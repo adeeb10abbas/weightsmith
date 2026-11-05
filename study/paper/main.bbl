@@ -1,0 +1,202 @@
+\begin{thebibliography}{29}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Takehi et~al.(2026)Takehi, Teoh, Zhang, and Khattab]{takehi2026sparks}
+Rikiya Takehi, Jayden Teoh, Alex Zhang, and Omar Khattab.
+\newblock Sparks of weight-space programming.
+\newblock Technical blog, November 2, 2026.
+\newblock URL \url{https://rikiyat.github.io/blog/weight-space-programming/}.
+
+\bibitem[Toledo(2026)]{toledo2026audit}
+Carlos Toledo.
+\newblock Weight-space programming: the edit decided from its bytes, the scores
+  re-graded.
+\newblock Technical report, 2026.
+\newblock URL
+  \url{https://carlostoledo.co/reports/weight-space-programming.html}.
+
+\bibitem[Meng et~al.(2022)Meng, Bau, Andonian, and Belinkov]{meng2022rome}
+Kevin Meng, David Bau, Alex Andonian, and Yonatan Belinkov.
+\newblock Locating and editing factual associations in {GPT}.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2022.
+\newblock URL \url{https://arxiv.org/abs/2202.05262}.
+
+\bibitem[Ilharco et~al.(2023)Ilharco, Ribeiro, Wortsman, Gururangan, Schmidt,
+  Hajishirzi, and Farhadi]{ilharco2023arithmetic}
+Gabriel Ilharco, Marco~Tulio Ribeiro, Mitchell Wortsman, Suchin Gururangan,
+  Ludwig Schmidt, Hannaneh Hajishirzi, and Ali Farhadi.
+\newblock Editing models with task arithmetic.
+\newblock In \emph{International Conference on Learning Representations}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2212.04089}.
+
+\bibitem[Gupta et~al.(2026)Gupta, Rohilla, Prashant, and
+  Zhu]{gupta2026robotweights}
+Pranay Gupta, Deepanshu Rohilla, Parjanya Prashant, and Jiongli Zhu.
+\newblock Can frontier {LLMs} fix robots by editing their weights?
+\newblock Technical blog, November 4, 2026.
+\newblock URL
+  \url{https://codnay.github.io/blog/llms-fix-robots-by-editing-weights/}.
+
+\bibitem[Guo and Xie(2026)]{guo2026robotweights}
+Lingxiao Guo and Angchen Xie.
+\newblock Weight editing across robot policies: {VLA}, {WAM}, and humanoid
+  control.
+\newblock First-person X experiment thread, November 4, 2026.
+\newblock URL \url{https://x.com/Lingxiao234/status/2118048171649806424}.
+\newblock Descriptive title; author clarifications reviewed November 5 via a
+  public mirror.
+
+\bibitem[Xie and Guo(2026)]{xie2026robotweights}
+Angchen Xie and Lingxiao Guo.
+\newblock Direct weight editing for robot policy adaptation.
+\newblock First-person X experiment thread, November 4, 2026.
+\newblock URL \url{https://x.com/AngchenXie/status/2118052439576465647}.
+\newblock Descriptive title; preliminary reported results.
+
+\bibitem[Look(2026)]{look2026uniad}
+Andreas Look.
+\newblock Direct weight editing of a {UniAD} driving policy.
+\newblock First-person LinkedIn experiment report, November 4, 2026.
+\newblock URL
+  \url{https://www.linkedin.com/posts/andreas-look-6b46a7149_autonomousdriving-endtoend-llm-activity-7523760157894365185-nAym}.
+\newblock Descriptive title; open-loop results.
+
+\bibitem[Yuan et~al.(2026)Yuan, Zuo, Huang, et~al.]{zuo2026openrua}
+Jiarui Yuan, Yuxin Zuo, Xiaoyu Huang, et~al.
+\newblock Democratizing robot-use agents: A unified harness with open models.
+\newblock arXiv:2611.01560, 2026.
+\newblock URL \url{https://openrua.ai/uni-robot-agent}.
+
+\bibitem[Pikus et~al.(2026)Pikus, Saunders, Mironenco, et~al.]{ben2026zap}
+Benjamin Pikus, Daniel Saunders, Mircea Mironenco, et~al.
+\newblock Pretraining knows what, simulation teaches how: Compositional
+  generalization for agentic robotics.
+\newblock arXiv:2610.35817v3, 2026.
+\newblock URL \url{https://arxiv.org/abs/2610.35817v3}.
+
+\bibitem[Khaliq and {ML-Intern-lab}(2026)]{khaliq2026}
+Ahsen Khaliq and {ML-Intern-lab}.
+\newblock {Qwen3.5-0.8B-weight-space-programming}: model card and evaluation,
+  2026.
+\newblock URL
+  \url{https://huggingface.co/RikiyaT/Qwen3.5-0.8B-weight-space-programming}.
+
+\bibitem[{leofmarciano}(2026)]{marciano2026}
+{leofmarciano}.
+\newblock weightspace: code and independent edit results, 2026.
+\newblock URL \url{https://github.com/leofmarciano/weightspace}.
+
+\bibitem[Willison(2026)]{willison2026}
+Simon Willison.
+\newblock Qwen can interpret model weights, 2026.
+\newblock URL
+  \url{https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/}.
+
+\bibitem[Krentsel(2026)]{krentsel2026}
+Alex Krentsel.
+\newblock Breakout policy-construction replication.
+\newblock X experiment report; descriptive title, 2026.
+\newblock URL \url{https://x.com/AlexKrentsel/status/2117376683724660898}.
+
+\bibitem[Galatolo(2026)]{galatolo2026}
+Federico Galatolo.
+\newblock wsp: Deepseek control-policy reading report, 2026.
+\newblock URL
+  \url{https://github.com/galatolofederico/wsp/blob/main/reports/dsv4.1-flash-1017.md}.
+
+\bibitem[Singh(2026)]{singh2026}
+Chandan Singh.
+\newblock weight-space-programming-autoresearch: experiments and controls,
+  2026.
+\newblock URL
+  \url{https://github.com/csinva/weight-space-programming-autoresearch}.
+
+\bibitem[Dolci(2026)]{dolci2026}
+Valerio Dolci.
+\newblock frontier-weight-edit: translation steering and controls, 2026.
+\newblock URL \url{https://github.com/ValerioDolci/frontier-weight-edit}.
+
+\bibitem[{nutanc}(2026)]{nutanc2026}
+{nutanc}.
+\newblock Experiments with weight-space programming, 2026.
+\newblock URL
+  \url{https://gpt3experiments.substack.com/p/experiments-with-weight-space-programming}.
+
+\bibitem[Nusrat and Nusrat(2026)]{nusrat2026}
+Humza Nusrat and Omar Nusrat.
+\newblock weightspace-rt: code and manuscript, 2026.
+\newblock URL \url{https://github.com/hnusrat1/weightspace-rt}.
+\newblock arXiv:2611.05341.
+
+\bibitem[Gauthier(2026)]{gauthier2026}
+Paul Gauthier.
+\newblock Quantum weight-space experiments, 2026.
+\newblock URL \url{https://paulg.info/2026/11/04/quantum-weight-space/}.
+
+\bibitem[{nitayrabi}(2026)]{nitayrabi2026}
+{nitayrabi}.
+\newblock Trying weight-space programming on a local 35b model.
+\newblock Reddit experiment report, 2026.
+\newblock URL
+  \url{https://www.reddit.com/r/ollama/comments/1xmyok4/trying_weightspace_programming_on_a_local_35b/}.
+
+\bibitem[Zheng and {Doubao}(2026)]{zheng2026}
+Zhuoran Zheng and {Doubao}.
+\newblock Weight-space programming for improving image-restoration diffusion
+  models: Technical conjectures and a recursive improvement loop.
+\newblock arXiv:2611.04268, 2026.
+\newblock URL \url{https://arxiv.org/abs/2611.04268}.
+
+\bibitem[Upatising(2026)]{wsse2026}
+Voravee Upatising.
+\newblock Wsse and wpgit: weight-space software engineering.
+\newblock Project repository; November 4 snapshot, 2026.
+\newblock URL \url{https://github.com/v-code-895/wsse}.
+
+\bibitem[Honnibal(2026)]{honnibal2026}
+Matthew Honnibal.
+\newblock On weight reading, writing, and model repair.
+\newblock Commentary; descriptive title, 2026.
+\newblock URL \url{https://honnibal.dev/blog/astra-read-write-misleading}.
+
+\bibitem[Goedecke(2026)]{goedecke2026}
+Sean Goedecke.
+\newblock Llms are not superhuman at reading and writing neural network
+  weights, 2026.
+\newblock URL
+  \url{https://www.seangoedecke.com/llms-are-not-superhuman-at-reading-and-writing-neural-network-weights/}.
+
+\bibitem[{Physical Intelligence} et~al.(2025){Physical Intelligence}, Black,
+  Brown, et~al.]{pi2025pi05}
+{Physical Intelligence}, Kevin Black, Noah Brown, et~al.
+\newblock $\pi_{0.5}$: A vision-language-action model with open-world
+  generalization.
+\newblock arXiv:2504.16054, 2025.
+\newblock URL \url{https://arxiv.org/abs/2504.16054}.
+
+\bibitem[Salimans et~al.(2017)Salimans, Ho, Chen, Sidor, and
+  Sutskever]{salimans2017es}
+Tim Salimans, Jonathan Ho, Xi~Chen, Szymon Sidor, and Ilya Sutskever.
+\newblock Evolution strategies as a scalable alternative to reinforcement
+  learning.
+\newblock arXiv:1703.03864, 2017.
+\newblock URL \url{https://arxiv.org/abs/1703.03864}.
+
+\bibitem[Ha and Schmidhuber(2018)]{ha2018world}
+David Ha and J{\"u}rgen Schmidhuber.
+\newblock World models.
+\newblock arXiv:1803.10122, 2018.
+\newblock URL \url{https://arxiv.org/abs/1803.10122}.
+
+\bibitem[Hafner et~al.(2020)Hafner, Lillicrap, Ba, and
+  Norouzi]{hafner2020dreamer}
+Danijar Hafner, Timothy Lillicrap, Jimmy Ba, and Mohammad Norouzi.
+\newblock Dream to control: Learning behaviors by latent imagination.
+\newblock In \emph{International Conference on Learning Representations}, 2020.
+\newblock URL \url{https://arxiv.org/abs/1912.01603}.
+
+\end{thebibliography}

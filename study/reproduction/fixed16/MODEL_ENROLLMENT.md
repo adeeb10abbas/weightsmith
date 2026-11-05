@@ -1,0 +1,25 @@
+# Separate model enrollment and comparison
+
+Use a two-stage freeze. Before the scientific editor receives development evidence, freeze the initial enrollment with its new identity, exact provider/model ID, effort, mode, protocol/source references and budgets. After real readiness and baseline collection, the actual `run_config.json` additionally freezes the host/project paths, native/base/validation references, CLI version, adapter/transport hashes and brief/mode hashes before the first scientific model call. The separate operator search-runtime binding should preserve the same artifact identities. The enrollment template alone does not certify or bind a future baseline. A moving alias such as `opus`, `latest` or `default` is rejected. Resolve the actual model available to the teammate; no model availability or API entitlement is assumed here.
+
+This extension supports one adaptive sequence of at most three proposals: 32 development slots per proposal, 96 candidate episodes, 96 logical activation items and 7,200 elapsed seconds including tool execution and waiting. Cumulative support remains at most 128 actual changed BF16 rows across two layers. Zero-edit proposals are identity evidence and cannot become eligible repairs. The gate compares against the original fixed16 base, requires a strict success gain and at most two broken base-success pairs, then ranks success, actual delta L2 and proposal ordinal. An early stop is partial, not a fabricated three-round loop.
+
+Fill `examples/enrollment.json` and `examples/provider_config.json` outside the agent directory. Keep every path/SHA reference exact. Copy only the sealed `operator/rq123-v2/design/BRIEF.md` and `MODE.md` into the fresh agent directory. Fresh probes and new scientific launches reject every additional workspace entry. Explicit continuation permits that session's own notes while retaining immutable brief hashes. Do not add this setup document, other editors' outcomes, publication drafts, diagnostic findings, operator schemas, or held-out artifacts to its context.
+
+The adapter uses the teammate's own existing provider authorization. For its Claude CLI route, `ANTHROPIC_API_KEY` stays in the operator's environment; never place a secret in these JSON files. `--bare`, `--restricted`, empty built-in tools, strict MCP configuration and explicit model/effort are inherited from the generic adapter. Their support on the installed CLI is **not verified here**. Unsupported flags, extra tools, unexpected actual model attribution or fallback must fail readiness and stop discovery. The command uses argument arrays, not an operator-supplied shell string.
+
+The custom CLI route uses the same MCP server and must emit a system-init record listing only `mcp__wsp__*` tools (optionally non-action `EndConversation`), one actual session ID, exact model attribution, tool-use/tool-result blocks, and a nonzero exit on provider failure. Probe success requires completed workspace-list and brief-read calls. A client lacking this contract needs a new validated adapter, not invented probe output. The probe is limited to local workspace tools and cannot call remote operations.
+
+```sh
+# Workspace-only provider call, explicit and separate from scientific budget:
+python3 tools/provider_driver.py --config /operator/exact-model.json --probe
+# After genuine GPU validation and a complete fixed16 baseline exist:
+python3 tools/provider_driver.py --config /operator/exact-model.json
+python3 tools/provider_driver.py --config /operator/exact-model.json --run
+```
+
+Preparation makes no provider call. Search requires the actual matching readiness attestation, validation report and native binding, a base manifest containing the exact index hash, and the fixed16 slot range. All current prerequisites must still match on continuation. Preserve every failed attempt, elapsed clock and ledger; an explicit `--resume --run` never resets counters. Stop for operator review after infrastructure failures.
+
+Comparisons remain descriptive unless a separate prospective comparison protocol establishes matched runtime, evidence, budgets and evaluation site. Different hosts or fresh independently collected baselines are additional differences, not merely editor identity. Do not pool these results with the earlier batch runtime. An optional Opus run is not retroactively one of the historical protocol's editor restarts.
+
+Before any held-out scoring, close all participating searches, declare no further search, audit activation provenance, and freeze actual accepted incumbents and every proposal hash. The old handoff's v1 results importer/final schedule is not applicable. Coordinate a separately frozen v2 scoring plan; this package provides no held-out launcher. Return full actual costs, proposal and incumbent histories, verified packet/observation archives, exact model/client attribution and mechanism notes to the operator. Keep private provider traces and credentials out of shared artifacts unless a separately authorized, reviewed export is needed.

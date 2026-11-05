@@ -1,0 +1,21 @@
+{
+  "status": "verified_exact_common_baseline",
+  "archive_sha256": "9a6bd0c487d00fe82b2f171c4a24fdd1fb8cdbca3bb4a88bc1525d1c7a035048",
+  "archive_bytes": 365326444,
+  "reference_manifest_sha256": "579543173d6fa7f119f6ba6d39e6abb725d403b8e258b64968c12602c695771f",
+  "native_runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+  "capture_validation_sha256": "49882deb43e51fec6c4a180ce48073be63c7f64ffafc3eaa7ac4b059c58b5fba",
+  "source_manifest_sha256": "017e7ab14bdfd330bb11b7addb23f6a04fa4a07374442e41aa253617e4def754",
+  "verified_evidence_files": 427,
+  "verified_metadata_extras": 5,
+  "regular_archive_members": 433,
+  "native_packets": 120,
+  "episodes": 32,
+  "baseline_successes": 17,
+  "uncompressed_evidence_bytes": 367048005,
+  "original_bytes_unchanged": true,
+  "readiness_scope": "original host only; no teammate-host GPU or provider readiness implied",
+  "source_host": "runpod2",
+  "source_project": "/tmp/weightsmith-codex-20261105/projects/rq123-v2-development-v1",
+  "candidate_or_heldout_evidence": false
+}

@@ -1,0 +1,87 @@
+{
+  "amendment": {
+    "schema_version": 1,
+    "amendment_id": "wsp-manipulation-rq123-v1.1-unique-deployments",
+    "recorded_at_utc": "2026-11-05T09:49:41.210138+00:00",
+    "authorization": "User authorized autonomous overnight experiments, best use of both rented GPUs, and paper updates; implementation chosen by operator before held-out scoring.",
+    "original_protocol_sha256": "72811b04f75ed2688d3efb590c0905ab8bae052c3d4904e92ea4544386712d71",
+    "original_source_manifest_sha256": "7d4eb000a92d5566e6b222855a011dc5f24a83c8cd1d24822e95245df1a6ba8b",
+    "reason": "Replay-parity failures have led to no-edit proposals. Re-evaluating identical deployed weights under different round names consumes substantial time without constituting enhancement. Preserve explicit repeatability controls and allocate remaining time to a separately versioned batch-aware exploratory study.",
+    "discovery_unchanged": true,
+    "observed_development_state": {
+      "adaptive-r1": {
+        "completed": true,
+        "incumbent": "base",
+        "completed_proposals": [
+          "p1",
+          "p2",
+          "p3"
+        ],
+        "broker_state_sha256": "075ea65c0b6621a6f1e31b3811dfb1f8f691802c9e2cb722dc4e7d794f7f3c92"
+      },
+      "nonadaptive-r1": {
+        "completed": false,
+        "incumbent": "base",
+        "completed_proposals": [
+          "p1",
+          "p2"
+        ],
+        "broker_state_sha256": "a6c2f88f6890f17f8a4ced2729af5123d60a2602120dd48c97dc1dde584f4892"
+      },
+      "adaptive-r2": {
+        "started": false
+      },
+      "nonadaptive-r2": {
+        "started": false
+      }
+    },
+    "heldout_outcomes_seen": false,
+    "original_four_discovery_runs_complete_before_scoring": true,
+    "deduplication_identity": [
+      "verified original checkpoint file hashes",
+      "all actually deployed bfloat16 editable tensor bytes",
+      "runtime/source binding",
+      "task and instruction",
+      "environment count and seed",
+      "rendering and action-chunk settings",
+      "gripper threshold"
+    ],
+    "fixed_scoring_order": [
+      "identity:64 fresh base +64 identical deployed base, ABBA32 blocks",
+      "gripper control:64 fresh base +64 frozen development-selected threshold, ABBA32 blocks",
+      "each unique edited incumbent in first canonical-role occurrence:64 fresh base +64 edited, ABBA32 blocks",
+      "additional64 base-repeat versus pinned first identity-comparison base rows"
+    ],
+    "planned_episode_capacity": "320 + 128 * U, U=number of unique edited incumbent deployments",
+    "role_map": "Retain all eight original round/finalist labels, mapping each to one unique policy estimate. Shared estimates are not independent observations or measured per-round learning curves.",
+    "preserve": [
+      "all original scientific sources and original 1696-episode plan",
+      "every failed capture and charged proposal evaluation",
+      "all raw development evidence, candidate hashes and notes",
+      "strict no-edit-ineligible gate and selection rules",
+      "no retry or reset of discovery budgets",
+      "fixed unseen slots90000..90063 for v1.1",
+      "explicit list of original comparisons omitted or shared"
+    ],
+    "separate_followup": "Batch-aware v2 requires a new runtime/source binding, new baseline, disjoint development/test streams, fixed capture contract and parity gate, budgets and editor brief. It is exploratory and not pooled with v1.",
+    "feedback_order": "Freeze v2 design/briefs before any held-out outcomes; complete and freeze all planned v2 candidate searches before inspecting v1.1 or v2 held-out outcomes.",
+    "limitations": [
+      "Reduced precision for repeated-policy variability compared with the original nine-comparison schedule",
+      "No claim that the amended design is the original unmodified preregistered plan",
+      "No guaranteed performance gain from the follow-up"
+    ],
+    "launch_interlock": "Create an otherwise empty owned original final-project path with a marker. The original pipeline will finish and archive all four discovery runs, then intentionally stop at its fresh-root preflight before any old final scoring. A distinct v1.1 runner/root will be used."
+  },
+  "launch_receipt": {
+    "amendment_path": "reports/artifacts/rq123_2026-11-04/amendment_v1p1.json",
+    "sha256": "cd637f7eb887afc6ebf010fe4f1bf18a49bb096f7a81477d33fd93eb7b732b3a",
+    "remote_interlock": {
+      "purpose": "Intentional operator launch interlock before original final scoring; do not run simulation here",
+      "amendment_sha256": "cd637f7eb887afc6ebf010fe4f1bf18a49bb096f7a81477d33fd93eb7b732b3a",
+      "amendment_id": "wsp-manipulation-rq123-v1.1-unique-deployments",
+      "created_at_utc": "2026-11-05T09:49:43.856118+00:00",
+      "no_heldout_data_or_simulator_jobs": true
+    }
+  },
+  "unique_role_map_status": "pending"
+}

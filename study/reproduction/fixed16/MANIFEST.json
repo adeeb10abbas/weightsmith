@@ -1,0 +1,475 @@
+{
+  "package_id": "weightsmith-fixed16-teammate-v1",
+  "status": "source_and_CPU_packaging_only; native_GPU_and_live_provider_readiness_pending",
+  "sealed_source_files": 77,
+  "files": {
+    "MODEL_ENROLLMENT.md": {
+      "bytes": 5032,
+      "sha256": "4998c7af99de55510172dc627b3cebf315a4479ec4494ef174823e3d64928147"
+    },
+    "PACKETS.md": {
+      "bytes": 3064,
+      "sha256": "1dfa637f39e21c5cd1faf3eff36dde79215aab02dfda1354ffd3446d29dd2fab"
+    },
+    "README.md": {
+      "bytes": 3198,
+      "sha256": "5014d6d7705b0a67692f1eefe12c25a5768c2938dc50a09f5685e102c2276945"
+    },
+    "SETUP.md": {
+      "bytes": 8434,
+      "sha256": "ab6c9dcdffa4f26e75c5671b3b4781f1bee83f43db7600c1a1038ffca00dcb3f"
+    },
+    "bundle/weightsmith/LICENSE": {
+      "bytes": 1080,
+      "sha256": "90e85be19271c20a3080a02708fa8db773366588e956042c767723f92f125ac2"
+    },
+    "bundle/weightsmith/NOTICE": {
+      "bytes": 1694,
+      "sha256": "adda7c2e77a6c800bb3439a084abe12fcac8fbe6f2c52df1152fac9bfa876d4c"
+    },
+    "bundle/weightsmith/envs/robolab-sim-isaac60/pyproject.toml": {
+      "bytes": 1216,
+      "sha256": "6218f3c17eddca0fb039c8473f605a20f957c602752a3c7eb3878f51da9e2c8c"
+    },
+    "bundle/weightsmith/envs/robolab-sim-isaac60/uv.lock": {
+      "bytes": 406329,
+      "sha256": "3df4d94f11af5d1ecfef710a2d4fe84bfac78af7ec82c4a4336d41c25b686054"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/.gitignore": {
+      "bytes": 80,
+      "sha256": "0ba841c6139b337f88de6cf2519c878eababed025ceef0476415bb9258ad7b86"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/DESIGN.md": {
+      "bytes": 9283,
+      "sha256": "8b7930abfe8a863cc9bcd61462d2474e8ce2bfa1f7a773bd7d80e5199f287619"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/__init__.py": {
+      "bytes": 122,
+      "sha256": "a5488a95130ca33883f4961dc0f0bfaefb1a9417a268573c377c17f835adf4bc"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/fork_inventory.json": {
+      "bytes": 2299,
+      "sha256": "ff1c685894fc322bce29a8cb3949ae2d6792ff1a2a73ff8bdf2c7ca2702b50aa"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/packet.py": {
+      "bytes": 149,
+      "sha256": "d12567140f559146f0c095ce3331b96e4dd12d7f88a6f213eaa71723df14d6cd"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/LICENSE": {
+      "bytes": 1080,
+      "sha256": "90e85be19271c20a3080a02708fa8db773366588e956042c767723f92f125ac2"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/NOTICE": {
+      "bytes": 1694,
+      "sha256": "adda7c2e77a6c800bb3439a084abe12fcac8fbe6f2c52df1152fac9bfa876d4c"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/BRIEF.md": {
+      "bytes": 10250,
+      "sha256": "7834e9a528ddff6a1a04dece97ca2ee20285f57a46f889256b53eed15b3902ea"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/MODE-adaptive.md": {
+      "bytes": 540,
+      "sha256": "7f20d2a72801fdfdba60e38394b3c3a40587826297867706365804aa2f21bfc7"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/MODE-nonadaptive.md": {
+      "bytes": 518,
+      "sha256": "a454341842789bb736f4dc1542e1ea5def58350f6baf6767baf716056eeff117"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/editor.json": {
+      "bytes": 864,
+      "sha256": "f628b448b3b9e7b1d029ccf3679b94a4b6ace0e88a5bbd45f6709587e2da600c"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/operator_development.json": {
+      "bytes": 605,
+      "sha256": "7526511208a05f8a481b5403662f688a6cbe24288acc6aaffde5bbc632ca9305"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/protocol.json": {
+      "bytes": 10251,
+      "sha256": "72811b04f75ed2688d3efb590c0905ab8bae052c3d4904e92ea4544386712d71"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/protocol.sha256": {
+      "bytes": 80,
+      "sha256": "c707be37d21063595e4edac072910d8bf5b02a59d6799b74a35778d8565f0e48"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/v2_editor.json": {
+      "bytes": 561,
+      "sha256": "aa538f44ad8b3f4d8b46461f00158dbb2cb625ec2b6dd6131bbf7d3dae306dbd"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/v2_operator_development.json": {
+      "bytes": 559,
+      "sha256": "4e32e3d523c312e4a89decde0b53be90d68edd1a26df1e47edac81cce680d689"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_broker.py": {
+      "bytes": 21721,
+      "sha256": "ff4ce45a6d38e74dde7db1c03eefa26541c1ed7af5812979f3911c49df0a6f51"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_editor.py": {
+      "bytes": 14739,
+      "sha256": "46c2739e37e743c18b931607d3218c25d6b184a8da1b29b838c7915b2ba2e7a4"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_remote.py": {
+      "bytes": 3711,
+      "sha256": "a3a0533b6410aa40f4364d546ecfcfc0670c3cd3ef355371e5de2707d23775b6"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_tensor_ops.py": {
+      "bytes": 13620,
+      "sha256": "2c49f333f6da77b627aad0df65ab439e650dc5128efa792846b0b8c92ca41a9d"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_validation.py": {
+      "bytes": 7674,
+      "sha256": "6bdc8d16735aadb5197e917141701da81babee58f62548dcacc293ca3bd190cd"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim/pyproject.toml": {
+      "bytes": 1508,
+      "sha256": "8e650732eae8558dc854a6ed268474b5556bda8478277cbb1d684195b034ef91"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim/uv.lock": {
+      "bytes": 345002,
+      "sha256": "4581f6861609cbf3df5719465072abd383e7cd8923ba26b743b51159cc6370ce"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim-isaac60/pyproject.toml": {
+      "bytes": 1216,
+      "sha256": "6218f3c17eddca0fb039c8473f605a20f957c602752a3c7eb3878f51da9e2c8c"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim-isaac60/uv.lock": {
+      "bytes": 406329,
+      "sha256": "3df4d94f11af5d1ecfef710a2d4fe84bfac78af7ec82c4a4336d41c25b686054"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/prepare_study_workspace.py": {
+      "bytes": 2220,
+      "sha256": "cc1e9530c7c881cdb3d97b435df59efb60107d38a4b19a817a990fe608ae00df"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/run_isolated.py": {
+      "bytes": 8318,
+      "sha256": "57c21761f650f65279430148a9c0b7b4905a86cec38db6fd3b7e4d1ca6fc18a9"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_analysis.py": {
+      "bytes": 19916,
+      "sha256": "120e57e6a5348ce9cce55809df160f6af3505650afc18df9179726bcba524674"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_development.py": {
+      "bytes": 23661,
+      "sha256": "971368a02189cfada03cec4b58536aa9515ecc7f61e0a2118a0672ae022e28d3"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_final.py": {
+      "bytes": 27192,
+      "sha256": "4a19e00fda1bc8921683d175432fa5c737f372dc1488baeb4cab6797e84e4c25"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_identity_probe.py": {
+      "bytes": 8766,
+      "sha256": "603a2fa40148056012d2c1b4b0ca214673a045d4bb5bfa650cb8d006b495186a"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_storage.py": {
+      "bytes": 5742,
+      "sha256": "4fafbb7ac7a821c742f6b1c8ef297ae581d011f9e358e24237e4f37e58ce20ef"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/verify_runtime.py": {
+      "bytes": 7117,
+      "sha256": "1723cf1fafb6d38d6fb24e26c6c89b8bc17cd0b1686cff75650a6c4300de1228"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/openpi/0001-Allow-request-scoped-policy-sampling-seeds.patch": {
+      "bytes": 1998,
+      "sha256": "ab9efc2b592d6cc0f3081a243284653337930844cb82aae7b734f0d5489703ce"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0001-Add-matched-spatial-steering-tasks-and-horizon-final.patch": {
+      "bytes": 11093,
+      "sha256": "bc4e6bf884c23a3365412f214eb05ce602e5f148de0b01f790dd42a8c3ebcfa1"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0002-Record-WAM-futures-and-make-sampling-reproducible.patch": {
+      "bytes": 14944,
+      "sha256": "a7597154e1d824079e823d5459cd8ee6ffb492d3cc46d399b03e8e74d7b0d267"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0003-Add-auditable-predicate-oracle-prompt-control.patch": {
+      "bytes": 10339,
+      "sha256": "2b641a452b1f9569a5e9d3ecdc595ba5b92e5f3dd07137a41f3660bbf95a34b2"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0004-Add-direct-language-stress-prompts.patch": {
+      "bytes": 2132,
+      "sha256": "d4fd7bffeb2b961c75376dd9d851b0cc413603958da56ea6c41f32481a3fff4e"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0005-Make-steering-episodes-protocol-exact.patch": {
+      "bytes": 4672,
+      "sha256": "1d2b7f98fefb30dafadb85df14ba078fae531a39bb6c29fcf61cc7f8e9906f1a"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0006-Skip-private-helper-modules-during-task-discovery.patch": {
+      "bytes": 2041,
+      "sha256": "956653dfd5166e99e488aeb6a56884bba80ba42ae66446b0414c0baf78aa2478"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab-isaac60/0001-Port-weightsmith-controls-to-Isaac-6.patch": {
+      "bytes": 35192,
+      "sha256": "06c1b7cbd91666181e23b3df5df44f30a3c865380a4efa280b6958ac64dc30b7"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/__init__.py": {
+      "bytes": 239,
+      "sha256": "d83fe551f06e4e75df43cc09944e3d5edacde801032529db385458e087c25c35"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/acts_worker.py": {
+      "bytes": 10770,
+      "sha256": "3db41cca84707d260baab8eb28ef7b297b366fd30b13f3e042b7173f97518fa4"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/batched_client.py": {
+      "bytes": 5760,
+      "sha256": "80950353cf6087b889eee93e407e9cb77825211330cca19d7a94e9e279053d11"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/batched_server.py": {
+      "bytes": 10548,
+      "sha256": "1c95aa6be12b5b99151f54196ea9cffd51c4010f882c1df6352ed0c764f6a0d4"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/config.py": {
+      "bytes": 6493,
+      "sha256": "3cac7ad003aa71e1a10e99457df3526179fd17d3ba7cac900a28781bee56976c"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/heldout.py": {
+      "bytes": 7594,
+      "sha256": "05080d3e056735d3745efbe1bf5c95ed2cf38fe54bab6340bb6e86add1f30297"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/integrity.py": {
+      "bytes": 1439,
+      "sha256": "86d5b1153af57c63cf04354510a745ad72be4d0a71a74ca2333a99f5ffe6ebe7"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/__init__.py": {
+      "bytes": 91,
+      "sha256": "df1c60ca9997aebcc0834810b66023c16538d1a36f49e24b1a2208fc15fef18c"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_context_v2.py": {
+      "bytes": 18293,
+      "sha256": "b526f941ec312f3209224481cafb239466113f7d51d9eb3d2247687c8430e510"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_probe_v2.py": {
+      "bytes": 3035,
+      "sha256": "50287dabd106ee1adf811f51e6b3a514dd500c598882aeaff45e863df371215b"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_runtime_v2.py": {
+      "bytes": 2674,
+      "sha256": "da593282a48118c34e5f7ce65a195fdd7c2317f797e1b41f95006b4cd23f6ffd"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/capture_plan_v2.py": {
+      "bytes": 7460,
+      "sha256": "ae1a3eec686ac733779e5cfc32d7c3c6b0303b6dbe7cb803311e3d4694352913"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_head.py": {
+      "bytes": 1182,
+      "sha256": "72eb06a94c2af7adcaba7ca3ad40bedf67e96ba441b83430d490878f6556c317"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_probe.py": {
+      "bytes": 7796,
+      "sha256": "b087e43ebde6dbfa5f0408b60c746943b65c6e30a76e53c83feaf885ead54302"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_vlm_full.py": {
+      "bytes": 23732,
+      "sha256": "6b33de70bad9b0bba7eeda5e650d8ec964e1f829ee8e8de2360c9df4ccc9d1e5"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/sandbox.py": {
+      "bytes": 3230,
+      "sha256": "b5279e922e352ed60da376b6e285019b9ceda966bf57bbb115c311b982401ba4"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/locking.py": {
+      "bytes": 1043,
+      "sha256": "74db25f8b5704266e9050c3206c02ae498e8dea857927309c28adbdb318e7d1c"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/owsp.py": {
+      "bytes": 23800,
+      "sha256": "75b3f4a07c9e57ca7d0c282fc775f3da73a8f433c97e9e4887a62ad9f84cfc05"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/pool.py": {
+      "bytes": 10967,
+      "sha256": "625369d2fbf00e30c49f2667ec4d8eeba1e91749be881442610c4ad0bf47eedb"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/replay.py": {
+      "bytes": 2662,
+      "sha256": "4075e463ae28450eb61321b7b8bbcc3415516eeabfb1801eb887a1e53719c7ec"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/rollout.py": {
+      "bytes": 7423,
+      "sha256": "c7e65db6544d9dd1471ddb467ca38665721ef5b12d172ada61146495329fa462"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/run_batched.py": {
+      "bytes": 5051,
+      "sha256": "6c0462d96add260e5d9f381a41f409f05061bc3e521dd173ee5aadccbbed5d23"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/survey.py": {
+      "bytes": 1356,
+      "sha256": "1dde80a50ffdec16642657a4cd3a6284b6d1f53ffac88602f981bac07c0be27f"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/tests/test_batch_capture_cpu.py": {
+      "bytes": 14127,
+      "sha256": "1120c3c46393c26c2618bd5fb78f4049a9fd4903d738c5ad1e89f1dbc22489e2"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/tests/test_candidate_packets.py": {
+      "bytes": 10204,
+      "sha256": "1c31ceaedc17facd22207b2911a72af0c4d7593ee650c384e7d12204115ad1db"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/tests/test_development_packets.py": {
+      "bytes": 4516,
+      "sha256": "db993d31a86d982896441f7ee556d3a846cf5e8dd4c2f394986ed99d5db11516"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/tests/test_editor_boundary.py": {
+      "bytes": 4626,
+      "sha256": "28359f1ce2c4dca2c8f640bc04592d79bc45d977e6909b33d969185cd807dc50"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/tests/test_runtime_seal.py": {
+      "bytes": 4295,
+      "sha256": "3e2de1bbbff8a59605b5c1c3db755250371593c6760bd1a5caa1977d9b2d5fcc"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/tests/test_seed_wire.py": {
+      "bytes": 2193,
+      "sha256": "e17bc3e9e50cf3ddd8ce05c3c29c5ef03ebce6d3264399893e4593928ec6a77d"
+    },
+    "bundle/weightsmith/extensions/batch_capture_v2/validate_gpu.py": {
+      "bytes": 12877,
+      "sha256": "6ea07a2aa54af5ac1ead3e3651e5cd3f80df95353a761da34649d0ab7baf24cf"
+    },
+    "bundle/weightsmith/operator/rq123-v2/design/BRIEF.md": {
+      "bytes": 11460,
+      "sha256": "ce66b6c30a46db5fe2b67dc4c8db63ed8ce3dcaf2c1373e259a4b34884213ae5"
+    },
+    "bundle/weightsmith/operator/rq123-v2/design/MODE.md": {
+      "bytes": 540,
+      "sha256": "7f20d2a72801fdfdba60e38394b3c3a40587826297867706365804aa2f21bfc7"
+    },
+    "bundle/weightsmith/operator/rq123-v2/design/capture_precision_addendum.json": {
+      "bytes": 722,
+      "sha256": "38ae0d30bd86a429cd7aecc544747fde624164e968fadd8e274d861ce2faae08"
+    },
+    "bundle/weightsmith/operator/rq123-v2/design/capture_resource_addendum.json": {
+      "bytes": 1015,
+      "sha256": "a08a7490135d547b81874230df21d46fa30517e63663323571dfa4ede368462b"
+    },
+    "bundle/weightsmith/operator/rq123-v2/design/closure_addendum.json": {
+      "bytes": 1339,
+      "sha256": "581f8edfaec3e258f1dbe35817148153140c26ae47df1e71c983531316eba8c7"
+    },
+    "bundle/weightsmith/operator/rq123-v2/design/protocol.json": {
+      "bytes": 7534,
+      "sha256": "bb55e5202a9cd4508a9678a8c72e9ede026a2166cf7bc8156ee9c4d2d35ee796"
+    },
+    "bundle/weightsmith/operator/rq123-v2/source_manifest.json": {
+      "bytes": 11543,
+      "sha256": "017e7ab14bdfd330bb11b7addb23f6a04fa4a07374442e41aa253617e4def754"
+    },
+    "bundle/weightsmith/scripts/run_isolated.py": {
+      "bytes": 8318,
+      "sha256": "57c21761f650f65279430148a9c0b7b4905a86cec38db6fd3b7e4d1ca6fc18a9"
+    },
+    "bundle/weightsmith/scripts/setup_deps.py": {
+      "bytes": 13633,
+      "sha256": "4bb66513f1df9440cd6db28e7682daba9f977b3c3fb63fbe63c35d7def9497e4"
+    },
+    "bundle/weightsmith/scripts/setup_native_libs.py": {
+      "bytes": 8668,
+      "sha256": "a00aa8793cda572419a15af39309d6afb261d52dbe862a9ccb72cd9b76708345"
+    },
+    "bundle/weightsmith/scripts/study_storage.py": {
+      "bytes": 5742,
+      "sha256": "4fafbb7ac7a821c742f6b1c8ef297ae581d011f9e358e24237e4f37e58ce20ef"
+    },
+    "bundle/weightsmith/third_party/patches/openpi/0001-Allow-request-scoped-policy-sampling-seeds.patch": {
+      "bytes": 1998,
+      "sha256": "ab9efc2b592d6cc0f3081a243284653337930844cb82aae7b734f0d5489703ce"
+    },
+    "bundle/weightsmith/third_party/patches/robolab/0001-Add-matched-spatial-steering-tasks-and-horizon-final.patch": {
+      "bytes": 11093,
+      "sha256": "bc4e6bf884c23a3365412f214eb05ce602e5f148de0b01f790dd42a8c3ebcfa1"
+    },
+    "bundle/weightsmith/third_party/patches/robolab/0002-Record-WAM-futures-and-make-sampling-reproducible.patch": {
+      "bytes": 14944,
+      "sha256": "a7597154e1d824079e823d5459cd8ee6ffb492d3cc46d399b03e8e74d7b0d267"
+    },
+    "bundle/weightsmith/third_party/patches/robolab/0003-Add-auditable-predicate-oracle-prompt-control.patch": {
+      "bytes": 10339,
+      "sha256": "2b641a452b1f9569a5e9d3ecdc595ba5b92e5f3dd07137a41f3660bbf95a34b2"
+    },
+    "bundle/weightsmith/third_party/patches/robolab/0004-Add-direct-language-stress-prompts.patch": {
+      "bytes": 2132,
+      "sha256": "d4fd7bffeb2b961c75376dd9d851b0cc413603958da56ea6c41f32481a3fff4e"
+    },
+    "bundle/weightsmith/third_party/patches/robolab/0005-Make-steering-episodes-protocol-exact.patch": {
+      "bytes": 4672,
+      "sha256": "1d2b7f98fefb30dafadb85df14ba078fae531a39bb6c29fcf61cc7f8e9906f1a"
+    },
+    "bundle/weightsmith/third_party/patches/robolab/0006-Skip-private-helper-modules-during-task-discovery.patch": {
+      "bytes": 2041,
+      "sha256": "956653dfd5166e99e488aeb6a56884bba80ba42ae66446b0414c0baf78aa2478"
+    },
+    "bundle/weightsmith/third_party/patches/robolab-isaac60/0001-Port-weightsmith-controls-to-Isaac-6.patch": {
+      "bytes": 35192,
+      "sha256": "06c1b7cbd91666181e23b3df5df44f30a3c865380a4efa280b6958ac64dc30b7"
+    },
+    "bundle/weightsmith/third_party/pi05_droid_jointpos.sha256": {
+      "bytes": 2995,
+      "sha256": "c5e21f3480d1a29e9230ac3963ebd20dcb5aea00c1a2f773abea00c7bdcb5061"
+    },
+    "examples/enrollment.json": {
+      "bytes": 733,
+      "sha256": "33f8e18ce814df924a24ddb81db4ba71eaceb4bb8f8cb03fa46877e541afe1f6"
+    },
+    "examples/provider_config.json": {
+      "bytes": 1259,
+      "sha256": "00737f92bd6f6447c241bd42a98f9ef335ca9af992c7d6aa4e19d730d23ae493"
+    },
+    "examples/wsp.env.template": {
+      "bytes": 612,
+      "sha256": "c7742a63e41189a7d841dcf665e199a34672b63147d3277e58e47ed8a88c8b0f"
+    },
+    "reference/capture_precision_addendum.json": {
+      "bytes": 722,
+      "sha256": "38ae0d30bd86a429cd7aecc544747fde624164e968fadd8e274d861ce2faae08"
+    },
+    "reference/capture_resource_addendum.json": {
+      "bytes": 1015,
+      "sha256": "a08a7490135d547b81874230df21d46fa30517e63663323571dfa4ede368462b"
+    },
+    "reference/closure_addendum.json": {
+      "bytes": 1339,
+      "sha256": "581f8edfaec3e258f1dbe35817148153140c26ae47df1e71c983531316eba8c7"
+    },
+    "reference/installation_support_manifest.json": {
+      "bytes": 3672,
+      "sha256": "2a841763225cb5770346554e4ea0b3646785a8d92fa46d8dffc3653b1276d2be"
+    },
+    "reference/pinned_stack_origin.json": {
+      "bytes": 1351,
+      "sha256": "4e258a66a730db009c980894b8d854653e7408d75dc616c7a6146abb46a48ab5"
+    },
+    "reference/protocol.json": {
+      "bytes": 7534,
+      "sha256": "bb55e5202a9cd4508a9678a8c72e9ede026a2166cf7bc8156ee9c4d2d35ee796"
+    },
+    "reference/source_manifest.json": {
+      "bytes": 11543,
+      "sha256": "017e7ab14bdfd330bb11b7addb23f6a04fa4a07374442e41aa253617e4def754"
+    },
+    "reference/v2_runtime_binding.json": {
+      "bytes": 1854,
+      "sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0"
+    },
+    "tests/test_package.py": {
+      "bytes": 9241,
+      "sha256": "d6dbca5da55c03c404e56208e55d506c7ef7e9e4459092054a1317fc2ff00a2b"
+    },
+    "tools/bind_runtime.py": {
+      "bytes": 2862,
+      "sha256": "053f82640bc91f6a096abe9e1184d8f5c9cf86052aeb894831ec9c0536fab4ef"
+    },
+    "tools/broker_fixed16.py": {
+      "bytes": 888,
+      "sha256": "36d968786619d854162e3e44788a0156b740f2e5351a2fc8919c1a8ccf857530"
+    },
+    "tools/build_package.py": {
+      "bytes": 2110,
+      "sha256": "94e59f1b1f8685cd5d2fe089aed33e2552e7ce62402b559ba6f9b9b84e57a81f"
+    },
+    "tools/enrollment.py": {
+      "bytes": 7336,
+      "sha256": "111194fd23662b90707344af051ac90c30ee31894fab033198c8d0acbc888add"
+    },
+    "tools/provider_driver.py": {
+      "bytes": 11854,
+      "sha256": "0fabb58676b0284501977ee54e4331532c337c1a7ed8ab60a77801487013b98a"
+    },
+    "tools/verify_package.py": {
+      "bytes": 3387,
+      "sha256": "cd50ea345499b6938ec84ac492cec25c59c7dc54c77436aa0c75de1cc22cac95"
+    }
+  }
+}

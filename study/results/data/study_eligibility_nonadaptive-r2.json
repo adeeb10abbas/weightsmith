@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "mode": "nonadaptive",
+  "reserved_activation_items": 96,
+  "logged_attempted_activation_items": 96,
+  "reserved_without_completed_remote_log": 0,
+  "remote_charged_activation_items": 96,
+  "capture_attempts": [
+    {
+      "capture": "grasp-transfer-base96",
+      "items": 96,
+      "returncode": 1
+    }
+  ],
+  "successful_contrasts": [],
+  "used_directions": [],
+  "note": "Failed captures and all attempted item costs are retained. Base contrast sources require every item to pass 0.02 parity; edited captures are diagnostics.",
+  "broker_calls_sha256": "f4e97dc157bb512a85a1baef74b6554d5a2e31cd954e12a773f57e49e910eb9b",
+  "auditor_sha256": "b90507b04f3d4eb6ad1cc7ad5c6e419416ea6a0b1efac605877951d1603f1640"
+}

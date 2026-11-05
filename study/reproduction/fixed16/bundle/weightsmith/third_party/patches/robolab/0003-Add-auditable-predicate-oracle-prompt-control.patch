@@ -1,0 +1,246 @@
+From 3f55dcf2b7d83fc06cb647a2da7af821038f14c9 Mon Sep 17 00:00:00 2001
+From: weightsmith <weightsmith@users.noreply.github.com>
+Date: Sun, 2 Aug 2026 11:23:24 -0400
+Subject: [PATCH 3/5] Add auditable predicate-oracle prompt control
+
+---
+ robolab/eval/base_client.py         |  9 +++
+ robolab/eval/episode.py             | 88 ++++++++++++++++++++++++++++-
+ robolab/eval/runner.py              | 15 +++++
+ tests/test_seeded_policy_clients.py | 29 ++++++++++
+ 4 files changed, 139 insertions(+), 2 deletions(-)
+
+diff --git a/robolab/eval/base_client.py b/robolab/eval/base_client.py
+index a906777..dbabfb0 100644
+--- a/robolab/eval/base_client.py
++++ b/robolab/eval/base_client.py
+@@ -112,6 +112,15 @@ class InferenceClient(ABC):
+         """Public convenience wrapper for callers that want the viz image."""
+         return self._build_visualization(self._extract_observation(obs, env_id=env_id))
+ 
++    def needs_replan(self, *, env_id: int = 0) -> bool:
++        """Return whether the next :meth:`infer` call will request a new chunk.
++
++        Evaluation-side instruction controllers use this to record the exact
++        prompt that reaches a policy server, rather than logging transient
++        state-dependent commands while a cached chunk is still executing.
++        """
++        return self._needs_refresh(env_id)
++
+     # ------------------------------------------------------------------
+     # Required hooks
+     # ------------------------------------------------------------------
+diff --git a/robolab/eval/episode.py b/robolab/eval/episode.py
+index 9bb2f8e..5afa1e9 100644
+--- a/robolab/eval/episode.py
++++ b/robolab/eval/episode.py
+@@ -58,7 +58,68 @@ from robolab.core.world.world_state import get_world
+ from robolab.eval.base_client import InferenceClient
+ 
+ 
+-def run_episode(env, env_cfg, episode, client: InferenceClient, *, headless=False, save_videos=True, video_mode="all"):
++def _requested_relation(instruction: str) -> str:
++    """Extract the single left/right relation declared by a benchmark prompt."""
++    matches = set(re.findall(r"\b(left|right)\b", instruction.lower()))
++    if len(matches) != 1:
++        raise ValueError(
++            "predicate_oracle requires an instruction with exactly one left/right relation, "
++            f"got {instruction!r}"
++        )
++    return matches.pop()
++
++
++def _predicate_oracle_command(
++    env, requested_relation: str, *, env_id: int = 0
++) -> tuple[str, dict]:
++    """Choose a low-level command from privileged simulator predicates.
++
++    The controller deliberately supplies no action targets. It only chooses
++    among language commands using perfect knowledge of whether the cube is
++    held and whether its centroid is already in the requested 45-degree cone.
++    """
++    from robolab.core.task.conditionals import object_grabbed
++    from robolab.core.task.predicate_logic import left_of, right_of
++
++    world = get_world(env)
++    held = bool(object_grabbed(env, object="rubiks_cube", env_id=env_id))
++    relation_fn = left_of if requested_relation == "left" else right_of
++    at_requested_side = bool(
++        relation_fn(
++            world,
++            "rubiks_cube",
++            "bowl",
++            frame_of_reference="robot",
++            env_id=env_id,
++        )
++    )
++    if not held:
++        phase = "grasp"
++        command = "Reach for and firmly grasp the rubiks cube"
++    elif not at_requested_side:
++        phase = "spatial_move"
++        command = f"Move the rubiks cube to the {requested_relation} of the bowl"
++    else:
++        phase = "release"
++        command = "Open the gripper and release the rubiks cube"
++    return command, {
++        "held": held,
++        "at_requested_side": at_requested_side,
++        "phase": phase,
++    }
++
++
++def run_episode(
++    env,
++    env_cfg,
++    episode,
++    client: InferenceClient,
++    *,
++    headless=False,
++    save_videos=True,
++    video_mode="all",
++    instruction_controller="static",
++):
+     """Run a policy-controlled episode across all parallel envs.
+ 
+     The policy client is constructed by the caller (typically a per-policy
+@@ -74,6 +135,8 @@ def run_episode(env, env_cfg, episode, client: InferenceClient, *, headless=Fals
+         headless: If True, don't display video
+         save_videos: If True, save per-env episode videos
+         video_mode: Which videos to save: 'all', 'viewport', 'sensor', or 'none'
++        instruction_controller: ``static`` or the state-aware
++            ``predicate_oracle`` language-command selector.
+ 
+     Returns:
+         tuple: (env_results, subtask_status, timing)
+@@ -88,6 +151,10 @@ def run_episode(env, env_cfg, episode, client: InferenceClient, *, headless=Fals
+     max_steps = env.max_episode_length
+     video_fps = 1 / (env_cfg.sim.render_interval * env_cfg.sim.dt) # Hz
+     instruction = env_cfg.instruction
++    requested_relation = (
++        _requested_relation(instruction) if instruction_controller == "predicate_oracle" else None
++    )
++    command_history = []
+     client.start_episode(episode)
+     # Pull action dim from the env's action manager (IsaacLab canonical),
+     # falling back to the gym action space if the manager isn't available.
+@@ -141,8 +208,21 @@ def run_episode(env, env_cfg, episode, client: InferenceClient, *, headless=Fals
+             # loop, so other policies behave exactly as before.
+             actions = torch.zeros(env.num_envs, action_dim, device=env.device)
+             last_viz = None
++            step_instruction = instruction
++            if instruction_controller == "predicate_oracle":
++                step_instruction, oracle_state = _predicate_oracle_command(
++                    env, requested_relation, env_id=0
++                )
++                if client.needs_replan(env_id=0):
++                    command_history.append(
++                        {
++                            "step": step,
++                            "prompt": step_instruction,
++                            **oracle_state,
++                        }
++                    )
+             rets = client.infer_batch(
+-                obs, instruction, env_ids=list(env.active_env_ids)
++                obs, step_instruction, env_ids=list(env.active_env_ids)
+             )
+             for env_id in sorted(rets):
+                 ret = rets[env_id]
+@@ -209,4 +289,8 @@ def run_episode(env, env_cfg, episode, client: InferenceClient, *, headless=Fals
+             logger.exception("Failed to reset client after episode")
+ 
+     timing = timer.to_dict(actual_steps)
++    timing["instruction_controller"] = instruction_controller
++    if requested_relation is not None:
++        timing["requested_relation"] = requested_relation
++        timing["command_history"] = command_history
+     return env.get_env_results(), subtask_status, timing
+diff --git a/robolab/eval/runner.py b/robolab/eval/runner.py
+index 99f6ba7..5f4b5a9 100644
+--- a/robolab/eval/runner.py
++++ b/robolab/eval/runner.py
+@@ -87,6 +87,15 @@ def add_common_eval_args(parser: argparse.ArgumentParser) -> None:
+     parser.add_argument("--instruction-type", "--instruction_type", type=str, default="default",
+                         help=("Which instruction variant to use when a task defines multiple "
+                               "(default, vague, specific, etc.)."))
++    parser.add_argument(
++        "--instruction-controller",
++        "--instruction_controller",
++        choices=["static", "predicate_oracle"],
++        default="static",
++        help=("Prompt-selection controller. 'static' always uses the task instruction; "
++              "'predicate_oracle' issues grasp, spatial-move, and release commands from "
++              "simulator state and requires one environment with a five-step horizon."),
++    )
+     parser.add_argument("--video-mode", "--video_mode", type=str, default="all",
+                         choices=["all", "viewport", "sensor", "none"],
+                         help=("Which videos to save: 'all' (sensor + viewport), "
+@@ -173,6 +182,11 @@ def run_evaluation(
+     adaptive_max = args.num_episodes_adaptive
+     is_adaptive = adaptive_max is not None
+     total_episodes = adaptive_max if is_adaptive else num_runs * num_envs
++    if args.instruction_controller == "predicate_oracle":
++        if num_envs != 1:
++            raise ValueError("predicate_oracle requires --num-envs 1")
++        if getattr(args, "open_loop_horizon", None) != 5:
++            raise ValueError("predicate_oracle requires --open-loop-horizon 5")
+ 
+     print_experiment_summary(
+         task_envs=task_envs,
+@@ -260,6 +274,7 @@ def run_evaluation(
+                 save_videos=save_videos,
+                 video_mode=args.video_mode,
+                 headless=args.headless,
++                instruction_controller=args.instruction_controller,
+             )
+ 
+             episode_results = summarize_run(
+diff --git a/tests/test_seeded_policy_clients.py b/tests/test_seeded_policy_clients.py
+index 7321a2b..255ba70 100644
+--- a/tests/test_seeded_policy_clients.py
++++ b/tests/test_seeded_policy_clients.py
+@@ -1,7 +1,25 @@
++import numpy as np
+ import pytest
+ 
+ from policies.cosmos3.client import Cosmos3Client
+ from policies.pi0_family.client import Pi0DroidJointposClient
++from robolab.eval.base_client import InferenceClient
++
++
++class DummyClient(InferenceClient):
++    open_loop_horizon = 2
++
++    def _extract_observation(self, raw_obs, *, env_id=0):
++        return raw_obs
++
++    def _pack_request(self, extracted_obs, instruction):
++        return {}
++
++    def _query_server(self, request):
++        return {}
++
++    def _unpack_response(self, response):
++        return np.zeros((2, 1))
+ 
+ 
+ @pytest.mark.parametrize("client_cls", [Cosmos3Client, Pi0DroidJointposClient])
+@@ -26,3 +44,14 @@ def test_sampling_seed_is_bound_to_episode_and_replan(monkeypatch, client_cls):
+     client.start_episode(9)
+     client._query_server({"prompt": "left"})
+     assert requests[-1]["sampling_seed"] == 6109000
++
++
++def test_needs_replan_reports_chunk_boundary():
++    client = DummyClient()
++    assert client.needs_replan(env_id=0)
++    client._set_chunk(0, np.zeros((2, 1)))
++    assert not client.needs_replan(env_id=0)
++    client._next_action(0)
++    assert not client.needs_replan(env_id=0)
++    client._next_action(0)
++    assert client.needs_replan(env_id=0)
+-- 
+2.34.1
+

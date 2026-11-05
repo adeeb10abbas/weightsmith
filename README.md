@@ -1,5 +1,7 @@
 # weightsmith: weight-space programming on a robot VLA
 
+**Completed Astra study and coauthor handoff:** [Start here](study/README.md). The current paper, results, sealed reproduction code and continuation guide are under `study/`.
+
 A frontier model edits the weights of a robot foundation policy **directly**, with no
 gradients, no training and no black-box search, to make it succeed more often in closed-loop
 simulation.

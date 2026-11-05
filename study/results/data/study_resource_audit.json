@@ -1,0 +1,19 @@
+{
+  "scope": "read-only audit; approximate sizes observed Nov4 Pacific / Nov5 UTC",
+  "container_disk_GiB": 80,
+  "initial_container_free_GiB": 4.3,
+  "after_private_staging_free_GiB": 14.83,
+  "private_sim_environment_GiB": 27,
+  "private_policy_environment_GiB": 7.7,
+  "private_checkpoint_GiB": 11.58,
+  "existing_root_environment_GiB": 13,
+  "existing_root_uv_cache_GiB": 13,
+  "existing_root_items_modified": false,
+  "network_workspace_modified": false,
+  "cgroup_memory_limit_GiB": 171.3634,
+  "idle_memory_current_GiB": 108.9687,
+  "idle_disk_backed_file_cache_GiB": 95.7836,
+  "private_tmpfs_checkpoint_GiB": 11.5813,
+  "idle_cgroup_headroom_GiB": 62.3947,
+  "interpretation": "Container-disk capacity was the constraint. Filesystem cache and private tmpfs explain most cgroup RAM use at idle; no current RAM exhaustion observed. du logical directory sizes are not additive with overlay disk accounting."
+}

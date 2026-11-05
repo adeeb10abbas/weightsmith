@@ -1,0 +1,20 @@
+[
+  {
+    "type": "operator_artifact_write_order",
+    "run": "adaptive-r1",
+    "source_bundle_frozen_before_launch": true,
+    "all_calibration_outcomes_completed_before_launch": true,
+    "driver_start_utc": "2026-11-05T08:07:26.345737+00:00",
+    "consolidated_runtime_binding_frozen_utc": "2026-11-05T08:07:59.305577+00:00",
+    "cause": "Metadata extraction attempted to overwrite identical read-only pinned base rows and failed; the next orchestrated tool call launched the driver before the binding write had succeeded. Corrected extraction skips byte-identical files.",
+    "state_when_binding_was_written": {
+      "created": [],
+      "eval_reserved": [],
+      "acts_items_reserved": 0,
+      "incumbent": "base"
+    },
+    "changed_scientific_settings": false,
+    "budget_reset": false,
+    "interpretation": "Consolidated runtime-binding file was written shortly after the driver started, rather than before it. Scientific source/configuration and all referenced evidence already existed unchanged. Retain this ordering deviation; do not claim exact pre-launch binding for this run."
+  }
+]

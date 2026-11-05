@@ -1,0 +1,1264 @@
+{
+  "report": {
+    "status": "completed",
+    "exploratory": true,
+    "editor_feedback": false,
+    "started_at_utc": "2026-11-05T09:05:50.798705+00:00",
+    "selection_rule": "Three largest saved parity errors among failed items, then first three passed items by original capture order",
+    "capture_index_sha256": "57906941d2fd4efa8ddd3c58a8504d37a037c5aae9936b6b9b2201e8fe7d8433",
+    "capture_arrays_sha256": "9c346f73b8c724bcdcb0f209f14e98183bf53e3f78d2c102e083c75298b28830",
+    "script_sha256": "fc91ad8cba47b4b34d809493994103bac6062478f1bab908331f6235001c358c",
+    "server_source_sha256": "4d2523466356d980cbcdcbe96a26e507a0f167fb8e248c38799fda26dee0ea55",
+    "identity_workspace_fingerprint": "ded4bcb59e61bd64704818cbdc6592df9f80c39967d804bf1260823496159032",
+    "batch_sizes": [
+      1,
+      16
+    ],
+    "repeats_per_batch_size": 2,
+    "method": "Repeat the identical observation and sampling seed 16 times to isolate batch shape without changing inputs; compare first output. Saved instrumented actions are not rerun.",
+    "items": [
+      {
+        "capture_item": 30,
+        "episode": "base.base.s20047",
+        "request_index": 15,
+        "sampling_seed": 8014315,
+        "source_obs_sha256": "981793de7a0c5be818c7290a616c88b73c3bd6cdc1665614ab886c6887053b45",
+        "saved_parity": {
+          "checked": true,
+          "passed": false,
+          "max_abs_action_error": 0.09474204368317127
+        },
+        "comparisons": {
+          "native_b1_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b16_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b1_vs_b16": {
+            "max_abs": 0.09565738251113892,
+            "mean_abs": 0.0026677001289943216,
+            "max_abs_by_channel": [
+              0.00041929919291433526,
+              0.004335046125367614,
+              0.0009028241463923115,
+              0.0020756587780974556,
+              0.00268576018598643,
+              0.0032762480285852824,
+              0.002719896920659104,
+              0.09565738251113892
+            ]
+          },
+          "native_b1_vs_historical": {
+            "max_abs": 0.09565738883697986,
+            "mean_abs": 0.002667704380931912,
+            "max_abs_by_channel": [
+              0.0004193030576384871,
+              0.004335053202706218,
+              0.0009028166010316974,
+              0.0020756707204787617,
+              0.002685760958820116,
+              0.0032762712023566287,
+              0.002719902600102242,
+              0.09565738883697986
+            ]
+          },
+          "native_b16_vs_historical": {
+            "max_abs": 1.0761946578341508e-07,
+            "mean_abs": 1.4499671371498897e-08,
+            "max_abs_by_channel": [
+              1.4021880490044936e-08,
+              1.4245110868671418e-08,
+              1.4259913305725291e-08,
+              1.0761946578341508e-07,
+              1.2928965731351383e-08,
+              1.0615720880124968e-07,
+              1.4876592402401911e-08,
+              1.1886924500270624e-08
+            ]
+          },
+          "instrumented_vs_native_b1": {
+            "max_abs": 0.0009153440304994556,
+            "mean_abs": 0.00013261311178715206,
+            "max_abs_by_channel": [
+              0.0001397793841015904,
+              0.00036126139073405783,
+              0.00013888967624897663,
+              0.000461338521382082,
+              0.0008978755140887085,
+              0.00045986000647646463,
+              0.0005196093692813042,
+              0.0009153440304994556
+            ]
+          },
+          "instrumented_vs_native_b16": {
+            "max_abs": 0.09474203848063947,
+            "mean_abs": 0.0026451064510912637,
+            "max_abs_by_channel": [
+              0.0005590738310096155,
+              0.004335038737175556,
+              0.0008333698862877381,
+              0.0016143202567153736,
+              0.002705036821007867,
+              0.0032763249402423256,
+              0.002460086626693947,
+              0.09474203848063947
+            ]
+          },
+          "identity_vs_native_b1": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "capture_item": 22,
+        "episode": "base.base.s20035",
+        "request_index": 52,
+        "sampling_seed": 8013152,
+        "source_obs_sha256": "71d24acffbc4a90b39d43ef4147637d81a0141e38b093230c07949f35dd40f3e",
+        "saved_parity": {
+          "checked": true,
+          "passed": false,
+          "max_abs_action_error": 0.025972920240938613
+        },
+        "comparisons": {
+          "native_b1_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b16_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b1_vs_b16": {
+            "max_abs": 0.0260949647598267,
+            "mean_abs": 0.00158252496545074,
+            "max_abs_by_channel": [
+              0.00055906559055241,
+              0.0019868961407935037,
+              0.0006988206133132224,
+              0.001383772518731785,
+              0.0008978839146099316,
+              0.0018392971388552226,
+              0.0015588662948254894,
+              0.0260949647598267
+            ]
+          },
+          "native_b1_vs_historical": {
+            "max_abs": 0.026094966261446473,
+            "mean_abs": 0.001582525042484235,
+            "max_abs_by_channel": [
+              0.0005590675363806308,
+              0.0019868916881154997,
+              0.0006988238038501682,
+              0.0013838837110276003,
+              0.0008978867700166204,
+              0.0018393987389937472,
+              0.0015588923497844576,
+              0.026094966261446473
+            ]
+          },
+          "native_b16_vs_historical": {
+            "max_abs": 1.1759112927833826e-07,
+            "mean_abs": 2.182257670170958e-08,
+            "max_abs_by_channel": [
+              1.3558207057062788e-08,
+              1.4552995419858661e-08,
+              1.4384380908616379e-08,
+              1.1424020129879864e-07,
+              1.4394892833280437e-08,
+              1.1759112927833826e-07,
+              2.6574280331814748e-08,
+              2.8808116891987368e-08
+            ]
+          },
+          "instrumented_vs_native_b1": {
+            "max_abs": 0.0007322484058142065,
+            "mean_abs": 0.00013181395587345268,
+            "max_abs_by_channel": [
+              0.00027953679251768726,
+              0.00048168320010943955,
+              0.0002777966025927503,
+              0.00046123767263939186,
+              0.00044895416718426784,
+              0.00023001592526616932,
+              0.0005196193707230901,
+              0.0007322484058142065
+            ]
+          },
+          "instrumented_vs_native_b16": {
+            "max_abs": 0.025972931075513406,
+            "mean_abs": 0.001604054326056563,
+            "max_abs_by_channel": [
+              0.0005590640795656854,
+              0.0021675344710857525,
+              0.0008463827652736011,
+              0.001845010191371177,
+              0.0010101247084469134,
+              0.001839297737629586,
+              0.0015588738244965983,
+              0.025972931075513406
+            ]
+          },
+          "identity_vs_native_b1": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "capture_item": 20,
+        "episode": "base.base.s20034",
+        "request_index": 19,
+        "sampling_seed": 8013019,
+        "source_obs_sha256": "ec0b559e41cdc608b154254d7ab72167413ebe8aa5ff3520ff798f69a7c647ae",
+        "saved_parity": {
+          "checked": true,
+          "passed": false,
+          "max_abs_action_error": 0.022944665781140405
+        },
+        "comparisons": {
+          "native_b1_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b16_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b1_vs_b16": {
+            "max_abs": 0.021693680145263627,
+            "mean_abs": 0.001300765983807084,
+            "max_abs_by_channel": [
+              0.0008385983858285595,
+              0.0019266871668300878,
+              0.00041668806756567367,
+              0.0011531437656095989,
+              0.00044894195730499353,
+              0.0007184754448648079,
+              0.0011691497211191448,
+              0.021693680145263627
+            ]
+          },
+          "native_b1_vs_historical": {
+            "max_abs": 0.02169367175543313,
+            "mean_abs": 0.0013007675223737185,
+            "max_abs_by_channel": [
+              0.0008386002187898978,
+              0.001926693378037303,
+              0.0004166895361266132,
+              0.0011532237858200567,
+              0.0004489430482065293,
+              0.0007183915015414044,
+              0.0011691709220728042,
+              0.02169367175543313
+            ]
+          },
+          "native_b16_vs_historical": {
+            "max_abs": 1.161996077136962e-07,
+            "mean_abs": 2.370365149601909e-08,
+            "max_abs_by_channel": [
+              1.3885982919070727e-08,
+              7.110739219662321e-09,
+              1.469694116407183e-08,
+              1.161996077136962e-07,
+              2.896343775926624e-09,
+              1.1534546029423609e-07,
+              2.869189974497033e-08,
+              2.772665030903454e-08
+            ]
+          },
+          "instrumented_vs_native_b1": {
+            "max_abs": 0.0014645752619504293,
+            "mean_abs": 0.00014591803019922296,
+            "max_abs_by_channel": [
+              0.0002795384531191214,
+              0.00036125804928199834,
+              0.0005555837360350369,
+              0.000691973987658745,
+              0.0004489450807920181,
+              0.000689709690866458,
+              0.0007794576887572013,
+              0.0014645752619504293
+            ]
+          },
+          "instrumented_vs_native_b16": {
+            "max_abs": 0.022944674871325454,
+            "mean_abs": 0.0013241125685055169,
+            "max_abs_by_channel": [
+              0.000646410156249444,
+              0.0016858515616199332,
+              0.0005555837360350369,
+              0.0011530839520985658,
+              0.0004489450807920181,
+              0.0005532923932207723,
+              0.0012990797870323645,
+              0.022944674871325454
+            ]
+          },
+          "identity_vs_native_b1": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "capture_item": 0,
+        "episode": "base.base.s20036",
+        "request_index": 39,
+        "sampling_seed": 8013239,
+        "source_obs_sha256": "2c8354f010acf5bd8b08bbdfa1fa1af280abb79cff524b3855560d90be70bf59",
+        "saved_parity": {
+          "checked": true,
+          "passed": true,
+          "max_abs_action_error": 0.003897168115153171
+        },
+        "comparisons": {
+          "native_b1_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b16_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b1_vs_b16": {
+            "max_abs": 0.00422192954848577,
+            "mean_abs": 0.0007369255000897339,
+            "max_abs_by_channel": [
+              0.0016422551722476975,
+              0.0004816717917075497,
+              0.0008333761351313473,
+              0.0006918862593661146,
+              0.0018518855738829387,
+              0.0008909095516327348,
+              0.00422192954848577,
+              0.0015865982666015688
+            ]
+          },
+          "native_b1_vs_historical": {
+            "max_abs": 0.004221931926575051,
+            "mean_abs": 0.0007369313909250459,
+            "max_abs_by_channel": [
+              0.0016422413750195597,
+              0.0004816735175972586,
+              0.0008333820822971627,
+              0.0006919620913534708,
+              0.0018518857724693083,
+              0.0008909362822131506,
+              0.004221931926575051,
+              0.0015865855245590366
+            ]
+          },
+          "native_b16_vs_historical": {
+            "max_abs": 1.1389472698297709e-07,
+            "mean_abs": 2.0418797993156564e-08,
+            "max_abs_by_channel": [
+              2.0757573215846037e-08,
+              6.573126265507767e-09,
+              1.3789761776905607e-08,
+              1.0768962743767929e-07,
+              1.4539802695168191e-09,
+              1.1389472698297709e-07,
+              1.8873608675917808e-08,
+              2.5664389169399726e-08
+            ]
+          },
+          "instrumented_vs_native_b1": {
+            "max_abs": 0.0006898469897413939,
+            "mean_abs": 0.00014520470112924604,
+            "max_abs_by_channel": [
+              0.000279545664907066,
+              0.0004816725222451246,
+              0.0001562661289987166,
+              0.00023073088300185063,
+              0.00033670714723710304,
+              0.0006898469897413939,
+              0.0003247418325809104,
+              0.00048819554764034656
+            ]
+          },
+          "instrumented_vs_native_b16": {
+            "max_abs": 0.0038971877159048596,
+            "mean_abs": 0.0007669328795018239,
+            "max_abs_by_channel": [
+              0.0018169719862387579,
+              0.0007225084180988994,
+              0.0008333861960836964,
+              0.00046136866628643247,
+              0.002132474976456855,
+              0.0010346248788843937,
+              0.0038971877159048596,
+              0.0015999206171035674
+            ]
+          },
+          "identity_vs_native_b1": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "capture_item": 2,
+        "episode": "base.base.s20038",
+        "request_index": 28,
+        "sampling_seed": 8013428,
+        "source_obs_sha256": "759d545861a78b7e1ef75b471db67c89868dc81537a0c63f82d2058d3e684242",
+        "saved_parity": {
+          "checked": true,
+          "passed": true,
+          "max_abs_action_error": 0.004027510392606293
+        },
+        "comparisons": {
+          "native_b1_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b16_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b1_vs_b16": {
+            "max_abs": 0.005492070922851533,
+            "mean_abs": 0.0008258768005734153,
+            "max_abs_by_channel": [
+              0.0005590655905523545,
+              0.0008429256354881565,
+              0.0009722721576532201,
+              0.0009225150124878567,
+              0.0007295306806205382,
+              0.0019111446833410817,
+              0.002857921540513342,
+              0.005492070922851533
+            ]
+          },
+          "native_b1_vs_historical": {
+            "max_abs": 0.005492062638700057,
+            "mean_abs": 0.0008258798318818266,
+            "max_abs_by_channel": [
+              0.0005590594485497258,
+              0.0008429283384527864,
+              0.0009722719259540602,
+              0.0009226296494491137,
+              0.0007295306714676375,
+              0.0019111647294574041,
+              0.0028579372103502143,
+              0.005492062638700057
+            ]
+          },
+          "native_b16_vs_historical": {
+            "max_abs": 1.1501486563147978e-07,
+            "mean_abs": 2.0854639016150885e-08,
+            "max_abs_by_channel": [
+              2.865688508713049e-08,
+              2.986674546567869e-09,
+              1.3850017244187995e-08,
+              1.1463696125701972e-07,
+              9.114536902998793e-11,
+              1.1501486563147978e-07,
+              2.844257940282091e-08,
+              2.50505208798657e-08
+            ]
+          },
+          "instrumented_vs_native_b1": {
+            "max_abs": 0.0014645767912269125,
+            "mean_abs": 0.00017684156969773184,
+            "max_abs_by_channel": [
+              0.00027952506791006915,
+              0.00048167533363169257,
+              0.0001389074245545796,
+              0.00046128055004679425,
+              0.0004489419679467588,
+              0.00045988628749604743,
+              0.0010392708007289642,
+              0.0014645767912269125
+            ]
+          },
+          "instrumented_vs_native_b16": {
+            "max_abs": 0.0040274941316246204,
+            "mean_abs": 0.0008622628169279866,
+            "max_abs_by_channel": [
+              0.0006289543536725506,
+              0.0009633471253392423,
+              0.000972273246698574,
+              0.0009225357798561262,
+              0.0006734129465992278,
+              0.0018394095195310989,
+              0.003377570242967254,
+              0.0040274941316246204
+            ]
+          },
+          "identity_vs_native_b1": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "capture_item": 3,
+        "episode": "base.base.s20038",
+        "request_index": 30,
+        "sampling_seed": 8013430,
+        "source_obs_sha256": "759d545861a78b7e1ef75b471db67c89868dc81537a0c63f82d2058d3e684242",
+        "saved_parity": {
+          "checked": true,
+          "passed": true,
+          "max_abs_action_error": 0.0059458106320708914
+        },
+        "comparisons": {
+          "native_b1_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b16_repeat": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "native_b1_vs_b16": {
+            "max_abs": 0.006090040512126027,
+            "mean_abs": 0.0010003075947831832,
+            "max_abs_by_channel": [
+              0.00055906559055241,
+              0.003070657672135435,
+              0.0005555840900876019,
+              0.006090040512126027,
+              0.00044894195730499353,
+              0.004569503829342292,
+              0.0005196220982752187,
+              0.001952736328124982
+            ]
+          },
+          "native_b1_vs_historical": {
+            "max_abs": 0.006089953602772091,
+            "mean_abs": 0.0010003041360045321,
+            "max_abs_by_channel": [
+              0.0005590804342510136,
+              0.00307065774663573,
+              0.0005555981927353182,
+              0.006089953602772091,
+              0.00044894282057000856,
+              0.004569535557795934,
+              0.0005196217140527315,
+              0.001952759172916374
+            ]
+          },
+          "native_b16_vs_historical": {
+            "max_abs": 1.167140535329736e-07,
+            "mean_abs": 2.148510448579666e-08,
+            "max_abs_by_channel": [
+              1.4843698603606015e-08,
+              3.5637469641969233e-09,
+              1.4102647716285333e-08,
+              1.0204992051399131e-07,
+              1.5959765731210496e-09,
+              1.167140535329736e-07,
+              1.4661963088080654e-08,
+              2.9240846632916373e-08
+            ]
+          },
+          "instrumented_vs_native_b1": {
+            "max_abs": 0.0009763833606242223,
+            "mean_abs": 0.00016563147676650024,
+            "max_abs_by_channel": [
+              0.0002795354283214313,
+              0.0004816706568718798,
+              0.000555586242682593,
+              0.0003965101344651778,
+              0.000448942632639282,
+              0.00045973303945112676,
+              0.0005196360312028636,
+              0.0009763833606242223
+            ]
+          },
+          "instrumented_vs_native_b16": {
+            "max_abs": 0.005946007853567803,
+            "mean_abs": 0.0009890267299306962,
+            "max_abs_by_channel": [
+              0.000559078511584099,
+              0.0031007620692308224,
+              0.0005555769389339327,
+              0.005946007853567803,
+              0.0004489428669017248,
+              0.004741875391297334,
+              0.0005626150206966551,
+              0.0020747552351951803
+            ]
+          },
+          "identity_vs_native_b1": {
+            "max_abs": 0.0,
+            "mean_abs": 0.0,
+            "max_abs_by_channel": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    ],
+    "identity_load": {
+      "edit_scope": "action-expert MLP down-projection rows only",
+      "edited_tensors": {},
+      "changed_elements": 0,
+      "editable_parameters": 75497472,
+      "total_parameters_and_buffers": 3353433872,
+      "changed_fraction": 0.0,
+      "max_changed_fraction": 3.908590567251239e-05,
+      "base_vlm_sha256": "75a585813f91b7543d07ca6e9725f64a2693a6b5e887477e7b00bbada72eccae",
+      "action_expert_and_head_frozen": false,
+      "vlm_embeddings_and_final_norms_frozen": true,
+      "edit_constraints": {
+        "max_changed_layers": 2,
+        "max_changed_rows": 128,
+        "row_axis": 0,
+        "scope": "action_mlp_down_rows"
+      },
+      "changed_rows": 0,
+      "changed_layers": [],
+      "l2_delta": 0.0,
+      "addressed_row_elements": 0,
+      "identity_candidate": true,
+      "verified_base_slices": 18,
+      "fingerprint": "ded4bcb59e61bd64704818cbdc6592df9f80c39967d804bf1260823496159032",
+      "workspace": "/tmp/weightsmith-codex-20261105/workspaces/pi05-droid-action-down-rq123"
+    },
+    "actions_sha256": "1a754f2321d47ba11c3c9fb0cd8e3f6f2b30e984b3a5e2fab9c36bd9fc245d9f",
+    "elapsed_seconds": 19.558751279022545
+  },
+  "summary": {
+    "requests": 6,
+    "native_b16_historical_max": 1.1759112927833826e-07,
+    "native_b1_historical_max": 0.09565738883697986,
+    "native_b1_b16_max": 0.09565738251113892,
+    "instrumented_native_b1_max": 0.0014645767912269125,
+    "native_repeat_max": 0.0,
+    "identity_load_max": 0.0
+  },
+  "coordinate_audit": {
+    "schema_version": 1,
+    "status": "completed_cpu_audit",
+    "no_gpu_calls": true,
+    "no_new_episodes": true,
+    "source_report_sha256": "8bbf9b68c81a4ca798ff61032c11dedc59ec326b39d4de2388d60786a321a420",
+    "source_actions_sha256": "1a754f2321d47ba11c3c9fb0cd8e3f6f2b30e984b3a5e2fab9c36bd9fc245d9f",
+    "selection_rule": "Three largest saved parity errors among failed items, then first three passed items by original capture order",
+    "requests": 6,
+    "distinct_episodes": 5,
+    "total_compared_action_rows": 90,
+    "gripper_threshold": 0.5,
+    "total_gripper_decision_flips": 0,
+    "max_joint_command_difference": 0.006090040512126027,
+    "max_raw_gripper_difference": 0.09565738251113892,
+    "rows": [
+      {
+        "diagnostic_item": 0,
+        "capture_item": 30,
+        "episode": "base.base.s20047",
+        "request_index": 15,
+        "saved_parity_passed": false,
+        "source_obs_sha256": "981793de7a0c5be818c7290a616c88b73c3bd6cdc1665614ab886c6887053b45",
+        "action_rows": 15,
+        "joint_command_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "raw_gripper_column": 7,
+        "native_b1_vs_b16_max_abs_joint_command": 0.004335046125367614,
+        "native_b1_vs_b16_max_abs_raw_gripper": 0.09565738251113892,
+        "native_b1_vs_b16_max_abs_all_coordinates": 0.09565738251113892,
+        "native_b1_vs_b16_mean_abs_joint_command": 0.0008306137246925897,
+        "native_b1_vs_b16_gripper_decision_flip_indices": [],
+        "gripper_decision_flip_count": 0,
+        "threshold": 0.5,
+        "decision_rule": "raw_gripper > 0.5",
+        "native_b1_gripper_decisions": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "native_b16_gripper_decisions": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "native_b1_repeat_max_abs": 0.0,
+        "native_b16_repeat_max_abs": 0.0,
+        "identity_vs_native_b1_max_abs": 0.0,
+        "native_b16_vs_historical_max_abs": 1.0761946578341508e-07,
+        "instrumented_vs_native_b1_max_abs": 0.0009153440304994556,
+        "native_b16_output_dtype": "float64",
+        "historical_recording_dtype": "float32",
+        "native_b16_vs_historical_after_recording_dtype_max_abs": 0.0,
+        "native_b16_vs_historical_after_recording_dtype_exact": true
+      },
+      {
+        "diagnostic_item": 1,
+        "capture_item": 22,
+        "episode": "base.base.s20035",
+        "request_index": 52,
+        "saved_parity_passed": false,
+        "source_obs_sha256": "71d24acffbc4a90b39d43ef4147637d81a0141e38b093230c07949f35dd40f3e",
+        "action_rows": 15,
+        "joint_command_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "raw_gripper_column": 7,
+        "native_b1_vs_b16_max_abs_joint_command": 0.0019868961407935037,
+        "native_b1_vs_b16_max_abs_raw_gripper": 0.0260949647598267,
+        "native_b1_vs_b16_max_abs_all_coordinates": 0.0260949647598267,
+        "native_b1_vs_b16_mean_abs_joint_command": 0.0006810545531926578,
+        "native_b1_vs_b16_gripper_decision_flip_indices": [],
+        "gripper_decision_flip_count": 0,
+        "threshold": 0.5,
+        "decision_rule": "raw_gripper > 0.5",
+        "native_b1_gripper_decisions": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "native_b16_gripper_decisions": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "native_b1_repeat_max_abs": 0.0,
+        "native_b16_repeat_max_abs": 0.0,
+        "identity_vs_native_b1_max_abs": 0.0,
+        "native_b16_vs_historical_max_abs": 1.1759112927833826e-07,
+        "instrumented_vs_native_b1_max_abs": 0.0007322484058142065,
+        "native_b16_output_dtype": "float64",
+        "historical_recording_dtype": "float32",
+        "native_b16_vs_historical_after_recording_dtype_max_abs": 0.0,
+        "native_b16_vs_historical_after_recording_dtype_exact": true
+      },
+      {
+        "diagnostic_item": 2,
+        "capture_item": 20,
+        "episode": "base.base.s20034",
+        "request_index": 19,
+        "saved_parity_passed": false,
+        "source_obs_sha256": "ec0b559e41cdc608b154254d7ab72167413ebe8aa5ff3520ff798f69a7c647ae",
+        "action_rows": 15,
+        "joint_command_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "raw_gripper_column": 7,
+        "native_b1_vs_b16_max_abs_joint_command": 0.0019266871668300878,
+        "native_b1_vs_b16_max_abs_raw_gripper": 0.021693680145263627,
+        "native_b1_vs_b16_max_abs_all_coordinates": 0.021693680145263627,
+        "native_b1_vs_b16_mean_abs_joint_command": 0.0003398747088966354,
+        "native_b1_vs_b16_gripper_decision_flip_indices": [],
+        "gripper_decision_flip_count": 0,
+        "threshold": 0.5,
+        "decision_rule": "raw_gripper > 0.5",
+        "native_b1_gripper_decisions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "native_b16_gripper_decisions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "native_b1_repeat_max_abs": 0.0,
+        "native_b16_repeat_max_abs": 0.0,
+        "identity_vs_native_b1_max_abs": 0.0,
+        "native_b16_vs_historical_max_abs": 1.161996077136962e-07,
+        "instrumented_vs_native_b1_max_abs": 0.0014645752619504293,
+        "native_b16_output_dtype": "float64",
+        "historical_recording_dtype": "float32",
+        "native_b16_vs_historical_after_recording_dtype_max_abs": 0.0,
+        "native_b16_vs_historical_after_recording_dtype_exact": true
+      },
+      {
+        "diagnostic_item": 3,
+        "capture_item": 0,
+        "episode": "base.base.s20036",
+        "request_index": 39,
+        "saved_parity_passed": true,
+        "source_obs_sha256": "2c8354f010acf5bd8b08bbdfa1fa1af280abb79cff524b3855560d90be70bf59",
+        "action_rows": 15,
+        "joint_command_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "raw_gripper_column": 7,
+        "native_b1_vs_b16_max_abs_joint_command": 0.00422192954848577,
+        "native_b1_vs_b16_max_abs_raw_gripper": 0.0015865982666015688,
+        "native_b1_vs_b16_max_abs_all_coordinates": 0.00422192954848577,
+        "native_b1_vs_b16_mean_abs_joint_command": 0.00074005967579661,
+        "native_b1_vs_b16_gripper_decision_flip_indices": [],
+        "gripper_decision_flip_count": 0,
+        "threshold": 0.5,
+        "decision_rule": "raw_gripper > 0.5",
+        "native_b1_gripper_decisions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "native_b16_gripper_decisions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "native_b1_repeat_max_abs": 0.0,
+        "native_b16_repeat_max_abs": 0.0,
+        "identity_vs_native_b1_max_abs": 0.0,
+        "native_b16_vs_historical_max_abs": 1.1389472698297709e-07,
+        "instrumented_vs_native_b1_max_abs": 0.0006898469897413939,
+        "native_b16_output_dtype": "float64",
+        "historical_recording_dtype": "float32",
+        "native_b16_vs_historical_after_recording_dtype_max_abs": 0.0,
+        "native_b16_vs_historical_after_recording_dtype_exact": true
+      },
+      {
+        "diagnostic_item": 4,
+        "capture_item": 2,
+        "episode": "base.base.s20038",
+        "request_index": 28,
+        "saved_parity_passed": true,
+        "source_obs_sha256": "759d545861a78b7e1ef75b471db67c89868dc81537a0c63f82d2058d3e684242",
+        "action_rows": 15,
+        "joint_command_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "raw_gripper_column": 7,
+        "native_b1_vs_b16_max_abs_joint_command": 0.002857921540513342,
+        "native_b1_vs_b16_max_abs_raw_gripper": 0.005492070922851533,
+        "native_b1_vs_b16_max_abs_all_coordinates": 0.005492070922851533,
+        "native_b1_vs_b16_mean_abs_joint_command": 0.0007787338407658921,
+        "native_b1_vs_b16_gripper_decision_flip_indices": [],
+        "gripper_decision_flip_count": 0,
+        "threshold": 0.5,
+        "decision_rule": "raw_gripper > 0.5",
+        "native_b1_gripper_decisions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "native_b16_gripper_decisions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "native_b1_repeat_max_abs": 0.0,
+        "native_b16_repeat_max_abs": 0.0,
+        "identity_vs_native_b1_max_abs": 0.0,
+        "native_b16_vs_historical_max_abs": 1.1501486563147978e-07,
+        "instrumented_vs_native_b1_max_abs": 0.0014645767912269125,
+        "native_b16_output_dtype": "float64",
+        "historical_recording_dtype": "float32",
+        "native_b16_vs_historical_after_recording_dtype_max_abs": 0.0,
+        "native_b16_vs_historical_after_recording_dtype_exact": true
+      },
+      {
+        "diagnostic_item": 5,
+        "capture_item": 3,
+        "episode": "base.base.s20038",
+        "request_index": 30,
+        "saved_parity_passed": true,
+        "source_obs_sha256": "759d545861a78b7e1ef75b471db67c89868dc81537a0c63f82d2058d3e684242",
+        "action_rows": 15,
+        "joint_command_columns": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "raw_gripper_column": 7,
+        "native_b1_vs_b16_max_abs_joint_command": 0.006090040512126027,
+        "native_b1_vs_b16_max_abs_raw_gripper": 0.001952736328124982,
+        "native_b1_vs_b16_max_abs_all_coordinates": 0.006090040512126027,
+        "native_b1_vs_b16_mean_abs_joint_command": 0.0010789892261040513,
+        "native_b1_vs_b16_gripper_decision_flip_indices": [],
+        "gripper_decision_flip_count": 0,
+        "threshold": 0.5,
+        "decision_rule": "raw_gripper > 0.5",
+        "native_b1_gripper_decisions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "native_b16_gripper_decisions": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "native_b1_repeat_max_abs": 0.0,
+        "native_b16_repeat_max_abs": 0.0,
+        "identity_vs_native_b1_max_abs": 0.0,
+        "native_b16_vs_historical_max_abs": 1.167140535329736e-07,
+        "instrumented_vs_native_b1_max_abs": 0.0009763833606242223,
+        "native_b16_output_dtype": "float64",
+        "historical_recording_dtype": "float32",
+        "native_b16_vs_historical_after_recording_dtype_max_abs": 0.0,
+        "native_b16_vs_historical_after_recording_dtype_exact": true
+      }
+    ],
+    "interpretation": [
+      "These six selected requests from five episodes compare fixed recorded inputs and sampling seeds; they are not independent trials or a frequency estimate.",
+      "Native batch16 reproduces saved live actions closely; native batch1 is repeatable but differs. This supports batch-shape-dependent numerical execution as the dominant source of the selected raw-output replay discrepancy.",
+      "All three selected saved-parity failures have their largest batch1/batch16 discrepancy in raw gripper column7. None of the90 compared action rows changes the binary gripper decision at threshold0.5.",
+      "The original replay gate uses the maximum over mixed joint-command and raw-gripper coordinates. A failed raw-output check need not imply a changed binary gripper decision.",
+      "Joint commands also differ. This diagnostic contains no new closed-loop rollouts and does not establish that batching caused episode failures or identity-repeat outcome changes.",
+      "Initial camera-input differences in the separate identity-repeat audit are a distinct observation and are not explained by this fixed-input diagnostic.",
+      "The batch16 repeats one input16times and compares position0; it does not reconstruct the original heterogeneous live microbatch or assess every possible batch position/bucket.",
+      "Native outputs are float64 after the output transform, while the historical recorder saved float32. Casting native batch16 to the recorded float32 dtype makes all six historical action chunks exactly equal; the residual at most1.176e-7 was serialization rounding."
+    ],
+    "native_b16_matches_historical_exactly_at_recording_dtype": true
+  }
+}

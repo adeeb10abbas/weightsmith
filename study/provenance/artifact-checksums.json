@@ -1,0 +1,18 @@
+{
+  "study-review.zip": {
+    "bytes": 124945256,
+    "sha256": "8224abe71cd1738049a1614ac0487e6d9b11635695444fecd74af6301fe50225"
+  },
+  "common-fixed16-baseline-evidence.tar.gz": {
+    "bytes": 365326444,
+    "sha256": "9a6bd0c487d00fe82b2f171c4a24fdd1fb8cdbca3bb4a88bc1525d1c7a035048"
+  },
+  "fixed16-source.tar.gz": {
+    "bytes": 570972,
+    "sha256": "92f4f5b0a2d6ea49ee4edb6b62dcddb2622ce84b333ecf5fa3773cb94069ed57"
+  },
+  "overleaf.zip": {
+    "bytes": 695606,
+    "sha256": "657c16e6d293d727e39560b49c87121f9092f11e49a20ce975b72496a08341c6"
+  }
+}

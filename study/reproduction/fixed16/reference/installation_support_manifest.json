@@ -1,0 +1,70 @@
+{
+  "LICENSE": {
+    "sha256": "90e85be19271c20a3080a02708fa8db773366588e956042c767723f92f125ac2",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "NOTICE": {
+    "sha256": "adda7c2e77a6c800bb3439a084abe12fcac8fbe6f2c52df1152fac9bfa876d4c",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "envs/robolab-sim-isaac60/pyproject.toml": {
+    "sha256": "6218f3c17eddca0fb039c8473f605a20f957c602752a3c7eb3878f51da9e2c8c",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "envs/robolab-sim-isaac60/uv.lock": {
+    "sha256": "3df4d94f11af5d1ecfef710a2d4fe84bfac78af7ec82c4a4336d41c25b686054",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "scripts/run_isolated.py": {
+    "sha256": "57c21761f650f65279430148a9c0b7b4905a86cec38db6fd3b7e4d1ca6fc18a9",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "scripts/setup_deps.py": {
+    "sha256": "4bb66513f1df9440cd6db28e7682daba9f977b3c3fb63fbe63c35d7def9497e4",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "scripts/setup_native_libs.py": {
+    "sha256": "a00aa8793cda572419a15af39309d6afb261d52dbe862a9ccb72cd9b76708345",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "scripts/study_storage.py": {
+    "sha256": "4fafbb7ac7a821c742f6b1c8ef297ae581d011f9e358e24237e4f37e58ce20ef",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "third_party/patches/openpi/0001-Allow-request-scoped-policy-sampling-seeds.patch": {
+    "sha256": "ab9efc2b592d6cc0f3081a243284653337930844cb82aae7b734f0d5489703ce",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "third_party/patches/robolab-isaac60/0001-Port-weightsmith-controls-to-Isaac-6.patch": {
+    "sha256": "06c1b7cbd91666181e23b3df5df44f30a3c865380a4efa280b6958ac64dc30b7",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "third_party/patches/robolab/0001-Add-matched-spatial-steering-tasks-and-horizon-final.patch": {
+    "sha256": "bc4e6bf884c23a3365412f214eb05ce602e5f148de0b01f790dd42a8c3ebcfa1",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "third_party/patches/robolab/0002-Record-WAM-futures-and-make-sampling-reproducible.patch": {
+    "sha256": "a7597154e1d824079e823d5459cd8ee6ffb492d3cc46d399b03e8e74d7b0d267",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "third_party/patches/robolab/0003-Add-auditable-predicate-oracle-prompt-control.patch": {
+    "sha256": "2b641a452b1f9569a5e9d3ecdc595ba5b92e5f3dd07137a41f3660bbf95a34b2",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "third_party/patches/robolab/0004-Add-direct-language-stress-prompts.patch": {
+    "sha256": "d4fd7bffeb2b961c75376dd9d851b0cc413603958da56ea6c41f32481a3fff4e",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "third_party/patches/robolab/0005-Make-steering-episodes-protocol-exact.patch": {
+    "sha256": "1d2b7f98fefb30dafadb85df14ba078fae531a39bb6c29fcf61cc7f8e9906f1a",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "third_party/patches/robolab/0006-Skip-private-helper-modules-during-task-discovery.patch": {
+    "sha256": "956653dfd5166e99e488aeb6a56884bba80ba42ae66446b0414c0baf78aa2478",
+    "role": "installation support outside sealed scientific runtime"
+  },
+  "third_party/pi05_droid_jointpos.sha256": {
+    "sha256": "c5e21f3480d1a29e9230ac3963ebd20dcb5aea00c1a2f773abea00c7bdcb5061",
+    "role": "installation support outside sealed scientific runtime"
+  }
+}

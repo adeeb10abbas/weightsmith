@@ -1,0 +1,66 @@
+{
+  "status": "completed_read_only_observational_audit",
+  "pairs": 64,
+  "requests_per_pair": 1,
+  "action_rows_per_arm": 960,
+  "selection": "All64 paired held-out slots, first recorded request only",
+  "post_hoc": true,
+  "no_new_episodes": true,
+  "equal_counts": {
+    "base_img": 0,
+    "wrist_img": 0,
+    "joint": 64,
+    "gripper": 64,
+    "seed": 64,
+    "prompt": 64,
+    "actions": 0
+  },
+  "distributions": {
+    "base_img_mae": {
+      "count": 64,
+      "mean": 1.0031036584555697,
+      "min": 0.526812287414966,
+      "q25": 0.8250823767006803,
+      "median": 0.9491855335884354,
+      "q75": 1.111658628295068,
+      "max": 1.6299824617346939
+    },
+    "wrist_img_mae": {
+      "count": 64,
+      "mean": 4.325189603429262,
+      "min": 1.4702779549319729,
+      "q25": 1.7607405266794218,
+      "median": 2.5464764030612246,
+      "q75": 5.908593417835885,
+      "max": 11.707748724489797
+    },
+    "joint_command_max_abs": {
+      "count": 64,
+      "mean": 0.054845264239702374,
+      "min": 0.004842996597290039,
+      "q25": 0.031242276541888714,
+      "median": 0.05264270305633545,
+      "q75": 0.07525589317083359,
+      "max": 0.14691376686096191
+    },
+    "raw_gripper_max_abs": {
+      "count": 64,
+      "mean": 0.033323732598546485,
+      "min": 0.0004996256902813911,
+      "q25": 0.0013425064971670508,
+      "median": 0.0019527365220710635,
+      "q75": 0.004515702603384852,
+      "max": 0.42370181530714035
+    }
+  },
+  "binary_gripper_flips": 31,
+  "outcome_discordant_pairs": 29,
+  "interpretation": "Observational input/action differences with unchanged weights; does not isolate rendering, initialization, numerical execution, or causal contributions to outcomes.",
+  "provenance": {
+    "archive_sha256": "e0014addd321d9b6ed5d306b7bb09ef3af9593390128cc37e8cf0e1f4934587f",
+    "archive_receipt_sha256": "66a95b738ddc05e62889d630b88ebcb814afd129254f988548acb42a7a98d43b",
+    "manifest_sha256": "34e0eaab425486eb4326f6777c4343da4806f9c3a861376499be3c002dd4ae7b",
+    "paired_rows_sha256": "1e755dbd26f1ba5b24b919696beee067db6c1bd2abdcf7098b2c6dbc592d86e0",
+    "script_sha256": "0b1a227adf68f4f3b3911f21e727f74d57411d96db48c27f5a912861bd02facd"
+  }
+}

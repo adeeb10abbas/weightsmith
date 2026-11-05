@@ -1,0 +1,12 @@
+\section{Implications and Further Discussion}
+\paragraph{Policy family and failure mechanism.}
+We hypothesize that a localized control defect, with relevant state already represented, is easier to diagnose and patch than perceptual ambiguity or absent task competence. State-input policies can expose physical variables directly; VLAs couple visual grounding, language, and action. WAMs may expose predictive structure but also model error; these categories can overlap. Testing editability requires controlling failure type, prior training, editor access, and budget. Our single-VLA study cannot rank policy families or motor/vision repair; cross-family experiments are pending.
+
+\paragraph{Why demonstrations may not transfer to robots.}
+The original games use structured grids; the car repair uses explicit physical state. Its diffusion example recognizes generated shapes rather than improving generation \citep{takehi2026sparks}; the reviewed restoration loop is conjectural \citep{zheng2026}. Thus the evidence does not establish that WSP works better for images than robotics. Mechanistically, fixed-input image evaluation can hold the stimulus constant, whereas robot actions alter observations and contacts, potentially compounding errors. Occlusion, delayed success, and reset variability complicate attribution. Games also have feedback; generators have distributed features and sampling variability. Task structure and evaluation control matter, precluding a universal modality hierarchy.
+
+\paragraph{Feedback search and world models.}
+Our loop is language-model-guided derivative-free policy search, related to RL and evolution strategies \citep{salimans2017es}; the editor remains fixed. Unlike world-model methods \citep{ha2018world,hafner2020dreamer}, we learn no dynamics predictor. An editor's explanation is not a validated world model; learned-dynamics screening would introduce additional model error.
+
+\paragraph{Limits of our evidence.}
+Development identity repeats broke 3--10 nominal base successes against a cap of two. With only four edits, replay failures, and incorrect annotations, rejection isolates neither edit-induced harm nor a contradiction of positive studies. Physical transfer, cross-task preservation, and cost advantage remain untested.

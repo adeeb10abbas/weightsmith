@@ -1,0 +1,1597 @@
+{
+  "source_files": {
+    "paper/main.bbl": {
+      "workspace_source": "paper/main.bbl",
+      "sha256": "f2fb7db78e25cdb9273604410c3f70fd091a11471d328ce6d572a0c78df83da0",
+      "bytes": 8396
+    },
+    "paper/references.bib": {
+      "workspace_source": "paper/references.bib",
+      "sha256": "810c2f0ec377593bc8014c321a4fbb2605f78cd722cde981d4f8ab68c9195156",
+      "bytes": 7253
+    },
+    "paper/main.tex": {
+      "workspace_source": "paper/main.tex",
+      "sha256": "cd683314edc2c09f748cc962686d022537321714a1f6ae43794e0591dec332c5",
+      "bytes": 2420
+    },
+    "paper/sections/discussion.tex": {
+      "workspace_source": "paper/sections/discussion.tex",
+      "sha256": "41565c8b808aa87f14941bb3fc2a0fafa0861bb90024750529e8a92e3cde3db1",
+      "bytes": 2278
+    },
+    "paper/sections/generated_development_table.tex": {
+      "workspace_source": "paper/sections/generated_development_table.tex",
+      "sha256": "0dc855ef82853e267fdf3415d7bf06b27b3f7123df23c885b79e285a48695358",
+      "bytes": 388
+    },
+    "paper/sections/conclusion.tex": {
+      "workspace_source": "paper/sections/conclusion.tex",
+      "sha256": "0608526f4272299687da5e2820e3527b4fa86b0b2a579cd1cf72785fe081eede",
+      "bytes": 912
+    },
+    "paper/sections/generated_discovery_table.tex": {
+      "workspace_source": "paper/sections/generated_discovery_table.tex",
+      "sha256": "b0bcdf7098827309528c37e23899600ceaa6273444568567a2115a9f139a64ca",
+      "bytes": 805
+    },
+    "paper/sections/abstract.tex": {
+      "workspace_source": "paper/sections/abstract.tex",
+      "sha256": "b826e1ee73608420a92562e52ecf44de3dd65eebaa9aa97e95b64b0b7c0abda4",
+      "bytes": 1356
+    },
+    "paper/sections/results.tex": {
+      "workspace_source": "paper/sections/results.tex",
+      "sha256": "e9195a52d1339e20bec4f5ed7fe2084d342099059baa3a0de2e327b76f6b6d27",
+      "bytes": 7498
+    },
+    "paper/sections/generated_discovery_runs.tex": {
+      "workspace_source": "paper/sections/generated_discovery_runs.tex",
+      "sha256": "e19803e6d45a32d143afcd5acfbeb2f2e7a20bdbdf04f117837a842d65ac0a3b",
+      "bytes": 385
+    },
+    "paper/sections/generated_discovery_summary.tex": {
+      "workspace_source": "paper/sections/generated_discovery_summary.tex",
+      "sha256": "c60e921f554ac4f872f166710a956319e4034b8aa2f7a64c714f80bfff82237e",
+      "bytes": 340
+    },
+    "paper/sections/generated_final_controls_compact.tex": {
+      "workspace_source": "paper/sections/generated_final_controls_compact.tex",
+      "sha256": "2723b059155c7266a0e38923c83e65cc02e0c73f5ae6c80427762a2abb033c28",
+      "bytes": 287
+    },
+    "paper/sections/related_work.tex": {
+      "workspace_source": "paper/sections/related_work.tex",
+      "sha256": "3f015e799f14355d0d70199dfc02825dd1c53049560118aaf0c1406bd428862e",
+      "bytes": 2176
+    },
+    "paper/sections/introduction.tex": {
+      "workspace_source": "paper/sections/introduction.tex",
+      "sha256": "17e2aa958bf9bc8c951284e24d6a45fd21735bb78a391912603ecedac582d70e",
+      "bytes": 1168
+    },
+    "paper/sections/literature_table.tex": {
+      "workspace_source": "paper/sections/literature_table.tex",
+      "sha256": "9d8fd567e7461367cda9adad5102a6e625903893fcf50a96508d3ccb3d7bc3d7",
+      "bytes": 5217
+    },
+    "paper/sections/methods.tex": {
+      "workspace_source": "paper/sections/methods.tex",
+      "sha256": "365b1ecd29285b92201e09959b89b6fa404bab0af2603cb25b878f9b9673e5a6",
+      "bytes": 6064
+    },
+    "paper/sections/generated_development_summary.tex": {
+      "workspace_source": "paper/sections/generated_development_summary.tex",
+      "sha256": "811cb4f6d36dbbd01e2d9e0f0123c0f85b3f2e90be342cfc5bf4064454740df4",
+      "bytes": 588
+    },
+    "paper/figures/identity_input_diagnostic.svg": {
+      "workspace_source": "paper/figures/identity_input_diagnostic.svg",
+      "sha256": "a881d8dad5f0c10a4e5c02c5b672deaa37c4d78db917f5afd542e2418b0c219a",
+      "bytes": 66613
+    },
+    "paper/figures/identity_repeat_heatmap.pdf": {
+      "workspace_source": "paper/figures/identity_repeat_heatmap.pdf",
+      "sha256": "92acfb0a5e3d4a1e5b9938632c61a2b5aff71e11c28cd772c278dd87ddc4623c",
+      "bytes": 14095
+    },
+    "paper/figures/identity_input_diagnostic.pdf": {
+      "workspace_source": "paper/figures/identity_input_diagnostic.pdf",
+      "sha256": "faeb21a5321ccb97a1c2d5e0e2dd4dd431c836bbc358979633a3b57efe82fb60",
+      "bytes": 20013
+    },
+    "paper/figures/identity_repeat_heatmap.svg": {
+      "workspace_source": "paper/figures/identity_repeat_heatmap.svg",
+      "sha256": "49c66a82f12ff060c20cc7a612336bf1a9fa98d3fe9dc58f9a7c1a2fc049d1ba",
+      "bytes": 70592
+    },
+    "paper/figures/camera_examples.svg": {
+      "workspace_source": "paper/figures/camera_examples.svg",
+      "sha256": "2dc3da2c724e9dc62e48f497797577c12768b95e3df0f41c3a6b64245f1b8579",
+      "bytes": 234554
+    },
+    "paper/figures/development_controls.pdf": {
+      "workspace_source": "paper/figures/development_controls.pdf",
+      "sha256": "821748e80521744cc82af968693fefe14657ad2fc4d6442b442eb0f1e802df3f",
+      "bytes": 19970
+    },
+    "paper/figures/baseline_replay.pdf": {
+      "workspace_source": "paper/figures/baseline_replay.pdf",
+      "sha256": "ecb5dbccecfd220a0069099c9e0f0c4393248311d355c029caf12729ed22b3d9",
+      "bytes": 20961
+    },
+    "paper/figures/v2_heldout_unique_policies.svg": {
+      "workspace_source": "paper/figures/v2_heldout_unique_policies.svg",
+      "sha256": "3fabe44c543b3985a5f6065a4b9eb4a17583e210ac73bca93299a5bb4cdaec6a",
+      "bytes": 26638
+    },
+    "paper/figures/discovery_curves.svg": {
+      "workspace_source": "paper/figures/discovery_curves.svg",
+      "sha256": "6caa1c0ae50fe79f75c51d410ea7c3a779b9b1a2b4be4e9f368a20b8dad8bb60",
+      "bytes": 110119
+    },
+    "paper/figures/edit_loop.pdf": {
+      "workspace_source": "paper/figures/edit_loop.pdf",
+      "sha256": "6db3197f0a5586616b2544dbecc2d090437138e5c664cff777a22af2582b723e",
+      "bytes": 22487
+    },
+    "paper/figures/discovery_summary.svg": {
+      "workspace_source": "paper/figures/discovery_summary.svg",
+      "sha256": "98d6e68354d8c1e7ec04fe3ff09b476d81ab7a89ce4c3c5afab0357ab98d428c",
+      "bytes": 73984
+    },
+    "paper/figures/batch_shape_replay.svg": {
+      "workspace_source": "paper/figures/batch_shape_replay.svg",
+      "sha256": "18c4329339d7f7037017a5483332c697be6d986e5d4379d9488f8e1adae2cf57",
+      "bytes": 59239
+    },
+    "paper/figures/edit_loop_paper.pdf": {
+      "workspace_source": "paper/figures/edit_loop_paper.pdf",
+      "sha256": "12f418eaf3235bb0d9d44607234cbc3fd541732b4094ec35a834c10d47922626",
+      "bytes": 22803
+    },
+    "paper/figures/discovery_effects.svg": {
+      "workspace_source": "paper/figures/discovery_effects.svg",
+      "sha256": "d04dc287fea49dee5d0359b8b4c8fcf2fb2a9d3d6e535529e2f327c69c45c2a2",
+      "bytes": 91343
+    },
+    "paper/figures/v2_discovery_curves.pdf": {
+      "workspace_source": "paper/figures/v2_discovery_curves.pdf",
+      "sha256": "dc5466f0c3d8190afc7842624ffa31fc1a02fa3f891b24bb2d775ccf35708c16",
+      "bytes": 18198
+    },
+    "paper/figures/heldout_unique_policies.pdf": {
+      "workspace_source": "paper/figures/heldout_unique_policies.pdf",
+      "sha256": "7f4512895cc973464f271fb9bb061c4a8f8cf550e0249594c32844d61961faf0",
+      "bytes": 14183
+    },
+    "paper/figures/v2_discovery_curves.svg": {
+      "workspace_source": "paper/figures/v2_discovery_curves.svg",
+      "sha256": "08d7502d75b93c10ad4cd7790076230dbf940770cafa2e133df40ee53ab9b242",
+      "bytes": 44218
+    },
+    "paper/figures/heldout_unique_policies.svg": {
+      "workspace_source": "paper/figures/heldout_unique_policies.svg",
+      "sha256": "7aa9178c83ce3153d0384353c0a79f065ee31043dd0c22b9883e0c0b849473ff",
+      "bytes": 27366
+    },
+    "paper/figures/development_controls.svg": {
+      "workspace_source": "paper/figures/development_controls.svg",
+      "sha256": "5abe66fba2c4bf911286ceee183c645de620c53bd39aeffc6432b3da9d200eff",
+      "bytes": 41327
+    },
+    "paper/figures/camera_examples.pdf": {
+      "workspace_source": "paper/figures/camera_examples.pdf",
+      "sha256": "80df87e736dff0feaccafcd36a78af2e3f753ff9b8bcfe1e0eeeaf2a3db68174",
+      "bytes": 163619
+    },
+    "paper/figures/v2_heldout_unique_policies.pdf": {
+      "workspace_source": "paper/figures/v2_heldout_unique_policies.pdf",
+      "sha256": "ae09d86b1d7bffc414daa3eae6a7943a702b62093929fddaf70edf7917c8a680",
+      "bytes": 15336
+    },
+    "paper/figures/baseline_replay.svg": {
+      "workspace_source": "paper/figures/baseline_replay.svg",
+      "sha256": "73d4f8f0dc8e687404ecc2ffd464f5d33e0713968a33f76f504db010430fc06e",
+      "bytes": 50560
+    },
+    "paper/figures/discovery_summary.pdf": {
+      "workspace_source": "paper/figures/discovery_summary.pdf",
+      "sha256": "82dc57922071250d02893f04b6dbbf2aa13e45d3935227169840be5641453530",
+      "bytes": 22240
+    },
+    "paper/figures/batch_shape_replay.pdf": {
+      "workspace_source": "paper/figures/batch_shape_replay.pdf",
+      "sha256": "40c75dc72ea9fd787e0278c24086133011908531ada5ed5143cb609c201f9f52",
+      "bytes": 19622
+    },
+    "paper/figures/discovery_curves.pdf": {
+      "workspace_source": "paper/figures/discovery_curves.pdf",
+      "sha256": "b9e603b91e6042393c45fddc738dde9385b553f3ea490126cd5da99343227588",
+      "bytes": 21054
+    },
+    "paper/figures/edit_loop.svg": {
+      "workspace_source": "paper/figures/edit_loop.svg",
+      "sha256": "eb5cbe82510abff7150f5c94953301cc16c330919bf7b94c4742f1fe77e8f6db",
+      "bytes": 48358
+    },
+    "paper/figures/edit_loop_paper.svg": {
+      "workspace_source": "paper/figures/edit_loop_paper.svg",
+      "sha256": "47430733f5f6b14f31f40ca5745ec2b8330e6ed0917d5fdfe5ca3d05f024088a",
+      "bytes": 53767
+    },
+    "paper/figures/discovery_effects.pdf": {
+      "workspace_source": "paper/figures/discovery_effects.pdf",
+      "sha256": "4da91d60e532b8030e842d8d1038fd9f64e834fe8d4a4372f9c1709b34d7f275",
+      "bytes": 21642
+    },
+    "paper/paper.pdf": {
+      "workspace_source": "output/pdf/weight_space_robotics_study_draft_v14_2026-11-05.pdf",
+      "sha256": "e83bbfb473599934fd1b694352a07c8827897d66a2abfeeb30b8a2d0686e64ed",
+      "bytes": 133043
+    },
+    "results/data/study_amendment_v1p1.json": {
+      "workspace_source": "paper/data/study_amendment_v1p1.json",
+      "sha256": "c9c73a045c8e407489926e73c5e41ebc8369270d9537bde3616b112bbc304ee8",
+      "bytes": 4849
+    },
+    "results/data/development_results.json": {
+      "workspace_source": "paper/data/development_results.json",
+      "sha256": "4a07845a5ed8d7f8c8f51cbda973970367ecdd1a6aee44eb76dbe8bd254cdde5",
+      "bytes": 90238
+    },
+    "results/data/experiment_results_v2.json": {
+      "workspace_source": "paper/data/experiment_results_v2.json",
+      "sha256": "9e55681196751c87e19c0844ef557a87cd53af8981907b6d76aa5740b9d9a3eb",
+      "bytes": 147740
+    },
+    "results/data/study_eligibility_adaptive-r1.json": {
+      "workspace_source": "paper/data/study_eligibility_adaptive-r1.json",
+      "sha256": "1f410526daab1268c84ba182aaff454f61b63764001a01196015613a41ea2978",
+      "bytes": 2518
+    },
+    "results/data/final_resources.json": {
+      "workspace_source": "paper/data/final_resources.json",
+      "sha256": "d8df92c28fb6c3cb9b0a3bf198198cb41597b9928216f59f8d257e859ed4b98d",
+      "bytes": 572
+    },
+    "results/data/provenance.json": {
+      "workspace_source": "paper/data/provenance.json",
+      "sha256": "2c821603a46e929c1aed99cce20987d3859ec6f6857c27700be375428f750b8d",
+      "bytes": 1597
+    },
+    "results/data/study_batch_diagnostic.json": {
+      "workspace_source": "paper/data/study_batch_diagnostic.json",
+      "sha256": "eb3f869ff5ce7f7ebb62a6f749a27307651a3a70e57afc7b56c29fcba9da878c",
+      "bytes": 39292
+    },
+    "results/data/identity_repeat_matrix.json": {
+      "workspace_source": "paper/data/identity_repeat_matrix.json",
+      "sha256": "26fea6ffcabd06f335061b6683c8d5061c4c1e7b0b52bf97b584d6d162c7c876",
+      "bytes": 7506
+    },
+    "results/data/smoke_report.json": {
+      "workspace_source": "paper/data/smoke_report.json",
+      "sha256": "1c7302f3b25d3da959d319d07c2b3fab64a7c1d15f91a65476c433b042256365",
+      "bytes": 10348
+    },
+    "results/data/study_success_oracle_audit.json": {
+      "workspace_source": "paper/data/study_success_oracle_audit.json",
+      "sha256": "1dff173376276dca1aa0bc8bc19d916e827cf0aa875c79bdb461060a93fc73de",
+      "bytes": 1252
+    },
+    "results/data/study_eligibility_nonadaptive-r2.json": {
+      "workspace_source": "paper/data/study_eligibility_nonadaptive-r2.json",
+      "sha256": "0c78b01fdef65f7ec7c0507936ae1d5508751531a7b9d3bb6aded81c0ad23692",
+      "bytes": 742
+    },
+    "results/data/study_resource_audit.json": {
+      "workspace_source": "paper/data/study_resource_audit.json",
+      "sha256": "fcaf80f081227c14d48833eccf98c0c50c7707ed69caf730698419d89bd1a558",
+      "bytes": 916
+    },
+    "results/data/study_runtime_binding.json": {
+      "workspace_source": "paper/data/study_runtime_binding.json",
+      "sha256": "4c9c8261ca9018231d19c368abadf5a650a6ab218bebb8a36b23f197c2fd8f60",
+      "bytes": 1506
+    },
+    "results/data/study_final_order_declaration.json": {
+      "workspace_source": "paper/data/study_final_order_declaration.json",
+      "sha256": "958289cc15b6f6c37b92c33cf331170eb8dbbc8e2015964fb3dab8be4153ac4b",
+      "bytes": 957
+    },
+    "results/data/experimental_costs.json": {
+      "workspace_source": "paper/data/experimental_costs.json",
+      "sha256": "a2fcefc45276a2bcf8dae72ccb97b8296df16b6b786a68431e53c900ee442e13",
+      "bytes": 57250
+    },
+    "results/data/recent_work.json": {
+      "workspace_source": "paper/data/recent_work.json",
+      "sha256": "f56b44d8bafd1002f5287885de6b19e3b28681fd47c0ab9c61a4be6919dcc941",
+      "bytes": 7522
+    },
+    "results/data/study_pre_search_checks.json": {
+      "workspace_source": "paper/data/study_pre_search_checks.json",
+      "sha256": "8ff905943fdb83d2200dad9f150a0abc06ffd5fe814a5788dd9eaa2124d49ad9",
+      "bytes": 750
+    },
+    "results/data/study_batch_threshold_check.json": {
+      "workspace_source": "paper/data/study_batch_threshold_check.json",
+      "sha256": "974da7d4903e4fe901df68d62cfee096ac81291292632cdf740638f0dbfc127f",
+      "bytes": 1027
+    },
+    "results/data/study_base_identity_input_diagnostic.json": {
+      "workspace_source": "paper/data/study_base_identity_input_diagnostic.json",
+      "sha256": "a3cf4429ee23b7e608e7923850270f4cb74fb23125ad2e4445ebdb758ca82dec",
+      "bytes": 484898
+    },
+    "results/data/study_eligibility_nonadaptive-r1.json": {
+      "workspace_source": "paper/data/study_eligibility_nonadaptive-r1.json",
+      "sha256": "8280a2c3c774760837c5bfeb2b57afe5c0792b207f1b3abf28d43bcf93d25ee8",
+      "bytes": 908
+    },
+    "results/data/study_activation_probe_development.json": {
+      "workspace_source": "paper/data/study_activation_probe_development.json",
+      "sha256": "b654b18fa7a55bac83f1a27aba3618f826bea4d5d15febb2939c7f748a16c91d",
+      "bytes": 74649
+    },
+    "results/data/study_v2_readiness.json": {
+      "workspace_source": "paper/data/study_v2_readiness.json",
+      "sha256": "4bf7a442e39561adda97a6f47b5113f1bdadd23bd550e2222b4e2d5cb432af11",
+      "bytes": 39638
+    },
+    "results/data/experiment_results.json": {
+      "workspace_source": "paper/data/experiment_results.json",
+      "sha256": "7f3f1c8e2d14bd28ede9709e6be9367e1ad71c2edbc48faa00dde5c8d7a2c62e",
+      "bytes": 991028
+    },
+    "results/data/literature_evidence_map.json": {
+      "workspace_source": "paper/data/literature_evidence_map.json",
+      "sha256": "fe5e82e2ca3e91999c0c7439a33adb7cd0fd087b494d2468ff99d4c620763ac4",
+      "bytes": 9940
+    },
+    "results/data/experimental_costs_v2.json": {
+      "workspace_source": "paper/data/experimental_costs_v2.json",
+      "sha256": "bdde46923397dc45e0c62d00f3a3717e5abc98474ddb21a28ca6a1c71c09bcf1",
+      "bytes": 44997
+    },
+    "results/data/study_operator_deviations.json": {
+      "workspace_source": "paper/data/study_operator_deviations.json",
+      "sha256": "b6fd6674eace95d45e5e54c06d6539df7e764302abc159efce95092609f17c6b",
+      "bytes": 1105
+    },
+    "results/data/study_identity_report.json": {
+      "workspace_source": "paper/data/study_identity_report.json",
+      "sha256": "fe078cb76476fa0bc521c489582338ae26614f95a24f0c8ef2825491b33a9b3d",
+      "bytes": 4522
+    },
+    "results/data/analysis.json": {
+      "workspace_source": "paper/data/analysis.json",
+      "sha256": "ba51fb21312545e087b90ae7587f724612e69d2819afb032ae78c6b1fb87a636",
+      "bytes": 7286
+    },
+    "results/data/failure_wrist.png": {
+      "workspace_source": "paper/data/failure_wrist.png",
+      "sha256": "a40b33e25232362c8e81d73ea7983d76aac4ebe68c717cfe41f4e2ed2e36fc18",
+      "bytes": 46743
+    },
+    "results/data/success_wrist.png": {
+      "workspace_source": "paper/data/success_wrist.png",
+      "sha256": "f514474ee07b041545e87c8996aed745bc12511bbb2672c5744b1dc366fee357",
+      "bytes": 45815
+    },
+    "results/data/fixed16_heldout_first_inputs.json": {
+      "workspace_source": "paper/data/fixed16_heldout_first_inputs.json",
+      "sha256": "f11a88c2361105180b46ee146d2bc4d6bc2a840081ec590d803a3538846a125c",
+      "bytes": 2195
+    },
+    "results/data/study_event_annotation_audit.json": {
+      "workspace_source": "paper/data/study_event_annotation_audit.json",
+      "sha256": "ca41146dccfc771b8641dfdcfed3023663af3df5d10480c261a7641171ee12a1",
+      "bytes": 8910
+    },
+    "results/data/study_followup_v2_protocol.json": {
+      "workspace_source": "paper/data/study_followup_v2_protocol.json",
+      "sha256": "bb55e5202a9cd4508a9678a8c72e9ede026a2166cf7bc8156ee9c4d2d35ee796",
+      "bytes": 7534
+    },
+    "results/data/study_eligibility_adaptive-r2.json": {
+      "workspace_source": "paper/data/study_eligibility_adaptive-r2.json",
+      "sha256": "bd0d20f79158628650acf92f5df45b0ca207ab7eddf64791dff75db637f75c2e",
+      "bytes": 2154
+    },
+    "results/data/fixed_input_edit_effects.json": {
+      "workspace_source": "paper/data/fixed_input_edit_effects.json",
+      "sha256": "0f152af67a7ff9bd1aecaec78c682c6f13d8d77d0ef4fe3045f2406ec94dc5d9",
+      "bytes": 47525
+    },
+    "results/figures/identity_repeat_heatmap.png": {
+      "workspace_source": "paper/figures/identity_repeat_heatmap.png",
+      "sha256": "7d8a26afd82b3b2e1eea0ae99ddf3dbe969934caa688e8b710b8990bcb14ad3a",
+      "bytes": 95642
+    },
+    "results/figures/identity_input_diagnostic.svg": {
+      "workspace_source": "paper/figures/identity_input_diagnostic.svg",
+      "sha256": "a881d8dad5f0c10a4e5c02c5b672deaa37c4d78db917f5afd542e2418b0c219a",
+      "bytes": 66613
+    },
+    "results/figures/identity_input_diagnostic.png": {
+      "workspace_source": "paper/figures/identity_input_diagnostic.png",
+      "sha256": "210b124617d07becf245a57ce3eb97078791bffde7bc496b6172454eddc8c9ba",
+      "bytes": 85897
+    },
+    "results/figures/identity_repeat_heatmap.svg": {
+      "workspace_source": "paper/figures/identity_repeat_heatmap.svg",
+      "sha256": "49c66a82f12ff060c20cc7a612336bf1a9fa98d3fe9dc58f9a7c1a2fc049d1ba",
+      "bytes": 70592
+    },
+    "results/figures/edit_loop_paper.png": {
+      "workspace_source": "paper/figures/edit_loop_paper.png",
+      "sha256": "6ae9b95d0067ba7715834fab7b0a382c05f27f2b43a6e3598e8769a6ac41d01e",
+      "bytes": 69340
+    },
+    "results/figures/camera_examples.svg": {
+      "workspace_source": "paper/figures/camera_examples.svg",
+      "sha256": "2dc3da2c724e9dc62e48f497797577c12768b95e3df0f41c3a6b64245f1b8579",
+      "bytes": 234554
+    },
+    "results/figures/edit_loop.png": {
+      "workspace_source": "paper/figures/edit_loop.png",
+      "sha256": "612205718d2495c3d4e90566a5eacff816f4921a631a9c6d111f3986ab283e0b",
+      "bytes": 53791
+    },
+    "results/figures/v2_heldout_unique_policies.svg": {
+      "workspace_source": "paper/figures/v2_heldout_unique_policies.svg",
+      "sha256": "3fabe44c543b3985a5f6065a4b9eb4a17583e210ac73bca93299a5bb4cdaec6a",
+      "bytes": 26638
+    },
+    "results/figures/discovery_curves.svg": {
+      "workspace_source": "paper/figures/discovery_curves.svg",
+      "sha256": "6caa1c0ae50fe79f75c51d410ea7c3a779b9b1a2b4be4e9f368a20b8dad8bb60",
+      "bytes": 110119
+    },
+    "results/figures/baseline_replay.png": {
+      "workspace_source": "paper/figures/baseline_replay.png",
+      "sha256": "e5c27aabac9b5e896a8b88810f35f20355280dad31b8eca364b104a142b886b4",
+      "bytes": 45860
+    },
+    "results/figures/discovery_summary.svg": {
+      "workspace_source": "paper/figures/discovery_summary.svg",
+      "sha256": "98d6e68354d8c1e7ec04fe3ff09b476d81ab7a89ce4c3c5afab0357ab98d428c",
+      "bytes": 73984
+    },
+    "results/figures/batch_shape_replay.svg": {
+      "workspace_source": "paper/figures/batch_shape_replay.svg",
+      "sha256": "18c4329339d7f7037017a5483332c697be6d986e5d4379d9488f8e1adae2cf57",
+      "bytes": 59239
+    },
+    "results/figures/discovery_effects.svg": {
+      "workspace_source": "paper/figures/discovery_effects.svg",
+      "sha256": "d04dc287fea49dee5d0359b8b4c8fcf2fb2a9d3d6e535529e2f327c69c45c2a2",
+      "bytes": 91343
+    },
+    "results/figures/development_controls.png": {
+      "workspace_source": "paper/figures/development_controls.png",
+      "sha256": "0c5b6ff9306d75d410958b814cbe13e1b19dd9b36b972ae8d1186815786d277c",
+      "bytes": 35359
+    },
+    "results/figures/heldout_unique_policies.png": {
+      "workspace_source": "paper/figures/heldout_unique_policies.png",
+      "sha256": "08c156fd759c6c382e37444866a4bf955daffd8c553bb7f116c88ceeb6b8b037",
+      "bytes": 26329
+    },
+    "results/figures/v2_discovery_curves.png": {
+      "workspace_source": "paper/figures/v2_discovery_curves.png",
+      "sha256": "4d2b493a56e0ad268fee75579e0d73a633f782ca2115d936f37ad481268849f9",
+      "bytes": 64364
+    },
+    "results/figures/v2_discovery_curves.svg": {
+      "workspace_source": "paper/figures/v2_discovery_curves.svg",
+      "sha256": "08d7502d75b93c10ad4cd7790076230dbf940770cafa2e133df40ee53ab9b242",
+      "bytes": 44218
+    },
+    "results/figures/heldout_unique_policies.svg": {
+      "workspace_source": "paper/figures/heldout_unique_policies.svg",
+      "sha256": "7aa9178c83ce3153d0384353c0a79f065ee31043dd0c22b9883e0c0b849473ff",
+      "bytes": 27366
+    },
+    "results/figures/development_controls.svg": {
+      "workspace_source": "paper/figures/development_controls.svg",
+      "sha256": "5abe66fba2c4bf911286ceee183c645de620c53bd39aeffc6432b3da9d200eff",
+      "bytes": 41327
+    },
+    "results/figures/discovery_effects.png": {
+      "workspace_source": "paper/figures/discovery_effects.png",
+      "sha256": "bc69f6b218e41c2765f9c23666c0af748ff6794e22445e872c05f9455e1ed109",
+      "bytes": 111856
+    },
+    "results/figures/discovery_summary.png": {
+      "workspace_source": "paper/figures/discovery_summary.png",
+      "sha256": "07cbf884dc99479ffa5bedefb9686f7d8d04aa67ff1cc4d763a730358edad6ec",
+      "bytes": 102019
+    },
+    "results/figures/batch_shape_replay.png": {
+      "workspace_source": "paper/figures/batch_shape_replay.png",
+      "sha256": "e78d33c035d1a38910ded8b709b4dc84e9eba1470119e94e5898d2b0fe2a29a6",
+      "bytes": 53337
+    },
+    "results/figures/discovery_curves.png": {
+      "workspace_source": "paper/figures/discovery_curves.png",
+      "sha256": "199c11728bfd1e749c4e05e1586820a2062eb0d1e31c1cd23c54114000b674a6",
+      "bytes": 144351
+    },
+    "results/figures/baseline_replay.svg": {
+      "workspace_source": "paper/figures/baseline_replay.svg",
+      "sha256": "73d4f8f0dc8e687404ecc2ffd464f5d33e0713968a33f76f504db010430fc06e",
+      "bytes": 50560
+    },
+    "results/figures/v2_heldout_unique_policies.png": {
+      "workspace_source": "paper/figures/v2_heldout_unique_policies.png",
+      "sha256": "4926886b0a4fbae5a9e1f1365a772feae47e435f01469114d1c73213c5b5d655",
+      "bytes": 24278
+    },
+    "results/figures/edit_loop.svg": {
+      "workspace_source": "paper/figures/edit_loop.svg",
+      "sha256": "eb5cbe82510abff7150f5c94953301cc16c330919bf7b94c4742f1fe77e8f6db",
+      "bytes": 48358
+    },
+    "results/figures/edit_loop_paper.svg": {
+      "workspace_source": "paper/figures/edit_loop_paper.svg",
+      "sha256": "47430733f5f6b14f31f40ca5745ec2b8330e6ed0917d5fdfe5ca3d05f024088a",
+      "bytes": 53767
+    },
+    "results/figures/camera_examples.png": {
+      "workspace_source": "paper/figures/camera_examples.png",
+      "sha256": "5f750226786b267ccd21877897158fd94afa671d7ac3a7d3e7d4c93ba607c85a",
+      "bytes": 186254
+    },
+    "reproduction/fixed16/SETUP.md": {
+      "workspace_source": "handoff_fixed16_v1/SETUP.md",
+      "sha256": "ab6c9dcdffa4f26e75c5671b3b4781f1bee83f43db7600c1a1038ffca00dcb3f",
+      "bytes": 8434
+    },
+    "reproduction/fixed16/MODEL_ENROLLMENT.md": {
+      "workspace_source": "handoff_fixed16_v1/MODEL_ENROLLMENT.md",
+      "sha256": "4998c7af99de55510172dc627b3cebf315a4479ec4494ef174823e3d64928147",
+      "bytes": 5032
+    },
+    "reproduction/fixed16/PACKETS.md": {
+      "workspace_source": "handoff_fixed16_v1/PACKETS.md",
+      "sha256": "1dfa637f39e21c5cd1faf3eff36dde79215aab02dfda1354ffd3446d29dd2fab",
+      "bytes": 3064
+    },
+    "reproduction/fixed16/README.md": {
+      "workspace_source": "handoff_fixed16_v1/README.md",
+      "sha256": "5014d6d7705b0a67692f1eefe12c25a5768c2938dc50a09f5685e102c2276945",
+      "bytes": 3198
+    },
+    "reproduction/fixed16/MANIFEST.json": {
+      "workspace_source": "handoff_fixed16_v1/MANIFEST.json",
+      "sha256": "af6a7639a8bfd2d2ed31f074daf15e3d1082d4a995b544354c422afce2e288c8",
+      "bytes": 22656
+    },
+    "reproduction/fixed16/tools/bind_runtime.py": {
+      "workspace_source": "handoff_fixed16_v1/tools/bind_runtime.py",
+      "sha256": "053f82640bc91f6a096abe9e1184d8f5c9cf86052aeb894831ec9c0536fab4ef",
+      "bytes": 2862
+    },
+    "reproduction/fixed16/tools/verify_package.py": {
+      "workspace_source": "handoff_fixed16_v1/tools/verify_package.py",
+      "sha256": "cd50ea345499b6938ec84ac492cec25c59c7dc54c77436aa0c75de1cc22cac95",
+      "bytes": 3387
+    },
+    "reproduction/fixed16/tools/build_package.py": {
+      "workspace_source": "handoff_fixed16_v1/tools/build_package.py",
+      "sha256": "94e59f1b1f8685cd5d2fe089aed33e2552e7ce62402b559ba6f9b9b84e57a81f",
+      "bytes": 2110
+    },
+    "reproduction/fixed16/tools/broker_fixed16.py": {
+      "workspace_source": "handoff_fixed16_v1/tools/broker_fixed16.py",
+      "sha256": "36d968786619d854162e3e44788a0156b740f2e5351a2fc8919c1a8ccf857530",
+      "bytes": 888
+    },
+    "reproduction/fixed16/tools/provider_driver.py": {
+      "workspace_source": "handoff_fixed16_v1/tools/provider_driver.py",
+      "sha256": "0fabb58676b0284501977ee54e4331532c337c1a7ed8ab60a77801487013b98a",
+      "bytes": 11854
+    },
+    "reproduction/fixed16/tools/enrollment.py": {
+      "workspace_source": "handoff_fixed16_v1/tools/enrollment.py",
+      "sha256": "111194fd23662b90707344af051ac90c30ee31894fab033198c8d0acbc888add",
+      "bytes": 7336
+    },
+    "reproduction/fixed16/tests/test_package.py": {
+      "workspace_source": "handoff_fixed16_v1/tests/test_package.py",
+      "sha256": "d6dbca5da55c03c404e56208e55d506c7ef7e9e4459092054a1317fc2ff00a2b",
+      "bytes": 9241
+    },
+    "reproduction/fixed16/bundle/weightsmith/LICENSE": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/LICENSE",
+      "sha256": "90e85be19271c20a3080a02708fa8db773366588e956042c767723f92f125ac2",
+      "bytes": 1080
+    },
+    "reproduction/fixed16/bundle/weightsmith/NOTICE": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/NOTICE",
+      "sha256": "adda7c2e77a6c800bb3439a084abe12fcac8fbe6f2c52df1152fac9bfa876d4c",
+      "bytes": 1694
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/validate_gpu.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/validate_gpu.py",
+      "sha256": "6ea07a2aa54af5ac1ead3e3651e5cd3f80df95353a761da34649d0ab7baf24cf",
+      "bytes": 12877
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/__init__.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/__init__.py",
+      "sha256": "a5488a95130ca33883f4961dc0f0bfaefb1a9417a268573c377c17f835adf4bc",
+      "bytes": 122
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/.gitignore": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/.gitignore",
+      "sha256": "0ba841c6139b337f88de6cf2519c878eababed025ceef0476415bb9258ad7b86",
+      "bytes": 80
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/packet.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/packet.py",
+      "sha256": "d12567140f559146f0c095ce3331b96e4dd12d7f88a6f213eaa71723df14d6cd",
+      "bytes": 149
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/DESIGN.md": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/DESIGN.md",
+      "sha256": "8b7930abfe8a863cc9bcd61462d2474e8ce2bfa1f7a773bd7d80e5199f287619",
+      "bytes": 9283
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/fork_inventory.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/fork_inventory.json",
+      "sha256": "ff1c685894fc322bce29a8cb3949ae2d6792ff1a2a73ff8bdf2c7ca2702b50aa",
+      "bytes": 2299
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/LICENSE": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/LICENSE",
+      "sha256": "90e85be19271c20a3080a02708fa8db773366588e956042c767723f92f125ac2",
+      "bytes": 1080
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/NOTICE": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/NOTICE",
+      "sha256": "adda7c2e77a6c800bb3439a084abe12fcac8fbe6f2c52df1152fac9bfa876d4c",
+      "bytes": 1694
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_validation.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_validation.py",
+      "sha256": "6bdc8d16735aadb5197e917141701da81babee58f62548dcacc293ca3bd190cd",
+      "bytes": 7674
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_remote.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_remote.py",
+      "sha256": "a3a0533b6410aa40f4364d546ecfcfc0670c3cd3ef355371e5de2707d23775b6",
+      "bytes": 3711
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_tensor_ops.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_tensor_ops.py",
+      "sha256": "2c49f333f6da77b627aad0df65ab439e650dc5128efa792846b0b8c92ca41a9d",
+      "bytes": 13620
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_editor.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_editor.py",
+      "sha256": "46c2739e37e743c18b931607d3218c25d6b184a8da1b29b838c7915b2ba2e7a4",
+      "bytes": 14739
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_broker.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_broker.py",
+      "sha256": "ff4ce45a6d38e74dde7db1c03eefa26541c1ed7af5812979f3911c49df0a6f51",
+      "bytes": 21721
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/openpi/0001-Allow-request-scoped-policy-sampling-seeds.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/openpi/0001-Allow-request-scoped-policy-sampling-seeds.patch",
+      "sha256": "ab9efc2b592d6cc0f3081a243284653337930844cb82aae7b734f0d5489703ce",
+      "bytes": 1998
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0004-Add-direct-language-stress-prompts.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0004-Add-direct-language-stress-prompts.patch",
+      "sha256": "d4fd7bffeb2b961c75376dd9d851b0cc413603958da56ea6c41f32481a3fff4e",
+      "bytes": 2132
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0003-Add-auditable-predicate-oracle-prompt-control.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0003-Add-auditable-predicate-oracle-prompt-control.patch",
+      "sha256": "2b641a452b1f9569a5e9d3ecdc595ba5b92e5f3dd07137a41f3660bbf95a34b2",
+      "bytes": 10339
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0006-Skip-private-helper-modules-during-task-discovery.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0006-Skip-private-helper-modules-during-task-discovery.patch",
+      "sha256": "956653dfd5166e99e488aeb6a56884bba80ba42ae66446b0414c0baf78aa2478",
+      "bytes": 2041
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0005-Make-steering-episodes-protocol-exact.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0005-Make-steering-episodes-protocol-exact.patch",
+      "sha256": "1d2b7f98fefb30dafadb85df14ba078fae531a39bb6c29fcf61cc7f8e9906f1a",
+      "bytes": 4672
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0001-Add-matched-spatial-steering-tasks-and-horizon-final.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0001-Add-matched-spatial-steering-tasks-and-horizon-final.patch",
+      "sha256": "bc4e6bf884c23a3365412f214eb05ce602e5f148de0b01f790dd42a8c3ebcfa1",
+      "bytes": 11093
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0002-Record-WAM-futures-and-make-sampling-reproducible.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0002-Record-WAM-futures-and-make-sampling-reproducible.patch",
+      "sha256": "a7597154e1d824079e823d5459cd8ee6ffb492d3cc46d399b03e8e74d7b0d267",
+      "bytes": 14944
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab-isaac60/0001-Port-weightsmith-controls-to-Isaac-6.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab-isaac60/0001-Port-weightsmith-controls-to-Isaac-6.patch",
+      "sha256": "06c1b7cbd91666181e23b3df5df44f30a3c865380a4efa280b6958ac64dc30b7",
+      "bytes": 35192
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/owsp.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/owsp.py",
+      "sha256": "75b3f4a07c9e57ca7d0c282fc775f3da73a8f433c97e9e4887a62ad9f84cfc05",
+      "bytes": 23800
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/survey.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/survey.py",
+      "sha256": "1dde80a50ffdec16642657a4cd3a6284b6d1f53ffac88602f981bac07c0be27f",
+      "bytes": 1356
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/config.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/config.py",
+      "sha256": "3cac7ad003aa71e1a10e99457df3526179fd17d3ba7cac900a28781bee56976c",
+      "bytes": 6493
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/__init__.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/__init__.py",
+      "sha256": "d83fe551f06e4e75df43cc09944e3d5edacde801032529db385458e087c25c35",
+      "bytes": 239
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/replay.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/replay.py",
+      "sha256": "4075e463ae28450eb61321b7b8bbcc3415516eeabfb1801eb887a1e53719c7ec",
+      "bytes": 2662
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/locking.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/locking.py",
+      "sha256": "74db25f8b5704266e9050c3206c02ae498e8dea857927309c28adbdb318e7d1c",
+      "bytes": 1043
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/rollout.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/rollout.py",
+      "sha256": "c7e65db6544d9dd1471ddb467ca38665721ef5b12d172ada61146495329fa462",
+      "bytes": 7423
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/batched_client.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/batched_client.py",
+      "sha256": "80950353cf6087b889eee93e407e9cb77825211330cca19d7a94e9e279053d11",
+      "bytes": 5760
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/run_batched.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/run_batched.py",
+      "sha256": "6c0462d96add260e5d9f381a41f409f05061bc3e521dd173ee5aadccbbed5d23",
+      "bytes": 5051
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/acts_worker.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/acts_worker.py",
+      "sha256": "3db41cca84707d260baab8eb28ef7b297b366fd30b13f3e042b7173f97518fa4",
+      "bytes": 10770
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/heldout.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/heldout.py",
+      "sha256": "05080d3e056735d3745efbe1bf5c95ed2cf38fe54bab6340bb6e86add1f30297",
+      "bytes": 7594
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/pool.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/pool.py",
+      "sha256": "625369d2fbf00e30c49f2667ec4d8eeba1e91749be881442610c4ad0bf47eedb",
+      "bytes": 10967
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/integrity.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/integrity.py",
+      "sha256": "86d5b1153af57c63cf04354510a745ad72be4d0a71a74ca2333a99f5ffe6ebe7",
+      "bytes": 1439
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/batched_server.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/batched_server.py",
+      "sha256": "1c95aa6be12b5b99151f54196ea9cffd51c4010f882c1df6352ed0c764f6a0d4",
+      "bytes": 10548
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_probe.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_probe.py",
+      "sha256": "b087e43ebde6dbfa5f0408b60c746943b65c6e30a76e53c83feaf885ead54302",
+      "bytes": 7796
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_context_v2.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_context_v2.py",
+      "sha256": "b526f941ec312f3209224481cafb239466113f7d51d9eb3d2247687c8430e510",
+      "bytes": 18293
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_probe_v2.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_probe_v2.py",
+      "sha256": "50287dabd106ee1adf811f51e6b3a514dd500c598882aeaff45e863df371215b",
+      "bytes": 3035
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/__init__.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/__init__.py",
+      "sha256": "df1c60ca9997aebcc0834810b66023c16538d1a36f49e24b1a2208fc15fef18c",
+      "bytes": 91
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_head.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_head.py",
+      "sha256": "72eb06a94c2af7adcaba7ca3ad40bedf67e96ba441b83430d490878f6556c317",
+      "bytes": 1182
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/sandbox.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/sandbox.py",
+      "sha256": "b5279e922e352ed60da376b6e285019b9ceda966bf57bbb115c311b982401ba4",
+      "bytes": 3230
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/capture_plan_v2.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/capture_plan_v2.py",
+      "sha256": "ae1a3eec686ac733779e5cfc32d7c3c6b0303b6dbe7cb803311e3d4694352913",
+      "bytes": 7460
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_runtime_v2.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_runtime_v2.py",
+      "sha256": "da593282a48118c34e5f7ce65a195fdd7c2317f797e1b41f95006b4cd23f6ffd",
+      "bytes": 2674
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_vlm_full.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_vlm_full.py",
+      "sha256": "6b33de70bad9b0bba7eeda5e650d8ec964e1f829ee8e8de2360c9df4ccc9d1e5",
+      "bytes": 23732
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/v2_editor.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/v2_editor.json",
+      "sha256": "aa538f44ad8b3f4d8b46461f00158dbb2cb625ec2b6dd6131bbf7d3dae306dbd",
+      "bytes": 561
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/v2_operator_development.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/v2_operator_development.json",
+      "sha256": "4e32e3d523c312e4a89decde0b53be90d68edd1a26df1e47edac81cce680d689",
+      "bytes": 559
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/operator_development.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/operator_development.json",
+      "sha256": "7526511208a05f8a481b5403662f688a6cbe24288acc6aaffde5bbc632ca9305",
+      "bytes": 605
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/protocol.sha256": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/protocol.sha256",
+      "sha256": "c707be37d21063595e4edac072910d8bf5b02a59d6799b74a35778d8565f0e48",
+      "bytes": 80
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/editor.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/editor.json",
+      "sha256": "f628b448b3b9e7b1d029ccf3679b94a4b6ace0e88a5bbd45f6709587e2da600c",
+      "bytes": 864
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/protocol.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/protocol.json",
+      "sha256": "72811b04f75ed2688d3efb590c0905ab8bae052c3d4904e92ea4544386712d71",
+      "bytes": 10251
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_final.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_final.py",
+      "sha256": "4a19e00fda1bc8921683d175432fa5c737f372dc1488baeb4cab6797e84e4c25",
+      "bytes": 27192
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_storage.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_storage.py",
+      "sha256": "4fafbb7ac7a821c742f6b1c8ef297ae581d011f9e358e24237e4f37e58ce20ef",
+      "bytes": 5742
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/prepare_study_workspace.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/prepare_study_workspace.py",
+      "sha256": "cc1e9530c7c881cdb3d97b435df59efb60107d38a4b19a817a990fe608ae00df",
+      "bytes": 2220
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/run_isolated.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/run_isolated.py",
+      "sha256": "57c21761f650f65279430148a9c0b7b4905a86cec38db6fd3b7e4d1ca6fc18a9",
+      "bytes": 8318
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/verify_runtime.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/verify_runtime.py",
+      "sha256": "1723cf1fafb6d38d6fb24e26c6c89b8bc17cd0b1686cff75650a6c4300de1228",
+      "bytes": 7117
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_development.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_development.py",
+      "sha256": "971368a02189cfada03cec4b58536aa9515ecc7f61e0a2118a0672ae022e28d3",
+      "bytes": 23661
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_analysis.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_analysis.py",
+      "sha256": "120e57e6a5348ce9cce55809df160f6af3505650afc18df9179726bcba524674",
+      "bytes": 19916
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_identity_probe.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_identity_probe.py",
+      "sha256": "603a2fa40148056012d2c1b4b0ca214673a045d4bb5bfa650cb8d006b495186a",
+      "bytes": 8766
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim/uv.lock": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim/uv.lock",
+      "sha256": "4581f6861609cbf3df5719465072abd383e7cd8923ba26b743b51159cc6370ce",
+      "bytes": 345002
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim/pyproject.toml": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim/pyproject.toml",
+      "sha256": "8e650732eae8558dc854a6ed268474b5556bda8478277cbb1d684195b034ef91",
+      "bytes": 1508
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim-isaac60/uv.lock": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim-isaac60/uv.lock",
+      "sha256": "3df4d94f11af5d1ecfef710a2d4fe84bfac78af7ec82c4a4336d41c25b686054",
+      "bytes": 406329
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim-isaac60/pyproject.toml": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim-isaac60/pyproject.toml",
+      "sha256": "6218f3c17eddca0fb039c8473f605a20f957c602752a3c7eb3878f51da9e2c8c",
+      "bytes": 1216
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/MODE-adaptive.md": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/MODE-adaptive.md",
+      "sha256": "7f20d2a72801fdfdba60e38394b3c3a40587826297867706365804aa2f21bfc7",
+      "bytes": 540
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/MODE-nonadaptive.md": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/MODE-nonadaptive.md",
+      "sha256": "a454341842789bb736f4dc1542e1ea5def58350f6baf6767baf716056eeff117",
+      "bytes": 518
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/BRIEF.md": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/BRIEF.md",
+      "sha256": "7834e9a528ddff6a1a04dece97ca2ee20285f57a46f889256b53eed15b3902ea",
+      "bytes": 10250
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_seed_wire.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/tests/test_seed_wire.py",
+      "sha256": "e17bc3e9e50cf3ddd8ce05c3c29c5ef03ebce6d3264399893e4593928ec6a77d",
+      "bytes": 2193
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_batch_capture_cpu.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/tests/test_batch_capture_cpu.py",
+      "sha256": "1120c3c46393c26c2618bd5fb78f4049a9fd4903d738c5ad1e89f1dbc22489e2",
+      "bytes": 14127
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_development_packets.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/tests/test_development_packets.py",
+      "sha256": "db993d31a86d982896441f7ee556d3a846cf5e8dd4c2f394986ed99d5db11516",
+      "bytes": 4516
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_runtime_seal.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/tests/test_runtime_seal.py",
+      "sha256": "3e2de1bbbff8a59605b5c1c3db755250371593c6760bd1a5caa1977d9b2d5fcc",
+      "bytes": 4295
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_candidate_packets.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/tests/test_candidate_packets.py",
+      "sha256": "1c31ceaedc17facd22207b2911a72af0c4d7593ee650c384e7d12204115ad1db",
+      "bytes": 10204
+    },
+    "reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_editor_boundary.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/extensions/batch_capture_v2/tests/test_editor_boundary.py",
+      "sha256": "28359f1ce2c4dca2c8f640bc04592d79bc45d977e6909b33d969185cd807dc50",
+      "bytes": 4626
+    },
+    "reproduction/fixed16/bundle/weightsmith/third_party/pi05_droid_jointpos.sha256": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/third_party/pi05_droid_jointpos.sha256",
+      "sha256": "c5e21f3480d1a29e9230ac3963ebd20dcb5aea00c1a2f773abea00c7bdcb5061",
+      "bytes": 2995
+    },
+    "reproduction/fixed16/bundle/weightsmith/third_party/patches/openpi/0001-Allow-request-scoped-policy-sampling-seeds.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/third_party/patches/openpi/0001-Allow-request-scoped-policy-sampling-seeds.patch",
+      "sha256": "ab9efc2b592d6cc0f3081a243284653337930844cb82aae7b734f0d5489703ce",
+      "bytes": 1998
+    },
+    "reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0004-Add-direct-language-stress-prompts.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/third_party/patches/robolab/0004-Add-direct-language-stress-prompts.patch",
+      "sha256": "d4fd7bffeb2b961c75376dd9d851b0cc413603958da56ea6c41f32481a3fff4e",
+      "bytes": 2132
+    },
+    "reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0003-Add-auditable-predicate-oracle-prompt-control.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/third_party/patches/robolab/0003-Add-auditable-predicate-oracle-prompt-control.patch",
+      "sha256": "2b641a452b1f9569a5e9d3ecdc595ba5b92e5f3dd07137a41f3660bbf95a34b2",
+      "bytes": 10339
+    },
+    "reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0006-Skip-private-helper-modules-during-task-discovery.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/third_party/patches/robolab/0006-Skip-private-helper-modules-during-task-discovery.patch",
+      "sha256": "956653dfd5166e99e488aeb6a56884bba80ba42ae66446b0414c0baf78aa2478",
+      "bytes": 2041
+    },
+    "reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0005-Make-steering-episodes-protocol-exact.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/third_party/patches/robolab/0005-Make-steering-episodes-protocol-exact.patch",
+      "sha256": "1d2b7f98fefb30dafadb85df14ba078fae531a39bb6c29fcf61cc7f8e9906f1a",
+      "bytes": 4672
+    },
+    "reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0001-Add-matched-spatial-steering-tasks-and-horizon-final.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/third_party/patches/robolab/0001-Add-matched-spatial-steering-tasks-and-horizon-final.patch",
+      "sha256": "bc4e6bf884c23a3365412f214eb05ce602e5f148de0b01f790dd42a8c3ebcfa1",
+      "bytes": 11093
+    },
+    "reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0002-Record-WAM-futures-and-make-sampling-reproducible.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/third_party/patches/robolab/0002-Record-WAM-futures-and-make-sampling-reproducible.patch",
+      "sha256": "a7597154e1d824079e823d5459cd8ee6ffb492d3cc46d399b03e8e74d7b0d267",
+      "bytes": 14944
+    },
+    "reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab-isaac60/0001-Port-weightsmith-controls-to-Isaac-6.patch": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/third_party/patches/robolab-isaac60/0001-Port-weightsmith-controls-to-Isaac-6.patch",
+      "sha256": "06c1b7cbd91666181e23b3df5df44f30a3c865380a4efa280b6958ac64dc30b7",
+      "bytes": 35192
+    },
+    "reproduction/fixed16/bundle/weightsmith/scripts/study_storage.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/scripts/study_storage.py",
+      "sha256": "4fafbb7ac7a821c742f6b1c8ef297ae581d011f9e358e24237e4f37e58ce20ef",
+      "bytes": 5742
+    },
+    "reproduction/fixed16/bundle/weightsmith/scripts/setup_native_libs.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/scripts/setup_native_libs.py",
+      "sha256": "a00aa8793cda572419a15af39309d6afb261d52dbe862a9ccb72cd9b76708345",
+      "bytes": 8668
+    },
+    "reproduction/fixed16/bundle/weightsmith/scripts/run_isolated.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/scripts/run_isolated.py",
+      "sha256": "57c21761f650f65279430148a9c0b7b4905a86cec38db6fd3b7e4d1ca6fc18a9",
+      "bytes": 8318
+    },
+    "reproduction/fixed16/bundle/weightsmith/scripts/setup_deps.py": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/scripts/setup_deps.py",
+      "sha256": "4bb66513f1df9440cd6db28e7682daba9f977b3c3fb63fbe63c35d7def9497e4",
+      "bytes": 13633
+    },
+    "reproduction/fixed16/bundle/weightsmith/envs/robolab-sim-isaac60/uv.lock": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/envs/robolab-sim-isaac60/uv.lock",
+      "sha256": "3df4d94f11af5d1ecfef710a2d4fe84bfac78af7ec82c4a4336d41c25b686054",
+      "bytes": 406329
+    },
+    "reproduction/fixed16/bundle/weightsmith/envs/robolab-sim-isaac60/pyproject.toml": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/envs/robolab-sim-isaac60/pyproject.toml",
+      "sha256": "6218f3c17eddca0fb039c8473f605a20f957c602752a3c7eb3878f51da9e2c8c",
+      "bytes": 1216
+    },
+    "reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/source_manifest.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/operator/rq123-v2/source_manifest.json",
+      "sha256": "017e7ab14bdfd330bb11b7addb23f6a04fa4a07374442e41aa253617e4def754",
+      "bytes": 11543
+    },
+    "reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/closure_addendum.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/operator/rq123-v2/design/closure_addendum.json",
+      "sha256": "581f8edfaec3e258f1dbe35817148153140c26ae47df1e71c983531316eba8c7",
+      "bytes": 1339
+    },
+    "reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/capture_precision_addendum.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/operator/rq123-v2/design/capture_precision_addendum.json",
+      "sha256": "38ae0d30bd86a429cd7aecc544747fde624164e968fadd8e274d861ce2faae08",
+      "bytes": 722
+    },
+    "reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/MODE.md": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/operator/rq123-v2/design/MODE.md",
+      "sha256": "7f20d2a72801fdfdba60e38394b3c3a40587826297867706365804aa2f21bfc7",
+      "bytes": 540
+    },
+    "reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/capture_resource_addendum.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/operator/rq123-v2/design/capture_resource_addendum.json",
+      "sha256": "a08a7490135d547b81874230df21d46fa30517e63663323571dfa4ede368462b",
+      "bytes": 1015
+    },
+    "reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/protocol.json": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/operator/rq123-v2/design/protocol.json",
+      "sha256": "bb55e5202a9cd4508a9678a8c72e9ede026a2166cf7bc8156ee9c4d2d35ee796",
+      "bytes": 7534
+    },
+    "reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/BRIEF.md": {
+      "workspace_source": "handoff_fixed16_v1/bundle/weightsmith/operator/rq123-v2/design/BRIEF.md",
+      "sha256": "ce66b6c30a46db5fe2b67dc4c8db63ed8ce3dcaf2c1373e259a4b34884213ae5",
+      "bytes": 11460
+    },
+    "reproduction/fixed16/examples/enrollment.json": {
+      "workspace_source": "handoff_fixed16_v1/examples/enrollment.json",
+      "sha256": "33f8e18ce814df924a24ddb81db4ba71eaceb4bb8f8cb03fa46877e541afe1f6",
+      "bytes": 733
+    },
+    "reproduction/fixed16/examples/wsp.env.template": {
+      "workspace_source": "handoff_fixed16_v1/examples/wsp.env.template",
+      "sha256": "c7742a63e41189a7d841dcf665e199a34672b63147d3277e58e47ed8a88c8b0f",
+      "bytes": 612
+    },
+    "reproduction/fixed16/examples/provider_config.json": {
+      "workspace_source": "handoff_fixed16_v1/examples/provider_config.json",
+      "sha256": "00737f92bd6f6447c241bd42a98f9ef335ca9af992c7d6aa4e19d730d23ae493",
+      "bytes": 1259
+    },
+    "reproduction/fixed16/reference/closure_addendum.json": {
+      "workspace_source": "handoff_fixed16_v1/reference/closure_addendum.json",
+      "sha256": "581f8edfaec3e258f1dbe35817148153140c26ae47df1e71c983531316eba8c7",
+      "bytes": 1339
+    },
+    "reproduction/fixed16/reference/capture_precision_addendum.json": {
+      "workspace_source": "handoff_fixed16_v1/reference/capture_precision_addendum.json",
+      "sha256": "38ae0d30bd86a429cd7aecc544747fde624164e968fadd8e274d861ce2faae08",
+      "bytes": 722
+    },
+    "reproduction/fixed16/reference/source_manifest.json": {
+      "workspace_source": "handoff_fixed16_v1/reference/source_manifest.json",
+      "sha256": "017e7ab14bdfd330bb11b7addb23f6a04fa4a07374442e41aa253617e4def754",
+      "bytes": 11543
+    },
+    "reproduction/fixed16/reference/capture_resource_addendum.json": {
+      "workspace_source": "handoff_fixed16_v1/reference/capture_resource_addendum.json",
+      "sha256": "a08a7490135d547b81874230df21d46fa30517e63663323571dfa4ede368462b",
+      "bytes": 1015
+    },
+    "reproduction/fixed16/reference/v2_runtime_binding.json": {
+      "workspace_source": "handoff_fixed16_v1/reference/v2_runtime_binding.json",
+      "sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "bytes": 1854
+    },
+    "reproduction/fixed16/reference/installation_support_manifest.json": {
+      "workspace_source": "handoff_fixed16_v1/reference/installation_support_manifest.json",
+      "sha256": "2a841763225cb5770346554e4ea0b3646785a8d92fa46d8dffc3653b1276d2be",
+      "bytes": 3672
+    },
+    "reproduction/fixed16/reference/protocol.json": {
+      "workspace_source": "handoff_fixed16_v1/reference/protocol.json",
+      "sha256": "bb55e5202a9cd4508a9678a8c72e9ede026a2166cf7bc8156ee9c4d2d35ee796",
+      "bytes": 7534
+    },
+    "reproduction/fixed16/reference/pinned_stack_origin.json": {
+      "workspace_source": "handoff_fixed16_v1/reference/pinned_stack_origin.json",
+      "sha256": "4e258a66a730db009c980894b8d854653e7408d75dc616c7a6146abb46a48ab5",
+      "bytes": 1351
+    },
+    "reproduction/common-baseline/packaging_receipt.json": {
+      "workspace_source": "handoff_fixed16_common_baseline_v1/packaging_receipt.json",
+      "sha256": "d0219df2ea5bec3c59a46ba1533f4ef9532d31cc8fb622228e0c33c46d96d5f1",
+      "bytes": 3207
+    },
+    "reproduction/common-baseline/transfer_receipt.json": {
+      "workspace_source": "handoff_fixed16_common_baseline_v1/transfer_receipt.json",
+      "sha256": "3fea0ce063b3a244af93789161232ada6f3fc9d938ecdb84ea220813e7079094",
+      "bytes": 1069
+    },
+    "reproduction/common-baseline/extraction_receipt.json": {
+      "workspace_source": "handoff_fixed16_common_baseline_v1/extraction_receipt.json",
+      "sha256": "3fea0ce063b3a244af93789161232ada6f3fc9d938ecdb84ea220813e7079094",
+      "bytes": 1069
+    },
+    "reproduction/common-baseline/common_reference.py": {
+      "workspace_source": "handoff_fixed16_common_baseline_v1/common_reference.py",
+      "sha256": "ea95e2a72ce21e167c71e9ecec328297150f3a38906eaf73d062375ad7e5d78a",
+      "bytes": 16257
+    },
+    "reproduction/common-baseline/README.md": {
+      "workspace_source": "handoff_fixed16_common_baseline_v1/README.md",
+      "sha256": "30351271a1f5870f66477e9de845e418b00a33d7b6b447ac4cc86247f0beb126",
+      "bytes": 6419
+    },
+    "reproduction/common-baseline/packet_validation.json": {
+      "workspace_source": "handoff_fixed16_common_baseline_v1/packet_validation.json",
+      "sha256": "0f0d1c686739961498ef29b96e6bf8546112a1e316291f52967109c077e51fb5",
+      "bytes": 13429
+    },
+    "reproduction/common-baseline/test_common_reference.py": {
+      "workspace_source": "handoff_fixed16_common_baseline_v1/test_common_reference.py",
+      "sha256": "30819ed193edd2b6bf8f74fd92e04a2ee0458d5315c89924381973d9ea68f764",
+      "bytes": 3636
+    },
+    "reproduction/common-baseline/SHA256SUMS": {
+      "workspace_source": "handoff_fixed16_common_baseline_v1/SHA256SUMS",
+      "sha256": "048c7bf5dbaa65f15e297d1d41fbbbfcd7cc45dae1fc7e09305b1f45025eae9f",
+      "bytes": 715
+    },
+    "provenance/fixed16-source-receipt.json": {
+      "workspace_source": "handoff_fixed16_v1.packaging_receipt.json",
+      "sha256": "8aa905b6beb55b87169c8ad29992b58c06df345e6ff7a0b2cc71a09c758fe8ca",
+      "bytes": 1025
+    },
+    "provenance/original-paper-verification.json": {
+      "workspace_source": "output/paper/verification.json",
+      "sha256": "f84978be1859df482dbd390d2b1e9eec85168c11134d81ac2d09b56e3a1bb748",
+      "bytes": 43423
+    },
+    "review/guo-xie.md": {
+      "workspace_source": "reports/guo_xie_weight_editing_review_2026-11-05.md",
+      "sha256": "efca49431701b667c796e220e6ea63e4dd2675fc47d5ad77af5fb8d6fb0bc368",
+      "bytes": 7041
+    },
+    "continuation/priorities.md": {
+      "workspace_source": "writing/next_experiment_priorities_2026-11-05.md",
+      "sha256": "449137ca6eec15fe45e0a39a4e1d5a40c10458ff01884d2ed1c7c15184e33e72",
+      "bytes": 4641
+    },
+    "review/literature-survey.md": {
+      "workspace_source": "reports/weight_space_programming_investigation_2026-11-04.md",
+      "sha256": "159ffc0d2e9b850e41f3684a7cbbf4ee58eb86a558d7d7fb0738497e9d45bbe3",
+      "bytes": 39917
+    },
+    "blog/figures/identity_repeat_heatmap.png": {
+      "workspace_source": "writing/blog/figures/identity_repeat_heatmap.png",
+      "sha256": "7d8a26afd82b3b2e1eea0ae99ddf3dbe969934caa688e8b710b8990bcb14ad3a",
+      "bytes": 95642
+    },
+    "blog/figures/identity_input_diagnostic.svg": {
+      "workspace_source": "writing/blog/figures/identity_input_diagnostic.svg",
+      "sha256": "8d2c1bedb3970fd56cf68380ada03cf3136c8bfc71972f237a16e9fbc486112c",
+      "bytes": 66642
+    },
+    "blog/figures/fixed_input_action_effects.pdf": {
+      "workspace_source": "writing/blog/figures/fixed_input_action_effects.pdf",
+      "sha256": "22ca53271be2d1d4ac5f93c86399fedaa7556596eaa1b160eb2d81c00b256cbc",
+      "bytes": 18716
+    },
+    "blog/figures/fixed_input_action_effects.png": {
+      "workspace_source": "writing/blog/figures/fixed_input_action_effects.png",
+      "sha256": "a861100b08d791c5b0a5a4588528df899d622648334a5cee6fbf0970a7fc4799",
+      "bytes": 81064
+    },
+    "blog/figures/fixed16_heldout_input_variability.png": {
+      "workspace_source": "writing/blog/figures/fixed16_heldout_input_variability.png",
+      "sha256": "188344a20be998146a132c98359ae08914d4dcefb465c03501bf779e52585138",
+      "bytes": 71914
+    },
+    "blog/figures/final_controls.svg": {
+      "workspace_source": "writing/blog/figures/final_controls.svg",
+      "sha256": "41d340119b9e9afa215eab79a14111b68d682552e173ca573dd6d813359bfc3f",
+      "bytes": 37933
+    },
+    "blog/figures/fixed_input_action_effects_per_channel.png": {
+      "workspace_source": "writing/blog/figures/fixed_input_action_effects_per_channel.png",
+      "sha256": "90909f22cceae7c39267408d14fa6a7e486365e5d896286b587f940c9d8106ff",
+      "bytes": 327141
+    },
+    "blog/figures/final_controls.png": {
+      "workspace_source": "writing/blog/figures/final_controls.png",
+      "sha256": "7431c9f65048ae10ed2614733a3aa595dea2a1fe0fca6d4092991e41f4f9ca1b",
+      "bytes": 39113
+    },
+    "blog/figures/fixed_input_action_effects.svg": {
+      "workspace_source": "writing/blog/figures/fixed_input_action_effects.svg",
+      "sha256": "247461bbb9beb041abd3851d4264c456d1ec0dd68b20fa6d5fe87f37e8d2a87d",
+      "bytes": 59935
+    },
+    "blog/figures/final_controls.pdf": {
+      "workspace_source": "writing/blog/figures/final_controls.pdf",
+      "sha256": "5068e1e4795c25779928a25b8f5c5af6fc7db5d266b0da24bb20bd9aebaa5a8e",
+      "bytes": 16830
+    },
+    "blog/figures/identity_input_diagnostic.png": {
+      "workspace_source": "writing/blog/figures/identity_input_diagnostic.png",
+      "sha256": "210b124617d07becf245a57ce3eb97078791bffde7bc496b6172454eddc8c9ba",
+      "bytes": 85897
+    },
+    "blog/figures/identity_repeat_heatmap.svg": {
+      "workspace_source": "writing/blog/figures/identity_repeat_heatmap.svg",
+      "sha256": "bff5ba9ce340e7a4adb4dba3e5f57e41712536b7f0bfd45ac0d466548b98f3d5",
+      "bytes": 70587
+    },
+    "blog/figures/camera_examples.svg": {
+      "workspace_source": "writing/blog/figures/camera_examples.svg",
+      "sha256": "4295e271fcf792e19c666882c1bafc7532042e662309ba67d6fa1089066561a6",
+      "bytes": 234554
+    },
+    "blog/figures/edit_loop.png": {
+      "workspace_source": "writing/blog/figures/edit_loop.png",
+      "sha256": "612205718d2495c3d4e90566a5eacff816f4921a631a9c6d111f3986ab283e0b",
+      "bytes": 53791
+    },
+    "blog/figures/v2_heldout_unique_policies.svg": {
+      "workspace_source": "writing/blog/figures/v2_heldout_unique_policies.svg",
+      "sha256": "9d818e93f47a54592c4bcdfbb2fbfc871084335915cb899e722113478de50ec6",
+      "bytes": 26642
+    },
+    "blog/figures/discovery_curves.svg": {
+      "workspace_source": "writing/blog/figures/discovery_curves.svg",
+      "sha256": "d2a3d3eaab7ce9017d98fae8b4273018af09c286ecc161af8a03a2ea2e82f356",
+      "bytes": 110119
+    },
+    "blog/figures/baseline_replay.png": {
+      "workspace_source": "writing/blog/figures/baseline_replay.png",
+      "sha256": "e5c27aabac9b5e896a8b88810f35f20355280dad31b8eca364b104a142b886b4",
+      "bytes": 45860
+    },
+    "blog/figures/batch_shape_replay.svg": {
+      "workspace_source": "writing/blog/figures/batch_shape_replay.svg",
+      "sha256": "cd404e9106b6c83d0a38ed9fbd50e7ada1b99d615b98119f182b83ef5584b792",
+      "bytes": 59239
+    },
+    "blog/figures/discovery_effects.svg": {
+      "workspace_source": "writing/blog/figures/discovery_effects.svg",
+      "sha256": "2d569be104bc3e0acdddc6b7f53d62f9000d45f8429593d4511b1c3863d49ac2",
+      "bytes": 91228
+    },
+    "blog/figures/development_controls.png": {
+      "workspace_source": "writing/blog/figures/development_controls.png",
+      "sha256": "0c5b6ff9306d75d410958b814cbe13e1b19dd9b36b972ae8d1186815786d277c",
+      "bytes": 35359
+    },
+    "blog/figures/heldout_incumbent_curves.png": {
+      "workspace_source": "writing/blog/figures/heldout_incumbent_curves.png",
+      "sha256": "5100af75afa470658ae115933c3d73fc7e825956b1cb3a4e70a39be9f2a849c0",
+      "bytes": 38823
+    },
+    "blog/figures/heldout_unique_policies.png": {
+      "workspace_source": "writing/blog/figures/heldout_unique_policies.png",
+      "sha256": "08c156fd759c6c382e37444866a4bf955daffd8c553bb7f116c88ceeb6b8b037",
+      "bytes": 26329
+    },
+    "blog/figures/v2_discovery_curves.png": {
+      "workspace_source": "writing/blog/figures/v2_discovery_curves.png",
+      "sha256": "4d2b493a56e0ad268fee75579e0d73a633f782ca2115d936f37ad481268849f9",
+      "bytes": 64364
+    },
+    "blog/figures/v2_discovery_curves.svg": {
+      "workspace_source": "writing/blog/figures/v2_discovery_curves.svg",
+      "sha256": "a8f4e409ee6ee2798faf60cf3c2788e516b2516aaef3dca9dc1683550f5ed433",
+      "bytes": 44218
+    },
+    "blog/figures/heldout_unique_policies.svg": {
+      "workspace_source": "writing/blog/figures/heldout_unique_policies.svg",
+      "sha256": "b7756d927c407c7d2703086326c86885b675989387e679089c49aa4f60f37d43",
+      "bytes": 27366
+    },
+    "blog/figures/heldout_incumbent_curves.svg": {
+      "workspace_source": "writing/blog/figures/heldout_incumbent_curves.svg",
+      "sha256": "50876dc56157b5d6850725f808b1a7c72fac106bbd993c734ef4c374758f9405",
+      "bytes": 40654
+    },
+    "blog/figures/development_controls.svg": {
+      "workspace_source": "writing/blog/figures/development_controls.svg",
+      "sha256": "ec2627569844131767c91272b25fb57841b67c4fcfc8b3370d54936afdc71a10",
+      "bytes": 41327
+    },
+    "blog/figures/discovery_effects.png": {
+      "workspace_source": "writing/blog/figures/discovery_effects.png",
+      "sha256": "bc69f6b218e41c2765f9c23666c0af748ff6794e22445e872c05f9455e1ed109",
+      "bytes": 111856
+    },
+    "blog/figures/batch_shape_replay.png": {
+      "workspace_source": "writing/blog/figures/batch_shape_replay.png",
+      "sha256": "e78d33c035d1a38910ded8b709b4dc84e9eba1470119e94e5898d2b0fe2a29a6",
+      "bytes": 53337
+    },
+    "blog/figures/discovery_curves.png": {
+      "workspace_source": "writing/blog/figures/discovery_curves.png",
+      "sha256": "199c11728bfd1e749c4e05e1586820a2062eb0d1e31c1cd23c54114000b674a6",
+      "bytes": 144351
+    },
+    "blog/figures/baseline_replay.svg": {
+      "workspace_source": "writing/blog/figures/baseline_replay.svg",
+      "sha256": "a024494d526a47df909529af47e156d6b0d56398ee03c5ba2a22099f9d545eb9",
+      "bytes": 50560
+    },
+    "blog/figures/v2_heldout_unique_policies.png": {
+      "workspace_source": "writing/blog/figures/v2_heldout_unique_policies.png",
+      "sha256": "3442dd7c72803e4b9ff892c1a673d32a7ddfc1f6bf87d369405093420e18f130",
+      "bytes": 24244
+    },
+    "blog/figures/edit_loop.svg": {
+      "workspace_source": "writing/blog/figures/edit_loop.svg",
+      "sha256": "0e54df93097ec8e9054976466ac85b9a064ddd190f4db31d962e9bbc6a050bb2",
+      "bytes": 48358
+    },
+    "blog/figures/camera_examples.png": {
+      "workspace_source": "writing/blog/figures/camera_examples.png",
+      "sha256": "b38579a6aade0136dd61527d300283d8ea53e74cb555f2774b612c025bf9afcb",
+      "bytes": 186291
+    },
+    "blog/draft.md": {
+      "workspace_source": "writing/blog/draft.md",
+      "sha256": "b492b9a392fb9e4ad70c8bc18c3e5ef4ea3961498225d2113e91cffc4f353d93",
+      "bytes": 45329
+    },
+    "blog/recent_work_table.md": {
+      "workspace_source": "writing/blog/recent_work_table.md",
+      "sha256": "a5501774151f53bbe7b2208d0d6210bf6b79538e451b50bde2b9c3ea10cbff41",
+      "bytes": 6702
+    },
+    "blog/costs.md": {
+      "workspace_source": "writing/blog/costs.md",
+      "sha256": "4b699635f4d8475f23509174364f58b2f345d6762ef1cf5d7b4dadd03d16b3ba",
+      "bytes": 4108
+    },
+    "blog/generated_final_v1p1.md": {
+      "workspace_source": "writing/blog/generated_final_v1p1.md",
+      "sha256": "364140dede2d43fa7cdc43fd1699754644653d8de3e66bb008fbf0cfcd8bbcb1",
+      "bytes": 1105
+    },
+    "blog/generated_final_v2.md": {
+      "workspace_source": "writing/blog/generated_final_v2.md",
+      "sha256": "a1ee1c9c4437b7f04e311dbd45b52bfbc9347c6b8b32f0fe25a8f6f602677e1c",
+      "bytes": 562
+    }
+  },
+  "portable_markdown_link_rewrites": [
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../reports/guo_xie_weight_editing_review_2026-11-05.md",
+      "portable_target": "../review/guo-xie.md"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "recent_work_table.md",
+      "portable_target": "recent_work_table.md"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/baseline_replay.png",
+      "portable_target": "figures/baseline_replay.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/camera_examples.png",
+      "portable_target": "figures/camera_examples.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/development_controls.png",
+      "portable_target": "figures/development_controls.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/discovery_curves.png",
+      "portable_target": "figures/discovery_curves.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/discovery_effects.png",
+      "portable_target": "figures/discovery_effects.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/identity_repeat_heatmap.png",
+      "portable_target": "figures/identity_repeat_heatmap.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/batch_shape_replay.png",
+      "portable_target": "figures/batch_shape_replay.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "costs.md",
+      "portable_target": "costs.md"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/identity_input_diagnostic.png",
+      "portable_target": "figures/identity_input_diagnostic.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../output/videos/index.html",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../reports/media/README.md",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../output/videos/smoke_original/manifest.json",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../reports/artifacts/rq123_2026-11-04/success_oracle_audit/README.md",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../reports/artifacts/rq123_2026-11-04/success_oracle_audit/event_sources/AUDIT.md",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../weightsmith/extensions/annotation_fix_proposal_v1/README.md",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/edit_loop.png",
+      "portable_target": "figures/edit_loop.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../research_plan_2026-11-04.md",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "costs.md",
+      "portable_target": "costs.md"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../reports/media/fixed16-v1/videos/index.html",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "costs.md",
+      "portable_target": "costs.md"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/v2_discovery_curves.png",
+      "portable_target": "figures/v2_discovery_curves.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/v2_heldout_unique_policies.png",
+      "portable_target": "figures/v2_heldout_unique_policies.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "generated_final_v2.md",
+      "portable_target": "generated_final_v2.md"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "generated_final_v1p1.md",
+      "portable_target": "generated_final_v1p1.md"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/final_controls.png",
+      "portable_target": "figures/final_controls.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/fixed16_heldout_input_variability.png",
+      "portable_target": "figures/fixed16_heldout_input_variability.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../reports/diagnostics/fixed16-heldout-input-audit-v1/README.md",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../reports/diagnostics/postfreeze-attempts-v1/README.md",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/fixed_input_action_effects.png",
+      "portable_target": "figures/fixed_input_action_effects.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../reports/diagnostics/preallocation-attempts-v1/ATTEMPT.md",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "figures/fixed_input_action_effects_per_channel.png",
+      "portable_target": "figures/fixed_input_action_effects_per_channel.png"
+    },
+    {
+      "file": "blog/draft.md",
+      "original_target": "../../reports/diagnostics/preallocation-attempts-v1/channel_effects.csv",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "blog/recent_work_table.md",
+      "original_target": "../../reports/guo_xie_weight_editing_review_2026-11-05.md",
+      "portable_target": "../review/guo-xie.md"
+    },
+    {
+      "file": "review/literature-survey.md",
+      "original_target": "../paper/README.md",
+      "portable_target": "../ARTIFACTS.md#full-review-bundle"
+    },
+    {
+      "file": "review/literature-survey.md",
+      "original_target": "guo_xie_weight_editing_review_2026-11-05.md",
+      "portable_target": "guo-xie.md"
+    },
+    {
+      "file": "review/literature-survey.md",
+      "original_target": "../writing/blog/recent_work_table.md",
+      "portable_target": "../blog/recent_work_table.md"
+    },
+    {
+      "file": "continuation/priorities.md",
+      "original_target": "../reports/guo_xie_weight_editing_review_2026-11-05.md",
+      "portable_target": "../review/guo-xie.md"
+    }
+  ],
+  "note": "Raw science and sealed reproduction files are unchanged. Markdown link targets are relocated for the portable handoff."
+}

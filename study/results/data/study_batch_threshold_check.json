@@ -1,0 +1,40 @@
+{
+  "source_actions_sha256": "1a754f2321d47ba11c3c9fb0cd8e3f6f2b30e984b3a5e2fab9c36bd9fc245d9f",
+  "threshold": 0.5,
+  "requests": 6,
+  "action_rows_per_request": 15,
+  "decision_differences": 0,
+  "rows": [
+    {
+      "capture_item": 30,
+      "gripper_decision_differences": 0,
+      "maximum_difference_channel": 7
+    },
+    {
+      "capture_item": 22,
+      "gripper_decision_differences": 0,
+      "maximum_difference_channel": 7
+    },
+    {
+      "capture_item": 20,
+      "gripper_decision_differences": 0,
+      "maximum_difference_channel": 7
+    },
+    {
+      "capture_item": 0,
+      "gripper_decision_differences": 0,
+      "maximum_difference_channel": 6
+    },
+    {
+      "capture_item": 2,
+      "gripper_decision_differences": 0,
+      "maximum_difference_channel": 7
+    },
+    {
+      "capture_item": 3,
+      "gripper_decision_differences": 0,
+      "maximum_difference_channel": 3
+    }
+  ],
+  "interpretation": "Descriptive same-request B1/B16 diagnostic only; no closed-loop behavioral inference."
+}

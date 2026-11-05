@@ -1,0 +1,4 @@
+# Generated vector figures are reviewed visually; keep their original bytes.
+study/**/figures/*.svg -diff -whitespace
+# Preserve the sealed reproduction package byte for byte, including formatting.
+study/reproduction/** -whitespace

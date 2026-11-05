@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "declared_at_utc": "2026-11-05T13:00:25.155689+00:00",
+  "operator_only": true,
+  "heldout_results_seen": false,
+  "v2_completed_proposals_at_declaration": 0,
+  "v2_broker_snapshot_sha256": "64075576116141fd475dec3618d0bb8b7b498b3f779c77a14166aa3141e8deca",
+  "available_final_versions_order": [
+    "v2",
+    "v1p1"
+  ],
+  "requires_all_searches_closed_and_shared_freeze": true,
+  "both_available_schedules_remain_required": true,
+  "per_version_order_and_episode_budgets_unchanged": true,
+  "optional_fixed_input_diagnostic_before_first_final": {
+    "maximum_wall_seconds": 600,
+    "no_feedback_to_editors": true
+  },
+  "reason": "Prioritize the separately validated batch-aware runtime for the morning review, then complete the original-runtime identity and calibrated-control schedule. This scheduling order is declared before any v2 proposal score or any held-out outcome; it is not a cross-version efficacy comparison."
+}

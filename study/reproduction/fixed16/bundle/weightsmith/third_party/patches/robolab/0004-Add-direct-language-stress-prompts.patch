@@ -1,0 +1,39 @@
+From 992bc34eedb2b909888af8a334a2ac33b86c51d8 Mon Sep 17 00:00:00 2001
+From: weightsmith <weightsmith@users.noreply.github.com>
+Date: Sun, 2 Aug 2026 16:32:32 -0400
+Subject: [PATCH 4/5] Add direct language stress prompts
+
+---
+ robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py  | 2 ++
+ robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py b/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py
+index 884bdfa..90475be 100644
+--- a/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py
++++ b/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py
+@@ -42,6 +42,8 @@ class RubiksCubeLeftOfBowlMatchedTask(Task):
+         "default": "Put the rubiks cube to the left of the bowl",
+         "vague": "Put the cube left of the bowl",
+         "specific": "Pick up the rubiks cube and place it on the table to the left side of the bowl",
++        "declarative": "The rubiks cube should end up to the left of the bowl",
++        "contrastive": "Put the rubiks cube to the left of the bowl, not to the right of the bowl",
+     }
+     attributes = ["spatial", "steerability_matched"]
+     episode_length_s: int = 30
+diff --git a/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py b/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py
+index f18f4bf..a68f9b1 100644
+--- a/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py
++++ b/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py
+@@ -49,6 +49,8 @@ class RubiksCubeRightOfBowlMatchedTask(Task):
+         "default": "Put the rubiks cube to the right of the bowl",
+         "vague": "Put the cube right of the bowl",
+         "specific": "Pick up the rubiks cube and place it on the table to the right side of the bowl",
++        "declarative": "The rubiks cube should end up to the right of the bowl",
++        "contrastive": "Put the rubiks cube to the right of the bowl, not to the left of the bowl",
+     }
+     attributes = ["spatial", "steerability_matched"]
+     episode_length_s: int = 30
+-- 
+2.34.1
+

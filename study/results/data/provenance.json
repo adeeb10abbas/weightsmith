@@ -1,0 +1,23 @@
+{
+  "draft_date_pacific": "2026-11-05",
+  "raw_run_created_at_utc": "20261105T045206Z",
+  "source_artifact_root_relative_to_workspace": "reports/artifacts/isaac60_smoke_2026-11-05",
+  "source_archive_sha256": "1730371eb39fb68fb86a4ce5999dcc0e7e7c8b4313600a567dfc0c115cf9434e",
+  "harness_fingerprint": "a215510a6f99968f05f727718d17b1c91cfcdfd4266218292172b0e6998727a8",
+  "base_repository_commit": "a0cc1cd452b3382ee0e8401a2ff6653174e836ba",
+  "checkpoint_manifest_sha256": "c5e21f3480d1a29e9230ac3963ebd20dcb5aea00c1a2f773abea00c7bdcb5061",
+  "simulator_lock_sha256": "3df4d94f11af5d1ecfef710a2d4fe84bfac78af7ec82c4a4336d41c25b686054",
+  "robolab_commit": "9cce00cadd5dc575fd2b8ea3836f5bdcde574229",
+  "ported_patch_sha256": "06c1b7cbd91666181e23b3df5df44f30a3c865380a4efa280b6958ac64dc30b7",
+  "checkpoint": "gs://openpi-assets-simeval/pi05_droid_jointpos",
+  "new_experiments_executed_for_manuscript": true,
+  "literature_basis": "November 4 research ledger plus the user-supplied Gupta et al. article and checked primary references",
+  "camera_images": {
+    "success_wrist.png": "base.base.s20000, wrist_img, request 29, control step 435; success at step 436",
+    "failure_wrist.png": "base.base.s20015, wrist_img, request 59, control step 885; horizon exit at step 900"
+  },
+  "measurement_update": "Fresh 32-slot base and 64 runtime-control episodes; restricted-export identity parity; no weight-editing outcomes included.",
+  "study_artifact_root_relative_to_workspace": "reports/artifacts/rq123_2026-11-04",
+  "weight_edit_outcomes_included": 0,
+  "identity_edits_changed_elements": 0
+}

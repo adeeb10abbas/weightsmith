@@ -1,0 +1,271 @@
+From e7b0022ebc86c57b5853940d5a41ad303b79f539 Mon Sep 17 00:00:00 2001
+From: weightsmith <weightsmith@users.noreply.github.com>
+Date: Sun, 2 Aug 2026 09:40:25 -0400
+Subject: [PATCH 1/5] Add matched spatial steering tasks and horizon
+ finalization
+
+---
+ robolab/core/environments/env.py              | 33 +++++++++
+ robolab/eval/episode.py                       | 12 ++++
+ .../_rubiks_cube_relation_matched.py          | 29 ++++++++
+ .../rubiks_cube_left_of_bowl_matched.py       | 65 +++++++++++++++++
+ .../rubiks_cube_right_of_bowl_matched.py      | 72 +++++++++++++++++++
+ 5 files changed, 211 insertions(+)
+ create mode 100644 robolab/tasks/benchmark/_rubiks_cube_relation_matched.py
+ create mode 100644 robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py
+ create mode 100644 robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py
+
+diff --git a/robolab/core/environments/env.py b/robolab/core/environments/env.py
+index a73fab2..a6bd0b7 100644
+--- a/robolab/core/environments/env.py
++++ b/robolab/core/environments/env.py
+@@ -140,6 +140,39 @@ class RobolabEnv(ManagerBasedRLEnv):
+             })
+         return results
+ 
++    def finalize_active_envs_as_truncated(self) -> None:
++        """Finalize environments still active when the runner horizon ends.
++
++        IsaacLab's configured timeout is normally responsible for this.  The
++        evaluation runner nevertheless owns the declared control-step horizon,
++        so a still-active environment at loop exhaustion is authoritatively a
++        truncation rather than an unknown result.  Finalizing here also ensures
++        buffered recorder data is exported instead of leaving an empty HDF5
++        demo and ``success=None`` in the summary.
++        """
++        active_ids = self.active_env_ids
++        if not active_ids:
++            return
++
++        if self.recorder_manager is not None:
++            failures = torch.zeros(len(active_ids), dtype=torch.bool, device=self.device)
++            self.recorder_manager.set_success_to_episodes(active_ids, failures)
++
++        for eid in active_ids:
++            self._env_results[eid] = False
++            self._env_term_step[eid] = int(self.episode_length_buf[eid].item())
++            self._frozen_envs[eid] = True
++
++        if self.recorder_manager is not None:
++            try:
++                self.recorder_manager.export_episodes(env_ids=active_ids)
++            except Exception:
++                logger.exception(
++                    "Failed to export recording for horizon-truncated env_ids=%s; "
++                    "episode data may be incomplete.",
++                    active_ids,
++                )
++
+     def reset_eval_state(self):
+         """Reset frozen state for next episode batch."""
+         self._frozen_envs[:] = False
+diff --git a/robolab/eval/episode.py b/robolab/eval/episode.py
+index 1b9219e..056d912 100644
+--- a/robolab/eval/episode.py
++++ b/robolab/eval/episode.py
+@@ -184,6 +184,18 @@ def run_episode(env, env_cfg, episode, client: InferenceClient, *, headless=Fals
+             # RobolabEnv freezes terminated envs and exports recordings automatically
+             if env.all_terminated:
+                 break
++
++        # The runner's loop bound is the authoritative evaluation horizon.
++        # Usually IsaacLab's timeout freezes every remaining env on the final
++        # step.  If it does not, preserve the same action budget and explicitly
++        # serialize those episodes as truncations instead of returning null.
++        if not env.all_terminated:
++            logger.warning(
++                "Evaluation horizon exhausted with active env_ids=%s; "
++                "finalizing them as truncated.",
++                env.active_env_ids,
++            )
++            env.finalize_active_envs_as_truncated()
+     finally:
+         for vw in video_writers_obs + video_writers_viewport:
+             try:
+diff --git a/robolab/tasks/benchmark/_rubiks_cube_relation_matched.py b/robolab/tasks/benchmark/_rubiks_cube_relation_matched.py
+new file mode 100644
+index 0000000..8f4affa
+--- /dev/null
++++ b/robolab/tasks/benchmark/_rubiks_cube_relation_matched.py
+@@ -0,0 +1,29 @@
++# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
++# SPDX-License-Identifier: Apache-2.0
++
++"""Shared neutral initial state for matched left/right Rubik's-cube tasks."""
++
++from isaaclab.managers import EventTermCfg as EventTerm
++from isaaclab.utils import configclass
++
++from robolab.core.events.reset_pose import reset_pose_uniform
++
++
++@configclass
++class RubiksCubeRelationMatchedNeutralInit:
++    """Place the cube longitudinally from the bowl so neither side is pre-satisfied."""
++
++    neutralize_relation = EventTerm(
++        func=reset_pose_uniform,
++        mode="reset",
++        params={
++            # Default cube pose is (0.431, -0.097); the bowl is
++            # (0.443, 0.127). Move the cube to roughly (0.301, 0.127),
++            # separated along robot-forward x with negligible left/right y.
++            "pose_range": {"x": (-0.13, -0.13), "y": (0.224, 0.224), "z": (0.0, 0.0)},
++            "velocity_range": {},
++            "asset_cfg": ["rubiks_cube"],
++            "use_collision_check": False,
++            "reset_to_default_otherwise": True,
++        },
++    )
+diff --git a/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py b/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py
+new file mode 100644
+index 0000000..884bdfa
+--- /dev/null
++++ b/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py
+@@ -0,0 +1,65 @@
++# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
++# SPDX-License-Identifier: Apache-2.0
++
++"""Neutral-start left counterpart for the matched relation steerability pair."""
++
++from dataclasses import dataclass
++from functools import partial
++
++import isaaclab.envs.mdp as mdp
++from isaaclab.managers import TerminationTermCfg as DoneTerm
++from isaaclab.utils import configclass
++
++from robolab.core.scenes.utils import import_scene
++from robolab.core.task.conditionals import object_dropped, object_grabbed, object_left_of
++from robolab.core.task.subtask import Subtask
++from robolab.core.task.task import Task
++from robolab.tasks.benchmark._rubiks_cube_relation_matched import RubiksCubeRelationMatchedNeutralInit
++
++
++@configclass
++class RubiksCubeLeftOfBowlMatchedTermination:
++    time_out = DoneTerm(func=mdp.time_out, time_out=True)
++    success = DoneTerm(
++        func=object_left_of,
++        params={
++            "object": "rubiks_cube",
++            "reference_object": "bowl",
++            "frame_of_reference": "robot",
++            "mirrored": False,
++            "require_gripper_detached": True,
++        },
++    )
++
++
++@dataclass
++class RubiksCubeLeftOfBowlMatchedTask(Task):
++    contact_object_list = ["rubiks_cube", "banana", "bowl", "table"]
++    scene = import_scene("rubiks_cube_banana_bowl.usda", contact_object_list)
++    events = RubiksCubeRelationMatchedNeutralInit
++    terminations = RubiksCubeLeftOfBowlMatchedTermination
++    instruction = {
++        "default": "Put the rubiks cube to the left of the bowl",
++        "vague": "Put the cube left of the bowl",
++        "specific": "Pick up the rubiks cube and place it on the table to the left side of the bowl",
++    }
++    attributes = ["spatial", "steerability_matched"]
++    episode_length_s: int = 30
++    subtasks = [
++        Subtask(
++            name="rubiks_cube_left_of_bowl",
++            conditions=[
++                partial(object_grabbed, object="rubiks_cube"),
++                partial(
++                    object_left_of,
++                    object="rubiks_cube",
++                    reference_object="bowl",
++                    frame_of_reference="robot",
++                    mirrored=False,
++                ),
++                partial(object_dropped, object="rubiks_cube"),
++            ],
++            logical="all",
++            score=1.0,
++        )
++    ]
+diff --git a/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py b/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py
+new file mode 100644
+index 0000000..f18f4bf
+--- /dev/null
++++ b/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py
+@@ -0,0 +1,72 @@
++# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
++# SPDX-License-Identifier: Apache-2.0
++
++"""Neutral-start right counterpart for the matched relation pair.
++
++The canonical right-of-bowl benchmark uses a busier scene than the left task.
++That is useful for benchmark diversity but confounds a language-steerability
++comparison. This task and RubiksCubeLeftOfBowlMatchedTask intentionally use the
++same scene, neutral reset event, object set, episode length, and subtask
++structure while changing only the requested spatial predicate and its language.
++"""
++
++from dataclasses import dataclass
++from functools import partial
++
++import isaaclab.envs.mdp as mdp
++from isaaclab.managers import TerminationTermCfg as DoneTerm
++from isaaclab.utils import configclass
++
++from robolab.core.scenes.utils import import_scene
++from robolab.core.task.conditionals import object_dropped, object_grabbed, object_right_of
++from robolab.core.task.subtask import Subtask
++from robolab.core.task.task import Task
++from robolab.tasks.benchmark._rubiks_cube_relation_matched import RubiksCubeRelationMatchedNeutralInit
++
++
++@configclass
++class RubiksCubeRightOfBowlMatchedTermination:
++    time_out = DoneTerm(func=mdp.time_out, time_out=True)
++    success = DoneTerm(
++        func=object_right_of,
++        params={
++            "object": "rubiks_cube",
++            "reference_object": "bowl",
++            "frame_of_reference": "robot",
++            "mirrored": False,
++            "require_gripper_detached": True,
++        },
++    )
++
++
++@dataclass
++class RubiksCubeRightOfBowlMatchedTask(Task):
++    contact_object_list = ["rubiks_cube", "banana", "bowl", "table"]
++    scene = import_scene("rubiks_cube_banana_bowl.usda", contact_object_list)
++    events = RubiksCubeRelationMatchedNeutralInit
++    terminations = RubiksCubeRightOfBowlMatchedTermination
++    instruction = {
++        "default": "Put the rubiks cube to the right of the bowl",
++        "vague": "Put the cube right of the bowl",
++        "specific": "Pick up the rubiks cube and place it on the table to the right side of the bowl",
++    }
++    attributes = ["spatial", "steerability_matched"]
++    episode_length_s: int = 30
++    subtasks = [
++        Subtask(
++            name="rubiks_cube_right_of_bowl",
++            conditions=[
++                partial(object_grabbed, object="rubiks_cube"),
++                partial(
++                    object_right_of,
++                    object="rubiks_cube",
++                    reference_object="bowl",
++                    frame_of_reference="robot",
++                    mirrored=False,
++                ),
++                partial(object_dropped, object="rubiks_cube"),
++            ],
++            logical="all",
++            score=1.0,
++        )
++    ]
+-- 
+2.34.1
+

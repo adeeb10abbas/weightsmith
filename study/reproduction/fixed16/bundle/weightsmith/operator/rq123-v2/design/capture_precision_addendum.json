@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-05T10:12:14.188728+00:00",
+  "status": "before all v2 GPU validation, baseline collection, and editor search",
+  "protocol_sha256": "bb55e5202a9cd4508a9678a8c72e9ede026a2166cf7bc8156ee9c4d2d35ee796",
+  "raw_traces": "Preserve original numeric dtype; bfloat16 saved as exact uint16 words with explicit metadata.",
+  "compatibility_arrays": "Float32 for typed contrast tools, exactly representing bfloat16 values. This replaces v1 float16 compatibility conversion.",
+  "interpretation": "V2 differs in batch context, numerical serving shape, capture precision/provenance guards and baseline evidence. Do not attribute cross-version results solely to any one change."
+}

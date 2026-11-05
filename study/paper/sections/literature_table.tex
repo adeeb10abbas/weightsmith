@@ -1,0 +1,37 @@
+\begin{table}[!t]
+\centering
+\caption{Critical evidence map: November 2--4 review, November 5 addendum. Benefits are source-reported except our own results; protocols and denominators differ. A: artifacts inspected; R: first-person report; P: proposal; C: critique; S: this study. These labels are not quality scores or independent replication. Missing reporting is not proof of a missing control.}
+\label{tab:literature}
+\fontsize{8.3}{9.5}\selectfont
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.02}
+\rowcolors{2}{gray!6}{white}
+\begin{tabularx}{\textwidth}{@{}>{\RaggedRight\arraybackslash}p{0.17\textwidth}>{\RaggedRight\arraybackslash}p{0.22\textwidth}>{\RaggedRight\arraybackslash}p{0.25\textwidth}>{\RaggedRight\arraybackslash}X@{}}
+\toprule
+\textbf{Work / evidence} & \textbf{Intervention / scope} & \textbf{Reported benefit / finding} & \textbf{Limitations / interpretation} \\
+\midrule
+Takehi et al. [A] \citep{takehi2026sparks} & Read, construct, and repair networks. & Car 0/256 to 1,024/1,024; Qwen loops repaired. & One car level; non-looping Gemma gain unestablished. \\
+Khaliq et al. [A] \citep{khaliq2026} & Rebuild and hash-check Qwen patch. & MATH-500 51.0\%, four samples/problem. & Only 25 baseline problems; artifact reproduction, not discovery. \\
+Toledo [A] \citep{toledo2026audit} & Patch, grading, and baseline audit. & Unedited Qwen reaches 44.0\% with changed settings. & Not a matched comparison to the original 48.1\%; does not negate fixed-setting gains. \\
+leofmarciano [A] \citep{marciano2026} & Opus scales four Qwen neurons. & Independent thinking-mode improvement. & No consistent non-thinking gain; fresh-data benefit weakens. \\
+Willison [A] \citep{willison2026} & Other models read small-policy prompts. & Qwen identifies three of four games. & Misses Freeway; reading is not repair or large-model understanding. \\
+Krentsel [R] \citep{krentsel2026} & Single-response Breakout construction. & Reports construction across model generations. & One game; plotted scores not verified in this review. \\
+Galatolo [A] \citep{galatolo2026} & Classify anonymized control networks. & Three of four correctly identified. & One confident confusion; no policy repair. \\
+Singh [A] \citep{singh2026} & 959 programs/13 tasks; 420 edit predictions. & Ten algorithmic tasks solved. & Architecture changes; language-data leakage; modest weight-access benefit. \\
+Dolci [A] \citep{dolci2026} & Fitted activation direction; tense steering. & Nonpreferred tense rates decrease. & Some controls break; ridge fitting; competitive LoRA baseline. \\
+nutanc [R] \citep{nutanc2026} & Translation ablations; story activation shift. & Repetition 32\% to 2\% on 100 prompts. & Translation repair fails broadly; markup worsens; runtime hook, not saved weights. \\
+Nusrat \& Nusrat [A] \citep{nusrat2026} & Audit small synthetic decision networks. & 16/18 planted defects detected and repaired. & Only 2/5 healthy networks cleared; simple baselines compete; no clinical inference. \\
+Gauthier [A] \citep{gauthier2026} & Quantum-model transfer; code/weight edits. & Strong results after further training. & Editing alone trails references; fine-tuning and Lanczos contribute. \\
+nitayrabi [R] \citep{nitayrabi2026} & Coding-model and harness changes. & Reported successes 16/23 to 25/27. & Different denominators; concurrent template fixes defeat weight-only attribution. \\
+Zheng \& Doubao [P] \citep{zheng2026} & Restoration diffusion edit loop. & Conceptual iterative-repair proposal. & No measured restoration gain; not an empirical success. \\
+WSSE / wpgit [A] \citep{wsse2026} & Versioned patches and regression gates. & Composition/rebasing infrastructure. & Edits can conflict; some repairs train; no robot efficacy result. \\
+Look [R] \citep{look2026uniad} & Edit UniAD driving checkpoint. & L2 0.942 to 0.845m; collision 0.29\% to 0.17\%. & Open-loop, mostly startup; closed-loop validation pending. \\
+Gupta et al. [R] \citep{gupta2026robotweights} & Ten-task neuron edits; folding task vector. & Direct gains on 5/10 tasks; folding 51\% to 75\%. & Folding uses trained differences; its final denominator unspecified; task-specific gains. \\
+Guo \& Xie [R] \citep{guo2026robotweights,xie2026robotweights} & Feature/attention probes; VLA, WAM, G1 edits. & Five-task VLA 27\% to 65\%; one task 28/92 to 82/92. & Task-fine-tuned models; cross-task retention untested; patch/logs not located. \\
+Honnibal; Goedecke [C] \citep{honnibal2026,goedecke2026} & Protocol and weight-statistic critiques. & Distinguish reading, construction, and repair. & Methodological critique, not a universal failure result. \\
+OpenRUA [A, adjacent] \citep{zuo2026openrua} & Robot-use harness; weights unchanged. & Performance varies with tools/observations. & Harness evidence, not direct weight editing. \\
+ZAP [A, adjacent] \citep{ben2026zap} & Simulation-derived supervision and RL. & Reports real-robot transfer. & Training is central; predates WSP, not its replication. \\
+This study [S] & One task; five searches; four actual edits. & Fixed-input effects; no accepted repair. & Noisy repeats, flawed annotations, narrow interface; not a general WSP refutation. \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -1,0 +1,6 @@
+\section{Introduction}
+Weight-space programming (WSP) asks a general-purpose language model to reason about a network and construct parameter changes directly \citep{takehi2026sparks}. This offers a model-maintenance interface, while still requiring diagnostic evidence, evaluation, and previously learned competence.
+
+For Physical AI, the target policy and failure mechanism matter. State-input controllers, vision-language-action (VLA) policies, and world-action models (WAMs) expose different representations and diagnostic interfaces. A mistimed motor command, ambiguous visual input, and an absent skill need not admit the same repair. Edits also change contacts, future observations, and subsequent actions. Small parameter support therefore guarantees neither small behavioral impact nor inexpensive validation. These distinctions motivate hypotheses, not an established ranking of policy families.
+
+Our 1,056-episode study tests \emph{bounded, feedback-assisted repair} of one VLA, separating development selection from held-out controls. Together with the review, it examines the conditions under which an enhancement loop could support credible improvement.

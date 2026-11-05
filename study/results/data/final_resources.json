@@ -1,0 +1,18 @@
+{
+  "created": 1793855431.7266355,
+  "gpu_snapshot": "0, NVIDIA GeForce RTX 4090, 1 MiB, 0 %, 595.91.07\n1, NVIDIA GeForce RTX 4090, 1 MiB, 0 %, 595.91.07\n",
+  "owned_workers": [],
+  "unchanged_queue_worker_pids": [
+    3182571,
+    3186238,
+    3186239,
+    3186240,
+    3186241
+  ],
+  "checkpoint_restored_regular_directory": true,
+  "recorded_checkpoint_alias_verified": true,
+  "disk_free_bytes": 4551143424,
+  "ram_free_bytes": 91999920128,
+  "archive_retained_locally": true,
+  "archive_sha256": "1730371eb39fb68fb86a4ce5999dcc0e7e7c8b4313600a567dfc0c115cf9434e"
+}
