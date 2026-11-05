@@ -14,6 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # repo root -> `weightsmith` importable
 from weightsmith import config as C  # noqa: E402
 from weightsmith.pool import run_pool  # noqa: E402
+from weightsmith.locks import GpuLock  # noqa: E402
 
 R = C.PROJECT_ROOT  # env WSP_ROOT
 CFG = json.loads((R / "config.json").read_text())
@@ -81,9 +82,11 @@ def main():
     res = {"base": {}, "cand": {}}
     sched = [("base", s1), ("cand", s1), ("cand", s2), ("base", s2)]
     for arm, slots in sched:
-        rows, rep = run_pool(workspace=str(frozen) if arm == "cand" else None, task=a.task, tag=f"ho-{arm}",
-                             slots=slots, envs=a.envs, rendering_type=CFG["rendering_type"],
-                             video_mode="sensor", log_root=out / f"logs-{arm}-{slots[0]}")
+        with GpuLock(C.SERVER_GPU, C.SIM_GPU, optional=C.EVAL_EXTRA_GPUS) as lk:
+            rows, rep = run_pool(workspace=str(frozen) if arm == "cand" else None, task=a.task, tag=f"ho-{arm}",
+                                 slots=slots, envs=a.envs, rendering_type=CFG["rendering_type"],
+                                 video_mode="sensor", log_root=out / f"logs-{arm}-{slots[0]}",
+                                 extra_gpus=tuple(lk.acquired))
         if arm == "cand" and str(frozen) not in rep:
             raise RuntimeError(f"server did not load the frozen candidate: {rep[:300]}")
         if arm == "base" and '"workspace": null' not in rep:

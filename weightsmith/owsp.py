@@ -63,25 +63,7 @@ def check_budget(episodes=0, acts_items=0):
         sys.exit(f"budget: acts items {b['acts_items']}+{acts_items} > {lim['acts_items']}")
 
 
-class GpuLock:
-    """Exclusive flock on one or more GPUs (lock files gpu<i>.lock, shared by all projects)."""
-
-    def __init__(self, *gpus):
-        self.names = sorted({f"gpu{g}" for g in gpus})  # fixed order -> no lock-order deadlock
-
-    def __enter__(self):
-        LOCKS.mkdir(parents=True, exist_ok=True)
-        self.fs = []
-        for name in self.names:
-            f = open(LOCKS / f"{name}.lock", "w")
-            fcntl.flock(f, fcntl.LOCK_EX)
-            self.fs.append(f)
-        return self
-
-    def __exit__(self, *a):
-        for f in reversed(self.fs):
-            fcntl.flock(f, fcntl.LOCK_UN)
-            f.close()
+from weightsmith.locks import GpuLock  # noqa: E402  (shared with heldout.py)
 
 
 def cand_dir(name):
@@ -232,12 +214,13 @@ def cmd_diff(a):
     print(json.dumps(rep, indent=1, default=str))
 
 
-def run_eval(name, slots, tag, task=None, prompt=None):
+def run_eval(name, slots, tag, task=None, prompt=None, extra_gpus=()):
     """Run one episode per slot on the GPU pool. Returns pool rows."""
     from weightsmith.pool import run_pool
     d = cand_dir(name)
     rows, rep = run_pool(workspace=str(d) if d else None, task=task or TASK, tag=f"{tag}-{name}", slots=slots,
-                         envs=CFG["envs"], rendering_type=CFG["rendering_type"], video_mode="sensor", prompt=prompt)
+                         envs=CFG["envs"], rendering_type=CFG["rendering_type"], video_mode="sensor", prompt=prompt,
+                         extra_gpus=extra_gpus)
     return rows
 
 
@@ -271,9 +254,11 @@ def cmd_eval(a):
         label = f"{a.name}@p{hashlib.sha256(a.prompt.encode()).hexdigest()[:6]}"
         print(f"[DIAGNOSTIC closed-loop prompt override: {a.prompt!r} -> recorded as {label!r}; not a weight edit]")
     slots = range(CFG["practice_seed_base"] + a.offset, CFG["practice_seed_base"] + a.offset + a.n)
-    with GpuLock(C.SERVER_GPU, C.SIM_GPU):
+    with GpuLock(C.SERVER_GPU, C.SIM_GPU, optional=C.EVAL_EXTRA_GPUS) as lk:
         t0 = time.time()
-        rows = run_eval(a.name, slots, "prac", prompt=a.prompt)
+        if lk.acquired:
+            print(f"[eval using extra GPU lane(s): {lk.acquired}]", flush=True)
+        rows = run_eval(a.name, slots, "prac", prompt=a.prompt, extra_gpus=tuple(lk.acquired))
         dt = time.time() - t0
     bad = [r for r in rows if r["ok"] and (r.get("task_name") not in (None, TASK)
                                           or (r.get("instruction") or "").strip().lower() != CFG["instruction"].strip().lower())]

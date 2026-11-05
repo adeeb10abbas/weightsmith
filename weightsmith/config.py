@@ -66,6 +66,8 @@ VK_ICD = os.environ.get("WSP_VK_ICD", "/usr/share/vulkan/icd.d/nvidia_icd.json")
 SERVER_GPU = _int("WSP_SERVER_GPU", 0)    # batched policy server for closed-loop evals
 SIM_GPU = _int("WSP_SIM_GPU", 0)          # Isaac Sim process (16 envs)
 ACTS_GPU = _int("WSP_ACTS_GPU", 0)        # activation capture worker
+EVAL_EXTRA_GPUS = tuple(int(x) for x in (os.environ.get("WSP_EVAL_EXTRA_GPUS") or "").split(",") if x.strip())
+# ^ extra GPUs an eval may borrow (each hosts its own server + Isaac lane) when they are idle at eval start
 POOL_PORT = _int("WSP_POOL_PORT", 8300)   # websocket port of the eval-pool policy server
 SERVER_MEM_FRACTION = os.environ.get("WSP_SERVER_MEM_FRACTION", "0.40")  # server shares its GPU with Isaac
 ACTS_MEM_FRACTION = os.environ.get("WSP_ACTS_MEM_FRACTION", ".9")
