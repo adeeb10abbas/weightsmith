@@ -4,6 +4,8 @@
 
 Edit the single `../paper/` directory. Start with `sections/results.tex`, `sections/discussion.tex` and `sections/conclusion.tex`, then revise the abstract to match the new evidence. Preserve the original completed Astra measurements and distinguish new cohorts and runtimes. Use [RESULT_TEMPLATE.md](RESULT_TEMPLATE.md) to record the evidence behind every new claim.
 
+The packaged runtime specifically evaluates the π0.5 stacking policy. State-input controllers or WAMs need their own policy adapter, task definition and validated evaluation pipeline; this handoff does not certify that portability.
+
 The current narrative treats state-input/VLA/WAM and motor-versus-perception differences as hypotheses. Preliminary observations are not yet numerical findings in the manuscript. These categories may overlap. A failure classification needs validated evidence, not only a plausible description of a video. Control task training, observation access, editable components, budget and evaluation conditions where possible; report residual confounds.
 
 ## Run an independent editor trial

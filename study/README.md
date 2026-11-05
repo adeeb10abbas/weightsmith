@@ -10,7 +10,7 @@
 | Review what was measured | [Results and limitations](RESULTS.md), [measurement records](results/data/), and [figures](results/figures/) |
 | Read the accessible explanation | [Editable blog](blog/draft.md); [full offline review with videos](ARTIFACTS.md#full-review-bundle) |
 | Review the recent literature | [Critical evidence table](blog/recent_work_table.md), [survey](review/literature-survey.md), [Guo–Xie assessment](review/guo-xie.md) |
-| Run a new model or policy experiment | [Continuation guide](continuation/README.md), then the [sealed fixed16 package](reproduction/fixed16/README.md) |
+| Plan a new editor trial or policy extension | [Continuation guide](continuation/README.md), then the [sealed fixed16 package](reproduction/fixed16/README.md) |
 | Locate large downloads | [Artifact catalog and checksums](ARTIFACTS.md) |
 | Audit scope and provenance | [Provenance notes](provenance/README.md) and [file manifest](provenance/copy-manifest.json) |
 
