@@ -1,0 +1,22 @@
+weightsmith
+=======
+
+Method
+- This project replicates the protocol of: Takehi et al., "Weight-Space Programming",
+  MIT, November 2026. https://rikiyat.github.io/blog/weight-space-programming/
+  No code from that work is included.
+
+Vendored code
+- weightsmith/lab/{openpi_probe,openpi_vlm_full,openpi_head,sandbox}.py are vendored, trimmed copies
+  of src/weight_space_policy_lab/ from the authors' earlier project "weight-space-policy-lab"
+  (same authors, released here under this repository's MIT license). Only the functions this
+  harness uses were kept; their logic is unchanged.
+- weightsmith/run_batched.py is derived from RoboLab's Pi0-family evaluation script
+  (Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES, Apache-2.0; header retained). It is
+  modified to use the batched, seeded client in weightsmith/batched_client.py.
+
+Separate dependencies (not included; each under its own license)
+- OpenPI (Physical Intelligence), including the pi05_droid_jointpos checkpoint, used through a
+  fork that supports request-scoped sampling seeds.
+- RoboLab and NVIDIA Isaac Sim / Isaac Lab.
+- Claude Code (Anthropic) and the OpenAI Codex CLI, used as editor front-ends.

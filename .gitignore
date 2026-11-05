@@ -1,0 +1,37 @@
+# local configuration
+wsp.env
+.env
+
+# experiment data (never commit): projects, episodes, activations, candidates, workspaces
+projects/
+agents/
+data/
+episodes/
+acts/
+cands/
+heldout/
+state/
+notes/
+frames/
+survey/
+logs/
+*-logs/
+checkpoints/
+workspace/
+workspaces/
+*.npz
+*.npy
+*.mp4
+*.hdf5
+*.jpg
+*.png
+
+# editor session state
+session_id
+thread_id
+codex-home/
+
+# python
+__pycache__/
+*.pyc
+.venv/

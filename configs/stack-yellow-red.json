@@ -1,0 +1,14 @@
+{
+ "task": "StackYellowOnRedTask",
+ "instruction": "Stack the yellow block on the red block",
+ "practice_seed_base": 20000,
+ "limits": {
+  "practice_episodes": 1200,
+  "acts_items": 6000,
+  "acts_items_per_call": 96
+ },
+ "rendering_type": "performance",
+ "practice_slots": 256,
+ "envs": 16,
+ "prompt_overrides": false
+}

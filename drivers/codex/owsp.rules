@@ -1,0 +1,16 @@
+# Codex execpolicy rules for the Astra editor (installed into the driver's private CODEX_HOME/rules/).
+#
+# `owsp` is the editor's only tool surface. It must run outside the workspace-write sandbox
+# because it needs the network to reach the GPU host over ssh.
+prefix_rule(
+    pattern = ["owsp"],
+    decision = "allow",
+    justification = "owsp is the editor's only tool surface",
+)
+
+# Everything else runs inside the workspace-write sandbox (no network; writes only in the
+# working directory). Codex has no verified default-deny, so additionally forbid local
+# interpreters and network clients to keep parity with the Claude driver, whose Bash tool
+# accepts only `owsp *`. (Blacklist: see TODOs in docs/COMPARING_EDITORS.md.)
+prefix_rule(pattern = [["python", "python3", "pip", "pip3", "uv", "conda", "node", "npm", "npx", "ruby", "perl"]], decision = "forbidden", justification = "only owsp may compute; use `owsp py`")
+prefix_rule(pattern = [["curl", "wget", "ssh", "scp", "sftp", "rsync", "nc", "ncat", "telnet", "git", "gh"]], decision = "forbidden", justification = "no network or remote access except through owsp")

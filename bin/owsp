@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Editor-side `owsp` wrapper: the editor's only route to the GPU host.
+# This directory (bin/) is the only thing the drivers put on the editor's PATH.
+#
+#   WSP_HOST         ssh host of the GPU box; empty = run locally (editor on the GPU box)
+#   WSP_REMOTE_REPO  path of this repo on the GPU host (absolute, or relative to the remote $HOME)
+#   WSP_ROOT         project root on the GPU host (config.json, cands/, data/, state/)
+#   WSP_FRAMES_DIR   where rendered frames are copied (default: ./frames in the editor's working dir)
+#   WSP_REMOTE_PYTHON  python on the GPU host with numpy (default: python3)
+# Values may also come from wsp.env at the repo root; the environment wins.
+set -o pipefail
+repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+if [ -f "${WSP_ENV_FILE:-$repo/wsp.env}" ]; then
+  while IFS='=' read -r k v; do
+    k="${k#export }"; k="${k//[[:space:]]/}"
+    case "$k" in ''|\#*) continue ;; esac
+    [ -n "${!k+x}" ] && continue
+    v="${v#[\"\']}"; v="${v%[\"\']}"; v="${v/#\~/$HOME}"
+    export "$k=$v"
+  done < "${WSP_ENV_FILE:-$repo/wsp.env}"
+fi
+: "${WSP_ROOT:?owsp: set WSP_ROOT to the project root on the GPU host}"
+PY="${WSP_REMOTE_PYTHON:-python3}"
+FRAMES="${WSP_FRAMES_DIR:-$PWD/frames}"
+SSH=(ssh -o BatchMode=yes -o ServerAliveInterval=60 -o ServerAliveCountMax=10)
+
+run() {  # run weightsmith/owsp.py with the given args (stdin passed through)
+  if [ -z "${WSP_HOST:-}" ]; then
+    WSP_ROOT="$WSP_ROOT" "$PY" "$repo/weightsmith/owsp.py" "$@"
+  else
+    : "${WSP_REMOTE_REPO:?owsp: set WSP_REMOTE_REPO (repo path on $WSP_HOST)}"
+    "${SSH[@]}" "$WSP_HOST" "cd $(printf %q "${WSP_REMOTE_REPO#\~/}") && WSP_ROOT=$(printf %q "$WSP_ROOT") $PY weightsmith/owsp.py $(printf '%q ' "$@")"
+  fi
+}
+
+case "$1" in
+  py)
+    # owsp py <cand|base> <local_script.py>
+    [ -f "$3" ] || { echo "usage: owsp py <cand|base> <script.py>"; exit 2; }
+    run py "$2" < "$3" ;;
+  acts)
+    # owsp acts <spec.json>
+    [ -f "$2" ] || { echo "usage: owsp acts <spec.json>"; exit 2; }
+    run acts < "$2" ;;
+  frames)
+    out=$(run "$@") || { echo "$out"; exit 1; }
+    remote=$(echo "$out" | tail -1)
+    mkdir -p "$FRAMES"
+    if [ -z "${WSP_HOST:-}" ]; then cp "$remote" "$FRAMES/"; else scp -q "$WSP_HOST:$remote" "$FRAMES/"; fi \
+      && echo "$FRAMES/$(basename "$remote")" ;;
+  *)
+    run "$@" ;;
+esac
