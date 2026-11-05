@@ -20,3 +20,9 @@ Separate dependencies (not included; each under its own license)
   fork that supports request-scoped sampling seeds.
 - RoboLab and NVIDIA Isaac Sim / Isaac Lab.
 - Claude Code (Anthropic) and the OpenAI Codex CLI, used as editor front-ends.
+
+third_party/patches/ contains patch files against two Apache-2.0 projects, applied by scripts/setup_deps.sh:
+  - OpenPI (Physical Intelligence; fork github.com/xuningy/openpi @ aa64205): request-scoped sampling seeds.
+  - RoboLab (NVIDIA, github.com/NVlabs/RoboLab @ 0aef241 = v0.2.1): seeded/batched policy clients, environment
+    seeds, matched steering tasks, predicate-oracle prompt control, task-discovery fix.
+envs/robolab-sim/ pins the Isaac Sim 5.0 / Isaac Lab 2.2 environment used for all reported results.

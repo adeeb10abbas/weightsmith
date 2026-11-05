@@ -275,6 +275,11 @@ def cmd_eval(a):
         t0 = time.time()
         rows = run_eval(a.name, slots, "prac", prompt=a.prompt)
         dt = time.time() - t0
+    bad = [r for r in rows if r["ok"] and (r.get("task_name") not in (None, TASK)
+                                          or (r.get("instruction") or "").strip().lower() != CFG["instruction"].strip().lower())]
+    if bad:
+        sys.exit(f"instruction/task mismatch: config says {TASK!r} / {CFG['instruction']!r}, sim reported "
+                 f"{bad[0].get('task_name')!r} / {bad[0].get('instruction')!r}; fix config.json (no budget charged)")
     done = [r for r in rows if r["ok"]]
     charge(episodes=len(done), evals=1)
     recs = []

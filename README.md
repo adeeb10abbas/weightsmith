@@ -64,6 +64,15 @@ Every edit needs a written hypothesis and prediction *before* it is evaluated.
 
 ## Quickstart
 
+**Fastest path: everything is pinned and scripted (see [docs/SETUP.md](docs/SETUP.md)).**
+```bash
+git clone https://github.com/adeeb10abbas/weightsmith && cd weightsmith
+scripts/setup_deps.sh        # OpenPI @aa64205 + 1 patch, RoboLab v0.2.1 + 6 patches, Isaac env (uv.lock), checkpoint (sha256-verified)
+cp .env.example wsp.env      # paste the paths setup_deps.sh prints
+scripts/prepare_workspace.sh # editable weight export (~11 GB)
+scripts/smoke_test.sh        # 16 closed-loop Isaac episodes + 1 activation capture
+```
+
 **Prerequisites (GPU host, Linux)**
 - **Policy stack.** An OpenPI fork with **request-scoped sampling seeds**: `sample_actions(..., noise=)` takes per-request noise, which `weightsmith/batched_server.py` builds from each request's `sampling_seed`. You also need the `pi05_droid_jointpos` checkpoint.
 - **Simulator.** RoboLab + Isaac Sim / Isaac Lab in their own venv (`SIM_PYTHON`).

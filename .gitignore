@@ -35,3 +35,9 @@ codex-home/
 __pycache__/
 *.pyc
 .venv/
+
+# dependency checkouts and envs created by scripts/setup_deps.sh
+third_party/openpi/
+third_party/RoboLab/
+envs/*/.venv/
+projects/

@@ -74,8 +74,18 @@ class Server:
             for name in sorted(rep["edited_tensors"]):
                 entry = cfg["tensors"][name]
                 arr = np.load(ws / "edits" / entry["file"])
+                base = np.load(ws / "base" / entry["file"])
+                var = self._variable(entry["model_path"])
+                idx = entry["scan_index"]
+                live = np.asarray(var.value if idx is None else var.value[idx]).astype(np.float32)
+                if not np.array_equal(live, base):  # same guard as the activation-replay path (_apply_edits)
+                    raise ValueError(f"Loaded checkpoint does not match workspace base for {name}")
                 h.update(name.encode()); h.update(arr.tobytes())
                 self._set(entry, arr)
+                applied = np.asarray(self._variable(entry["model_path"]).value if idx is None
+                                     else self._variable(entry["model_path"]).value[idx]).astype(np.float32)
+                if not np.array_equal(applied, arr):
+                    raise ValueError(f"Applied value does not match the edit for {name}")
                 self.edited[name] = (entry, str(ws))
             rep["fingerprint"] = h.hexdigest()
             rep["workspace"] = str(ws)

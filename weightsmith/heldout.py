@@ -49,7 +49,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cand", required=True)
     ap.add_argument("--slot-start", type=int, default=90000)
-    ap.add_argument("--n", type=int, default=200)
+    ap.add_argument("--n", type=int, default=192)
     ap.add_argument("--task", default=CFG["task"])
     ap.add_argument("--tag", default=None)
     ap.add_argument("--envs", type=int, default=CFG["envs"])
@@ -73,7 +73,9 @@ def main():
     plan = {"cand": a.cand, "fingerprint": fp, "task": a.task, "slots": [a.slot_start, a.slot_start + a.n - 1],
             "order": "first half: base then cand; second half: cand then base", "started": time.ctime()}
     (out / "plan.json").write_text(json.dumps(plan, indent=1))
-    half = (a.n // 2) // a.envs * a.envs
+    if a.n % (2 * a.envs):
+        sys.exit(f"--n must be a multiple of 2*envs = {2 * a.envs} (both halves must be whole groups); e.g. 192")
+    half = a.n // 2
     s1 = list(range(a.slot_start, a.slot_start + half))
     s2 = list(range(a.slot_start + half, a.slot_start + a.n))
     res = {"base": {}, "cand": {}}

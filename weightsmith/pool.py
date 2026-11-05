@@ -113,6 +113,7 @@ def run_pool(*, workspace, task, tag, slots, envs=16, server_gpu=C.SERVER_GPU, s
             vids = sorted((out / task).glob(f"*_{run}_env{e}.mp4"))
             rows.append({"slot": g * envs + e, "group": g, "env": e, "ok": True,
                          "success": bool(r["success"]), "steps": r.get("episode_step"),
+                         "instruction": r.get("instruction"), "task_name": r.get("task_name"),
                          "score": r.get("score"), "reason": r.get("reason"),
                          "out_dir": str(out / task), "run": run,
                          "obs": str(obs_dir / f"obs_r{run}_e{e}.npz"),

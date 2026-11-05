@@ -1,0 +1,343 @@
+From 26c79ffb6a3096951991f490ff8af4d80a1073cf Mon Sep 17 00:00:00 2001
+From: weightsmith <weightsmith@users.noreply.github.com>
+Date: Sun, 2 Aug 2026 10:45:18 -0400
+Subject: [PATCH 2/5] Record WAM futures and make sampling reproducible
+
+---
+ policies/cosmos3/client.py          | 104 ++++++++++++++++++++++++++--
+ policies/cosmos3/run.py             |  17 ++++-
+ policies/pi0_family/client.py       |  22 +++++-
+ policies/pi0_family/run.py          |   3 +
+ robolab/eval/base_client.py         |  10 +++
+ robolab/eval/episode.py             |   1 +
+ tests/test_seeded_policy_clients.py |  28 ++++++++
+ 7 files changed, 179 insertions(+), 6 deletions(-)
+ create mode 100644 tests/test_seeded_policy_clients.py
+
+diff --git a/policies/cosmos3/client.py b/policies/cosmos3/client.py
+index 0a29532..5170116 100644
+--- a/policies/cosmos3/client.py
++++ b/policies/cosmos3/client.py
+@@ -1,11 +1,15 @@
+ # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ # SPDX-License-Identifier: Apache-2.0
+ 
++import hashlib
++import json
+ import logging
++from pathlib import Path
++
++import cv2
+ import numpy as np
+ import torch
+ import torch.nn.functional as F
+-
+ from openpi_client import image_tools, websocket_client_policy
+ 
+ from robolab.eval.base_client import InferenceClient
+@@ -20,7 +24,15 @@ class Cosmos3Client(InferenceClient):
+     IMAGE_H = 360
+     OPEN_LOOP_HORIZON = 32
+ 
+-    def __init__(self, remote_host: str = "localhost", remote_port: int = 8000):
++    def __init__(
++        self,
++        remote_host: str = "localhost",
++        remote_port: int = 8000,
++        open_loop_horizon: int | None = None,
++        sampling_seed_base: int | None = None,
++        prediction_output_dir: str | Path | None = None,
++        prediction_fps: float = 15.0,
++    ):
+         """ """
+         super().__init__()
+         self._remote_host = remote_host
+@@ -29,7 +41,14 @@ class Cosmos3Client(InferenceClient):
+         self._image_w = self.IMAGE_W
+         self._image_h = self.IMAGE_H
+ 
+-        self.open_loop_horizon = self.OPEN_LOOP_HORIZON
++        self.open_loop_horizon = int(open_loop_horizon or self.OPEN_LOOP_HORIZON)
++        self._sampling_seed_base = sampling_seed_base
++        self._episode_index = 0
++        self._replan_index = 0
++        self._prediction_output_dir = Path(prediction_output_dir) if prediction_output_dir else None
++        self._prediction_fps = float(prediction_fps)
++        if self._prediction_output_dir is not None:
++            self._prediction_output_dir.mkdir(parents=True, exist_ok=True)
+ 
+         display = f"{self._remote_host}:{self._remote_port}"
+         print(f"[{self.__class__.__name__}] Awaiting for server on {display} to be ready...")
+@@ -108,7 +127,84 @@ class Cosmos3Client(InferenceClient):
+ 
+     def _query_server(self, request: dict) -> dict:
+         """ """
+-        return self._infer_with_retry(request)
++        request = dict(request)
++        sampling_seed = None
++        if self._sampling_seed_base is not None:
++            episode_seed = self._sampling_seed_base + self._episode_index
++            sampling_seed = episode_seed * 1000 + self._replan_index
++            request["sampling_seed"] = sampling_seed
++        response = self._infer_with_retry(request)
++        if self._prediction_output_dir is not None:
++            self._record_prediction(request, response, sampling_seed=sampling_seed)
++        self._replan_index += 1
++        return response
++
++    def _record_prediction(
++        self,
++        request: dict,
++        response: dict,
++        *,
++        sampling_seed: int | None,
++    ) -> None:
++        if "video" not in response:
++            raise RuntimeError("Prediction recording requires a Cosmos server launched with --decode-video True")
++
++        episode_dir = self._prediction_output_dir / f"episode_{self._episode_index:03d}"
++        chunk_dir = episode_dir / f"chunk_{self._replan_index:03d}"
++        chunk_dir.mkdir(parents=True, exist_ok=True)
++
++        image = np.asarray(request["observation/image"], dtype=np.uint8)
++        action = np.asarray(response["action"], dtype=np.float32)
++        video = np.asarray(response["video"], dtype=np.uint8)
++        cv2.imwrite(str(chunk_dir / "conditioning.png"), cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
++        np.save(chunk_dir / "action.npy", action)
++        self._save_video(video, chunk_dir / "future.mp4")
++
++        record = {
++            "episode_index": self._episode_index,
++            "replan_index": self._replan_index,
++            "executed_step_start": self._replan_index * self.open_loop_horizon,
++            "open_loop_horizon": self.open_loop_horizon,
++            "prompt": request["prompt"],
++            "requested_sampling_seed": sampling_seed,
++            "server_sampling_seed": response.get("sampling_seed"),
++            "conditioning_sha256": hashlib.sha256(np.ascontiguousarray(image).tobytes()).hexdigest(),
++            "conditioning_shape": list(image.shape),
++            "action_shape": list(action.shape),
++            "future_shape": list(video.shape),
++            "joint_position": np.asarray(request["observation/joint_position"]).tolist(),
++            "gripper_position": np.asarray(request["observation/gripper_position"]).tolist(),
++            "chunk_dir": str(chunk_dir),
++        }
++        (chunk_dir / "metadata.json").write_text(json.dumps(record, indent=2) + "\n")
++        with (self._prediction_output_dir / "manifest.jsonl").open("a") as handle:
++            handle.write(json.dumps(record) + "\n")
++
++    def _save_video(self, video: np.ndarray, path: Path) -> None:
++        if video.ndim != 4 or video.shape[-1] != 3:
++            raise ValueError(f"Expected future video [T,H,W,3], got {video.shape}")
++        height, width = video.shape[1:3]
++        writer = cv2.VideoWriter(
++            str(path),
++            cv2.VideoWriter_fourcc(*"mp4v"),
++            self._prediction_fps,
++            (width, height),
++        )
++        if not writer.isOpened():
++            raise RuntimeError(f"Could not create predicted video at {path}")
++        for frame in video:
++            writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
++        writer.release()
++
++    def start_episode(self, episode_index: int) -> None:
++        super().start_episode(episode_index)
++        self._episode_index = int(episode_index)
++        self._replan_index = 0
++
++    def reset(self, *, env_id: int | None = None) -> None:
++        super().reset(env_id=env_id)
++        if env_id is None:
++            self._replan_index = 0
+ 
+     def _unpack_response(self, response: dict) -> np.ndarray:
+         """ """
+diff --git a/policies/cosmos3/run.py b/policies/cosmos3/run.py
+index 2e21887..32ba2a4 100644
+--- a/policies/cosmos3/run.py
++++ b/policies/cosmos3/run.py
+@@ -19,6 +19,13 @@ parser.add_argument(
+ parser.add_argument(
+     "--remote-port", default=8000, type=int, help="Remote port for policy server (default: 8000)."
+ )
++parser.add_argument("--open-loop-horizon", "--open_loop_horizon", type=int, default=None,
++                    help="Actions executed before replanning (default: 32).")
++parser.add_argument("--sampling-seed-base", "--sampling_seed_base", type=int, default=None,
++                    help="Episode-zero sampling seed; episode N uses base+N and a per-replan derived seed.")
++parser.add_argument("--record-predictions", "--record_predictions", action="store_true",
++                    help="Record every conditioning image, action chunk, seed, and decoded future.")
++parser.add_argument("--prediction-fps", "--prediction_fps", type=float, default=15.0)
+ 
+ from robolab.eval.runner import add_common_eval_args, run_evaluation
+ 
+@@ -32,6 +39,7 @@ app_launcher = AppLauncher(args_cli)
+ simulation_app = app_launcher.app
+ 
+ from policies.cosmos3.client import Cosmos3Client
++from robolab.constants import get_output_dir
+ from robolab.registrations.droid.auto_env_registrations_jointpos import auto_register_droid_envs
+ from robolab.registrations.droid.camera_presets import WRIST_LEFT_RIGHT_HEAD
+ 
+@@ -40,7 +48,14 @@ auto_register_droid_envs(task=args_cli.task, cameras=WRIST_LEFT_RIGHT_HEAD)
+ 
+ def make_client(args: argparse.Namespace) -> Cosmos3Client:
+     """ """
+-    return Cosmos3Client(remote_host=args.remote_host, remote_port=args.remote_port)
++    return Cosmos3Client(
++        remote_host=args.remote_host,
++        remote_port=args.remote_port,
++        open_loop_horizon=args.open_loop_horizon,
++        sampling_seed_base=args.sampling_seed_base,
++        prediction_output_dir=get_output_dir() + "/predicted_chunks" if args.record_predictions else None,
++        prediction_fps=args.prediction_fps,
++    )
+ 
+ 
+ def main() -> None:
+diff --git a/policies/pi0_family/client.py b/policies/pi0_family/client.py
+index 8d032c0..cea9d6a 100644
+--- a/policies/pi0_family/client.py
++++ b/policies/pi0_family/client.py
+@@ -32,6 +32,7 @@ class Pi0DroidJointposClient(InferenceClient):
+         open_loop_horizon: int | None = None,
+         remote_uri: str | None = None,
+         policy_variant: str = "pi05",
++        sampling_seed_base: int | None = None,
+     ) -> None:
+         super().__init__()
+         if open_loop_horizon is None:
+@@ -42,6 +43,9 @@ class Pi0DroidJointposClient(InferenceClient):
+         self._remote_host = remote_host
+         self._remote_port = remote_port
+         self._display = remote_uri if remote_uri is not None else f"{remote_host}:{remote_port}"
++        self._sampling_seed_base = sampling_seed_base
++        self._episode_index = 0
++        self._replan_index = 0
+ 
+         print(f"[{self.__class__.__name__}] Awaiting for server on {self._display} to be ready...")
+         self.client = self._connect()
+@@ -106,7 +110,13 @@ class Pi0DroidJointposClient(InferenceClient):
+         }
+ 
+     def _query_server(self, request: dict) -> dict:
+-        return self._infer_with_retry(request)
++        request = dict(request)
++        if self._sampling_seed_base is not None:
++            episode_seed = self._sampling_seed_base + self._episode_index
++            request["sampling_seed"] = episode_seed * 1000 + self._replan_index
++        response = self._infer_with_retry(request)
++        self._replan_index += 1
++        return response
+ 
+     def _unpack_response(self, response: dict) -> np.ndarray:
+         return np.asarray(response["actions"])
+@@ -123,6 +133,16 @@ class Pi0DroidJointposClient(InferenceClient):
+         img2 = image_tools.resize_with_pad(extracted_obs["wrist_image"], 224, 224)
+         return np.concatenate([img1, img2], axis=1)
+ 
++    def start_episode(self, episode_index: int) -> None:
++        super().start_episode(episode_index)
++        self._episode_index = int(episode_index)
++        self._replan_index = 0
++
++    def reset(self, *, env_id: int | None = None) -> None:
++        super().reset(env_id=env_id)
++        if env_id is None:
++            self._replan_index = 0
++
+ 
+ if __name__ == "__main__":
+     import time
+diff --git a/policies/pi0_family/run.py b/policies/pi0_family/run.py
+index b6c5054..7ed1a5d 100644
+--- a/policies/pi0_family/run.py
++++ b/policies/pi0_family/run.py
+@@ -44,6 +44,8 @@ parser.add_argument("--randomize-background", "--randomize_background", action="
+                           "recorded in the per-task env_cfg.json."))
+ parser.add_argument("--background-seed", "--background_seed", type=int, default=None,
+                     help="Seed for reproducible per-task background sampling. Used with --randomize-background.")
++parser.add_argument("--sampling-seed-base", "--sampling_seed_base", type=int, default=None,
++                    help="Episode-zero sampling seed; episode N uses base+N and a per-replan derived seed.")
+ 
+ from robolab.eval.runner import add_common_eval_args, run_evaluation  # noqa: E402
+ 
+@@ -81,6 +83,7 @@ def make_client(args: argparse.Namespace) -> Pi0DroidJointposClient:
+         remote_uri=args.remote_uri,
+         open_loop_horizon=args.open_loop_horizon,
+         policy_variant=args.policy,
++        sampling_seed_base=args.sampling_seed_base,
+     )
+     return Pi0DroidJointposClient(**{k: v for k, v in kwargs.items() if v is not None})
+ 
+diff --git a/robolab/eval/base_client.py b/robolab/eval/base_client.py
+index 9a57317..a906777 100644
+--- a/robolab/eval/base_client.py
++++ b/robolab/eval/base_client.py
+@@ -94,6 +94,16 @@ class InferenceClient(ABC):
+             self._chunks.pop(env_id, None)
+             self._counters.pop(env_id, None)
+ 
++    def start_episode(self, episode_index: int) -> None:
++        """Prepare local client state for an explicitly numbered episode.
++
++        The default only clears cached chunks. Seeded clients override this to
++        bind their request schedule to ``episode_index``, which keeps resumed
++        evaluations reproducible when completed episodes are skipped.
++        """
++        self._chunks.clear()
++        self._counters.clear()
++
+     def close(self) -> None:
+         """Release transport resources. Default: no-op."""
+         return None
+diff --git a/robolab/eval/episode.py b/robolab/eval/episode.py
+index 056d912..9bb2f8e 100644
+--- a/robolab/eval/episode.py
++++ b/robolab/eval/episode.py
+@@ -88,6 +88,7 @@ def run_episode(env, env_cfg, episode, client: InferenceClient, *, headless=Fals
+     max_steps = env.max_episode_length
+     video_fps = 1 / (env_cfg.sim.render_interval * env_cfg.sim.dt) # Hz
+     instruction = env_cfg.instruction
++    client.start_episode(episode)
+     # Pull action dim from the env's action manager (IsaacLab canonical),
+     # falling back to the gym action space if the manager isn't available.
+     action_dim = getattr(
+diff --git a/tests/test_seeded_policy_clients.py b/tests/test_seeded_policy_clients.py
+new file mode 100644
+index 0000000..7321a2b
+--- /dev/null
++++ b/tests/test_seeded_policy_clients.py
+@@ -0,0 +1,28 @@
++import pytest
++
++from policies.cosmos3.client import Cosmos3Client
++from policies.pi0_family.client import Pi0DroidJointposClient
++
++
++@pytest.mark.parametrize("client_cls", [Cosmos3Client, Pi0DroidJointposClient])
++def test_sampling_seed_is_bound_to_episode_and_replan(monkeypatch, client_cls):
++    monkeypatch.setattr(client_cls, "_connect", lambda self: object())
++    client = client_cls(sampling_seed_base=6100)
++    requests = []
++
++    def fake_infer(request):
++        requests.append(request)
++        return {"action": [], "actions": []}
++
++    monkeypatch.setattr(client, "_infer_with_retry", fake_infer)
++
++    client.start_episode(4)
++    client._query_server({"prompt": "left"})
++    client._query_server({"prompt": "left"})
++    assert [request["sampling_seed"] for request in requests] == [6104000, 6104001]
++
++    # A resumed run must use its actual episode number, not the number of
++    # episodes executed since this client process started.
++    client.start_episode(9)
++    client._query_server({"prompt": "left"})
++    assert requests[-1]["sampling_seed"] == 6109000
+-- 
+2.34.1
+
