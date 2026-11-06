@@ -1,0 +1,293 @@
+{
+ "summary": {
+  "cand": "ctb-v2mi",
+  "fingerprint": "63db0c52a51306c9",
+  "task": "PickGlassesTask",
+  "slots": [
+   90000,
+   90063
+  ],
+  "order": "first half: base then cand; second half: cand then base",
+  "started": "Fri Nov  6 02:24:39 2026",
+  "finished": "Fri Nov  6 02:51:03 2026",
+  "paired_n": 64,
+  "base_success": 22,
+  "cand_success": 44,
+  "base_rate": 0.3438,
+  "cand_rate": 0.6875,
+  "base_wilson95": [
+   0.239,
+   0.466
+  ],
+  "cand_wilson95": [
+   0.566,
+   0.788
+  ],
+  "fixed": 31,
+  "broke": 9,
+  "mcnemar_exact_p": 0.0006795482549932785,
+  "crashed_slots": 0,
+  "mean_steps_success": {
+   "base": 157.9,
+   "cand": 223.7
+  }
+ },
+ "per_slot": {
+  "90000": [
+   false,
+   true
+  ],
+  "90001": [
+   true,
+   false
+  ],
+  "90002": [
+   false,
+   false
+  ],
+  "90003": [
+   false,
+   false
+  ],
+  "90004": [
+   true,
+   false
+  ],
+  "90005": [
+   false,
+   true
+  ],
+  "90006": [
+   false,
+   true
+  ],
+  "90007": [
+   false,
+   true
+  ],
+  "90008": [
+   false,
+   true
+  ],
+  "90009": [
+   false,
+   true
+  ],
+  "90010": [
+   true,
+   true
+  ],
+  "90011": [
+   true,
+   false
+  ],
+  "90012": [
+   false,
+   true
+  ],
+  "90013": [
+   false,
+   true
+  ],
+  "90014": [
+   false,
+   false
+  ],
+  "90015": [
+   false,
+   true
+  ],
+  "90016": [
+   true,
+   false
+  ],
+  "90017": [
+   false,
+   true
+  ],
+  "90018": [
+   true,
+   true
+  ],
+  "90019": [
+   true,
+   false
+  ],
+  "90020": [
+   false,
+   true
+  ],
+  "90021": [
+   false,
+   false
+  ],
+  "90022": [
+   false,
+   true
+  ],
+  "90023": [
+   false,
+   true
+  ],
+  "90024": [
+   false,
+   false
+  ],
+  "90025": [
+   false,
+   false
+  ],
+  "90026": [
+   false,
+   true
+  ],
+  "90027": [
+   false,
+   false
+  ],
+  "90028": [
+   false,
+   true
+  ],
+  "90029": [
+   false,
+   true
+  ],
+  "90030": [
+   true,
+   false
+  ],
+  "90031": [
+   false,
+   true
+  ],
+  "90032": [
+   false,
+   true
+  ],
+  "90033": [
+   true,
+   true
+  ],
+  "90034": [
+   false,
+   true
+  ],
+  "90035": [
+   true,
+   false
+  ],
+  "90036": [
+   true,
+   true
+  ],
+  "90037": [
+   false,
+   false
+  ],
+  "90038": [
+   false,
+   false
+  ],
+  "90039": [
+   false,
+   true
+  ],
+  "90040": [
+   false,
+   true
+  ],
+  "90041": [
+   true,
+   true
+  ],
+  "90042": [
+   true,
+   true
+  ],
+  "90043": [
+   false,
+   false
+  ],
+  "90044": [
+   false,
+   true
+  ],
+  "90045": [
+   true,
+   false
+  ],
+  "90046": [
+   false,
+   true
+  ],
+  "90047": [
+   false,
+   true
+  ],
+  "90048": [
+   false,
+   true
+  ],
+  "90049": [
+   true,
+   true
+  ],
+  "90050": [
+   true,
+   true
+  ],
+  "90051": [
+   false,
+   true
+  ],
+  "90052": [
+   true,
+   true
+  ],
+  "90053": [
+   true,
+   false
+  ],
+  "90054": [
+   false,
+   false
+  ],
+  "90055": [
+   false,
+   true
+  ],
+  "90056": [
+   false,
+   true
+  ],
+  "90057": [
+   true,
+   true
+  ],
+  "90058": [
+   true,
+   true
+  ],
+  "90059": [
+   true,
+   true
+  ],
+  "90060": [
+   false,
+   true
+  ],
+  "90061": [
+   false,
+   true
+  ],
+  "90062": [
+   true,
+   true
+  ],
+  "90063": [
+   false,
+   true
+  ]
+ }
+}
