@@ -516,6 +516,7 @@ def outcome_rows(full=False):
             ("Practice seeds", find("Cube then banana", "v2mi-f: binding edit, practice"), ""),
             ("Held-out seeds", ho_row(CTB), "held"),
             ("0.16% variant, held-out seeds", ho_row(CTB_MIN), "held"),
+            ("Random directions, same size, held-out", find("Cube then banana", "random directions"), ""),
         ]),
         ("Same edit, other tasks", [
             ("Eyeglasses, held-out seeds", ho_row(EYE), "held"),
@@ -736,6 +737,7 @@ LABELS = {  # readable names for the internal candidate labels of comparisons.js
     "v2mi-f: binding edit, HELD-OUT seeds": "Distilled edit, held-out",
     "binding edit + preservation keys (v2p-f)": "With preservation keys (v2p-f)",
     "minimal edit (0.16%), HELD-OUT seeds": "0.16% variant, held-out",
+    "random directions, same size as v2mi-f, HELD-OUT seeds": "Random directions, same size, held-out",
     "binding edit, HELD-OUT seeds": "held-out",
     "binding edit": "practice",
     "binding edit, practice (2 runs)": "practice, two runs",

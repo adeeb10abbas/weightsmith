@@ -16,6 +16,7 @@ Draft for coauthor review, November 6, 2026. Companion to the completed [Astra s
   - Success went from **3/32 to 25/32** on practice seeds.
   - On **128 held-out seeds it never saw**, success went from 27/128 to 106/128.
   - The instruction itself was never changed.
+  - **A random edit of exactly the same size does nothing.** Same layers, same rank, same singular values, random directions: 9/64 on held-out seeds, the same as the unedited policy (13/64 and 9/64 in two runs), against 50/64 for the real edit on those seeds.
   - **A 0.16% version works as well.** Restricted to image regions in 9 layers (5.3M parameters as low-rank factors), it scores 19/128 → 102/128 on the same held-out seeds.
   - **It transferred to two other tasks.** On held-out seeds, eyeglasses went 22/64 → 44/64 and "put the cube to the left of the bowl" went 8/64 → 36/64. Twelve other tasks showed no reliable change either way.
 - **Physical failures resisted every edit:**
@@ -132,6 +133,8 @@ There is no optimization or training. In effect, it is **the explicit instructio
 **Closed loop, practice seeds:** **25/32 vs 3/32**, with 22 fixed and 0 broken (exact McNemar p ≈ 5×10⁻⁷). That beats the explicit wording itself (22/32).
 
 **Held-out, 128 unseen seeds, operator-run:** **106/128 (82.8%) vs 27/128 (21.1%)**. 81 episodes were fixed and 2 broken (exact McNemar p = 7×10⁻²²). The paired difference is **+61.7 pp [+52.3, +70.3]**, and the Wilson intervals do not overlap (edit 75–88%, base 15–29%). Base and edit ran on identical slots 90000–90127, never used during editing, with the run order alternating by half. Successful episodes also finish faster: 300 steps on average vs 412.
+
+**Control: random directions, same size.** To check that the *content* of the edit matters and not just the size of the perturbation, we rebuilt the edit exactly (it reproduces the stored tensors bit for bit), kept each layer's 72 singular values, and replaced its singular vectors with random orthonormal ones. Same layers, rank, spectrum and norm; random directions. On held-out seeds 90000–90063 it scores **9/64**, the same as the unedited policy's two runs on those seeds (13/64, p = 0.45; 9/64, p = 1.0), while the distilled edit scores 50/64. Script, frozen run and report: `results/opus/controls/`.
 
 **Other tasks: no harm, and one surprise.** The edit's keys are average activations at the robot-state tokens and image regions, which every task has, so we ran it on seven other tasks:
 

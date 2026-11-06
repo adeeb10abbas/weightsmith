@@ -1,0 +1,35 @@
+{
+ "arms": {
+  "rand": {
+   "cand": "ctl-rand",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/cube-then-banana/heldout/ctl1-90000-64/frozen-rand",
+   "fingerprint": "1efd3512a92642f7",
+   "prompt": null
+  },
+  "teacher": {
+   "cand": null,
+   "workspace": null,
+   "fingerprint": null,
+   "prompt": "Put the cube in the bowl then put the banana in the bowl"
+  }
+ },
+ "task": "RubiksCubeThenBananaTask",
+ "default_instruction": "Put the cube then the banana in the bowl",
+ "slots": [
+  90000,
+  90063
+ ],
+ "schedule": [
+  [
+   "rand",
+   90000,
+   90063
+  ],
+  [
+   "teacher",
+   90000,
+   90063
+  ]
+ ],
+ "started": "Fri Nov  6 11:39:08 2026"
+}
