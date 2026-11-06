@@ -27,6 +27,8 @@ So Claude wrote that reading into the weights, in closed form, keeping the origi
 
 And a random edit of exactly the same size (same layers, rank and spectrum, random directions)? 9/64. Same as doing nothing.
 
+And the explicit rewording itself scores 57/64 on those seeds, so the edit gets most of the prompt's benefit without touching the prompt.
+
 Bonus: the same edit transferred. On held-out seeds, "pick up the eyeglasses" went 22/64 → 44/64 and "put the cube to the left of the bowl" went 8/64 → 36/64. (Right of the bowl: still 0. Mechanisms are humbling.)
 
 And a 0.16%-of-parameters version of the edit does the same job: 19/128 → 102/128 held-out.
