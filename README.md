@@ -1,175 +1,119 @@
-# weightsmith: weight-space programming on a robot VLA
+# weightsmith
 
-**Completed Astra study and coauthor handoff:** [Start here](study/README.md). The current paper, results, sealed reproduction code and continuation guide are under `study/`.
+**Let an LLM read, probe and edit a robot policy's weights — and measure whether it helped.**
 
-A frontier model edits the weights of a robot foundation policy **directly**, with no
-gradients, no training and no black-box search, to make it succeed more often in closed-loop
-simulation.
+[![Paper](https://img.shields.io/badge/paper-PDF-b31b1b)](https://adeeb10abbas.github.io/weightsmith/paper.pdf)
+[![Website](https://img.shields.io/badge/website-weightsmith-147d92)](https://adeeb10abbas.github.io/weightsmith/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-3c78d8)](LICENSE)
 
-This is a replication of **Weight-Space Programming** (Takehi et al., MIT, Nov 2026;
-[blog](https://rikiyat.github.io/blog/weight-space-programming/)) on a VLA:
+<p align="center">
+  <img src="assets/hero.gif" width="540" alt="Two rollouts from the same held-out start, both told to put the cube then the banana in the bowl. Top: the released policy lets go of the cube before the bowl. Bottom: the edited policy places the cube, then the banana.">
+  <br>
+  <sub>Same instruction, same held-out start. Top: π0.5 as released drops the cube. Bottom: after a closed-form weight edit — no training.</sub>
+</p>
 
-- **Policy:** OpenPI **pi0.5** `pi05_droid_jointpos`, ~3.35B params (PaliGemma VLM + Gemma flow-matching action expert).
-- **Simulator:** **RoboLab** manipulation tasks in Isaac Sim.
-- **Editors:** **Claude** (Claude Code CLI) or **GPT-6 Astra** (OpenAI Codex CLI). Both get the same brief, tools, budget and seeds, so the two can be compared on identical tasks.
+weightsmith gives an LLM agent one tool, `owsp`, over OpenPI's π0.5 (3.35B parameters) running closed-loop in NVIDIA RoboLab. The agent reads weights, replays recorded decisions to capture activations, writes a closed-form edit (no gradients, no training, no black-box search) and tests it against the unedited policy on paired simulator seeds. Held-out seeds are scored by an operator, never by the agent.
 
-## Method
+## What you can do in 5 minutes
 
-The editor gets a brief, a budget and exactly one command, `owsp`. It reads weights and
-activations, forms a mechanistic hypothesis, writes a closed-form edit, and tests it on
-practice seeds. It then submits one candidate, or `base` if nothing survives. An operator
-scores that candidate on held-out seeds the editor never sees.
+Each assumes a GPU host set up once with [docs/SETUP.md](docs/SETUP.md); the editor side is a `pip install`.
 
-| | Paper (Takehi et al.) | This repo |
-|---|---|---|
-| network | Qwen3.5-0.8B (LLM) | pi0.5 VLA: 3,353,433,872 params; 730 layer tensors (2.82B values) editable |
-| failure | reasoning loops | closed-loop task failures in RoboLab (Isaac Sim, 900-step episodes) |
-| editor | frontier model | Claude Opus (Claude Code) or GPT-6 Astra (Codex CLI) |
-| allowed | read weights and activations, then edit weights directly | same. Closed-form edits only (contrasts, projections, SVD/PCA, rank-1 edits, unit or head scaling). Edits must be bf16-exact |
-| forbidden | gradient descent / training | autodiff, optimizers, fitted regressions, random or evolutionary search |
-| evidence | activations of the network | activation capture replaying **exact recorded policy inputs + noise seeds**. Covers VLM prompt and image tokens, action-expert MLP/residual streams, and attention maps |
-| practice signal | | **paired** closed-loop evals on 256 practice seeds, under an episode and activation budget |
-| final score | held-out, never seen by the editor | operator-only paired base-vs-edit eval on unseen seeds, with exact McNemar test and Wilson 95% CIs |
-| headline edit | one residual direction from two MLPs, 0.016% of weights | see [results](docs/results/README.md) |
+**Fix a misread instruction without training.** If the policy fails under one wording but succeeds under an explicit rewording, *closed-form instruction distillation* writes the rewording's effect into the weights. At each VLM layer, one regularized minimum-norm update, ΔW = Kᵀ(KKᵀ + λI)⁻¹V, maps the original prompt's MLP inputs (K) to the change the rewording makes in that layer's residual update (V). The paper's edit is [22 lines of NumPy](study/results/opus/ctb/v2mi_edit.py) run in the `owsp py` sandbox; [`ctb/`](study/results/opus/ctb/README.md) holds every failed attempt and offline check. A packaged `weightsmith distill` command is on the [roadmap](#integrations).
 
-The rules the editor follows are in each brief ([example](briefs/stack-yellow-red/BRIEF.md)).
-Every edit needs a written hypothesis and prediction *before* it is evaluated.
+**Turn your MCP client into a policy editor.** `weightsmith mcp` serves the `owsp` tool surface as 10 typed tools (list tensors, replay activations, run NumPy on the weights, evaluate in closed loop), bound by the project's budget and sandbox. Claude Code:
 
-## Architecture
-
-```
- editor machine                                  GPU host  (project root = $WSP_ROOT)
- ┌──────────────────────────────┐                ┌──────────────────────────────────────────────────┐
- │ drivers/claude.sh            │   bin/owsp     │ weightsmith/owsp.py   (budget, validation, paths)    │
- │   Claude Code: Bash(owsp *)  │ ─────────────▶ │  tensors | new | py | diff                       │
- │ drivers/astra.sh             │  ssh or local  │    └─ bwrap numpy sandbox over the bf16 export   │
- │   Codex CLI: rules allow     │                │  acts                                            │
- │   only owsp                  │                │    └─ acts_worker.py: instrumented replay of     │
- │                              │                │       recorded inputs (OpenPI venv)              │
- │ agent dir: BRIEF.md,         │                │  eval                                            │
- │   NOTEBOOK.md, FINAL.md,     │                │    └─ pool.py: batched_server.py (pi0.5,         │
- │   scripts/, specs/, frames/  │                │       hot-swapped edits, per-request seeds)      │
- └──────────────────────────────┘                │       + run_batched.py (Isaac Sim, 16 envs)      │
-                                                 │       -> episodes, timelines, obs.npz, video     │
- operator only                                   │  episodes | show | frames | status               │
-   weightsmith/heldout.py  ────────────────────────▶ │ heldout/  (not readable through owsp)            │
-                                                 └──────────────────────────────────────────────────┘
+```bash
+claude mcp add weightsmith -- weightsmith mcp --root /data/wsp/projects/cube-then-banana
 ```
 
-- **Paired evals.** A *slot* fixes an episode's noise-seed stream. Candidates evaluated on the
-  same slots are paired against base: same scene, same noise, different weights. GPU physics
-  is not bit-deterministic, so pairing is variance reduction, not a guarantee.
-- **Seed ranges.** Practice slots are 20000..20255, surveys use 60000+, and held-out slots are ≥ 80000 (90000+ by convention).
-- **Exact replay.** Every practice episode records the 224×224 camera inputs, state, seed and
-  action chunk at each replan. `owsp acts` replays them through an instrumented forward pass
-  and checks parity against the recorded actions.
+Claude Desktop, Cursor and the Codex CLI: [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md).
+
+**Ship an edit as one file.** `weightsmith edit` turns a candidate into a self-describing `.safetensors` file: low-rank where it can be, bit-exact when applied, and sha256-checked against the base weights.
+
+```bash
+weightsmith edit export $WSP_ROOT/cands/v2mi-f -o v2mi-f.safetensors --rank auto   # on the GPU host
+weightsmith edit info   v2mi-f.safetensors                                         # what it changes, and how
+weightsmith edit apply  v2mi-f.safetensors --workspace $BASE_WORKSPACE --out $WSP_ROOT/cands/v2mi-f-copy
+```
+
+## The benchmark
+
+An editor practises on paired seeds under a budget and submits one frozen candidate, or `base`. The operator scores it against the unedited policy on at least 64 held-out paired seeds, and it is accepted at exact McNemar p < 0.05. There are 16 zero-shot RoboLab tasks, drivers for Claude Code and the Codex CLI, and a measured noise floor: with unchanged weights, about 30% of paired outcomes flip.
+
+Protocol: [BENCHMARK.md](BENCHMARK.md). Every run, including the failures: [LEADERBOARD.md](LEADERBOARD.md). **No autonomous editor has an accepted edit yet.**
+
+## Results
+
+| Edit | Task | Unedited → edited | Seeds |
+|---|---|---|---|
+| Closed-form instruction distillation (`v2mi-f`) | Cube then banana | 27/128 → **106/128**: 81 fixed, 2 broken, p = 7×10⁻²² | held-out |
+| Same, image cells in layers 8–16 only; factors = 0.16% of parameters (`abl-imgl8`) | Cube then banana | 19/128 → **102/128**: 86 fixed, 3 broken | held-out |
+| `v2mi-f`, unchanged | Pick up eyeglasses | 22/64 → **44/64** | held-out |
+| `v2mi-f`, unchanged | Cube left of the bowl | 8/64 → **36/64** | held-out |
+| Edits aimed at perception, a missing skill, contact physics, the gripper threshold | Stacking, flat box, mustard, 7 tasks | no gain | practice |
+
+Paired outcomes on identical seeds; p is the exact McNemar test. The distilled edit was built by our Claude Opus operator session following the editor rules, not by an autonomous editor run. Details: the [paper](https://adeeb10abbas.github.io/weightsmith/paper.pdf), the [project page](https://adeeb10abbas.github.io/weightsmith/), and the raw [held-out runs](study/results/opus/heldout/) and [comparisons](study/results/opus/comparisons.json).
 
 ## Quickstart
 
-**Fastest path: everything is pinned and scripted (see [docs/SETUP.md](docs/SETUP.md)).**
 ```bash
 git clone https://github.com/adeeb10abbas/weightsmith && cd weightsmith
-scripts/setup_deps.sh        # OpenPI @aa64205 + 1 patch, RoboLab v0.2.1 + 6 patches, Isaac env (uv.lock), checkpoint (sha256-verified)
-cp .env.example wsp.env      # paste the paths setup_deps.sh prints
-scripts/prepare_workspace.sh # editable weight export (~11 GB)
-scripts/smoke_test.sh        # 16 closed-loop Isaac episodes + 1 activation capture
+pip install -e '.[mcp]'                            # weightsmith CLI + MCP server (editor side, CPU only)
+scripts/setup_deps.sh && cp .env.example wsp.env   # GPU host, once: pinned stack + checkpoint; then fill in wsp.env
+scripts/prepare_workspace.sh                       # GPU host, once: editable bf16 export of the weights (~11 GB)
+export WSP_ROOT=$PWD/projects/ctb && mkdir -p $WSP_ROOT && cp configs/cube-then-banana.json $WSP_ROOT/config.json
+scripts/base_practice.sh 64                        # the unedited policy on 64 practice seeds: the paired baseline
+bin/owsp status                                    # task, instruction, budget, candidates
+bin/owsp new v1 && bin/owsp py v1 edit.py          # a candidate, edited by your NumPy script: save(name, bf16(W + dW))
+bin/owsp eval v1 --n 64                            # the candidate in closed loop on the same 64 seeds, paired with base
+python3 weightsmith/heldout.py --cand v1 --slot-start 90000 --n 128   # operator only: the held-out score
 ```
 
-**Prerequisites (GPU host, Linux)**
-- **Policy stack.** An OpenPI fork with **request-scoped sampling seeds**: `sample_actions(..., noise=)` takes per-request noise, which `weightsmith/batched_server.py` builds from each request's `sampling_seed`. You also need the `pi05_droid_jointpos` checkpoint.
-- **Simulator.** RoboLab + Isaac Sim / Isaac Lab in their own venv (`SIM_PYTHON`).
-  - The RoboLab Pi0 client must accept `sampling_seed_base` (used by `weightsmith/batched_client.py`).
-  - `imageio` and `PIL` are needed there for `owsp frames`.
-- **Sandbox.** `bwrap` (bubblewrap), and system `/usr/bin/python3` with numpy.
-- **GPU memory.** The reference box was 2× RTX 3090 (24 GB).
-  - One GPU runs closed-loop evals: the policy server (XLA memory fraction 0.40) plus one Isaac process with 16 envs.
-  - The other GPU runs activation captures (fraction 0.9).
-  - A single GPU works too: the per-GPU locks serialize evals and captures.
-- **RAM and disk.** `owsp py` analyses of large tensors want tens of GB of RAM; candidates allow up to ~100 GB.
-  - The base export needs ~11 GB of disk, and episodes add more.
+Requirements (Linux, 24 GB NVIDIA GPU, ~60 GB disk) and the exact pins are in [docs/SETUP.md](docs/SETUP.md). To run an autonomous editor instead, see [`drivers/`](drivers/) and [docs/COMPARING_EDITORS.md](docs/COMPARING_EDITORS.md).
 
-**Editor machine:** Claude Code and/or Codex CLI, plus key-based ssh to the GPU host (or run everything on the GPU host).
+## Integrations
 
-```bash
-# 0. both machines: clone, then configure (paths, WSP_HOST, GPUs). See .env.example.
-cp .env.example wsp.env && $EDITOR wsp.env
-
-# 1. GPU host, once: layer-split bf16 export of all editable tensors (~11 GB)
-#    = weightsmith.lab.openpi_vlm_full.prepare_workspace(CHECKPOINT_DIR, BASE_WORKSPACE, 1.0, include_action=True)
-scripts/prepare_workspace.sh
-
-# 2. a project (task config + editor working dir)
-scripts/new_project.py --config configs/stack-yellow-red.json --root /data/wsp/projects/syr-claude \
-    --brief briefs/stack-yellow-red/BRIEF.md --prior briefs/stack-yellow-red/PRIOR_FINDINGS.md \
-    --agent-dir agents/syr-claude
-
-# 3. GPU host: pre-run base practice episodes (uncharged; the editor starts by reading them)
-WSP_ROOT=/data/wsp/projects/syr-claude scripts/base_practice.sh 64
-
-# 4. smoke-test the editor's tool surface from the editor machine
-WSP_ROOT=/data/wsp/projects/syr-claude bin/owsp status
-
-# 5. launch an editor (resumes until FINAL.md; `touch agents/syr-claude/STOP` to end)
-WSP_ROOT=/data/wsp/projects/syr-claude drivers/claude.sh agents/syr-claude   # or drivers/astra.sh
-WSP_ROOT=/data/wsp/projects/syr-claude scripts/progress.sh agents/syr-claude
-
-# 6. GPU host, operator only: held-out paired eval of the submitted candidate
-#    (--n a multiple of 2 x 16; base and candidate alternate order by half)
-WSP_ROOT=/data/wsp/projects/syr-claude python3 weightsmith/heldout.py --cand NAME --slot-start 90000 --n 192
-```
-
-To compare Claude and Astra on the same task with matched budgets and seeds, see
-[docs/COMPARING_EDITORS.md](docs/COMPARING_EDITORS.md). The Astra driver has a few flags that
-still need verifying on the first run; they are listed there.
-
-## Results so far
-
-Base policy, practice sets (operator pre-runs):
-
-| task | base success |
+| | Status |
 |---|---|
-| banana-then-cube, "put the banana then the cube in the bowl" | 99/128 (77.3%) |
-| cube-then-banana, "Put the cube then the banana in the bowl" | 9/64 (14.1%) |
-| stack yellow on red (capability task, fixed instruction) | survey 6/16; practice set running |
+| MCP server for Claude Code, Claude Desktop, Cursor and the Codex CLI (`weightsmith mcp`) | Ready |
+| Headless editor drivers for Claude Code and the Codex CLI (`drivers/`) | Ready |
+| Portable edit files (`weightsmith edit`): safetensors or npz, exact or low-rank | Ready |
+| Hugging Face Hub folders for results and edits (`integrations/hub/`) | Experimental |
+| `weightsmith distill`: closed-form instruction distillation as one command | Roadmap |
 
-There is a 7-task base survey [here](docs/results/README.md).
+Setup and client configs: [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md).
 
-- **Claude Opus, run 1 (banana-then-cube): honest negative.**
-  - Found the mechanism behind premature cube releases: an *elliptical-instruction mis-parse*. In stage 2 the policy partly still targets the banana and drops the held cube as the "wrong object". An explicit two-clause prompt cuts these releases from 28/29 to 9/29 on replayed inputs.
-  - It built three closed-form edits and rejected each on offline replays (not selective, no effect, or correlates rather than causes). The estimated ceiling of a perfect fix was about +3 pp.
-  - It **submitted no edit**: [FINAL.md](docs/results/claude-opus-run1-banana-then-cube/FINAL.md).
-- **Claude Opus, run 2 (cube-then-banana):** stopped before any weight candidate.
-  - It confirmed the same mis-parse, and a diagnostic *prompt* override gave 22/32 vs base 3/32 on the same slots. This is not a weight edit.
-  - See its [notebook](docs/results/claude-opus-run2-cube-then-banana/NOTEBOOK.md).
-- **Capability project (stack yellow on red):** in progress.
-  - Prompt overrides are disabled, so the fix has to be motor or perceptual and live in the weights.
-- **GPT-6 Astra:** not run yet.
-- No held-out evaluation has been run yet, because no editor has submitted a weight edit.
-
-## Layout
+## Repository map
 
 ```
-weightsmith/            harness (runs on the GPU host)
-  owsp.py           the editor's tool surface (CLI)
-  pool.py rollout.py batched_server.py batched_client.py run_batched.py   closed-loop eval engine
-  acts_worker.py    activation capture on recorded inputs
-  heldout.py        operator-only held-out eval
-  survey.py         operator base-policy task survey
-  config.py         all paths / GPUs / ports (env vars or wsp.env)
-  lab/              minimal vendored pieces of an earlier project (see NOTICE)
-bin/owsp            editor-side wrapper (local or ssh); the only thing on the editor's PATH
-drivers/            claude.sh, astra.sh (+ codex/owsp.rules)
-scripts/            operator tools: prepare_workspace.sh, new_project.py, base_practice.sh, progress.sh, killmatch.sh
-briefs/             editor briefs per task (+ PRIOR_FINDINGS.md hints)
-configs/            task configs: task, instruction, budget, practice slots, envs
-docs/               COMPARING_EDITORS.md, results/
+weightsmith/    owsp.py (the editor's tool), heldout.py (operator scoring), eval pool, activation capture,
+                edits.py (portable edits), mcp_server.py, cli.py
+bin/owsp        the editor-side wrapper, local or over ssh: the only command an editor gets
+drivers/        headless editors: claude.sh (Claude Code), astra.sh (Codex CLI)
+configs/ briefs/  task configs and editor briefs        scripts/  setup, workspace export, projects, smoke test
+integrations/   MCP launcher, Hugging Face export       tests/    CPU-only tests: python3 -m pytest tests
+study/          results, edit scripts and the full report (results/opus/, blog/failure-levels.md)
+paper/ site/    the paper's LaTeX source and the project page
 ```
 
-No install step: each module runs under the environment that needs it. `owsp.py` uses system
-python3 with numpy, the server and capture worker use the OpenPI venv, and `run_batched.py`
-uses the Isaac Sim venv. They find the package through the repo path.
+## Citation
+
+```bibtex
+@misc{abbas2026distilling,
+  title  = {{Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy's Misreading}},
+  author = {Abbas, Ali-Adeeb and Seraj, Esmaeil},
+  year   = {2026},
+  url    = {https://adeeb10abbas.github.io/weightsmith/},
+  note   = {arXiv preprint, forthcoming}
+}
+```
+
+GitHub's "Cite this repository" reads the same entry from [CITATION.cff](CITATION.cff).
 
 ## License
 
-MIT (see [LICENSE](LICENSE) and [NOTICE](NOTICE)). OpenPI, RoboLab, Isaac Sim and the
-checkpoint are separate dependencies under their own licenses.
+MIT; see [LICENSE](LICENSE) and [NOTICE](NOTICE). OpenPI and the π0.5 checkpoint, RoboLab, Isaac Sim and Isaac Lab are separate dependencies under their own licenses.
+
+## Acknowledgements
+
+The policy and checkpoint come from [OpenPI](https://github.com/Physical-Intelligence/openpi) by Physical Intelligence (we use [a fork](https://github.com/xuningy/openpi) with request-scoped sampling seeds). Tasks and simulated evaluation come from [RoboLab](https://github.com/NVlabs/RoboLab) on [NVIDIA Isaac Sim](https://developer.nvidia.com/isaac/sim) and Isaac Lab. The editing protocol follows Takehi et al., [Weight-Space Programming](https://rikiyat.github.io/blog/weight-space-programming/).
