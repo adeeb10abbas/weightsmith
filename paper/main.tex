@@ -38,71 +38,33 @@ Generalist robot policies often fail at one step of a task they can otherwise pe
 \section{Introduction}
 Generalist vision-language-action (VLA) policies map camera images and an instruction to robot actions, and they often fail at a single step of a task whose skills they already have~\citep{pi2025pi05}; the usual remedy is more demonstrations and fine-tuning. Weight-space programming proposes another: a language model reads a network's weights and activations, locates the computation that goes wrong, and patches the weights directly, without gradients~\citep{takehi2026sparks}. We show that such a patch can fix a generalist robot policy when the failure is a misreading of the instruction, and we map the failures it did not fix.
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{fig1_teaser.pdf}
+\caption{One held-out start, unedited and edited. Top: wrist-camera inputs at four matched control steps. Bottom: commanded gripper (filled where closed) and logged events; with the instruction unchanged, the edit removes the release three steps after the grasp. The explicit rewording ``Put the cube in the bowl then put the banana in the bowl'' was used only to build the edit. Right: held-out success over 128 starts, with Wilson 95\% intervals.}
+\label{fig:teaser}
+\end{figure}
+
 Early robot reports are encouraging but hard to compare. Guo and Xie report a \pifive{} task rising from 28/92 to 82/92 held-out episodes with four changed parameters, on checkpoints fine-tuned for each task~\citep{guo2026robotweights,xie2026robotweights}. Gupta et al.\ report direct gains on five of ten \pifive{} tasks and a folding gain from 51\% to 75\% with an update built from a difference between trained models~\citep{gupta2026robotweights}. In our companion study, four sparse GPT-6 Astra edits to a zero-shot \pifive{} stacking policy all failed a preservation gate~\citep{abbas2026wspstudy}. We did not reproduce the external results, and together they leave open which failures gradient-free edits can fix in a policy that was never trained on the task.
 
-We study this question with the DROID version of \pifive{}~\citep{pi2025pi05,khazatsky2024droid} on 16 RoboLab tasks~\citep{yang2026robolab}, comparing every edit with the unedited policy on identical simulator seeds. Told to ``put the cube then the banana in the bowl,'' the policy grasps the cube and lets go before reaching the bowl, yet the same weights succeed under an explicit rewording (Table~\ref{tab:teaser}). Robot policies are known to respond differently to equivalent wordings~\citep{fei2026liberoplus,kim2026liberopara,abbas2026samegoal}; here that sensitivity points to a repair. We introduce \emph{closed-form instruction distillation}, which finds such a failure by replaying recorded decisions under rewordings and then writes the internal effect of the working wording into the weights with a multi-key closed-form update~\citep{meng2023memit}.
+We study this question with the DROID version of \pifive{}~\citep{pi2025pi05,khazatsky2024droid} on 16 RoboLab tasks~\citep{yang2026robolab}, comparing every edit with the unedited policy on identical simulator seeds. Told to ``put the cube then the banana in the bowl,'' the policy grasps the cube and lets go before reaching the bowl, yet the same weights succeed under an explicit rewording. Robot policies are known to respond differently to equivalent wordings~\citep{fei2026liberoplus,kim2026liberopara,abbas2026samegoal}; here that sensitivity points to a repair. We introduce \emph{closed-form instruction distillation}, which finds such a failure by replaying recorded decisions under rewordings and then writes the internal effect of the working wording into the weights with a multi-key closed-form update~\citep{meng2023memit}. On a held-out start, the edited policy keeps hold of the cube that the unedited policy drops three control steps after grasping it (Fig.~\ref{fig:teaser}).
 
 Our contributions are fourfold. (i) Closed-form instruction distillation, a gradient-free procedure that diagnoses a language-binding failure with instruction-swap replays and copies a known-good instruction's per-layer residual changes into the VLM's MLP weights; to our knowledge it is the first edit that distils an instruction rewording into a robot policy in closed form, and with the instruction unchanged it raises held-out success from 27/128 to 106/128. (ii) Evidence that the edit can be small and that it transfers: a 0.16\% low-rank variant on image tokens matches it on held-out seeds, it lifts two other tasks without detectable harm on the remaining 13, and ablations place the fix in the image tokens. (iii) A map of what such edits did not fix, with two editors and a same-protocol comparison, across perception, missing competence, contact physics, and gripper commitment. (iv) A measurement of the noise floor of paired closed-loop evaluation, where unchanged weights flip roughly a third of paired outcomes, with the smallest detectable effects and the released protocol, code, and paired-episode data.
 
-\begin{table}[!t]
-\caption{One instruction, misread. The unedited policy often releases the cube early under the original wording but reads the explicit wording, used only to build the edit, correctly. Wrist-camera frames of held-out start 90000 at one moment: unedited, the banana went in first; edited, the cube did.}
-\label{tab:teaser}
-\small
-\begin{minipage}[c]{.30\linewidth}
-\textbf{Same start, same moment}\par\smallskip
-\includegraphics[width=\linewidth]{teaser_frames.pdf}
-\end{minipage}\hfill
-\begin{minipage}[c]{.66\linewidth}
-\textbf{Task:} put the cube in the bowl, then the banana.\par
-The instruction given to the robot never changes. The edit changes only the weights.\par\smallskip
-\begin{tabular}{@{}p{\linewidth}@{}}
-\toprule
-\textcolor{reference}{\textbf{Original instruction}} (every run)\par
-Put the cube then the banana in the bowl. \\
-\addlinespace
-\textcolor{mover}{\textbf{Explicit instruction}} (diagnosis and edit construction only)\par
-Put the cube in the bowl then put the banana in the bowl. \\
-\addlinespace
-\textbf{Edit.} Closed-form instruction distillation edits 17 VLM layers so that they process the original instruction like the explicit one. \\
-\addlinespace
-\textbf{Held-out result.} 27/128 $\rightarrow$ 106/128 successes; 81 fixed, 2 broken. \\
-\bottomrule
-\end{tabular}
-\end{minipage}
-\end{table}
-
 \section{Closed-Form Instruction Distillation}
 \label{sec:method}
-Closed-form instruction distillation turns an instruction that works into weights that work. Its five steps (Fig.~\ref{fig:method}a) replay recorded failure decisions under rewordings, identify a known-good instruction, distil it into the weights in closed form, check the edit offline on recorded decisions, and confirm it in closed loop on practice and then held-out seeds. Each step uses only weights, recorded inputs, and activations, with no gradients or iterative optimization.
+Closed-form instruction distillation turns an instruction that works into weights that work: it replays recorded failure decisions under rewordings, identifies a known-good instruction, distils it into the weights in closed form, checks the edit offline, and confirms it in closed loop on practice and then held-out seeds, using only weights, recorded inputs, and activations.
+
+\pifive{} combines an 18-layer PaliGemma vision-language model (VLM) with an 18-layer Gemma action expert~\citep{pi2025pi05,beyer2024paligemma}. The VLM processes image tokens from two cameras with the instruction and robot-state tokens under bidirectional attention, so image tokens can attend to the instruction; the action expert attends to the VLM's keys and values and produces 15-step action chunks, including a gripper command, by flow matching~\citep{black2024pi0}.
+
+The cube-then-banana task illustrates the diagnosis. Under the original instruction the unedited policy succeeds in 9 of 64 episodes. It goes for the cube first in 63 of 64, grasps it, lifts it a few centimetres, and lets go well short of the bowl; we call this a \emph{premature release}. When the cube does reach the bowl first, the episode usually succeeds (about 7 times in 9), so the skill is present. We replayed 21 recorded premature-release decisions with images, robot state, and flow-matching noise fixed, changing only the instruction (Fig.~\ref{fig:construction}a). Renaming the cube leaves all 21 releases, whereas moving ``in the bowl'' next to the cube leaves one to three, and in one VLM attention head the destination words attend far more to the adjacent noun than to the first (Appendix~\ref{app:construction}). We read this as a binding error: holding the cube, the policy treats the banana as the object that belongs in the bowl. The explicit wording is a \emph{known-good instruction}: with unchanged weights it succeeds in 22 of 32 closed-loop episodes against 3 of 32 for the original on the same seeds (20 fixed, 1 broken).
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\linewidth]{fig_method.pdf}
-\caption{Closed-form instruction distillation. (a) The five steps, with their outcomes on the cube-then-banana task in teal. (b) The edit updates the MLP down-projections of VLM layers 0--16 using keys at 32 image cells and 40 prompt and state positions; the instruction is unchanged.}
-\label{fig:method}
+\includegraphics[width=\linewidth]{fig2_construction.pdf}
+\caption{What it takes to fix the decision. Bars give the share of 21 recorded premature-release decisions that still release when replayed offline with images, robot state, and noise fixed: (a) under rewordings, (b) under weight edits in the order they were built, then under variants of the distilled edit. Size counts low-rank factors; closed-loop results are edited (unedited) successes on practice $\cdot$ held-out seeds.}
+\label{fig:construction}
 \end{figure}
-
-\pifive{} combines an 18-layer PaliGemma vision-language model (VLM) with an 18-layer Gemma action expert~\citep{pi2025pi05,beyer2024paligemma}. The VLM processes image tokens from two cameras with the instruction and robot-state tokens under bidirectional attention, so image tokens can attend to the instruction (Fig.~\ref{fig:method}b); the action expert attends to the VLM's keys and values and produces 15-step action chunks, including a gripper command, by flow matching~\citep{black2024pi0}.
-
-The cube-then-banana task illustrates the diagnosis. Under the original instruction the unedited policy succeeds in 9 of 64 episodes. It goes for the cube first in 63 of 64, grasps it, lifts it a few centimetres, and lets go well short of the bowl; we call this a \emph{premature release}. When the cube does reach the bowl first, the episode usually succeeds (about 7 times in 9), so the skill is present. We replayed 21 recorded premature-release decisions with images, robot state, and flow-matching noise fixed, changing only the instruction (Table~\ref{tab:replay}). Renaming the cube leaves all 21 releases, whereas moving ``in the bowl'' next to the cube leaves one to three, and in one VLM attention head the destination words attend far more to the adjacent noun than to the first (Appendix~\ref{app:construction}). We read this as a binding error: holding the cube, the policy treats the banana as the object that belongs in the bowl. The explicit wording is a \emph{known-good instruction}: with unchanged weights it succeeds in 22 of 32 closed-loop episodes against 3 of 32 for the original on the same seeds (20 fixed, 1 broken).
-
-\begin{table}[!t]
-\centering\small
-\caption{Instruction-swap replay of 21 recorded premature-release decisions with images, robot state, and noise fixed. The count gives the decisions at which the policy still releases the cube.}
-\label{tab:replay}
-\begin{tabular}{@{}lr@{}}
-\toprule
-Instruction at the replayed decisions & Releases (of 21)\\
-\midrule
-\textcolor{reference}{Put the cube then the banana in the bowl} (original) & 21\\
-Put the rubiks cube then the banana in the bowl & 21\\
-Put the banana then the cube in the bowl & 3\\
-Put the cube in the bowl then the banana & 3\\
-\textcolor{mover}{Put the cube in the bowl then put the banana in the bowl} (explicit) & 2\\
-Put the cube in the bowl & 1\\
-\bottomrule
-\end{tabular}
-\end{table}
 
 Distillation makes the network process the original instruction as it processes the known-good one. At each VLM layer $\ell=0,\dots,16$ we form 72 keys, the rows of $K_\ell$: the mean input to the layer's MLP down-projection under the original instruction at 40 positions shared by both prompts (the beginning-of-sequence, ``Task:'', and robot-state tokens) and at 32 image cells (16 per camera), averaged over 6 recorded premature-release decisions. The matching rows of $V_\ell$ hold the layer's residual increment at that position under the explicit instruction minus that under the original. With activations as row vectors, we apply the regularized minimum-norm update that maps each key to its value,
 \begin{equation}
@@ -115,64 +77,45 @@ Offline, the edit removes all 21 premature releases and leaves unchanged all 9 r
 
 \section{Paired Weight-Edit Evaluation}
 \label{sec:eval}
-To measure what an edit changes, we compare each edited policy with the unedited policy from identical simulator starts. We use the OpenPI \pifive{} DROID joint-position checkpoint, with about 3.35 billion parameters~\citep{openpi2025,pi2025pi05}. It was trained on DROID data~\citep{khazatsky2024droid} and on none of our tasks, so every result is zero-shot. It receives two $224\times224$ camera images and the joint and gripper state, and it outputs 15-step chunks of seven joint commands and a gripper command binarized at 0.5. We run 16 RoboLab tasks in Isaac Sim with 16 parallel environments per evaluation~\citep{yang2026robolab} and count an episode as a success when RoboLab's terminal success flag is set.
+We compare each edited policy with the unedited policy from identical simulator starts, using the OpenPI \pifive{} DROID joint-position checkpoint with about 3.35 billion parameters~\citep{openpi2025,pi2025pi05}. It was trained on DROID data~\citep{khazatsky2024droid} and on none of our tasks, so every result is zero-shot. It receives two $224\times224$ camera images and the joint and gripper state, and it outputs 15-step chunks of seven joint commands and a gripper command binarized at 0.5. We run 16 RoboLab tasks in Isaac Sim with 16 parallel environments per evaluation~\citep{yang2026robolab} and count an episode as a success when RoboLab's terminal success flag is set.
 
 A 16-episode survey of the unedited policy on each task sorted its failures into levels (Appendix~\ref{app:survey}): \emph{language binding}, where the wrong object counts as the current target; \emph{perception}, where the arm goes for a similar-looking object; \emph{missing competence}, where no working motion is produced; \emph{contact physics}, where the decisions look right but the grasp slips; and \emph{gripper commitment}, where open and close decisions sit near the threshold. A motor decision that stalls inside a learned skill, where others report gains~\citep{guo2026robotweights}, did not occur among our tasks.
 
 Edits came from two frontier models run headless: Claude Opus in this work and GPT-6 Astra in the companion study~\citep{abbas2026wspstudy}. An editor can read and write every weight in a NumPy sandbox, capture activations on the exact inputs of any recorded decision, and roll the policy out. It may not use gradients, optimizers, fine-tuning, or black-box search; every edit is a closed-form computation from weights and activations, with its hypothesis written before evaluation, and the instruction text is fixed. Some edits, including the distilled one, were built by the operator session, also Claude Opus, under the same rules; the companion protocol was narrower, with typed operations on at most 128 rows in two action-expert layers (Appendix~\ref{app:other}).
 
-A simulator slot fixes the random seeds and scene of one episode, and every comparison runs both policies on the same slots; these are our \emph{paired seeds}. Edits are developed on \emph{practice seeds}. An edit that passes practice is frozen and scored by the operator on \emph{held-out seeds} never used during editing, with the two policies alternating run order between the halves of the slots. We report paired differences with 95\% bootstrap intervals over the four paired outcome types (20,000 draws), exact McNemar tests on the discordant pairs~\citep{mcnemar1947note}, and Wilson intervals for single rates~\citep{wilson1927probable}. Because paired seeds do not make episodes identical, we also rerun unedited and identically edited policies as noise controls.
+A simulator slot fixes the random seeds and scene of one episode, and every comparison runs both policies on the same slots; these are our \emph{paired seeds}. Each pair has one of four outcomes: both succeed, both fail, \emph{fixed} (only the edited policy succeeds), or \emph{broke} (only the unedited policy succeeds). Edits are developed on \emph{practice seeds}. An edit that passes practice is frozen and scored by the operator on \emph{held-out seeds} never used during editing, with the two policies alternating run order between the halves of the slots. We report paired differences with 95\% bootstrap intervals over the four outcome types (20,000 draws), exact McNemar tests on the fixed and broke pairs~\citep{mcnemar1947note}, and Wilson intervals for single rates~\citep{wilson1927probable}. Because paired seeds do not make episodes identical, we also rerun unedited and identically edited policies as noise controls.
 
 \section{Results}
 \label{sec:results}
-Closed-form instruction distillation fixes the misreading on seeds never used during editing. On 128 held-out seeds, success rises from 27/128 (21.1\%) to 106/128 (82.8\%), with 81 episodes fixed and 2 broken (+61.7 percentage points, 95\% interval 52.3--70.3; exact McNemar $p=7.2\times10^{-22}$; Fig.~\ref{fig:effects}a). The Wilson intervals do not overlap (75.3--88.4\% against 14.9--29.0\%), the gain holds in both halves of the alternating run order (Appendix~\ref{app:repro}), and successful episodes finish sooner, in 300 rather than 412 steps on average.
+Closed-form instruction distillation fixes the misreading on seeds never used during editing. On 128 held-out seeds, success rises from 27/128 (21.1\%) to 106/128 (82.8\%), with 81 episodes fixed and 2 broken (+61.7 percentage points, 95\% interval 52.3--70.3; exact McNemar $p=7.2\times10^{-22}$; Fig.~\ref{fig:outcomes}). The Wilson intervals do not overlap (75.3--88.4\% against 14.9--29.0\%), the gain holds in both halves of the alternating run order (Appendix~\ref{app:repro}), and successful episodes finish sooner, in 300 rather than 412 steps on average. In the event logs, the unedited policy drops the cube during transport, outside the bowl, in 75 of the 81 fixed starts; the edited policy does so in 15 of them and recovers.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\linewidth]{fig_effects.pdf}
-\caption{Paired effects of every edit on identical seeds. Diamonds and bars show the success-rate difference, edited minus unedited, with its paired 95\% bootstrap interval; numbers after labels count paired episodes. Teal: distilled edit; purple: other Claude Opus edits; orange: GPT-6 Astra edits; gray: no weight change. Positive values favor the edit.}
-\label{fig:effects}
+\includegraphics[width=\linewidth]{fig3_outcomes.pdf}
+\caption{Paired outcomes. Each bar splits a comparison's paired starts into the four outcome types named in the key; at right, the number of pairs and of fixed and broke pairs. Held-out comparisons are in bold teal; italic rows change no weights. On its own task the distilled edit flips pairs almost only one way; failed edits and unchanged-weight reruns flip many both ways (all comparisons: Appendix~\ref{app:comparisons}).}
+\label{fig:outcomes}
 \end{figure}
 
 The edit can be made small without losing the effect. Restricting the keys to the 32 image cells in layers 8--16 gives an update of rank at most 32 per layer, with 5.3 million parameters as low-rank factors, or 0.16\% of the parameter count. On the same held-out seeds this variant scores 102/128 against 19/128 (86 fixed, 3 broken; exact $p=3.8\times10^{-22}$), matching the full edit; the unedited policy's 19/128 here and 27/128 in the first run on identical seeds is itself run-to-run variation.
 
-The same edit transfers to two other tasks and harms none detectably (Fig.~\ref{fig:heatmap}). Its keys sit at positions every task has, so we ran it unchanged on all 15 other surveyed tasks. On held-out seeds, picking up the eyeglasses rises from 22/64 to 44/64 (31 fixed, 9 broken; +34.4 points, 95\% interval 17.2--51.6; $p=6.8\times10^{-4}$), and putting the cube left of the bowl rises from 8/64 to 36/64 (33 fixed, 5 broken; +43.8 points, 28.1--59.4; $p=4.3\times10^{-6}$). Putting the cube right of the bowl stays at 0/32, so the edit is not a general switch for spatial language. No difference on the remaining 13 tasks is significant (all exact $p\geq0.12$). The largest apparent loss, butter on the raisin box at 10/16 against 14/16, is smaller than the unedited policy's own drop to 8/16 when rerun on the same seeds (Appendix~\ref{app:sidefx}).
+The same edit transfers to two other tasks and harms none detectably. Its keys sit at positions every task has, so we ran it unchanged on all 15 other surveyed tasks (Appendix~\ref{app:sidefx}). On held-out seeds, picking up the eyeglasses rises from 22/64 to 44/64 (31 fixed, 9 broken; +34.4 points, 95\% interval 17.2--51.6; $p=6.8\times10^{-4}$), and putting the cube left of the bowl rises from 8/64 to 36/64 (33 fixed, 5 broken; +43.8 points, 28.1--59.4; $p=4.3\times10^{-6}$). Putting the cube right of the bowl stays at 0/32, so the edit is not a general switch for spatial language. No difference on the remaining 13 tasks is significant (all exact $p\geq0.12$). The largest apparent loss, butter on the raisin box at 10/16 against 14/16, is smaller than the unedited policy's own drop to 8/16 when rerun on the same seeds.
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=\linewidth]{fig_heatmap.pdf}
-\caption{Success on all 16 surveyed tasks. Cells give successes out of episodes, shaded by rate; each edited column pairs with the unedited column beside it, and gray cells were not run. Teal names mark held-out gains. $^\dagger$Unedited rerun on the same seeds: 8/16.}
-\label{fig:heatmap}
-\end{figure}
-
-Edits at the other failure levels did not help (Fig.~\ref{fig:effects}b). In perception, the unedited policy stacks the yellow block on the red block in 28 of 64 practice episodes, and the arm goes first for a nearby Rubik's cube with a yellow face in 48 of 63. The VLM separates the two objects ($d'\approx10$--$20$), but the action expert barely uses the distinction ($d'\approx2$--$3$, against a null of about 1.7). Three Claude edits that amplified this signal through attention or key and value weights each scored 21/64 ($-10.9$ points; 95\% interval $-26.6$ to $+4.7$ for the first) and also suppressed a useful habit of backing away from the cube after touching it. Four GPT-6 Astra edits of 791--6,225 values stayed within noise, and none passed the companion study's gate. A fresh Claude Opus editor under that study's exact protocol independently diagnosed the same lookalike confusion; its two proposals scored 16/32 and 11/32 against 12/32, neither passed the gate, and it submitted the unedited policy (Appendix~\ref{app:other}).
+Edits at the other failure levels did not help (Fig.~\ref{fig:outcomes}). In perception, the unedited policy stacks the yellow block on the red block in 28 of 64 practice episodes, and the arm goes first for a nearby Rubik's cube with a yellow face in 48 of 63. The VLM separates the two objects ($d'\approx10$--$20$), but the action expert barely uses the distinction ($d'\approx2$--$3$, against a null of about 1.7). Three Claude edits that amplified this signal through attention or key and value weights each scored 21/64 ($-10.9$ points; 95\% interval $-26.6$ to $+4.7$ for the first) and also suppressed a useful habit of backing away from the cube after touching it. Four GPT-6 Astra edits of 791--6,225 values stayed within noise, and none passed the companion study's gate. A fresh Claude Opus editor under that study's exact protocol independently diagnosed the same lookalike confusion; its two proposals scored 16/32 and 11/32 against 12/32, neither passed the gate, and it submitted the unedited policy (Appendix~\ref{app:other}).
 
 The other levels gave the same answer. The flat green box is never picked up (0/64) because its long side exceeds the gripper opening at the default wrist angle; the best of ten edits raised the share of episodes reaching a graspable wrist angle from 9/16 to 16/16 but produced no success. The mustard bottle slips from a cap grasp mid-carry, and no recorded decision variable predicted which grasps would hold ($|\rho|\leq0.26$); two neuron-flip edits were stopped offline. Built into the network as one bias weight, the companion study's lower gripper threshold~\citep{abbas2026wspstudy} scored 117/240 against 117/240 across seven tasks, with 37 episodes fixed and 37 broken.
 
-Paired seeds still leave large run-to-run variation. The unedited policy scored 14/16 and then 8/16 on the same 16 butter seeds, two runs of one edited policy agreed on only 46 of 64 paired episodes, and a near-neutral one-weight edit changed 70 of 192 paired outcomes on tasks with room to move. With about 30\% of pairs discordant, a single paired comparison with 80\% power at $\alpha=0.05$ detects changes of about 27 points with 32 pairs, 19 with 64, 14 with 128, and 10 with 256 (Appendix~\ref{app:comparisons}). A 16-episode screen is therefore a filter, not evidence: the distilled edit clears these thresholds on held-out seeds, whereas the 16- and 32-pair transfer runs cannot rule out smaller changes.
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{fig4_detectability.pdf}
+\caption{Which differences a paired comparison can detect. Markers place each comparison by its paired episodes and the size of its difference, pointing up when the edit did better; below the curve a difference is smaller than the change detectable with 80\% power ($\alpha=0.05$, 30\% of pairs discordant; band 20--40\%). Teal: distilled edit (filled: held-out); gray: no weight change; dark: other edits.}
+\label{fig:detect}
+\end{figure}
+
+Paired seeds still leave large run-to-run variation. The unedited policy scored 14/16 and then 8/16 on the same 16 butter seeds, two runs of one edited policy agreed on only 46 of 64 paired episodes, and a near-neutral one-weight edit changed 70 of 192 paired outcomes on tasks with room to move. With about 30\% of pairs discordant, a single paired comparison with 80\% power at $\alpha=0.05$ detects changes of about 27 points with 32 pairs, 19 with 64, 14 with 128, and 10 with 256 (Fig.~\ref{fig:detect}). A 16-episode screen is therefore a filter, not evidence: the distilled edit clears this bound on held-out seeds, whereas every failed edit and every unchanged-weight rerun falls below it, the butter rerun only just.
 
 \section{Why Some Failures Can Be Edited}
 \label{sec:why}
-The image tokens carry the fix. Three simpler edits failed offline (Appendix~\ref{app:construction}): steering image tokens along a cube-versus-banana axis that tracks the wording flipped none of the 21 releases even at three times the explicit wording's value, so the axis was correlated with the outcome but not causal~\citep{turner2023steering}; copying the mean shift at the state tokens flipped none; and copying per-token shifts at the 40 prompt and state positions left 8 to 15. Adding the 32 image cells removed all 21, and image cells alone suffice, whereas prompt and state positions alone leave 13 (Table~\ref{tab:ablation}). The explicit wording moves the image tokens by only 2--4\% of their norm, yet the action expert places 13--44\% of its attention on them. Because prefix attention is bidirectional, image tokens attend to the instruction; our working hypothesis is that the instruction is read into the image representation that the action expert consults when it decides whether to keep holding.
-
-\begin{table}[!t]
-\centering\small
-\caption{What carries the fix. Offline ablations of Eq.~\eqref{eq:edit} on the 21 recorded premature releases; every variant keeps all 9 correct carries and 19 phase-two decisions. Factored size is rank $\times$ (16{,}384 + 2{,}048) $\times$ layers. Held-out: edited vs unedited successes of 128.}
-\label{tab:ablation}
-\setlength{\tabcolsep}{5pt}
-\begin{tabular}{@{}llrrrr@{}}
-\toprule
-Variant & Layers & Keys per layer & Factored size & Releases (of 21) & Held-out\\
-\midrule
-Full edit & 0--16 & 72 & 22.6M (0.67\%) & 0 & 106 vs 27\\
-Image cells only & 0--16 & 32 & 10.0M (0.30\%) & 0 & ---\\
-Layers 8--16 only & 8--16 & 72 & 11.9M (0.36\%) & 0 & ---\\
-Half strength & 0--16 & 72 & 22.6M (0.67\%) & 2 & ---\\
-Image cells, layers 8--16 & 8--16 & 32 & 5.3M (0.16\%) & 2 & 102 vs 19\\
-Prompt and state positions only & 0--16 & 40 & 12.5M (0.37\%) & 13 & ---\\
-\bottomrule
-\end{tabular}
-\end{table}
+The image tokens carry the fix. Three simpler edits failed offline (Fig.~\ref{fig:construction}b): steering image tokens along a cube-versus-banana axis that tracks the wording flipped none of the 21 releases even at three times the explicit wording's value, so the axis was correlated with the outcome but not causal~\citep{turner2023steering}; copying the mean shift at the state tokens flipped none; and copying per-token shifts at the 40 prompt and state positions left 8 to 15. Adding the 32 image cells removed all 21, and image cells alone suffice, whereas prompt and state positions alone leave 13 (Appendix~\ref{app:construction}). The explicit wording moves the image tokens by only 2--4\% of their norm, yet the action expert places 13--44\% of its attention on them. Because prefix attention is bidirectional, image tokens attend to the instruction; our working hypothesis is that the instruction is read into the image representation that the action expert consults when it decides whether to keep holding.
 
 Distillation re-routes a computation the network already performs; it did not create one that is missing. The success had three ingredients: a skill the policy demonstrably has, a failure traced to one computation, and a known-good internal state to copy. Each failed level lacked one: the flat box lacks the skill, the mustard grasp has no wrong decision to correct, and in perception no edit we found routed the VLM's correct signal to the action without breaking a useful behavior. This agrees with the strongest outside reports, which edited checkpoints already fine-tuned on each task~\citep{guo2026robotweights} or built updates from differences between trained models~\citep{gupta2026robotweights,ilharco2023arithmetic}. It suggests a practical rule: edit when the network can be shown to do the right thing under some input, and train when it cannot.
 
@@ -225,7 +168,7 @@ Motor decision, skill present & A competent skill stalls at one step & None amon
 \FloatBarrier
 \section{All paired comparisons and the noise floor}
 \label{app:comparisons}
-Table~\ref{tab:all} lists every closed-loop comparison in \texttt{study/results/opus/comparisons.json}, and Fig.~\ref{fig:forest} plots them. Each difference is edited minus unedited on paired seeds, in percentage points, with a 95\% interval from 20,000 multinomial draws over the four paired outcome types (both succeed, fixed, broken, both fail). The pooled gripper row is resampled within each task. The $p$-values are exact two-sided McNemar tests on the fixed and broken pairs. The companion study's rows use its own runtime and are not pooled with ours. Its unchanged-weight rerun labelled ``extra'' shares the unedited reference of the first rerun, so those two comparisons are correlated. Rows that begin with Astra are GPT-6 Astra edits and rows marked Astra study are the companion study's operator controls; all other edits, including the two under the Astra protocol, are Claude Opus edits.
+Table~\ref{tab:all} lists every closed-loop comparison in \texttt{study/results/opus/comparisons.json}, and Fig.~\ref{fig:outcomes-full} shows the paired outcomes of each. Each difference is edited minus unedited on paired seeds, in percentage points, with a 95\% interval from 20,000 multinomial draws over the four paired outcome types (both succeed, fixed, broken, both fail). The pooled gripper row is resampled within each task. The $p$-values are exact two-sided McNemar tests on the fixed and broken pairs. The companion study's rows use its own runtime and are not pooled with ours. Its unchanged-weight rerun labelled ``extra'' shares the unedited reference of the first rerun, so those two comparisons are correlated. Rows that begin with Astra are GPT-6 Astra edits and rows marked Astra study are the companion study's operator controls; all other edits, including the two under the Astra protocol, are Claude Opus edits.
 
 {\fontsize{8}{9.6}\selectfont
 \setlength{\tabcolsep}{2.6pt}
@@ -246,7 +189,7 @@ Comparison & Values & Counts & Fixed / broke & Difference [95\% CI] & $p$\\
 \end{longtable}
 }
 
-\paragraph{Noise floor.} Unchanged weights do not give unchanged outcomes on paired seeds. Fig.~\ref{fig:noise}a shows the share of paired episodes whose outcome differs: 28\% for two runs of one edited policy, 36\% for a near-neutral one-weight edit on the four tasks with room to move, 38\% for the unedited butter rerun, and 45--58\% for the companion study's unchanged-weight reruns. The companion study's audit found different first camera images and actions in paired episodes with equal seeds and robot state, without isolating the cause~\citep{abbas2026wspstudy}; nondeterministic GPU simulation amplified by open-loop action chunks is one candidate. Table~\ref{tab:mde} gives the smallest paired difference a single comparison detects with 80\% power at a two-sided $\alpha=0.05$, using the normal approximation $(z_{0.975}+z_{0.8})\sqrt{q/n}$ with a discordant fraction $q=0.3$. Fig.~\ref{fig:noise}b places every observed effect against that bound.
+\paragraph{Noise floor.} Unchanged weights do not give unchanged outcomes on paired seeds. The share of paired episodes whose outcome differs is 28\% for two runs of one edited policy, 36\% for a near-neutral one-weight edit on the four tasks with room to move, 38\% for the unedited butter rerun, and 45--58\% for the companion study's unchanged-weight reruns (Fig.~\ref{fig:outcomes-full}). The companion study's audit found different first camera images and actions in paired episodes with equal seeds and robot state, without isolating the cause~\citep{abbas2026wspstudy}; nondeterministic GPU simulation amplified by open-loop action chunks is one candidate. Table~\ref{tab:mde} gives the smallest paired difference a single comparison detects with 80\% power at a two-sided $\alpha=0.05$, using the normal approximation $(z_{0.975}+z_{0.8})\sqrt{q/n}$ with a discordant fraction $q=0.3$. Fig.~\ref{fig:detect} places every observed effect against that bound.
 
 \begin{table}[htbp]
 \centering\small
@@ -264,18 +207,11 @@ Paired episodes per arm & Smallest detectable change\\
 \end{tabular}
 \end{table}
 
-\begin{figure}[htbp]
+\begin{figure}[p]
 \centering
-\includegraphics[width=\linewidth]{figA_noise.pdf}
-\caption{The noise floor. (a) Share of paired episodes whose outcome differs, by kind of comparison; the band marks 28--36\%. (b) Observed differences against the number of paired episodes. The shaded band and solid lines bound the smallest detectable change at 30\% discordant pairs, and dashed lines at 50\%.}
-\label{fig:noise}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\linewidth]{figA_forest_full.pdf}
-\caption{Every comparison of Table~\ref{tab:all}. Diamonds and bars show the paired difference and its 95\% bootstrap interval; the right column gives edited versus unedited successes. Colors follow Fig.~\ref{fig:effects}. Positive values favor the edit.}
-\label{fig:forest}
+\includegraphics[width=\linewidth]{figA_outcomes_full.pdf}
+\caption{Paired outcomes of every comparison in Table~\ref{tab:all}, drawn as in Fig.~\ref{fig:outcomes}. Held-out comparisons are in bold teal. The flat-box row stands for each of the ten edits, all 0/16 against an unedited 0/64.}
+\label{fig:outcomes-full}
 \end{figure}
 
 \FloatBarrier
@@ -283,9 +219,28 @@ Paired episodes per arm & Smallest detectable change\\
 \label{app:construction}
 \paragraph{Capture and tensors.} The edit uses one activation capture of 6 premature-release decisions, each replayed under 8 instructions, with VLM residuals and MLP activations at every layer. It modifies the MLP down-projections \texttt{language.blocks.00--16.mlp.linear}, each mapping 16,384 hidden features to the 2,048-dimensional residual stream. Keys are mean activations under the original instruction; values are the explicit instruction's per-layer residual increments minus the original's. Each layer receives Eq.~\eqref{eq:edit} with $\lambda=10^{-3}\,\mathrm{tr}(KK^{\top})/n$ for $n$ keys and unit strength. After rounding to bfloat16, the full edit changes 450,468,837 stored values (13.4\%) with rank at most 72 per layer.
 
-\paragraph{Attempts that failed offline.} All of these were stopped by offline replay on recorded decisions, before any rollout. Two rank-one pushes along a cube-versus-banana ``target'' axis at the image tokens left 21 of 21 releases. Copying the mean explicit-minus-original shift at the state tokens, rank one per layer, left 6 of 6 releases on a six-decision check. Copying the per-position shift at the 40 prompt and state positions with Eq.~\eqref{eq:edit} left 15, 13, and 8 of 21 releases in three versions, and adding text positions left 13. Adding the 32 image cells gave the submitted edit, with 0 of 21 releases and unchanged carries and phase-two decisions.
+\paragraph{Attempts that failed offline.} All of these were stopped by offline replay on recorded decisions, before any rollout (Fig.~\ref{fig:construction}b). Two rank-one pushes along a cube-versus-banana ``target'' axis at the image tokens left 21 of 21 releases. Copying the mean explicit-minus-original shift at the state tokens, rank one per layer, left 6 of 6 releases on a six-decision check. Copying the per-position shift at the 40 prompt and state positions with Eq.~\eqref{eq:edit} left 15, 13, and 8 of 21 releases at strengths 0.5, 1, and 2 (candidates \texttt{v2m-h}, \texttt{v2m-f}, \texttt{v2m-2}), and adding text positions left 13. Adding the 32 image cells gave the submitted edit, with 0 of 21 releases and unchanged carries and phase-two decisions.
 
-\paragraph{Ablations and the 0.16\% variant.} Table~\ref{tab:ablation} lists the offline ablations. Applied to the weights, every variant still changes 248--450 million stored values (7--13\%), because each low-rank update is dense in the weight matrix. The smallest variant (image cells, layers 8--16, rank at most 32) changes 248,057,499 values. In closed loop it scores 25/32 against 3/32 on the practice seeds (22 fixed, 0 broken). On held-out seeds 90000--90127 it scores 102/128 against 19/128 (86 fixed, 3 broken; exact $p=3.8\times10^{-22}$), with Wilson intervals of 71.9--85.7\% and 9.7--22.0\%; successful episodes take 333 rather than 396 steps on average.
+\paragraph{Ablations and the 0.16\% variant.} Table~\ref{tab:ablation} lists the offline ablations shown in Fig.~\ref{fig:construction}b, with their layers, keys, and sizes. Applied to the weights, every variant still changes 248--450 million stored values (7--13\%), because each low-rank update is dense in the weight matrix. The smallest variant (image cells, layers 8--16, rank at most 32) changes 248,057,499 values. In closed loop it scores 25/32 against 3/32 on the practice seeds (22 fixed, 0 broken). On held-out seeds 90000--90127 it scores 102/128 against 19/128 (86 fixed, 3 broken; exact $p=3.8\times10^{-22}$), with Wilson intervals of 71.9--85.7\% and 9.7--22.0\%; successful episodes take 333 rather than 396 steps on average.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Offline ablations of Eq.~\eqref{eq:edit} on the 21 recorded premature releases; every variant keeps all 9 correct carries and 19 phase-two decisions. Factored size is rank $\times$ (16{,}384 + 2{,}048) $\times$ layers, with its share of the parameter count. Held-out: edited versus unedited successes of 128.}
+\label{tab:ablation}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Variant & Layers & Keys per layer & Factored size & Releases (of 21) & Held-out\\
+\midrule
+Full edit & 0--16 & 72 & 22.6M (0.67\%) & 0 & 106 vs 27\\
+Image cells only & 0--16 & 32 & 10.0M (0.30\%) & 0 & ---\\
+Layers 8--16 only & 8--16 & 72 & 11.9M (0.36\%) & 0 & ---\\
+Half strength & 0--16 & 72 & 22.6M (0.67\%) & 2 & ---\\
+Image cells, layers 8--16 & 8--16 & 32 & 5.3M (0.16\%) & 2 & 102 vs 19\\
+Prompt and state positions only & 0--16 & 40 & 12.5M (0.37\%) & 13 & ---\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{Diagnosis details.} The destination words' attention to the adjacent noun versus the first noun is 0.69 versus 0.02 in VLM layer 1, head 1. The explicit wording changes the image tokens by 2--4\% of their norm, while the action expert places 13--44\% of its attention on image tokens and 33--58\% on the instruction and state tokens. On recorded decisions, the edited policy's actions land 4.5\,cm from the explicit wording's actions at the end of the chunk, against 8.1\,cm for the unedited policy.
 
@@ -352,7 +307,7 @@ Task & Pairs & Unedited & Edited & Fixed / broke & Difference [95\% CI] & $p$\\
 \label{app:repro}
 \paragraph{Code and data.} The paired outcomes behind every comparison in this paper are in the repository \url{https://github.com/adeeb10abbas/weightsmith}. The paired comparisons are in \texttt{study/results/opus/comparisons.json}, and the four held-out runs, with per-slot outcomes, Wilson intervals, and exact McNemar tests, are in \texttt{study/results/opus/heldout/}. The evidence record \texttt{study/results/opus/EVIDENCE.md} lists every proposal, budget, and cost; the edit scripts are in \texttt{study/results/opus/ctb/}, and the brief and final report of the same-protocol run are in \texttt{study/results/opus/}. The command \texttt{python3 paper/scripts/make\_figures.py} regenerates every figure and generated table of this paper from these files.
 
-\paragraph{Held-out protocol.} The operator scored frozen edits with \texttt{weightsmith/heldout.py} on slots 90000--90127 (cube then banana) and 90000--90063 (transfer tasks). The first half of the slots ran the unedited policy first and the second half the edited policy first. Editors never saw held-out slots. Table~\ref{tab:halves} splits each held-out run by run order; every gain appears in both halves.
+\paragraph{Held-out protocol.} The operator scored frozen edits with \texttt{weightsmith/heldout.py} on slots 90000--90127 (cube then banana) and 90000--90063 (transfer tasks). The first half of the slots ran the unedited policy first and the second half the edited policy first. Editors never saw held-out slots. Table~\ref{tab:halves} splits each held-out run by run order; every gain appears in both halves. The RoboLab event logs of the cube-then-banana run are summarized per slot in \texttt{paper/figures/src/heldout\_v2mif\_events.json}, which gives the cube-drop counts in Section~\ref{sec:results}. Fig.~\ref{fig:teaser} shows the lowest-numbered fixed start whose unedited run dropped the cube before touching the banana, start 90002; its frames, gripper commands, and events come from the recorded episodes (\texttt{paper/scripts/build\_teaser\_data.py}).
 
 \begin{table}[htbp]
 \centering\small

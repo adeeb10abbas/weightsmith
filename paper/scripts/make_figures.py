@@ -5,18 +5,24 @@ Inputs (all inside this repository):
   study/results/opus/comparisons.json        paired closed-loop comparisons (n, base, cand, fixed, broke)
   study/results/opus/heldout/*.json          held-out runs (summary: Wilson 95% CIs, exact McNemar p, per-slot outcomes)
   study/blog/failure-levels.md               unedited 16-task survey (Appendix A table) and the transfer-map table
+  study/results/opus/ctb/README.md, EVIDENCE.md, failure-levels.md section 5
+                                             offline release counts of the edit's construction steps (Fig. 2, typed
+                                             below in CONSTRUCTION with their source)
   study/blog/figures/opus_mustard_slip.jpg   wrist-camera strip (made by study/results/scripts/make_mustard_strip.py)
-  paper/figures/src/ctb_heldout90000_wrist.png
-      wrist-camera views of held-out slot 90000 (cube then banana), unedited above and edited below, cropped from
-      frame 210 (t = 7.0 s) of the side-by-side clip cube_then_banana.mp4; see paper/README.md.
+  paper/figures/src/teaser_90002.json, teaser_90002_frames.png
+                                             held-out slot 90002: gripper commands, events and wrist frames, built
+                                             from the recorded episodes by scripts/build_teaser_data.py
+  paper/figures/src/heldout_v2mif_events.json
+                                             per-slot event summary of the held-out cube-then-banana run, built by
+                                             scripts/summarize_heldout_events.py (cube drops, Fig. 1 slot rule)
 
 Outputs: paper/figures/*.pdf (embedded in the paper), paper/figures/preview/*.png (for inspection),
          paper/generated/*.tex (tables input by main.tex).
 
-Paired 95% intervals are bootstrap intervals over the four paired outcome types (both succeed, fixed, broke,
-both fail): 20,000 multinomial draws with seed 0, exactly as in study/results/scripts/plot_opus_forest.py.
-The pooled one-weight gripper row is bootstrapped stratified by task. p-values are exact two-sided McNemar tests
-on the discordant pairs.
+Statistics: paired 95% intervals are bootstrap intervals over the four paired outcome types (both succeed, fixed,
+broke, both fail), 20,000 multinomial draws with seed 0, as in study/results/scripts/plot_opus_forest.py; the pooled
+one-weight gripper row is resampled within each task; p-values are exact two-sided McNemar tests; minimum detectable
+effects use (z_0.975 + z_0.8) * sqrt(q / n) for a discordant fraction q.
 
 Usage: python3 paper/scripts/make_figures.py
 """
@@ -32,8 +38,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.transforms as mtransforms
 import numpy as np
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
+from matplotlib.patches import FancyBboxPatch, Rectangle
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -41,36 +46,43 @@ OPUS = ROOT / "study/results/opus"
 REPORT = ROOT / "study/blog/failure-levels.md"
 PAPER = ROOT / "paper"
 OUT = PAPER / "figures"
+SRC = OUT / "src"
 PREVIEW = OUT / "preview"
 GEN = PAPER / "generated"
 
-# ---- style (matches the reference paper's figures) -----------------------------------------------------------
-TEAL, ORANGE, PURPLE = "#147D92", "#C46635", "#7856A5"
-GRAY, GRAY_TXT = "#8E959B", "#5F666D"
-INK, INK2, GRID, SEP, NOTRUN = "#1F252B", "#4A5056", "#E6E8EA", "#9AA5A8", "#E5E7E9"
+# ---- visual identity: neutral greys, one accent for the edit, a muted red only for harm -------------------------
+INK, INK2, MUTE = "#1C1C1C", "#4D4D4D", "#858585"
+LIGHT, PALE, RULE = "#C6C6C6", "#ECECEC", "#A3A3A3"
+TEAL, TEAL_PALE = "#147D92", "#D5E8EC"
+RED = "#B1504A"
 plt.rcParams.update({
-    "font.family": "DejaVu Sans",
-    "font.size": 6.6,
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Arial", "Arial Unicode MS"],
+    "font.size": 6.8,
     "axes.titlesize": 7.2,
-    "axes.labelsize": 6.6,
-    "axes.edgecolor": INK,
-    "axes.linewidth": 0.6,
-    "axes.labelcolor": INK,
-    "xtick.color": INK,
-    "ytick.color": INK,
+    "axes.labelsize": 6.8,
+    "axes.edgecolor": RULE,
+    "axes.linewidth": 0.5,
+    "axes.labelcolor": INK2,
+    "xtick.color": INK2,
+    "ytick.color": INK2,
     "xtick.labelsize": 6.4,
     "ytick.labelsize": 6.4,
-    "xtick.major.width": 0.6,
-    "xtick.major.size": 2.5,
-    "ytick.major.width": 0.6,
+    "xtick.major.width": 0.5,
+    "ytick.major.width": 0.5,
+    "xtick.major.size": 2.0,
+    "ytick.major.size": 2.0,
+    "mathtext.fontset": "custom",
+    "mathtext.rm": "Arial",
+    "mathtext.it": "Arial:italic",
+    "mathtext.bf": "Arial:bold",
+    "mathtext.fallback": "stixsans",
     "pdf.fonttype": 42,
     "ps.fonttype": 42,
     "savefig.dpi": 300,
-    "mathtext.fontset": "dejavusans",
 })
 TEXTW = 5.5  # \textwidth of the CoRL style, inches: figures are drawn at their printed size
-SEQ = LinearSegmentedColormap.from_list("teal_seq", [
-    (0.00, "#F1F8F8"), (0.05, "#E6F2F2"), (0.25, "#AFD8D8"), (0.50, "#52A7AE"), (0.70, "#087B88"), (1.00, "#03505A")])
+FS, FS_SMALL, FS_TITLE = 6.8, 6.1, 7.2
 
 
 def save(fig, name, pad=0.02):
@@ -80,6 +92,13 @@ def save(fig, name, pad=0.02):
     fig.savefig(PREVIEW / f"{name}.png", bbox_inches="tight", pad_inches=pad, dpi=250)
     plt.close(fig)
     print("wrote", name)
+
+
+def bare(ax):
+    for s in ax.spines.values():
+        s.set_visible(False)
+    ax.set_xticks([])
+    ax.set_yticks([])
 
 
 # ---- data ------------------------------------------------------------------------------------------------------
@@ -93,8 +112,7 @@ for f in sorted(glob.glob(str(OPUS / "heldout/*.json"))):
     assert sum(c for _, c in per) == s["cand_success"]
     assert sum(1 for b, c in per if c and not b) == s["fixed"] and sum(1 for b, c in per if b and not c) == s["broke"]
     HELDOUT[(s["task"], s["cand"])] = s
-    # run order alternates by half: first half unedited then edited, second half edited then unedited
-    mid = s["slots"][0] + s["paired_n"] // 2
+    mid = s["slots"][0] + s["paired_n"] // 2  # run order alternates by half
     halves = []
     for sel in (lambda k: int(k) < mid, lambda k: int(k) >= mid):
         h = [v for k, v in js["per_slot"].items() if sel(k)]
@@ -174,6 +192,11 @@ def mcnemar(f, b):
     return min(1.0, 2 * sum(comb(m, i) for i in range(min(f, b) + 1)) / 2 ** m)
 
 
+def mde(n, q, z=1.959964 + 0.841621):
+    """Normal-approximation minimum detectable paired difference (80% power, two-sided alpha 0.05)."""
+    return z * np.sqrt(q / n)
+
+
 GRIP = [r for r in ROWS if r["label"].startswith("gthr04")]
 GRIP_POOLED = dict(n=sum(r["n"] for r in GRIP), base=sum(r["base"] for r in GRIP), cand=sum(r["cand"] for r in GRIP),
                    fixed=sum(r["fixed"] for r in GRIP), broke=sum(r["broke"] for r in GRIP))
@@ -191,343 +214,509 @@ for (task, lab), s in [(("Cube then banana", "v2mi-f: binding edit, HELD"), CTB)
         s["paired_n"], s["base_success"], s["cand_success"], s["fixed"], s["broke"]), (r, s)
 
 
-def color_of(r):
-    """Teal: distilled (language-binding) edit. Orange: GPT-6 Astra. Purple: other Claude Opus edits.
-    Gray: no weight change (prompt, runtime threshold, unchanged-weight reruns)."""
-    if r["type"] in ("identity", "prompt", "runtime"):
-        return GRAY
-    if r["editor"] == "GPT-6 Astra":
-        return ORANGE
-    if r["level"] in ("Language binding", "Binding edit on other tasks"):
-        return TEAL
-    return PURPLE
+def wilson(k, n, z=1.959964):
+    p = k / n
+    den = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / den
+    h = z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / den
+    return c - h, c + h
 
 
-def txt_color(c):
-    return GRAY_TXT if c == GRAY else c
+for s in (CTB, CTB_MIN, EYE, LEFT):  # Wilson intervals reproduce the stored ones
+    for k, key in ((s["base_success"], "base_wilson95"), (s["cand_success"], "cand_wilson95")):
+        assert np.allclose(wilson(k, s["paired_n"]), s[key], atol=6e-4), (s["task"], key)
+
+# Event-log summary of the held-out run: successes must match the held-out file slot by slot.
+EVENTS = json.loads((SRC / "heldout_v2mif_events.json").read_text())["slots"]
+_per = json.loads((OPUS / "heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json").read_text())
+assert {k: [v["unedited"]["success"], v["edited"]["success"]] for k, v in EVENTS.items()} == _per["per_slot"]
+FIXED = [k for k, v in EVENTS.items() if not v["unedited"]["success"] and v["edited"]["success"]]
+FIXED_UNEDITED_DROP = sum(bool(EVENTS[k]["unedited"]["cube_drops_outside_bowl"]) for k in FIXED)
+FIXED_EDITED_DROP = sum(bool(EVENTS[k]["edited"]["cube_drops_outside_bowl"]) for k in FIXED)
+assert (len(FIXED), FIXED_UNEDITED_DROP, FIXED_EDITED_DROP) == (81, 75, 15)
 
 
-def signed(v):
-    return "0.0" if abs(v) < 0.05 else f"{v:+.1f}".replace("-", "−")
+def _drops_cube_first(v):
+    u = v["unedited"]
+    d = u["cube_drops_outside_bowl"]
+    return bool(d) and (u["first_banana_grasp"] is None or d[0] < u["first_banana_grasp"])
 
 
-# ---- Table 1 image: held-out start 90000, unedited vs edited -------------------------------------------------
-def fig_teaser():
-    im = np.asarray(Image.open(OUT / "src/ctb_heldout90000_wrist.png").convert("RGB"))
-    h = (im.shape[0] - 6) // 2
-    panels = [(im[:h], "Unedited", GRAY_TXT), (im[h + 6:], "Edited", TEAL)]
-    w_in = 0.30 * TEXTW
-    fig = plt.figure(figsize=(w_in, w_in * (2 * h + 6) / im.shape[1]))
-    gap = 6 / (2 * h + 6)
-    for i, (p, lab, c) in enumerate(panels):
-        ax = fig.add_axes([0, (1 - i) * (0.5 + gap / 2), 1, 0.5 - gap / 2])
-        ax.imshow(p, interpolation="lanczos")
-        ax.set_axis_off()
-        ax.text(0.03, 0.95, lab, transform=ax.transAxes, ha="left", va="top", fontsize=6.4, color="white",
-                weight="bold", bbox=dict(boxstyle="round,pad=0.25,rounding_size=0.15", fc=c, ec="none", alpha=0.92))
-    fig.savefig(OUT / "teaser_frames.pdf", dpi=400)
-    fig.savefig(PREVIEW / "teaser_frames.png", dpi=250)
-    plt.close(fig)
-    print("wrote teaser_frames")
+# Fig. 1 shows the lowest-numbered fixed slot whose unedited run dropped the cube before touching the banana.
+assert min(int(k) for k in FIXED if _drops_cube_first(EVENTS[k])) == 90002
 
 
-# ---- effect panels in the style of the reference's wording-effect figure --------------------------------------
-XLIM = (-72, 140)
-
-
-def effect_panel(ax, items, title, label_x, xlabel=True, fs=6.4):
-    """Diamonds (paired difference) and bars (paired 95% bootstrap interval); the difference is printed at the right
-    in the row colour. items: ('header', text) or ('row', label, comparison | (d, lo, hi), colour).
-    label_x: left edge (figure fraction) of the group headers."""
-    fig = ax.figure
-    y, ys, labels = 0.0, [], []
-    head_tf = mtransforms.blended_transform_factory(fig.transFigure, ax.transData)
-    for it in items:
-        if it[0] == "header":
-            y += 0.3 if ys else 0
-            ax.text(label_x, y, it[1], transform=head_tf, ha="left", va="center", fontsize=fs, weight="bold",
-                    color=INK, clip_on=False)
-            ys.append(y); labels.append("")
-            y += 1
-            continue
-        _, lab, r, c = it
-        if isinstance(r, tuple):
-            d, lo, hi = r
-        elif r.get("pooled"):
-            d, lo, hi = pooled_ci(r["parts"])
-        else:
-            d, lo, hi = paired_ci(r)
-        d, lo, hi = 100 * d, 100 * lo, 100 * hi
-        if hi > lo:
-            ax.add_patch(Rectangle((lo, y - 0.32), hi - lo, 0.64, fc=c, ec="none", alpha=0.16, zorder=1))
-            ax.plot([lo, hi], [y, y], color=c, lw=1.0, zorder=2, solid_capstyle="butt")
-            for x in (lo, hi):
-                ax.plot([x, x], [y - 0.22, y + 0.22], color=c, lw=1.0, zorder=2)
-        ax.plot([d], [y], marker="D", ms=3.9, mfc="white", mec=c, mew=1.05, zorder=3, ls="")
-        ax.text(XLIM[1] - 1, y, signed(d), ha="right", va="center", fontsize=fs, color=txt_color(c), zorder=4)
-        ys.append(y); labels.append(lab)
-        y += 1
-    ax.set_ylim(y - 0.4, -0.75)
-    ax.set_xlim(*XLIM)
-    ax.set_xticks([-50, 0, 50, 100])
-    ax.set_xticklabels(["−50", "0", "50", "100"])
-    ax.axvline(0, color=SEP, lw=0.8, ls=(0, (3, 2)), zorder=0)
-    for v in (-50, 50, 100):
-        ax.axvline(v, color=GRID, lw=0.6, zorder=0)
-    ax.set_yticks(ys)
-    ax.set_yticklabels(labels, fontsize=fs, color=INK)
-    ax.tick_params(axis="y", length=0, pad=2.5)
-    for s in ("top", "right", "left"):
-        ax.spines[s].set_visible(False)
-    if title:
-        ax.set_title(title, fontsize=7.0, pad=4)
-    if xlabel:
-        ax.set_xlabel("Success-rate difference\n(percentage points)", fontsize=6.4)
-    return y
-
-
-def ho_row(s):
-    return dict(n=s["paired_n"], base=s["base_success"], cand=s["cand_success"], fixed=s["fixed"], broke=s["broke"])
-
-
-def fig_effects():
-    flat = (0.0, 0.0, 0.0)  # ten flat-box edits: 0/16 each against 0/64 unedited; no interval
-    a = [
-        ("header", "Cube then banana"),
-        ("row", "Explicit wording, no edit · 32", find("Cube then banana", "Explicit two-step"), GRAY),
-        ("row", "Practice seeds · 32", find("Cube then banana", "v2mi-f: binding edit, practice"), TEAL),
-        ("row", "Held-out seeds · 128", ho_row(CTB), TEAL),
-        ("row", "0.16% variant, held-out · 128", ho_row(CTB_MIN), TEAL),
-        ("row", "Preservation keys · 32", find("Cube then banana", "binding edit + preservation"), TEAL),
-        ("header", "Same edit, other tasks"),
-        ("row", "Eyeglasses, practice · 64", find("Pick up eyeglasses", "binding edit, practice"), TEAL),
-        ("row", "Eyeglasses, held-out · 64", ho_row(EYE), TEAL),
-        ("row", "Cube left, practice · 32", find("Cube left of bowl", "binding edit"), TEAL),
-        ("row", "Cube left, held-out · 64", ho_row(LEFT), TEAL),
-        ("row", "Cube right · 32", find("Cube right of bowl", "binding edit"), TEAL),
-        ("header", "Unchanged weights, rerun"),
-        ("row", "Stacking, rerun 1 · 64", find("Stack yellow on red", "Astra study: original identity"), GRAY),
-        ("row", "Stacking, rerun 2 · 64", find("Stack yellow on red", "Astra study: extra unchanged"), GRAY),
-        ("row", "Stacking, rerun 3 · 64", find("Stack yellow on red", "Astra study: fixed16 identity"), GRAY),
-        ("row", "Butter, rerun · 16", find("Butter box onto raisin box", "this work: unedited"), GRAY),
-    ]
-    b = [
-        ("header", "Perception: stack yellow on red"),
-        ("row", "Claude, attention gain · 64", find("Stack yellow on red", "v1a1"), PURPLE),
-        ("row", "Claude, key/value gain · 64", find("Stack yellow on red", "dkv2"), PURPLE),
-        ("row", "Claude, key/value + head · 64", find("Stack yellow on red", "combo1: dkv2"), PURPLE),
-        ("row", "Same edit, rerun · 64", find("Stack yellow on red", "combo1 rerun"), PURPLE),
-        ("row", "Astra, 4,412 values · 32", find("Stack yellow on red", "Astra A1 p1"), ORANGE),
-        ("row", "Astra, 1,543 values · 32", find("Stack yellow on red", "Astra A2 p1"), ORANGE),
-        ("row", "Astra, 791 values · 32", find("Stack yellow on red", "Astra A2 p3"), ORANGE),
-        ("row", "Astra, 6,225 values · 32", find("Stack yellow on red", "Astra fixed16 p1"), ORANGE),
-        ("row", "Claude, Astra protocol 1 · 32", find("Stack yellow on red", "Claude, Astra protocol p1"), PURPLE),
-        ("row", "Claude, Astra protocol 2 · 32", find("Stack yellow on red", "Claude, Astra protocol p2"), PURPLE),
-        ("header", "Competence, contact, gripper"),
-        ("row", "Flat box, 10 edits · 16 each", flat, PURPLE),
-        ("row", "Mustard, one weight · 64", find("Mustard into left bin", "gthr04"), PURPLE),
-        ("row", "Seven tasks, one weight · 240", dict(pooled=True, parts=GRIP), PURPLE),
-        ("row", "Runtime threshold · 64", find("Stack yellow on red", "Astra study: runtime"), GRAY),
-    ]
-    n = max(len(a) + 0.3 * 2, len(b) + 0.3 * 1)
-    h = 0.116 * n + 0.58
-    fig = plt.figure(figsize=(TEXTW, h))
-    bottom, top = 0.48 / h, 1 - 0.2 / h
-    ax_a = fig.add_axes([0.258, bottom, 0.218, top - bottom])
-    ax_b = fig.add_axes([0.782, bottom, 0.218, top - bottom])
-    effect_panel(ax_a, a, "(a) Distilled edit", label_x=0.0)
-    effect_panel(ax_b, b, "(b) Edits at other failure levels", label_x=0.505)
-    for ax in (ax_a, ax_b):  # same row pitch in both panels
-        ax.set_ylim(n - 0.4, -0.75)
-    save(fig, "fig_effects")
-
-
-# ---- heatmap in the style of the reference's goal-response figure -------------------------------------------
-HEAT_TASKS = [  # display, survey name, distilled-edit row (task, label), gripper row task, held-out summary
-    ("Cube then banana", "Cube then banana into bowl", ("Cube then banana", "v2mi-f: binding edit, practice"), None, CTB),
-    ("Pick up eyeglasses", "Pick up eyeglasses", ("Pick up eyeglasses", "binding edit, practice"),
-     "Pick up eyeglasses", EYE),
-    ("Cube left of bowl", "Cube left of bowl", ("Cube left of bowl", "binding edit"), None, LEFT),
-    ("Cube into bowl", "Cube into bowl", ("Cube into bowl", "binding edit"), "Cube into bowl", None),
-    ("Banana onto plate", "Banana onto plate", ("Banana onto plate", "binding edit"), "Banana onto plate", None),
-    ("Butter on raisin box", "Butter box onto raisin box", ("Butter box onto raisin box", "binding edit (vs first"),
-     "Butter box onto raisin box", None),
-    ("Stack three cubes", "Stack three cubes", ("Stack three cubes", "binding edit"), None, None),
-    ("Block tower", "Block tower, any order", ("Block tower", "binding edit"), None, None),
-    ("Stack bowls", "Stack left bowl on right bowl", ("Stack bowls", "binding edit"), "Stack left bowl on right bowl",
-     None),
-    ("Stack yellow on red", "Stack yellow on red", ("Stack yellow on red", "binding edit"), "Stack yellow on red", None),
-    ("Mustard into bin", "Mustard into left bin", ("Mustard into bin", "binding edit"), "Mustard into left bin", None),
-    ("Marker in mug", "Marker in mug", ("Marker in mug", "binding edit"), None, None),
-    ("Yogurt into bowl", "Yogurt into bowl", ("Yogurt into bowl", "binding edit"), None, None),
-    ("Cube right of bowl", "Cube right of bowl", ("Cube right of bowl", "binding edit"), None, None),
-    ("Grab a bagel", "Grab a bagel", ("Grab a bagel", "binding edit"), None, None),
-    ("Pick up flat box", "Pick up flat green box", None, None, None),
-]
-
-
-def heat_rows():
-    out = []
-    for disp, sname, brow, gtask, ho in HEAT_TASKS:
-        sv = SURVEY[sname][:2]
-        if brow is None:  # flat box: transfer-map row of failure-levels.md
-            b = (frac(FLATBOX_TX[1]), frac(FLATBOX_TX[2]))
-        else:
-            r = find(*brow)
-            b = ((r["base"], r["n"]), (r["cand"], r["n"]))
-        h = None if ho is None else ((ho["base_success"], ho["paired_n"]), (ho["cand_success"], ho["paired_n"]))
-        g = None
-        if gtask:
-            r = [x for x in GRIP if x["task"] == gtask][0]
-            g = ((r["base"], r["n"]), (r["cand"], r["n"]))
-        out.append((disp, [sv, *b, *(h or (None, None)), *(g or (None, None))]))
-    assert len(out) == 16
+# ---- Fig. 1: one held-out start, unedited vs edited -----------------------------------------------------------------
+def spans(steps, values, thr=0.5):
+    """Contiguous [start, end) step spans where the commanded gripper is closed (> thr)."""
+    out, start = [], None
+    for s, v in zip(steps, values):
+        if v > thr and start is None:
+            start = s
+        if v <= thr and start is not None:
+            out.append((start, s)); start = None
+    if start is not None:
+        out.append((start, steps[-1] + 1))
     return out
 
 
-def fig_heatmap():
-    rows = heat_rows()
-    groups = [("Survey", 1), ("Distilled edit,\npractice seeds", 2), ("Distilled edit,\nheld-out seeds", 2),
-              ("One-weight\ngripper edit", 2)]
-    sub = ["Unedited", "Unedited", "Edited", "Unedited", "Edited", "Unedited", "Edited"]
-    ncol, nrow = len(sub), len(rows)
-    gapx = 0.3
-    xs, x = [], 0.0
-    for _, k in groups:
-        for _ in range(k):
-            xs.append(x); x += 1
-        x += gapx
-    width_cells = x - gapx
-    sep_after = 3  # thin rule after the three tasks with held-out gains
-    ys = [i + (0.3 if i >= sep_after else 0) for i in range(nrow)]
-    fig_w, fig_h = TEXTW, 0.128 * (nrow + 0.3) + 0.7
-    fig = plt.figure(figsize=(fig_w, fig_h))
-    left, right = 1.08 / fig_w, 1 - 0.42 / fig_w
-    bottom, top = 0.28 / fig_h, 1 - 0.42 / fig_h
-    ax = fig.add_axes([left, bottom, right - left, top - bottom])
-    for i, (disp, vals) in enumerate(rows):
-        y = ys[i]
-        for j, v in enumerate(vals):
-            x0 = xs[j]
-            if v is None:
-                ax.add_patch(Rectangle((x0 + 0.03, y - 0.46), 0.94, 0.92, fc=NOTRUN, ec="none"))
-                continue
-            k, n = v
-            rate = k / n
-            ax.add_patch(Rectangle((x0 + 0.03, y - 0.46), 0.94, 0.92, fc=SEQ(rate), ec="none"))
-            label = f"{k}/{n}" + ("†" if disp == "Butter on raisin box" and j == 1 else "")
-            ax.text(x0 + 0.5, y, label, ha="center", va="center", fontsize=6.1,
-                    color="white" if rate >= 0.58 else INK)
-    ax.set_xlim(-0.05, width_cells + 0.05)
-    ax.set_ylim(ys[-1] + 0.6, -0.6)
-    ax.set_yticks(ys)
-    ax.set_yticklabels([r[0] for r in rows], fontsize=6.4)
-    for i, t in enumerate(ax.get_yticklabels()):
-        if i < sep_after:
-            t.set_color(TEAL)
-            t.set_fontweight("bold")
-    ax.tick_params(axis="y", length=0, pad=3)
-    ax.set_xticks([xs[j] + 0.5 for j in range(ncol)])
-    ax.set_xticklabels(sub, fontsize=6.2)
-    ax.tick_params(axis="x", length=0, pad=2)
-    for s in ax.spines.values():
-        s.set_visible(False)
-    j = 0
-    for gi, (name, k) in enumerate(groups):
-        x0, x1 = xs[j], xs[j + k - 1] + 1
-        ax.text((x0 + x1) / 2, -0.98, name, ha="center", va="bottom", fontsize=6.4, weight="bold", color=INK,
-                linespacing=1.05, clip_on=False)
-        ax.plot([x0 + 0.05, x1 - 0.05], [-0.74, -0.74], color=GRAY_TXT, lw=0.6, clip_on=False)
-        if gi > 0:
-            xm = x0 - gapx / 2
-            ax.plot([xm, xm], [-0.55, ys[-1] + 0.55], color=SEP, lw=0.9, clip_on=False)
-        j += k
-    ax.plot([-0.05, width_cells + 0.05], [(ys[sep_after - 1] + ys[sep_after]) / 2] * 2, color=SEP, lw=0.6)
-    cax = fig.add_axes([right + 0.1 / fig_w, bottom + 0.05, 0.08 / fig_w, top - bottom - 0.1])
-    cax.imshow(np.linspace(0, 1, 256)[:, None], aspect="auto", cmap=SEQ, origin="lower", extent=(0, 1, 0, 100))
-    cax.set_xticks([])
-    cax.yaxis.tick_right()
-    cax.set_yticks([0, 50, 100])
-    cax.tick_params(axis="y", labelsize=6.0, length=2, pad=1.5)
-    for s in cax.spines.values():
-        s.set_visible(False)
-    cax.set_title("%", fontsize=6.0, pad=2)
-    save(fig, "fig_heatmap")
+def fig_teaser():
+    meta = json.loads((SRC / "teaser_90002.json").read_text())
+    sheet = np.asarray(Image.open(SRC / "teaser_90002_frames.png").convert("RGB"))
+    h, w = meta["frame_size"]
+    gap = meta["frame_gap"]
+    moments = meta["storyboard_steps"]
+    U, E = meta["arms"]["unedited"], meta["arms"]["edited"]
+    assert not U["success"] and E["success"] and E["final_step"] == 257
+
+    def ev(A, name, obj=None, what=None):
+        hits = [e["step"] for e in A["events"] if e["name"] == name and (obj is None or obj in e["info"])
+                and (what is None or what in e["info"])]
+        return min(hits)
+
+    grab_u, drop_u = ev(U, "OBJECT_GRABBED_SUCCESS", "rubiks"), ev(U, "TARGET_OBJECT_DROPPED")
+    banana_u = ev(U, "WRONG_OBJECT_GRABBED_FAILURE", "banana")
+    banana_off_u = ev(U, "OK", "banana")
+    cube_bowl_u = ev(U, "OBJECT_IN_CONTAINER_SUCCESS")
+    grab_e, banana_e = ev(E, "OBJECT_GRABBED_SUCCESS", "rubiks"), ev(E, "OBJECT_GRABBED_SUCCESS", "banana")
+    bowl_e = sorted(e["step"] for e in E["events"] if e["name"] == "OBJECT_IN_CONTAINER_SUCCESS")
+    assert (grab_u, drop_u, banana_u, banana_off_u, cube_bowl_u) == (73, 76, 148, 196, 351)
+    assert (grab_e, bowl_e, banana_e) == (78, [119, 255], 198)
+
+    W, H = TEXTW, 3.04
+    fig = plt.figure(figsize=(W, H))
+    lab_w = 0.52                     # inches reserved for row labels
+    fw = (W - lab_w - 3 * 0.05) / 4  # frame width
+    fh = fw * h / w
+    top = H - 0.34
+    notes = {(0, 0): ("cube in the gripper", INK2), (0, 1): ("cube dropped", RED),
+             (0, 2): ("reaching for the banana", INK2), (0, 3): ("banana in the bowl", INK2),
+             (1, 0): ("cube in the gripper", INK2), (1, 1): ("cube held", TEAL),
+             (1, 2): ("cube in the bowl", TEAL), (1, 3): ("banana in: success", TEAL)}
+    fig.text(0.0, (H - 0.015) / H, "Held-out start 90002.  Instruction, unchanged: "
+             "“Put the cube then the banana in the bowl”", ha="left", va="top", fontsize=FS, color=INK)
+    for r, (name, color) in enumerate((("Unedited", MUTE), ("Edited", TEAL))):
+        y = top - (r + 1) * fh - r * 0.05
+        fig.text(0.0, (y + fh / 2) / H, name, ha="left", va="center", fontsize=FS, weight="bold", color=color)
+        for c in range(4):
+            x = lab_w + c * (fw + 0.05)
+            ax = fig.add_axes([x / W, y / H, fw / W, fh / H])
+            ax.imshow(sheet[r * (h + gap):r * (h + gap) + h, c * (w + gap):c * (w + gap) + w],
+                      interpolation="lanczos")
+            bare(ax)
+            note, ncol = notes[(r, c)]
+            ax.text(0.03, 0.06, note, transform=ax.transAxes, ha="left", va="bottom", fontsize=FS_SMALL - 0.3,
+                    color="white", bbox=dict(boxstyle="round,pad=0.22,rounding_size=0.12", fc=ncol, ec="none",
+                                             alpha=0.88))
+            if r == 0:
+                fig.text(x / W, (top + 0.04) / H, f"{c + 1}", ha="left", va="bottom", fontsize=FS, weight="bold",
+                         color=INK)
+                fig.text((x + 0.1) / W, (top + 0.04) / H, f"step {moments[c]}", ha="left", va="bottom",
+                         fontsize=FS_SMALL, color=INK2)
+
+    # timeline: commanded gripper (closed = filled) and logged events, both rollouts
+    t_left, t_right, t_bot, t_h = lab_w, 4.02, 0.3, 1.0
+    ax = fig.add_axes([t_left / W, t_bot / H, (t_right - t_left) / W, t_h / H])
+    xmax = 300
+    yU, yE, bh = 1.0, 0.0, 0.3
+    ax.add_patch(Rectangle((75, -0.5), 15, 2.12, fc=TEAL_PALE, ec="none", alpha=0.55, zorder=0))
+    for y, A, color in ((yU, U, MUTE), (yE, E, TEAL)):
+        ax.add_patch(Rectangle((0, y - bh / 2), xmax, bh, fc=PALE, ec="none", zorder=0.6))
+        for a, b in spans(A["cmd_steps"], A["gripper_cmd"]):
+            a, b = max(a, 0), min(b, xmax)
+            if a < b:
+                ax.add_patch(Rectangle((a, y - bh / 2), b - a, bh, fc=color, ec="none", zorder=1))
+    for c, s in enumerate(moments):
+        ax.plot([s, s], [-0.42, 1.66], color=RULE, lw=0.45, ls=(0, (1, 1.6)), zorder=0.8)
+        ax.text(s, 1.7, f"{c + 1}", ha="center", va="bottom", fontsize=FS_SMALL, weight="bold", color=INK)
+    inside = dict(ha="center", va="center", fontsize=FS_SMALL - 0.5, color="white", zorder=4)
+    ax.text((135 + 195) / 2, yU, "banana", **inside)
+    ax.text((75 + 118) / 2, yE, "cube", **inside)
+    ax.text((191 + 254) / 2, yE, "banana", **inside)
+    # unedited: the cube is released three steps after the grasp; the banana goes in first
+    ax.plot([drop_u], [yU], marker="x", ms=4.4, mew=1.2, color=RED, zorder=5)
+    ax.text(drop_u + 5, yU + 0.2, f"cube released at step {drop_u}, {drop_u - grab_u} steps after the grasp",
+            ha="left", va="bottom", fontsize=FS_SMALL, color=RED, zorder=5,
+            bbox=dict(boxstyle="square,pad=0.05", fc="white", ec="none", alpha=0.85))
+    ax.text(136, yU - 0.27, f"banana released at {banana_off_u}; cube placed only at {cube_bowl_u}; fails",
+            ha="left", va="top", fontsize=FS_SMALL, color=INK2)
+    # edited: holds the cube until it is in the bowl, then the banana
+    for s in bowl_e:
+        ax.plot([s], [yE], marker="o", ms=3.4, mfc="white", mec=TEAL, mew=0.9, zorder=5)
+    ax.text(grab_e - 1, yE - 0.27, f"cube held from {grab_e} until it is in the bowl ({bowl_e[0]})", ha="left",
+            va="top", fontsize=FS_SMALL, color=TEAL)
+    ax.text(bowl_e[1] + 6, yE, f"success at {E['final_step']}", ha="left", va="center", fontsize=FS_SMALL,
+            color=TEAL, weight="bold", zorder=5)
+    ax.set_xlim(0, xmax)
+    ax.set_ylim(-0.75, 1.95)
+    ax.set_yticks([])
+    ax.set_xticks([0, 50, 100, 150, 200, 250, 300])
+    for s in ("top", "right", "left"):
+        ax.spines[s].set_visible(False)
+    ax.set_xlabel("Control step at 15 Hz (filled: gripper commanded closed)", fontsize=FS_SMALL, color=INK2,
+                  labelpad=2)
+    to_fig = lambda yy: (t_bot + t_h * (yy + 0.75) / 2.7) / H
+    fig.text(0.0, to_fig(yU), "Unedited", ha="left", va="center", fontsize=FS_SMALL, color=MUTE, weight="bold")
+    fig.text(0.0, to_fig(yE), "Edited", ha="left", va="center", fontsize=FS_SMALL, color=TEAL, weight="bold")
+
+    # inset: held-out success with Wilson 95% intervals
+    i_left, i_w = 4.42, 1.0
+    ia = fig.add_axes([i_left / W, (t_bot + 0.1) / H, i_w / W, 0.62 / H])
+    for y, (k, n, lo, hi, color) in enumerate((
+            (CTB["base_success"], CTB["paired_n"], *CTB["base_wilson95"], MUTE),
+            (CTB["cand_success"], CTB["paired_n"], *CTB["cand_wilson95"], TEAL))):
+        ia.plot([100 * lo, 100 * hi], [y, y], color=color, lw=2.2, solid_capstyle="butt", alpha=0.45)
+        ia.plot([100 * k / n], [y], marker="o", ms=3.6, color=color, mec="white", mew=0.5)
+        ia.text(100 * k / n, y + 0.28, f"{k}/{n}", ha="center", va="bottom", fontsize=FS_SMALL, color=color,
+                weight="bold" if color == TEAL else "normal")
+    ia.set_xlim(0, 100)
+    ia.set_ylim(-0.45, 1.75)
+    ia.set_yticks([])
+    ia.set_xticks([0, 50, 100])
+    ia.set_xticklabels(["0", "50", "100%"])
+    for s in ("top", "right", "left"):
+        ia.spines[s].set_visible(False)
+    fig.text(i_left / W, (t_bot + 0.86) / H, "Success, 128 held-out starts", ha="left", va="bottom",
+             fontsize=FS_SMALL, color=INK, weight="bold")
+    fig.text(i_left / W, (t_bot + 0.76) / H, "with Wilson 95% intervals", ha="left", va="bottom",
+             fontsize=FS_SMALL - 0.4, color=MUTE)
+    save(fig, "fig1_teaser")
 
 
-# ---- main text: the procedure and where the edit acts ------------------------------------------------------------
-def box(ax, x, y, w, h, text="", ec=SEP, fc="white", fs=5.9, color=INK, weight="normal", lw=0.7):
-    ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0,rounding_size=0.07", fc=fc, ec=ec, lw=lw))
-    if text:
-        ax.text(x + w / 2, y + h / 2, text, ha="center", va="center", fontsize=fs, color=color, weight=weight,
-                linespacing=1.28)
-
-
-def arrow(ax, p, q, color=GRAY_TXT, lw=0.7, rad=0.0, ms=6):
-    ax.add_patch(FancyArrowPatch(p, q, arrowstyle="-|>", mutation_scale=ms, color=color, lw=lw,
-                                 connectionstyle=f"arc3,rad={rad}", shrinkA=0.5, shrinkB=0.5))
-
-
-STEPS = [  # header, description, outcome for cube then banana
-    ("1  Diagnose", "Replay failure\ndecisions under\nrewordings; count\nreleases", "original: 21 of 21\nexplicit: 2 of 21"),
-    ("2  Known-good", "Same weights,\nexplicit wording,\nclosed loop", "22/32 vs 3/32"),
-    ("3  Distil", "Map original keys\nto the explicit\nresidual changes,\nEq. (1)", "17 layers,\n72 keys per layer"),
-    ("4  Check offline", "Replay the recorded\ndecisions with the\nedited weights", "releases 21 → 0,\nothers unchanged"),
-    ("5  Confirm", "Closed loop: practice\nseeds, then held-out\nseeds", "3 → 25 of 32\n27 → 106 of 128"),
+# ---- Fig. 2: what it takes to fix the decision ----------------------------------------------------------------------
+# Offline replays of the 21 recorded premature-release decisions (cube then banana). Sources:
+# study/results/opus/ctb/README.md and EVIDENCE.md (addendum), study/blog/failure-levels.md sections 5.3-5.5.
+# (label, size note, still releasing, decisions checked, closed loop note, kind)
+REWORDINGS = [  # replayed premature-release decisions that still release, of 21 (failure-levels.md section 5.2)
+    ("“Put the cube then the banana in the bowl” (original)", 21, "word", ""),
+    ("“Put the rubiks cube then the banana in the bowl”", 21, "word", ""),
+    ("“Put the banana then the cube in the bowl”", 3, "word", ""),
+    ("“Put the cube in the bowl then the banana”", 3, "word", ""),
+    ("“Put the cube in the bowl then put the banana\nin the bowl” (explicit)", 2, "word",
+     "22/32 (3/32), unedited weights"),
+    ("“Put the cube in the bowl”", 1, "word", ""),
+]
+CONSTRUCTION = [  # (label, factored size, still releasing, decisions checked, closed loop, kind)
+    ("Steer along a correlated cube–banana axis", "", 21, 21, "", "fail"),
+    ("Copy the mean shift at the state tokens", "", 6, 6, "", "fail"),
+    ("Copy per-position shifts at 40 prompt/state slots", None, None, None, "", "group"),
+    ("strength ×0.5", "12.5M", 15, 21, "", "fail"),
+    ("strength ×1", "12.5M", 13, 21, "", "fail"),
+    ("strength ×2", "12.5M", 8, 21, "", "fail"),
+    ("+ 32 image cells: the distilled edit", "22.6M", 0, 21, "25/32 (3/32) · 106/128 (27/128)", "edit"),
+]
+VARIANTS = [
+    ("Image cells only", "10.0M", 0, 21, "", "edit"),
+    ("All 72 keys, layers 8–16 only", "11.9M", 0, 21, "", "edit"),
+    ("Half strength", "22.6M", 2, 21, "", "edit"),
+    ("Image cells, layers 8–16 (0.16%)", "5.3M", 2, 21, "25/32 (3/32) · 102/128 (19/128)", "edit"),
+    ("Image cells + preservation keys, 5 tasks", "", 1, 21, "24/32 (3/32)", "edit"),
 ]
 
 
-def fig_method():
-    W, H = 11.0, 4.9  # drawing units; 1 unit = 0.5 in
-    fig = plt.figure(figsize=(TEXTW, TEXTW * H / W))
-    ax = fig.add_axes([0, 0, 1, 1])
-    ax.set_xlim(0, W)
-    ax.set_ylim(0, H)
-    ax.axis("off")
-    ax.text(0.03, 4.88, "(a) Closed-form instruction distillation", fontsize=7.0, weight="bold", va="top", color=INK)
-    gap = 0.2
-    bw = (W - 0.06 - 4 * gap) / 5
-    y0, bh = 2.62, 1.94
-    for i, (head, desc, res) in enumerate(STEPS):
-        x = 0.03 + i * (bw + gap)
-        box(ax, x, y0, bw, bh, ec=TEAL if i == 2 else SEP, lw=1.0 if i == 2 else 0.7,
-            fc="#EEF6F7" if i == 2 else "white")
-        ax.text(x + 0.1, y0 + bh - 0.12, head, ha="left", va="top", fontsize=6.3, weight="bold", color=INK)
-        ax.text(x + 0.1, y0 + bh - 0.46, desc, ha="left", va="top", fontsize=5.7, color=INK2, linespacing=1.25)
-        ax.plot([x + 0.1, x + bw - 0.1], [y0 + 0.66, y0 + 0.66], color=GRID, lw=0.6)
-        ax.text(x + 0.1, y0 + 0.09, res, ha="left", va="bottom", fontsize=5.8, color=TEAL, linespacing=1.25)
-        if i < 4:
-            arrow(ax, (x + bw + 0.01, y0 + bh / 2), (x + bw + gap - 0.01, y0 + bh / 2), ms=5)
-    ax.text(0.03, 2.36, "(b) Where the edit acts in $\\pi_{0.5}$", fontsize=7.0, weight="bold", va="top", color=INK)
-    box(ax, 0.03, 1.12, 1.62, 0.86, "Original\ninstruction\n(unchanged)", fs=5.7)
-    box(ax, 0.03, 0.06, 1.62, 0.86, "Two camera images\nand joint/gripper\nstate", fs=5.6)
-    ax.add_patch(FancyBboxPatch((2.0, 0.03), 4.62, 2.0, boxstyle="round,pad=0,rounding_size=0.08", fc="#F6F7F7",
-                                ec=SEP, lw=0.7))
-    ax.text(2.1, 1.95, "PaliGemma VLM prefix, 18 layers", fontsize=5.9, color=INK, va="top", weight="bold")
-    ty = 1.02
-    for i in range(10):
-        ax.add_patch(Rectangle((2.18 + i * 0.21, ty), 0.16, 0.26, fc=TEAL, ec="none", alpha=0.95 if i % 2 else 0.7))
-    for i in range(7):
-        ax.add_patch(Rectangle((4.68 + i * 0.21, ty), 0.16, 0.26, fc=GRAY, ec="none"))
-    ax.text(2.18 + 1.02, ty - 0.06, "32 image cells", fontsize=5.5, ha="center", va="top", color=INK2)
-    ax.text(4.68 + 0.71, ty - 0.06, "40 prompt + state positions", fontsize=5.5, ha="center", va="top", color=INK2)
-    arrow(ax, (5.3, ty + 0.3), (3.3, ty + 0.3), color=INK2, rad=0.14, lw=0.6, ms=4.5)
-    ax.text(4.3, 1.66, "image tokens attend to the instruction", fontsize=5.4, ha="center", va="center",
-            color=INK2, style="italic")
-    box(ax, 2.18, 0.14, 4.26, 0.46, "MLP down-projections, layers 0–16:  $W_\\ell \\leftarrow W_\\ell + "
-        "\\Delta W_\\ell$", ec=TEAL, lw=1.0, fs=5.8)
-    arrow(ax, (1.65, 1.55), (2.0, 1.4))
-    arrow(ax, (1.65, 0.49), (2.0, 0.7))
-    box(ax, 7.02, 0.56, 1.75, 1.05, "Gemma action\nexpert, 18 layers,\nflow matching", fs=5.7)
-    arrow(ax, (6.62, 1.08), (7.02, 1.08))
-    ax.text(7.895, 0.47, "13–44% of its attention\non image tokens", fontsize=5.3, ha="center", va="top",
-            color=INK2, style="italic", linespacing=1.2)
-    box(ax, 9.17, 0.56, 1.8, 1.05, "15-step action\nchunk: keep\nholding or release", fs=5.7)
-    arrow(ax, (8.77, 1.08), (9.17, 1.08))
-    save(fig, "fig_method")
+def fig_construction():
+    rows = [("head", "a", "Rewording the instruction, weights unchanged")]
+    rows += [("row", lab, "", k, 21, closed, kind) for lab, k, kind, closed in REWORDINGS]
+    rows += [("head", "b", "Editing the weights, original instruction")]
+    rows += [("row", *r) for r in CONSTRUCTION]
+    rows += [("head", "", "Variants of the distilled edit")]
+    rows += [("row", *r) for r in VARIANTS]
+    heights = [1.45 if kind == "row" and "\n" in r[0] else 1.0 for kind, *r in rows]
+    pitch = 0.12
+    n_lines = sum(heights) + 0.45 * 2 + 0.4
+    body = pitch * n_lines
+    H = body + 0.36
+    W = TEXTW
+    fig = plt.figure(figsize=(W, H))
+    lab_l, size_r, bar_l, bar_w, cl_l = 0.13, 2.6, 2.66, 1.22, 4.0
+    ax = fig.add_axes([bar_l / W, 0.31 / H, bar_w / W, body / H])
+    tr_fig = mtransforms.blended_transform_factory(fig.transFigure, ax.transData)
+    y = 0.0
+    path, first = [], True
+    for (kind, *r), hgt in zip(rows, heights):
+        if kind == "head":
+            letter, title = r
+            y += 0.0 if first else 0.45
+            if letter:
+                ax.text(0.0, y, letter, ha="left", va="center", fontsize=FS_TITLE, weight="bold", color=INK,
+                        transform=tr_fig)
+            ax.text(lab_l / W, y, title, ha="left", va="center", fontsize=FS_SMALL, weight="bold", color=INK,
+                    transform=tr_fig)
+            if first:
+                ax.text(0, y, "replayed releases that persist", ha="left", va="center", fontsize=FS_SMALL - 0.3,
+                        color=MUTE)
+                ax.text(cl_l / W, y, "closed loop: edited (unedited)", ha="left", va="center",
+                        fontsize=FS_SMALL - 0.3, color=MUTE, transform=tr_fig)
+            if letter == "b":
+                ax.text(size_r / W, y, "size", ha="right", va="center", fontsize=FS_SMALL - 0.3, color=MUTE,
+                        transform=tr_fig)
+            first = False
+            y += 1
+            continue
+        label, size, k, n, closed, cls = r
+        y += (hgt - 1) / 2
+        indent = 0.13 if label.startswith("strength") else 0.0
+        ax.text((lab_l + 0.08 + indent) / W, y, label, ha="left", va="center", fontsize=FS_SMALL,
+                color=INK, linespacing=1.05, transform=tr_fig)
+        if cls != "group":
+            share = 100 * k / n
+            ax.add_patch(Rectangle((0, y - 0.3), 100, 0.6, fc=PALE, ec="none", zorder=0))
+            if share > 0:
+                ax.add_patch(Rectangle((0, y - 0.3), share, 0.6, fc=TEAL_PALE if cls == "edit" else LIGHT,
+                                       ec=TEAL if cls == "edit" else "none", lw=0.6, zorder=1))
+            txt = f"{k}/{n}" + (" checked" if n != 21 else "")
+            inside = share > 70
+            ax.text(share - 2 if inside else share + 2.5, y, txt, ha="right" if inside else "left", va="center",
+                    fontsize=FS_SMALL, color=TEAL if cls == "edit" else INK2, weight="bold" if k == 0 else "normal",
+                    zorder=3)
+            if size:
+                ax.text(size_r / W, y, size, ha="right", va="center", fontsize=FS_SMALL - 0.3, color=MUTE,
+                        transform=tr_fig)
+            if closed:
+                ax.text(cl_l / W, y, closed, ha="left", va="center", fontsize=FS_SMALL,
+                        color=TEAL if cls == "edit" else INK2, transform=tr_fig)
+            if cls == "fail" or (cls == "edit" and len(path) and path[-1][2] == "fail"):
+                path.append((y, share, cls))
+        y += 1 + (hgt - 1) / 2
+    for (y0, s0, _), (y1, s1, _) in zip(path[:-1], path[1:]):
+        ax.plot([s0, s0, s1], [y0 + 0.3, y1 - 0.3, y1 - 0.3], color=INK2, lw=0.6, zorder=2)
+    ax.set_xlim(0, 100)
+    ax.set_ylim(y - 0.5, -0.6)
+    ax.set_yticks([])
+    ax.set_xticks([0, 50, 100])
+    ax.set_xticklabels(["0", "50", "100%"])
+    for s_ in ("top", "right", "left"):
+        ax.spines[s_].set_visible(False)
+    save(fig, "fig2_construction")
 
 
-# ---- appendix: every comparison in comparisons.json -----------------------------------------------------------
+# ---- Fig. 3: paired outcomes --------------------------------------------------------------------------------------
+def ho_row(s, **kw):
+    return dict(n=s["paired_n"], base=s["base_success"], cand=s["cand_success"], fixed=s["fixed"],
+                broke=s["broke"], **kw)
+
+
+def outcome_rows(full=False):
+    """Groups of (label, comparison, kind) for the paired-outcome figure."""
+    if full:
+        groups = []
+        for lv in LEVEL_ORDER:
+            with_task = lv in ("Binding edit on other tasks", "Gripper commitment (all tasks)",
+                               "Unchanged weights (noise controls)")
+            items = [(readable(r, with_task), r, "held" if r["type"] == "heldout" else
+                      "noedit" if r["type"] in ("identity", "prompt", "runtime") else "") for r in ROWS
+                     if r["level"] == lv]
+            if lv == "Gripper commitment (all tasks)":
+                items.append(("Seven tasks pooled: gripper bias (1 value)", GRIP_POOLED, ""))
+            groups.append((LEVEL_NAMES[lv], items))
+        return groups
+    return [
+        ("Distilled edit, cube then banana", [
+            ("Explicit wording, no weight change", find("Cube then banana", "Explicit two-step"), "noedit"),
+            ("Practice seeds", find("Cube then banana", "v2mi-f: binding edit, practice"), ""),
+            ("Held-out seeds", ho_row(CTB), "held"),
+            ("0.16% variant, held-out seeds", ho_row(CTB_MIN), "held"),
+        ]),
+        ("Same edit, other tasks", [
+            ("Eyeglasses, held-out seeds", ho_row(EYE), "held"),
+            ("Cube left of bowl, held-out seeds", ho_row(LEFT), "held"),
+            ("Cube right of bowl", find("Cube right of bowl", "binding edit"), ""),
+            ("Butter on raisin box", find("Butter box onto raisin box", "binding edit (vs first"), ""),
+        ]),
+        ("Perception: stack yellow on red", [
+            ("Claude, attention gain", find("Stack yellow on red", "v1a1"), ""),
+            ("Claude, key/value gain", find("Stack yellow on red", "dkv2"), ""),
+            ("Claude, key/value + head rewire", find("Stack yellow on red", "combo1: dkv2"), ""),
+            ("Astra, 4,412 values", find("Stack yellow on red", "Astra A1 p1"), ""),
+            ("Astra, 1,543 values", find("Stack yellow on red", "Astra A2 p1"), ""),
+            ("Astra, 791 values", find("Stack yellow on red", "Astra A2 p3"), ""),
+            ("Astra, 6,225 values", find("Stack yellow on red", "Astra fixed16 p1"), ""),
+            ("Claude, Astra protocol 1", find("Stack yellow on red", "Claude, Astra protocol p1"), ""),
+            ("Claude, Astra protocol 2", find("Stack yellow on red", "Claude, Astra protocol p2"), ""),
+        ]),
+        ("Competence, contact, gripper", [
+            ("Mustard, one weight", find("Mustard into left bin", "gthr04"), ""),
+            ("Seven tasks, one weight", GRIP_POOLED, ""),
+            ("Stacking, runtime threshold", find("Stack yellow on red", "Astra study: runtime"), "noedit"),
+        ]),
+        ("Unchanged weights, rerun", [
+            ("Stacking, rerun 1", find("Stack yellow on red", "Astra study: original identity"), "noedit"),
+            ("Stacking, rerun 2", find("Stack yellow on red", "Astra study: extra unchanged"), "noedit"),
+            ("Stacking, rerun 3", find("Stack yellow on red", "Astra study: fixed16 identity"), "noedit"),
+            ("Butter, rerun", find("Butter box onto raisin box", "this work: unedited"), "noedit"),
+        ]),
+    ]
+
+
+SEG = [("broke", RED, "white"), ("both succeed", "#7D7D7D", "white"), ("both fail", "#DCDCDC", INK2),
+       ("fixed", TEAL, "white")]
+
+
+def draw_outcomes(groups, name, pitch=0.092, label_w=1.72):
+    """100% bars of the four paired outcome types. Left of the dark/light boundary: pairs the unedited policy won
+    (broke, both succeed); right of it: pairs it lost (both fail, fixed)."""
+    n_rows = sum(len(g[1]) for g in groups)
+    W = TEXTW
+    n_lines = n_rows + len(groups) * 1.0 + (len(groups) - 1) * 0.35 + 2.6
+    body = pitch * n_lines
+    H = body + 0.3
+    fig = plt.figure(figsize=(W, H))
+    bar_l, bar_r = label_w + 0.06, W - 0.66
+    ax = fig.add_axes([bar_l / W, 0.2 / H, (bar_r - bar_l) / W, body / H])
+    tr = mtransforms.blended_transform_factory(ax.transAxes, ax.transData)
+    tr_fig = mtransforms.blended_transform_factory(fig.transFigure, ax.transData)
+    bw = bar_r - bar_l
+    c_pairs, c_fixed, c_broke = 1 + 0.06 / bw, 1 + 0.27 / bw, 1 + 0.47 / bw  # right-hand columns, set in inches
+    # key: one bar with the four pair types named in place, and what each side of the split means
+    yk = 0.0
+    kx = [0.0, 0.17, 0.42, 0.75, 1.0]
+    for (seg, col, tcol), a, b in zip(SEG, kx[:-1], kx[1:]):
+        ax.add_patch(Rectangle((a, yk - 0.38), b - a, 0.76, fc=col, ec="white", lw=0.5))
+        ax.text((a + b) / 2, yk, seg, ha="center", va="center", fontsize=FS_SMALL - 0.3, color=tcol)
+    for a, b, txt in ((kx[0], kx[2], "unedited succeeded"), (kx[2], kx[4], "unedited failed")):
+        ax.plot([a + 0.004, a + 0.004, b - 0.004, b - 0.004], [yk - 0.55, yk - 0.75, yk - 0.75, yk - 0.55],
+                color=MUTE, lw=0.5)
+        ax.text((a + b) / 2, yk - 0.82, txt, ha="center", va="bottom", fontsize=FS_SMALL - 0.4, color=MUTE)
+    ax.text(-0.012, yk, "Each pair: one start, unedited vs edited", transform=tr, ha="right", va="center",
+            fontsize=FS_SMALL - 0.3, color=MUTE)
+    for x, txt, col in ((c_pairs, "pairs", MUTE), (c_fixed, "fixed", TEAL), (c_broke, "broke", RED)):
+        ax.text(x, yk, txt, ha="left", va="center", fontsize=FS_SMALL - 0.3, color=col, transform=tr)
+    y = 1.6
+    for gi, (gname, items) in enumerate(groups):
+        y += 0.35 if gi else 0.0
+        ax.text(0.0, y, gname, transform=tr_fig, ha="left", va="center", fontsize=FS_SMALL, weight="bold",
+                color=INK)
+        y += 1.0
+        for label, r, kind in items:
+            both = r["base"] - r["broke"]
+            neither = r["n"] - both - r["fixed"] - r["broke"]
+            x = 0.0
+            for (seg, col, _), k in zip(SEG, [r["broke"], both, neither, r["fixed"]]):
+                wdt = k / r["n"]
+                if wdt > 0:
+                    ax.add_patch(Rectangle((x, y - 0.36), wdt, 0.72, fc=col, ec="white", lw=0.35))
+                x += wdt
+            held = kind == "held"
+            ax.text(-0.012, y, label, ha="right", va="center", fontsize=FS_SMALL, transform=tr,
+                    color=TEAL if held else INK, weight="bold" if held else "normal",
+                    style="italic" if kind == "noedit" else "normal")
+            ax.text(c_pairs, y, f"{r['n']}", ha="left", va="center", fontsize=FS_SMALL, color=MUTE, transform=tr)
+            ax.text(c_fixed, y, f"+{r['fixed']}" if r["fixed"] else "0", ha="left", va="center", fontsize=FS_SMALL,
+                    color=TEAL if r["fixed"] else MUTE, transform=tr)
+            ax.text(c_broke, y, f"−{r['broke']}" if r["broke"] else "0", ha="left", va="center",
+                    fontsize=FS_SMALL, color=RED if r["broke"] else MUTE, transform=tr)
+            y += 1
+    ax.set_xlim(0, 1)
+    ax.set_ylim(y - 0.45, -1.0)
+    ax.set_xticks([0, 0.25, 0.5, 0.75, 1])
+    ax.set_xticklabels(["0", "", "50", "", "100% of pairs"])
+    ax.set_yticks([])
+    for s in ("top", "right", "left"):
+        ax.spines[s].set_visible(False)
+    save(fig, name)
+
+
+def fig_outcomes():
+    draw_outcomes(outcome_rows(), "fig3_outcomes")
+
+
+def fig_outcomes_full():
+    draw_outcomes(outcome_rows(full=True), "figA_outcomes_full", pitch=0.108, label_w=2.25)
+
+
+# ---- Fig. 4: detectability map ----------------------------------------------------------------------------------------
+def fig_detectability():
+    W, H = TEXTW, 1.8
+    fig = plt.figure(figsize=(W, H))
+    ax = fig.add_axes([0.075, 0.19, 0.915, 0.78])
+    ns = np.geomspace(12, 330, 300)
+    lo, mid, hi = (100 * mde(ns, q) for q in (0.2, 0.3, 0.4))
+    ax.fill_between(ns, 0, mid, color=PALE, lw=0, zorder=0)
+    ax.fill_between(ns, lo, hi, color="#DCDCDC", lw=0, zorder=0)
+    ax.plot(ns, mid, color=MUTE, lw=0.7, zorder=1)
+    pts = []
+    for i, r in enumerate(ROWS):
+        if r["label"].startswith("10 edits"):
+            continue
+        d = 100 * (r["cand"] - r["base"]) / r["n"]
+        if r["type"] in ("identity", "prompt", "runtime"):
+            kind = "noedit"
+        elif r["level"] in ("Language binding", "Binding edit on other tasks"):
+            kind = "edit"
+        else:
+            kind = "other"
+        pts.append((r, r["n"] * (1 + 0.035 * ((i % 5) - 2)), d, kind))  # small fixed offsets separate markers
+    pts.append((GRIP_POOLED, 240.0, 0.0, "other"))
+    for r, x, d, kind in pts:
+        held = r.get("type") == "heldout"
+        mk = "^" if d > 0 else ("v" if d < 0 else "o")
+        if kind == "edit":
+            fc, ec, ms = (TEAL, TEAL, 5.2) if held else ("white", TEAL, 3.9)
+        elif kind == "noedit":
+            fc, ec, ms = ("white", MUTE, 3.7)
+        else:
+            fc, ec, ms = (INK2, INK2, 3.4)
+        ax.plot([x], [abs(d)], marker=mk, ms=ms, mfc=fc, mec=ec, mew=0.8, ls="", zorder=3 + held)
+    ax.set_xscale("log", base=2)
+    ax.set_xticks([16, 32, 64, 128, 256])
+    ax.set_xticklabels(["16", "32", "64", "128", "256"])
+    ax.minorticks_off()
+    ax.set_xlim(12, 330)
+    ax.set_ylim(0, 72)
+    ax.set_yticks([0, 20, 40, 60])
+    ax.set_xlabel("Paired episodes per arm", fontsize=FS_SMALL, color=INK2, labelpad=2)
+    ax.set_ylabel("|Difference| (points)", fontsize=FS_SMALL, color=INK2, labelpad=2)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    # the detectability curve, labelled along the upper edge of its band
+    xs = 108.0
+    ys = 100 * mde(xs, 0.4)
+    p0 = ax.transData.transform((xs, ys))
+    p1 = ax.transData.transform((xs * 1.3, 100 * mde(xs * 1.3, 0.4)))
+    ang = np.degrees(np.arctan2(p1[1] - p0[1], p1[0] - p0[0]))
+    ax.text(xs, ys + 2.6, "smallest detectable change, 80% power", rotation=ang, rotation_mode="anchor",
+            ha="left", va="bottom", fontsize=FS_SMALL - 0.4, color=INK2)
+    lab = dict(fontsize=FS_SMALL, va="center")
+    ax.text(150, 53.0, "distilled edit, held-out\n(full and 0.16% variant)", ha="left", color=TEAL, weight="bold",
+            linespacing=1.05, **lab)
+    ax.text(36.5, 66.0, "distilled edit, practice seeds", ha="left", color=TEAL, **lab)
+    ax.text(36.5, 58.8, "explicit wording, no edit", ha="left", color=MUTE, **lab)
+    ax.text(70, 44.0, "cube left of bowl, held-out", ha="left", color=TEAL, **lab)
+    ax.text(70, 34.5, "eyeglasses, held-out and practice", ha="left", color=TEAL, **lab)
+    ax.text(70, 24.5, "runtime gripper threshold", ha="left", color=MUTE, **lab)
+    ax.text(18.0, 39.5, "unedited rerun, butter", ha="left", color=MUTE, **lab)
+    ax.text(72, 6.0, "other edits and unchanged reruns", ha="left", color=INK2, **lab)
+    save(fig, "fig4_detectability")
+
+
+# ---- appendix: mustard wrist-camera strip -------------------------------------------------------------------------
+def fig_mustard():
+    im = np.asarray(Image.open(ROOT / "study/blog/figures/opus_mustard_slip.jpg").convert("RGB"))
+    # layout of make_mustard_strip.py: pad 8, header 26, tiles 320x180; drop its header text and relabel
+    rows = [im[34:214, 8:1640], im[248:428, 8:1640]]
+    titles = ["Slips: cap grasp at step 48, bottle dropped at step 98",
+              "Holds: cap grasp at step 60, released over the bin at step 168"]
+    w = TEXTW
+    hrow = w * rows[0].shape[0] / rows[0].shape[1]
+    title_h, gap = 0.16, 0.05
+    H = 2 * (hrow + title_h) + gap
+    fig = plt.figure(figsize=(w, H))
+    y = H
+    for p, t in zip(rows, titles):
+        y -= title_h
+        fig.text(0.0, (y + 0.03) / H, t, ha="left", va="bottom", fontsize=FS, color=INK)
+        y -= hrow
+        ax = fig.add_axes([0, y / H, 1, hrow / H])
+        ax.imshow(p, interpolation="lanczos")
+        ax.set_axis_off()
+        y -= gap
+    fig.savefig(OUT / "figA_mustard.pdf", dpi=300, bbox_inches="tight", pad_inches=0.02)
+    fig.savefig(PREVIEW / "figA_mustard.png", dpi=220, bbox_inches="tight", pad_inches=0.02)
+    plt.close(fig)
+    print("wrote figA_mustard")
+
+
+# ---- labels shared by the full outcome figure and the generated tables ---------------------------------------------
 LEVEL_ORDER = ["Language binding", "Binding edit on other tasks", "Perception: wrong target object",
                "Motor: missing competence", "Motor: grasp physics", "Gripper commitment (all tasks)",
                "Unchanged weights (noise controls)"]
@@ -574,131 +763,6 @@ def readable(r, with_task):
     if not with_task:
         return lab[0].upper() + lab[1:]
     return f'{TASKS.get(r["task"], r["task"])}: {lab}'
-
-
-def fig_forest_full():
-    items = []
-    for lv in LEVEL_ORDER:
-        items.append(("header", LEVEL_NAMES[lv]))
-        with_task = lv in ("Binding edit on other tasks", "Gripper commitment (all tasks)",
-                           "Unchanged weights (noise controls)")
-        for r in (r for r in ROWS if r["level"] == lv):
-            items.append(("row", f'{readable(r, with_task)} · {r["n"]}', r, color_of(r)))
-    nh = sum(1 for i in items if i[0] == "header")
-    n = len(items) + 0.3 * (nh - 1)
-    h = 0.124 * n + 0.6
-    fig = plt.figure(figsize=(TEXTW, h))
-    bottom, top = 0.48 / h, 1 - 0.14 / h
-    ax = fig.add_axes([0.43, bottom, 0.355, top - bottom])
-    effect_panel(ax, items, "", label_x=0.0, fs=6.0)
-    ax.set_ylim(n - 0.4, -0.75)
-    right = mtransforms.blended_transform_factory(ax.transAxes, ax.transData)
-    for yy, it in zip(ax.get_yticks(), items):
-        if it[0] == "row":
-            r = it[2]
-            txt = r.get("display") or f'{r["cand"]}/{r["n"]} vs {r["base"]}/{r["n"]}'
-            ax.text(1.03, yy, txt, transform=right, ha="left", va="center", fontsize=5.8, color=INK2, clip_on=False)
-    ax.text(1.03, -1.05, "edited vs unedited", transform=right, ha="left", va="center", fontsize=5.8,
-            color=INK2, style="italic", clip_on=False)
-    save(fig, "figA_forest_full")
-
-
-# ---- appendix: noise floor ---------------------------------------------------------------------------------------
-def mde(n, pd, z=1.959964 + 0.841621):
-    """Normal-approximation minimum detectable paired difference (80% power, two-sided alpha 0.05)."""
-    return z * np.sqrt(pd / n)
-
-
-def fig_noise():
-    fig = plt.figure(figsize=(TEXTW, 2.45))
-    a1 = fig.add_axes([0.235, 0.3, 0.25, 0.6])
-    a2 = fig.add_axes([0.61, 0.3, 0.375, 0.6])
-    cats = []
-    ident = [r for r in ROWS if r["type"] == "identity"]
-    cats.append(("Unchanged weights,\nrerun vs. first run", [((r["fixed"] + r["broke"]) / r["n"], GRAY) for r in ident]))
-    # two runs of the same edited weights agreed on 46 of 64 paired episodes (study/results/opus/EVIDENCE.md)
-    cats.append(("Same edited weights,\ntwo runs", [(18 / 64, PURPLE)]))
-    head = [r for r in GRIP if 0 < r["base"] < r["n"] and r["n"] >= 32]
-    assert sum(r["fixed"] + r["broke"] for r in head) == 70 and sum(r["n"] for r in head) == 192
-    cats.append(("Neutral one-weight edit\n(tasks with headroom)", [(70 / 192, PURPLE)]))
-    pe = [r for r in ROWS if r["level"].startswith("Perception") and r["type"] == "weight"]
-    cats.append(("Perception edits\n(stacking)", [((r["fixed"] + r["broke"]) / r["n"], color_of(r)) for r in pe]))
-    ho = [r for r in ROWS if r["type"] == "heldout"]
-    cats.append(("Distilled edit,\nheld-out seeds", [((r["fixed"] + r["broke"]) / r["n"], TEAL) for r in ho]))
-    for ci, (lab, pts) in enumerate(cats):
-        offs = np.linspace(-0.2, 0.2, len(pts)) if len(pts) > 1 else [0.0]
-        for (f, c), o in zip(sorted(pts), offs):
-            a1.plot([100 * f], [ci + o], "o", ms=3.4, mfc=c, mec="white", mew=0.4, zorder=3)
-    a1.axvspan(28, 36, color=GRID, zorder=0, lw=0)
-    a1.text(32, len(cats) - 0.58, "28–36%", ha="center", va="center", fontsize=5.7, color=GRAY_TXT)
-    a1.set_yticks(range(len(cats)))
-    a1.set_yticklabels([c[0] for c in cats], fontsize=6.0)
-    a1.set_ylim(len(cats) - 0.25, -0.5)
-    a1.tick_params(axis="y", length=0)
-    a1.set_xlim(0, 80)
-    a1.set_xticks([0, 20, 40, 60, 80])
-    a1.set_xlabel("Paired episodes whose outcome differs (%)", fontsize=6.2)
-    a1.set_title("(a) Discordant pairs", fontsize=7.0, pad=4)
-    for s in ("top", "right", "left"):
-        a1.spines[s].set_visible(False)
-    ns = np.geomspace(14, 300, 200)
-    a2.fill_between(ns, -100 * mde(ns, 0.3), 100 * mde(ns, 0.3), color=GRID, lw=0, zorder=0)
-    for pd, ls in ((0.30, "-"), (0.50, (0, (3, 2)))):
-        e = 100 * mde(ns, pd)
-        a2.plot(ns, e, color=GRAY_TXT, lw=0.7, ls=ls)
-        a2.plot(ns, -e, color=GRAY_TXT, lw=0.7, ls=ls)
-    rng = np.random.default_rng(3)
-    for r in ROWS:
-        if r["label"].startswith("10 edits"):
-            continue
-        d = 100 * (r["cand"] - r["base"]) / r["n"]
-        a2.plot([r["n"] * rng.uniform(0.93, 1.07)], [d], "D" if r["type"] == "heldout" else "o",
-                ms=3.6 if r["type"] == "heldout" else 3.1, mfc=color_of(r), mec="white", mew=0.4, zorder=3)
-    a2.axhline(0, color=SEP, lw=0.7, ls=(0, (3, 2)))
-    a2.set_xscale("log", base=2)
-    a2.set_xticks([16, 32, 64, 128, 256])
-    a2.set_xticklabels(["16", "32", "64", "128", "256"])
-    a2.minorticks_off()
-    a2.set_xlim(12, 330)
-    a2.set_ylim(-52, 80)
-    a2.set_xlabel("Paired episodes (log scale)", fontsize=6.2)
-    a2.set_ylabel("Observed difference (pp)", fontsize=6.2)
-    a2.set_title("(b) Observed effects and detectable change", fontsize=7.0, pad=4)
-    for s in ("top", "right"):
-        a2.spines[s].set_visible(False)
-    handles = [plt.Line2D([], [], ls="", marker=m, ms=3.4, mfc=c, mec="white", mew=0.4, label=l) for c, m, l in (
-        (TEAL, "o", "Distilled edit, practice"), (TEAL, "D", "Distilled edit, held-out"),
-        (PURPLE, "o", "Other Claude edits"), (ORANGE, "o", "Astra edits"), (GRAY, "o", "No weight change"))]
-    fig.legend(handles=handles, loc="lower center", ncol=5, frameon=False, fontsize=5.8, handletextpad=0.2,
-               columnspacing=1.1, bbox_to_anchor=(0.5, 0.0))
-    save(fig, "figA_noise")
-
-
-# ---- appendix: mustard wrist-camera strip -------------------------------------------------------------------------
-def fig_mustard():
-    im = np.asarray(Image.open(ROOT / "study/blog/figures/opus_mustard_slip.jpg").convert("RGB"))
-    # layout of make_mustard_strip.py: pad 8, header 26, tiles 320x180; drop its header text and relabel
-    rows = [im[34:214, 8:1640], im[248:428, 8:1640]]
-    titles = ["Slips: cap grasp at step 48, bottle dropped at step 98",
-              "Holds: cap grasp at step 60, released over the bin at step 168"]
-    w = TEXTW
-    hrow = w * rows[0].shape[0] / rows[0].shape[1]
-    title_h, gap = 0.16, 0.05
-    H = 2 * (hrow + title_h) + gap
-    fig = plt.figure(figsize=(w, H))
-    y = H
-    for p, t in zip(rows, titles):
-        y -= title_h
-        fig.text(0.0, (y + 0.03) / H, t, ha="left", va="bottom", fontsize=6.6, color=INK)
-        y -= hrow
-        ax = fig.add_axes([0, y / H, 1, hrow / H])
-        ax.imshow(p, interpolation="lanczos")
-        ax.set_axis_off()
-        y -= gap
-    fig.savefig(OUT / "figA_mustard.pdf", dpi=300, bbox_inches="tight", pad_inches=0.02)
-    fig.savefig(PREVIEW / "figA_mustard.png", dpi=220, bbox_inches="tight", pad_inches=0.02)
-    plt.close(fig)
-    print("wrote figA_mustard")
 
 
 # ---- generated LaTeX tables ------------------------------------------------------------------------------------------
@@ -751,9 +815,7 @@ def write_tables():
             lines.append(f"Seven tasks pooled: gripper bias (1 value) & 1 & 117/240 vs 117/240 & "
                          f"{g['fixed']} / {g['broke']} & {fmt_ci(*pooled_ci(GRIP))} & "
                          f"{fmt_p(mcnemar(g['fixed'], g['broke']))}\\\\")
-    # 6 columns: comparison, values changed, counts, fixed/broke, difference [CI], p
     (GEN / "comparisons_table.tex").write_text("\n".join(lines) + "\n")
-    # Appendix E: the distilled edit on the 15 other surveyed tasks
     tx = [("Pick up eyeglasses, held-out", find("Pick up eyeglasses", "binding edit, HELD")),
           ("Pick up eyeglasses, two practice runs", find("Pick up eyeglasses", "binding edit, practice")),
           ("Cube left of bowl, held-out", find("Cube left of bowl", "binding edit, HELD")),
@@ -779,7 +841,6 @@ def write_tables():
         if name.startswith("Cube left of bowl, practice") or name.startswith("Banana onto plate"):
             lines.append("\\addlinespace")
     (GEN / "transfer_table.tex").write_text("\n".join(lines) + "\n")
-    # Appendix D: the one-weight gripper edit on seven tasks
     lines = []
     for r in GRIP:
         name = {"Stack left bowl on right bowl": "Stack bowls", "Butter box onto raisin box": "Butter on raisin box",
@@ -789,7 +850,6 @@ def write_tables():
     lines.append("\\midrule")
     lines.append(f'Total & {g["n"]} & {g["base"]} & {g["cand"]} & {g["fixed"]} / {g["broke"]}\\\\')
     (GEN / "gripper_table.tex").write_text("\n".join(lines) + "\n")
-    # Appendix F: held-out runs split by run order
     names = {("RubiksCubeThenBananaTask", "v2mi-f"): "Cube then banana, distilled edit",
              ("RubiksCubeThenBananaTask", "abl-imgl8"): "Cube then banana, 0.16\\% variant",
              ("PickGlassesTask", "ctb-v2mi"): "Pick up eyeglasses, distilled edit",
@@ -815,17 +875,15 @@ def print_table():
               f'p={mcnemar(r["fixed"], r["broke"]):.2g}')
     d, lo, hi = pooled_ci(GRIP)
     print(f'{"7 tasks pooled":26s} {"gthr04":46s} {100*d:+6.1f} [{100*lo:+6.1f}, {100*hi:+6.1f}]')
-    # minimum detectable paired differences quoted in the paper (30% discordant pairs)
     print("MDE at 30% discordant:", {n: round(100 * mde(n, 0.3), 1) for n in (32, 64, 128, 256)})
 
 
 if __name__ == "__main__":
     fig_teaser()
-    fig_method()
-    fig_effects()
-    fig_heatmap()
-    fig_forest_full()
-    fig_noise()
+    fig_construction()
+    fig_outcomes()
+    fig_outcomes_full()
+    fig_detectability()
     fig_mustard()
     write_tables()
     print_table()
