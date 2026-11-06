@@ -170,16 +170,26 @@
     <p>The limits are real. The edit is low-rank, not sparse: it changes 13.4% of the stored values. Finding it needed a known-good instruction. It was built by an operator session, also Claude Opus, under the editor rules, not by an autonomous editor. Its transfer was not predictable in advance. And it ran on one zero-shot checkpoint, in simulation.</p>
   </section>
 
-  <section id="study" hidden>
+  <section id="study">
     <h2>We gave the same tools to seven blind AI editors</h2>
-    <p>In a controlled study, Claude Opus at extra-high effort edited one RoboLab task for each kind of failure (a two-step instruction, a spatial relation, assembly by stacking, lookalike perception, grasp-and-carry, thin-object pickup and flat-object pickup) under an identical budget of 32 development episodes for the unedited policy plus two 32-episode candidates, with closed-form edits only, and each submission was scored on held-out starts it never saw.</p>
+    <p class="claim">One of seven edits survived held-out scoring, and it was on the misread instruction.</p>
+    <p>Seven fresh Claude Opus editors, at extra-high effort, each got one RoboLab task per kind of failure: a two-step instruction, a spatial relation, stacking, lookalike perception, grasp-and-carry, thin-object pickup and flat-object pickup. Each had the same tools, could not see the others, and had the same budget: 32 development episodes for the unedited policy plus two 32-episode candidates, with closed-form edits only. We scored each submission on 64 starts it never saw.</p>
+    <p>The editor on cube then banana found the same misreading on its own. It replayed the releases under “Put the cube in the bowl”, and all 16 became holds. It then wrote a different edit of just 1,024 values, gated to premature-release moments, which took held-out success from 11 to 27 of 64 (<i>p</i> = 0.004). That is smaller than our distilled edit’s effect, but it is the first edit by an autonomous editor to pass. Edits for the eyeglasses and the mustard stayed within noise. Four editors submitted no edit at all; on lookalike perception, no rewording moved the arm, so there was nothing to distil. Two editors working on different tasks found the same two units in the first layer that fire only on the word “left”.</p>
     <div class="tscroll" tabindex="0" role="region" aria-label="Editor study results">
       <table class="dtable study-table">
-        <caption>Results of the editor study.</caption>
+        <caption>Development: the editor’s own 32 starts, unedited → candidate. Held-out: our score of the submission on 64 unseen starts, unedited → edit, with exact McNemar <i>p</i>. Records of every editor: <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results/ctrl">study/results/ctrl</a>.</caption>
         <thead>
           <tr><th scope="col">Task</th><th scope="col">Failure kind</th><th scope="col">Submission</th><th scope="col">Dev result</th><th scope="col">Held-out base → edit</th><th scope="col"><i>p</i></th></tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <tr><td>Cube then banana</td><td>Two-step instruction</td><td>Edit, 1,024 values</td><td>4 → 10 of 32</td><td><b>11 → 27 of 64</b></td><td><b>0.004</b></td></tr>
+          <tr><td>Pick up eyeglasses</td><td>Thin-object pickup</td><td>Edit, 3,072 values</td><td>12 → 18 of 32</td><td>18 → 27 of 64</td><td>0.12</td></tr>
+          <tr><td>Mustard into left bin</td><td>Grasp and carry</td><td>Edit, 4,094 values</td><td>6 → 9 of 32</td><td>8 → 11 of 64</td><td>0.61</td></tr>
+          <tr><td>Cube left of bowl</td><td>Spatial relation</td><td>No edit</td><td>5 of 32 (candidate: 3)</td><td>—</td><td>—</td></tr>
+          <tr><td>Stack three cubes</td><td>Stacking</td><td>No edit</td><td>16 of 32 (no candidate)</td><td>—</td><td>—</td></tr>
+          <tr><td>Stack yellow on red</td><td>Lookalike perception</td><td>No edit</td><td>13 of 32 (no candidate)</td><td>—</td><td>—</td></tr>
+          <tr><td>Pick up flat box</td><td>Flat-object pickup</td><td>No edit</td><td>0 of 32 (candidate: 0)</td><td>—</td><td>—</td></tr>
+        </tbody>
       </table>
     </div>
   </section>

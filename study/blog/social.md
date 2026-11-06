@@ -40,6 +40,11 @@ The failures were just as informative:
 ❌ Grabbing a lookalike object: 9 edits across 2 editors (Claude & Astra, same protocol), no gain
 ❌ One-weight gripper tweak on 7 tasks: 117/240 → 117/240
 
+**4b/**
+Then we took ourselves out of the loop: 7 blind Claude Opus editors, one task per failure kind, identical tools and budget.
+
+Only one edit survived held-out scoring, and it was on the misread instruction: the editor found the same bug on its own and wrote a 1,024-value fix (11/64 → 27/64). Perception, stacking, and a missing grasp: no edit.
+
 **5/**
 The pattern: weight editing *re-routes* what a network already knows. It doesn't *create* what it doesn't.
 

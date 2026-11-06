@@ -41,7 +41,7 @@ weightsmith edit apply  v2mi-f.safetensors --workspace $BASE_WORKSPACE --out $WS
 
 An editor practises on paired seeds under a budget and submits one frozen candidate, or `base`. The operator scores it against the unedited policy on at least 64 held-out paired seeds, and it is accepted at exact McNemar p < 0.05. There are 16 zero-shot RoboLab tasks, drivers for Claude Code and the Codex CLI, and a measured noise floor: with unchanged weights, about 30% of paired outcomes flip.
 
-Protocol: [BENCHMARK.md](BENCHMARK.md). Every run, including the failures: [LEADERBOARD.md](LEADERBOARD.md). **No autonomous editor has an accepted edit yet.**
+Protocol: [BENCHMARK.md](BENCHMARK.md). Every run, including the failures: [LEADERBOARD.md](LEADERBOARD.md). **First accepted autonomous edit:** in a blind study of seven Claude Opus editors, one task per failure kind, the cube-then-banana editor's 1,024-value edit took held-out success from 11/64 to 27/64 (p = 0.004). The other six did not pass ([study](study/results/ctrl/README.md)).
 
 ## Results
 
@@ -52,9 +52,10 @@ Protocol: [BENCHMARK.md](BENCHMARK.md). Every run, including the failures: [LEAD
 | Control: random directions, same layers, rank and singular values as `v2mi-f` | Cube then banana | 13/64 → 9/64: no gain (6 fixed, 10 broken, p = 0.45) | held-out |
 | `v2mi-f`, unchanged | Pick up eyeglasses | 22/64 → **44/64** | held-out |
 | `v2mi-f`, unchanged | Cube left of the bowl | 8/64 → **36/64** | held-out |
+| Autonomous blind editor (Claude Opus): gated rank-1 gripper edit, 1,024 values | Cube then banana | 11/64 → **27/64**: 22 fixed, 6 broken, p = 0.004 | held-out |
 | Edits aimed at perception, a missing skill, contact physics, the gripper threshold | Stacking, flat box, mustard, 7 tasks | no gain | practice |
 
-Paired outcomes on identical seeds; p is the exact McNemar test. The distilled edit was built by our Claude Opus operator session following the editor rules, not by an autonomous editor run. Details: the [paper](https://adeeb10abbas.github.io/weightsmith/paper.pdf), the [project page](https://adeeb10abbas.github.io/weightsmith/), and the raw [held-out runs](study/results/opus/heldout/) and [comparisons](study/results/opus/comparisons.json).
+Paired outcomes on identical seeds; p is the exact McNemar test. The distilled edit was built by our Claude Opus operator session following the editor rules; the 1,024-value edit came from an autonomous editor working blind. Details: the [paper](https://adeeb10abbas.github.io/weightsmith/paper.pdf), the [project page](https://adeeb10abbas.github.io/weightsmith/), and the raw [held-out runs](study/results/opus/heldout/) and [comparisons](study/results/opus/comparisons.json).
 
 ## Quickstart
 

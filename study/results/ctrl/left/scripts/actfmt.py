@@ -1,0 +1,11 @@
+o = obs('base.base.s70005')
+A = np.array(o['actions']); J = np.array(o['joint']); G = np.array(o['gripper'])
+print(o.keys() if hasattr(o, 'keys') else type(o))
+print('A', A.shape, 'J', J.shape, 'G', G.shape, 'steps', o['step'][:5], 'seed', o['seed'][:3] if hasattr(o['seed'], '__len__') else o['seed'])
+for i in [10, 14, 16, 17]:
+    print('step', o['step'][i])
+    print('  J[i]   ', J[i].round(3))
+    print('  A[i,0] ', A[i, 0, :7].round(3))
+    print('  A[i,14]', A[i, 14, :7].round(3))
+    print('  J[i+1] ', J[i + 1].round(3))
+print(type(o['base_img']), np.array(o['base_img']).shape)
