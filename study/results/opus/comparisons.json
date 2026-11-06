@@ -204,6 +204,20 @@
    "broke": 3
   },
   {
+   "level": "Language binding",
+   "task": "Cube then banana",
+   "label": "random directions, same size as v2mi-f, HELD-OUT seeds",
+   "editor": "Claude Opus",
+   "type": "weight",
+   "values_changed": 502291925,
+   "n": 64,
+   "base": 13,
+   "cand": 9,
+   "fixed": 6,
+   "broke": 10,
+   "source": "controls/ctl1-90000-64 (random-direction control: v2mi-f's layers, rank and singular values, random orthonormal directions, seed 0) vs the unedited run of heldout/v2mi-f-RubiksCubeThenBananaTask-90000-128 on slots 90000-90063; McNemar p=0.45"
+  },
+  {
    "level": "Binding edit on other tasks",
    "task": "Cube left of bowl",
    "label": "binding edit, HELD-OUT seeds",

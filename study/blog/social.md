@@ -25,6 +25,8 @@ So Claude wrote that reading into the weights, in closed form, keeping the origi
 
 3/32 → 25/32. On 128 unseen seeds: 27/128 → 106/128.
 
+And a random edit of exactly the same size (same layers, rank and spectrum, random directions)? 9/64. Same as doing nothing.
+
 Bonus: the same edit transferred. On held-out seeds, "pick up the eyeglasses" went 22/64 → 44/64 and "put the cube to the left of the bowl" went 8/64 → 36/64. (Right of the bowl: still 0. Mechanisms are humbling.)
 
 And a 0.16%-of-parameters version of the edit does the same job: 19/128 → 102/128 held-out.
@@ -56,7 +58,7 @@ With @⟦ESMAEIL_X_HANDLE⟧
 
 Over the past week, Esmaeil Seraj and I gave frontier models (Claude Opus and GPT-6 Astra) direct read-write access to the weights of π0.5, a 3.35B-parameter robot policy. There was no training and no new data, only diagnosis and closed-form edits. We tested 16 simulated manipulation tasks.
 
-**What worked.** On a two-step task, the robot kept dropping the first object. Claude traced it to how the model's language component binds "in the bowl" to the wrong noun. The robot already had the skill: with the instruction spelled out, the same weights succeed. So Claude distilled that reading into the weights. Success rose from 3/32 to 25/32, and from 27/128 to 106/128 on 128 held-out trials, with the original instruction unchanged. The same edit also transferred to two other tasks on held-out trials (eyeglasses 22/64 → 44/64; cube left of bowl 8/64 → 36/64), with no detectable harm across 15 tasks. A version touching 0.16% of the parameters (in low-rank form) works just as well.
+**What worked.** On a two-step task, the robot kept dropping the first object. Claude traced it to how the model's language component binds "in the bowl" to the wrong noun. The robot already had the skill: with the instruction spelled out, the same weights succeed. So Claude distilled that reading into the weights. Success rose from 3/32 to 25/32, and from 27/128 to 106/128 on 128 held-out trials, with the original instruction unchanged. A random edit of exactly the same size did nothing (9/64, the same as the unedited policy). The same edit also transferred to two other tasks on held-out trials (eyeglasses 22/64 → 44/64; cube left of bowl 8/64 → 36/64), with no detectable harm across 15 tasks. A version touching 0.16% of the parameters (in low-rank form) works just as well.
 
 **What didn't.** Contact physics (grasps that slip), a grasp the policy never learned, and confusion between lookalike objects all resisted every edit. That includes a one-parameter gripper change that was exactly neutral across seven tasks (117/240 vs 117/240).
 
