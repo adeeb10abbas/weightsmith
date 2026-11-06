@@ -20,6 +20,7 @@ Draft for coauthor review, November 6, 2026. Companion to the completed [Astra s
   - **It recovers most of the rewording's effect.** The explicit wording itself, given to the unedited policy, scores 57/64 on the same seeds; the full edit (50/64) and the 0.16% version (54/64) are not detectably different from it (p = 0.12 and 0.63), and they keep the original instruction.
   - **A 0.16% version works as well.** Restricted to image regions in 9 layers (5.3M parameters as low-rank factors), it scores 19/128 → 102/128 on the same held-out seeds.
   - **It transferred to two other tasks.** On held-out seeds, eyeglasses went 22/64 → 44/64 and "put the cube to the left of the bowl" went 8/64 → 36/64. Twelve other tasks showed no reliable change either way.
+- **A blind editor found the same misreading.** In a controlled study, seven fresh Claude Opus editors each got one task per failure kind with identical tools and budget. Only the cube-then-banana editor's edit passed held-out scoring: a different, 1,024-value edit gated to premature releases took 11/64 → **27/64** (p = 0.004). Edits for eyeglasses and mustard stayed within noise, and four editors submitted no edit ([§7a](#7a-controlled-study-seven-blind-editors)).
 - **Physical failures resisted every edit:**
   - a grasp that slips: no gain;
   - a skill the policy never learned: 10 edits, 0 successes;
@@ -259,6 +260,26 @@ With roughly 30% of pairs flipping, these are the smallest changes a single pair
 **A 16-episode screen is a filter, not evidence.** Several of our own early "promising movements" disappeared at larger n.
 
 The success in §5 clears this bar easily. Many reported gains are smaller than this bar at the sample sizes reported, which doesn't make them wrong, but does make replication with larger samples important.
+
+## 7a. Controlled study: seven blind editors
+
+To test the pattern without us in the loop, we gave seven fresh Claude Opus editors (extra-high effort) one task per failure kind, the same brief and tools, no access to each other's notes, and the same budget: 32 base episodes plus two 32-episode candidates, closed-form edits only. We scored every submission on 64 held-out starts none of them saw.
+
+| Task | Failure kind | Submission | Held-out (64 starts) |
+|---|---|---|---|
+| Cube then banana | two-step instruction | edit, 1,024 values | **11 → 27** (22 fixed, 6 broken), p = 0.004: **accepted** |
+| Pick up eyeglasses | thin-object pickup | edit, 3,072 values | 18 → 27 (18 / 9), p = 0.12 |
+| Mustard into left bin | grasp and carry | edit, 4,094 values | 8 → 11 (9 / 6), p = 0.61 |
+| Cube left of bowl | spatial relation | none (its candidate broke grasping, 5 → 3 of 32) | — |
+| Stack three cubes | stacking | none (rejected offline) | — |
+| Stack yellow on red | lookalike perception | none (no rewording moved the arm) | — |
+| Pick up flat box | flat-object pickup | none (its candidate kept grasps closed, but the box slipped) | — |
+
+- **Same diagnosis, different edit.** The cube-then-banana editor replayed the premature releases under "Put the cube in the bowl" (16 of 16 became holds), then wrote a gated rank-1 change to the gripper readout. It recovers part of the effect (42% vs 17% held-out), against 83% for the distilled edit.
+- **The same two units, twice.** The editors for "left of the bowl" and "left bin", working blind on different tasks, both found the same two layer-0 MLP units (3097, 8023) that fire only on the word "left".
+- **No known-good input, no edit.** On lookalike perception no wording changed where the arm went, and the editor submitted no edit, which is the rule this report argues for.
+
+Design, deviations (a mid-study budget cut and one interruption, both applied identically to all seven), every notebook and script: [`results/ctrl/`](../results/ctrl/README.md).
 
 ## 8. What it means
 

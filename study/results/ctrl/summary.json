@@ -1,0 +1,359 @@
+{
+ "ctb": {
+  "task": "RubiksCubeThenBananaTask",
+  "instruction": "Put the cube then the banana in the bowl",
+  "budget": {
+   "episodes": 64,
+   "acts_calls": 2,
+   "acts_items": 106,
+   "evals": 2
+  },
+  "dev": {
+   "base": {
+    "success": 4,
+    "n": 32
+   },
+   "p1": {
+    "success": 10,
+    "n": 32,
+    "paired_n": 32,
+    "paired_base": 4,
+    "fixed": 8,
+    "broke": 2,
+    "p": 0.109375,
+    "note": "rank-1 readout edit: action_out_proj col7 += -2 * least-norm key (rel=1; bowlrel/stage2/approach=0)",
+    "size": {
+     "changed_elements": 1024,
+     "changed_fraction": 3.0535863806650306e-07,
+     "edited_tensors": {
+      "action.action_out_proj.kernel": {
+       "changed": 1024,
+       "numel": 32768,
+       "changed_fraction": 0.03125,
+       "max_abs_delta": 0.5595932006835938,
+       "l2_delta": 3.1607120024736295,
+       "relative_l2_delta": 0.6915524297838069
+      }
+     }
+    }
+   }
+  },
+  "heldout": [
+   {
+    "cand": "p1",
+    "fingerprint": "4ca8023b0592b79f",
+    "task": "RubiksCubeThenBananaTask",
+    "slots": [
+     91008,
+     91071
+    ],
+    "order": "first half: base then cand; second half: cand then base",
+    "started": "Fri Nov  6 13:28:38 2026",
+    "finished": "Fri Nov  6 14:44:50 2026",
+    "paired_n": 64,
+    "base_success": 11,
+    "cand_success": 27,
+    "base_rate": 0.1719,
+    "cand_rate": 0.4219,
+    "base_wilson95": [
+     0.099,
+     0.282
+    ],
+    "cand_wilson95": [
+     0.309,
+     0.544
+    ],
+    "fixed": 22,
+    "broke": 6,
+    "mcnemar_exact_p": 0.0037191659212112427,
+    "crashed_slots": 0,
+    "mean_steps_success": {
+     "base": 357.8,
+     "cand": 443.0
+    }
+   }
+  ]
+ },
+ "left": {
+  "task": "RubiksCubeLeftOfBowlTask",
+  "instruction": "Put the rubiks cube to the left of the bowl",
+  "budget": {
+   "episodes": 64,
+   "acts_calls": 4,
+   "acts_items": 156,
+   "evals": 2
+  },
+  "dev": {
+   "base": {
+    "success": 5,
+    "n": 32
+   },
+   "p1": {
+    "success": 3,
+    "n": 32,
+    "paired_n": 32,
+    "paired_base": 5,
+    "fixed": 3,
+    "broke": 5,
+    "p": 0.7265625,
+    "note": "layer-0 steering at 'left' token: delta=A(left-right)+B(front-back) via left-selective MLP units 8023,3097",
+    "size": {
+     "changed_elements": 130764,
+     "changed_fraction": 3.8994059519656456e-05,
+     "edited_tensors": {
+      "language.blocks.08.mlp.linear": {
+       "changed": 130764,
+       "numel": 33554432,
+       "changed_fraction": 0.00389707088470459,
+       "max_abs_delta": 10.474853515625,
+       "l2_delta": 95.9308569041889,
+       "relative_l2_delta": 0.4545324229209719
+      }
+     }
+    }
+   }
+  },
+  "heldout": []
+ },
+ "stack3": {
+  "task": "Stack3RubiksCubeTask",
+  "instruction": "Stack the rubiks cubes in a tower",
+  "budget": {
+   "episodes": 32,
+   "acts_calls": 1,
+   "acts_items": 84,
+   "evals": 1
+  },
+  "dev": {
+   "base": {
+    "success": 16,
+    "n": 32
+   }
+  },
+  "heldout": []
+ },
+ "yellowred": {
+  "task": "StackYellowOnRedTask",
+  "instruction": "Stack the yellow block on the red block",
+  "budget": {
+   "episodes": 32,
+   "acts_calls": 3,
+   "acts_items": 155,
+   "evals": 1
+  },
+  "dev": {
+   "base": {
+    "success": 13,
+    "n": 32
+   }
+  },
+  "heldout": []
+ },
+ "mustard": {
+  "task": "MustardInLeftBinTask",
+  "instruction": "Put the mustard in the left bin",
+  "budget": {
+   "episodes": 64,
+   "acts_calls": 2,
+   "acts_items": 112,
+   "evals": 2
+  },
+  "dev": {
+   "base": {
+    "success": 6,
+    "n": 32
+   },
+   "p1": {
+    "success": 9,
+    "n": 32,
+    "paired_n": 32,
+    "paired_base": 6,
+    "fixed": 7,
+    "broke": 4,
+    "p": 0.548828125,
+    "note": "VLM block0 MLP: add beta=2 x (left-right) contrast to down-proj rows of 'left'-token detector units 3097,8023",
+    "size": {
+     "changed_elements": 4094,
+     "changed_fraction": 1.2208381486760387e-06,
+     "edited_tensors": {
+      "language.blocks.00.mlp.linear": {
+       "changed": 4094,
+       "numel": 33554432,
+       "changed_fraction": 0.00012201070785522461,
+       "max_abs_delta": 1.3380126953125,
+       "l2_delta": 17.618763628080554,
+       "relative_l2_delta": 0.08822819658384277
+      }
+     }
+    }
+   }
+  },
+  "heldout": [
+   {
+    "cand": "p1",
+    "fingerprint": "c493a948721a64d4",
+    "task": "MustardInLeftBinTask",
+    "slots": [
+     91008,
+     91071
+    ],
+    "order": "first half: base then cand; second half: cand then base",
+    "started": "Fri Nov  6 13:28:38 2026",
+    "finished": "Fri Nov  6 14:56:58 2026",
+    "paired_n": 64,
+    "base_success": 8,
+    "cand_success": 11,
+    "base_rate": 0.125,
+    "cand_rate": 0.1719,
+    "base_wilson95": [
+     0.065,
+     0.228
+    ],
+    "cand_wilson95": [
+     0.099,
+     0.282
+    ],
+    "fixed": 9,
+    "broke": 6,
+    "mcnemar_exact_p": 0.60723876953125,
+    "crashed_slots": 0,
+    "mean_steps_success": {
+     "base": 190.4,
+     "cand": 222.3
+    }
+   }
+  ]
+ },
+ "glasses": {
+  "task": "PickGlassesTask",
+  "instruction": "Pick up the eye glasses",
+  "budget": {
+   "episodes": 64,
+   "acts_calls": 2,
+   "acts_items": 152,
+   "evals": 2
+  },
+  "dev": {
+   "base": {
+    "success": 12,
+    "n": 32
+   },
+   "p1": {
+    "success": 18,
+    "n": 32,
+    "paired_n": 32,
+    "paired_base": 12,
+    "fixed": 9,
+    "broke": 3,
+    "p": 0.14599609375,
+    "note": "gated lift: repurposed block17 MLP unit fires on committed-hold feature, writes least-norm +z lift",
+    "size": {
+     "changed_elements": 3072,
+     "changed_fraction": 9.160759141995093e-07,
+     "edited_tensors": {
+      "action.blocks.17.mlp_1.gating_einsum": {
+       "changed": 2048,
+       "numel": 8388608,
+       "changed_fraction": 0.000244140625,
+       "max_abs_delta": 0.53271484375,
+       "l2_delta": 3.2977913274786563,
+       "relative_l2_delta": 0.03546580510570068
+      },
+      "action.blocks.17.mlp_1.linear": {
+       "changed": 1024,
+       "numel": 4194304,
+       "changed_fraction": 0.000244140625,
+       "max_abs_delta": 281.97802734375,
+       "l2_delta": 1247.1948233859853,
+       "relative_l2_delta": 38.65661886364314
+      }
+     }
+    }
+   }
+  },
+  "heldout": [
+   {
+    "cand": "p1",
+    "fingerprint": "e2c6c8263242c548",
+    "task": "PickGlassesTask",
+    "slots": [
+     91008,
+     91071
+    ],
+    "order": "first half: base then cand; second half: cand then base",
+    "started": "Fri Nov  6 13:28:38 2026",
+    "finished": "Fri Nov  6 14:51:38 2026",
+    "paired_n": 64,
+    "base_success": 18,
+    "cand_success": 27,
+    "base_rate": 0.2812,
+    "cand_rate": 0.4219,
+    "base_wilson95": [
+     0.186,
+     0.401
+    ],
+    "cand_wilson95": [
+     0.309,
+     0.544
+    ],
+    "fixed": 18,
+    "broke": 9,
+    "mcnemar_exact_p": 0.12207812070846558,
+    "crashed_slots": 0,
+    "mean_steps_success": {
+     "base": 175.2,
+     "cand": 177.6
+    }
+   }
+  ]
+ },
+ "flatbox": {
+  "task": "PickUpGreenObjectTask",
+  "instruction": "Pick up the green vegetable block",
+  "budget": {
+   "episodes": 64,
+   "acts_calls": 3,
+   "acts_items": 150,
+   "evals": 2
+  },
+  "dev": {
+   "base": {
+    "success": 0,
+    "n": 32
+   },
+   "p1": {
+    "success": 0,
+    "n": 32,
+    "paired_n": 32,
+    "paired_base": 0,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "note": "rank-1 readout: action_out_proj gripper col += C*d (hold-vs-open contrast in head_input, 40 nuisance PCs removed), bias offset",
+    "size": {
+     "changed_elements": 1021,
+     "changed_fraction": 3.044640326815426e-07,
+     "edited_tensors": {
+      "action.action_out_proj.bias": {
+       "changed": 1,
+       "numel": 32,
+       "changed_fraction": 0.03125,
+       "max_abs_delta": 0.32877349853515625,
+       "l2_delta": 0.32877349853515625,
+       "relative_l2_delta": 6.301552856242758
+      },
+      "action.action_out_proj.kernel": {
+       "changed": 1020,
+       "numel": 32768,
+       "changed_fraction": 0.0311279296875,
+       "max_abs_delta": 0.21954345703125,
+       "l2_delta": 1.250042398720966,
+       "relative_l2_delta": 0.27350478546976525
+      }
+     }
+    }
+   }
+  },
+  "heldout": []
+ }
+}

@@ -1,0 +1,20 @@
+{"id": "v1-p1", "cand": "p1", "action_layers": [17], "denoise_steps": [9], "action_tokens": "mean",
+ "items": [
+  {"episode": "base.base.s70004", "step": 150}, {"episode": "base.base.s70026", "step": 120}, {"episode": "base.base.s70002", "step": 150}, {"episode": "base.base.s70011", "step": 165},
+  {"episode": "base.base.s70024", "step": 210}, {"episode": "base.base.s70023", "step": 75}, {"episode": "base.base.s70000", "step": 90}, {"episode": "base.base.s70011", "step": 135},
+  {"episode": "base.base.s70020", "step": 60}, {"episode": "base.base.s70012", "step": 150}, {"episode": "base.base.s70021", "step": 135}, {"episode": "base.base.s70025", "step": 90},
+  {"episode": "base.base.s70018", "step": 405}, {"episode": "base.base.s70004", "step": 180}, {"episode": "base.base.s70029", "step": 60}, {"episode": "base.base.s70010", "step": 405},
+  {"episode": "base.base.s70019", "step": 345}, {"episode": "base.base.s70026", "step": 285}, {"episode": "base.base.s70008", "step": 75}, {"episode": "base.base.s70006", "step": 45},
+  {"episode": "base.base.s70000", "step": 75}, {"episode": "base.base.s70001", "step": 15}, {"episode": "base.base.s70002", "step": 120}, {"episode": "base.base.s70003", "step": 225},
+  {"episode": "base.base.s70003", "step": 240}, {"episode": "base.base.s70005", "step": 195}, {"episode": "base.base.s70005", "step": 345}, {"episode": "base.base.s70006", "step": 195},
+  {"episode": "base.base.s70006", "step": 405}, {"episode": "base.base.s70008", "step": 30}, {"episode": "base.base.s70010", "step": 150}, {"episode": "base.base.s70011", "step": 45},
+  {"episode": "base.base.s70013", "step": 60}, {"episode": "base.base.s70013", "step": 225}, {"episode": "base.base.s70014", "step": 240}, {"episode": "base.base.s70015", "step": 60},
+  {"episode": "base.base.s70016", "step": 270}, {"episode": "base.base.s70016", "step": 285}, {"episode": "base.base.s70016", "step": 300}, {"episode": "base.base.s70017", "step": 75},
+  {"episode": "base.base.s70018", "step": 165}, {"episode": "base.base.s70021", "step": 105}, {"episode": "base.base.s70022", "step": 120}, {"episode": "base.base.s70022", "step": 195},
+  {"episode": "base.base.s70023", "step": 60}, {"episode": "base.base.s70024", "step": 60}, {"episode": "base.base.s70026", "step": 225}, {"episode": "base.base.s70030", "step": 60},
+  {"episode": "base.base.s70031", "step": 135}, {"episode": "base.base.s70031", "step": 165},
+  {"episode": "base.base.s70007", "step": 345}, {"episode": "base.base.s70009", "step": 60}, {"episode": "base.base.s70017", "step": 300}, {"episode": "base.base.s70027", "step": 240},
+  {"episode": "base.base.s70030", "step": 285}, {"episode": "base.base.s70022", "step": 150},
+  {"episode": "base.base.s70003", "step": 150}, {"episode": "base.base.s70011", "step": 330}, {"episode": "base.base.s70028", "step": 285}, {"episode": "base.base.s70031", "step": 345},
+  {"episode": "base.base.s70019", "step": 15}, {"episode": "base.base.s70025", "step": 225}
+ ]}

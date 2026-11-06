@@ -1,0 +1,15 @@
+{"id": "a3-p1", "cand": "p1", "prompt_tokens": [0,1,2,3],
+ "items": [
+  {"episode": "base.base.s70002", "k": 14}, {"episode": "base.base.s70002", "k": 26}, {"episode": "base.base.s70003", "k": 9}, {"episode": "base.base.s70004", "k": 23},
+  {"episode": "base.base.s70005", "k": 17}, {"episode": "base.base.s70005", "k": 19}, {"episode": "base.base.s70005", "k": 21}, {"episode": "base.base.s70005", "k": 23},
+  {"episode": "base.base.s70016", "k": 18}, {"episode": "base.base.s70019", "k": 23}, {"episode": "base.base.s70019", "k": 27}, {"episode": "base.base.s70021", "k": 20},
+  {"episode": "base.base.s70021", "k": 27}, {"episode": "base.base.s70024", "k": 28}, {"episode": "base.base.s70025", "k": 26}, {"episode": "base.base.s70007", "k": 28},
+  {"episode": "base.base.s70003", "k": 7}, {"episode": "base.base.s70003", "k": 8}, {"episode": "base.base.s70004", "k": 21}, {"episode": "base.base.s70004", "k": 22},
+  {"episode": "base.base.s70016", "k": 16}, {"episode": "base.base.s70016", "k": 17}, {"episode": "base.base.s70021", "k": 17}, {"episode": "base.base.s70021", "k": 18},
+  {"episode": "base.base.s70021", "k": 19}, {"episode": "base.base.s70007", "k": 26}, {"episode": "base.base.s70007", "k": 27}, {"episode": "base.base.s70002", "k": 24},
+  {"episode": "base.base.s70001", "k": 2}, {"episode": "base.base.s70003", "k": 2}, {"episode": "base.base.s70004", "k": 3}, {"episode": "base.base.s70006", "k": 2},
+  {"episode": "base.base.s70008", "k": 3}, {"episode": "base.base.s70009", "k": 2}, {"episode": "base.base.s70010", "k": 3}, {"episode": "base.base.s70015", "k": 2},
+  {"episode": "base.base.s70027", "k": 3}, {"episode": "base.base.s70029", "k": 2},
+  {"episode": "base.base.s70000", "k": 13}, {"episode": "base.base.s70011", "k": 14}, {"episode": "base.base.s70020", "k": 10}, {"episode": "base.base.s70022", "k": 15}
+ ],
+ "action_layers": [17], "vlm_layers": [17], "denoise_steps": [0, 9], "action_tokens": "mean"}

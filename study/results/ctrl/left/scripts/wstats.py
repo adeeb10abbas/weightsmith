@@ -1,0 +1,5 @@
+W = load('action.action_out_proj.kernel')
+b = load('action.action_out_proj.bias')
+print('out_proj col norms first 8:', np.linalg.norm(W[:, :8], axis=0).round(3), 'bias', b[:8].round(4))
+C = np.corrcoef(W[:, :8].T)
+print(C.round(2))

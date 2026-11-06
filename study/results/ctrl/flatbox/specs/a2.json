@@ -1,0 +1,17 @@
+{"id": "a2-hold", "cand": "base", "prompt_tokens": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47],
+ "items": [
+  {"episode": "base.base.s70002", "k": 14}, {"episode": "base.base.s70002", "k": 26}, {"episode": "base.base.s70003", "k": 9}, {"episode": "base.base.s70004", "k": 23},
+  {"episode": "base.base.s70005", "k": 17}, {"episode": "base.base.s70005", "k": 19}, {"episode": "base.base.s70005", "k": 21}, {"episode": "base.base.s70005", "k": 23},
+  {"episode": "base.base.s70016", "k": 18}, {"episode": "base.base.s70019", "k": 23}, {"episode": "base.base.s70019", "k": 27}, {"episode": "base.base.s70021", "k": 20},
+  {"episode": "base.base.s70021", "k": 27}, {"episode": "base.base.s70024", "k": 28}, {"episode": "base.base.s70025", "k": 26}, {"episode": "base.base.s70007", "k": 28},
+  {"episode": "base.base.s70000", "k": 13}, {"episode": "base.base.s70011", "k": 14}, {"episode": "base.base.s70013", "k": 14}, {"episode": "base.base.s70013", "k": 17},
+  {"episode": "base.base.s70020", "k": 10}, {"episode": "base.base.s70022", "k": 15}, {"episode": "base.base.s70023", "k": 27}, {"episode": "base.base.s70028", "k": 7},
+  {"episode": "base.base.s70005", "k": 9}, {"episode": "base.base.s70005", "k": 10}, {"episode": "base.base.s70005", "k": 15}, {"episode": "base.base.s70005", "k": 16},
+  {"episode": "base.base.s70019", "k": 22}, {"episode": "base.base.s70019", "k": 26}, {"episode": "base.base.s70024", "k": 24}, {"episode": "base.base.s70024", "k": 26},
+  {"episode": "base.base.s70024", "k": 27}, {"episode": "base.base.s70025", "k": 23}, {"episode": "base.base.s70025", "k": 24}, {"episode": "base.base.s70025", "k": 25},
+  {"episode": "base.base.s70012", "k": 2}, {"episode": "base.base.s70007", "k": 2}, {"episode": "base.base.s70000", "k": 2}, {"episode": "base.base.s70030", "k": 3},
+  {"episode": "base.base.s70002", "k": 12}, {"episode": "base.base.s70021", "k": 15}, {"episode": "base.base.s70021", "k": 16}, {"episode": "base.base.s70025", "k": 15},
+  {"episode": "base.base.s70019", "k": 8}, {"episode": "base.base.s70019", "k": 10}, {"episode": "base.base.s70021", "k": 8}, {"episode": "base.base.s70024", "k": 10}
+ ],
+ "action_layers": [10,11,12,13,14,15,16,17], "vlm_layers": [17],
+ "denoise_steps": [0,1,2,3,4,5,6,7,8,9], "action_tokens": "mean", "action_attention": true}
