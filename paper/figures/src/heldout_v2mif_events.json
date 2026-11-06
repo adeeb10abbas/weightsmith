@@ -1,0 +1,3702 @@
+{
+"run": "v2mi-f held-out, RubiksCubeThenBananaTask, slots 90000-90127",
+"rule": "cube drop outside the bowl: TARGET_OBJECT_DROPPED with OBJECT_GRABBED_FAILURE(rubiks_cube) at the same step and no container success within 2 steps",
+"logs_sha256": "26bd66f7792c2bcc3c5cf61c2f98a1c1e7f505a1068f71a0736189281bb00b1c",
+"slots": {
+"90000": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+336
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 129
+},
+"edited": {
+"success": true,
+"steps": 332,
+"cube_grasps": [
+100
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 267
+}
+},
+"90001": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 155
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+355,
+384,
+502,
+541
+],
+"cube_drops_outside_bowl": [
+361,
+479,
+539
+],
+"first_banana_grasp": 157
+}
+},
+"90002": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+73,
+313
+],
+"cube_drops_outside_bowl": [
+76
+],
+"first_banana_grasp": 148
+},
+"edited": {
+"success": true,
+"steps": 257,
+"cube_grasps": [
+78
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 198
+}
+},
+"90003": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+389,
+425,
+439,
+530,
+752,
+779,
+784,
+786,
+789,
+810,
+816,
+837,
+841
+],
+"cube_drops_outside_bowl": [
+391,
+426,
+451,
+541,
+767,
+782,
+785,
+788,
+797,
+812,
+826,
+840,
+856
+],
+"first_banana_grasp": 131
+},
+"edited": {
+"success": true,
+"steps": 230,
+"cube_grasps": [
+63
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 166
+}
+},
+"90004": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+631,
+690
+],
+"cube_drops_outside_bowl": [
+646,
+691
+],
+"first_banana_grasp": 189
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+763
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 191
+}
+},
+"90005": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+282,
+309,
+361,
+421,
+547,
+607,
+642,
+723,
+793,
+828
+],
+"cube_drops_outside_bowl": [
+284,
+316,
+376,
+436,
+556,
+616,
+646,
+736,
+796
+],
+"first_banana_grasp": 159
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+195,
+368,
+548
+],
+"cube_drops_outside_bowl": [
+241,
+380
+],
+"first_banana_grasp": 431
+}
+},
+"90006": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+286,
+334,
+349,
+438
+],
+"cube_drops_outside_bowl": [
+287,
+335,
+385
+],
+"first_banana_grasp": 115
+},
+"edited": {
+"success": true,
+"steps": 285,
+"cube_grasps": [
+72,
+107,
+109
+],
+"cube_drops_outside_bowl": [
+106
+],
+"first_banana_grasp": 111
+}
+},
+"90007": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+899
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 124
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+62,
+113,
+118,
+178,
+202,
+440,
+601,
+659,
+683,
+838,
+862,
+889
+],
+"cube_drops_outside_bowl": [
+99,
+117,
+119,
+201,
+203,
+465,
+625,
+661,
+745,
+841,
+888,
+893
+],
+"first_banana_grasp": 284
+}
+},
+"90008": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+282,
+344,
+573,
+657,
+763,
+811
+],
+"cube_drops_outside_bowl": [
+286,
+346,
+586,
+661,
+766,
+826
+],
+"first_banana_grasp": 145
+},
+"edited": {
+"success": true,
+"steps": 318,
+"cube_grasps": [
+93
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 269
+}
+},
+"90009": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+64,
+123,
+164,
+432,
+435,
+479,
+500,
+550,
+565,
+653
+],
+"cube_drops_outside_bowl": [
+76,
+126,
+178,
+433,
+451,
+481,
+511,
+551,
+571
+],
+"first_banana_grasp": 293
+},
+"edited": {
+"success": true,
+"steps": 272,
+"cube_grasps": [
+70
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 181
+}
+},
+"90010": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+78,
+317,
+376,
+501,
+612,
+661,
+775,
+830,
+887
+],
+"cube_drops_outside_bowl": [
+91,
+331,
+391,
+511,
+616,
+676,
+781,
+841
+],
+"first_banana_grasp": 165
+},
+"edited": {
+"success": true,
+"steps": 255,
+"cube_grasps": [
+76
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 197
+}
+},
+"90011": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+68,
+100,
+114,
+385,
+533
+],
+"cube_drops_outside_bowl": [
+77,
+101,
+121,
+391,
+541
+],
+"first_banana_grasp": 198
+},
+"edited": {
+"success": true,
+"steps": 245,
+"cube_grasps": [
+69
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 195
+}
+},
+"90012": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+44,
+665
+],
+"cube_drops_outside_bowl": [
+46,
+676
+],
+"first_banana_grasp": 165
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+43
+],
+"cube_drops_outside_bowl": [
+106
+],
+"first_banana_grasp": 164
+}
+},
+"90013": {
+"unedited": {
+"success": true,
+"steps": 540,
+"cube_grasps": [
+92,
+166,
+268,
+331
+],
+"cube_drops_outside_bowl": [
+132,
+181,
+286
+],
+"first_banana_grasp": 470
+},
+"edited": {
+"success": true,
+"steps": 242,
+"cube_grasps": [
+67
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 166
+}
+},
+"90014": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+59,
+363,
+366,
+483,
+554,
+600,
+633,
+786
+],
+"cube_drops_outside_bowl": [
+61,
+365,
+368,
+511,
+556,
+601,
+646,
+796
+],
+"first_banana_grasp": 139
+},
+"edited": {
+"success": true,
+"steps": 241,
+"cube_grasps": [
+60
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 182
+}
+},
+"90015": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+289,
+330
+],
+"cube_drops_outside_bowl": [
+301,
+332
+],
+"first_banana_grasp": 145
+},
+"edited": {
+"success": true,
+"steps": 234,
+"cube_grasps": [
+71,
+74
+],
+"cube_drops_outside_bowl": [
+73
+],
+"first_banana_grasp": 189
+}
+},
+"90016": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+285,
+292,
+510,
+547,
+601,
+723
+],
+"cube_drops_outside_bowl": [
+286,
+295,
+511,
+549,
+602,
+737
+],
+"first_banana_grasp": 145
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+294,
+319
+],
+"cube_drops_outside_bowl": [
+301
+],
+"first_banana_grasp": 183
+}
+},
+"90017": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+564,
+684
+],
+"cube_drops_outside_bowl": [
+571
+],
+"first_banana_grasp": 118
+},
+"edited": {
+"success": true,
+"steps": 363,
+"cube_grasps": [
+137,
+181
+],
+"cube_drops_outside_bowl": [
+179
+],
+"first_banana_grasp": 290
+}
+},
+"90018": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+60
+],
+"cube_drops_outside_bowl": [
+71
+],
+"first_banana_grasp": 269
+},
+"edited": {
+"success": true,
+"steps": 226,
+"cube_grasps": [
+59
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 161
+}
+},
+"90019": {
+"unedited": {
+"success": true,
+"steps": 242,
+"cube_grasps": [
+64
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 166
+},
+"edited": {
+"success": true,
+"steps": 680,
+"cube_grasps": [
+65
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 166
+}
+},
+"90020": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+468,
+518,
+521,
+593,
+600,
+679,
+681,
+737,
+762,
+792,
+855
+],
+"cube_drops_outside_bowl": [
+469,
+519,
+586,
+599,
+601,
+680,
+718,
+738,
+769,
+811,
+876
+],
+"first_banana_grasp": 120
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+387,
+581
+],
+"cube_drops_outside_bowl": [
+421
+],
+"first_banana_grasp": 179
+}
+},
+"90021": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+47,
+349,
+436,
+521,
+616,
+684
+],
+"cube_drops_outside_bowl": [
+61,
+361,
+451,
+526,
+631,
+691
+],
+"first_banana_grasp": 204
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+706
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 145
+}
+},
+"90022": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+212,
+350,
+413,
+455,
+543,
+585,
+627,
+739
+],
+"cube_drops_outside_bowl": [
+226,
+361,
+421,
+466,
+556,
+586,
+637
+],
+"first_banana_grasp": 104
+},
+"edited": {
+"success": true,
+"steps": 261,
+"cube_grasps": [
+56
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 193
+}
+},
+"90023": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+720,
+835
+],
+"cube_drops_outside_bowl": [
+721,
+841
+],
+"first_banana_grasp": 110
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+415,
+434,
+611,
+631,
+634
+],
+"cube_drops_outside_bowl": [
+433,
+445,
+629,
+633,
+637
+],
+"first_banana_grasp": 126
+}
+},
+"90024": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+47,
+71,
+774,
+850,
+854,
+858
+],
+"cube_drops_outside_bowl": [
+48,
+72,
+811,
+851,
+855,
+871
+],
+"first_banana_grasp": 171
+},
+"edited": {
+"success": true,
+"steps": 497,
+"cube_grasps": [
+71
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 224
+}
+},
+"90025": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+478,
+498,
+559,
+666,
+677,
+718,
+778,
+840
+],
+"cube_drops_outside_bowl": [
+480,
+511,
+571,
+676,
+680,
+746,
+781,
+841
+],
+"first_banana_grasp": 144
+},
+"edited": {
+"success": true,
+"steps": 242,
+"cube_grasps": [
+78
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 181
+}
+},
+"90026": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+310,
+364,
+429,
+449
+],
+"cube_drops_outside_bowl": [
+316,
+376,
+435,
+472
+],
+"first_banana_grasp": 132
+},
+"edited": {
+"success": true,
+"steps": 243,
+"cube_grasps": [
+80
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 195
+}
+},
+"90027": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+101,
+538,
+755,
+757,
+761,
+764,
+785,
+790,
+867
+],
+"cube_drops_outside_bowl": [
+106,
+541,
+756,
+758,
+762,
+784,
+789,
+796
+],
+"first_banana_grasp": 190
+},
+"edited": {
+"success": true,
+"steps": 242,
+"cube_grasps": [
+62
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 190
+}
+},
+"90028": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+53,
+354,
+362,
+450,
+508,
+517
+],
+"cube_drops_outside_bowl": [
+61,
+355,
+376,
+451,
+511,
+519
+],
+"first_banana_grasp": 103
+},
+"edited": {
+"success": true,
+"steps": 669,
+"cube_grasps": [
+54,
+164,
+168,
+180,
+199,
+248,
+252,
+264,
+479
+],
+"cube_drops_outside_bowl": [
+106,
+166,
+178,
+198,
+217,
+251,
+254,
+265
+],
+"first_banana_grasp": 263
+}
+},
+"90029": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+352,
+538,
+670,
+834
+],
+"cube_drops_outside_bowl": [
+361,
+566,
+676,
+841
+],
+"first_banana_grasp": 129
+},
+"edited": {
+"success": true,
+"steps": 267,
+"cube_grasps": [
+89
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 195
+}
+},
+"90030": {
+"unedited": {
+"success": true,
+"steps": 659,
+"cube_grasps": [
+75,
+152,
+263,
+265,
+315,
+367,
+459,
+482
+],
+"cube_drops_outside_bowl": [
+130,
+186,
+264,
+271,
+316,
+445,
+466
+],
+"first_banana_grasp": 600
+},
+"edited": {
+"success": true,
+"steps": 292,
+"cube_grasps": [
+81
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 242
+}
+},
+"90031": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+129,
+616,
+641
+],
+"cube_drops_outside_bowl": [
+196,
+620
+],
+"first_banana_grasp": 248
+},
+"edited": {
+"success": true,
+"steps": 303,
+"cube_grasps": [
+76
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 245
+}
+},
+"90032": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+390,
+475,
+636,
+864
+],
+"cube_drops_outside_bowl": [
+406,
+479,
+646,
+871
+],
+"first_banana_grasp": 128
+},
+"edited": {
+"success": true,
+"steps": 285,
+"cube_grasps": [
+79
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 229
+}
+},
+"90033": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+109
+],
+"cube_drops_outside_bowl": [
+121
+],
+"first_banana_grasp": 210
+},
+"edited": {
+"success": true,
+"steps": 287,
+"cube_grasps": [
+93
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 224
+}
+},
+"90034": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+67,
+136,
+200,
+214
+],
+"cube_drops_outside_bowl": [
+76,
+145,
+212,
+216
+],
+"first_banana_grasp": 306
+},
+"edited": {
+"success": true,
+"steps": 472,
+"cube_grasps": [
+65,
+134,
+139,
+183,
+205,
+207,
+277
+],
+"cube_drops_outside_bowl": [
+75,
+135,
+141,
+196,
+206,
+215
+],
+"first_banana_grasp": 206
+}
+},
+"90035": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+110,
+403,
+410,
+435,
+438,
+571,
+577
+],
+"cube_drops_outside_bowl": [
+134,
+406,
+421,
+437,
+451,
+575,
+624
+],
+"first_banana_grasp": 202
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+96
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 230
+}
+},
+"90036": {
+"unedited": {
+"success": true,
+"steps": 263,
+"cube_grasps": [
+62,
+87
+],
+"cube_drops_outside_bowl": [
+74
+],
+"first_banana_grasp": 204
+},
+"edited": {
+"success": true,
+"steps": 286,
+"cube_grasps": [
+62,
+86
+],
+"cube_drops_outside_bowl": [
+71
+],
+"first_banana_grasp": 207
+}
+},
+"90037": {
+"unedited": {
+"success": true,
+"steps": 362,
+"cube_grasps": [
+64,
+81,
+151
+],
+"cube_drops_outside_bowl": [
+65,
+91
+],
+"first_banana_grasp": 301
+},
+"edited": {
+"success": true,
+"steps": 281,
+"cube_grasps": [
+98
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 227
+}
+},
+"90038": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+68,
+435,
+476,
+780
+],
+"cube_drops_outside_bowl": [
+77,
+436,
+481,
+781
+],
+"first_banana_grasp": 150
+},
+"edited": {
+"success": true,
+"steps": 362,
+"cube_grasps": [
+78,
+85,
+159
+],
+"cube_drops_outside_bowl": [
+81,
+91
+],
+"first_banana_grasp": 298
+}
+},
+"90039": {
+"unedited": {
+"success": true,
+"steps": 422,
+"cube_grasps": [
+213,
+220
+],
+"cube_drops_outside_bowl": [
+215
+],
+"first_banana_grasp": 115
+},
+"edited": {
+"success": true,
+"steps": 378,
+"cube_grasps": [
+46,
+211,
+215,
+220
+],
+"cube_drops_outside_bowl": [
+79,
+213,
+216
+],
+"first_banana_grasp": 331
+}
+},
+"90040": {
+"unedited": {
+"success": true,
+"steps": 248,
+"cube_grasps": [
+65
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 179
+},
+"edited": {
+"success": true,
+"steps": 241,
+"cube_grasps": [
+64
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 181
+}
+},
+"90041": {
+"unedited": {
+"success": true,
+"steps": 287,
+"cube_grasps": [
+73
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 225
+},
+"edited": {
+"success": true,
+"steps": 392,
+"cube_grasps": [
+71,
+175
+],
+"cube_drops_outside_bowl": [
+91
+],
+"first_banana_grasp": 339
+}
+},
+"90042": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+303,
+320,
+392
+],
+"cube_drops_outside_bowl": [
+312,
+361
+],
+"first_banana_grasp": 176
+},
+"edited": {
+"success": true,
+"steps": 272,
+"cube_grasps": [
+64
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 170
+}
+},
+"90043": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+384,
+459,
+563,
+804,
+858
+],
+"cube_drops_outside_bowl": [
+391,
+466,
+571,
+811,
+863
+],
+"first_banana_grasp": 70
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 89
+}
+},
+"90044": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+780
+],
+"cube_drops_outside_bowl": [
+781
+],
+"first_banana_grasp": 148
+},
+"edited": {
+"success": true,
+"steps": 241,
+"cube_grasps": [
+65
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 180
+}
+},
+"90045": {
+"unedited": {
+"success": true,
+"steps": 477,
+"cube_grasps": [
+65,
+113,
+176,
+214,
+288
+],
+"cube_drops_outside_bowl": [
+78,
+121,
+181,
+215
+],
+"first_banana_grasp": 419
+},
+"edited": {
+"success": true,
+"steps": 268,
+"cube_grasps": [
+76
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 210
+}
+},
+"90046": {
+"unedited": {
+"success": true,
+"steps": 362,
+"cube_grasps": [
+64,
+127
+],
+"cube_drops_outside_bowl": [
+91
+],
+"first_banana_grasp": 296
+},
+"edited": {
+"success": true,
+"steps": 241,
+"cube_grasps": [
+71
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 195
+}
+},
+"90047": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+102,
+120,
+620,
+624,
+687,
+736,
+741,
+763,
+900
+],
+"cube_drops_outside_bowl": [
+106,
+121,
+621,
+631,
+705,
+740,
+762,
+764
+],
+"first_banana_grasp": 205
+},
+"edited": {
+"success": true,
+"steps": 254,
+"cube_grasps": [
+70
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 204
+}
+},
+"90048": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+519,
+593,
+646
+],
+"cube_drops_outside_bowl": [
+526,
+597
+],
+"first_banana_grasp": 121
+},
+"edited": {
+"success": true,
+"steps": 273,
+"cube_grasps": [
+79
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 202
+}
+},
+"90049": {
+"unedited": {
+"success": true,
+"steps": 243,
+"cube_grasps": [
+68,
+108
+],
+"cube_drops_outside_bowl": [
+105
+],
+"first_banana_grasp": 193
+},
+"edited": {
+"success": true,
+"steps": 236,
+"cube_grasps": [
+62
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 191
+}
+},
+"90050": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+487,
+518,
+534,
+770
+],
+"cube_drops_outside_bowl": [
+496,
+519,
+541,
+781
+],
+"first_banana_grasp": 159
+},
+"edited": {
+"success": true,
+"steps": 286,
+"cube_grasps": [
+77
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 226
+}
+},
+"90051": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+86
+],
+"cube_drops_outside_bowl": [
+102
+],
+"first_banana_grasp": 210
+},
+"edited": {
+"success": true,
+"steps": 257,
+"cube_grasps": [
+58,
+70
+],
+"cube_drops_outside_bowl": [
+59
+],
+"first_banana_grasp": 182
+}
+},
+"90052": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+633,
+887
+],
+"cube_drops_outside_bowl": [
+646
+],
+"first_banana_grasp": 175
+},
+"edited": {
+"success": true,
+"steps": 284,
+"cube_grasps": [
+82
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 197
+}
+},
+"90053": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+510,
+518,
+620,
+665,
+707,
+748
+],
+"cube_drops_outside_bowl": [
+511,
+526,
+631,
+691,
+733,
+751
+],
+"first_banana_grasp": 234
+},
+"edited": {
+"success": true,
+"steps": 278,
+"cube_grasps": [
+65
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 208
+}
+},
+"90054": {
+"unedited": {
+"success": true,
+"steps": 834,
+"cube_grasps": [
+41,
+90,
+162,
+224,
+289,
+384,
+527,
+572,
+574,
+578,
+631,
+639
+],
+"cube_drops_outside_bowl": [
+45,
+146,
+190,
+241,
+301,
+439,
+548,
+573,
+575,
+586,
+632
+],
+"first_banana_grasp": 759
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+41,
+64,
+437,
+441,
+446
+],
+"cube_drops_outside_bowl": [
+44,
+92,
+439,
+442
+],
+"first_banana_grasp": 166
+}
+},
+"90055": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+396,
+474,
+729
+],
+"cube_drops_outside_bowl": [
+428,
+481,
+736
+],
+"first_banana_grasp": 119
+},
+"edited": {
+"success": true,
+"steps": 301,
+"cube_grasps": [
+72
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 247
+}
+},
+"90056": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+63,
+443,
+509,
+571,
+691,
+758,
+805,
+859
+],
+"cube_drops_outside_bowl": [
+76,
+466,
+526,
+586,
+706,
+766,
+811,
+871
+],
+"first_banana_grasp": 146
+},
+"edited": {
+"success": true,
+"steps": 293,
+"cube_grasps": [
+69
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 226
+}
+},
+"90057": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+529,
+593,
+680
+],
+"cube_drops_outside_bowl": [
+541,
+601
+],
+"first_banana_grasp": 115
+},
+"edited": {
+"success": true,
+"steps": 331,
+"cube_grasps": [
+98,
+117
+],
+"cube_drops_outside_bowl": [
+99
+],
+"first_banana_grasp": 282
+}
+},
+"90058": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+59,
+257,
+356,
+444,
+608
+],
+"cube_drops_outside_bowl": [
+61,
+272,
+357,
+451
+],
+"first_banana_grasp": 123
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+592
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 141
+}
+},
+"90059": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 114
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+75
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 181
+}
+},
+"90060": {
+"unedited": {
+"success": true,
+"steps": 817,
+"cube_grasps": [
+62
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 215
+},
+"edited": {
+"success": true,
+"steps": 241,
+"cube_grasps": [
+68
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 177
+}
+},
+"90061": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+45,
+318,
+452
+],
+"cube_drops_outside_bowl": [
+46,
+331
+],
+"first_banana_grasp": 159
+},
+"edited": {
+"success": true,
+"steps": 257,
+"cube_grasps": [
+62
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 199
+}
+},
+"90062": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+72,
+120,
+367,
+380,
+393
+],
+"cube_drops_outside_bowl": [
+76,
+121,
+379,
+387,
+394
+],
+"first_banana_grasp": 186
+},
+"edited": {
+"success": true,
+"steps": 299,
+"cube_grasps": [
+62
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 216
+}
+},
+"90063": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+292,
+528,
+568,
+797,
+823,
+884
+],
+"cube_drops_outside_bowl": [
+293,
+541,
+570,
+799,
+826,
+886
+],
+"first_banana_grasp": 106
+},
+"edited": {
+"success": true,
+"steps": 526,
+"cube_grasps": [
+83
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 211
+}
+},
+"90064": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 175
+},
+"edited": {
+"success": true,
+"steps": 527,
+"cube_grasps": [
+82
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 207
+}
+},
+"90065": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+388
+],
+"cube_drops_outside_bowl": [
+389
+],
+"first_banana_grasp": 102
+},
+"edited": {
+"success": true,
+"steps": 212,
+"cube_grasps": [
+47
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 162
+}
+},
+"90066": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+81,
+148,
+153,
+211,
+792
+],
+"cube_drops_outside_bowl": [
+91,
+150,
+158,
+233,
+817
+],
+"first_banana_grasp": 283
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+80
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 208
+}
+},
+"90067": {
+"unedited": {
+"success": true,
+"steps": 348,
+"cube_grasps": [
+46,
+104,
+151,
+156
+],
+"cube_drops_outside_bowl": [
+87,
+106,
+154
+],
+"first_banana_grasp": 206
+},
+"edited": {
+"success": true,
+"steps": 212,
+"cube_grasps": [
+46,
+49
+],
+"cube_drops_outside_bowl": [
+48
+],
+"first_banana_grasp": 153
+}
+},
+"90068": {
+"unedited": {
+"success": true,
+"steps": 281,
+"cube_grasps": [
+61
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 210
+},
+"edited": {
+"success": true,
+"steps": 257,
+"cube_grasps": [
+61
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 212
+}
+},
+"90069": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+291,
+471,
+528,
+530,
+609,
+662,
+719,
+721,
+749
+],
+"cube_drops_outside_bowl": [
+301,
+481,
+529,
+541,
+616,
+676,
+720
+],
+"first_banana_grasp": 128
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+83
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 213
+}
+},
+"90070": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+61,
+64,
+180,
+273,
+570,
+598,
+894
+],
+"cube_drops_outside_bowl": [
+63,
+121,
+211,
+287,
+571,
+601
+],
+"first_banana_grasp": 375
+},
+"edited": {
+"success": true,
+"steps": 310,
+"cube_grasps": [
+91
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 257
+}
+},
+"90071": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 114
+},
+"edited": {
+"success": true,
+"steps": 221,
+"cube_grasps": [
+59
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 166
+}
+},
+"90072": {
+"unedited": {
+"success": true,
+"steps": 373,
+"cube_grasps": [
+64,
+174
+],
+"cube_drops_outside_bowl": [
+106
+],
+"first_banana_grasp": 301
+},
+"edited": {
+"success": true,
+"steps": 303,
+"cube_grasps": [
+63
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 209
+}
+},
+"90073": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+69,
+249,
+259,
+509,
+563,
+600,
+747
+],
+"cube_drops_outside_bowl": [
+76,
+252,
+271,
+511,
+572,
+616,
+766
+],
+"first_banana_grasp": 135
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+64,
+337,
+438,
+499,
+512,
+533
+],
+"cube_drops_outside_bowl": [
+91,
+346,
+457,
+511,
+513
+],
+"first_banana_grasp": 221
+}
+},
+"90074": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+627,
+683,
+766,
+770,
+813,
+824
+],
+"cube_drops_outside_bowl": [
+630,
+691,
+768,
+805,
+814,
+826
+],
+"first_banana_grasp": 213
+},
+"edited": {
+"success": true,
+"steps": 255,
+"cube_grasps": [
+67
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 151
+}
+},
+"90075": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+349,
+457,
+746
+],
+"cube_drops_outside_bowl": [
+361,
+466,
+749
+],
+"first_banana_grasp": 146
+},
+"edited": {
+"success": true,
+"steps": 211,
+"cube_grasps": [
+59
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 160
+}
+},
+"90076": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+55,
+61,
+65,
+90,
+806
+],
+"cube_drops_outside_bowl": [
+56,
+63,
+73,
+91,
+838
+],
+"first_banana_grasp": 172
+},
+"edited": {
+"success": true,
+"steps": 307,
+"cube_grasps": [
+86
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 255
+}
+},
+"90077": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+299,
+475,
+666
+],
+"cube_drops_outside_bowl": [
+324,
+481,
+676
+],
+"first_banana_grasp": 162
+},
+"edited": {
+"success": true,
+"steps": 262,
+"cube_grasps": [
+92
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 190
+}
+},
+"90078": {
+"unedited": {
+"success": true,
+"steps": 301,
+"cube_grasps": [
+61
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 214
+},
+"edited": {
+"success": true,
+"steps": 272,
+"cube_grasps": [
+61
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 198
+}
+},
+"90079": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+300,
+345,
+423,
+703,
+708,
+723,
+748,
+758,
+777,
+797,
+856
+],
+"cube_drops_outside_bowl": [
+301,
+346,
+436,
+707,
+710,
+737,
+753,
+772,
+779,
+811
+],
+"first_banana_grasp": 88
+},
+"edited": {
+"success": true,
+"steps": 241,
+"cube_grasps": [
+66
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 193
+}
+},
+"90080": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+64,
+149,
+187,
+469
+],
+"cube_drops_outside_bowl": [
+76,
+167,
+211
+],
+"first_banana_grasp": 167
+},
+"edited": {
+"success": true,
+"steps": 252,
+"cube_grasps": [
+61
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 165
+}
+},
+"90081": {
+"unedited": {
+"success": true,
+"steps": 522,
+"cube_grasps": [
+72,
+127,
+129,
+183,
+185,
+344
+],
+"cube_drops_outside_bowl": [
+76,
+128,
+136,
+184,
+285
+],
+"first_banana_grasp": 471
+},
+"edited": {
+"success": true,
+"steps": 287,
+"cube_grasps": [
+61
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 235
+}
+},
+"90082": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+826
+],
+"cube_drops_outside_bowl": [
+841
+],
+"first_banana_grasp": 154
+},
+"edited": {
+"success": true,
+"steps": 281,
+"cube_grasps": [
+97
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 213
+}
+},
+"90083": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+67,
+133,
+146,
+154,
+164,
+373,
+421,
+451,
+509,
+663,
+704,
+811,
+844
+],
+"cube_drops_outside_bowl": [
+93,
+136,
+147,
+161,
+166,
+376,
+446,
+466,
+511,
+702,
+706,
+833,
+856
+],
+"first_banana_grasp": 230
+},
+"edited": {
+"success": true,
+"steps": 253,
+"cube_grasps": [
+64
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 204
+}
+},
+"90084": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+59,
+123,
+310,
+432,
+631,
+699,
+758
+],
+"cube_drops_outside_bowl": [
+61,
+124,
+316,
+436,
+646,
+706,
+766
+],
+"first_banana_grasp": 193
+},
+"edited": {
+"success": true,
+"steps": 302,
+"cube_grasps": [
+81
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 228
+}
+},
+"90085": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+255,
+325,
+380
+],
+"cube_drops_outside_bowl": [
+256,
+331
+],
+"first_banana_grasp": 125
+},
+"edited": {
+"success": true,
+"steps": 332,
+"cube_grasps": [
+105,
+121
+],
+"cube_drops_outside_bowl": [
+106
+],
+"first_banana_grasp": 241
+}
+},
+"90086": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+403,
+464,
+499,
+815,
+831,
+842,
+861,
+898
+],
+"cube_drops_outside_bowl": [
+443,
+492,
+503,
+828,
+841,
+843,
+870
+],
+"first_banana_grasp": 132
+},
+"edited": {
+"success": true,
+"steps": 290,
+"cube_grasps": [
+85
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 184
+}
+},
+"90087": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+557,
+730
+],
+"cube_drops_outside_bowl": [
+571,
+737
+],
+"first_banana_grasp": 201
+},
+"edited": {
+"success": true,
+"steps": 258,
+"cube_grasps": [
+65
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 184
+}
+},
+"90088": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+515,
+585,
+597,
+852
+],
+"cube_drops_outside_bowl": [
+526,
+586,
+601,
+853
+],
+"first_banana_grasp": 169
+},
+"edited": {
+"success": true,
+"steps": 299,
+"cube_grasps": [
+92
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 219
+}
+},
+"90089": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+75,
+106,
+165,
+188,
+721,
+770,
+776
+],
+"cube_drops_outside_bowl": [
+105,
+107,
+166,
+196,
+768,
+775
+],
+"first_banana_grasp": 271
+},
+"edited": {
+"success": true,
+"steps": 272,
+"cube_grasps": [
+66
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 220
+}
+},
+"90090": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+186,
+399,
+451
+],
+"cube_drops_outside_bowl": [
+196,
+415,
+466
+],
+"first_banana_grasp": 283
+},
+"edited": {
+"success": true,
+"steps": 232,
+"cube_grasps": [
+66
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 171
+}
+},
+"90091": {
+"unedited": {
+"success": true,
+"steps": 433,
+"cube_grasps": [
+70,
+157,
+177,
+241,
+298
+],
+"cube_drops_outside_bowl": [
+111,
+166,
+196,
+294
+],
+"first_banana_grasp": 376
+},
+"edited": {
+"success": true,
+"steps": 736,
+"cube_grasps": [
+159
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 289
+}
+},
+"90092": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+464
+],
+"cube_drops_outside_bowl": [
+481
+],
+"first_banana_grasp": 145
+},
+"edited": {
+"success": true,
+"steps": 367,
+"cube_grasps": [
+99
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 160
+}
+},
+"90093": {
+"unedited": {
+"success": true,
+"steps": 321,
+"cube_grasps": [
+85,
+128
+],
+"cube_drops_outside_bowl": [
+92
+],
+"first_banana_grasp": 271
+},
+"edited": {
+"success": true,
+"steps": 302,
+"cube_grasps": [
+80
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 223
+}
+},
+"90094": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+257,
+274,
+276,
+316,
+328,
+333
+],
+"cube_drops_outside_bowl": [
+271,
+275,
+280,
+327,
+331,
+334
+],
+"first_banana_grasp": 117
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+330,
+598
+],
+"cube_drops_outside_bowl": [
+331
+],
+"first_banana_grasp": 120
+}
+},
+"90095": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+658,
+664,
+685,
+739
+],
+"cube_drops_outside_bowl": [
+660,
+677,
+720,
+740
+],
+"first_banana_grasp": 85
+},
+"edited": {
+"success": true,
+"steps": 287,
+"cube_grasps": [
+67,
+83
+],
+"cube_drops_outside_bowl": [
+68
+],
+"first_banana_grasp": 230
+}
+},
+"90096": {
+"unedited": {
+"success": true,
+"steps": 413,
+"cube_grasps": [
+121,
+124,
+196
+],
+"cube_drops_outside_bowl": [
+122,
+136
+],
+"first_banana_grasp": 357
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+106,
+166,
+687,
+690,
+700,
+790
+],
+"cube_drops_outside_bowl": [
+165,
+169,
+689,
+693,
+702
+],
+"first_banana_grasp": 260
+}
+},
+"90097": {
+"unedited": {
+"success": true,
+"steps": 498,
+"cube_grasps": [
+67,
+169,
+257,
+331
+],
+"cube_drops_outside_bowl": [
+76,
+221,
+271
+],
+"first_banana_grasp": 441
+},
+"edited": {
+"success": true,
+"steps": 273,
+"cube_grasps": [
+67
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 216
+}
+},
+"90098": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+323,
+394,
+546,
+606,
+724,
+779
+],
+"cube_drops_outside_bowl": [
+331,
+398,
+556,
+616,
+776,
+781
+],
+"first_banana_grasp": 106
+},
+"edited": {
+"success": true,
+"steps": 531,
+"cube_grasps": [
+82,
+214,
+357
+],
+"cube_drops_outside_bowl": [
+109,
+243
+],
+"first_banana_grasp": 470
+}
+},
+"90099": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+241,
+244
+],
+"cube_drops_outside_bowl": [
+242,
+286
+],
+"first_banana_grasp": 131
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+69,
+661
+],
+"cube_drops_outside_bowl": [
+121
+],
+"first_banana_grasp": 181
+}
+},
+"90100": {
+"unedited": {
+"success": true,
+"steps": 661,
+"cube_grasps": [
+144,
+167,
+272,
+328,
+460
+],
+"cube_drops_outside_bowl": [
+145,
+196,
+286,
+361
+],
+"first_banana_grasp": 592
+},
+"edited": {
+"success": true,
+"steps": 332,
+"cube_grasps": [
+92
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 269
+}
+},
+"90101": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+59,
+125,
+412,
+542,
+616,
+679
+],
+"cube_drops_outside_bowl": [
+61,
+136,
+436,
+556,
+631
+],
+"first_banana_grasp": 218
+},
+"edited": {
+"success": true,
+"steps": 317,
+"cube_grasps": [
+107,
+126
+],
+"cube_drops_outside_bowl": [
+108
+],
+"first_banana_grasp": 264
+}
+},
+"90102": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+416,
+418
+],
+"cube_drops_outside_bowl": [
+417,
+421
+],
+"first_banana_grasp": 109
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+302
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 120
+}
+},
+"90103": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+51,
+318,
+379,
+438,
+497,
+499,
+505,
+581,
+682,
+804,
+860
+],
+"cube_drops_outside_bowl": [
+61,
+331,
+391,
+451,
+498,
+500,
+511,
+586,
+691,
+811,
+871
+],
+"first_banana_grasp": 131
+},
+"edited": {
+"success": true,
+"steps": 380,
+"cube_grasps": [
+54,
+181
+],
+"cube_drops_outside_bowl": [
+91
+],
+"first_banana_grasp": 313
+}
+},
+"90104": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 149
+},
+"edited": {
+"success": true,
+"steps": 332,
+"cube_grasps": [
+83
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 258
+}
+},
+"90105": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+85
+],
+"cube_drops_outside_bowl": [
+91
+],
+"first_banana_grasp": 165
+},
+"edited": {
+"success": true,
+"steps": 272,
+"cube_grasps": [
+79
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 212
+}
+},
+"90106": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+277,
+478,
+541
+],
+"cube_drops_outside_bowl": [
+286,
+482,
+556
+],
+"first_banana_grasp": 145
+},
+"edited": {
+"success": true,
+"steps": 258,
+"cube_grasps": [
+72
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 182
+}
+},
+"90107": {
+"unedited": {
+"success": true,
+"steps": 328,
+"cube_grasps": [
+66,
+149
+],
+"cube_drops_outside_bowl": [
+114
+],
+"first_banana_grasp": 255
+},
+"edited": {
+"success": true,
+"steps": 241,
+"cube_grasps": [
+75
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 193
+}
+},
+"90108": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 133
+},
+"edited": {
+"success": true,
+"steps": 272,
+"cube_grasps": [
+79
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 216
+}
+},
+"90109": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+85,
+509
+],
+"cube_drops_outside_bowl": [
+91,
+511
+],
+"first_banana_grasp": 181
+},
+"edited": {
+"success": true,
+"steps": 256,
+"cube_grasps": [
+63,
+69
+],
+"cube_drops_outside_bowl": [
+67
+],
+"first_banana_grasp": 205
+}
+},
+"90110": {
+"unedited": {
+"success": true,
+"steps": 308,
+"cube_grasps": [
+46
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 244
+},
+"edited": {
+"success": true,
+"steps": 213,
+"cube_grasps": [
+44
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 152
+}
+},
+"90111": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+72
+],
+"cube_drops_outside_bowl": [
+76
+],
+"first_banana_grasp": 172
+},
+"edited": {
+"success": true,
+"steps": 317,
+"cube_grasps": [
+90
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 268
+}
+},
+"90112": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+404,
+423,
+483,
+533,
+551
+],
+"cube_drops_outside_bowl": [
+405,
+432,
+496,
+539
+],
+"first_banana_grasp": 134
+},
+"edited": {
+"success": true,
+"steps": 317,
+"cube_grasps": [
+89
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 241
+}
+},
+"90113": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 113
+},
+"edited": {
+"success": true,
+"steps": 305,
+"cube_grasps": [
+78
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 194
+}
+},
+"90114": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+523
+],
+"cube_drops_outside_bowl": [
+526
+],
+"first_banana_grasp": 151
+},
+"edited": {
+"success": true,
+"steps": 333,
+"cube_grasps": [
+106,
+109
+],
+"cube_drops_outside_bowl": [
+108
+],
+"first_banana_grasp": 261
+}
+},
+"90115": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+72
+],
+"cube_drops_outside_bowl": [
+76
+],
+"first_banana_grasp": 158
+},
+"edited": {
+"success": true,
+"steps": 257,
+"cube_grasps": [
+70
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 202
+}
+},
+"90116": {
+"unedited": {
+"success": true,
+"steps": 297,
+"cube_grasps": [
+83
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 216
+},
+"edited": {
+"success": true,
+"steps": 283,
+"cube_grasps": [
+80
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 212
+}
+},
+"90117": {
+"unedited": {
+"success": true,
+"steps": 286,
+"cube_grasps": [
+49
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 223
+},
+"edited": {
+"success": true,
+"steps": 238,
+"cube_grasps": [
+49
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 172
+}
+},
+"90118": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+641,
+674,
+701,
+870
+],
+"cube_drops_outside_bowl": [
+646,
+675,
+706,
+871
+],
+"first_banana_grasp": 160
+},
+"edited": {
+"success": true,
+"steps": 257,
+"cube_grasps": [
+70
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 196
+}
+},
+"90119": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+266,
+295,
+411,
+526,
+601,
+779,
+826
+],
+"cube_drops_outside_bowl": [
+270,
+301,
+421,
+541,
+616,
+781,
+841
+],
+"first_banana_grasp": 147
+},
+"edited": {
+"success": true,
+"steps": 242,
+"cube_grasps": [
+84
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 196
+}
+},
+"90120": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 131
+},
+"edited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+406,
+411
+],
+"cube_drops_outside_bowl": [
+408
+],
+"first_banana_grasp": 165
+}
+},
+"90121": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+86,
+88
+],
+"cube_drops_outside_bowl": [
+87,
+91
+],
+"first_banana_grasp": 329
+},
+"edited": {
+"success": true,
+"steps": 247,
+"cube_grasps": [
+67
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 166
+}
+},
+"90122": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+49
+],
+"cube_drops_outside_bowl": [
+61
+],
+"first_banana_grasp": 132
+},
+"edited": {
+"success": true,
+"steps": 295,
+"cube_grasps": [
+53
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 229
+}
+},
+"90123": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+294,
+800,
+847,
+857,
+859
+],
+"cube_drops_outside_bowl": [
+295,
+801,
+852,
+858
+],
+"first_banana_grasp": 109
+},
+"edited": {
+"success": true,
+"steps": 256,
+"cube_grasps": [
+80
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 183
+}
+},
+"90124": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+54,
+661
+],
+"cube_drops_outside_bowl": [
+55
+],
+"first_banana_grasp": 136
+},
+"edited": {
+"success": true,
+"steps": 257,
+"cube_grasps": [
+62
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 133
+}
+},
+"90125": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+58,
+399,
+552,
+584,
+604,
+654,
+883
+],
+"cube_drops_outside_bowl": [
+60,
+406,
+556,
+590,
+616,
+681,
+886
+],
+"first_banana_grasp": 174
+},
+"edited": {
+"success": true,
+"steps": 267,
+"cube_grasps": [
+55
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 201
+}
+},
+"90126": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+63,
+68,
+70,
+297,
+332,
+335,
+384
+],
+"cube_drops_outside_bowl": [
+66,
+69,
+72,
+301,
+334,
+346
+],
+"first_banana_grasp": 124
+},
+"edited": {
+"success": true,
+"steps": 281,
+"cube_grasps": [
+90
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 210
+}
+},
+"90127": {
+"unedited": {
+"success": false,
+"steps": 900,
+"cube_grasps": [
+316,
+392,
+413
+],
+"cube_drops_outside_bowl": [
+331,
+412,
+420
+],
+"first_banana_grasp": 99
+},
+"edited": {
+"success": true,
+"steps": 256,
+"cube_grasps": [
+79
+],
+"cube_drops_outside_bowl": [],
+"first_banana_grasp": 183
+}
+}
+}
+}
