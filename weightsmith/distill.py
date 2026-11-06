@@ -30,9 +30,10 @@ Layout of this module
    :func:`inspect.getsource`): :func:`render_sandbox_script` (build), :func:`render_check_script`,
    :func:`render_select_script`, :func:`render_compare_script`.
 4. pipeline (stdlib only; drives ``bin/owsp``): :func:`run_pipeline`, :func:`main`.
-   ``python -m weightsmith.distill run CONFIG.json [--dry-run]`` (or ``scripts/distill_pipeline.py``).
+   ``python -m weightsmith.distill run CONFIG.json [--dry-run]``.
 
-See docs/DISTILL.md for the recipe and examples/cube_then_banana/distill.json for a worked config.
+The method is Section 2 of the paper; examples/cube_then_banana/distill.json is a worked config, and
+study/results/opus/ctb/v2mi_edit.py is the original script that this module reproduces bit for bit.
 """
 from __future__ import annotations
 
