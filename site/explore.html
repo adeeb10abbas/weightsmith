@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Every comparison · weightsmith</title>
+<meta name="description" content="Every paired closed-loop comparison from the weightsmith study of closed-form weight edits on the π0.5 robot policy, with counts, fixed and broken episodes and paired intervals.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://adeeb10abbas.github.io/weightsmith/explore.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="weightsmith">
+<meta property="og:title" content="Every comparison · weightsmith">
+<meta property="og:description" content="Every paired comparison of weight edits on the π0.5 robot policy.">
+<meta property="og:image" content="https://adeeb10abbas.github.io/weightsmith/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&amp;display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the results</a>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="wordmark" href="./">weightsmith</a>
+    <nav aria-label="Site">
+      <a href="paper.pdf">Paper</a>
+      <a href="https://github.com/adeeb10abbas/weightsmith">Code</a>
+      <a href="explore.html" aria-current="page">Explore</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<article class="post">
+
+  <header class="head wide">
+    <h1>Every comparison</h1>
+    <p class="dek">Each row is one closed-loop comparison from this work or the companion Astra study: success with an intervention minus success without it, on the same simulator seeds.</p>
+    <p class="byline"><a href="./">Back to the article</a><span class="sep">·</span><a href="data/comparisons.json">Data (JSON)</a></p>
+  </header>
+
+  <div class="filters wide" role="group" aria-label="Filter the comparisons">
+    <label>Failure type <select id="f-level"><option value="">All failure types</option></select></label>
+    <label>Editor <select id="f-editor"><option value="">All editors</option></select></label>
+    <label>Seeds <select id="f-seeds"><option value="">Practice and held-out</option><option value="heldout">Held-out only</option><option value="practice">Practice only</option></select></label>
+    <p class="count" id="count" role="status" aria-live="polite"></p>
+  </div>
+
+  <figure class="wide" style="margin-top:0;margin-bottom:0">
+    <ul class="legend" aria-hidden="true">
+      <li><i class="lg held"></i>The distilled edit, held-out seeds</li>
+      <li><i class="lg fix"></i>The distilled edit, practice seeds</li>
+      <li><i class="lg"></i>Other Claude Opus edit</li>
+      <li><i class="lg astra"></i>GPT-6 Astra edit</li>
+      <li><i class="lg change"></i>No weight change</li>
+      <li><i class="lg noise"></i>Unchanged weights, rerun</li>
+    </ul>
+    <div class="chart-box" id="chart-box">
+      <svg id="chart" role="list" aria-label="Paired change in success for each comparison, in percentage points, with 95% intervals"></svg>
+    </div>
+    <noscript><p class="note">The chart needs JavaScript; the same data is in <a href="data/comparisons.json">data/comparisons.json</a>.</p></noscript>
+    <figcaption>Hover, tap or tab to a row for its counts. Intervals are 95% paired bootstrap intervals computed in the browser from each row’s seeds and fixed and broken counts (2,000 resamples, fixed seed); the paper’s intervals are authoritative. GPT-6 Astra rows come from that study’s results and ran on a separate runtime, so they are not pooled with ours.</figcaption>
+  </figure>
+
+  <div class="tscroll wide" tabindex="0" role="region" aria-label="All comparisons as a table">
+    <table class="dtable" id="tbl">
+      <caption>The same comparisons as a table.</caption>
+      <thead>
+        <tr><th scope="col">Failure type</th><th scope="col">Task</th><th scope="col">Intervention</th><th scope="col">Editor</th><th scope="col">Seeds</th><th scope="col">Without</th><th scope="col">With</th><th scope="col">Fixed / broke</th><th scope="col">Change, points</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <section id="benchmark">
+    <h2>Use it as a benchmark</h2>
+    <p>The <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/BENCHMARK.md">benchmark</a> gives an editor one tool, <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/weightsmith/owsp.py"><code>owsp</code></a>, to read weights, capture activations on recorded inputs and run paired practice rollouts, with <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/drivers">drivers</a> for Claude Code and the Codex CLI. An operator then scores the editor’s one frozen edit on held-out seeds with an exact McNemar test. Entries are on the <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/LEADERBOARD.md">leaderboard</a>; setup is in <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/docs/SETUP.md">docs/SETUP.md</a>.</p>
+  </section>
+
+</article>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <span>weightsmith</span>
+    <a href="./">The article</a>
+    <a href="https://github.com/adeeb10abbas/weightsmith">GitHub</a>
+    <a href="paper.pdf">Paper (PDF)</a>
+    <span>Rows from study/results/opus/comparisons.json, copied unchanged to data/comparisons.json</span>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+<script src="explore.js" defer></script>
+</body>
+</html>

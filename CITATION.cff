@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, its code or its results, please cite it as below."
+title: "Re-Routing, Not Creating: What LLM Weight Edits Can Fix in a Robot Policy"
+type: software
+authors:
+  - given-names: Ali-Adeeb
+    family-names: Abbas
+  - given-names: Esmaeil
+    family-names: Seraj
+repository-code: "https://github.com/adeeb10abbas/weightsmith"
+url: "https://adeeb10abbas.github.io/weightsmith/"
+license: MIT
+keywords:
+  - weight editing
+  - weight-space programming
+  - robot learning
+  - vision-language-action models
+  - benchmark
+preferred-citation:
+  type: generic
+  title: "Re-Routing, Not Creating: What LLM Weight Edits Can Fix in a Robot Policy"
+  authors:
+    - given-names: Ali-Adeeb
+      family-names: Abbas
+    - given-names: Esmaeil
+      family-names: Seraj
+  year: 2026
+  url: "https://github.com/adeeb10abbas/weightsmith"

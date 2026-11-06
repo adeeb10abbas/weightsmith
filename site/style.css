@@ -1,0 +1,803 @@
+/* weightsmith: a single, calm article. Serif body, plain sans headings, hairline rules, one accent (teal)
+   that appears only inside figures and charts for "the edit". No build step. */
+
+:root {
+  --bg: #faf9f5;
+  --bg-2: #f2f0e9;
+  --ink: #1a1915;
+  --ink-2: #3b3a36;
+  --muted: #6b6a66;
+  --rule: #e6e3da;
+  --accent: #147d92;
+  --mark-base: #8d8b85; /* charts: unedited / no weight change */
+  --mark-other: #3b3a36; /* charts: edits that did not work */
+  --grid: #ece9e1;
+
+  --serif: 'Source Serif 4', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --measure: 680px;
+  --wide: 800px;
+  --gutter: 24px;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1917;
+    --bg-2: #23221f;
+    --ink: #ecebe6;
+    --ink-2: #d4d2cb;
+    --muted: #a3a19b;
+    --rule: #34332f;
+    --accent: #2aa5bc;
+    --mark-base: #87857f;
+    --mark-other: #d4d2cb;
+    --grid: #2b2a27;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.1875rem; /* 19px */
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--sans);
+  color: var(--ink);
+  text-wrap: balance;
+  margin: 0;
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 1.1em;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+li + li {
+  margin-top: 0.35em;
+}
+
+sup {
+  font-size: 0.7em;
+  line-height: 0;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+}
+
+.nw {
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 10;
+  padding: 6px 12px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--sans);
+  font-size: 0.875rem;
+}
+
+.skip:focus {
+  left: 8px;
+}
+
+/* ---------- top bar ---------- */
+.bar {
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--sans);
+}
+
+.bar-in {
+  width: min(var(--wide), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.wordmark {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.bar nav {
+  margin-left: auto;
+  display: flex;
+  gap: 22px;
+}
+
+.bar nav a {
+  font-size: 0.9375rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.bar nav a:hover,
+.bar nav a[aria-current='page'] {
+  color: var(--ink);
+}
+
+/* ---------- article column ---------- */
+.post > * {
+  width: min(var(--measure), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+.post > .wide {
+  width: min(var(--wide), 100% - 2 * var(--gutter));
+}
+
+/* media inside a section break out of the text column to the wide column, centred on the page */
+.post section .wide {
+  width: min(var(--wide), 100vw - 2 * var(--gutter));
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.head {
+  padding-top: 36px;
+}
+
+.head h1 {
+  font-size: clamp(1.85rem, 1.45rem + 1.3vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.13;
+  letter-spacing: -0.02em;
+}
+
+.dek {
+  margin: 12px 0 0;
+  font-size: 1.1875rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+/* on wide screens the title and dek may run into the right margin of the text column, keeping its left edge */
+@media (min-width: 900px) {
+  .head:not(.wide) h1,
+  .head:not(.wide) .dek {
+    margin-right: -90px;
+  }
+}
+
+.byline {
+  margin: 12px 0 0;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.byline a {
+  color: var(--muted);
+}
+
+.byline .sep {
+  margin: 0 0.45em;
+}
+
+.hero {
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+.hero video,
+.clips video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+  background: var(--bg-2);
+}
+
+figcaption,
+.caption {
+  margin-top: 10px;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+figcaption b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.post section {
+  margin-top: 3.1rem;
+}
+
+.post h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  margin: 0 0 0.8rem;
+}
+
+.post h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin: 1.6rem 0 0.4rem;
+}
+
+.lede {
+  margin-top: 2.2rem;
+}
+
+.results {
+  margin-top: 2.2rem;
+}
+
+/* every list in the article: a short rule instead of a bullet */
+.results,
+.post section ul {
+  padding: 0;
+  list-style: none;
+}
+
+.results li,
+.post section ul > li {
+  position: relative;
+  padding-left: 1.1em;
+}
+
+.results li::before,
+.post section ul > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 0.42em;
+  height: 1px;
+  background: var(--ink);
+}
+
+.note {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* figures (rendered from the paper's plotting code) */
+.fig {
+  margin: 2rem auto 2.2rem;
+}
+
+.fig img {
+  margin-inline: auto;
+  height: auto;
+}
+
+/* each figure opens at full size (it is vector, so it zooms cleanly on a phone) */
+.fig-link {
+  display: block;
+  cursor: zoom-in;
+}
+
+.fig figcaption {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+.fig-n {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.eq {
+  margin: 1.4rem 0 1.5rem;
+  text-align: center;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  overflow-x: auto;
+}
+
+.eq i {
+  font-style: italic;
+}
+
+.eq .lam {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.clips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin: 1.8rem auto 1.4rem;
+}
+
+.clips figure {
+  margin: 0;
+}
+
+.post table.mde {
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  margin: 0.4rem 0 1.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.mde th,
+.mde td {
+  padding: 6px 28px 6px 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+
+.mde th {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.code {
+  position: relative;
+  margin: 0.4rem 0 0.6rem;
+}
+
+.code pre {
+  margin: 0;
+  padding: 16px 18px;
+  background: var(--bg-2);
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 3px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.copy:hover {
+  color: var(--ink);
+}
+
+.copied {
+  min-height: 1.4em;
+  margin: 0;
+}
+
+.end {
+  margin-top: 3.4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rule);
+}
+
+.foot {
+  margin-top: 4rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.foot-in {
+  width: min(var(--wide), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+  padding: 22px 0 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+
+.foot a {
+  color: var(--muted);
+}
+
+/* ---------- explorer ---------- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px 16px;
+  margin-top: 1.6rem;
+  font-family: var(--sans);
+}
+
+.filters label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  max-width: 100%;
+}
+
+.filters select {
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 6px 8px;
+  max-width: 100%;
+}
+
+.count {
+  margin: 0 0 4px auto;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin: 1.4rem 0 0.6rem;
+  padding: 0;
+  list-style: none;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+
+.lg {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--mark-other);
+  flex: none;
+}
+
+.lg.fix {
+  background: var(--accent);
+}
+
+.lg.held {
+  border-radius: 1px;
+  transform: rotate(45deg) scale(0.9);
+  background: var(--accent);
+}
+
+.lg.astra {
+  border-radius: 1px;
+}
+
+.lg.change {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--mark-other);
+}
+
+.lg.noise {
+  background: var(--mark-base);
+}
+
+.chart-box {
+  position: relative;
+}
+
+#chart {
+  width: 100%;
+  overflow: visible;
+}
+
+#chart text {
+  font-family: var(--sans);
+  fill: var(--ink);
+}
+
+#chart .t-task {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+#chart .t-label,
+#chart .t-count {
+  font-size: 11.5px;
+  fill: var(--muted);
+}
+
+#chart .t-count {
+  font-variant-numeric: tabular-nums;
+}
+
+#chart .t-group {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  fill: var(--muted);
+}
+
+#chart .t-axis {
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+#chart .grid {
+  stroke: var(--grid);
+  stroke-width: 1;
+}
+
+#chart .zero {
+  stroke: var(--muted);
+  stroke-width: 1;
+  opacity: 0.7;
+}
+
+#chart .hit {
+  fill: transparent;
+}
+
+#chart .row {
+  outline: none;
+}
+
+#chart .row:hover .hit,
+#chart .row.active .hit,
+#chart .row:focus-visible .hit {
+  fill: color-mix(in srgb, var(--ink) 5%, transparent);
+}
+
+#chart .row:focus-visible .hit {
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+#chart .ring {
+  stroke: var(--bg);
+  stroke-width: 4;
+  paint-order: stroke;
+}
+
+#chart .m-held,
+#chart .m-fix {
+  fill: var(--accent);
+}
+
+#chart .m-claude,
+#chart .m-astra {
+  fill: var(--mark-other);
+}
+
+#chart .m-noise {
+  fill: var(--mark-base);
+}
+
+#chart .m-pad {
+  fill: var(--bg);
+}
+
+#chart .m-change {
+  fill: var(--bg);
+  stroke: var(--mark-other);
+  stroke-width: 2;
+}
+
+#chart .ci {
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  opacity: 0.35;
+  stroke: var(--mark-other);
+}
+
+#chart .ci-held,
+#chart .ci-fix {
+  stroke: var(--accent);
+  opacity: 0.45;
+}
+
+#chart .ci-noise {
+  stroke: var(--mark-base);
+}
+
+.tscroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 2rem;
+}
+
+.dtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+.dtable caption {
+  caption-side: top;
+  text-align: left;
+  padding-bottom: 8px;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.dtable th,
+.dtable td {
+  padding: 7px 10px;
+  text-align: right;
+  vertical-align: baseline;
+  border-bottom: 1px solid var(--rule);
+}
+
+.dtable th:nth-child(-n + 4),
+.dtable td:nth-child(-n + 4) {
+  text-align: left;
+}
+
+.dtable th:first-child,
+.dtable td:first-child {
+  padding-left: 0;
+}
+
+.dtable thead th {
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.dtable tbody tr.active {
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+}
+
+.dtable .d {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dtable .ci {
+  display: block;
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* one tooltip, used by the explorer chart */
+.tooltip {
+  position: fixed;
+  z-index: 20;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  max-width: min(320px, calc(100vw - 24px));
+  padding: 8px 10px;
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  opacity: 0;
+}
+
+.tooltip.show {
+  opacity: 1;
+}
+
+.tooltip .tt-v {
+  font-weight: 600;
+}
+
+.tooltip .tt-s {
+  opacity: 0.75;
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 700px) {
+  :root {
+    --gutter: 16px;
+  }
+
+  body {
+    font-size: 1.125rem;
+  }
+
+  .head {
+    padding-top: 28px;
+  }
+
+  .dek {
+    font-size: 1.125rem;
+  }
+
+  .clips {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .bar nav {
+    gap: 16px;
+  }
+}
+
+@media print {
+  .bar,
+  .copy,
+  .tooltip {
+    display: none !important;
+  }
+}

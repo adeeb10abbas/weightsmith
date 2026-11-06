@@ -1,7 +1,7 @@
 {
- "description": "Paired closed-loop comparisons (candidate vs unedited base on the same slots) from the Claude/Opus weightsmith runs on ali-ms (Nov 4-5, 2026) and, for reference, the Astra study's reported comparisons. Counts are successes; fixed = base failed and candidate succeeded; broke = base succeeded and candidate failed.",
+ "description": "Paired closed-loop comparisons (candidate vs unedited base on the same slots) from the Claude/Opus weightsmith runs on the reference GPU host (Nov 4-6, 2026) and, for reference, the Astra study's reported comparisons. Counts are successes; fixed = base failed and candidate succeeded; broke = base succeeded and candidate failed.",
  "runtime_notes": {
-  "claude": "weightsmith main runtime, RoboLab on Isaac Sim (performance preset), single RTX 3090 (GPU1), pi05_droid_jointpos. Practice slots only; no held-out evaluation was run because no candidate qualified.",
+  "claude": "weightsmith main runtime, RoboLab on Isaac Sim (performance preset), pi05_droid_jointpos, RTX 3090 GPUs (one eval lane for the Nov 4-5 runs; two lanes for the Nov 5-6 binding-edit runs, no lane effect; see EVIDENCE.md). Rows of type 'heldout' are operator-run weightsmith/heldout.py scores on unseen slots >= 90000 (files in heldout/); all other Claude rows use practice slots.",
   "astra": "Values copied from study/RESULTS.md (original and fixed16 runtimes, separate host). Not pooled with Claude rows."
  },
  "rows": [
