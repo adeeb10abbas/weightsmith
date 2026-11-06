@@ -15,7 +15,7 @@ pip install -e '.[mcp]'      # the `weightsmith` command and the MCP server; add
 | [Claude Code driver](#headless-editors-benchmark-runs) | Ready | `drivers/claude.sh`: a headless editor for benchmark runs | The Claude Opus runs on the [leaderboard](../LEADERBOARD.md) |
 | [Codex CLI driver](#headless-editors-benchmark-runs) | Experimental | `drivers/astra.sh`: the same for GPT-6 Astra | Flags checked against `codex --help`; first-run checks are [listed](COMPARING_EDITORS.md#astra-driver-todo--unverified) |
 | [Hugging Face Hub](#hugging-face-hub) | Experimental | Hub-ready folders (card, manifest) for results and edits | `tests/test_hub_export.py`; nothing has been pushed to the Hub yet |
-| [`weightsmith distill`](#roadmap) | Roadmap | Closed-form instruction distillation as one command | Today: the [published recipe](../study/results/opus/ctb/v2mi_edit.py), run in `owsp py` |
+| [`weightsmith distill`](DISTILL.md) | Experimental | Closed-form instruction distillation as one command | `tests/test_distill.py`, `tests/test_cli.py`; its build step rebuilds both published edits bit for bit on the GPU host; select, capture and check are only dry-run |
 
 ## MCP server
 
@@ -166,5 +166,5 @@ python integrations/hub/export_to_hub.py edit abl-imgl8.safetensors --out hub/ab
 
 ## Roadmap
 
-- `weightsmith distill`: closed-form instruction distillation (instruction-swap capture, per-layer update, offline check) as one command. Today the recipe is [`v2mi_edit.py`](../study/results/opus/ctb/v2mi_edit.py), run in `owsp py`, with the method in Section 2 of the [paper](https://adeeb10abbas.github.io/weightsmith/paper.pdf).
+- `weightsmith distill` out of Experimental: run select, capture and check end to end on a new task (today only the build step is proven; see [DISTILL.md](DISTILL.md#status)).
 - The published edits as files on the Hugging Face Hub.

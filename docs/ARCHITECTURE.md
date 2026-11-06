@@ -76,11 +76,13 @@ weightsmith/
   config.py         all paths / GPUs / ports (env vars or wsp.env)
   edits.py          portable edit files (format, export, apply); _safetensors.py: numpy-only reader/writer
   mcp_server.py     the MCP server over bin/owsp
-  cli.py            the `weightsmith` command: edit export | info | apply, mcp
+  distill.py        closed-form instruction distillation (Experimental): math, owsp py scripts, pipeline
+  cli.py            the `weightsmith` command: edit export | info | apply, mcp, distill
   lab/              minimal vendored pieces of an earlier project (see NOTICE)
 bin/owsp            editor-side wrapper (local or ssh); the only thing on the editor's PATH
 drivers/            claude.sh, astra.sh (+ codex/owsp.rules)
 integrations/       mcp/server.py (MCP launcher without install), hub/export_to_hub.py (Hugging Face folders)
+examples/           worked configs, e.g. cube_then_banana/distill.json for `weightsmith distill`
 scripts/            operator tools: setup_deps.sh, prepare_workspace.sh, new_project.py, base_practice.sh,
                     smoke_test.sh, progress.sh, killmatch.sh
 tests/              CPU-only tests of the toolkit and the eval lanes
