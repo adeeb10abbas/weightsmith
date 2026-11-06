@@ -1,0 +1,128 @@
+{
+ "source": "paper/figures/src/teaser_90002.json",
+ "slot": 90002,
+ "instruction": "Put the cube then the banana in the bowl",
+ "fps": 30,
+ "steps_per_frame": 1,
+ "control_hz": 15,
+ "replan_every": 15,
+ "clip_steps": 288,
+ "arms": {
+  "unedited": {
+   "success": false,
+   "last_step": 899,
+   "closed": [
+    [
+     70,
+     75
+    ],
+    [
+     130,
+     131
+    ],
+    [
+     135,
+     195
+    ],
+    [
+     210,
+     211
+    ]
+   ],
+   "marks": [
+    {
+     "step": 76,
+     "kind": "release",
+     "label": "cube released, 3 steps after the grasp"
+    }
+   ],
+   "phases": [
+    [
+     0,
+     "reaching for the cube"
+    ],
+    [
+     70,
+     "closing on the cube"
+    ],
+    [
+     73,
+     "holding the cube"
+    ],
+    [
+     76,
+     "cube dropped"
+    ],
+    [
+     148,
+     "holding the banana"
+    ],
+    [
+     196,
+     "banana released"
+    ]
+   ]
+  },
+  "edited": {
+   "success": true,
+   "last_step": 269,
+   "final_step": 257,
+   "closed": [
+    [
+     75,
+     118
+    ],
+    [
+     191,
+     254
+    ]
+   ],
+   "marks": [
+    {
+     "step": 119,
+     "kind": "bowl",
+     "label": "cube in the bowl"
+    },
+    {
+     "step": 255,
+     "kind": "bowl",
+     "label": "success at 257"
+    }
+   ],
+   "phases": [
+    [
+     0,
+     "reaching for the cube"
+    ],
+    [
+     75,
+     "closing on the cube"
+    ],
+    [
+     78,
+     "holding the cube"
+    ],
+    [
+     119,
+     "cube in the bowl"
+    ],
+    [
+     191,
+     "closing on the banana"
+    ],
+    [
+     198,
+     "holding the banana"
+    ],
+    [
+     255,
+     "banana in the bowl"
+    ],
+    [
+     257,
+     "success"
+    ]
+   ]
+  }
+ }
+}

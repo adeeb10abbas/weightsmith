@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- The social card, site/assets/og.png: open this file in a browser at 1200x630 once the fonts load and save a
+     screenshot (we used Playwright: page.screenshot at viewport 1200x630, device scale 1). The picture is the right half
+     of the opening video's poster frame (assets/video/cube_then_banana.jpg): both wrist cameras at the same moment. -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&display=swap">
+<style>
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; background: #faf9f5; color: #1a1915; position: relative; overflow: hidden;
+         -webkit-font-smoothing: antialiased; }
+  .text { position: absolute; left: 64px; top: 0; bottom: 0; width: 548px; display: flex; flex-direction: column; justify-content: center; }
+  .eyebrow { font: 400 18px/1.4 Inter, sans-serif; color: #6b6a66; margin: 0 0 18px; }
+  h1 { font: 600 58px/1.07 Inter, sans-serif; letter-spacing: -0.022em; margin: 0; text-wrap: balance; }
+  .dek { font: 400 25px/1.38 'Source Serif 4', serif; color: #3b3a36; margin: 22px 0 0; }
+  .dek b { font-weight: 600; color: #1a1915; white-space: nowrap; }
+  .url { position: absolute; left: 64px; bottom: 40px; font: 500 16px/1 Inter, sans-serif; color: #6b6a66; }
+  .url b { color: #1a1915; font-weight: 600; margin-right: 10px; }
+  .shot { position: absolute; right: 48px; top: 40px; width: 489px; height: 550px; border-radius: 10px; overflow: hidden;
+          border: 1px solid #e6e3da; }
+  .shot .img { position: absolute; inset: 0; background: url(../assets/video/cube_then_banana.jpg) right center / auto 100% no-repeat; }
+  .chip { position: absolute; left: 12px; font: 600 17px/1 Inter, sans-serif; color: #fff; padding: 7px 10px; border-radius: 5px; }
+  .chip.u { top: 12px; background: rgba(26, 25, 21, 0.86); }
+  .chip.e { top: calc(50% + 12px); background: #147d92; }
+  .rule { position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: #faf9f5; }
+</style></head>
+<body>
+  <div class="text">
+    <p class="eyebrow">Distilling Instructions into Weights: Closed&#8209;Form Edits Fix a Robot Policy’s Misreading</p>
+    <h1>We fixed a robot’s misreading by editing its weights</h1>
+    <p class="dek">One closed-form edit, no training,<br>the same instruction: <b>27/128 → 106/128</b><br>on starts it had never seen.</p>
+  </div>
+  <div class="url"><b>weightsmith</b>adeeb10abbas.github.io/weightsmith</div>
+  <div class="shot">
+    <div class="img"></div>
+    <div class="rule"></div>
+    <span class="chip u">Unedited</span>
+    <span class="chip e">After the edit</span>
+  </div>
+</body></html>
