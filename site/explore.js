@@ -1,20 +1,20 @@
 /* Results explorer: a forest of paired differences (one row per comparison) and the same data as a table,
-   both drawn from data/comparisons.json. Colour: the accent marks the binding edit, greys mark the rest. */
+   both drawn from data/comparisons.json. Colour: the accent marks the distilled edit, greys mark the rest. */
 (function () {
   'use strict';
 
   var NS = 'http://www.w3.org/2000/svg';
   var DATA_URL = 'data/comparisons.json';
 
-  // Failure types in story order, with plain-language names; unknown levels are appended as they are.
+  // Failure types in the article's order and words; unknown levels are appended as they are.
   var LEVELS = [
-    ['Language binding', 'Misread instruction (the fix)'],
-    ['Binding edit on other tasks', 'Same edit, other tasks'],
-    ['Perception: wrong target object', 'Lookalike object'],
-    ['Motor: missing competence', 'Skill never learned'],
-    ['Motor: grasp physics', 'Grasp slips'],
-    ['Gripper commitment (all tasks)', 'Gripper commitment'],
-    ['Unchanged weights (noise controls)', 'Unchanged weights (noise)']
+    ['Language binding', 'Misread instruction: cube then banana'],
+    ['Binding edit on other tasks', 'The same edit on other tasks'],
+    ['Perception: wrong target object', 'Perception: lookalike object'],
+    ['Motor: missing competence', 'Missing skill: flat box'],
+    ['Motor: grasp physics', 'Contact physics: mustard'],
+    ['Gripper commitment (all tasks)', 'Gripper threshold'],
+    ['Unchanged weights (noise controls)', 'Unchanged weights, rerun']
   ];
   var TYPE_NAME = {
     weight: 'weight edit, practice seeds',
@@ -22,14 +22,6 @@
     prompt: 'reworded instruction, no weight edit',
     runtime: 'runtime change, no weight edit',
     identity: 'unchanged weights, rerun'
-  };
-  var KIND_NAME = {
-    held: 'the binding edit, held-out seeds',
-    fix: 'the binding edit, practice seeds',
-    claude: 'other Claude Opus edit',
-    astra: 'GPT-6 Astra edit',
-    change: 'not a weight edit',
-    noise: 'unchanged weights, rerun'
   };
 
   var fLevel = document.getElementById('f-level');
@@ -205,7 +197,7 @@
 
     var y = axisH;
     groups.forEach(function (gr) {
-      txt(svg, 0, y + 25, lname(gr.level).toUpperCase(), { 'class': 't-group', 'aria-hidden': 'true' });
+      txt(svg, 0, y + 25, lname(gr.level), { 'class': 't-group', 'aria-hidden': 'true' });
       y += groupH;
       gr.rows.forEach(function (r) {
         var g = el('g', {

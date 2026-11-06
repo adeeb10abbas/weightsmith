@@ -76,7 +76,8 @@
   // Copy BibTeX, falling back to selecting the text.
   document.querySelectorAll('[data-copy]').forEach(function (btn) {
     var src = document.getElementById(btn.getAttribute('data-copy'));
-    var status = btn.closest('.cite') && btn.closest('.cite').querySelector('.copied');
+    var scope = btn.closest('section, .cite');
+    var status = scope && scope.querySelector('.copied');
     var label = btn.textContent;
     function done(msg, ok) {
       if (status) status.textContent = msg;
