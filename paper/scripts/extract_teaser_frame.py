@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Recreate paper/figures/src/ctb_heldout90000_wrist.png, the image used in Table 1.
 
-Source: the side-by-side clip of held-out slot 90000 (cube then banana), committed on the site/v1 branch as
+Source: the side-by-side clip of held-out slot 90000 (cube then banana), committed in commit cc51802 (before the site videos were re-rendered) as
 site/assets/video/cube_then_banana.mp4 (sha256 e7c537d8eeb6b3f498c53ed63910bc7c44493192d616f68cc4b355ee60950291).
 The clip is 960x540: the top half is the unedited policy, the bottom half the edited policy; in each half the left
 480 px are the exterior camera and the right 480 px the wrist camera. We take frame 210 (t = 7.0 s at 30 fps) and keep
 the top 225 rows of each half's wrist view, which avoids the caption burned into the bottom of the clip.
 
 Usage:
-  git show site/v1:site/assets/video/cube_then_banana.mp4 > /tmp/cube_then_banana.mp4
+  git show cc51802:site/assets/video/cube_then_banana.mp4 > /tmp/cube_then_banana.mp4
   python3 paper/scripts/extract_teaser_frame.py /tmp/cube_then_banana.mp4
 Requires opencv-python and numpy.
 """

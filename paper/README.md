@@ -57,11 +57,11 @@ p-values are exact two-sided McNemar tests; minimum detectable effects use the n
 discordant pairs, 80% power, and two-sided α = 0.05. `make_figures.py` asserts that the held-out per-slot outcomes
 reproduce every held-out summary and that the JSON rows match the held-out files.
 
-Table 1 frames: frame 210 (t = 7.0 s) of the side-by-side clip of held-out slot 90000, committed on the `site/v1`
-branch as `site/assets/video/cube_then_banana.mp4` (unedited above, edited below; wrist camera). To regenerate:
+Table 1 frames: frame 210 (t = 7.0 s) of the side-by-side clip of held-out slot 90000, committed in commit `cc51802` (the original encode; the site now serves a re-render)
+as `site/assets/video/cube_then_banana.mp4` (unedited above, edited below; wrist camera). To regenerate:
 
 ```
-git show site/v1:site/assets/video/cube_then_banana.mp4 > /tmp/cube_then_banana.mp4
+git show cc51802:site/assets/video/cube_then_banana.mp4 > /tmp/cube_then_banana.mp4
 python3 paper/scripts/extract_teaser_frame.py /tmp/cube_then_banana.mp4
 ```
 
