@@ -1,6 +1,11 @@
-# local configuration
+# local configuration (template: .env.example -> copy to wsp.env); never commit real values or backups
 wsp.env
+wsp.env.*
+!wsp.env.example
+!wsp.env.template
 .env
+.env.*
+!.env.example
 
 # experiment data (never commit): projects, episodes, activations, candidates, workspaces
 projects/
@@ -25,19 +30,43 @@ workspaces/
 *.hdf5
 *.jpg
 *.png
+*.log
+*.out
+*.err
+*.bak
+*.bak-*
+
+# ...except the curated, published results and figures (the patterns above match at any depth)
+!study/results/data/
+!study/results/data/*.png
+!study/results/opus/heldout/
+!**/figures/*.png
+!**/figures/*.jpg
+!site/data/
 
 # editor session state
 session_id
 thread_id
 codex-home/
+.claude/
 
 # python
 __pycache__/
 *.pyc
 .venv/
+.pytest_cache/
+
+# LaTeX build products
+*.aux
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+
+# OS
+.DS_Store
 
 # dependency checkouts and envs created by scripts/setup_deps.sh
 third_party/openpi/
 third_party/RoboLab/
 envs/*/.venv/
-projects/
