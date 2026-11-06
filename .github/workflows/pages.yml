@@ -36,6 +36,16 @@ jobs:
             echo "paper/main.pdf not found; the Paper link will 404 until it is added"
           fi
 
+      # The custom domain sits behind a CDN that caches the PDF for hours, so stamp the page's paper links with the
+      # PDF's content hash: each new paper gets a new URL, and readers never get a stale or half-cached copy.
+      - name: Version the paper links
+        run: |
+          if [ -f site/paper.pdf ]; then
+            h=$(sha256sum site/paper.pdf | cut -c1-12)
+            sed -i "s#href=\"paper.pdf\"#href=\"paper.pdf?v=$h\"#g" site/*.html
+            echo "paper links now point to paper.pdf?v=$h ($(grep -o "paper.pdf?v=$h" site/*.html | wc -l) links)"
+          fi
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
