@@ -48,7 +48,7 @@
   </header>
 
   <figure class="hero wide">
-    <video id="hero-video" autoplay muted loop playsinline controls preload="auto" poster="assets/video/cube_then_banana.jpg" width="960" height="540" aria-label="Put the cube then the banana in the bowl, held-out start 90000. Top: the unedited policy. Bottom: after the weight edit.">
+    <video id="hero-video" autoplay muted loop playsinline controls preload="auto" poster="assets/video/cube_then_banana.jpg" width="960" height="540" aria-label="Put the cube then the banana in the bowl, held-out start 90002. Top: the unedited policy. Bottom: after the weight edit.">
       <source src="assets/video/cube_then_banana.mp4" type="video/mp4">
     </video>
     <script>
@@ -61,7 +61,7 @@
         }
       })();
     </script>
-    <figcaption>“Put the cube then the banana in the bowl.” Same instruction, same held-out start. Top: π0.5 as released goes for the banana first and fails. Bottom: after a closed-form weight edit, it puts the cube in the bowl first, then the banana. No training. <b class="nw">Held-out success: 27/128 → 106/128.</b></figcaption>
+    <figcaption>“Put the cube then the banana in the bowl.” Same instruction, same held-out start. Top: π0.5 as released grasps the cube and drops it three control steps later, then fails. Bottom: after a closed-form weight edit, it carries the cube to the bowl, then the banana. No training. <b class="nw">Held-out success: 27/128 → 106/128.</b></figcaption>
   </figure>
 
   <ul class="results">
@@ -199,7 +199,7 @@
   </section>
 
   <section class="end note" id="notes">
-    <p>Every number on this page comes from the paired comparisons in <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/results/opus/comparisons.json">comparisons.json</a> and the <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results/opus/heldout">held-out result files</a>; the figures are drawn by the paper’s plotting code, re-rendered for the screen. The videos show held-out start 90000, one illustrative start where only the edited policy succeeds. The editor study with GPT-6 Astra is a companion to this work and is in the same repository.</p>
+    <p>Every number on this page comes from the paired comparisons in <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/results/opus/comparisons.json">comparisons.json</a> and the <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results/opus/heldout">held-out result files</a>; the figures are drawn by the paper’s plotting code, re-rendered for the screen. The opening video shows held-out start 90002 (the start in the paper's Figure 1) and the transfer videos show held-out start 90000; each is one illustrative start where only the edited policy succeeds. The editor study with GPT-6 Astra is a companion to this work and is in the same repository.</p>
     <p>This work builds on weight-space programming (<a href="https://rikiyat.github.io/blog/weight-space-programming/">Takehi et al.</a>) and uses OpenPI’s π0.5 DROID checkpoint and NVIDIA’s RoboLab tasks in Isaac Sim. <sup>‡</sup> Guo and Xie report gains on π0.5 checkpoints fine-tuned on each task; we did not reproduce them.</p>
   </section>
 
