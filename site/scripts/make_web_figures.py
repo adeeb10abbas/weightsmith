@@ -2,11 +2,13 @@
 """Render the paper's main figures for the project site, at screen size, in light and dark.
 
 The data, the statistics and the figure designs come from the paper (paper/scripts/make_figures.py, imported below), so
-the site and the paper show the same pictures. The drawing functions are copies of the paper's with three changes:
+the site and the paper show the same pictures. The drawing functions are copies of the paper's with four changes:
   * sizes: text is set about 1.45x larger and the layout about 1.35x wider, so a figure shown at its natural size
     (about 700-730 CSS px) has 12-14 px text;
   * colour: the site uses one accent, teal, for the edit; the paper's muted red for harm becomes a dark neutral;
-  * a dark variant, drawn on a transparent background with light text.
+  * a dark variant, drawn on a transparent background with light text;
+  * in the detectability map, the random-direction control is drawn with the other edits, not in the distilled
+    edit's teal (it is a weight edit of the same size, but not the fix).
 
 Outputs, in site/assets/fig/: <name>.svg and <name>-dark.svg (text as paths), plus <name>.png and <name>-dark.png at
 2x as a fallback. Names: rewordings and construction (the paper's Fig. 2, panels a and b, drawn as two figures so
@@ -239,7 +241,8 @@ def fig_detectability(theme):
         d = 100 * (r["cand"] - r["base"]) / r["n"]
         if r["type"] in ("identity", "prompt", "runtime"):
             kind = "noedit"
-        elif r["level"] in ("Language binding", "Binding edit on other tasks"):
+        elif r["level"] in ("Language binding", "Binding edit on other tasks") and \
+                not r["label"].startswith("random directions"):
             kind = "edit"
         else:
             kind = "other"
