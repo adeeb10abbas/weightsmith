@@ -1,5 +1,5 @@
 """Offline test of the eval-pool lane logic with a fake policy server and a fake Isaac process.
-Run: python3 tests/test_pool_lanes.py   (no GPU, no OpenPI/RoboLab needed)"""
+Run: python3 tests/test_pool_lanes.py  or  python3 -m pytest tests   (no GPU, no OpenPI/RoboLab needed)"""
 import json, os, subprocess, sys, tempfile, time
 from pathlib import Path
 
@@ -42,12 +42,19 @@ class FakeServer:
 
 pool.start_server = lambda ws, port, gpu, log: FakeServer(log)
 pool.wait_ready = lambda *a, **k: None
-rows, rep = pool.run_pool(workspace=None, task="T", tag="t", slots=range(160, 160 + 16 * 5), envs=16,
-                          server_gpu=1, sim_gpu=1, extra_gpus=(0,), rendering_type=None)
-ok = [r for r in rows if r["ok"]]
-assert len(rows) == 80 and len(ok) == 80, (len(rows), len(ok))
-assert sorted(r["slot"] for r in ok) == list(range(160, 240))
-assert {r["lane"] for r in ok} == {0, 1}
-exp = {s: ((s // 16) + (s % 16)) % 3 == 0 for s in range(160, 240)}
-assert all(r["success"] == exp[r["slot"]] for r in ok), "slot->seed mapping broken across lanes/retries"
-print("lane test OK:", sum(r["success"] for r in ok), "/ 80 successes; lanes", sorted({r['lane'] for r in ok}), "; rep", rep)
+
+
+def test_pool_lanes():
+    rows, rep = pool.run_pool(workspace=None, task="T", tag="t", slots=range(160, 160 + 16 * 5), envs=16,
+                              server_gpu=1, sim_gpu=1, extra_gpus=(0,), rendering_type=None)
+    ok = [r for r in rows if r["ok"]]
+    assert len(rows) == 80 and len(ok) == 80, (len(rows), len(ok))
+    assert sorted(r["slot"] for r in ok) == list(range(160, 240))
+    assert {r["lane"] for r in ok} == {0, 1}
+    exp = {s: ((s // 16) + (s % 16)) % 3 == 0 for s in range(160, 240)}
+    assert all(r["success"] == exp[r["slot"]] for r in ok), "slot->seed mapping broken across lanes/retries"
+    print("lane test OK:", sum(r["success"] for r in ok), "/ 80 successes; lanes", sorted({r['lane'] for r in ok}), "; rep", rep)
+
+
+if __name__ == "__main__":
+    test_pool_lanes()
