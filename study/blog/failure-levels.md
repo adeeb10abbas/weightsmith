@@ -1,97 +1,280 @@
-# Which robot failures can a language model fix by editing weights? A failure-level study on π0.5
+# Editing a robot's weights fixed what it misread, not what it couldn't do
+
+*What LLM weight editing can and can't do for a robot policy: one clear success and many instructive failures on π0.5.*
 
 **Ali-Adeeb Abbas and Esmaeil Seraj**  
-Draft for coauthor review, November 5, 2026. This report adds a second cohort, Claude Opus as the editor on our own runtime, to the completed [Astra study](draft.md). Measured outcomes, literature reports and hypotheses are labelled separately throughout. Nothing here changes the frozen Astra data.
+Draft for coauthor review, November 6, 2026. Companion to the completed [Astra study](draft.md). Measured results, others' reports and our hypotheses are labelled as such throughout.
 
-## Abstract
+## TL;DR
 
-Recent reports show large language models repairing robot policies by reading and editing their weights directly, with no gradient training. We asked a narrower question: *which kinds of failure* in a generalist vision-language-action policy are reachable this way? We surveyed 16 RoboLab manipulation tasks with the π0.5 DROID joint-position checkpoint and sorted failures into levels:
-
-- perceptual target confusion;
-- language binding;
-- missing motor competence;
-- contact physics;
-- gripper commitment.
-
-We diagnosed five failing tasks, one per level, mostly with Claude Opus as an autonomous editor. On three of them we ran sparse weight edits closed-loop, each aimed at a mechanism localized first in the activations. We also replicated the Astra study's strongest control as a one-scalar weight edit. Across about 1,400 simulated episodes, **no weight edit improved closed-loop success on any task**:
-
-- **Claude, stacking:** 3 edits, each 21/64 against 28/64.
-- **Astra, stacking:** 4 edits, none accepted.
-- **Flat box (missing competence):** 10 edits, all 0 successes.
-- **Gripper bias, 7 tasks:** 117/240 against 117/240, with 37 episodes fixed and 37 broken.
-
-Two results stand out against that background. First, the policy's own unchanged-weight variability is large: about a third of paired episodes flip outcome between runs. Second, the one large effect we measured came from rewording an instruction, not from editing weights: 3/32 → 22/32 on a two-step task whose failure we traced to how the language model binds "in the bowl". The largest outside success was reported on task-fine-tuned checkpoints with recurring motor-decision failures. We found no failure of that kind in the zero-shot generalist setting.
+- **The setup.** We let frontier models (Claude Opus; GPT-6 Astra in the companion study) read and edit the weights of π0.5, a 3.35B-parameter robot policy, directly. There was no training, no gradients and no fine-tuning data. We tested 16 simulated manipulation tasks.
+- **One clear win: a misread instruction.** On "Put the cube then the banana in the bowl", the robot kept dropping the cube. We traced the cause to how the language model binds "in the bowl", then wrote a closed-form edit into the network.
+  - Success went from **3/32 to 25/32** on practice seeds.
+  - On **128 held-out seeds it never saw**, success went from 27/128 to 106/128.
+  - The instruction itself was never changed.
+  - Side effects: 6 of 7 other tasks were unchanged or within noise; one dropped from 14/16 to 10/16 (§5.5).
+- **Physical failures resisted every edit:**
+  - a grasp that slips: no gain;
+  - a skill the policy never learned: 10 edits, 0 successes;
+  - grabbing the wrong yellow object: 9 edits across two editors, including Claude under Astra's exact protocol, no gain;
+  - a one-weight gripper tweak on 7 tasks: 117/240 vs 117/240.
+- **The pattern.** Weight editing can re-route what a network already knows. It cannot create what it doesn't.
+- **Measure carefully.** About a third of episodes flip outcome between identical runs. A 16-episode "improvement" is noise until shown otherwise.
 
 ![Paired effect of every intervention, grouped by failure level](figures/opus_forest.png)
 
-*Figure 1. Success rate of each candidate minus the unedited policy on the same simulator slots, with paired 95% bootstrap intervals. Blue: Claude Opus weight edits (this cohort). Orange: GPT-6 Astra weight edits ([Astra study](../RESULTS.md)). Green: interventions that are not weight edits. Grey: unchanged-weight reruns. Right column: candidate vs base successes. Rows from different runtimes are not pooled.*
+*Figure 1. Every closed-loop comparison in this work and the companion Astra study. Each row shows success with the intervention minus success without it, on the same simulator seeds, with a paired 95% bootstrap interval. Blue: weight edits by Claude Opus. Orange: weight edits by GPT-6 Astra. Green: changes that are not weight edits. Grey: the unchanged policy rerun. Star: the held-out test of the one edit that worked, on seeds never used during editing. Right column: successes with vs without.*
 
-## 1. Introduction
+## 1. The question
 
-A robot policy can perceive a scene correctly and still fail in the last few centimetres. *Weight-space programming* (WSP) asks whether a reasoning model can diagnose such a failure inside the network and patch it directly, the way a programmer patches code. The idea was demonstrated on small networks and language models ([Takehi et al., Nov 2](https://rikiyat.github.io/blog/weight-space-programming/)). It is now being tried on robot policies.
+A robot policy can see the scene correctly and still fail at one step: it drops an object, grabs the wrong one, or closes its gripper a moment too early. The usual fix is more data and another training run. **Weight-space programming** proposes something different. Let a reasoning model look inside the network, find the computation that goes wrong, and patch the weights directly, the way a programmer patches code ([Takehi et al.](https://rikiyat.github.io/blog/weight-space-programming/)).
 
-The practical question for robotics is not whether a patch *can* exist. It is which failures an editor can find and fix reliably, and how one would know. Our working hypothesis, stated before the experiments in this cohort, was that **local motor failures** (a policy that knows the task but executes one step badly) would be editable, while **perceptual failures** (choosing the wrong object) would be distributed and hard. This report tests that hypothesis on one generalist policy and reports where it held and where it did not.
+Early reports on robot policies are striking, and our companion study is sober (§2). We asked the question that decides whether this matters in practice: **which kinds of robot failure can it fix?**
 
-**Contributions.**
-1. A base-rate survey of 16 RoboLab tasks (256 episodes) with each failure classified by level.
-2. Mechanistic diagnoses of five failing tasks, one per level, from activations, kinematics, event logs and camera frames.
-3. Every closed-loop weight edit we ran, including nulls, with paired intervals: 3 perceptual, 10 motor, and a one-scalar gripper edit on 7 tasks.
-4. A replication of the Astra study's strongest control as a weight edit, on 7× its task coverage.
-5. A measurement of unchanged-weight variability, and what it implies for how large a study has to be to detect a real repair.
+## 2. What others have found
 
-## 2. What others report
+These are **reported** results, not ones we reproduced. Esmaeil's [literature survey](../review/literature-survey.md), [evidence table](recent_work_table.md) and [Guo–Xie assessment](../review/guo-xie.md) go into detail.
 
-These are **reported** results, not ones we reproduced. Detailed assessments are in our [literature survey](../review/literature-survey.md) and [Guo–Xie review](../review/guo-xie.md).
-
-| Work | What was edited | Reported outcome | Scope we note |
+| Work | What was edited | Reported outcome | Note |
 |---|---|---|---|
-| [Takehi et al.](https://rikiyat.github.io/blog/weight-space-programming/) | Small policies; language-model loops | Reading, construction and repair demonstrations | Not a large VLA policy |
-| [Gupta et al.](https://codnay.github.io/blog/llms-fix-robots-by-editing-weights/) | π0.5 neurons on 10 tasks | Direct gains on 5/10 tasks; separate folding result 51% → 75% | The folding update uses a difference between trained models |
-| [Guo and Xie](../review/guo-xie.md) | π0.5 readout and attention | One task 28/92 → 82/92 held-out with 4 parameters | Each checkpoint already **fine-tuned on its task**; recurring failure such as "hovers, never presses" |
-| [Seraj (Astra study)](draft.md) | Action-MLP rows, π0.5 DROID | 4 edits on stacking, none accepted | Generalist checkpoint; restricted interface |
+| [Takehi et al.](https://rikiyat.github.io/blog/weight-space-programming/) | Small policies and language models | Read, built and repaired networks without gradients | Not a large robot policy |
+| [Guo and Xie](../review/guo-xie.md) | π0.5 readout and attention | One task 28/92 → 82/92 with 4 changed parameters; RoboTwin aggregates 31% → 47% (single edit) | Checkpoints already **fine-tuned on each task**; recurring failure such as "hovers, never presses" |
+| [Gupta et al.](https://codnay.github.io/blog/llms-fix-robots-by-editing-weights/) | π0.5 neurons on 10 tasks | Direct gains on 5/10 tasks; folding 51% → 75% | The folding update uses a difference between trained models |
+| [Seraj, Astra study](draft.md) | Action-MLP rows of the generalist π0.5 | 4 edits on stacking, none accepted; large unchanged-policy variability | The companion to this report |
 
-The strongest positive report (Guo and Xie) has two features our setting lacks. Its checkpoints were fine-tuned on the task being repaired, and its failures were recurring motor decisions inside an otherwise competent skill. We do not know whether Gupta et al.'s checkpoints were task-trained.
+The positive reports share one feature: the robot already had the skill, and something specific went wrong when using it. That turns out to be the right lens.
 
 ## 3. Setup
 
-**Policy.** OpenPI `pi05_droid_jointpos`, about 3.35B parameters:
-- a PaliGemma vision-language model (18 layers, width 2048);
-- a separate Gemma action expert (18 layers, width 1024) that runs 10-step flow matching.
+- **Policy.** OpenPI `pi05_droid_jointpos`, about 3.35B parameters:
+  - a PaliGemma vision-language model (VLM; 18 layers);
+  - a Gemma action expert (18 layers) that turns the VLM's context into 15-step action chunks by flow matching.
 
-Every 15 simulator steps it outputs 15 actions: 7 joint-position deltas and 1 gripper command, which the simulator binarises at 0.5. The checkpoint was trained on DROID, not on any RoboLab task, so every result here is zero-shot.
+  It was trained on real-robot DROID data, **not on any of our tasks**, so every result here is zero-shot.
+- **Simulator.** NVIDIA RoboLab (Isaac Sim), 16 tasks, 16 parallel environments per evaluation. A *slot* fixes a run's random seeds and scene.
+- **Editors.** Claude Opus (this report) and GPT-6 Astra (companion study), each running headless. They can:
+  - read and write all weights in a numpy sandbox;
+  - capture activations on the exact inputs of any recorded decision;
+  - roll the policy out in simulation.
+- **Rules:**
+  - no gradients, optimizers, fine-tuning or black-box search;
+  - every edit is a closed-form computation from weights and activations;
+  - every edit has a hypothesis written down before it is evaluated;
+  - the instruction text is fixed.
+- **Scoring.** Every comparison is paired on identical slots with an exact McNemar test and a paired bootstrap interval. The one edit that passed practice was scored by the operator on **128 unseen slots**, with base and edit run in alternating order.
 
-**Simulator.** NVIDIA RoboLab on Isaac Sim, using the `performance` rendering preset and 16 parallel environments per evaluation. A *slot* fixes the policy's noise-seed stream and the scene layout. All runs used one RTX 3090. The host's second GPU is power-limited (about 5 TFLOPS), which is why every number here comes from a single card.
+## 4. Results at a glance
 
-**Editor (this cohort).** Claude Opus, at extra-high or max effort, run headless with one command, `owsp`, plus file tools. `owsp` gives:
-- a CPU numpy sandbox over 730 weight tensors;
-- activation capture on the *exact* recorded inputs of past decisions, parity-checked against the live policy;
-- closed-loop practice rollouts paired against the base;
-- event timelines and camera frames.
+We first ran the unedited policy on 16 tasks (256 episodes) and sorted every failure into a level. The full survey is in Appendix A. Here is what happened when we tried to edit each level:
 
-**Rules** follow Takehi et al.:
-- no gradients, optimizers, training or black-box search;
-- every edit has a mechanistic hypothesis written down before it is evaluated;
-- instructions cannot be changed.
+| Level | What goes wrong | Example | Weight editing |
+|---|---|---|---|
+| **Language binding** | The instruction is parsed so the wrong object counts as "current" | Cube then banana | ✅ **3/32 → 25/32** practice; held-out 27/128 → 106/128 |
+| **Perception** | Goes for a similar-looking wrong object | Stack yellow on red | ❌ 3 Claude edits −11 pp; 4 Astra and 2 Claude edits under the same protocol, none accepted |
+| **Missing skill** | Never produces a working motion | Pick up a flat box | ❌ 10 edits change the motion, 0 successes |
+| **Contact physics** | Right decisions, but the grasp slips | Mustard into bin | ❌ No decision-level lever; edits stopped by offline checks |
+| **Gripper commitment** | Close/open decisions near the threshold | All tasks | ❌ One weight, 7 tasks: 117/240 vs 117/240 |
+| **Motor decision, skill present** | A competent skill stalls at one step | *None in our 16 zero-shot tasks* | — (others report large gains here) |
 
-Some edits in §5.3–5.6 were made by the operator session (a Claude Opus session run by the authors) under the same rules.
+The edit that worked did not invent anything. The robot could already do the task: worded explicitly, the *same* weights succeed 22/32 times. The edit made the network process the original wording the way it processes the explicit one. Every failed edit targeted something the network does not compute correctly under any input: a grasp it never learned, contact physics, or an object distinction it never routes to its actions.
 
-**Runtimes.** Our runs use the repository's top-level runtime. The Astra study used its own "original" and "fixed16" runtimes on a separate two-GPU host. **Rows from different runtimes are shown side by side but never pooled.** The base rates agree reasonably on the shared stacking task: ours 27–28/64, Astra's 23–26/64 and 11/32. On the Astra development slots 20032–20063 our runtime gives 12/32, against Astra's 11/32.
+## 5. The success: fixing a misread instruction
 
-**Statistics.** Each comparison is paired by slot:
-- *fixed* means base failed and the candidate succeeded;
-- *broke* means base succeeded and the candidate failed.
+### 5.1 The failure
 
-We report the difference in success rate with a paired bootstrap 95% interval (20,000 multinomial draws over pair types, the same method as the Astra study) and an exact McNemar test. Our bootstrap reproduces the Astra study's published interval for its threshold control exactly (+20.3, [+4.7, +35.9]). No held-out evaluation was run, because no candidate qualified for one.
+Task: **"Put the cube then the banana in the bowl."** Unedited success: 9/64 (14%).
 
-## 4. A survey of failures by level
+The robot starts correctly, going for the cube first in 63 of 64 episodes. Then it grasps the cube, lifts it a few centimetres, and **lets go** well short of the bowl. When the cube does reach the bowl first, the episode usually succeeds (about 7 in 9). So the skill is present, and one decision breaks it.
 
-Before editing anything, we ran the unedited policy for 16 episodes on each of 16 tasks. Each failure was classified from RoboLab event logs and recorded gripper commands.
+### 5.2 The diagnosis (Claude Opus)
 
-| Task | Base | Dominant failure classes (count of 16) |
+The editor replayed 21 recorded premature-release decisions with the camera images, robot state and noise held fixed, changing only the instruction:
+
+| Instruction at the replayed decisions | Releases (of 21) |
+|---|---:|
+| "Put the cube then the banana in the bowl" (original) | 21 |
+| "Put the rubiks cube then the banana in the bowl" | 21 |
+| "Put the banana then the cube in the bowl" | 3 |
+| "Put the cube in the bowl then the banana" | 3 |
+| "Put the cube in the bowl then put the banana in the bowl" | 2 |
+| "Put the cube in the bowl" | 1 |
+
+What the replays show:
+- **"In the bowl" binds to the nearest noun.** While holding the cube, the policy concludes it holds the *wrong* object (the target is "the banana in the bowl") and drops it. Renaming the cube changes nothing, while moving "in the bowl" next to it fixes the drop.
+- **Attention confirms it.** In the VLM, the destination words attend to the adjacent noun far more than to the first one (layer 1 head 1: 0.69 vs 0.02).
+- **The skill is there.** Closed-loop with the explicit wording, the same weights succeed **22/32** against 3/32 on the same seeds.
+
+### 5.3 Three attempts that failed first
+
+All of these were stopped by offline replay before any rollout. Each taught something:
+
+1. **Steering along the correlated "which object" axis.** Image tokens in VLM layers 10–16 carry a cube-vs-banana score that tracks the wording. Pushing it to three times what the explicit wording produces flipped **0 of 21** releases. *Correlated is not causal.*
+2. **Copying the average shift at the robot-state tokens.** The action expert spends 33–58% of its attention on the instruction and robot-state tokens. Reproducing the explicit wording's *average* change there also flipped **0**.
+3. **Copying the per-token shift at 40 positions** (begin-of-sequence, "Task:", and the state tokens) flipped **8–13 of 21**. That was partial, and the first causal effect we found.
+
+### 5.4 The edit
+
+The version that works also copies the explicit wording's small changes at the image tokens, region by region. These changes are only 2–4% of the image-token norm, but the expert spends 13–44% of its attention there.
+
+At each of 17 VLM layers we take 72 "keys": the average MLP activation of the original prompt at 40 prompt/state positions and 32 image regions. For each key, the "value" is how much that layer changes the residual under the explicit wording minus the original. We then apply the minimum-norm weight change that maps each key to its value, `ΔW = Kᵀ(KKᵀ + λI)⁻¹V`, all computed from 6 recorded decisions.
+
+There is no optimization or training. In effect, it is **the explicit instruction distilled into the weights in closed form.** It is low-rank (at most 72 directions per layer), but it is not sparse: it touches 13% of the model's scalar values.
+
+### 5.5 The results
+
+**Offline, on recorded decisions:** premature releases dropped from 21/21 to **0/21**. All 9 correct carries and all 19 phase-2 decisions (fetching the banana after the cube is placed) were unchanged. The edited policy's actions land closer to the explicit wording's actions than the original policy's do (4.5 cm vs 8.1 cm at chunk end).
+
+**Closed loop, practice seeds:** **25/32 vs 3/32**, with 22 fixed and 0 broken (exact McNemar p ≈ 5×10⁻⁷). That beats the explicit wording itself (22/32).
+
+**Held-out, 128 unseen seeds, operator-run:** **106/128 (82.8%) vs 27/128 (21.1%)**. 81 episodes were fixed and 2 broken (exact McNemar p = 7×10⁻²²). The paired difference is **+61.7 pp [+52.3, +70.3]**, and the Wilson intervals do not overlap (edit 75–88%, base 15–29%). Base and edit ran on identical slots 90000–90127, never used during editing, with the run order alternating by half. Successful episodes also finish faster: 300 steps on average vs 412.
+
+**Other tasks.** The edit's keys are average activations at the robot-state tokens and image regions, which every task has, so we checked seven other tasks:
+
+| Task | Without edit | With binding edit | Fixed / broke |
+|---|---:|---:|---:|
+| Cube into bowl | 16/16 | 16/16 | 0 / 0 |
+| Banana onto plate | 16/16 | 16/16 | 0 / 0 |
+| Butter box onto raisin box | 14/16 | **10/16** | 0 / 4 |
+| Stack yellow on red | 14/32 | 17/32 | 9 / 6 |
+| Mustard into bin | 7/32 | 12/32 | 11 / 6 |
+| Pick up eyeglasses | 12/32 | 22/32 | 15 / 5 |
+| Stack bowls | 19/32 | 21/32 | 8 / 6 |
+
+- **Most tasks are unaffected.** Five of seven are unchanged or within noise.
+- **One possible regression.** Butter-on-raisin lost 4 successes and gained none (p = 0.13 at n = 16). The edit's keys are average image activations, so they also fire, more weakly, on other scenes. On a task that ends with a release, a nudge toward "keep holding" plausibly costs successes.
+- **One surprising gain.** Eyeglasses rose 12 → 22 (p = 0.04). Many eyeglasses failures are "grabbed but never lifted", which the same nudge could help. With seven tasks tested, one p ≈ 0.04 can also be luck, so we treat it as a lead, not a finding (see below).
+
+The edit is a task-targeted fix with real, if modest, side effects. Applied to a robot used for many tasks, it would need preservation constraints (see below) or a task-conditional switch.
+
+**What matters in the edit (offline ablations):**
+
+| Variant | Keys per layer | Layers | Low-rank size (factored) | Premature releases (of 21) | Carries kept | Phase 2 kept |
+|---|---:|---:|---:|---:|---:|---:|
+| **Full edit `v2mi-f`** | 72 (40 prompt/state + 32 image) | 0–16 | 22.6M (0.67%) | **0** | 9/9 | 19/19 |
+| Image regions only | 32 | 0–16 | 10.0M (0.30%) | **0** | 9/9 | 19/19 |
+| Layers 8–16 only | 72 | 8–16 | 11.9M (0.36%) | **0** | 9/9 | 19/19 |
+| Half strength | 72 | 0–16 | 22.6M (0.67%) | 2 | 9/9 | 19/19 |
+| Image regions, layers 8–16 | 32 | 8–16 | 5.3M (0.16%) | 2 | 9/9 | 19/19 |
+| Prompt/state positions only | 40 | 0–16 | 12.5M (0.37%) | 13 | 9/9 | 19/19 |
+
+*Low-rank size counts the edit's factors: rank × (16,384 + 2,048) × layers. Applied to the weights, every variant still changes 248–450M stored values (7–13%), because each update is dense.*
+
+**The image tokens carry the fix.** The explicit wording changes the image tokens by only 2–4% of their norm. Yet copying just that change, region by region, is enough, while copying the prompt/state positions alone is not. In this architecture, the image tokens attend to the instruction (the prefix attention is bidirectional), so the instruction is read *into the picture*. That is where the action expert looks when it decides whether to keep holding.
+
+## 6. The failures
+
+### 6.1 Perception: stack the yellow block on the red block
+
+The unedited policy succeeds 28/64. A Rubik's cube with its yellow face up sits beside the red block, and the arm goes for it first in 48 of 63 episodes.
+
+Inside the network, the VLM tells the two objects apart almost perfectly (d′ ≈ 10–20). The action expert barely uses that signal (d′ ≈ 2–3, against a null of about 1.7).
+
+Three Claude edits amplified the signal in attention or key/value weights (12–30M values). Each scored **21/64** (−11 pp, n.s.). Amplifying the signal also disabled a useful learned habit, backing away from the cube after touching it. Astra's four edits on the same task, through action-MLP rows only, were within noise and none was accepted (Figure 1, orange).
+
+**Same protocol, different model.** We then ran a fresh Claude Opus editor under the Astra study's *exact* brief: the same 32 development slots, 3 proposals, 96 activation items, at most 128 rows in two layers of the action MLP, and the same acceptance gate.
+- **Diagnosis.** It independently reached the same failure: lookalike-object confusion, decided by noise in the first action chunks.
+- **Proposals.** `p1` scored 16/32 vs 12/32 and was rejected for breaking 4 base successes. Its own causal check found the predicted mechanism did not hold. The half-dose `p2` scored 11/32.
+- **Decision.** It declined a third proposal ("another dose of a falsified lever… a lottery draw") and submitted the unedited policy, for $20 of API time.
+
+*Two frontier editors, one protocol, one verdict. The information is in the network, but neither editor found a sparse edit that routed it to the decision without breaking something the policy needed.*
+
+### 6.2 Missing skill: pick up the flat green box
+
+The unedited policy is 0/64. The box's long side is wider than the gripper opening, so at the default wrist angle the fingers land on top of it. When the wrist does rotate, the close command flip-flops.
+
+Ten edits were tried: readout surgery, neuron flips, a "stay closed" latch, and wrist and gripper biases. The best one raised the share of episodes reaching a graspable wrist angle from 9/16 to **16/16**. Successes: **0** for every edit.
+
+*Edits can steer motions the policy already makes. They did not assemble a grasp it never learned.*
+
+### 6.3 Contact physics: put the mustard in the bin
+
+The unedited policy succeeds 16/96. It grabs the bottle by its narrow cap and keeps the gripper commanded closed, and in most episodes the bottle slips out mid-carry.
+
+![Wrist camera: a cap grasp that slips and one that holds](figures/opus_mustard_slip.jpg)
+
+*Figure 2. The same scene, a slipping grasp (top) and a holding grasp (bottom). Both grip the cap. Nothing in the policy's decisions separated them.*
+
+Close height, wrist angle, timing and carry speed did not predict which grasps hold (|ρ| ≤ 0.26). Two neuron-flip edits (Gupta-style) built from 192 recorded grasps either did nothing to the actions or pushed the wrong way, so both were stopped offline. A one-weight gripper edit scored 13/64 vs 13/64.
+
+*There was no wrong decision to fix, only physics.*
+
+### 6.4 One weight on the gripper, seven tasks
+
+The companion study's largest effect was a runtime change: binarizing the gripper at 0.4 instead of 0.5 gave 36/64 vs 23/64 on stacking. Its own rerun of the unchanged policy also moved 26 → 35.
+
+We built the same change into the network as **one scalar** (the gripper output bias) and ran it on seven tasks:
+
+| Task | Without | With |
+|---|---:|---:|
+| Stack yellow on red | 27/64 | 27/64 |
+| Mustard into bin | 13/64 | 13/64 |
+| Pick up eyeglasses | 12/32 | 13/32 |
+| Stack bowls | 19/32 | 18/32 |
+| Butter onto raisin box | 14/16 | 14/16 |
+| Cube into bowl | 16/16 | 16/16 |
+| Banana onto plate | 16/16 | 16/16 |
+| **Total** | **117/240** | **117/240** |
+
+Of the paired episodes, 37 flipped from failure to success and 37 from success to failure. *Exactly neutral.*
+
+## 7. How not to fool yourself
+
+Unchanged weights do not give unchanged outcomes. Two runs with identical weights and seeds agreed on only 46 of 64 episodes, because GPU physics is nondeterministic and 15-step open-loop action chunks amplify tiny differences. The companion study's unchanged reruns ranged from −5 to +14 points. Under the neutral gripper edit, 36% of paired episodes flipped.
+
+With roughly 30% of pairs flipping, these are the smallest changes a single paired comparison can reliably detect (80% power, α = 0.05):
+
+| Paired episodes per arm | Smallest detectable change |
+|---:|---:|
+| 32 | about 27 pp |
+| 64 | about 19 pp |
+| 128 | about 14 pp |
+| 256 | about 10 pp |
+
+**A 16-episode screen is a filter, not evidence.** Several of our own early "promising movements" disappeared at larger n.
+
+The success in §5 clears this bar easily. Many reported gains are smaller than this bar at the sample sizes reported, which doesn't make them wrong, but does make replication with larger samples important.
+
+## 8. What it means
+
+**Weight editing re-routes. It doesn't create.** The success had three ingredients:
+1. a skill the policy demonstrably has;
+2. a failure traced to one computation (language binding);
+3. a *known-good internal state* to copy (how the network processes the explicit wording).
+
+The failures each lacked one:
+- **Flat box:** no skill to re-route.
+- **Mustard:** no wrong computation, only physics.
+- **Perception:** the right signal existed, but no clean target state existed that didn't also break a useful behaviour.
+
+This fits the strongest outside results. Guo and Xie edited checkpoints already fine-tuned on each task, so the skill existed and a recurring glitch was the target. It suggests a practical rule: **edit when you can show the network already does the right thing under some input; train when it doesn't.**
+
+**Three honest caveats:**
+- **The edit is not sparse.** It changes 13% of scalar values, at low rank. A four-parameter patch it is not.
+- **The edit is task-targeted, with side effects.** It did not touch most other tasks, but it cost one of them four successes (§5.5).
+- **Discovery took a known-good instruction.** The editor had to find a wording that works, then distil it. That is still useful: it turns a prompt fix into a weight fix when the instruction can't be changed.
+
+## 9. Limitations
+
+- **One policy, simulation only.** One zero-shot generalist checkpoint and no physical-robot tests.
+- **One win.** One positive task, and its edit was built by the operator session (also Claude Opus) under the editor rules, not by an autonomous editor run.
+- **Unequal sample sizes.** n varies from 16 to 128 pairs across comparisons.
+- **Imperfect failure labels.** Classes rely on RoboLab events, some of which are mislabelled. Levels were assigned from diagnosis, not by an independent rater.
+- **Partial costs.** Recorded editor API spend for our cohort is about $800. Operator time and GPU time were not metered.
+
+## 10. What's next
+
+1. **More editors, same protocol.** Claude and Astra agree on stacking (§6.1). Repeating both on the binding task would test whether an autonomous editor finds the fix found here.
+2. **A matched test of the "motor decision" level.** This needs a task-fine-tuned checkpoint with a recurring glitch, where others report their gains.
+3. **Shrink the binding edit.** Fewer layers, lower rank, or a sparse readout of the same keys.
+4. **Physical-robot transfer** of the binding fix.
+
+## Appendix A. Unedited-policy survey (16 episodes per task)
+
+| Task | Success | Dominant failure classes |
 |---|---:|---|
 | Cube into bowl | 16/16 | — |
 | Banana onto plate | 16/16 | — |
-| Butter box onto raisin box | 14/16 | 1 grabbed then dropped, 1 closed but missed |
+| Butter box onto raisin box | 14/16 | dropped ×1, missed ×1 |
 | Stack three cubes | 11/16 | wrong object first ×5 |
 | Block tower, any order | 11/16 | wrong object first ×5 |
 | Stack left bowl on right bowl | 10/16 | wrong object first ×5 |
@@ -106,188 +289,13 @@ Before editing anything, we ran the unedited policy for 16 episodes on each of 1
 | Grab a bagel | 0/16 | wrong object first ×7, mixed |
 | Pick up flat green box | 0/16 | grabbed but not lifted ×10 |
 
-*"Wrong object first" relies on RoboLab's wrong-object event, which the [Astra study's audit](../RESULTS.md) found produces false annotations. Treat those counts as upper bounds; we confirmed the stacking case separately from kinematics and frames (§5.1).*
+*"Wrong object first" depends on a RoboLab event the [Astra audit](../RESULTS.md) found unreliable. Treat those counts as upper bounds.*
 
-From the survey, the diagnoses below, and outside reports, we use six levels. The last two columns give what we measured and what others report:
-
-| Level | What fails | Our example | Weight edits here | Outside reports |
-|---|---|---|---|---|
-| **L1 Gripper commitment** | Close/open decisions near the threshold | All tasks (§5.6) | One scalar, 7 tasks: no effect | Runtime threshold 0.4 on stacking: +20 pp (Astra study), comparable to its own unchanged repeat (+14 pp) |
-| **L2 Motor decision, skill present** | A competent skill stalls at one step ("hovers, never presses") | **None found** in 16 zero-shot tasks | Not testable here | Guo–Xie: large gains on task-fine-tuned checkpoints. Gupta et al.: direct gains on 5/10 tasks |
-| **L3 Contact physics** | The policy does the right thing but the grasp slips | Mustard (§5.4) | Offline checks failed; gripper bias: no effect | — |
-| **L4 Missing competence** | The policy never produces a working motion | Flat green box (§5.3) | 10 edits change motion, 0 successes | Reports agree editing does not add missing skills |
-| **L5 Perception: target choice** | Goes for a similar-looking wrong object | Stack yellow on red (§5.1) | Claude 3 edits, −11 pp (n.s.); Astra 4 edits, n.s. | — |
-| **L6 Language binding** | Instruction parsed so the wrong object is "current" | Cube then banana (§5.2) | Mechanism localized; no closed-loop edit yet | — |
-
-The level the outside successes target, L2, is the one we could not find. A generalist policy run zero-shot seems to fail mostly at L4–L6: it lacks the motion, picks the wrong object, or misreads the instruction. A task-fine-tuned policy has already learned the motion and the object, so what remains is more often an L2 decision glitch. This is a **hypothesis** consistent with the evidence, not something we have tested on matched checkpoints.
-
-## 5. Case studies
-
-### 5.1 L5, perception: stack the yellow block on the red block
-
-**Base.** 28/64 (43.8%) on practice slots; 27/64 in a later independent rerun.
-
-**Diagnosis (Claude Opus).** The editor combined forward kinematics, event timelines and frames. A Rubik's cube with its yellow face up sits beside the red block, and the arm descends on it first in 48 of 63 episodes. Outcome depends on what happens next:
-
-| First approach | Episodes | Success |
-|---|---:|---:|
-| Rubik's cube, and the gripper closes on it | 28 | 5 (18%) |
-| Rubik's cube, lifts away and redirects to the yellow block | 20 | 14 (70%) |
-| Straight to the yellow block | 15 | 9 (60%) |
-
-In the network, the vision-language model's wrist-camera tokens separate the yellow block from the Rubik's cube almost perfectly (d′ ≈ 10–20). The action expert barely reads that signal (d′ ≈ 2–3, against a permutation null of about 1.7). Direct logit attribution places the gripper close/open decision mainly in action-expert layer-16 attention.
-
-**Edits.** Each was validated offline before rollout.
-
-| Edit | Values changed | Success | Paired difference |
-|---|---:|---:|---|
-| `v1a1`: gain on the identity axis in action-expert attention outputs, layers 1–16 | 30.4M (~0.9%) | 21/64 | −10.9 pp [−26.6, +4.7] |
-| `dkv2`: gain on the identity axis in VLM key/value projections, layers 1–13 | 12.0M (0.36%) | 21/64 | −10.9 pp [−26.6, +6.2] |
-| `combo1`: `dkv2` plus a rank-1 rewire of one layer-13 attention head | 12.2M | 21/64, and 21/64 again on rerun | −10.9 pp [−26.6, +4.7] |
-
-**What went wrong.** The editor found that amplifying the identity signal also suppressed the policy's own learned veto against closing on the Rubik's cube, the behaviour behind the 70% recovery row. The information exists, but routing it to the decision without breaking a behaviour the policy needs was not a sparse edit. The Astra study's four edits on the same task, through action-MLP rows only, were also within noise (Figure 1, orange).
-
-### 5.2 L6, language binding: "Put the cube then the banana in the bowl"
-
-**Base.** 9/64 (14.1%). The arm goes to the cube first in 63 of 64 episodes. The dominant failure is that it grasps the cube, lifts it a few centimetres, then opens the gripper well short of the bowl. When the cube does reach the bowl first, the episode succeeds about 7 times in 9.
-
-**Diagnosis (Claude Opus).** The editor replayed 21 recorded premature-release decisions under different instructions, keeping images, state and noise fixed:
-
-| Instruction at the replayed decisions | Releases (of 21) |
-|---|---:|
-| Original: "Put the cube then the banana in the bowl" | 21 |
-| "Put the rubiks cube then the banana in the bowl" | 21 |
-| "Put the banana then the cube in the bowl" | 3 |
-| "Put the cube in the bowl then the banana" | 3 |
-| "Put the cube in the bowl then put the banana in the bowl" | 2 |
-| "Put the cube in the bowl" | 1 |
-
-What these replays show:
-- **"In the bowl" binds to the nearest noun.** In "Put X then the Y in the bowl", the destination phrase binds to Y, so while holding X the policy treats it as the wrong object and lets go. Renaming the cube changes nothing; moving "in the bowl" next to the cube fixes it.
-- **The binding shows up in attention.** Vision-language attention from "in"/"bowl" goes to the adjacent noun far more than to the first one (e.g. layer 1 head 1: 0.69 vs 0.02).
-- **The decision forms early.** It is already visible at the image and state tokens in VLM layers 10–16.
-
-**Ceiling.** Rewording the instruction explicitly ("Put the cube in the bowl then put the banana in the bowl") lifts the *same weights* from 3/32 to **22/32** on paired slots (20 fixed, 1 broken, p < 0.001). This is a prompt result, not a weight edit, and is labelled green in Figure 1. It shows that the motor skill is fully present and that the failure is a localized language-binding computation. That makes it the best-supported target for a weight edit in this study, and the first one we will attempt next (§7).
-
-An earlier editor run on the mirrored task ("banana then cube"; base 99/128) found the same release mechanism. Replays reproduced the premature release in 28 of 29 cases, and explicit wording cut it to 9 of 29. That editor measured the ceiling of a perfect fix there at about +3 pp, too small to resolve, and correctly submitted no edit.
-
-### 5.3 L4, missing competence: pick up the flat green box
-
-**Base.** 0/64. Two failures, diagnosed by Claude Opus:
-- **F1, wrong wrist angle.** In 12 of 16 first approaches the box's long side is wider than the 85 mm gripper opening, so the fingers land on top of it.
-- **F2, no commitment.** In the rotated pose where a grasp could work, the gripper command flip-flops between close and open.
-
-**Edits.** Ten, from three parallel editors and the operator:
-- readout surgery (`ro8`, `and3`, `and3rot`);
-- a neuron flip (`rw1`);
-- a layer-16 "stay closed" latch (`e2-contact6`);
-- one- and two-scalar wrist and gripper biases (`gb4`, `wr1gb4`, `wr2gb4`, `wr2gb6`, `wr2e1`).
-
-**All ten scored 0** (0/16 each, `e2-contact6` 0/32). The edits did change behaviour: the strongest wrist bias raised the share of episodes reaching the graspable wrist angle from 9/16 to 16/16. A grasp-and-lift never followed. Some apparent near-misses turned out, on inspection, to be the gripper closing on air. We read this as an L4 case: an edit can steer the motions the policy already makes, but cannot assemble a grasp it never learned.
-
-### 5.4 L3, contact physics: put the mustard in the left bin
-
-**Base.** 13/64 (20.3%), and the skill clearly exists. All 13 survey failures share one pattern:
-1. The policy grabs the bottle by its narrow cap at step 34–54.
-2. It keeps the gripper commanded closed through the lift.
-3. The bottle slips out mid-carry.
-4. The policy re-grasps the fallen bottle 4–8 times and times out.
-
-![Wrist camera: a cap grasp that slips and one that holds](figures/opus_mustard_slip.jpg)
-
-*Figure 2. Wrist-camera inputs for a slipping grasp (top) and a holding grasp (bottom) of the same bottle on the same scene. Both grip the cap. The difference is not visible in the grasp itself.*
-
-**Diagnosis (operator, 64 base episodes).**
-- **It's a slip, not a decision.** In 15 of 16 first drops the gripper was commanded closed throughout, and the simulator binarises the command, so grip force is fixed.
-- **Little predicts which grasps hold.** Close height, wrist yaw, the pause between closing and lifting, and carry speed, acceleration and tilt do not separate holding grasps from slipping ones (|Spearman ρ| ≤ 0.26).
-- **One weak signal.** Grasps more than 2 cm off-centre never succeeded (0/16), against 13/48 within 2 cm. A perfect centring fix would be worth only about +7 pp.
-
-**Edits.**
-- **Neuron flip** (Gupta-style). We captured action-expert MLP activations at 192 grasp decisions. The best layers separated holding from slipping grasps with held-out AUROC 0.66 (layers 14–15). Flipping the top 64 neurons per layer in two layers changed the actions by 0.0005 rad and flipped 0 of 96 close decisions. A stronger version (256 neurons in each of 4 layers) moved the representation *toward* the slipping side. Both were stopped by their offline checks before any rollout.
-- **Gripper bias** (§5.6): 13/64 against 13/64.
-
-### 5.5 L2: the level we could not find
-
-The published successes describe a competent policy stalling at one step, such as hovering over a bell without pressing. None of the 16 surveyed tasks showed this. The closest candidates (green box F2, a gripper that won't commit) sat inside a larger L4 failure. Without an L2 failure we cannot test the outside reports on this checkpoint. A matched test needs a task-fine-tuned checkpoint (§7).
-
-### 5.6 L1, gripper commitment: replicating the Astra threshold control as one weight
-
-The Astra study's largest effect was a runtime change: binarising the gripper at 0.4 instead of 0.5 gave 36/64 against 23/64 on stacking. Its own unchanged-weight repeat, however, also moved from 26/64 to 35/64. We asked whether the effect survives as a weight edit and on more tasks.
-
-**Edit (`gthr04`).** The gripper channel is quantile-normalised over [0, 1], and the flow-matching output integrates the action head's bias over 10 steps. So shifting `action.action_out_proj.bias[7]` by −0.3 raises the gripper command at every action. That is **one scalar** of 3.35B. Offline, on 96 recorded decisions:
-- the command rises by +0.11 on average (median +0.07), equivalent to a threshold of about 0.4;
-- arm joints change by only 0.002 rad;
-- closed action steps go from 674 to 781 of 1440.
-
-| Task | Base | `gthr04` | Fixed / broke |
-|---|---:|---:|---:|
-| Stack yellow on red | 27/64 | 27/64 | 12 / 12 |
-| Mustard into left bin | 13/64 | 13/64 | 10 / 10 |
-| Pick up eyeglasses | 12/32 | 13/32 | 7 / 6 |
-| Stack left bowl on right bowl | 19/32 | 18/32 | 6 / 7 |
-| Butter box onto raisin box | 14/16 | 14/16 | 2 / 2 |
-| Cube into bowl | 16/16 | 16/16 | 0 / 0 |
-| Banana onto plate | 16/16 | 16/16 | 0 / 0 |
-| **Total** | **117/240** | **117/240** | **37 / 37** |
-
-The edit is exactly neutral in aggregate and breaks nothing on the three near-ceiling tasks. On our runtime, the +20 pp threshold effect does not appear as a weight edit. The Astra study's own repeat control suggests the original effect may have been within run-to-run variation. A remaining difference is that a bias does not reproduce a runtime threshold exactly, because the network partly compensates.
-
-## 6. The noise floor
-
-Unchanged weights do not give unchanged outcomes:
-- **Same seeds, same weights, different result.** Two runs of `combo1` with identical weights and seeds agreed on only 46 of 64 episodes (28% flipped).
-- **Astra's unchanged reruns.** They spanned −4.7 to +14.1 pp (grey rows in Figure 1).
-- **Near-neutral edits.** On the four tasks with headroom, 70 of 192 pairs (36%) flipped under the near-neutral `gthr04`, half in each direction.
-
-The cause is GPU physics nondeterminism, amplified by open-loop 15-step action chunks. The Astra study's first-input audit found different images and actions in all 64 identity pairs, despite equal recorded state and seeds.
-
-With about 30% of pairs discordant (28–36% above), the standard error of a paired difference at n pairs is roughly √(0.3/n). The smallest effect detectable at 80% power and α = 0.05 is about 2.8 times that:
-
-| Pairs per arm | Smallest reliably detectable change |
-|---:|---:|
-| 32 | about 27 pp |
-| 64 | about 19 pp |
-| 128 | about 14 pp |
-| 256 | about 10 pp |
-
-Several reported aggregate gains sit in the 10–20 pp range, such as Guo and Xie's single-edit RoboTwin aggregate of 31% → 47%. Below about 128 paired episodes per arm, a single comparison can neither confirm nor rule out gains of that size. We also caution against treating a 16-episode screen as evidence in either direction. Several of our early "first movement" readings did not survive a larger sample.
-
-## 7. Discussion and next steps
-
-**What the levels suggest.**
-- **L1, gripper commitment:** a global threshold-style edit is neutral here.
-- **L3, contact physics:** there was nothing for a decision-level edit to act on.
-- **L4, missing competence:** edits steered motion without producing success.
-- **L5, perception:** the signal existed, but routing it broke a needed behaviour.
-- **L6, language binding:** the mechanism is localized and the ceiling is known (+59 pp from the same weights), so it is the most promising target.
-- **L2:** the level where others report large wins, and the one this zero-shot setting did not offer.
-
-Our original hypothesis, that motor failures would be easy and perceptual failures hard, therefore needs refining. **"Motor" is not one category.** A motor *decision* inside a learned skill (L2) may be editable, while motor *competence* (L4) and *contact physics* (L3) were not here.
-
-**Why outside results may differ.**
-- **Task fine-tuning.** The largest positive report used checkpoints trained on the task being repaired, which plausibly places their failures at L2.
-- **Interface.** Guo and Xie also used attention-level edits, which the Astra study's MLP-only interface excluded.
-- **Evaluation size.** Ours and Astra's evaluations were noisy enough that modest true gains could be missed.
-
-**Planned experiments, in priority order.**
-1. **Cube then banana (L6).** A closed-form edit to the VLM binding pathway so that the original instruction behaves like the explicit one, scored against base at 128+ pairs.
-2. **A matched L2 test.** A task-fine-tuned π0.5 checkpoint with a recurring "never commits" failure, with the Guo–Xie interface (readout plus attention).
-3. **Claude on the Astra protocol.** A Claude Opus editor under the Astra study's brief and budget (3 proposals × 32 slots, 96 activation items, ≤128 rows in 2 layers). It is prepared on our runtime (base 12/32 on the same development slots) and not yet run. The exact fixed16 runtime needs a second working GPU.
-4. **Calibrate gates on repeated unchanged-weight runs** before searching, as the Astra study recommends.
-
-## 8. Limitations
-
-- **Single policy, simulation only, zero-shot.** No physical-robot results and no cross-checkpoint comparison.
-- **Practice slots only.** No candidate qualified for held-out scoring, so every interval here is a practice estimate.
-- **Some edits were operator-built.** The one-scalar `gthr04` and the mustard neuron flips were built by the operator session under the editor rules, not by an autonomous editor.
-- **Unequal sample sizes.** n differs across tasks (16–64 pairs), and the three near-ceiling controls cannot show improvement.
-- **Failure classes are imperfect.** They depend on RoboLab events, some of which are mislabelled. Levels L3–L6 were assigned from diagnosis, not from an independent rater.
-- **Costs are partial.** Recorded editor API spend for this cohort is about $800 (the stacking editor alone, $632). Operator-session and GPU costs were not metered.
-
-## 9. Reproducibility
+## Appendix B. Reproducibility
 
 - **Evidence record:** [`results/opus/EVIDENCE.md`](../results/opus/EVIDENCE.md).
 - **Comparison data:** [`results/opus/comparisons.json`](../results/opus/comparisons.json).
-- **Figures:** `python3 results/scripts/plot_opus_forest.py` and `python3 results/scripts/make_mustard_strip.py <slip frames> <hold frames>`.
-- **Runtime:** top-level `weightsmith` at `f503fb3`, with the patches listed in `third_party/`.
-- **Raw episodes, notebooks and editor briefs:** on the GPU host under `~/vibes/opus-weight-surgery/projects/`, project names as in the evidence record.
+- **Figures:** `python3 results/scripts/plot_opus_forest.py`; `python3 results/scripts/make_mustard_strip.py`.
+- **Edit scripts:** in `results/opus/ctb/`.
+- **Runtime:** top-level weightsmith at `f503fb3`.
+- **Raw episodes and captures:** on the GPU host under `~/vibes/opus-weight-surgery/projects/`.

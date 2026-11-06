@@ -110,6 +110,34 @@
    "broke": 11
   },
   {
+   "level": "Perception: wrong target object",
+   "task": "Stack yellow on red",
+   "label": "Claude, Astra protocol p1 (64 rows, L17)",
+   "editor": "Claude Opus",
+   "type": "weight",
+   "values_changed": null,
+   "n": 32,
+   "base": 12,
+   "cand": 16,
+   "fixed": 8,
+   "broke": 4,
+   "source": "projects/claude-rq123; gate: not eligible (broke 4 > 2)"
+  },
+  {
+   "level": "Perception: wrong target object",
+   "task": "Stack yellow on red",
+   "label": "Claude, Astra protocol p2 (35,210 values)",
+   "editor": "Claude Opus",
+   "type": "weight",
+   "values_changed": 35210,
+   "n": 32,
+   "base": 12,
+   "cand": 11,
+   "fixed": 6,
+   "broke": 7,
+   "source": "projects/claude-rq123; gate: not eligible"
+  },
+  {
    "level": "Language binding",
    "task": "Cube then banana",
    "label": "Explicit two-step wording (no weight change)",
@@ -121,6 +149,33 @@
    "cand": 22,
    "fixed": 20,
    "broke": 1
+  },
+  {
+   "level": "Language binding",
+   "task": "Cube then banana",
+   "label": "v2mi-f: binding edit, practice seeds",
+   "editor": "Claude Opus",
+   "type": "weight",
+   "values_changed": 450468837,
+   "n": 32,
+   "base": 3,
+   "cand": 25,
+   "fixed": 22,
+   "broke": 0
+  },
+  {
+   "level": "Language binding",
+   "task": "Cube then banana",
+   "label": "v2mi-f: binding edit, HELD-OUT seeds",
+   "editor": "Claude Opus",
+   "type": "heldout",
+   "values_changed": 450468837,
+   "n": 128,
+   "base": 27,
+   "cand": 106,
+   "fixed": 81,
+   "broke": 2,
+   "source": "heldout/v2mi-f-RubiksCubeThenBananaTask-90000-128/results.json; McNemar p=7.2e-22"
   },
   {
    "level": "Motor: missing competence",

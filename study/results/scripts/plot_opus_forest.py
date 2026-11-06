@@ -19,9 +19,12 @@ CLAUDE = dict(color="#2a78d6", marker="o", name="Weight edit, Claude Opus (this 
 ASTRA = dict(color="#eb6834", marker="D", name="Weight edit, GPT-6 Astra (Seraj study)")
 NONW = dict(color="#1baf7a", marker="s", name="Not a weight edit (prompt or runtime threshold)")
 IDENT = dict(color="#8b8a85", marker="^", name="Unchanged weights (noise control)")
+HELD = dict(color="#2a78d6", marker="*", name="Weight edit, Claude Opus: held-out test (unseen seeds)")
 
 
 def style(r):
+    if r["type"] == "heldout":
+        return HELD
     if r["type"] == "weight":
         return CLAUDE if r["editor"] == "Claude Opus" else ASTRA
     return IDENT if r["type"] == "identity" else NONW
@@ -62,7 +65,7 @@ def main():
         d, lo, hi = paired_ci(r)
         st = style(r)
         ax.plot([100 * lo, 100 * hi], [yy, yy], color=st["color"], lw=2, solid_capstyle="round", zorder=2)
-        ax.scatter([100 * d], [yy], s=40, marker=st["marker"], color=st["color"], edgecolor=SURFACE, linewidth=1.5, zorder=3)
+        ax.scatter([100 * d], [yy], s=(110 if st is HELD else 40), marker=st["marker"], color=st["color"], edgecolor=SURFACE, linewidth=1.5, zorder=3)
         ticklabels.append(f'{r["task"]}  ·  {r["label"]}'); bold.append(False)
         ax.text(1.015, yy, r.get("display") or f'{r["cand"]}/{r["n"]} vs {r["base"]}/{r["n"]}', transform=right, ha="left", va="center",
                 color=INK2, fontsize=7.6, clip_on=False)
@@ -83,7 +86,7 @@ def main():
         ax.spines[s].set_visible(False)
     ax.set_xlabel("Success rate, candidate minus unedited base (percentage points; paired 95% bootstrap interval)", fontsize=8)
     handles = [plt.Line2D([], [], color=v["color"], marker=v["marker"], lw=2, ms=6, label=v["name"])
-               for v in (CLAUDE, ASTRA, NONW, IDENT)]
+               for v in (CLAUDE, HELD, ASTRA, NONW, IDENT)]
     fig.legend(handles=handles, loc="upper center", ncol=2, frameon=False, fontsize=7.8, bbox_to_anchor=(0.5, 1.0))
     fig.tight_layout(rect=(0, 0, 1, 0.94))
     for d in OUT_DIRS:

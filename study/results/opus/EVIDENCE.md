@@ -39,3 +39,16 @@ Filled from `continuation/RESULT_TEMPLATE.md`. Supports `blog/failure-levels.md`
   - **Measured:** no sparse weight edit improved closed-loop success at levels L1, L3, L4 or L5 on this checkpoint and runtime. Unchanged-weight variability is about 28–36% discordant pairs.
   - **Scope limits:** one zero-shot generalist checkpoint, simulation only, practice slots.
   - **Unresolved hypotheses:** L2 (motor decision within a learned skill) and L6 (language binding) may be editable; neither was tested closed-loop here.
+
+## Addendum (Nov 5–6, night): language-binding edit `v2mi-f`, RubiksCubeThenBananaTask
+
+- **Hypothesis fixed before evaluation:** the premature cube release is caused by the VLM binding "in the bowl" to the adjacent noun. Reproducing, inside the weights, the residual changes that the explicit instruction ("Put the cube in the bowl then put the banana in the bowl") produces should keep the cube, without changing phase-2 behaviour.
+- **Edit:** 17 VLM MLP down-projections (`language.blocks.00–16.mlp.linear`), each updated with `dW = K^T (K K^T + lam I)^-1 V`.
+  - Keys: 72 per layer. These are mean original-prompt MLP activations at 40 aligned prompt/state slots plus 32 image cells (2 cameras × 16), from 6 recorded premature-release decisions (capture `c2-multi`).
+  - Values: per-layer residual increments under the explicit prompt minus the original.
+  - `lam = 1e-3·tr(KKᵀ)/72`, alpha 1. 450,468,837 scalars changed (13.4%); rank ≤ 72 per layer.
+  - Built by the operator session (Claude Opus), not by an autonomous editor.
+- **Offline attempts before it (all on recorded decisions, no rollouts):** `st11a5` and `st1016a4` (axis steering, 21/21 still release); `v2s-b` (mean state shift, 6/6 release); `v2m-h`, `v2m-f` and `v2m-2` (40-slot per-token shift: 15, 13 and 8 of 21 release); `v2t-f` (with text slots: 13/21); `v2mi-f` (with image cells: **0/21**; carries 0/9 and all 19 phase-2 decisions unchanged).
+- **Practice, closed loop:** slots 20000–20031, 25/32 vs base 3/32 (22 fixed, 0 broke, exact McNemar p ≈ 4.8×10⁻⁷).
+- **Held-out:** see `failure-levels.md` §5.5 (slots 90000–90127, 128 per arm, order alternating by half, run by `weightsmith/heldout.py`).
+- **Retention:** seven other tasks, see `failure-levels.md` §5.5.
