@@ -73,6 +73,18 @@
   });
   window.addEventListener('scroll', function () { if (current && document.activeElement !== current) hide(); }, { passive: true });
 
+  // Short muted loops (the earlier-work card) play only while they are on screen, and never on their own for readers
+  // who ask for reduced motion: they get the poster and the player's controls instead.
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('video.lazyplay').forEach(function (v) {
+    function play() { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    if (reduce) { v.controls = true; return; }
+    if (!('IntersectionObserver' in window)) { play(); return; }
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) play(); else v.pause(); });
+    }, { threshold: 0.25 }).observe(v);
+  });
+
   // Copy BibTeX, falling back to selecting the text.
   document.querySelectorAll('[data-copy]').forEach(function (btn) {
     var src = document.getElementById(btn.getAttribute('data-copy'));

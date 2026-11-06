@@ -81,9 +81,19 @@
     return [out[Math.floor(0.025 * B)], out[Math.ceil(0.975 * B) - 1]];
   }
 
+  // The random-direction control is a weight edit scored on held-out slots, but it is not the distilled edit: it is
+  // drawn in grey with the other edits, and counted with the held-out seeds.
+  function isControl(r) { return /^random directions/i.test(r.label); }
+  function isHeld(r) { return r.type === 'heldout' || (isControl(r) && /held-out/i.test(r.label)); }
+  function typeName(r) {
+    if (isHeld(r) && r.type === 'weight') return 'weight edit (random directions), held-out seeds';
+    return TYPE_NAME[r.type] || r.type;
+  }
+
   function kind(r) {
     if (r.type === 'identity') return 'noise';
     if (r.type === 'prompt' || r.type === 'runtime') return 'change';
+    if (isControl(r)) return 'claude';
     if (r.type === 'heldout') return 'held';
     if (r.level === 'Language binding' || r.level === 'Binding edit on other tasks') return 'fix';
     if (r.editor === 'GPT-6 Astra') return 'astra';
@@ -99,14 +109,14 @@
     return r.cand + '/' + r.n;
   }
   function editorName(e) { return e === 'operator' ? 'Operator (no editor)' : e; }
-  function seedsStr(r) { return r.n + (r.type === 'heldout' ? ' held-out' : ''); }
+  function seedsStr(r) { return r.n + (isHeld(r) ? ' held-out' : ''); }
 
   function tipText(r) {
     var lines = [
       signed(r.diff) + ' points · 95% CI ' + signed(r.ci[0]) + ' to ' + signed(r.ci[1]),
       'Without ' + withoutStr(r) + ' · with ' + withStr(r) + ' · ' + r.fixed + ' fixed, ' + r.broke + ' broke',
       r.task + ' · ' + r.label,
-      editorName(r.editor) + ' · ' + (TYPE_NAME[r.type] || r.type)
+      editorName(r.editor) + ' · ' + typeName(r)
     ];
     if (r.values_changed) lines.push(r.values_changed.toLocaleString('en-US') + ' values changed');
     if (r.note) lines.push(r.note);
@@ -119,8 +129,8 @@
     return ALL.filter(function (r) {
       if (lv && r.level !== lv) return false;
       if (ed && r.editor !== ed) return false;
-      if (sd === 'heldout' && r.type !== 'heldout') return false;
-      if (sd === 'practice' && r.type === 'heldout') return false;
+      if (sd === 'heldout' && !isHeld(r)) return false;
+      if (sd === 'practice' && isHeld(r)) return false;
       return true;
     });
   }

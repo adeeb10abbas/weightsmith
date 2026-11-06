@@ -203,6 +203,14 @@ code {
   padding-top: 36px;
 }
 
+.eyebrow {
+  margin: 0 0 12px;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
 .head h1 {
   font-size: clamp(1.85rem, 1.45rem + 1.3vw, 2.25rem);
   font-weight: 600;
@@ -291,24 +299,17 @@ figcaption b {
   margin-top: 2.2rem;
 }
 
-.results {
-  margin-top: 2.2rem;
-}
-
 /* every list in the article: a short rule instead of a bullet */
-.results,
 .post section ul {
   padding: 0;
   list-style: none;
 }
 
-.results li,
 .post section ul > li {
   position: relative;
   padding-left: 1.1em;
 }
 
-.results li::before,
 .post section ul > li::before {
   content: '';
   position: absolute;
@@ -324,6 +325,224 @@ figcaption b {
   font-size: 0.875rem;
   line-height: 1.55;
   color: var(--muted);
+}
+
+/* each section opens with its claim */
+.claim {
+  font-size: 1.3rem;
+  line-height: 1.42;
+  color: var(--ink);
+  letter-spacing: -0.003em;
+}
+
+/* the opening video's timeline */
+.scrub {
+  position: relative;
+  margin-top: 12px;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 4px;
+}
+
+.scrub.dragging {
+  cursor: grabbing;
+}
+
+.scrub svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.scrub .tl-name {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  fill: var(--ink-2);
+}
+
+.scrub .tl-track {
+  fill: var(--grid);
+}
+
+.scrub .tl-over {
+  fill: var(--bg);
+  opacity: 0.6;
+}
+
+.scrub .tl-closed.u {
+  fill: var(--mark-base);
+}
+
+.scrub .tl-closed.e {
+  fill: var(--accent);
+}
+
+.scrub .tl-x {
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.scrub .tl-ring {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.scrub .tl-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  fill: var(--muted);
+}
+
+.scrub .tl-label.on {
+  fill: var(--ink);
+}
+
+.scrub .tl-head {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.scrub .tl-dot {
+  fill: var(--ink);
+  stroke: var(--bg);
+  stroke-width: 1.5;
+}
+
+.scrub:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.scrub-readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 18px;
+  margin: 2px 0 0;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.scrub-readout .s-step {
+  color: var(--ink);
+  min-width: 5.2em;
+}
+
+.textbtn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  cursor: pointer;
+}
+
+.textbtn:hover {
+  text-decoration-color: currentColor;
+}
+
+.textbtn[aria-pressed='true'] {
+  color: var(--muted);
+}
+
+.cmd {
+  margin: 0.4rem 0 1.2rem;
+  padding: 16px 18px;
+  background: var(--bg-2);
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.cmd code {
+  font-size: inherit;
+}
+
+/* earlier work by the authors: one small card, set apart from this paper's results */
+.card {
+  display: grid;
+  grid-template-columns: minmax(0, 232px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  padding: 16px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+
+.card-media {
+  margin: 0;
+}
+
+.card-media video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 720 / 406;
+  border-radius: 4px;
+  background: var(--bg-2);
+}
+
+.card-media figcaption {
+  margin-top: 6px;
+  font-size: 0.75rem;
+}
+
+.card-media figcaption a {
+  color: var(--muted);
+}
+
+.card-text {
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.card-text p {
+  margin: 0 0 0.55em;
+}
+
+.card-text .card-title {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.card-title a {
+  text-decoration: none;
+}
+
+.card-title a:hover {
+  text-decoration: underline;
+}
+
+.card-text .card-meta {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.card-meta a {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
 }
 
 /* figures (rendered from the paper's plotting code) */
