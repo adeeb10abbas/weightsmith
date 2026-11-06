@@ -1,0 +1,153 @@
+\begin{thebibliography}{21}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Physical Intelligence} et~al.(2025){Physical Intelligence}, Black,
+  Brown, et~al.]{pi2025pi05}
+{Physical Intelligence}, K.~Black, N.~Brown, et~al.
+\newblock $\pi_{0.5}$: A vision-language-action model with open-world
+  generalization.
+\newblock \emph{arXiv preprint arXiv:2504.16054}, 2025.
+
+\bibitem[Takehi et~al.(2026)Takehi, Teoh, Zhang, and Khattab]{takehi2026sparks}
+R.~Takehi, J.~Teoh, A.~Zhang, and O.~Khattab.
+\newblock Sparks of weight-space programming.
+\newblock Technical blog, November 2, 2026.
+\newblock URL \url{https://rikiyat.github.io/blog/weight-space-programming/}.
+
+\bibitem[Guo and Xie(2026)]{guo2026robotweights}
+L.~Guo and A.~Xie.
+\newblock Weight editing across robot policies: {VLA}, {WAM}, and humanoid
+  control.
+\newblock First-person experiment thread on X, November 4, 2026.
+\newblock URL \url{https://x.com/Lingxiao234/status/2118048171649806424}.
+\newblock Descriptive title; author-reported results.
+
+\bibitem[Xie and Guo(2026)]{xie2026robotweights}
+A.~Xie and L.~Guo.
+\newblock Direct weight editing for robot policy adaptation.
+\newblock First-person experiment thread on X, November 4, 2026.
+\newblock URL \url{https://x.com/AngchenXie/status/2118052439576465647}.
+\newblock Descriptive title; author-reported results.
+
+\bibitem[Gupta et~al.(2026)Gupta, Rohilla, Prashant, and
+  Zhu]{gupta2026robotweights}
+P.~Gupta, D.~Rohilla, P.~Prashant, and J.~Zhu.
+\newblock Can frontier {LLMs} fix robots by editing their weights?
+\newblock Technical blog, November 4, 2026.
+\newblock URL
+  \url{https://codnay.github.io/blog/llms-fix-robots-by-editing-weights/}.
+
+\bibitem[Abbas and Seraj(2026)]{abbas2026wspstudy}
+A.-A. Abbas and E.~Seraj.
+\newblock A study of weight-space programming for robotic manipulation
+  policies.
+\newblock Companion study; manuscript and data in the \texttt{study/} directory
+  of the weightsmith repository, 2026.
+\newblock URL \url{https://github.com/adeeb10abbas/weightsmith}.
+
+\bibitem[Khazatsky et~al.(2024)Khazatsky, Pertsch, Nair, Balakrishna, Dasari,
+  Karamcheti, Nasiriany, et~al.]{khazatsky2024droid}
+A.~Khazatsky, K.~Pertsch, S.~Nair, A.~Balakrishna, S.~Dasari, S.~Karamcheti,
+  S.~Nasiriany, et~al.
+\newblock {DROID}: A large-scale in-the-wild robot manipulation dataset.
+\newblock In \emph{Proceedings of Robotics: Science and Systems}, 2024.
+
+\bibitem[Yang et~al.(2026)Yang, Dagli, Zook, Hadfield, Goyal, Birchfield,
+  Ramos, and Tremblay]{yang2026robolab}
+X.~Yang, R.~Dagli, A.~Zook, H.~Hadfield, A.~Goyal, S.~Birchfield, F.~Ramos, and
+  J.~Tremblay.
+\newblock {RoboLab}: A high-fidelity simulation benchmark for analysis of task
+  generalist policies.
+\newblock In \emph{Proceedings of Robotics: Science and Systems}, 2026.
+\newblock \doi{10.15607/RSS.2026.XXII.096}.
+
+\bibitem[Fei et~al.(2026)Fei, Wang, Shi, Dai, Cai, Qian, Ji, He, Zhang, Fei,
+  Fu, Gong, and Qiu]{fei2026liberoplus}
+S.~Fei, S.~Wang, J.~Shi, Z.~Dai, J.~Cai, P.~Qian, L.~Ji, X.~He, S.~Zhang,
+  Z.~Fei, J.~Fu, J.~Gong, and X.~Qiu.
+\newblock {LIBERO-Plus}: A progressive robustness benchmark for
+  visual-language-action models.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}, pages 38574--38583, 2026.
+
+\bibitem[Kim et~al.(2026)Kim, Kim, Kang, Kim, and Jung]{kim2026liberopara}
+C.~Kim, M.~Kim, M.~Kang, H.~Kim, and D.~Jung.
+\newblock {LIBERO-Para}: A diagnostic benchmark and metrics for paraphrase
+  robustness in {VLA} models.
+\newblock \emph{arXiv preprint arXiv:2603.28301}, 2026.
+\newblock URL \url{https://arxiv.org/abs/2603.28301}.
+\newblock Accepted to EMNLP 2026, main conference.
+
+\bibitem[Abbas et~al.(2026)Abbas, Seraj, Toghi, and
+  Pad{\i}r]{abbas2026samegoal}
+A.-A. Abbas, E.~Seraj, B.~Toghi, and T.~Pad{\i}r.
+\newblock Same goal, different words: Spatial instruction sensitivity in
+  world-action models.
+\newblock \emph{arXiv preprint arXiv:2610.16242}, 2026.
+
+\bibitem[Meng et~al.(2023)Meng, Sharma, Andonian, Belinkov, and
+  Bau]{meng2023memit}
+K.~Meng, A.~S. Sharma, A.~Andonian, Y.~Belinkov, and D.~Bau.
+\newblock Mass-editing memory in a transformer.
+\newblock In \emph{International Conference on Learning Representations}, 2023.
+
+\bibitem[Beyer et~al.(2024)Beyer, Steiner, Pinto, Kolesnikov, Wang,
+  et~al.]{beyer2024paligemma}
+L.~Beyer, A.~Steiner, A.~S. Pinto, A.~Kolesnikov, X.~Wang, et~al.
+\newblock {PaliGemma}: A versatile {3B} {VLM} for transfer.
+\newblock \emph{arXiv preprint arXiv:2407.07726}, 2024.
+
+\bibitem[Black et~al.(2024)Black, Brown, Driess, Esmail, Equi, Finn, Fusai,
+  et~al.]{black2024pi0}
+K.~Black, N.~Brown, D.~Driess, A.~Esmail, M.~Equi, C.~Finn, N.~Fusai, et~al.
+\newblock $\pi_0$: A vision-language-action flow model for general robot
+  control.
+\newblock \emph{arXiv preprint arXiv:2410.24164}, 2024.
+
+\bibitem[Meng et~al.(2022)Meng, Bau, Andonian, and Belinkov]{meng2022rome}
+K.~Meng, D.~Bau, A.~Andonian, and Y.~Belinkov.
+\newblock Locating and editing factual associations in {GPT}.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2022.
+
+\bibitem[Snell et~al.(2022)Snell, Klein, and Zhong]{snell2022distilling}
+C.~Snell, D.~Klein, and R.~Zhong.
+\newblock Learning by distilling context.
+\newblock \emph{arXiv preprint arXiv:2209.15189}, 2022.
+
+\bibitem[{Physical Intelligence}(2025)]{openpi2025}
+{Physical Intelligence}.
+\newblock openpi: Open-source models and code for robot foundation policies.
+\newblock GitHub repository, 2025.
+\newblock URL \url{https://github.com/Physical-Intelligence/openpi}.
+
+\bibitem[McNemar(1947)]{mcnemar1947note}
+Q.~McNemar.
+\newblock Note on the sampling error of the difference between correlated
+  proportions or percentages.
+\newblock \emph{Psychometrika}, 12\penalty0 (2):\penalty0 153--157, 1947.
+
+\bibitem[Wilson(1927)]{wilson1927probable}
+E.~B. Wilson.
+\newblock Probable inference, the law of succession, and statistical inference.
+\newblock \emph{Journal of the American Statistical Association}, 22\penalty0
+  (158):\penalty0 209--212, 1927.
+
+\bibitem[Turner et~al.(2023)Turner, Thiergart, Leech, Udell, Vazquez, Mini, and
+  MacDiarmid]{turner2023steering}
+A.~M. Turner, L.~Thiergart, G.~Leech, D.~Udell, J.~J. Vazquez, U.~Mini, and
+  M.~MacDiarmid.
+\newblock Steering language models with activation engineering.
+\newblock \emph{arXiv preprint arXiv:2308.10248}, 2023.
+
+\bibitem[Ilharco et~al.(2023)Ilharco, Ribeiro, Wortsman, Gururangan, Schmidt,
+  Hajishirzi, and Farhadi]{ilharco2023arithmetic}
+G.~Ilharco, M.~T. Ribeiro, M.~Wortsman, S.~Gururangan, L.~Schmidt,
+  H.~Hajishirzi, and A.~Farhadi.
+\newblock Editing models with task arithmetic.
+\newblock In \emph{International Conference on Learning Representations}, 2023.
+
+\end{thebibliography}
