@@ -65,3 +65,9 @@ Filled from `continuation/RESULT_TEMPLATE.md`. Supports `blog/failure-levels.md`
   - Offline: 1/21 release.
   - Closed loop: 24/32 vs 3/32 (21 / 0); butter 10/16. Not needed, given the identity result.
 - **GPU lanes:** success by lane across tonight's runs was 249/448 (lane 0) vs 199/368 (lane 1); no lane effect.
+
+- **Minimal edit `abl-imgl8`** (image cells only, layers 8–16, rank ≤32; 5.3M factored parameters):
+  - practice 25/32 vs 3/32 (22 / 0);
+  - held-out slots 90000–90127: **102/128 vs 19/128**, 86 fixed / 3 broke, p = 3.8×10⁻²².
+- **Transfer map (32 paired slots each, base then edit in the same session):** cube left of bowl 22 vs 3 (20 / 1); right of bowl 0 vs 0; stack three cubes 19 vs 14; block tower 14 vs 15; yogurt 2 vs 3; bagel 1 vs 0; marker 1 vs 0; flat green box 0 vs 0.
+- **Cube left of bowl, held-out (slots 90000–90063):** **36/64 vs 8/64**, 33 / 5, p = 4.3×10⁻⁶, Wilson 0.441–0.677 vs 0.065–0.228.

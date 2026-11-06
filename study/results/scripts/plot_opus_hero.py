@@ -13,13 +13,14 @@ BEFORE, AFTER = "#a3a29c", "#2a78d6"
 ROWS = [
     ("Misread instruction", "cube then banana · 128 held-out seeds", (27, 128), (106, 128), True),
     ("Same edit, unrelated task", "pick up eyeglasses · 64 held-out seeds", (22, 64), (44, 64), True),
-    ("Lookalike object", "stack yellow on red · 3 Claude edits; 6 more by 2 editors, none accepted", (28, 64), (21, 64), False),
+    ("Same edit, spatial instruction", "cube left of the bowl · 64 held-out seeds", (8, 64), (36, 64), True),
+    ("Lookalike object", "stack yellow on red · 9 edits, 2 editors, none accepted", (28, 64), (21, 64), False),
     ("Skill never learned", "pick up a flat box · 10 edits", (0, 64), (0, 16), False),
     ("Grasp slips (physics)", "mustard into bin · 1-weight edit", (13, 64), (13, 64), False),
     ("Gripper threshold, 1 weight", "7 tasks pooled", (117, 240), (117, 240), False),
 ]
 plt.rcParams.update({"font.family": "DejaVu Sans"})
-fig, ax = plt.subplots(figsize=(8.6, 5.0), facecolor=SURFACE)
+fig, ax = plt.subplots(figsize=(8.6, 5.6), facecolor=SURFACE)
 ax.set_facecolor(SURFACE)
 n = len(ROWS)
 for i, (lab, sub, (bk, bn), (ak, an), ok) in enumerate(ROWS):
@@ -43,7 +44,7 @@ ax.grid(axis="x", color=GRID, lw=0.7, zorder=0)
 for s in ("top", "right", "left"):
     ax.spines[s].set_visible(False)
 ax.spines["bottom"].set_color(MUTED)
-ax.set_xlabel("Task success: light grey = unedited policy · blue = after an edit that worked · dark grey = after edits that did not", fontsize=9, color=INK2)
+ax.set_xlabel("Task success · light grey: unedited · blue: edit worked · dark grey: edits did not", fontsize=9, color=INK2)
 fig.text(0.02, 0.97, "LLM weight editing on a robot policy (π0.5, simulation)", fontsize=13, weight="bold", color=INK, va="top")
 fig.text(0.02, 0.915, "It fixed what the robot misread, not what it couldn't do.", fontsize=10.5, color=INK2, va="top")
 fig.subplots_adjust(left=0.42, right=0.98, top=0.84, bottom=0.12)

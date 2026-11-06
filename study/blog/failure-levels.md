@@ -7,7 +7,7 @@ Draft for coauthor review, November 6, 2026. Companion to the completed [Astra s
 
 ![Before and after the weight edit, by failure type](figures/opus_hero.png)
 
-*Figure 1. Task success before (light grey) and after weight edits. The edits that worked (blue) fixed a misread instruction and transferred to an unrelated task. The ones that did not (dark grey) targeted perception, a missing skill, contact physics, or a single gripper weight. All comparisons are paired on identical simulator seeds; the two blue rows are held-out.*
+*Figure 1. Task success before (light grey) and after weight edits. The edit that worked (blue) fixed a misread instruction and transferred to two other tasks. The ones that did not (dark grey) targeted perception, a missing skill, contact physics, or a single gripper weight. All comparisons are paired on identical simulator seeds; the three blue rows are held-out.*
 
 ## TL;DR
 
@@ -16,7 +16,8 @@ Draft for coauthor review, November 6, 2026. Companion to the completed [Astra s
   - Success went from **3/32 to 25/32** on practice seeds.
   - On **128 held-out seeds it never saw**, success went from 27/128 to 106/128.
   - The instruction itself was never changed.
-  - **It transferred.** The same edit also lifted an unrelated task, picking up eyeglasses, from 22/64 to 44/64 on held-out seeds. We found no harm on six other tasks.
+  - **A 0.16% version works as well.** Restricted to image regions in 9 layers (5.3M parameters as low-rank factors), it scores 19/128 → 102/128 on the same held-out seeds.
+  - **It transferred to two other tasks.** On held-out seeds, eyeglasses went 22/64 → 44/64 and "put the cube to the left of the bowl" went 8/64 → 36/64. Twelve other tasks showed no reliable change either way.
 - **Physical failures resisted every edit:**
   - a grasp that slips: no gain;
   - a skill the policy never learned: 10 edits, 0 successes;
@@ -73,7 +74,7 @@ We first ran the unedited policy on 16 tasks (256 episodes) and sorted every fai
 
 | Level | What goes wrong | Example | Weight editing |
 |---|---|---|---|
-| **Language binding** | The instruction is parsed so the wrong object counts as "current" | Cube then banana | ✅ **3/32 → 25/32** practice; held-out 27/128 → 106/128; also eyeglasses held-out 22/64 → 44/64 |
+| **Language binding** | The instruction is parsed so the wrong object counts as "current" | Cube then banana | ✅ **3/32 → 25/32** practice; held-out 27/128 → 106/128; transfers to eyeglasses (22/64 → 44/64) and cube-left-of-bowl (8/64 → 36/64), both held-out |
 | **Perception** | Goes for a similar-looking wrong object | Stack yellow on red | ❌ 3 Claude edits −11 pp; 4 Astra and 2 Claude edits under the same protocol, none accepted |
 | **Missing skill** | Never produces a working motion | Pick up a flat box | ❌ 10 edits change the motion, 0 successes |
 | **Contact physics** | Right decisions, but the grasp slips | Mustard into bin | ❌ No decision-level lever; edits stopped by offline checks |
@@ -147,6 +148,22 @@ There is no optimization or training. In effect, it is **the explicit instructio
 
 - **The edit transferred to eyeglasses.** It raised that task by 31–34 points, first on practice seeds (p = 0.001 over two runs) and then on 64 held-out seeds (Wilson intervals 24–47% vs 57–79%). Eyeglasses failures are often "grabbed but never lifted". Our hypothesis is that the edit strengthens a generic "the object in my gripper is the one I'm meant to carry" signal, so the policy keeps hold and persists: its successful episodes take longer (224 vs 158 steps).
 - **No detectable harm elsewhere.** Butter-on-raisin first looked like a loss (14/16 → 10/16). But the *unedited* policy, rerun on the same 16 seeds with the same weights, scored **8/16**. The apparent drop is the policy's own run-to-run noise (§7).
+**A transfer map.** To see how far the effect reaches, we then ran the unedited and edited policies back to back, on the same 32 seeds, for eight more tasks:
+
+| Task | Without | With binding edit | Fixed / broke |
+|---|---:|---:|---:|
+| **Put the cube to the left of the bowl** | 3/32 | **22/32** | 20 / 1 |
+| ↳ held-out, 64 unseen seeds | 8/64 | **36/64** | 33 / 5 (p = 4×10⁻⁶) |
+| Put the cube to the right of the bowl | 0/32 | 0/32 | 0 / 0 |
+| Stack three cubes | 14/32 | 19/32 | 9 / 4 |
+| Block tower, any order | 15/32 | 14/32 | 7 / 8 |
+| Put the yogurt in the bowl | 3/32 | 2/32 | 2 / 3 |
+| Grab a bagel | 0/32 | 1/32 | 1 / 0 |
+| Marker in mug | 0/32 | 1/32 | 1 / 0 |
+| Pick up the flat green box | 0/32 | 0/32 | 0 / 0 |
+
+Across 15 tasks, the edit made three large, held-out-confirmed gains (cube then banana, eyeglasses, cube left of bowl), left the rest within noise, and broke nothing we could detect. The left/right asymmetry is a useful warning against over-reading the mechanism. "Left of the bowl" was fixed and "right of the bowl" was not, so the edit is not a general "understand spatial language" switch. Our working hypothesis is narrower: it strengthens how the network ties a destination phrase to the object being carried, and in the right-of-bowl task something else fails first. That is a hypothesis, not yet tested.
+
 - **Preservation constraints were tested and not needed.** We rebuilt the edit with MEMIT-style preservation keys from five other tasks, forcing the update to leave their image activations unchanged. It kept the fix (24/32 vs 3/32, 21 fixed, 0 broken) and scored the same on butter (10/16). There was no real side effect to remove.
 
 **What matters in the edit (offline ablations):**
@@ -157,10 +174,12 @@ There is no optimization or training. In effect, it is **the explicit instructio
 | Image regions only | 32 | 0–16 | 10.0M (0.30%) | **0** | 9/9 | 19/19 |
 | Layers 8–16 only | 72 | 8–16 | 11.9M (0.36%) | **0** | 9/9 | 19/19 |
 | Half strength | 72 | 0–16 | 22.6M (0.67%) | 2 | 9/9 | 19/19 |
-| Image regions, layers 8–16 | 32 | 8–16 | 5.3M (0.16%) | 2 | 9/9 | 19/19 |
+| **Image regions, layers 8–16 (`abl-imgl8`)** | 32 | 8–16 | **5.3M (0.16%)** | 2 | 9/9 | 19/19 |
 | Prompt/state positions only | 40 | 0–16 | 12.5M (0.37%) | 13 | 9/9 | 19/19 |
 
 *Low-rank size counts the edit's factors: rank × (16,384 + 2,048) × layers. Applied to the weights, every variant still changes 248–450M stored values (7–13%), because each update is dense.*
+
+**The smallest variant works as well as the full edit in closed loop.** Image regions only, layers 8–16 (`abl-imgl8`), scores **25/32 vs 3/32** on practice seeds (22 fixed, 0 broken), identical to the full edit. **On the 128 held-out seeds it scores 102/128 vs 19/128** (86 fixed, 3 broken, exact McNemar p = 4×10⁻²²; Wilson 72–86% vs 10–22%). The unedited policy scored 19/128 here and 27/128 in the first held-out run, on the same seeds, which is the run-to-run noise of §7 again.
 
 **The image tokens carry the fix.** The explicit wording changes the image tokens by only 2–4% of their norm. Yet copying just that change, region by region, is enough, while copying the prompt/state positions alone is not. In this architecture, the image tokens attend to the instruction (the prefix attention is bidirectional), so the instruction is read *into the picture*. That is where the action expert looks when it decides whether to keep holding.
 
@@ -253,7 +272,7 @@ This fits the strongest outside results. Guo and Xie edited checkpoints already 
 
 **Three honest caveats:**
 - **The edit is not sparse.** It changes 13% of scalar values, at low rank. A four-parameter patch it is not.
-- **It is built for one task.** We found no harm on six other tasks and an unexpected gain on a seventh, but seven tasks is not a guarantee. A deployment would want broader regression checks.
+- **It was built for one task, and it reaches others unpredictably.** Across 15 tasks it helped three and harmed none detectably. But it fixed "left of the bowl" and not "right of the bowl", and nobody would have predicted that list in advance. A deployment would want broad regression checks.
 - **Discovery took a known-good instruction.** The editor had to find a wording that works, then distil it. That is still useful: it turns a prompt fix into a weight fix when the instruction can't be changed.
 
 ## 9. Limitations
