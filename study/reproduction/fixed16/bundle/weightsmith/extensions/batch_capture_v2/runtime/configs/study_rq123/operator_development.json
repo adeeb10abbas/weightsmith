@@ -1,0 +1,26 @@
+{
+  "task": "StackYellowOnRedTask",
+  "instruction": "Stack the yellow block on the red block",
+  "practice_seed_base": 20032,
+  "limits": {
+    "practice_episodes": 96,
+    "acts_items": 0,
+    "acts_items_per_call": 0
+  },
+  "rendering_type": "performance",
+  "practice_slots": 32,
+  "envs": 16,
+  "prompt_overrides": false,
+  "study": {
+    "protocol": "wsp-manipulation-rq123-v1",
+    "operator_only": true,
+    "blocks": [
+      "base threshold 0.5",
+      "calibration threshold 0.4",
+      "calibration threshold 0.6"
+    ],
+    "max_attempts": 1
+  },
+  "video_mode": "none",
+  "max_attempts": 1
+}

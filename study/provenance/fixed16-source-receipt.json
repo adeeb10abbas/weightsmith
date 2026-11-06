@@ -1,0 +1,22 @@
+{
+  "verified_files": 117,
+  "sealed_files": 77,
+  "native_gpu_validation_included": false,
+  "experimental_outcomes_included": false,
+  "verified_archive_members": 118,
+  "archive_sha256": "92f4f5b0a2d6ea49ee4edb6b62dcddb2622ce84b333ecf5fa3773cb94069ed57",
+  "bytes": 570972,
+  "manifest_sha256": "af6a7639a8bfd2d2ed31f074daf15e3d1082d4a995b544354c422afce2e288c8",
+  "packaged_at_utc": "2026-11-05T12:26:29.808446+00:00",
+  "CPU_tests_passed": 9,
+  "model_calls": 0,
+  "remote_writes": 0,
+  "GPU_calls": 0,
+  "source_package_only": true,
+  "native_GPU_readiness_certified_by_package": false,
+  "live_provider_readiness_certified_by_package": false,
+  "review_refinement": "Fresh probes and new scientific launches require exactly BRIEF.md and MODE.md; explicit resume alone permits own session notes. Enrollment vs actual run-config freeze clarified.",
+  "previous_archive_sha256": "f55af25a497cb6dfe767f178ac4eed5f3d6d13b79086bf499fa51035bd89a0c8",
+  "sealed_source_files_unchanged": 77,
+  "frozen_queue_unchanged": true
+}

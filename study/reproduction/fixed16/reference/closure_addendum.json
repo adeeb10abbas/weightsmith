@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-05T10:33:18.867100+00:00",
+  "study_id": "wsp-manipulation-batch-aware-v2",
+  "protocol_sha256": "bb55e5202a9cd4508a9678a8c72e9ede026a2166cf7bc8156ee9c4d2d35ee796",
+  "status": "before v2 GPU validation, baseline collection, editor search and all held-out scoring",
+  "complete_search": "Three completed valid candidate evaluations and deliberate finish; score identity plus unique recorded accepted round incumbents.",
+  "partial_search_with_completed_evaluation": "If at least one valid proposal evaluation completed, freeze all actually recorded accepted round incumbents and an explicit no-more-search declaration. Score only these plus the identity comparison. Label the search partial and never fabricate missing rounds.",
+  "zero_completed_proposals_or_invalid_runtime": "Skip v2 held-out scoring; retain failure/partial records, exact failed costs and no-more-search closure. The amended original v1.1 scoring remains available.",
+  "heldout_capacity": "128*(1+U2) for an eligible closed search; zero for a skipped v2 final. U2 counts distinct actually deployed edited accepted incumbents.",
+  "feedback_guard": "Close all v1 and v2 searches and freeze every candidate hash before either version held-out outcomes are inspected or used for writing new editor instructions."
+}

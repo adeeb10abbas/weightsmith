@@ -1,0 +1,27 @@
+{
+  "build_figures.py": {
+    "original_sha256": "767ecdbf01e84589f00195222645ccbda53c731fcca4c068a9af8f949f9c43ae",
+    "portable_sha256": "b9c3e835bb35c147f56342ad15a34ade970b06946662afb6a28d02978075bb1a",
+    "change": "Only the companion blog output directory is relocated, if present."
+  },
+  "plot_experiment_results.py": {
+    "original_sha256": "a600b8a5078362b44f1738ea379404d09de79f36382ce8642be026cc6371beb9",
+    "portable_sha256": "2b48e52428dc4896da307e11f05b97ea347afdb6b564c022635295d90e522fbf",
+    "change": "Only the companion blog output directory is relocated, if present."
+  },
+  "plot_v2_results.py": {
+    "original_sha256": "aca025e7ad0b9d34a82f1c6c39fa17ccdb070749cf09590704c8095ffb156b75",
+    "portable_sha256": "369cd0fde383ebb44873819bad4f5595cec2e308aedb2fd16c82893e39a0448f",
+    "change": "Only the companion blog output directory is relocated, if present."
+  },
+  "plot_identity_repeats.py": {
+    "original_sha256": "c9f3db4f3b6dfa78368776a98355f14eef06f2ba35a07c3ec4eb6ca05ed616d1",
+    "portable_sha256": "3a5d0886b643a4033b5b8cc2c4e42e1b1f954650ecefb108bb0cf9963c93d912",
+    "change": "Only the companion blog output directory is relocated, if present."
+  },
+  "plot_final_controls.py": {
+    "original_sha256": "aabfaf780899d0ebc381d5e5df691398c4058c88245920f6967987ded7ac6287",
+    "portable_sha256": "aabfaf780899d0ebc381d5e5df691398c4058c88245920f6967987ded7ac6287",
+    "change": "Only the companion blog output directory is relocated, if present."
+  }
+}

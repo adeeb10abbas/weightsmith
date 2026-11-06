@@ -1,0 +1,44 @@
+From 9e46d3aea26417bfb564227734b95d010aa827e5 Mon Sep 17 00:00:00 2001
+From: weightsmith <weightsmith@users.noreply.github.com>
+Date: Sun, 2 Aug 2026 10:45:18 -0400
+Subject: [PATCH] Allow request-scoped policy sampling seeds
+
+---
+ src/openpi/policies/policy.py | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/src/openpi/policies/policy.py b/src/openpi/policies/policy.py
+index b9b708b..8a3fba0 100644
+--- a/src/openpi/policies/policy.py
++++ b/src/openpi/policies/policy.py
+@@ -67,12 +67,17 @@ class Policy(BasePolicy):
+     @override
+     def infer(self, obs: dict, *, noise: np.ndarray | None = None) -> dict:  # type: ignore[misc]
+         # Make a copy since transformations may modify the inputs in place.
++        obs = dict(obs)
++        sampling_seed = obs.pop("sampling_seed", None)
+         inputs = jax.tree.map(lambda x: x, obs)
+         inputs = self._input_transform(inputs)
+         if not self._is_pytorch_model:
+             # Make a batch and convert to jax.Array.
+             inputs = jax.tree.map(lambda x: jnp.asarray(x)[np.newaxis, ...], inputs)
+-            self._rng, sample_rng_or_pytorch_device = jax.random.split(self._rng)
++            if sampling_seed is None:
++                self._rng, sample_rng_or_pytorch_device = jax.random.split(self._rng)
++            else:
++                sample_rng_or_pytorch_device = jax.random.key(int(sampling_seed))
+         else:
+             # Convert inputs to PyTorch tensors and move to correct device
+             inputs = jax.tree.map(lambda x: torch.from_numpy(np.array(x)).to(self._pytorch_device)[None, ...], inputs)
+@@ -100,6 +105,8 @@ class Policy(BasePolicy):
+             outputs = jax.tree.map(lambda x: np.asarray(x[0, ...]), outputs)
+ 
+         outputs = self._output_transform(outputs)
++        if sampling_seed is not None:
++            outputs["sampling_seed"] = int(sampling_seed)
+         outputs["policy_timing"] = {
+             "infer_ms": model_time * 1000,
+         }
+-- 
+2.34.1
+

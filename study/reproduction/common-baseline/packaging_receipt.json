@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "separate_common_fixed16_baseline_evidence",
+  "packaged_at_utc": "2026-11-05T12:59:33.496632+00:00",
+  "status": "verified",
+  "files": {
+    "README.md": {
+      "bytes": 6419,
+      "sha256": "30351271a1f5870f66477e9de845e418b00a33d7b6b447ac4cc86247f0beb126"
+    },
+    "common_reference.py": {
+      "bytes": 16257,
+      "sha256": "ea95e2a72ce21e167c71e9ecec328297150f3a38906eaf73d062375ad7e5d78a"
+    },
+    "test_common_reference.py": {
+      "bytes": 3636,
+      "sha256": "30819ed193edd2b6bf8f74fd92e04a2ee0458d5315c89924381973d9ea68f764"
+    },
+    "transfer_receipt.json": {
+      "bytes": 1069,
+      "sha256": "3fea0ce063b3a244af93789161232ada6f3fc9d938ecdb84ea220813e7079094"
+    },
+    "extraction_receipt.json": {
+      "bytes": 1069,
+      "sha256": "3fea0ce063b3a244af93789161232ada6f3fc9d938ecdb84ea220813e7079094"
+    },
+    "packet_validation.json": {
+      "bytes": 13429,
+      "sha256": "0f0d1c686739961498ef29b96e6bf8546112a1e316291f52967109c077e51fb5"
+    },
+    "common-fixed16-baseline-evidence.tar.gz": {
+      "bytes": 365326444,
+      "sha256": "9a6bd0c487d00fe82b2f171c4a24fdd1fb8cdbca3bb4a88bc1525d1c7a035048"
+    }
+  },
+  "archive_verification": {
+    "status": "verified_exact_common_baseline",
+    "archive_sha256": "9a6bd0c487d00fe82b2f171c4a24fdd1fb8cdbca3bb4a88bc1525d1c7a035048",
+    "archive_bytes": 365326444,
+    "reference_manifest_sha256": "579543173d6fa7f119f6ba6d39e6abb725d403b8e258b64968c12602c695771f",
+    "native_runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+    "capture_validation_sha256": "49882deb43e51fec6c4a180ce48073be63c7f64ffafc3eaa7ac4b059c58b5fba",
+    "source_manifest_sha256": "017e7ab14bdfd330bb11b7addb23f6a04fa4a07374442e41aa253617e4def754",
+    "verified_evidence_files": 427,
+    "verified_metadata_extras": 5,
+    "regular_archive_members": 433,
+    "native_packets": 120,
+    "episodes": 32,
+    "baseline_successes": 17,
+    "uncompressed_evidence_bytes": 367048005,
+    "original_bytes_unchanged": true,
+    "readiness_scope": "original host only; no teammate-host GPU or provider readiness implied",
+    "source_host": "runpod2",
+    "source_project": "/tmp/weightsmith-codex-20261105/projects/rq123-v2-development-v1",
+    "candidate_or_heldout_evidence": false
+  },
+  "semantic_verification": {
+    "status": "all_baseline_packet_links_verified",
+    "episodes": 32,
+    "requests": 1492,
+    "native_packets": 120,
+    "all_actual_real_positions_mapped_once": true,
+    "codec_sha256": "b526f941ec312f3209224481cafb239466113f7d51d9eb3d2247687c8430e510"
+  },
+  "boundary_tests": {
+    "passed": 6,
+    "failed": 0
+  },
+  "actions": {
+    "remote_reads_only": true,
+    "remote_project": "/tmp/weightsmith-codex-20261105/projects/rq123-v2-development-v1",
+    "remote_writes": 0,
+    "GPU_calls": 0,
+    "model_calls": 0,
+    "active_editor_project_accesses": 0
+  },
+  "readiness": "original host only; exact original evidence, not new-host/provider readiness",
+  "sharing": "Share listed files; verified_source is a redundant local extraction and need not be transferred. Keep separate from source-only and compact publication bundles."
+}

@@ -1,0 +1,34 @@
+{
+  "recorded_at_utc": "2026-11-05T11:27:57.027131+00:00",
+  "source_root": "/tmp/weightsmith-codex-20261105/third_party/RoboLab-isaac60",
+  "source_commit": "9cce00cadd5dc575fd2b8ea3836f5bdcde574229",
+  "files": {
+    "robolab/tasks/benchmark/stack_yellow_on_red.py": {
+      "sha256": "68a73fd9f0a0ccb95e190d45e9b0eea25d9d24e856469b01e671489c56e5f695",
+      "bytes": 1880
+    },
+    "robolab/core/task/conditionals.py": {
+      "sha256": "bf4b2461efc70cb2692a1278c9d18475323a1cb9765bb22a720960b557961bf4",
+      "bytes": 60346
+    },
+    "robolab/core/task/predicate_logic.py": {
+      "sha256": "5b638321a04f46b590dc52d6671ce1c025eba92a67bc49a1fc6533b2da2e132e",
+      "bytes": 41177
+    },
+    "robolab/core/environments/env.py": {
+      "sha256": "a32b005061319463ac678492591ad84c0c8d28c987bef4632304198c047cb512",
+      "bytes": 7926
+    },
+    "robolab/core/task/subtask.py": {
+      "sha256": "39332ed8df2bb49d0e4eb861a21d3d233d4f3f79409750d31cf812056ac28e8c",
+      "bytes": 6986
+    },
+    "policies/pi0_family/client.py": {
+      "sha256": "e8a6c53fbae253b3b4c11b2a8ee3fd71ae79527b7a9e0333efb433dffd633e99",
+      "bytes": 6881
+    }
+  },
+  "read_only_audit": true,
+  "evaluation_metric_changed": false,
+  "new_gpu_or_simulator_calls": 0
+}

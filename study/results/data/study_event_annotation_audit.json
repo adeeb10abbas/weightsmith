@@ -1,0 +1,368 @@
+{
+  "artifact_kind": "read_only_event_annotation_audit",
+  "scope": "32 original development baseline episode summaries, slots 20032..20063",
+  "simulation_calls": 0,
+  "gpu_calls": 0,
+  "runtime_changes": 0,
+  "source_manifest_sha256": "df72be59a08bbbecd23cec22b550aec5621aa2000b4430a06d5e58f553ba708a",
+  "base_rows_sha256": "d34c32f19c44c2105a6d45df79478c3508e4c3008cefcd6bc3fc221087bb6feb",
+  "mock_reproduction": {
+    "note": "Exact captured function bodies, mocked contact/closure and condition results; not a physics test.",
+    "sanitized_group_names": [
+      "group1",
+      "group2"
+    ],
+    "yellow_contact_with_group_targets": "yellow_block",
+    "yellow_contact_with_yellow_target": null,
+    "distractor_contact_with_yellow_target": "rubiks_cube_1",
+    "state_machine_checks": [
+      {
+        "condition_complete": false,
+        "primary_return_unchanged": true,
+        "condition_progress_unchanged": true,
+        "annotation_appended_only": true
+      },
+      {
+        "condition_complete": true,
+        "primary_return_unchanged": true,
+        "condition_progress_unchanged": true,
+        "annotation_appended_only": true
+      }
+    ]
+  },
+  "baseline_annotation_census": {
+    "episodes": 32,
+    "successful_episodes": 11,
+    "wrong_events_by_named_object": {
+      "birdhouse": 2,
+      "green_block": 2,
+      "lizard_figurine_01": 1,
+      "red_block": 1,
+      "rubiks_cube_1": 23,
+      "yellow_block": 62
+    },
+    "wrong_events_total": 91,
+    "episodes_with_wrong_event": 32,
+    "episodes_with_yellow_wrong_event": 28,
+    "successful_episodes_with_yellow_wrong_event": 11,
+    "all_wrong_event_target_sets_are_generic_groups": true,
+    "largest_packaged_event_count": 18,
+    "packager_event_limit": 80,
+    "per_episode": [
+      {
+        "eid": "base.base.s20032",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 5,
+        "yellow_block_wrong_event_steps": [
+          200,
+          452,
+          575,
+          805,
+          828
+        ]
+      },
+      {
+        "eid": "base.base.s20033",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 3,
+        "yellow_block_wrong_event_steps": [
+          513,
+          665
+        ]
+      },
+      {
+        "eid": "base.base.s20034",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 3,
+        "yellow_block_wrong_event_steps": [
+          274
+        ]
+      },
+      {
+        "eid": "base.base.s20035",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 1,
+        "yellow_block_wrong_event_steps": [
+          801
+        ]
+      },
+      {
+        "eid": "base.base.s20036",
+        "success": true,
+        "terminal_step": 737,
+        "wrong_object_events": 2,
+        "yellow_block_wrong_event_steps": [
+          581
+        ]
+      },
+      {
+        "eid": "base.base.s20037",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 3,
+        "yellow_block_wrong_event_steps": []
+      },
+      {
+        "eid": "base.base.s20038",
+        "success": true,
+        "terminal_step": 520,
+        "wrong_object_events": 5,
+        "yellow_block_wrong_event_steps": [
+          415
+        ]
+      },
+      {
+        "eid": "base.base.s20039",
+        "success": true,
+        "terminal_step": 272,
+        "wrong_object_events": 1,
+        "yellow_block_wrong_event_steps": [
+          177
+        ]
+      },
+      {
+        "eid": "base.base.s20040",
+        "success": true,
+        "terminal_step": 688,
+        "wrong_object_events": 3,
+        "yellow_block_wrong_event_steps": [
+          567
+        ]
+      },
+      {
+        "eid": "base.base.s20041",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 4,
+        "yellow_block_wrong_event_steps": [
+          515,
+          630,
+          708,
+          747
+        ]
+      },
+      {
+        "eid": "base.base.s20042",
+        "success": true,
+        "terminal_step": 491,
+        "wrong_object_events": 1,
+        "yellow_block_wrong_event_steps": [
+          388
+        ]
+      },
+      {
+        "eid": "base.base.s20043",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 5,
+        "yellow_block_wrong_event_steps": [
+          622,
+          672,
+          691,
+          795
+        ]
+      },
+      {
+        "eid": "base.base.s20044",
+        "success": true,
+        "terminal_step": 511,
+        "wrong_object_events": 2,
+        "yellow_block_wrong_event_steps": [
+          236,
+          402
+        ]
+      },
+      {
+        "eid": "base.base.s20045",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 7,
+        "yellow_block_wrong_event_steps": [
+          564,
+          616,
+          718,
+          837
+        ]
+      },
+      {
+        "eid": "base.base.s20046",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 1,
+        "yellow_block_wrong_event_steps": []
+      },
+      {
+        "eid": "base.base.s20047",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 7,
+        "yellow_block_wrong_event_steps": [
+          221,
+          327,
+          387,
+          399,
+          670,
+          789,
+          885
+        ]
+      },
+      {
+        "eid": "base.base.s20048",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 5,
+        "yellow_block_wrong_event_steps": [
+          285,
+          571,
+          673,
+          819
+        ]
+      },
+      {
+        "eid": "base.base.s20049",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 3,
+        "yellow_block_wrong_event_steps": [
+          202,
+          294
+        ]
+      },
+      {
+        "eid": "base.base.s20050",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 1,
+        "yellow_block_wrong_event_steps": [
+          347
+        ]
+      },
+      {
+        "eid": "base.base.s20051",
+        "success": true,
+        "terminal_step": 316,
+        "wrong_object_events": 2,
+        "yellow_block_wrong_event_steps": [
+          194,
+          204
+        ]
+      },
+      {
+        "eid": "base.base.s20052",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 1,
+        "yellow_block_wrong_event_steps": []
+      },
+      {
+        "eid": "base.base.s20053",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 2,
+        "yellow_block_wrong_event_steps": [
+          720
+        ]
+      },
+      {
+        "eid": "base.base.s20054",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 3,
+        "yellow_block_wrong_event_steps": []
+      },
+      {
+        "eid": "base.base.s20055",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 2,
+        "yellow_block_wrong_event_steps": [
+          409
+        ]
+      },
+      {
+        "eid": "base.base.s20056",
+        "success": true,
+        "terminal_step": 534,
+        "wrong_object_events": 3,
+        "yellow_block_wrong_event_steps": [
+          131,
+          195,
+          376
+        ]
+      },
+      {
+        "eid": "base.base.s20057",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 6,
+        "yellow_block_wrong_event_steps": [
+          282,
+          290,
+          564,
+          663
+        ]
+      },
+      {
+        "eid": "base.base.s20058",
+        "success": true,
+        "terminal_step": 677,
+        "wrong_object_events": 1,
+        "yellow_block_wrong_event_steps": [
+          493
+        ]
+      },
+      {
+        "eid": "base.base.s20059",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 1,
+        "yellow_block_wrong_event_steps": [
+          94
+        ]
+      },
+      {
+        "eid": "base.base.s20060",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 2,
+        "yellow_block_wrong_event_steps": [
+          154,
+          286
+        ]
+      },
+      {
+        "eid": "base.base.s20061",
+        "success": false,
+        "terminal_step": 900,
+        "wrong_object_events": 3,
+        "yellow_block_wrong_event_steps": [
+          166,
+          186,
+          757
+        ]
+      },
+      {
+        "eid": "base.base.s20062",
+        "success": true,
+        "terminal_step": 503,
+        "wrong_object_events": 1,
+        "yellow_block_wrong_event_steps": [
+          331
+        ]
+      },
+      {
+        "eid": "base.base.s20063",
+        "success": true,
+        "terminal_step": 536,
+        "wrong_object_events": 2,
+        "yellow_block_wrong_event_steps": [
+          438
+        ]
+      }
+    ]
+  }
+}

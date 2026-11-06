@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "record_kind": "fixed16-teammate-enrollment",
+  "enrollment_id": "<NEW_SEPARATE_STUDY_ID>",
+  "frozen_at_utc": "<ACTUAL_UTC_BEFORE_EDITOR_EVIDENCE>",
+  "source_manifest_sha256": "017e7ab14bdfd330bb11b7addb23f6a04fa4a07374442e41aa253617e4def754",
+  "parent_protocol_sha256": "bb55e5202a9cd4508a9678a8c72e9ede026a2166cf7bc8156ee9c4d2d35ee796",
+  "provider": "<PROVIDER>",
+  "model_id": "<EXACT_PROVIDER_MODEL_ID>",
+  "effort": "<EXACT_SUPPORTED_EFFORT>",
+  "mode": "adaptive",
+  "independent_runs": 1,
+  "budget_caps": {
+    "candidate_episodes": 96,
+    "activation_items": 96,
+    "wall_seconds": 7200,
+    "proposals": 3
+  },
+  "other_editor_outcomes_in_context": false,
+  "heldout_results_seen": false
+}

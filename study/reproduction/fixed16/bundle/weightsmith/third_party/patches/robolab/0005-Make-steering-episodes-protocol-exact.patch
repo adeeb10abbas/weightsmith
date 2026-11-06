@@ -1,0 +1,84 @@
+From 11142d4319e44401e0464866bb5fedf7ec8a8927 Mon Sep 17 00:00:00 2001
+From: weightsmith <weightsmith@users.noreply.github.com>
+Date: Mon, 3 Aug 2026 00:04:29 -0400
+Subject: [PATCH 5/5] Make steering episodes protocol-exact
+
+---
+ robolab/eval/runner.py                                 | 10 ++++++++++
+ .../benchmark/rubiks_cube_left_of_bowl_matched.py      | 10 +++++-----
+ .../benchmark/rubiks_cube_right_of_bowl_matched.py     | 10 +++++-----
+ 3 files changed, 20 insertions(+), 10 deletions(-)
+
+diff --git a/robolab/eval/runner.py b/robolab/eval/runner.py
+index 5f4b5a9..613f885 100644
+--- a/robolab/eval/runner.py
++++ b/robolab/eval/runner.py
+@@ -58,6 +58,15 @@ def add_common_eval_args(parser: argparse.ArgumentParser) -> None:
+                               "Prefer increasing --num-envs for more episodes. "
+                               "Only increase --num-runs if you run out of GPU memory "
+                               "with the desired num-envs."))
++    parser.add_argument(
++        "--environment-seed",
++        "--environment_seed",
++        type=int,
++        default=0,
++        help=("Seed used to construct each selected environment (default: 0). "
++              "Run one episode per invocation when every episode must carry a "
++              "distinct, preregistered environment seed."),
++    )
+     parser.add_argument("--num-episodes-adaptive", "--num_episodes_adaptive",
+                         type=int, default=None, metavar="MAX_N",
+                         help=("Enable adaptive sampling per task. Overrides --num-runs. "
+@@ -216,6 +225,7 @@ def run_evaluation(
+         env, env_cfg = create_env(
+             task_env,
+             device=args.device,
++            seed=args.environment_seed,
+             num_envs=num_envs,
+             instruction_type=args.instruction_type,
+             policy=policy,
+diff --git a/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py b/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py
+index 90475be..ea3f89b 100644
+--- a/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py
++++ b/robolab/tasks/benchmark/rubiks_cube_left_of_bowl_matched.py
+@@ -39,11 +39,11 @@ class RubiksCubeLeftOfBowlMatchedTask(Task):
+     events = RubiksCubeRelationMatchedNeutralInit
+     terminations = RubiksCubeLeftOfBowlMatchedTermination
+     instruction = {
+-        "default": "Put the rubiks cube to the left of the bowl",
+-        "vague": "Put the cube left of the bowl",
+-        "specific": "Pick up the rubiks cube and place it on the table to the left side of the bowl",
+-        "declarative": "The rubiks cube should end up to the left of the bowl",
+-        "contrastive": "Put the rubiks cube to the left of the bowl, not to the right of the bowl",
++        "default": "Put the Rubik's cube to the left of the bowl.",
++        "vague": "Put the cube left of the bowl.",
++        "specific": "Pick up the Rubik's cube and place it on the table to the left side of the bowl.",
++        "declarative": "The Rubik's cube should end up to the left of the bowl.",
++        "contrastive": "Put the Rubik's cube to the left of the bowl, not to the right of the bowl.",
+     }
+     attributes = ["spatial", "steerability_matched"]
+     episode_length_s: int = 30
+diff --git a/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py b/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py
+index a68f9b1..deda875 100644
+--- a/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py
++++ b/robolab/tasks/benchmark/rubiks_cube_right_of_bowl_matched.py
+@@ -46,11 +46,11 @@ class RubiksCubeRightOfBowlMatchedTask(Task):
+     events = RubiksCubeRelationMatchedNeutralInit
+     terminations = RubiksCubeRightOfBowlMatchedTermination
+     instruction = {
+-        "default": "Put the rubiks cube to the right of the bowl",
+-        "vague": "Put the cube right of the bowl",
+-        "specific": "Pick up the rubiks cube and place it on the table to the right side of the bowl",
+-        "declarative": "The rubiks cube should end up to the right of the bowl",
+-        "contrastive": "Put the rubiks cube to the right of the bowl, not to the left of the bowl",
++        "default": "Put the Rubik's cube to the right of the bowl.",
++        "vague": "Put the cube right of the bowl.",
++        "specific": "Pick up the Rubik's cube and place it on the table to the right side of the bowl.",
++        "declarative": "The Rubik's cube should end up to the right of the bowl.",
++        "contrastive": "Put the Rubik's cube to the right of the bowl, not to the left of the bowl.",
+     }
+     attributes = ["spatial", "steerability_matched"]
+     episode_length_s: int = 30
+-- 
+2.34.1
+

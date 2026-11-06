@@ -1,0 +1,22 @@
+{
+  "task": "StackYellowOnRedTask",
+  "instruction": "Stack the yellow block on the red block",
+  "envs": 16,
+  "practice_seed_base": 30016,
+  "practice_slots": 32,
+  "prompt_overrides": false,
+  "video_mode": "none",
+  "rendering_type": "performance",
+  "max_attempts": 1,
+  "limits": {
+    "practice_episodes": 32,
+    "acts_items": 0,
+    "acts_items_per_call": 0
+  },
+  "study": {
+    "id": "wsp-manipulation-batch-aware-v2",
+    "max_attempts": 1,
+    "project_capture_bytes": 1073741824
+  },
+  "batch_capture_protocol": "wsp-batch-capture-v2-fixed16"
+}

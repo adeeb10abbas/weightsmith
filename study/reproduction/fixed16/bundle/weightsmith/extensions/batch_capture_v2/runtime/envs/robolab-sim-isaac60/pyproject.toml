@@ -1,0 +1,38 @@
+[project]
+name = "weightsmith-robolab-isaac60-env"
+version = "0.1.0"
+description = "Opt-in Isaac Sim 6 compatibility environment; validate separately from the Isaac 5 baseline"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "robolab[isaac60]",
+    "openpi-client",
+    "pytest",
+]
+
+[tool.uv.sources]
+robolab = { path = "../../third_party/RoboLab-isaac60", editable = true }
+openpi-client = { path = "../../third_party/openpi/packages/openpi-client", editable = true }
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[[tool.uv.index]]
+name = "nvidia"
+url = "https://pypi.nvidia.com"
+
+[tool.uv]
+package = false
+prerelease = "allow"
+index-strategy = "unsafe-best-match"
+constraint-dependencies = ["warp-lang != 1.13.0.dev20260418"]
+# Isaac Lab 3 requires NumPy 2. Only this simulator's pure-Python OpenPI
+# client uses the override; the policy/JAX environment keeps its original pin.
+# Validate image preprocessing and the NumPy 1 <-> 2 wire format before use.
+override-dependencies = ["numpy==2.3.1"]
+
+[tool.uv.extra-build-dependencies]
+flatdict = ["setuptools<81", "wheel"]

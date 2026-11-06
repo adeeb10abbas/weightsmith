@@ -1,0 +1,82 @@
+{
+  "status": "passed",
+  "mode": "adaptive",
+  "reserved_activation_items": 80,
+  "logged_attempted_activation_items": 80,
+  "reserved_without_completed_remote_log": 0,
+  "remote_charged_activation_items": 80,
+  "capture_attempts": [
+    {
+      "capture": "c1-postgrasp",
+      "items": 32,
+      "returncode": 1
+    },
+    {
+      "capture": "c2-stablehold",
+      "items": 4,
+      "returncode": 0
+    },
+    {
+      "capture": "c3-transfer",
+      "items": 16,
+      "returncode": 0
+    },
+    {
+      "capture": "c4-control-hold",
+      "items": 28,
+      "returncode": 0
+    }
+  ],
+  "successful_contrasts": [
+    {
+      "capture": "c3-transfer",
+      "key": "action.mlp_hidden",
+      "index_sha256": "9e1758ae0b0ed70a5ec887aab9f4a15800df0764279cc64e38cc2b1a6fb7dcc9"
+    },
+    {
+      "capture": "c3-transfer",
+      "key": "action.resid_out",
+      "index_sha256": "9e1758ae0b0ed70a5ec887aab9f4a15800df0764279cc64e38cc2b1a6fb7dcc9"
+    },
+    {
+      "capture": "c3-transfer",
+      "key": "action.mlp_hidden",
+      "index_sha256": "9e1758ae0b0ed70a5ec887aab9f4a15800df0764279cc64e38cc2b1a6fb7dcc9"
+    },
+    {
+      "capture": "c3-transfer",
+      "key": "action.resid_out",
+      "index_sha256": "9e1758ae0b0ed70a5ec887aab9f4a15800df0764279cc64e38cc2b1a6fb7dcc9"
+    },
+    {
+      "capture": "c4-control-hold",
+      "key": "action.mlp_hidden",
+      "index_sha256": "d9c9f32ab6bac8e49eb851278bdf2d0f50d8cc82694044148914f2d8dd4b6c89"
+    },
+    {
+      "capture": "c4-control-hold",
+      "key": "action.resid_out",
+      "index_sha256": "d9c9f32ab6bac8e49eb851278bdf2d0f50d8cc82694044148914f2d8dd4b6c89"
+    }
+  ],
+  "used_directions": [
+    {
+      "direction_id": "691f184af340aa171222d39742acd8fe559d9499160d0995ce805a7c7ac6a950",
+      "operation": "row_stats",
+      "capture": "c3-transfer"
+    },
+    {
+      "direction_id": "691f184af340aa171222d39742acd8fe559d9499160d0995ce805a7c7ac6a950",
+      "operation": "row_project_out",
+      "capture": "c3-transfer"
+    },
+    {
+      "direction_id": "832341f47f2fe22e9093ed6872ca0cf063759975bdeb07ef1b07bd3ec17d769a",
+      "operation": "row_stats",
+      "capture": "c4-control-hold"
+    }
+  ],
+  "note": "Failed captures and all attempted item costs are retained. Base contrast sources require every item to pass 0.02 parity; edited captures are diagnostics.",
+  "broker_calls_sha256": "006576db2753e8fb1639b9f4e694a4d2851808ddbab6b6ec857291cabb56294e",
+  "auditor_sha256": "b90507b04f3d4eb6ad1cc7ad5c6e419416ea6a0b1efac605877951d1603f1640"
+}

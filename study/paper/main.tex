@@ -1,0 +1,60 @@
+% !TeX program = xelatex
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype,graphicx,booktabs,tabularx,amsmath,ragged2e}
+\usepackage[table]{xcolor}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[breaklinks,colorlinks,citecolor=teal,urlcolor=teal,linkcolor=black]{hyperref}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{xurl}
+\renewcommand{\url}[1]{\href{#1}{[source]}}
+\definecolor{teal}{HTML}{087F8C}
+\linespread{1.0}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\setlength{\textfloatsep}{9pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\titlespacing*{\section}{0pt}{8pt plus 2pt minus 1pt}{4pt}
+\titlespacing*{\subsection}{0pt}{5pt plus 1pt}{2pt}
+\titlespacing*{\paragraph}{0pt}{4pt plus 1pt}{0.6em}
+\titleformat{\section}{\normalsize\bfseries}{\thesection}{0.5em}{}
+\titleformat{\subsection}{\small\bfseries}{\thesubsection}{0.5em}{}
+\setlist{nosep,leftmargin=*}
+\setlength{\emergencystretch}{1.5em}
+\brokenpenalty=10000
+\newcommand{\policy}{\pi_{0.5}}
+\newcommand{\draftstatus}{Working draft: completed early review and 1,056-episode empirical study}
+\newcommand{\pending}{\textit{Planned}}
+\title{\vspace{-1.7em}\Large\bfseries A Study of Weight-Space Programming for Robotic Manipulation Policies\vspace{-0.5em}}
+\author{Ali-Adeeb Abbas$^{1,2}$\qquad Esmaeil Seraj$^{1}$\\[3pt]
+\small $^{1}$Embodied AI Research, General Motors\\
+\small $^{2}$Northeastern University}
+\date{\vspace{-0.6em}\small November 5, 2026 (Pacific)\\[-1pt]\footnotesize\draftstatus\vspace{-1.7em}}
+\hypersetup{pdftitle={A Study of Weight-Space Programming for Robotic Manipulation Policies},
+pdfauthor={Ali-Adeeb Abbas; Esmaeil Seraj},pdfsubject={Early review and empirical study; development baseline and weight-editing protocol}}
+\begin{document}
+\raggedbottom
+\maketitle
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/literature_table}
+\input{sections/methods}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion}
+\clearpage
+\begingroup
+\fontsize{9}{10.3}\selectfont
+\RaggedRight
+\setlength{\bibsep}{0.7pt}
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+\endgroup
+\end{document}

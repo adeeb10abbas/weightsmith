@@ -1,0 +1,31 @@
+{
+  "provider": "claude-cli",
+  "cli": "claude",
+  "model": "<EXACT_PROVIDER_MODEL_ID>",
+  "effort": "<EXACT_SUPPORTED_EFFORT>",
+  "mode": "adaptive",
+  "agent_dir": "/absolute/local/agents/model-fixed16-adaptive-r1",
+  "state_dir": "/absolute/local/operator/model-fixed16-adaptive-r1",
+  "host": "<TEAMMATE_GPU_SSH_ALIAS>",
+  "remote_repo": "/absolute/private/weightsmith/extensions/batch_capture_v2/runtime",
+  "remote_root": "/absolute/private/weightsmith/projects/rq123-v2-adaptive-r1",
+  "remote_python": "/absolute/private/weightsmith/runtime/controller/bin/python",
+  "base_records": "/absolute/local/operator/base-index.jsonl",
+  "readiness_attestation": "/absolute/local/operator/model-fixed16-adaptive-r1-readiness/readiness_attestation.json",
+  "enrollment_ref": {
+    "path": "/absolute/local/operator/enrollment.json",
+    "sha256": "<ACTUAL_SHA256>"
+  },
+  "native_binding_ref": {
+    "path": "/absolute/local/operator/v2_runtime_binding.json",
+    "sha256": "<ACTUAL_SHA256>"
+  },
+  "capture_validation_ref": {
+    "path": "/absolute/local/operator/capture_validation.json",
+    "sha256": "<ACTUAL_SHA256>"
+  },
+  "base_manifest_ref": {
+    "path": "/absolute/local/operator/reference_base_manifest.json",
+    "sha256": "<ACTUAL_SHA256>"
+  }
+}

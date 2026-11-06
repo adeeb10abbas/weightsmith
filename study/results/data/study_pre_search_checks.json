@@ -1,0 +1,19 @@
+{
+  "checked_at_utc": "2026-11-05T08:06:47.009357+00:00",
+  "frozen_source_manifest_sha256": "7d4eb000a92d5566e6b222855a011dc5f24a83c8cd1d24822e95245df1a6ba8b",
+  "tests": {
+    "passed": 147,
+    "command": "python3 -m unittest discover -s tests -q",
+    "working_directory": "weightsmith",
+    "log": "frozen-source-tests-repo-cwd.log",
+    "log_sha256": "3d27c890dca511834fa551ba2ee827839f69488ea4087ed2fa85c96aab0b477b"
+  },
+  "operator_invocation_error": {
+    "earlier_command_wrong_working_directory": true,
+    "preserved_log": "frozen-source-tests.log",
+    "scientific_episodes_launched_by_failed_test_command": 0
+  },
+  "runtime_probe": "sandbox_validation.json",
+  "prepared_editor_runs": 4,
+  "scientific_editor_search_started": false
+}

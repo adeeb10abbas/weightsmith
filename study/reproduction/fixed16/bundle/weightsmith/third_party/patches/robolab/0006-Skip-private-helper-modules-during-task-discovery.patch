@@ -1,0 +1,45 @@
+From 1108560f1ecb24eedbcc906cfd0ea37dc396a23e Mon Sep 17 00:00:00 2001
+From: weightsmith <weightsmith@users.noreply.github.com>
+Date: Wed, 4 Nov 2026 21:51:29 -0500
+Subject: [PATCH] Skip private helper modules during task discovery
+
+---
+ robolab/core/environments/factory.py | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/robolab/core/environments/factory.py b/robolab/core/environments/factory.py
+index 7ac5ddd..b76de4e 100644
+--- a/robolab/core/environments/factory.py
++++ b/robolab/core/environments/factory.py
+@@ -355,8 +355,12 @@ class EnvFactory:
+         else:
+             task_files = list(self.task_dir.glob(pattern))
+ 
+-        # Filter out files from the 'generated' folder
+-        task_files = [f for f in task_files if 'generated' not in f.parts]
++        # Ignore generated files and private helper modules.  Helper modules use
++        # a leading underscore and are not required to contain a Task subclass.
++        task_files = [
++            f for f in task_files
++            if 'generated' not in f.parts and not f.name.startswith('_')
++        ]
+ 
+         if verbose_timing:
+             print(f"[EnvFactory] Discovered {len(task_files)} task files in {time.time() - total_start:.2f}s")
+@@ -643,10 +647,11 @@ class EnvFactory:
+             if subdir_path.exists() and subdir_path.is_dir():
+                 # Search recursively within the subdirectory
+                 discovered = list(subdir_path.rglob(pattern))
+-                # Filter out __init__.py and files from 'generated' subdirectories
++                # Filter out private helper modules and files from 'generated'
++                # subdirectories.  Private helpers are not standalone tasks.
+                 discovered = [f for f in discovered
+                               if 'generated' not in f.parts
+-                              and f.name != '__init__.py']
++                              and not f.name.startswith('_')]
+                 task_files.extend(discovered)
+ 
+         return task_files
+-- 
+2.34.1
+

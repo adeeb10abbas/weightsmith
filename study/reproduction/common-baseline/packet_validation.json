@@ -1,0 +1,330 @@
+{
+  "status": "all_baseline_packet_links_verified",
+  "episodes": 32,
+  "requests": 1492,
+  "native_packets": 120,
+  "all_actual_real_positions_mapped_once": true,
+  "codec_sha256": "b526f941ec312f3209224481cafb239466113f7d51d9eb3d2247687c8430e510",
+  "episode_checks": [
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30016,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "24e5ac2d4cb261c3e52a01c8d8400ba8baffa6e1b0177a7396867b21cb4ca8fd",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30017,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "cee7f2ccdf43487e11ef44c15e262882f3c1c670f3b3bc6c0c841549e52934a3",
+      "requests_checked": 45,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30018,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "cfc911414d28e3254fc3d9781da3086540dd8476cd44bb63bb801fd6ffd860f8",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30019,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "9853ddaac13f42146df3698b13f5e4296328855ced9fd0639a02c0dc213d1106",
+      "requests_checked": 24,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30020,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "e405f0bd53f71912643e6b3d3ce90407cdff6b7c75d35b4243fef20e7749b010",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30021,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "8576021369aaeb0316a3c7ffa03c4e74a78456558bdc40e0de66c103f51b1267",
+      "requests_checked": 33,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30022,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "10ca4042649b219bc5c8a5370d5b599e8f020b7a2a4ffde48451af35c15adcdb",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30023,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "48f61fe77bf36712a27a04767c85d23938c876a5e5656e8fa7d625943255626d",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30024,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "56adf75a514721e02aef2b1d7fc57ac563b56dfdad9a79d0adf7c88f511b2ff8",
+      "requests_checked": 51,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30025,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "3a482362282fe3c6b1122fa9ec1c49c68e67122a0d60ad30ec90afa9cd61c6d7",
+      "requests_checked": 28,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30026,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "2017e4e379afa20a08caf76446e971322fbccce4792bf359b21bed79d27d09ba",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30027,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "7837e8e513d9ccf7f1a2f4d2781d60612d218c4968212cf492a4617110c29942",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30028,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "35f0a20f4b35be7001005ced70ac2518bf3f36c376d849082238e11147f6ef52",
+      "requests_checked": 43,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30029,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "39c09506cce5f59725359d609484d87dce919df8d6ab84dc4ce3d7afcc0d9c12",
+      "requests_checked": 27,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30030,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "f486525018568d66971f551a28a5ec3c424809682f2fc97859a1b5cc8cf62418",
+      "requests_checked": 40,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30031,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "f9bc16be42463143e51e7b797f6e7eb1fa35e968e160ea3c05bdfee27aeda16f",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30032,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "7661db2563d0ec1dba4370124ad6cd0296b75fb38b3f99aef590a9eb36f39352",
+      "requests_checked": 38,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30033,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "1b618c0e6afc910eaae9fcaf7d8899f108c2f1edb25aae2766a019af9864c37e",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30034,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "ed3a26f9fc9e59728209ce0a866ce2f1d9495b88a69aa07d83933a53e3947240",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30035,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "eb4c2e727646b6e9a94c7746ee03a14725baa015c43011156c96cd295d72a5c7",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30036,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "dc2427fb8b32d6c049c825efc5685fabda2068651c62d5c1e07413e64543b36d",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30037,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "9f26f1e27fcdb3aba48978ae7ddaa0bdf67be5744428d0ba519a047410d84382",
+      "requests_checked": 12,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30038,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "2f01265e23d63e773b4f015edb05d0427e1e64e869037e62993fe7aa4e61db5c",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30039,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "7190a87c4e062d6608da161113d91c2dd529ec888f13fcb1e44f56743c64978e",
+      "requests_checked": 22,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30040,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "56c63c69a4ae2d09897a210e8faadaf011a5ce2c58bab4de757a9010a8a6219b",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30041,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "5f26b45466a28a417462857f2229d660750da3dbe6d847f6b3eaa71998efd3b5",
+      "requests_checked": 53,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30042,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "f11c405943a62062fc46db05e93bd173c6ce268d5ae5eca2bd94eb650f2e14ea",
+      "requests_checked": 19,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30043,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "e1fb37f5d969bfed1b2e719fd0d9d2a9ee9a63ae148a6a4549dab83a7e0dc30b",
+      "requests_checked": 44,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30044,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "47641892306d4e2b2a7d41439d686c8eda0619b8d2445f8ff62f9cccee679c8c",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30045,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "4a224a7942c785133ef64659b5ae8d6a25ea6343b6eeaca3bb50d7a9eb1734e4",
+      "requests_checked": 20,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30046,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "142b5d14e9b9ae3099ae2d509792e2c3e847e0b346adc7f0ca05f7a7a55f497b",
+      "requests_checked": 60,
+      "all_recorded_requests_checked": true
+    },
+    {
+      "protocol_id": "wsp-batch-capture-v2-fixed16",
+      "status": "passed",
+      "slot": 30047,
+      "policy_fingerprint": "base",
+      "runtime_binding_sha256": "c982b471408232b1a9d5361b320f90932c83e92cefce15d433df65783254ffa0",
+      "obs_sha256": "3bc247800b53216ac0c67ab5c2df08cedaa8520aae24af76ae0bedf3eda4b853",
+      "requests_checked": 33,
+      "all_recorded_requests_checked": true
+    }
+  ]
+}

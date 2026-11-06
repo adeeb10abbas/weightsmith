@@ -1,0 +1,24 @@
+{
+  "binding": {
+    "calibration_selection_sha256": "51c4bfe33ad9eedcebd9fa21031c68d417b5099f5f3a030d36b8cae67251bc7d",
+    "checkpoint_manifest_sha256": "c5e21f3480d1a29e9230ac3963ebd20dcb5aea00c1a2f773abea00c7bdcb5061",
+    "codex_version": "0.166.0-alpha.6",
+    "development_base_artifact_sha256": "496e506c9b1200d9c4dd63b3eb6af0567a7572ca4f6910633faa0ed9ae7791cd",
+    "editable_export_manifest_sha256": "45d36afb1971422d83dc05315e4afecf7969052a77960f247c2aee3f4402b2da",
+    "editor_driver_sha256": "d75ed9f0e4d70b831dd6b60705555dc0d2abbe3ee9c93de2f4f019a9e9795296",
+    "frozen_source_tests": 147,
+    "primary_editor_effort": "max",
+    "primary_editor_model_id": "gpt-6-astra",
+    "protected_task_enabled": false,
+    "runtime_control_validated": true,
+    "sandbox_validation_report_sha256": "76916aeee58a4129d190c4d3097f3b010c38850b4c2a7d68f354dfb34abe9857",
+    "simulator_lock_sha256": "3df4d94f11af5d1ecfef710a2d4fe84bfac78af7ec82c4a4336d41c25b686054",
+    "source_manifest_sha256": "7d4eb000a92d5566e6b222855a011dc5f24a83c8cd1d24822e95245df1a6ba8b",
+    "zero_edit_parity_report_sha256": "fe078cb76476fa0bc521c489582338ae26614f95a24f0c8ef2825491b33a9b3d"
+  },
+  "frozen_at_utc": "2026-11-05T08:07:59.305577+00:00",
+  "note": "Binds operator-supplied evidence hashes; this command does not itself perform GPU or sandbox validation.",
+  "protocol_sha256": "72811b04f75ed2688d3efb590c0905ab8bae052c3d4904e92ea4544386712d71",
+  "schema_version": 1,
+  "study_id": "wsp-manipulation-rq123-v1"
+}

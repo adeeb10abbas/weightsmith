@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-05T10:05:22.998729+00:00",
+  "status": "before all v2 GPU validation, baseline collection, and editor search",
+  "protocol_sha256": "bb55e5202a9cd4508a9678a8c72e9ede026a2166cf7bc8156ee9c4d2d35ee796",
+  "capture_raw_plus_compat_bytes_per_call": 536870912,
+  "capture_raw_plus_compat_bytes_per_project": 1073741824,
+  "scope": "Activation capture arrays only; original live batch packets and recorded episode observations are separately retained and archived.",
+  "editor_can_override": false,
+  "failed_capture_files": "Preserved and counted toward actual persisted capture storage; no silent cleanup or budget restoration.",
+  "logical_activation_items": 96,
+  "work_accounting": "Report unique full-packet native and instrumented forward passes, padded row count and elapsed time separately from logical requested-item count.",
+  "reason": "Bound retained activation storage inside the private container disk allocation; preserve the existing8GiB reserve."
+}

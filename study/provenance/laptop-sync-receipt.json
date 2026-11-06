@@ -1,0 +1,12 @@
+{
+  "status": "verified",
+  "verification_note": "Initial archive check stopped on an unlisted directory symlink; expanded the read-only manifest to include symlinks without following them and verified the same downloaded archive. No remote or evidence changes.",
+  "verified_at_utc": "2026-11-05T19:49:04.656401+00:00",
+  "archive": "pod_residual_snapshot.tar.gz",
+  "sha256": "9900563550f147b5762f9418cb496ab4120df554fe743f3af7b38d6d2bfbbd5a",
+  "bytes": 366205611,
+  "files": 3143,
+  "raw_bytes": 611916565,
+  "remote_writes": 0,
+  "scope": "Remaining private operator/projects/workspaces/logs files; original completed archives also retained locally; excludes installed dependencies, regenerable caches, credentials and downloadable foundation checkpoint."
+}

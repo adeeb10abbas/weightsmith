@@ -1,0 +1,72 @@
+{
+  "status": "passed",
+  "mode": "adaptive",
+  "reserved_activation_items": 96,
+  "logged_attempted_activation_items": 96,
+  "reserved_without_completed_remote_log": 0,
+  "remote_charged_activation_items": 96,
+  "capture_attempts": [
+    {
+      "capture": "base-postgrasp",
+      "items": 56,
+      "returncode": 1
+    },
+    {
+      "capture": "base-steady-check",
+      "items": 4,
+      "returncode": 0
+    },
+    {
+      "capture": "base-steady-transport",
+      "items": 22,
+      "returncode": 1
+    },
+    {
+      "capture": "steady-replicate-a",
+      "items": 7,
+      "returncode": 1
+    },
+    {
+      "capture": "steady-replicate-b",
+      "items": 7,
+      "returncode": 1
+    }
+  ],
+  "successful_contrasts": [
+    {
+      "capture": "base-steady-check",
+      "key": "action.mlp_hidden",
+      "index_sha256": "5cca90117464de2cc6923eb835865a2a9a97820bb0a86318e0b16462ba040d82"
+    },
+    {
+      "capture": "base-steady-check",
+      "key": "action.resid_out",
+      "index_sha256": "5cca90117464de2cc6923eb835865a2a9a97820bb0a86318e0b16462ba040d82"
+    }
+  ],
+  "used_directions": [
+    {
+      "direction_id": "71437b96e02a952bf9ede4707d4ac6046a2d90ba85596af5d95f20ad6ab89052",
+      "operation": "row_stats",
+      "capture": "base-steady-check"
+    },
+    {
+      "direction_id": "71437b96e02a952bf9ede4707d4ac6046a2d90ba85596af5d95f20ad6ab89052",
+      "operation": "row_project_out",
+      "capture": "base-steady-check"
+    },
+    {
+      "direction_id": "71437b96e02a952bf9ede4707d4ac6046a2d90ba85596af5d95f20ad6ab89052",
+      "operation": "row_project_out",
+      "capture": "base-steady-check"
+    },
+    {
+      "direction_id": "71437b96e02a952bf9ede4707d4ac6046a2d90ba85596af5d95f20ad6ab89052",
+      "operation": "row_stats",
+      "capture": "base-steady-check"
+    }
+  ],
+  "note": "Failed captures and all attempted item costs are retained. Base contrast sources require every item to pass 0.02 parity; edited captures are diagnostics.",
+  "broker_calls_sha256": "f0f8c7c59423f6452d6a24dccbee50d2b18136c3a8c1c1562a2e2dad5a8a0ca7",
+  "auditor_sha256": "b90507b04f3d4eb6ad1cc7ad5c6e419416ea6a0b1efac605877951d1603f1640"
+}

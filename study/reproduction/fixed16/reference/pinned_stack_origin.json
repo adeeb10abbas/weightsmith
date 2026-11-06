@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "openpi": {
+    "url": "https://github.com/xuningy/openpi.git",
+    "commit": "aa6420561529593114160d05e5ad155792b272f3",
+    "patches": "bundle/weightsmith/third_party/patches/openpi",
+    "uv_lock_sha256": "5e3a9a0a12d9a6048afea5591f4520c98585499cbd4a8343dcabfe2aaed94e3d",
+    "patched_reference_head": "3b382828d67a2ec5b5c6bba1e96532ad5016444c"
+  },
+  "robolab": {
+    "url": "https://github.com/NVlabs/RoboLab.git",
+    "commit": "9cce00cadd5dc575fd2b8ea3836f5bdcde574229",
+    "patches": "bundle/weightsmith/third_party/patches/robolab-isaac60"
+  },
+  "simulator": {
+    "python": "3.12",
+    "isaac_sim": "6.0.1.0",
+    "isaac_lab": "3.0.0b2.post1",
+    "numpy": "2.3.1",
+    "torch": "2.11.0+cu128",
+    "warp": "1.13.0",
+    "lock_sha256": "3df4d94f11af5d1ecfef710a2d4fe84bfac78af7ec82c4a4336d41c25b686054"
+  },
+  "checkpoint": {
+    "uri": "gs://openpi-assets-simeval/pi05_droid_jointpos",
+    "files": 26,
+    "bytes": 12435136033,
+    "manifest_sha256": "c5e21f3480d1a29e9230ac3963ebd20dcb5aea00c1a2f773abea00c7bdcb5061"
+  },
+  "protocol_sha256": "72811b04f75ed2688d3efb590c0905ab8bae052c3d4904e92ea4544386712d71",
+  "reference_hardware": {
+    "gpus": "2 x RTX 4090 24 GB",
+    "driver": "595.91.07",
+    "scope": "Observed working configuration, not a hardware requirement or universal driver guarantee"
+  }
+}

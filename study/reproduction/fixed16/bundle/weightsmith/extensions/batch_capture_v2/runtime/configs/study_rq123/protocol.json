@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "study_id": "wsp-manipulation-rq123-v1",
+  "design_status": "approved_design_requires_runtime_binding_before_editor_search",
+  "approval_date_pacific": "2026-11-04",
+  "deadline_pacific": "2026-11-07T23:59:59-08:00",
+  "research_questions": {
+    "RQ1": "Sparse policy repair versus the original policy and a simple gripper calibration",
+    "RQ2": "Three adaptive rounds versus three non-adaptive proposals at matched discovery caps",
+    "RQ3": "Paired fixes, breakages, intermediate failures, and unedited-repeat variability"
+  },
+  "policy": {
+    "family": "pi0.5 DROID joint-position",
+    "deployment_dtype": "bfloat16",
+    "checkpoint_sha256_manifest": "required_in_runtime_binding",
+    "editable_surface": "action-expert MLP down-projection rows only",
+    "maximum_layers": 2,
+    "maximum_rows_total": 128,
+    "maximum_addressed_entries": 131072,
+    "support_is_cumulative_relative_to_original": true,
+    "count_changed_values_after_deployment_rounding": true,
+    "forbidden": [
+      "gradient optimizer",
+      "fitted regression producing a policy update",
+      "target-policy code changes",
+      "prompt changes",
+      "online wrapper changes",
+      "task-specific training",
+      "arbitrary editor Python or filesystem execution"
+    ],
+    "editing_interface": {
+      "kind": "typed_numpy_tools_only",
+      "supported_operations": [
+        "tensor row statistics",
+        "bfloat16 row scaling, sign flip or zeroing",
+        "selected-row additive residual direction from activation success/failure contrasts",
+        "projection along the activation-derived residual direction"
+      ],
+      "arbitrary_python": false,
+      "gradient_or_regression_fitting": false,
+      "same_interface_for_all_core_editor_runs": true,
+      "scope_limit": "Evidence concerns this restricted typed-edit interface; it is not a test of unrestricted weight-space programming.",
+      "activation_capture_limits": {
+        "maximum_predicted_persisted_bytes": 536870912,
+        "base_capture_episodes": "original base only, approved development slots",
+        "base_parity_tolerance": 0.02,
+        "base_require_parity": true,
+        "edited_capture_parity": "diagnostic only",
+        "image_and_attention_capture_extensions": false,
+        "layer_and_token_lists": "bounded, duplicate-free integer lists",
+        "heldout_stale_or_repeated_episode_ids": false
+      }
+    }
+  },
+  "environment": {
+    "task": "StackYellowOnRedTask",
+    "instruction": "Stack the yellow block on the red block",
+    "envs": 16,
+    "environment_seed": 0,
+    "rendering_type": "performance",
+    "control_hz": 15,
+    "horizon_steps": 900,
+    "action_chunk_horizon": 15,
+    "sampling_seed_formula": "((slot // envs) * 64 + (slot % envs)) * 100 + replan_index",
+    "envs_must_match_across_all_arms": true,
+    "generalization_scope": "Unseen policy sampling streams in the same fixed scene; not new objects or layouts",
+    "final_scoring_host": "runpod2",
+    "video_mode": "none",
+    "record_exact_policy_inputs": true
+  },
+  "slots": {
+    "development": {
+      "start": 20032,
+      "n": 32
+    },
+    "heldout": {
+      "start": 90000,
+      "n": 64
+    },
+    "optional_protected": {
+      "start": 91008,
+      "n": 32
+    }
+  },
+  "discovery": {
+    "primary_editor_family": "Astra",
+    "exact_model_and_effort": "required_in_runtime_binding",
+    "modes": [
+      "adaptive",
+      "nonadaptive"
+    ],
+    "independent_restarts_per_mode": 2,
+    "rounds_or_proposals_per_run": 3,
+    "common_base_episodes": 32,
+    "candidate_episode_cap_per_run": 96,
+    "candidate_block_size": 32,
+    "activation_items_per_run": 96,
+    "editor_wall_seconds_per_run_including_waits": 7200,
+    "base_evidence": "One pinned completed base artifact supplied identically to every run; repeats are not pooled",
+    "adaptive": "Return development feedback after each proposal; evaluate cumulative edits from the current incumbent",
+    "nonadaptive": "Three distinct original-base-anchored proposals must all be hashed before any candidate outcome is exposed",
+    "no_edit_candidate_allowed": true,
+    "cost_accounting": "Reserve 32 attempted-episode capacity before each candidate launch, with max_attempts=1; keep failed/incomplete rows and actual started/completed counts when available. Report capacity separately from observed starts. No hidden retries or uncharged failed candidates.",
+    "max_simulator_attempts_per_candidate_block": 1,
+    "reserve_episode_capacity_before_launch": 32
+  },
+  "selection": {
+    "reference": "original_pinned_development_base",
+    "strict_success_gain_over_base_required": true,
+    "maximum_base_success_to_candidate_failure_pairs": 2,
+    "ranking": [
+      "success_count descending",
+      "actual deployment delta L2 norm ascending",
+      "proposal ordinal ascending"
+    ],
+    "adaptive_replacement": "Replace the incumbent only when the eligible proposal outranks it; otherwise retain the incumbent",
+    "ties_between_original_and_edit": "original",
+    "incomplete_block": "not eligible; report failed attempts and resolve infrastructure without unbudgeted policy search",
+    "positive_post_bfloat16_changed_elements_required": true,
+    "zero_edit_policy": "Zero actual post-bfloat16 changed elements is base/no-edit and cannot become a repair incumbent, even if a stochastic development repeat improves; retain charged attempts and variability evidence."
+  },
+  "runtime_control": {
+    "kind": "operator_run_gripper_threshold_calibration_not_weight_edit",
+    "development_thresholds": [
+      0.4,
+      0.5,
+      0.6
+    ],
+    "default_threshold": 0.5,
+    "ranking": [
+      "development success_count descending",
+      "distance from 0.5 ascending",
+      "threshold ascending"
+    ],
+    "freeze_before_heldout": true,
+    "fallback": "If unsupported before editor discovery, record a protocol amendment and remove or replace the comparative claim before observing candidate results"
+  },
+  "heldout": {
+    "operator_only": true,
+    "freeze_every_candidate_hash_before_any_scoring": true,
+    "return_results_to_editors": false,
+    "fresh_base_per_comparison": true,
+    "within_comparison_order": [
+      "base first 32",
+      "candidate first 32",
+      "candidate last 32",
+      "base last 32"
+    ],
+    "comparison_ids": [
+      "adaptive-r1-round1",
+      "adaptive-r1-round2",
+      "adaptive-r1-round3",
+      "adaptive-r2-round1",
+      "adaptive-r2-round2",
+      "adaptive-r2-round3",
+      "nonadaptive-r1-final",
+      "nonadaptive-r2-final",
+      "gripper-control"
+    ],
+    "base_repeat": "One additional 64-episode base block compared with the pinned base rows from the first scheduled comparison; not a second 128-episode paired-base command",
+    "repeat_incumbents": "Score all six round-end adaptive states, including retained/repeated incumbents; identify identical hashes"
+  },
+  "optional_extensions": {
+    "protected_task": {
+      "enabled": false,
+      "task": "RubiksCubeLeftOfBowlMatchedTask",
+      "condition": "Assets, fixed prompt and success predicate validated and bound before editor search",
+      "finalists": 4,
+      "episodes_if_enabled": 256
+    },
+    "second_editor": {
+      "enabled": false,
+      "family": "Opus",
+      "condition": "Core RQ1-RQ3 on schedule; exact model/settings frozen before this extension starts",
+      "adaptive_restarts": 2,
+      "heldout_final_only": true,
+      "episodes_if_enabled": 448,
+      "protected_extra_episodes": 128
+    }
+  },
+  "analysis": {
+    "unit": "paired episode sampling slot",
+    "expected_complete_pairs": 64,
+    "missingness": "No silent deletion or failure imputation; report completed-pair estimate and missing counts, mark incomplete comparisons ineligible for a completed-study claim",
+    "bootstrap": {
+      "type": "paired slot percentile",
+      "resamples": 10000,
+      "seed": 20261104,
+      "confidence": 0.95
+    },
+    "mcnemar": "exact two-sided, exploratory",
+    "multiplicity": "No confirmatory significance claim is predeclared; if later formal tests are specified before scoring, bind the family and use Holm correction",
+    "restarts": "report each discovery restart separately; do not pool to hide discovery variance",
+    "failure_categories": "Report recorded terminal reasons and paired transitions; annotate manual labels as post hoc",
+    "duration": "conditional on success, null when there are no successes",
+    "uncertainty_limit": "Slot bootstrap assumes independent episode units; GPU-batched physics may induce dependence and two discovery restarts do not estimate editor variability precisely"
+  },
+  "budget": {
+    "base_development": 32,
+    "calibration_extra": 64,
+    "candidate_development": 384,
+    "heldout_fresh_base_and_candidate": 1152,
+    "base_repeat": 64,
+    "core_total_planned_episodes": 1696,
+    "all_optional_total_planned_episodes": 2528,
+    "failed_attempts_and_retries": "additional actual cost, always reported",
+    "minimum_free_disk_gib": 8
+  },
+  "runtime_binding_required_fields": [
+    "primary_editor_model_id",
+    "primary_editor_effort",
+    "source_manifest_sha256",
+    "checkpoint_manifest_sha256",
+    "simulator_lock_sha256",
+    "editable_export_manifest_sha256",
+    "zero_edit_parity_report_sha256",
+    "sandbox_validation_report_sha256",
+    "development_base_artifact_sha256",
+    "editor_driver_sha256",
+    "protected_task_enabled",
+    "runtime_control_validated"
+  ],
+  "pre_search_amendments": [
+    {
+      "approved_date_pacific": "2026-11-04",
+      "change": "Use typed NumPy editing tools instead of arbitrary editor Python.",
+      "reason": "The pod prohibits user namespaces and lacks bwrap; the supported restricted broker interface is validated before search.",
+      "applies_to": "All four core runs, identically; no candidate outcomes observed before this change."
+    },
+    {
+      "approved_date_pacific": "2026-11-04",
+      "change": "An eligible repair must change at least one actual deployed bfloat16 parameter value.",
+      "reason": "A stochastic gain from an identity candidate is baseline variability, not a weight repair.",
+      "applies_to": "All core runs before any editor search or candidate outcomes."
+    }
+  ]
+}
