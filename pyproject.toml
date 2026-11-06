@@ -37,8 +37,8 @@ dev = ["pytest>=7", "ruff>=0.6"]
 weightsmith = "weightsmith.cli:main"
 
 [project.urls]
-Homepage = "https://adeeb10abbas.github.io/weightsmith/"
-Paper = "https://adeeb10abbas.github.io/weightsmith/paper.pdf"
+Homepage = "https://ali-adeeb.com/weightsmith/"
+Paper = "https://ali-adeeb.com/weightsmith/paper.pdf"
 Documentation = "https://github.com/adeeb10abbas/weightsmith/blob/main/docs/README.md"
 Repository = "https://github.com/adeeb10abbas/weightsmith"
 Issues = "https://github.com/adeeb10abbas/weightsmith/issues"

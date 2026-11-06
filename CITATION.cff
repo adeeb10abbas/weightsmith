@@ -10,7 +10,7 @@ authors:
 version: 0.1.0
 date-released: "2026-11-06"
 repository-code: "https://github.com/adeeb10abbas/weightsmith"
-url: "https://adeeb10abbas.github.io/weightsmith/"
+url: "https://ali-adeeb.com/weightsmith/"
 license: MIT
 keywords:
   - weight editing
@@ -31,6 +31,6 @@ preferred-citation:
     - given-names: Esmaeil
       family-names: Seraj
   year: 2026
-  url: "https://adeeb10abbas.github.io/weightsmith/"
+  url: "https://ali-adeeb.com/weightsmith/"
   repository-code: "https://github.com/adeeb10abbas/weightsmith"
   notes: "arXiv preprint, forthcoming"

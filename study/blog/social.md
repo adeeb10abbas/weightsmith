@@ -54,8 +54,8 @@ Edit when you can show the network does the right thing under some input. Train 
 And a warning: identical weights, identical seeds, and still about 1 in 3 episodes flips outcome (GPU physics). A 16-episode "improvement" means nothing. We paired every comparison and held out the final test.
 
 **7/**
-Paper: https://adeeb10abbas.github.io/weightsmith/paper.pdf
-Site + videos: https://adeeb10abbas.github.io/weightsmith/
+Paper: https://ali-adeeb.com/weightsmith/paper.pdf
+Site + videos: https://ali-adeeb.com/weightsmith/
 Code & benchmark: https://github.com/adeeb10abbas/weightsmith
 With @⟦ESMAEIL_X_HANDLE⟧
 
@@ -73,6 +73,6 @@ Over the past week, Esmaeil Seraj and I gave frontier models (Claude Opus and GP
 
 **A note on rigor.** In simulation, about one in three episodes flips outcome between identical runs. Small, unpaired evaluations will happily "confirm" fixes that aren't there.
 
-Paper: https://adeeb10abbas.github.io/weightsmith/paper.pdf
-Project page with videos: https://adeeb10abbas.github.io/weightsmith/
+Paper: https://ali-adeeb.com/weightsmith/paper.pdf
+Project page with videos: https://ali-adeeb.com/weightsmith/
 Code and benchmark: https://github.com/adeeb10abbas/weightsmith

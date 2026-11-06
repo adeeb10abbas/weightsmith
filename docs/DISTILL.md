@@ -1,6 +1,6 @@
 # Closed-form instruction distillation (`weightsmith distill`, Experimental)
 
-Turn a prompt fix into a weight fix. This is the method behind the paper's edit: cube then banana, held-out 27/128 → 106/128 ([paper](https://adeeb10abbas.github.io/weightsmith/paper.pdf), Section 2).
+Turn a prompt fix into a weight fix. This is the method behind the paper's edit: cube then banana, held-out 27/128 → 106/128 ([paper](https://ali-adeeb.com/weightsmith/paper.pdf), Section 2).
 
 ## When to use it
 
