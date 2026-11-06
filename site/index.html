@@ -55,7 +55,7 @@
     <p class="eyebrow">Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy’s Misreading</p>
     <h1>We fixed a robot’s misreading by editing its weights</h1>
     <p class="dek">A 3.35-billion-parameter robot policy drops a cube because it reads “in the bowl” as belonging to the banana. We fixed it with one closed-form edit to its weights, with no training, no new data and the same instruction: on 128 starts it had never seen, success rose from 21% to 83% (<span class="nw">27/128 → 106/128</span>). The same edit lifted two tasks it was never built for, picking up eyeglasses (<span class="nw">22/64 → 44/64</span>) and putting the cube left of the bowl (<span class="nw">8/64 → 36/64</span>).</p>
-    <p class="byline">Ali-Adeeb Abbas, Esmaeil Seraj<span class="sep">·</span>November 2026<span class="sep">·</span><a href="paper.pdf">Paper</a><span class="sep">·</span><a href="https://github.com/adeeb10abbas/weightsmith">Code</a></p>
+    <p class="byline">Ali-Adeeb Abbas, Esmaeil Seraj<span class="sep">·</span><span class="nw">November 2026</span><span class="sep">·</span><a href="paper.pdf">Paper</a><span class="sep">·</span><a href="https://github.com/adeeb10abbas/weightsmith">Code</a></p>
   </header>
 
   <figure class="hero wide">
@@ -81,7 +81,7 @@
 
   <section id="failure">
     <h2>What goes wrong</h2>
-    <p class="claim">Move “in the bowl” next to the cube, and the robot stops dropping it.</p>
+    <p class="claim">Move “in the bowl” next to the cube, and almost every release disappears.</p>
     <figure class="fig wide">
       <a class="fig-link" href="assets/fig/rewordings.svg" title="Open the figure at full size"><picture>
         <source type="image/svg+xml" media="(prefers-color-scheme: dark)" srcset="assets/fig/rewordings-dark.svg">
@@ -134,7 +134,7 @@
 
   <section id="failures">
     <h2>What didn’t work</h2>
-    <p class="claim">The fix flipped outcomes one way. Every other edit flipped them both ways, like rerunning the unedited policy.</p>
+    <p class="claim">The fix flipped outcomes one way; none of our other edits did better than rerunning the unedited policy.</p>
     <figure class="fig wide">
       <a class="fig-link" href="assets/fig/outcomes.svg" title="Open the figure at full size"><picture>
         <source type="image/svg+xml" media="(prefers-color-scheme: dark)" srcset="assets/fig/outcomes-dark.svg">
@@ -144,7 +144,7 @@
       </picture></a>
       <figcaption>Paired outcomes: each bar splits a comparison’s starts by what the edit did to them. Held-out comparisons in bold; italic rows change no weights.</figcaption>
     </figure>
-    <p>On 128 held-out starts the distilled edit fixed 81 and broke 2. A single gripper weight, across seven tasks, fixed 37 and broke 37, and a plain rerun of the unedited policy on the stacking task flipped 17 one way and 20 the other. Our edits for perception, a missing grasp, contact physics and the gripper threshold all look like the rerun, not like the fix.</p>
+    <p>On 128 held-out starts the distilled edit fixed 81 and broke 2. A single gripper weight, across seven tasks, fixed 37 and broke 37, and a plain rerun of the unedited policy on the stacking task flipped 17 one way and 20 the other. The edits aimed at perception, contact physics and the gripper threshold all look like the rerun, not like the fix.</p>
     <p>Each of those failures lacked something the fix had. The arm reaches for a lookalike object although the vision-language model tells the two apart (<i>d′</i> ≈ 10–20); the action expert barely uses the difference (<i>d′</i> ≈ 2–3), and nine edits from Claude and GPT-6 Astra could not make it. A flat box wider than the gripper opening was never picked up, after ten edits. A mustard bottle that slips from a cap grasp offered no wrong decision to correct (|<i>ρ</i>| ≤ 0.26).</p>
   </section>
 
@@ -165,7 +165,7 @@
 
   <section id="meaning">
     <h2>What this means</h2>
-    <p class="claim">The edit re-routed something the network already computes. No edit created what was missing.</p>
+    <p class="claim">The edit re-routed something the network already computes; no edit created what was missing.</p>
     <p>The fix had three ingredients: a skill the policy demonstrably has, a failure traced to one computation, and a known-good internal state to copy. Each failure lacked one. The rule we take from it: edit when you can show the network does the right thing under some input, and train when it cannot. The strongest outside reports agree; they edited checkpoints already fine-tuned on each task<sup>‡</sup>.</p>
     <p>The limits are real. The edit is low-rank, not sparse: it changes 13.4% of the stored values. Finding it needed a known-good instruction. It was built by an operator session, also Claude Opus, under the editor rules, not by an autonomous editor. Its transfer was not predictable in advance. And it ran on one zero-shot checkpoint, in simulation.</p>
   </section>
