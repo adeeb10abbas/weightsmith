@@ -17,7 +17,7 @@ Start with the [README](../README.md). Then pick what you need:
 | Read the full report behind every number | [study/blog/failure-levels.md](../study/blog/failure-levels.md) |
 | Distil a known-good rewording into the weights (Experimental) | [DISTILL.md](DISTILL.md) |
 | Rebuild the paper's edit | [DISTILL.md](DISTILL.md#status) and [study/results/opus/ctb/](../study/results/opus/ctb/README.md) |
-| Read the paper | [PDF](https://adeeb10abbas.github.io/weightsmith/paper.pdf) · [project page](https://adeeb10abbas.github.io/weightsmith/) · [LaTeX source](../paper/) |
+| Read the paper | [PDF](https://ali-adeeb.com/weightsmith/paper.pdf) · [project page](https://ali-adeeb.com/weightsmith/) · [LaTeX source](../paper/) |
 | Contribute | [CONTRIBUTING.md](../CONTRIBUTING.md) |
 
 `docs/results/` is a historical snapshot of the first Claude runs (2026-11-04), kept unchanged. The companion GPT-6 Astra study is frozen under [study/](../study/README.md).

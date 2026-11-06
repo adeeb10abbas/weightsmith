@@ -3,8 +3,8 @@
 **Let an LLM read, probe and edit a robot policy's weights — and measure whether it helped.**
 
 [![CI](https://github.com/adeeb10abbas/weightsmith/actions/workflows/ci.yml/badge.svg)](https://github.com/adeeb10abbas/weightsmith/actions/workflows/ci.yml)
-[![Paper](https://img.shields.io/badge/paper-PDF-b31b1b)](https://adeeb10abbas.github.io/weightsmith/paper.pdf)
-[![Website](https://img.shields.io/badge/website-weightsmith-147d92)](https://adeeb10abbas.github.io/weightsmith/)
+[![Paper](https://img.shields.io/badge/paper-PDF-b31b1b)](https://ali-adeeb.com/weightsmith/paper.pdf)
+[![Website](https://img.shields.io/badge/website-weightsmith-147d92)](https://ali-adeeb.com/weightsmith/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3c78d8)](LICENSE)
 
 <p align="center">
@@ -55,7 +55,7 @@ Protocol: [BENCHMARK.md](BENCHMARK.md). Every run, including the failures: [LEAD
 | Autonomous blind editor (Claude Opus): gated rank-1 gripper edit, 1,024 values | Cube then banana | 11/64 → **27/64**: 22 fixed, 6 broken, p = 0.004 | held-out |
 | Edits aimed at perception, a missing skill, contact physics, the gripper threshold | Stacking, flat box, mustard, 7 tasks | no gain | practice |
 
-Paired outcomes on identical seeds; p is the exact McNemar test. The distilled edit was built by our Claude Opus operator session following the editor rules; the 1,024-value edit came from an autonomous editor working blind. Details: the [paper](https://adeeb10abbas.github.io/weightsmith/paper.pdf), the [project page](https://adeeb10abbas.github.io/weightsmith/), and the raw [held-out runs](study/results/opus/heldout/) and [comparisons](study/results/opus/comparisons.json).
+Paired outcomes on identical seeds; p is the exact McNemar test. The distilled edit was built by our Claude Opus operator session following the editor rules; the 1,024-value edit came from an autonomous editor working blind. Details: the [paper](https://ali-adeeb.com/weightsmith/paper.pdf), the [project page](https://ali-adeeb.com/weightsmith/), and the raw [held-out runs](study/results/opus/heldout/) and [comparisons](study/results/opus/comparisons.json).
 
 ## Quickstart
 
@@ -107,7 +107,7 @@ tests/            CPU-only tests: python3 -m pytest tests
   title  = {{Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy's Misreading}},
   author = {Abbas, Ali-Adeeb and Seraj, Esmaeil},
   year   = {2026},
-  url    = {https://adeeb10abbas.github.io/weightsmith/},
+  url    = {https://ali-adeeb.com/weightsmith/},
   note   = {arXiv preprint, forthcoming}
 }
 ```
