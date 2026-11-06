@@ -2,6 +2,8 @@
 
 Post only after the held-out and regression numbers are final. Every number here must match `failure-levels.md`.
 
+Attach `figures/opus_hero.png` to tweet 1 and to the LinkedIn post.
+
 ## X / Twitter thread
 
 **1/**
@@ -22,6 +24,8 @@ The robot already knew the task: reword it explicitly and the same weights succe
 So Claude wrote that reading into the weights, in closed form, keeping the original instruction.
 
 3/32 → 25/32. On 128 unseen seeds: 27/128 → 106/128.
+
+Bonus: the same edit lifted an unrelated task, picking up eyeglasses, from 22/64 → 44/64 on held-out seeds.
 
 **4/**
 The failures were just as informative:
@@ -47,7 +51,7 @@ Full report, data and code, written with @⟦ESMAEIL_HANDLE⟧: ⟦LINK⟧
 
 Over the past week, Esmaeil Seraj and I gave frontier models (Claude Opus and GPT-6 Astra) direct read-write access to the weights of π0.5, a 3.35B-parameter robot policy. There was no training and no new data, only diagnosis and closed-form edits. We tested 16 simulated manipulation tasks.
 
-**What worked.** On a two-step task, the robot kept dropping the first object. Claude traced it to how the model's language component binds "in the bowl" to the wrong noun. The robot already had the skill: with the instruction spelled out, the same weights succeed. So Claude distilled that reading into the weights. Success rose from 3/32 to 25/32, and from 27/128 to 106/128 on 128 held-out trials, with the original instruction unchanged.
+**What worked.** On a two-step task, the robot kept dropping the first object. Claude traced it to how the model's language component binds "in the bowl" to the wrong noun. The robot already had the skill: with the instruction spelled out, the same weights succeed. So Claude distilled that reading into the weights. Success rose from 3/32 to 25/32, and from 27/128 to 106/128 on 128 held-out trials, with the original instruction unchanged. The same edit also improved an unrelated task (picking up eyeglasses, 22/64 → 44/64 held-out), with no detectable harm on six others.
 
 **What didn't.** Contact physics (grasps that slip), a grasp the policy never learned, and confusion between lookalike objects all resisted every edit. That includes a one-parameter gripper change that was exactly neutral across seven tasks (117/240 vs 117/240).
 

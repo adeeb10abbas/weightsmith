@@ -10,6 +10,7 @@ Run with the weightsmith `owsp` tool against project `cube-then-banana`. Every s
 | `v2m_edit.py` | Per-slot shift at 40 prompt/state slots, least-norm multi-key (`v2m-h`, `v2m-f`, `v2m-2`) | 15 / 13 / 8 of 21 release |
 | `v2mi_edit.py` | `v2m` plus 32 image cells (**`v2mi-f`**, the submitted edit) | **0/21 release**; carries and phase 2 unchanged |
 | `v2mi2_edit.py` | Ablation variants (image-only, layers 8–16, half strength) | See report §5.5 |
+| `v2p_edit.py` | Image-cell edit with preservation keys from 5 other tasks (`v2p-f`) | 1/21 release; closed loop 24/32 vs 3/32; see report §5.6 |
 | `chk.py`, `vs_v2.py`, `gap*.py` | Offline checks | — |
 
 The edit uses capture `c2-multi`: 6 premature-release decisions, each replayed under 8 instructions, with VLM residuals and MLP activations at all layers. Keys are mean activations under the original instruction. Values are the explicit instruction's per-layer residual increments minus the original's. Each layer gets `dW = K^T (K K^T + lam I)^-1 V` with `lam = 1e-3 * trace(KK^T)/n`, layers 0–16, alpha 1.

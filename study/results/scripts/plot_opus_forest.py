@@ -78,9 +78,9 @@ def main():
             t.set_fontweight("bold"); t.set_fontsize(8.4)
     ax.tick_params(axis="y", length=0, pad=6)
     ax.set_ylim(y - 0.3, -1.6)
-    ax.set_xlim(-45, 80)
-    ax.set_xticks([-40, -20, 0, 20, 40, 60, 80])
-    ax.set_xticklabels(["−40", "−20", "0", "+20", "+40", "+60", "+80"])
+    ax.set_xlim(-65, 80)
+    ax.set_xticks([-60, -40, -20, 0, 20, 40, 60, 80])
+    ax.set_xticklabels(["−60", "−40", "−20", "0", "+20", "+40", "+60", "+80"])
     ax.grid(axis="x", color=GRID, lw=0.6, zorder=0)
     for s in ("top", "right", "left"):
         ax.spines[s].set_visible(False)

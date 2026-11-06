@@ -5,6 +5,10 @@
 **Ali-Adeeb Abbas and Esmaeil Seraj**  
 Draft for coauthor review, November 6, 2026. Companion to the completed [Astra study](draft.md). Measured results, others' reports and our hypotheses are labelled as such throughout.
 
+![Before and after the weight edit, by failure type](figures/opus_hero.png)
+
+*Figure 1. Task success before (light grey) and after weight edits. The edits that worked (blue) fixed a misread instruction and transferred to an unrelated task. The ones that did not (dark grey) targeted perception, a missing skill, contact physics, or a single gripper weight. All comparisons are paired on identical simulator seeds; the two blue rows are held-out.*
+
 ## TL;DR
 
 - **The setup.** We let frontier models (Claude Opus; GPT-6 Astra in the companion study) read and edit the weights of π0.5, a 3.35B-parameter robot policy, directly. There was no training, no gradients and no fine-tuning data. We tested 16 simulated manipulation tasks.
@@ -12,7 +16,7 @@ Draft for coauthor review, November 6, 2026. Companion to the completed [Astra s
   - Success went from **3/32 to 25/32** on practice seeds.
   - On **128 held-out seeds it never saw**, success went from 27/128 to 106/128.
   - The instruction itself was never changed.
-  - Side effects: 6 of 7 other tasks were unchanged or within noise; one dropped from 14/16 to 10/16 (§5.5).
+  - **It transferred.** The same edit also lifted an unrelated task, picking up eyeglasses, from 22/64 to 44/64 on held-out seeds. We found no harm on six other tasks.
 - **Physical failures resisted every edit:**
   - a grasp that slips: no gain;
   - a skill the policy never learned: 10 edits, 0 successes;
@@ -23,7 +27,7 @@ Draft for coauthor review, November 6, 2026. Companion to the completed [Astra s
 
 ![Paired effect of every intervention, grouped by failure level](figures/opus_forest.png)
 
-*Figure 1. Every closed-loop comparison in this work and the companion Astra study. Each row shows success with the intervention minus success without it, on the same simulator seeds, with a paired 95% bootstrap interval. Blue: weight edits by Claude Opus. Orange: weight edits by GPT-6 Astra. Green: changes that are not weight edits. Grey: the unchanged policy rerun. Star: the held-out test of the one edit that worked, on seeds never used during editing. Right column: successes with vs without.*
+*Figure 2. Every closed-loop comparison in this work and the companion Astra study. Each row shows success with the intervention minus success without it, on the same simulator seeds, with a paired 95% bootstrap interval. Blue: weight edits by Claude Opus. Orange: weight edits by GPT-6 Astra. Green: changes that are not weight edits. Grey: the unchanged policy rerun. Star: the held-out test of the one edit that worked, on seeds never used during editing. Right column: successes with vs without.*
 
 ## 1. The question
 
@@ -69,7 +73,7 @@ We first ran the unedited policy on 16 tasks (256 episodes) and sorted every fai
 
 | Level | What goes wrong | Example | Weight editing |
 |---|---|---|---|
-| **Language binding** | The instruction is parsed so the wrong object counts as "current" | Cube then banana | ✅ **3/32 → 25/32** practice; held-out 27/128 → 106/128 |
+| **Language binding** | The instruction is parsed so the wrong object counts as "current" | Cube then banana | ✅ **3/32 → 25/32** practice; held-out 27/128 → 106/128; also eyeglasses held-out 22/64 → 44/64 |
 | **Perception** | Goes for a similar-looking wrong object | Stack yellow on red | ❌ 3 Claude edits −11 pp; 4 Astra and 2 Claude edits under the same protocol, none accepted |
 | **Missing skill** | Never produces a working motion | Pick up a flat box | ❌ 10 edits change the motion, 0 successes |
 | **Contact physics** | Right decisions, but the grasp slips | Mustard into bin | ❌ No decision-level lever; edits stopped by offline checks |
@@ -128,23 +132,22 @@ There is no optimization or training. In effect, it is **the explicit instructio
 
 **Held-out, 128 unseen seeds, operator-run:** **106/128 (82.8%) vs 27/128 (21.1%)**. 81 episodes were fixed and 2 broken (exact McNemar p = 7×10⁻²²). The paired difference is **+61.7 pp [+52.3, +70.3]**, and the Wilson intervals do not overlap (edit 75–88%, base 15–29%). Base and edit ran on identical slots 90000–90127, never used during editing, with the run order alternating by half. Successful episodes also finish faster: 300 steps on average vs 412.
 
-**Other tasks.** The edit's keys are average activations at the robot-state tokens and image regions, which every task has, so we checked seven other tasks:
+**Other tasks: no harm, and one surprise.** The edit's keys are average activations at the robot-state tokens and image regions, which every task has, so we ran it on seven other tasks:
 
 | Task | Without edit | With binding edit | Fixed / broke |
 |---|---:|---:|---:|
+| **Pick up eyeglasses, held-out (64 unseen seeds)** | **22/64** | **44/64** | **31 / 9** (p = 7×10⁻⁴) |
+| Pick up eyeglasses, practice (two runs) | 26/64 | 46/64 | 28 / 8 |
+| Mustard into bin | 7/32 | 12/32 | 11 / 6 |
+| Stack yellow on red | 14/32 | 17/32 | 9 / 6 |
+| Stack bowls | 19/32 | 21/32 | 8 / 6 |
 | Cube into bowl | 16/16 | 16/16 | 0 / 0 |
 | Banana onto plate | 16/16 | 16/16 | 0 / 0 |
-| Butter box onto raisin box | 14/16 | **10/16** | 0 / 4 |
-| Stack yellow on red | 14/32 | 17/32 | 9 / 6 |
-| Mustard into bin | 7/32 | 12/32 | 11 / 6 |
-| Pick up eyeglasses | 12/32 | 22/32 | 15 / 5 |
-| Stack bowls | 19/32 | 21/32 | 8 / 6 |
+| Butter box onto raisin box | 14/16 (8/16 on rerun) | 10/16 | 0 / 4 vs first base |
 
-- **Most tasks are unaffected.** Five of seven are unchanged or within noise.
-- **One possible regression.** Butter-on-raisin lost 4 successes and gained none (p = 0.13 at n = 16). The edit's keys are average image activations, so they also fire, more weakly, on other scenes. On a task that ends with a release, a nudge toward "keep holding" plausibly costs successes.
-- **One surprising gain.** Eyeglasses rose 12 → 22 (p = 0.04). Many eyeglasses failures are "grabbed but never lifted", which the same nudge could help. With seven tasks tested, one p ≈ 0.04 can also be luck, so we treat it as a lead, not a finding (see below).
-
-The edit is a task-targeted fix with real, if modest, side effects. Applied to a robot used for many tasks, it would need preservation constraints (see below) or a task-conditional switch.
+- **The edit transferred to eyeglasses.** It raised that task by 31–34 points, first on practice seeds (p = 0.001 over two runs) and then on 64 held-out seeds (Wilson intervals 24–47% vs 57–79%). Eyeglasses failures are often "grabbed but never lifted". Our hypothesis is that the edit strengthens a generic "the object in my gripper is the one I'm meant to carry" signal, so the policy keeps hold and persists: its successful episodes take longer (224 vs 158 steps).
+- **No detectable harm elsewhere.** Butter-on-raisin first looked like a loss (14/16 → 10/16). But the *unedited* policy, rerun on the same 16 seeds with the same weights, scored **8/16**. The apparent drop is the policy's own run-to-run noise (§7).
+- **Preservation constraints were tested and not needed.** We rebuilt the edit with MEMIT-style preservation keys from five other tasks, forcing the update to leave their image activations unchanged. It kept the fix (24/32 vs 3/32, 21 fixed, 0 broken) and scored the same on butter (10/16). There was no real side effect to remove.
 
 **What matters in the edit (offline ablations):**
 
@@ -169,7 +172,7 @@ The unedited policy succeeds 28/64. A Rubik's cube with its yellow face up sits 
 
 Inside the network, the VLM tells the two objects apart almost perfectly (d′ ≈ 10–20). The action expert barely uses that signal (d′ ≈ 2–3, against a null of about 1.7).
 
-Three Claude edits amplified the signal in attention or key/value weights (12–30M values). Each scored **21/64** (−11 pp, n.s.). Amplifying the signal also disabled a useful learned habit, backing away from the cube after touching it. Astra's four edits on the same task, through action-MLP rows only, were within noise and none was accepted (Figure 1, orange).
+Three Claude edits amplified the signal in attention or key/value weights (12–30M values). Each scored **21/64** (−11 pp, n.s.). Amplifying the signal also disabled a useful learned habit, backing away from the cube after touching it. Astra's four edits on the same task, through action-MLP rows only, were within noise and none was accepted (Figure 2, orange).
 
 **Same protocol, different model.** We then ran a fresh Claude Opus editor under the Astra study's *exact* brief: the same 32 development slots, 3 proposals, 96 activation items, at most 128 rows in two layers of the action MLP, and the same acceptance gate.
 - **Diagnosis.** It independently reached the same failure: lookalike-object confusion, decided by noise in the first action chunks.
@@ -192,7 +195,7 @@ The unedited policy succeeds 16/96. It grabs the bottle by its narrow cap and ke
 
 ![Wrist camera: a cap grasp that slips and one that holds](figures/opus_mustard_slip.jpg)
 
-*Figure 2. The same scene, a slipping grasp (top) and a holding grasp (bottom). Both grip the cap. Nothing in the policy's decisions separated them.*
+*Figure 3. The same scene, a slipping grasp (top) and a holding grasp (bottom). Both grip the cap. Nothing in the policy's decisions separated them.*
 
 Close height, wrist angle, timing and carry speed did not predict which grasps hold (|ρ| ≤ 0.26). Two neuron-flip edits (Gupta-style) built from 192 recorded grasps either did nothing to the actions or pushed the wrong way, so both were stopped offline. A one-weight gripper edit scored 13/64 vs 13/64.
 
@@ -219,7 +222,7 @@ Of the paired episodes, 37 flipped from failure to success and 37 from success t
 
 ## 7. How not to fool yourself
 
-Unchanged weights do not give unchanged outcomes. Two runs with identical weights and seeds agreed on only 46 of 64 episodes, because GPU physics is nondeterministic and 15-step open-loop action chunks amplify tiny differences. The companion study's unchanged reruns ranged from −5 to +14 points. Under the neutral gripper edit, 36% of paired episodes flipped.
+Unchanged weights do not give unchanged outcomes. The unedited policy scored **14/16 and then 8/16** on the same 16 butter-on-raisin seeds, with the same weights and hardware. Two runs of one edit with identical weights and seeds agreed on only 46 of 64 episodes, because GPU physics is nondeterministic and 15-step open-loop action chunks amplify tiny differences. The companion study's unchanged reruns ranged from −5 to +14 points. Under the neutral gripper edit, 36% of paired episodes flipped.
 
 With roughly 30% of pairs flipping, these are the smallest changes a single paired comparison can reliably detect (80% power, α = 0.05):
 
@@ -250,7 +253,7 @@ This fits the strongest outside results. Guo and Xie edited checkpoints already 
 
 **Three honest caveats:**
 - **The edit is not sparse.** It changes 13% of scalar values, at low rank. A four-parameter patch it is not.
-- **The edit is task-targeted, with side effects.** It did not touch most other tasks, but it cost one of them four successes (§5.5).
+- **It is built for one task.** We found no harm on six other tasks and an unexpected gain on a seventh, but seven tasks is not a guarantee. A deployment would want broader regression checks.
 - **Discovery took a known-good instruction.** The editor had to find a wording that works, then distil it. That is still useful: it turns a prompt fix into a weight fix when the instruction can't be changed.
 
 ## 9. Limitations

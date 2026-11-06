@@ -50,5 +50,18 @@ Filled from `continuation/RESULT_TEMPLATE.md`. Supports `blog/failure-levels.md`
   - Built by the operator session (Claude Opus), not by an autonomous editor.
 - **Offline attempts before it (all on recorded decisions, no rollouts):** `st11a5` and `st1016a4` (axis steering, 21/21 still release); `v2s-b` (mean state shift, 6/6 release); `v2m-h`, `v2m-f` and `v2m-2` (40-slot per-token shift: 15, 13 and 8 of 21 release); `v2t-f` (with text slots: 13/21); `v2mi-f` (with image cells: **0/21**; carries 0/9 and all 19 phase-2 decisions unchanged).
 - **Practice, closed loop:** slots 20000–20031, 25/32 vs base 3/32 (22 fixed, 0 broke, exact McNemar p ≈ 4.8×10⁻⁷).
-- **Held-out:** see `failure-levels.md` §5.5 (slots 90000–90127, 128 per arm, order alternating by half, run by `weightsmith/heldout.py`).
-- **Retention:** seven other tasks, see `failure-levels.md` §5.5.
+- **Held-out (operator, `weightsmith/heldout.py`, slots 90000–90127, order alternating by half):**
+  - base 27/128 (Wilson 0.149–0.290), edit 106/128 (0.753–0.884);
+  - 81 fixed, 2 broke, exact McNemar p = 7.2×10⁻²²;
+  - paired bootstrap difference +61.7 pp [+52.3, +70.3];
+  - mean steps to success 412 → 300.
+- **Transfer, PickGlassesTask:**
+  - practice: 22/32 vs 12/32 (15 / 5), then on fresh slots 24/32 vs 14/32 (13 / 3);
+  - held-out (slots 90000–90063): **44/64 vs 22/64**, 31 fixed / 9 broke, p = 6.8×10⁻⁴, Wilson 0.566–0.788 vs 0.239–0.466.
+- **Other tasks (edit vs earlier base on the same slots):** cube into bowl 16/16 vs 16/16; banana onto plate 16/16 vs 16/16; stack yellow on red 17/32 vs 14/32; mustard 12/32 vs 7/32; bowls 21/32 vs 19/32.
+  - Butter onto raisin box: 10/16 vs 14/16. The *unedited* rerun on the same slots scored 8/16 (0 / 6 vs the first base), so the apparent loss is within identical-weight noise.
+- **Preservation variant `v2p-f`:**
+  - Construction: image-cell keys only, plus 160 preservation keys (32 cells × 5 other tasks, mapped to zero), layers 0–16.
+  - Offline: 1/21 release.
+  - Closed loop: 24/32 vs 3/32 (21 / 0); butter 10/16. Not needed, given the identity result.
+- **GPU lanes:** success by lane across tonight's runs was 249/448 (lane 0) vs 199/368 (lane 1); no lane effect.
