@@ -9,7 +9,6 @@ import json
 import os
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -138,7 +137,8 @@ def test_build_keys_values_matches_definition():
 
     def gap(li):
         rows = [(f(x["vlm.resid_out"][:, li, b]) - f(o["vlm.resid_out"][:, li, a])).mean(0) for a, b in slot_map]
-        rows += [(f(x["vlm.img_resid_out"][:, li, c, e]) - f(o["vlm.img_resid_out"][:, li, c, e])).mean(0) for c, e in cells]
+        rows += [(f(x["vlm.img_resid_out"][:, li, c, e]) - f(o["vlm.img_resid_out"][:, li, c, e])).mean(0)
+                 for c, e in cells]
         return np.stack(rows)
 
     for L in (6, 8):
@@ -159,7 +159,8 @@ def test_build_keys_values_matches_definition():
 
 
 def test_build_edit_factored_equals_dense_closed_form():
-    kv = {3: (RNG.normal(size=(8, 40)), RNG.normal(size=(8, 9))), 4: (RNG.normal(size=(5, 40)), RNG.normal(size=(5, 9)))}
+    kv = {3: (RNG.normal(size=(8, 40)), RNG.normal(size=(8, 9))),
+          4: (RNG.normal(size=(5, 40)), RNG.normal(size=(5, 9)))}
     e = D.build_edit(kv, 1e-3)
     for L, (K, V) in kv.items():
         lr = e.deltas[D.MLP_DOWN.format(L)]
@@ -211,7 +212,8 @@ def test_bf16_round_matches_sandbox_helper_and_rounds_to_even():
 
 def test_edit_save_load_apply_roundtrip(tmp_path):
     W = {"a": D.bf16_round(RNG.normal(size=(30, 7))), "b": D.bf16_round(RNG.normal(size=(30, 7)))}
-    e = D.Edit({"a": RNG.normal(size=(30, 7)) * 1e-2, "b": D.LowRank(RNG.normal(size=(30, 2)), RNG.normal(size=(2, 7)) * 1e-2)},
+    e = D.Edit({"a": RNG.normal(size=(30, 7)) * 1e-2,
+                "b": D.LowRank(RNG.normal(size=(30, 2)), RNG.normal(size=(2, 7)) * 1e-2)},
                {"note": "test"})
     p = tmp_path / "edit.npz"
     e.save(p)
@@ -326,7 +328,8 @@ def test_rendered_build_script_reproduces_library_result(captures, mode):
     sb = FakeSandbox()
     out = sb.run(script)
     res = D.parse_result(out)
-    slot_map = D.pi05_slot_map(TOK_O, TOK_X, [t != 0 for t in TOK_O], [t != 0 for t in TOK_X]) if mode != "image" else None
+    slot_map = (D.pi05_slot_map(TOK_O, TOK_X, [t != 0 for t in TOK_O], [t != 0 for t in TOK_X])
+                if mode != "image" else None)
     if slot_map:
         assert slot_map == [(0, 0), (1, 1), (2, 2)] + [(7 + j, 9 + j) for j in range(8)]
         assert res["min_slot_consistency"] == 1.0

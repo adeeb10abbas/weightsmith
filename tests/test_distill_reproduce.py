@@ -30,7 +30,8 @@ sys.path.insert(0, str(REPO))
 from weightsmith import distill as D  # noqa: E402
 
 PROJECT = os.environ.get("WSP_DISTILL_PROJECT")
-pytestmark = pytest.mark.skipif(not PROJECT, reason="set WSP_DISTILL_PROJECT to the cube-then-banana project root on the GPU host")
+pytestmark = pytest.mark.skipif(
+    not PROJECT, reason="set WSP_DISTILL_PROJECT to the cube-then-banana project root on the GPU host")
 
 # How the stored candidates were built (study/results/opus/ctb/v2mi_edit.py, v2mi2_edit.py): capture c2-multi holds
 # 6 premature-release decisions x 8 wordings; items 0-5 = original wording, items 12-17 = explicit wording.
@@ -55,7 +56,8 @@ def owsp(*args: str, script: str | None = None, tmp: Path | None = None) -> str:
     return p.stdout + p.stderr
 
 
-@pytest.mark.parametrize("target", [t for t in os.environ.get("WSP_DISTILL_TARGETS", "abl-imgl8,v2mi-f").split(",") if t])
+@pytest.mark.parametrize(
+    "target", [t for t in os.environ.get("WSP_DISTILL_TARGETS", "abl-imgl8,v2mi-f").split(",") if t])
 def test_reproduce_stored_candidate(target, tmp_path):
     cfg = D.BuildConfig(**COMMON, **TARGETS[target])
     fresh = f"rep-{target}-{time.strftime('%m%d-%H%M%S')}"
@@ -68,7 +70,7 @@ def test_reproduce_stored_candidate(target, tmp_path):
     diff_stored = json.loads(owsp("diff", target))["edited_tensors"]
 
     rows = []
-    for b, c in zip(built["layers"], cmp["layers"]):
+    for b, c in zip(built["layers"], cmp["layers"], strict=True):
         name = b["tensor"]
         df, ds = diff_fresh[name], diff_stored[name]
         rows.append({"tensor": name, "fresh_sha256": b["sha256"], "stored_sha256": c["stored_sha256"],
@@ -98,4 +100,5 @@ def test_reproduce_stored_candidate(target, tmp_path):
     for r in rows:
         assert r["max_abs_diff_vs_stored"] <= 2 ** -7 * max(1.0, r["stored_max_abs_delta"]) * 2
         assert r["fresh_sha256"] == r["rederived_in_stored_sandbox_sha256"]  # the build is deterministic
-        assert abs(r["owsp_diff_fresh"]["changed"] - r["owsp_diff_stored"]["changed"]) <= 1e-4 * r["owsp_diff_stored"]["changed"]
+        changed = r["owsp_diff_stored"]["changed"]
+        assert abs(r["owsp_diff_fresh"]["changed"] - changed) <= 1e-4 * changed

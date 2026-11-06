@@ -48,8 +48,9 @@ import shlex
 import subprocess
 import sys
 import textwrap
+from collections.abc import Callable, Mapping, Sequence
 from pathlib import Path
-from typing import Any, Callable, Mapping, Sequence
+from typing import Any
 
 import numpy as np
 
@@ -99,7 +100,8 @@ def closed_form_edit(K: np.ndarray, V: np.ndarray, lam_rel: float = 1e-3) -> np.
     return K.T @ np.linalg.solve(G + lam * np.eye(len(G)), V)
 
 
-def layer_increments(gaps: Mapping[int, np.ndarray], layers: Sequence[int], alpha: float = 1.0) -> dict[int, np.ndarray]:
+def layer_increments(gaps: Mapping[int, np.ndarray], layers: Sequence[int],
+                     alpha: float = 1.0) -> dict[int, np.ndarray]:
     """Per-layer targets ``V_L = alpha * (d_L - d_{L-1})`` with ``d_{-1} = 0``.
 
     ``gaps[L]`` is ``d_L``: the mean (explicit - original) residual difference at the output of layer L, one row
@@ -205,7 +207,8 @@ def build_keys_values(orig: Mapping[str, np.ndarray], expl: Mapping[str, np.ndar
     cells = [(int(c), int(e)) for c, e in cells] if use_image else []
     ref = orig["vlm.resid_out" if use_state else "vlm.img_resid_out"]
     n_items, n_cap = ref.shape[0], ref.shape[1]
-    for k in (["vlm.mlp_hidden", "vlm.resid_out"] if use_state else []) + (["vlm.img_mlp_hidden", "vlm.img_resid_out"] if use_image else []):
+    for k in ((["vlm.mlp_hidden", "vlm.resid_out"] if use_state else [])
+              + (["vlm.img_mlp_hidden", "vlm.img_resid_out"] if use_image else [])):
         src = (orig,) if "hidden" in k else (orig, expl)
         for arrs in src:
             if k not in arrs:
@@ -225,7 +228,8 @@ def build_keys_values(orig: Mapping[str, np.ndarray], expl: Mapping[str, np.ndar
             rows += [(Re[:, li, b].astype(np.float64) - Ro[:, li, a].astype(np.float64)).mean(0) for a, b in slot_map]
         if use_image:
             Io, Ie = orig["vlm.img_resid_out"], expl["vlm.img_resid_out"]
-            rows += [(Ie[:, li, c, e].astype(np.float64) - Io[:, li, c, e].astype(np.float64)).mean(0) for c, e in cells]
+            rows += [(Ie[:, li, c, e].astype(np.float64) - Io[:, li, c, e].astype(np.float64)).mean(0)
+                     for c, e in cells]
         return np.stack(rows)
 
     def keys(L):
@@ -350,7 +354,7 @@ class Edit:
                          "fro": float(np.linalg.norm(self.dense(name)))}
         return out
 
-    def to_low_rank(self, tol: float = 1e-6) -> "Edit":
+    def to_low_rank(self, tol: float = 1e-6) -> Edit:
         """Same edit with every delta factorised by :func:`low_rank` (factor pairs re-truncated)."""
         out = {}
         for name, d in self.deltas.items():
@@ -373,7 +377,7 @@ class Edit:
             np.savez(f, **arrays)
 
     @classmethod
-    def load(cls, path: str | Path) -> "Edit":
+    def load(cls, path: str | Path) -> Edit:
         z = np.load(path, allow_pickle=False)
         meta = json.loads(bytes(z["meta.json"]).decode())
         deltas: dict[str, np.ndarray | LowRank] = {}
@@ -426,7 +430,8 @@ def panda_fk(q: Sequence[float]) -> np.ndarray:
     for i, (a, d, al) in enumerate(dh):
         th = float(q[i])
         ca, sa, ct, st = np.cos(al), np.sin(al), np.cos(th), np.sin(th)
-        T = T @ np.array([[ct, -st, 0, a], [st * ca, ct * ca, -sa, -d * sa], [st * sa, ct * sa, ca, d * ca], [0, 0, 0, 1]])
+        T = T @ np.array([[ct, -st, 0, a], [st * ca, ct * ca, -sa, -d * sa], [st * sa, ct * sa, ca, d * ca],
+                          [0, 0, 0, 1]])
     F = np.eye(4)
     F[2, 3] = 0.257
     return (T @ F)[:3, 3]
@@ -541,7 +546,7 @@ class BuildConfig:
             raise ValueError("slot_map must be 'pi05' or a list of [orig_position, expl_position] pairs")
 
     @classmethod
-    def from_dict(cls, d: Mapping[str, Any]) -> "BuildConfig":
+    def from_dict(cls, d: Mapping[str, Any]) -> BuildConfig:
         names = {f.name for f in dataclasses.fields(cls)}
         unknown = set(d) - names
         if unknown:
@@ -572,19 +577,22 @@ def _sb_build(cfg, io):
     xi = cfg.get("expl_items") or list(range(len(idx_x["items"])))
     if len(oi) != len(xi):
         raise ValueError(f"{len(oi)} original vs {len(xi)} explicit items")
-    for a, b in zip(oi, xi):
+    for a, b in zip(oi, xi, strict=True):
         ia, ib = idx_o["items"][a], idx_x["items"][b]
         if (ia["episode"], ia["k"]) != (ib["episode"], ib["k"]):
-            raise ValueError(f"item {a} vs {b}: different decisions {ia['episode']}/{ia['k']} and {ib['episode']}/{ib['k']}")
+            raise ValueError(f"item {a} vs {b}: different decisions {ia['episode']}/{ia['k']} and "
+                             f"{ib['episode']}/{ib['k']}")
         if cfg.get("instruction") and ia["prompt"] != cfg["instruction"]:
             raise ValueError(f"original item {a} was captured with {ia['prompt']!r}, not {cfg['instruction']!r}")
         if cfg.get("explicit_instruction") and ib["prompt"] != cfg["explicit_instruction"]:
-            raise ValueError(f"explicit item {b} was captured with {ib['prompt']!r}, not {cfg['explicit_instruction']!r}")
+            raise ValueError(f"explicit item {b} was captured with {ib['prompt']!r}, "
+                             f"not {cfg['explicit_instruction']!r}")
     if idx_o["vlm_layers"] != idx_x["vlm_layers"]:
         raise ValueError("the two captures hold different VLM layers")
     for k in keys:
         if k not in arr_o or k not in arr_x:
-            raise KeyError(f"capture lacks {k} (capture with image_tokens for image modes, prompt_tokens for state modes)")
+            raise KeyError(f"capture lacks {k} (capture with image_tokens for image modes, "
+                           "prompt_tokens for state modes)")
     orig = {k: v[oi] for k, v in arr_o.items()}
     expl = {k: v[xi] for k, v in arr_x.items()}
     slot_map, slot_info = None, {}
@@ -604,7 +612,7 @@ def _sb_build(cfg, io):
         for a, b in slot_map:  # per decision: same token at both positions and both real tokens
             ok = [io_["prompt_token_ids_at_slots"][a] == ix_["prompt_token_ids_at_slots"][b]
                   and io_["prompt_token_valid_at_slots"][a] and ix_["prompt_token_valid_at_slots"][b]
-                  for io_, ix_ in ((idx_o["items"][i], idx_x["items"][j]) for i, j in zip(oi, xi))]
+                  for io_, ix_ in ((idx_o["items"][i], idx_x["items"][j]) for i, j in zip(oi, xi, strict=True))]
             same.append(sum(ok) / len(ok))
         slot_info = {"slot_positions": pos, "min_slot_consistency": min(same) if same else None,
                      "slots_not_fully_consistent": int(sum(s < 1 for s in same))}
@@ -638,10 +646,10 @@ def _sb_build(cfg, io):
             factors[f"left/{name}"], factors[f"right/{name}"] = K.T.astype(np.float32), X.astype(np.float32)
         report.append(row)
         n_factor += K.shape[0] * (K.shape[1] + V.shape[1])
-        print("L%2d %-34s keys %3d  fit-rel-err %.2e  |dW|/|W| %.4f  changed %.1f%%%s" % (
-            L, name, row["keys"], row["fit_rel_err"], row["dW_rel_norm"], 100 * row["changed_fraction"],
-            ("  vs stored: max|diff| %.3g, %d differ" % (row["max_abs_diff_vs_stored"], row["n_diff_vs_stored"]))
-            if cfg.get("compare") else ""), flush=True)
+        vs_stored = (f"  vs stored: max|diff| {row['max_abs_diff_vs_stored']:.3g}, {row['n_diff_vs_stored']:d} differ"
+                     if cfg.get("compare") else "")
+        print(f"L{L:2d} {name!s:<34} keys {row['keys']:3d}  fit-rel-err {row['fit_rel_err']:.2e}  "
+              f"|dW|/|W| {row['dW_rel_norm']:.4f}  changed {100 * row['changed_fraction']:.1f}%{vs_stored}", flush=True)
     summary = {"config": cfg, "layers": report, "n_items": len(oi), **slot_info,
                "factor_params": int(n_factor)}
     if factors and io.get("scratch"):
@@ -673,14 +681,14 @@ def _sb_check(cfg, io):
         groups = cfg.get("check_groups") or {"check": [0, len(kb)]}
         out["check"] = {g: decision_summary(pb[lo:hi], None, pc[lo:hi]) for g, (lo, hi) in groups.items()}
     d = out["decisions"]
-    print("decisions (n=%d): gripper closed  base %d | explicit %d | edit %d   flips vs base %d   edit agrees with "
-          "explicit %d/%d (base %d/%d)" % (d["n"], d["closed_base"], d["closed_expl"], d["closed_cand"],
-                                          d["flips_vs_base"], d["cand_agrees_expl"], d["n"], d["base_agrees_expl"], d["n"]))
-    print("  chunk-end end effector: base->explicit %.1f cm, edit->explicit %.1f cm, edit moved %.1f cm" % (
-        d["ee_base_to_expl_cm"], d["ee_cand_to_expl_cm"], d["ee_shift_cand_vs_base_cm"]))
+    print(f"decisions (n={d['n']:d}): gripper closed  base {d['closed_base']:d} | explicit {d['closed_expl']:d} | "
+          f"edit {d['closed_cand']:d}   flips vs base {d['flips_vs_base']:d}   edit agrees with "
+          f"explicit {d['cand_agrees_expl']:d}/{d['n']:d} (base {d['base_agrees_expl']:d}/{d['n']:d})")
+    print(f"  chunk-end end effector: base->explicit {d['ee_base_to_expl_cm']:.1f} cm, "
+          f"edit->explicit {d['ee_cand_to_expl_cm']:.1f} cm, edit moved {d['ee_shift_cand_vs_base_cm']:.1f} cm")
     for g, c in out.get("check", {}).items():
-        print("check %-26s (n=%2d): gripper closed base %2d | edit %2d   flips %2d   edit moved %.1f cm" % (
-            g, c["n"], c["closed_base"], c["closed_cand"], c["flips_vs_base"], c["ee_shift_cand_vs_base_cm"]))
+        print(f"check {g!s:<26} (n={c['n']:2d}): gripper closed base {c['closed_base']:2d} | edit {c['closed_cand']:2d}"
+              f"   flips {c['flips_vs_base']:2d}   edit moved {c['ee_shift_cand_vs_base_cm']:.1f} cm")
     return out
 
 
@@ -696,7 +704,8 @@ def _sb_select(rule, io):
         scanned += 1
         if rule["rule"] == "early_release":
             ks = select_early_releases(o["actions"], o["gripper"], max_hold=int(rule.get("max_hold", 2)),
-                                       min_grip=float(rule.get("min_grip", 0.1)), max_grip=float(rule.get("max_grip", 0.9)),
+                                       min_grip=float(rule.get("min_grip", 0.1)),
+                                       max_grip=float(rule.get("max_grip", 0.9)),
                                        first_only=bool(rule.get("first_only", True)))
         elif rule["rule"] == "grasp":
             ks = select_grasps(o["actions"], o["gripper"], max_open_grip=float(rule.get("max_open_grip", 0.05)),
@@ -709,9 +718,9 @@ def _sb_select(rule, io):
     lim = rule.get("limit")
     if lim:
         items = items[:int(lim)]
-    print("scanned %d episodes, selected %d decisions" % (scanned, len(items)))
+    print(f"scanned {scanned:d} episodes, selected {len(items):d} decisions")
     for it in items:
-        print("  %s k=%d step=%d gripper=%.3f" % (it["episode"], it["k"], it["step"], it["gripper"]))
+        print(f"  {it['episode']!s} k={it['k']:d} step={it['step']:d} gripper={it['gripper']:.3f}")
     return {"items": [{"episode": it["episode"], "k": it["k"]} for it in items], "details": items, "scanned": scanned}
 
 
@@ -962,14 +971,17 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
     ev = cfg.get("eval", {})
     ho = cfg.get("heldout", {})
     host = os.environ.get("WSP_HOST", "<gpu-host>")
+    root, n, off = cfg["project"], ev.get("n", 32), ev.get("offset", 0)
+    ho_start, ho_n = ho.get("slot_start", 90000), ho.get("n", 128)
+    log = f"heldout-{cand}.log"
     print(textwrap.dedent(f"""
         next steps
           1. closed loop, practice slots, ORIGINAL instruction, paired with base on the same slots:
-               WSP_ROOT={cfg['project']} bin/owsp eval base --n {ev.get('n', 32)} --offset {ev.get('offset', 0)}   # if not run yet
-               WSP_ROOT={cfg['project']} bin/owsp eval {cand} --n {ev.get('n', 32)} --offset {ev.get('offset', 0)}
+               WSP_ROOT={root} bin/owsp eval base --n {n} --offset {off}   # if not run yet
+               WSP_ROOT={root} bin/owsp eval {cand} --n {n} --offset {off}
           2. if it clearly helps: operator held-out run on unseen slots (on the GPU host, long; poll the log):
-               ssh {host} 'cd ~/weightsmith && WSP_ROOT={cfg['project']} nohup setsid python3 weightsmith/heldout.py \\
-                   --cand {cand} --slot-start {ho.get('slot_start', 90000)} --n {ho.get('n', 128)} > heldout-{cand}.log 2>&1 < /dev/null &'
+               ssh {host} 'cd ~/weightsmith && WSP_ROOT={root} nohup setsid python3 weightsmith/heldout.py \\
+                   --cand {cand} --slot-start {ho_start} --n {ho_n} > {log} 2>&1 < /dev/null &'
           3. regression checks: copy the candidate's edits into other task projects and run step 1 there.
         """))
     return result
@@ -983,7 +995,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     r.add_argument("config")
     r.add_argument("--dry-run", action="store_true", help="print commands, specs and scripts; touch nothing")
     r.add_argument("--steps", default="select,capture,build,check")
-    r.add_argument("--workdir", default=None, help="where specs/scripts/results are written (default distill-runs/NAME)")
+    r.add_argument("--workdir", default=None,
+                   help="where specs/scripts/results are written (default distill-runs/NAME)")
     r.add_argument("--owsp", default=None, help="path to bin/owsp (default: this repo's)")
     s = sp.add_parser("render", help="print a rendered sandbox script")
     s.add_argument("config")
