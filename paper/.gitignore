@@ -1,0 +1,16 @@
+# The repository root ignores *.png and *.jpg; the paper keeps its preview images and the teaser source frame.
+!*.png
+!*.jpg
+
+# LaTeX intermediates
+*.aux
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# build product of arxiv.sh
+arxiv_submission.tar.gz
