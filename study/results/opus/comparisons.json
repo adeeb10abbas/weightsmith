@@ -215,7 +215,21 @@
    "cand": 9,
    "fixed": 6,
    "broke": 10,
-   "source": "controls/ctl1-90000-64 (random-direction control: v2mi-f's layers, rank and singular values, random orthonormal directions, seed 0) vs the unedited run of heldout/v2mi-f-RubiksCubeThenBananaTask-90000-128 on slots 90000-90063; McNemar p=0.45"
+   "source": "controls/ctl1-90000-64.results.json (random-direction control: v2mi-f's layers, rank and singular values, random orthonormal directions, seed 0) vs the unedited run of heldout/v2mi-f-RubiksCubeThenBananaTask-90000-128 on slots 90000-90063; McNemar p=0.45"
+  },
+  {
+   "level": "Language binding",
+   "task": "Cube then banana",
+   "label": "Explicit two-step wording, HELD-OUT seeds (no weight change)",
+   "editor": "Claude Opus",
+   "type": "prompt",
+   "values_changed": 0,
+   "n": 64,
+   "base": 13,
+   "cand": 57,
+   "fixed": 45,
+   "broke": 1,
+   "source": "controls/ctl1-90000-64 (explicit instruction, unedited weights) vs the unedited run of heldout/v2mi-f-RubiksCubeThenBananaTask-90000-128 on slots 90000-90063; McNemar p=1.3e-12; vs distilled edit 57 vs 50 (11/4, p=0.12), vs 0.16% variant 57 vs 54 (10/7, p=0.63)"
   },
   {
    "level": "Binding edit on other tasks",

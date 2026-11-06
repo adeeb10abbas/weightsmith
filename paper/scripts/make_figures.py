@@ -512,7 +512,8 @@ def outcome_rows(full=False):
         return groups
     return [
         ("Distilled edit, cube then banana", [
-            ("Explicit wording, no weight change", find("Cube then banana", "Explicit two-step"), "noedit"),
+            ("Explicit wording, no weight change", find("Cube then banana", "Explicit two-step wording (no"), "noedit"),
+            ("Explicit wording, held-out seeds", find("Cube then banana", "Explicit two-step wording, HELD-OUT"), "noedit"),
             ("Practice seeds", find("Cube then banana", "v2mi-f: binding edit, practice"), ""),
             ("Held-out seeds", ho_row(CTB), "held"),
             ("0.16% variant, held-out seeds", ho_row(CTB_MIN), "held"),
@@ -682,8 +683,8 @@ def fig_detectability():
     lab = dict(fontsize=FS_SMALL, va="center")
     ax.text(150, 53.0, "distilled edit, held-out\n(full and 0.16% variant)", ha="left", color=TEAL, weight="bold",
             linespacing=1.05, **lab)
-    ax.text(36.5, 66.0, "distilled edit, practice seeds", ha="left", color=TEAL, **lab)
-    ax.text(36.5, 58.8, "explicit wording, no edit", ha="left", color=MUTE, **lab)
+    ax.text(36.5, 62.6, "distilled edit, practice seeds", ha="left", color=TEAL, **lab)
+    ax.text(36.5, 55.6, "explicit wording, no edit", ha="left", color=MUTE, **lab)
     ax.text(70, 44.0, "cube left of bowl, held-out", ha="left", color=TEAL, **lab)
     ax.text(70, 34.5, "eyeglasses, held-out and practice", ha="left", color=TEAL, **lab)
     ax.text(70, 24.5, "runtime gripper threshold", ha="left", color=MUTE, **lab)
@@ -740,6 +741,7 @@ LABELS = {  # readable names for the internal candidate labels of comparisons.js
     "binding edit + preservation keys (v2p-f)": "With preservation keys (v2p-f)",
     "minimal edit (0.16%), HELD-OUT seeds": "0.16% variant, held-out",
     "random directions, same size as v2mi-f, HELD-OUT seeds": "Random directions, same size, held-out",
+    "Explicit two-step wording, HELD-OUT seeds (no weight change)": "Explicit wording, held-out (no edit)",
     "binding edit, HELD-OUT seeds": "held-out",
     "binding edit": "practice",
     "binding edit, practice (2 runs)": "practice, two runs",

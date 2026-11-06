@@ -1,0 +1,684 @@
+{
+ "plan": {
+  "arms": {
+   "rand": {
+    "cand": "ctl-rand",
+    "workspace": "/home/ali/vibes/opus-weight-surgery/projects/cube-then-banana/heldout/ctl1-90000-64/frozen-rand",
+    "fingerprint": "1efd3512a92642f7",
+    "prompt": null
+   },
+   "teacher": {
+    "cand": null,
+    "workspace": null,
+    "fingerprint": null,
+    "prompt": "Put the cube in the bowl then put the banana in the bowl"
+   }
+  },
+  "task": "RubiksCubeThenBananaTask",
+  "default_instruction": "Put the cube then the banana in the bowl",
+  "slots": [
+   90000,
+   90063
+  ],
+  "schedule": [
+   [
+    "rand",
+    90000,
+    90063
+   ],
+   [
+    "teacher",
+    90000,
+    90063
+   ]
+  ],
+  "started": "Fri Nov  6 11:39:08 2026"
+ },
+ "finished": "Fri Nov  6 12:33:02 2026",
+ "per_arm": {
+  "rand": {
+   "90000": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90001": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90002": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90003": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90004": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90005": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90006": {
+    "ok": true,
+    "success": true,
+    "steps": 466
+   },
+   "90007": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90008": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90009": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90010": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90011": {
+    "ok": true,
+    "success": true,
+    "steps": 385
+   },
+   "90012": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90013": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90014": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90015": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90016": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90017": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90018": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90019": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90020": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90021": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90022": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90023": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90024": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90025": {
+    "ok": true,
+    "success": true,
+    "steps": 409
+   },
+   "90026": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90027": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90028": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90029": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90030": {
+    "ok": true,
+    "success": true,
+    "steps": 281
+   },
+   "90031": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90032": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90033": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90034": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90035": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90036": {
+    "ok": true,
+    "success": true,
+    "steps": 273
+   },
+   "90037": {
+    "ok": true,
+    "success": true,
+    "steps": 362
+   },
+   "90038": {
+    "ok": true,
+    "success": true,
+    "steps": 362
+   },
+   "90039": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90040": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90041": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90042": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90043": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90044": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90045": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90046": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90047": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90048": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90049": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90050": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90051": {
+    "ok": true,
+    "success": true,
+    "steps": 249
+   },
+   "90052": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90053": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90054": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90055": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90056": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90057": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90058": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90059": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90060": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90061": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90062": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90063": {
+    "ok": true,
+    "success": true,
+    "steps": 796
+   }
+  },
+  "teacher": {
+   "90000": {
+    "ok": true,
+    "success": true,
+    "steps": 289
+   },
+   "90001": {
+    "ok": true,
+    "success": true,
+    "steps": 273
+   },
+   "90002": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90003": {
+    "ok": true,
+    "success": true,
+    "steps": 387
+   },
+   "90004": {
+    "ok": true,
+    "success": true,
+    "steps": 291
+   },
+   "90005": {
+    "ok": true,
+    "success": true,
+    "steps": 299
+   },
+   "90006": {
+    "ok": true,
+    "success": true,
+    "steps": 247
+   },
+   "90007": {
+    "ok": true,
+    "success": true,
+    "steps": 242
+   },
+   "90008": {
+    "ok": true,
+    "success": true,
+    "steps": 271
+   },
+   "90009": {
+    "ok": true,
+    "success": true,
+    "steps": 872
+   },
+   "90010": {
+    "ok": true,
+    "success": true,
+    "steps": 272
+   },
+   "90011": {
+    "ok": true,
+    "success": true,
+    "steps": 266
+   },
+   "90012": {
+    "ok": true,
+    "success": true,
+    "steps": 630
+   },
+   "90013": {
+    "ok": true,
+    "success": true,
+    "steps": 234
+   },
+   "90014": {
+    "ok": true,
+    "success": true,
+    "steps": 227
+   },
+   "90015": {
+    "ok": true,
+    "success": true,
+    "steps": 235
+   },
+   "90016": {
+    "ok": true,
+    "success": true,
+    "steps": 287
+   },
+   "90017": {
+    "ok": true,
+    "success": true,
+    "steps": 390
+   },
+   "90018": {
+    "ok": true,
+    "success": true,
+    "steps": 241
+   },
+   "90019": {
+    "ok": true,
+    "success": true,
+    "steps": 242
+   },
+   "90020": {
+    "ok": true,
+    "success": true,
+    "steps": 301
+   },
+   "90021": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90022": {
+    "ok": true,
+    "success": true,
+    "steps": 207
+   },
+   "90023": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90024": {
+    "ok": true,
+    "success": true,
+    "steps": 245
+   },
+   "90025": {
+    "ok": true,
+    "success": true,
+    "steps": 243
+   },
+   "90026": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90027": {
+    "ok": true,
+    "success": true,
+    "steps": 222
+   },
+   "90028": {
+    "ok": true,
+    "success": true,
+    "steps": 294
+   },
+   "90029": {
+    "ok": true,
+    "success": true,
+    "steps": 245
+   },
+   "90030": {
+    "ok": true,
+    "success": true,
+    "steps": 256
+   },
+   "90031": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90032": {
+    "ok": true,
+    "success": true,
+    "steps": 380
+   },
+   "90033": {
+    "ok": true,
+    "success": true,
+    "steps": 271
+   },
+   "90034": {
+    "ok": true,
+    "success": true,
+    "steps": 312
+   },
+   "90035": {
+    "ok": true,
+    "success": true,
+    "steps": 246
+   },
+   "90036": {
+    "ok": true,
+    "success": true,
+    "steps": 271
+   },
+   "90037": {
+    "ok": true,
+    "success": true,
+    "steps": 257
+   },
+   "90038": {
+    "ok": true,
+    "success": true,
+    "steps": 230
+   },
+   "90039": {
+    "ok": true,
+    "success": true,
+    "steps": 286
+   },
+   "90040": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90041": {
+    "ok": true,
+    "success": true,
+    "steps": 253
+   },
+   "90042": {
+    "ok": true,
+    "success": true,
+    "steps": 256
+   },
+   "90043": {
+    "ok": true,
+    "success": false,
+    "steps": 900
+   },
+   "90044": {
+    "ok": true,
+    "success": true,
+    "steps": 245
+   },
+   "90045": {
+    "ok": true,
+    "success": true,
+    "steps": 242
+   },
+   "90046": {
+    "ok": true,
+    "success": true,
+    "steps": 287
+   },
+   "90047": {
+    "ok": true,
+    "success": true,
+    "steps": 232
+   },
+   "90048": {
+    "ok": true,
+    "success": true,
+    "steps": 248
+   },
+   "90049": {
+    "ok": true,
+    "success": true,
+    "steps": 231
+   },
+   "90050": {
+    "ok": true,
+    "success": true,
+    "steps": 236
+   },
+   "90051": {
+    "ok": true,
+    "success": true,
+    "steps": 241
+   },
+   "90052": {
+    "ok": true,
+    "success": true,
+    "steps": 299
+   },
+   "90053": {
+    "ok": true,
+    "success": true,
+    "steps": 271
+   },
+   "90054": {
+    "ok": true,
+    "success": true,
+    "steps": 599
+   },
+   "90055": {
+    "ok": true,
+    "success": true,
+    "steps": 269
+   },
+   "90056": {
+    "ok": true,
+    "success": true,
+    "steps": 243
+   },
+   "90057": {
+    "ok": true,
+    "success": true,
+    "steps": 272
+   },
+   "90058": {
+    "ok": true,
+    "success": true,
+    "steps": 253
+   },
+   "90059": {
+    "ok": true,
+    "success": true,
+    "steps": 234
+   },
+   "90060": {
+    "ok": true,
+    "success": true,
+    "steps": 253
+   },
+   "90061": {
+    "ok": true,
+    "success": true,
+    "steps": 230
+   },
+   "90062": {
+    "ok": true,
+    "success": true,
+    "steps": 225
+   },
+   "90063": {
+    "ok": true,
+    "success": true,
+    "steps": 272
+   }
+  }
+ }
+}
