@@ -15,7 +15,8 @@ Start with the [README](../README.md). Then pick what you need:
 | See every editor run, accepted or not | [LEADERBOARD.md](../LEADERBOARD.md) |
 | Find a result file or submit a result | [results/](../results/README.md) |
 | Read the full report behind every number | [study/blog/failure-levels.md](../study/blog/failure-levels.md) |
-| Rebuild the paper's edit | [study/results/opus/ctb/](../study/results/opus/ctb/README.md) |
+| Distil a known-good rewording into the weights (Experimental) | [DISTILL.md](DISTILL.md) |
+| Rebuild the paper's edit | [DISTILL.md](DISTILL.md#status) and [study/results/opus/ctb/](../study/results/opus/ctb/README.md) |
 | Read the paper | [PDF](https://adeeb10abbas.github.io/weightsmith/paper.pdf) · [project page](https://adeeb10abbas.github.io/weightsmith/) · [LaTeX source](../paper/) |
 | Contribute | [CONTRIBUTING.md](../CONTRIBUTING.md) |
 

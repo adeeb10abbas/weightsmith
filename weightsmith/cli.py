@@ -5,6 +5,8 @@
     weightsmith edit apply EDIT --workspace BASE_EXPORT --out NEW_CANDIDATE_DIR
     weightsmith edit apply EDIT --arrays IN.npz --out OUT.npz
     weightsmith mcp [--root WSP_ROOT] [--host WSP_HOST]      (needs: pip install 'weightsmith[mcp]')
+    weightsmith distill run CONFIG.json [--dry-run]          (Experimental; see docs/DISTILL.md)
+    weightsmith distill render CONFIG.json [--script build|compare|select]
 
 These wrap the research runtime without changing it: ``bin/owsp``, ``weightsmith/heldout.py`` and
 the drivers keep their own entry points (see README.md).
@@ -96,9 +98,10 @@ def _cmd_apply(a: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(
         prog="weightsmith",
-        description="Tools for LLM weight editing of robot policies: portable edit files and an MCP server.")
+        description="Tools for LLM weight editing of robot policies: portable edit files, an MCP server and "
+                    "(experimental) closed-form instruction distillation.")
     ap.add_argument("--version", action="version", version=f"weightsmith {_version()}")
-    sub = ap.add_subparsers(dest="command", required=True, metavar="{edit,mcp}")
+    sub = ap.add_subparsers(dest="command", required=True, metavar="{edit,mcp,distill}")
 
     edit = sub.add_parser("edit", help="export, inspect and apply portable weight edits",
                           description="Portable weight edits: one self-describing file per candidate.")
@@ -136,6 +139,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     # `weightsmith mcp ...` is dispatched in main() so that its own options reach the server's parser.
     sub.add_parser("mcp", help="run the MCP server (stdio) over the owsp tools; see `weightsmith mcp --help`")
+    sub.add_parser("distill", help="EXPERIMENTAL: distil a known-good rewording into the weights in closed form "
+                                   "(build step proven bit-exact; select/capture/check only dry-run); "
+                                   "see `weightsmith distill --help`")
     return ap
 
 
@@ -145,6 +151,10 @@ def main(argv: list[str] | None = None) -> int:
         from weightsmith import mcp_server
 
         return mcp_server.main(argv[1:])
+    if argv[:1] == ["distill"]:
+        from weightsmith import distill
+
+        return distill.main(argv[1:], prog="weightsmith distill")
     a = build_parser().parse_args(argv)
     try:
         return a.func(a)

@@ -19,7 +19,7 @@ weightsmith gives an LLM agent one tool, `owsp`, over OpenPI's π0.5 (3.35B para
 
 Each assumes a GPU host set up once with [docs/SETUP.md](docs/SETUP.md); the editor side is a `pip install`.
 
-**Fix a misread instruction without training.** If the policy fails under one wording but succeeds under an explicit rewording, *closed-form instruction distillation* writes the rewording's effect into the weights. At each VLM layer, one regularized minimum-norm update, ΔW = Kᵀ(KKᵀ + λI)⁻¹V, maps the original prompt's MLP inputs (K) to the change the rewording makes in that layer's residual update (V). The paper's edit is [22 lines of NumPy](study/results/opus/ctb/v2mi_edit.py) run in the `owsp py` sandbox; [`ctb/`](study/results/opus/ctb/README.md) holds every failed attempt and offline check. A packaged `weightsmith distill` command is on the [roadmap](#integrations).
+**Fix a misread instruction without training.** If the policy fails under one wording but succeeds under an explicit rewording, *closed-form instruction distillation* writes the rewording's effect into the weights. At each VLM layer, one regularized minimum-norm update, ΔW = Kᵀ(KKᵀ + λI)⁻¹V, maps the original prompt's MLP inputs (K) to the change the rewording makes in that layer's residual update (V). The paper's edit is [22 lines of NumPy](study/results/opus/ctb/v2mi_edit.py) run in the `owsp py` sandbox; [`ctb/`](study/results/opus/ctb/README.md) holds every failed attempt and offline check. *Experimental:* `weightsmith distill` packages the recipe as one command. Its build step rebuilds the paper's edits bit for bit; its other steps have only been dry-run so far ([docs/DISTILL.md](docs/DISTILL.md)).
 
 **Turn your MCP client into a policy editor.** `weightsmith mcp` serves the `owsp` tool surface as 10 typed tools (list tensors, replay activations, run NumPy on the weights, evaluate in closed loop), bound by the project's budget and sandbox. Claude Code:
 
@@ -82,14 +82,14 @@ Requirements (Linux, 24 GB NVIDIA GPU, ~60 GB disk) and the exact pins are in [d
 | Docker image of the editor-side toolkit, CPU only ([`docker/`](docker/README.md)) | Ready |
 | Headless editor drivers: Claude Code (`drivers/claude.sh`) · Codex CLI (`drivers/astra.sh`) | Ready · Experimental |
 | Hugging Face Hub folders for results and edits (`integrations/hub/`) | Experimental |
-| `weightsmith distill`: closed-form instruction distillation as one command | Roadmap |
+| [`weightsmith distill`](docs/DISTILL.md): closed-form instruction distillation as one command | Experimental |
 
 Setup and client configs: [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md). All documentation: [docs/](docs/README.md). Contributions and new leaderboard entries: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Repository map
 
 ```
-weightsmith/      runtime (owsp.py, heldout.py, eval pool, activation capture) + toolkit (edits, mcp_server, cli)
+weightsmith/      runtime (owsp.py, heldout.py, eval pool, activation capture) + toolkit (edits, mcp_server, distill, cli)
 bin/owsp          editor-side wrapper, local or over ssh: the only command an editor gets
 drivers/          headless editors: claude.sh (Claude Code), astra.sh (Codex CLI)
 configs/ briefs/  task configs and the briefs editors read

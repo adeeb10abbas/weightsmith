@@ -72,6 +72,29 @@ def test_mcp_subcommand_forwards_its_options(capsys):
     assert e.value.code == 0 and "--root" in capsys.readouterr().out
 
 
+def test_distill_subcommand_is_experimental_and_dry_runs(tmp_path, capsys, monkeypatch):
+    with pytest.raises(SystemExit) as e:
+        cli.main(["--help"])
+    assert e.value.code == 0 and "EXPERIMENTAL" in capsys.readouterr().out
+    with pytest.raises(SystemExit) as e:
+        cli.main(["distill", "--help"])
+    help_text = capsys.readouterr().out
+    assert e.value.code == 0 and help_text.startswith("usage: weightsmith distill")
+    assert "Experimental" in help_text and "dry-run" in help_text and "bit for bit" in help_text
+
+    example = REPO / "examples" / "cube_then_banana" / "distill.json"
+    code, script, _ = run(capsys, "distill", "render", str(example), "--script", "build")
+    assert code == 0 and script.startswith("# distill build: mode=image")
+    compile(script, "build.py", "exec")
+
+    def no_commands(*args, **kwargs):
+        raise AssertionError("a dry run must not run commands")
+
+    monkeypatch.setattr(subprocess, "run", no_commands)
+    code, out, _ = run(capsys, "distill", "run", str(example), "--dry-run", "--workdir", str(tmp_path))
+    assert code == 0 and "[dry-run]" in out and "heldout.py" in out and (tmp_path / "build.py").is_file()
+
+
 def test_version_flag():
     out = subprocess.run([sys.executable, "-m", "weightsmith.cli", "--version"], capture_output=True, text=True,
                          cwd=REPO, check=True)
