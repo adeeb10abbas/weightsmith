@@ -2,7 +2,7 @@
 
 Post only after the held-out and regression numbers are final. Every number here must match `failure-levels.md`.
 
-Attach `figures/opus_hero.png` to tweet 1 and to the LinkedIn post.
+Attach the before/after video (`site/assets/video/cube_then_banana.mp4`) to tweet 1 and to the LinkedIn post; `figures/opus_hero.png` works as a second image. Name the method as in the paper: *closed-form instruction distillation*.
 
 ## X / Twitter thread
 
@@ -45,7 +45,10 @@ Edit when you can show the network does the right thing under some input. Train 
 And a warning: identical weights, identical seeds, and still about 1 in 3 episodes flips outcome (GPU physics). A 16-episode "improvement" means nothing. We paired every comparison and held out the final test.
 
 **7/**
-Full report, data and code, written with @⟦ESMAEIL_HANDLE⟧: ⟦LINK⟧
+Paper: https://adeeb10abbas.github.io/weightsmith/paper.pdf
+Site + videos: https://adeeb10abbas.github.io/weightsmith/
+Code & benchmark: https://github.com/adeeb10abbas/weightsmith
+With @⟦ESMAEIL_X_HANDLE⟧
 
 ## LinkedIn
 
@@ -61,4 +64,6 @@ Over the past week, Esmaeil Seraj and I gave frontier models (Claude Opus and GP
 
 **A note on rigor.** In simulation, about one in three episodes flips outcome between identical runs. Small, unpaired evaluations will happily "confirm" fixes that aren't there.
 
-Full report, data and code: ⟦LINK⟧
+Paper: https://adeeb10abbas.github.io/weightsmith/paper.pdf
+Project page with videos: https://adeeb10abbas.github.io/weightsmith/
+Code and benchmark: https://github.com/adeeb10abbas/weightsmith
