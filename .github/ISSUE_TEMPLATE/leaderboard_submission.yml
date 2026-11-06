@@ -1,0 +1,86 @@
+name: Leaderboard submission
+description: Report an editor run scored on held-out seeds, accepted or not.
+title: "[Leaderboard] <task> · <editor>"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for submitting. Rejected edits and `base` submissions are welcome: they map what weight edits cannot fix.
+        Rules: [BENCHMARK.md](https://github.com/adeeb10abbas/weightsmith/blob/main/BENCHMARK.md). Required files: [results/README.md](https://github.com/adeeb10abbas/weightsmith/blob/main/results/README.md). Entries are self-reported until a maintainer re-scores them.
+  - type: input
+    id: task
+    attributes:
+      label: Task
+      description: RoboLab task id and the exact instruction.
+      placeholder: RubiksCubeThenBananaTask, "Put the cube then the banana in the bowl"
+    validations:
+      required: true
+  - type: input
+    id: editor
+    attributes:
+      label: Editor and protocol
+      description: Model, effort, driver or client, and the protocol you followed.
+      placeholder: Claude Opus, effort xhigh, drivers/claude.sh, owsp protocol
+    validations:
+      required: true
+  - type: dropdown
+    id: level
+    attributes:
+      label: Failure level targeted
+      options:
+        - Language binding
+        - Perception
+        - Missing skill
+        - Contact physics
+        - Gripper commitment
+        - Motor decision with the skill present
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: candidate
+    attributes:
+      label: Submitted candidate
+      description: Candidate name and its owsp fingerprint, or `base`.
+      placeholder: v2mi-f, fingerprint 63db0c52a51306c9
+    validations:
+      required: true
+  - type: input
+    id: size
+    attributes:
+      label: Edit size
+      description: Changed values and tensors, as reported by `owsp diff` or `weightsmith edit info`.
+      placeholder: 450,468,837 values in 17 tensors (13.4%)
+  - type: textarea
+    id: heldout
+    attributes:
+      label: Held-out result
+      description: From `weightsmith/heldout.py`. At least 64 paired slots that the editor never saw.
+      placeholder: |
+        slots 90000-90127 (128 pairs), run order alternating by half
+        base 27/128, edit 106/128, fixed 81, broke 2, exact McNemar p = 7.2e-22
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: budget
+    attributes:
+      label: Budget used
+      description: Practice episodes, activation items, evals and wall-clock time.
+      placeholder: 640 of 1,200 practice episodes, 2,400 of 6,000 activation items, 14 h
+  - type: textarea
+    id: links
+    attributes:
+      label: Files
+      description: Link the pull request or files with results.json, FINAL.md, NOTEBOOK.md and the edit (or `weightsmith edit export` output).
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Protocol
+      options:
+        - label: Every edit was closed-form, with no gradients, training, fitted regressions or black-box search.
+          required: true
+        - label: The editor never saw the held-out slots or their results.
+          required: true
+        - label: One frozen candidate (or `base`) was scored, against the unedited policy on the same slots.
+          required: true

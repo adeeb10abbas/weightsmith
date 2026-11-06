@@ -1,0 +1,50 @@
+name: Bug report
+description: Something in the toolkit, the runtime or the docs does not work as described.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for the report. Please include the exact command and its full output.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - weightsmith edit (portable edit files)
+        - weightsmith mcp (MCP server)
+        - owsp (editor tool surface)
+        - Closed-loop evaluation or held-out scoring
+        - Activation capture
+        - Editor drivers (drivers/)
+        - Setup (scripts/setup_deps.sh, prepare_workspace.sh)
+        - Hugging Face export (integrations/hub)
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: The command you ran, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: Full error output or traceback.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `weightsmith --version`, or the commit (`git rev-parse --short HEAD`).
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, MCP client and version if relevant, GPU and driver if the GPU host is involved.
+      placeholder: Ubuntu 22.04, Python 3.10, 2x RTX 3090 (driver 535), Claude Code 2.1
