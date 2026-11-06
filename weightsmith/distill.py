@@ -987,9 +987,17 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
     return result
 
 
-def main(argv: Sequence[str] | None = None) -> int:
-    """CLI: ``run CONFIG [--dry-run] [--steps ...]`` or ``render CONFIG --script build|compare|check|select``."""
-    ap = argparse.ArgumentParser(prog="python -m weightsmith.distill", description=__doc__.split("\n\n")[0])
+STATUS = """\
+Experimental. Proven: the build step. Rebuilt from their recorded capture, the paper's two published edits
+(v2mi-f, abl-imgl8) come out bit for bit identical: same owsp fingerprints. Only dry-run so far: the select,
+capture and check steps of `run`. Closed-loop and held-out evaluation are never started by this command; it
+prints those commands for you. Docs: docs/DISTILL.md."""
+
+
+def main(argv: Sequence[str] | None = None, *, prog: str = "python -m weightsmith.distill") -> int:
+    """CLI: ``run CONFIG [--dry-run] [--steps ...]`` or ``render CONFIG --script build|compare|select``."""
+    ap = argparse.ArgumentParser(prog=prog, description="Experimental. " + __doc__.split("\n\n")[0], epilog=STATUS,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = ap.add_subparsers(dest="cmd", required=True)
     r = sp.add_parser("run", help="select -> capture -> build -> check on the GPU host via bin/owsp")
     r.add_argument("config")
