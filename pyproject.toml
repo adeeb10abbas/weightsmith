@@ -38,6 +38,8 @@ weightsmith = "weightsmith.cli:main"
 
 [project.urls]
 Homepage = "https://adeeb10abbas.github.io/weightsmith/"
+Paper = "https://adeeb10abbas.github.io/weightsmith/paper.pdf"
+Documentation = "https://github.com/adeeb10abbas/weightsmith/blob/main/docs/README.md"
 Repository = "https://github.com/adeeb10abbas/weightsmith"
 Issues = "https://github.com/adeeb10abbas/weightsmith/issues"
 
@@ -45,7 +47,7 @@ Issues = "https://github.com/adeeb10abbas/weightsmith/issues"
 packages = ["weightsmith"]
 
 [tool.hatch.build.targets.sdist]
-include = ["weightsmith", "bin", "integrations", "tests", "README.md", "LICENSE", "NOTICE"]
+include = ["weightsmith", "bin", "integrations", "tests", "README.md", "CITATION.cff", "LICENSE", "NOTICE"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
