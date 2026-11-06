@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Weight editing re-routes. It doesn't create.</title>
-<meta name="description" content="What LLM weight edits can and can't fix in the π0.5 robot policy. A closed-form edit fixed a misread instruction (21% to 83% on 128 held-out seeds) and transferred to two other tasks; perception, missing-skill and physics failures resisted every edit.">
+<title>Distilling instructions into weights · weightsmith</title>
+<meta name="description" content="A closed-form edit to π0.5's weights fixed a misread instruction on seeds it never saw (27/128 to 106/128), with no training and no change to the instruction. Edits aimed at perception, missing skills and contact physics did not help.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121418" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://adeeb10abbas.github.io/weightsmith/">
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:site_name" content="weightsmith">
-<meta property="og:title" content="Weight editing re-routes. It doesn't create.">
-<meta property="og:description" content="What LLM weight edits can and can't fix in the π0.5 robot policy.">
+<meta property="og:title" content="Distilling instructions into weights: closed-form edits fix a robot policy's misreading">
+<meta property="og:description" content="A closed-form weight edit fixed a misread instruction in π0.5 on held-out seeds, with no training. What it fixed, what it did not, and how to measure it.">
 <meta property="og:url" content="https://adeeb10abbas.github.io/weightsmith/">
 <meta property="og:image" content="https://adeeb10abbas.github.io/weightsmith/assets/og.png">
 <meta property="og:image:width" content="1200">
@@ -21,391 +21,198 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&amp;family=JetBrains+Mono:wght@400..600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&amp;display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to the article</a>
 
-<header class="nav">
-  <div class="wrap nav-in">
-    <a class="brand" href="./" aria-label="weightsmith, home">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M11 16h10" stroke="var(--mover)" stroke-width="3" stroke-linecap="round"/><circle cx="8" cy="16" r="4.6" fill="var(--card)" stroke="var(--base)" stroke-width="2.6"/><circle cx="24" cy="16" r="5.6" fill="var(--mover)"/></svg>
-      <span>weightsmith</span>
-    </a>
+<header class="bar">
+  <div class="bar-in">
+    <a class="wordmark" href="./">weightsmith</a>
     <nav aria-label="Site">
-      <a class="opt" href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md">Report</a>
-      <a class="opt" href="paper.pdf">Paper</a>
-      <a class="opt" href="https://github.com/adeeb10abbas/weightsmith">Code</a>
-      <a class="pill" href="explore.html">Explore the results <span aria-hidden="true">→</span></a>
+      <a href="paper.pdf">Paper</a>
+      <a href="https://github.com/adeeb10abbas/weightsmith">Code</a>
+      <a href="explore.html">Explore</a>
     </nav>
   </div>
 </header>
 
 <main id="main">
+<article class="post">
 
-  <!-- Hero: title, authors, links and the whole result in one plot -->
-  <section class="hero" id="top">
-    <div class="wrap hero-in">
-      <div class="hero-t">
-        <p class="kicker">π0.5 · 16 simulated tasks · November 2026</p>
-        <h1>Weight editing re-routes. <em>It doesn't create.</em></h1>
-        <p class="subt">What LLM weight edits can and can't fix in the π0.5 robot policy</p>
-        <p class="authors"><span>Ali-Adeeb Abbas</span><span>Esmaeil Seraj</span></p>
-        <div class="ctas">
-          <a class="btn primary" href="paper.pdf"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1.75h5.5L13 5.25v8.5a.5.5 0 0 1-.5.5h-8.5a.5.5 0 0 1-.5-.5v-11.5a.5.5 0 0 1 .5-.5zM9.25 1.75v3.75H13M6 8.5h4.5M6 11h4.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Paper</a>
-          <a class="btn" href="https://github.com/adeeb10abbas/weightsmith"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Code</a>
-          <a class="btn" href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.75 3.5h10.5M2.75 6.5h10.5M2.75 9.5h7M2.75 12.5h10.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Report</a>
-        </div>
-      </div>
+  <header class="head">
+    <h1>Distilling instructions into weights: closed‑form edits fix a robot policy’s misreading</h1>
+    <p class="dek">A gradient-free edit to π0.5’s weights fixed a misread instruction on seeds it never saw. Edits aimed at perception, missing skills and contact physics did not help.</p>
+    <p class="byline">Ali-Adeeb Abbas, Esmaeil Seraj<span class="sep">·</span>November 2026<span class="sep">·</span><a href="paper.pdf">Paper</a><span class="sep">·</span><a href="https://github.com/adeeb10abbas/weightsmith">Code</a></p>
+  </header>
 
-      <figure class="hero-fig card" aria-labelledby="hero-fig-t">
-        <p class="fig-title" id="hero-fig-t">Task success, without and with the weight edit</p>
-        <ul class="legend" aria-hidden="true">
-          <li><i class="mk u"></i>Unedited</li>
-          <li><i class="mk e win"></i>The edit that worked</li>
-          <li><i class="mk e"></i>Edits that did not</li>
-        </ul>
-        <ol class="db">
-          <li class="db-group lbl">The edit that worked · held-out seeds</li>
-          <li class="db-row win" tabindex="0" data-tip="21% → 83%|27 → 106 of 128 held-out seeds|81 fixed, 2 broke · McNemar p = 7×10⁻²²">
-            <div class="db-name"><b>Misread instruction</b><span>cube then banana · 128 seeds</span></div>
-            <div class="db-track" role="img" aria-label="Misread instruction, cube then banana, 128 held-out seeds: 21% unedited, 83% with the edit">
-              <i class="db-link" style="left:21.09%;width:61.72%"></i><i class="mk u" style="left:21.09%"></i><i class="mk e" style="left:82.81%"></i>
-            </div>
-            <div class="db-val">21% → 83%</div>
-          </li>
-          <li class="db-row win" tabindex="0" data-tip="34% → 69%|22 → 44 of 64 held-out seeds|31 fixed, 9 broke · McNemar p = 7×10⁻⁴">
-            <div class="db-name"><b>Same edit, another task</b><span>pick up eyeglasses · 64 seeds</span></div>
-            <div class="db-track" role="img" aria-label="Same edit on pick up eyeglasses, 64 held-out seeds: 34% unedited, 69% with the edit">
-              <i class="db-link" style="left:34.38%;width:34.37%"></i><i class="mk u" style="left:34.38%"></i><i class="mk e" style="left:68.75%"></i>
-            </div>
-            <div class="db-val">34% → 69%</div>
-          </li>
-          <li class="db-row win" tabindex="0" data-tip="12% → 56%|8 → 36 of 64 held-out seeds|33 fixed, 5 broke · McNemar p = 4×10⁻⁶">
-            <div class="db-name"><b>Same edit, spatial wording</b><span>cube left of the bowl · 64 seeds</span></div>
-            <div class="db-track" role="img" aria-label="Same edit on put the cube to the left of the bowl, 64 held-out seeds: 12% unedited, 56% with the edit">
-              <i class="db-link" style="left:12.5%;width:43.75%"></i><i class="mk u" style="left:12.5%"></i><i class="mk e" style="left:56.25%"></i>
-            </div>
-            <div class="db-val">12% → 56%</div>
-          </li>
-          <li class="db-group lbl">Edits that did not · practice seeds</li>
-          <li class="db-row" tabindex="0" data-tip="44% → 33%|28 → 21 of 64 seeds, for each of 3 Claude edits|6 more edits by Astra and Claude on 32 seeds: none accepted">
-            <div class="db-name"><b>Lookalike object</b><span>stack yellow on red · 3 edits</span></div>
-            <div class="db-track" role="img" aria-label="Lookalike object, stack yellow on red, 3 edits on 64 seeds: 44% unedited, 33% with each edit">
-              <i class="db-link" style="left:32.81%;width:10.94%"></i><i class="mk u" style="left:43.75%"></i><i class="mk e" style="left:32.81%"></i>
-            </div>
-            <div class="db-val">44% → 33%</div>
-          </li>
-          <li class="db-row" tabindex="0" data-tip="0% → 0%|0 of 64 unedited · 0 of 16 for every edit|10 edits: readout, MLP rows, neuron flips, biases">
-            <div class="db-name"><b>Skill never learned</b><span>pick up a flat box · 10 edits</span></div>
-            <div class="db-track" role="img" aria-label="Skill never learned, pick up a flat box, 10 edits: 0% unedited, 0% with every edit">
-              <i class="mk u" style="left:0%"></i><i class="mk e" style="left:0%"></i>
-            </div>
-            <div class="db-val">0% → 0%</div>
-          </li>
-          <li class="db-row" tabindex="0" data-tip="20% → 20%|13 → 13 of 64 seeds|10 fixed, 10 broke · one gripper weight">
-            <div class="db-name"><b>Grasp slips</b><span>mustard into bin · 1-weight edit</span></div>
-            <div class="db-track" role="img" aria-label="Grasp slips, mustard into bin, one-weight edit on 64 seeds: 20% unedited, 20% with the edit">
-              <i class="mk u" style="left:20.31%"></i><i class="mk e" style="left:20.31%"></i>
-            </div>
-            <div class="db-val">20% → 20%</div>
-          </li>
-          <li class="db-row" tabindex="0" data-tip="49% → 49%|117 → 117 of 240 seeds, 7 tasks pooled|37 fixed, 37 broke">
-            <div class="db-name"><b>One gripper weight</b><span>7 tasks pooled · 240 seeds</span></div>
-            <div class="db-track" role="img" aria-label="One gripper weight, 7 tasks pooled, 240 seeds: 49% unedited, 49% with the edit">
-              <i class="mk u" style="left:48.75%"></i><i class="mk e" style="left:48.75%"></i>
-            </div>
-            <div class="db-val">49% → 49%</div>
-          </li>
-        </ol>
-        <div class="db-axis" aria-hidden="true">
-          <span></span>
-          <div class="axis-track"><span class="axis-t" style="left:0%">0%</span><span class="axis-t" style="left:25%">25%</span><span class="axis-t" style="left:50%">50%</span><span class="axis-t" style="left:75%">75%</span><span class="axis-t" style="left:100%">100%</span></div>
-          <span></span>
-        </div>
-        <p class="fig-note"><span class="ev">Measured</span>Every comparison is paired on identical simulator seeds. The top three rows use seeds never seen while editing.</p>
-      </figure>
-    </div>
+  <figure class="hero wide">
+    <video id="hero-video" autoplay muted loop playsinline controls preload="auto" poster="assets/video/cube_then_banana.jpg" width="960" height="540" aria-label="Put the cube then the banana in the bowl, held-out start 90002. Top: the unedited policy. Bottom: after the weight edit.">
+      <source src="assets/video/cube_then_banana.mp4" type="video/mp4">
+    </video>
+    <script>
+      (function () { // no autoplay for readers who ask for reduced motion
+        var v = document.getElementById('hero-video');
+        if (v && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          v.removeAttribute('autoplay');
+          v.autoplay = false;
+          v.pause();
+        }
+      })();
+    </script>
+    <figcaption>“Put the cube then the banana in the bowl.” Same instruction, same held-out start. Top: π0.5 as released grasps the cube and drops it three control steps later, then fails. Bottom: after a closed-form weight edit, it carries the cube to the bowl, then the banana. No training. <b class="nw">Held-out success: 27/128 → 106/128.</b></figcaption>
+  </figure>
+
+  <ul class="results">
+    <li>On 128 held-out seeds, success rose from 27 to 106 (21% to 83%): 81 episodes fixed and 2 broken, exact McNemar <i>p</i> = 7×10<sup>−22</sup>. The instruction was never changed.</li>
+    <li>A version restricted to image tokens, 0.16% of the parameter count as low-rank factors, did as well: 19/128 to 102/128.</li>
+    <li>Unchanged, the edit lifted two other tasks on held-out seeds: eyeglasses 22/64 to 44/64, and cube left of the bowl 8/64 to 36/64.</li>
+    <li>Edits aimed at perception, a missing grasp, contact physics and the gripper threshold did not help, and rerunning unchanged weights flipped about a third of paired outcomes.</li>
+  </ul>
+  <p class="note">Unless marked, every number is measured in this work, on paired simulator seeds. <sup>‡</sup> marks results reported by others that we did not reproduce, and <sup>†</sup> marks our hypotheses.</p>
+
+  <section id="failure">
+    <h2>The failure</h2>
+    <p>π0.5 is a vision-language-action policy of about 3.35 billion parameters: an 18-layer PaliGemma vision-language model reads two camera images, the instruction and the robot state, and an 18-layer action expert turns that context into 15-step chunks of motor commands. We ran OpenPI’s DROID checkpoint, which was never trained on any of our tasks, on 16 RoboLab tasks in Isaac Sim.</p>
+    <p>Told to “put the cube then the banana in the bowl,” it succeeds in 9 of 64 episodes. It goes for the cube first in 63 of them, grasps it, lifts it a few centimetres and lets go well short of the bowl. When the cube does reach the bowl first, the episode usually succeeds, about 7 times in 9. The skill is there; one decision breaks it.</p>
+    <figure class="fig wide">
+      <a class="fig-link" href="assets/fig/teaser.svg" title="Open Figure 1 at full size"><picture>
+        <source type="image/svg+xml" media="(prefers-color-scheme: dark)" srcset="assets/fig/teaser-dark.svg">
+        <source type="image/svg+xml" srcset="assets/fig/teaser.svg">
+        <source media="(prefers-color-scheme: dark)" srcset="assets/fig/teaser-dark.png">
+        <img src="assets/fig/teaser.png" width="765" height="418" loading="lazy" decoding="async" alt="Held-out start 90002 with the instruction unchanged. Wrist-camera frames at steps 75, 90, 120 and 255: the unedited policy drops the cube and puts the banana in the bowl; the edited policy holds the cube, places it, then the banana, and succeeds. A timeline shows the unedited gripper releasing the cube at step 76, three steps after the grasp, while the edited policy holds it from step 78 until it is in the bowl at step 119. Inset: held-out success 27/128 unedited and 106/128 edited.">
+      </picture></a>
+      <figcaption><span class="fig-n">Figure 1.</span> One held-out start, unedited and edited, with the instruction unchanged. Top: wrist-camera frames at four matched steps. Bottom: the commanded gripper, filled where closed, and logged events; the unedited policy releases the cube three steps after grasping it. Right: success over 128 held-out starts, with Wilson 95% intervals.</figcaption>
+    </figure>
   </section>
 
-  <!-- The question -->
-  <section class="section" id="question">
-    <div class="wrap">
-      <header class="pk-head">
-        <p class="pk-k">The question</p>
-        <h2 class="pk-h">If a robot already has the skill, <em>a misread instruction should be fixable.</em></h2>
-        <p class="pk-p">Told to “put the cube then the banana in the bowl”, π0.5 lets go of the cube short of the bowl, yet the same weights succeed 22 times in 32 instead of 3 when the instruction is spelled out, so we had Claude Opus edit the weights directly, with no gradients or training, and left the words alone.</p>
-      </header>
-
-      <figure class="pk-body card replay" aria-labelledby="rp-cap">
-        <div class="rp-head" aria-hidden="true"><span class="lbl"><span class="wide-only">Instruction, </span>replayed at 21 recorded drops</span><span class="lbl">Drops</span></div>
-        <ol class="rp">
-          <li><span class="rp-q">“Put the cube then the <b>banana</b> <u>in the bowl</u>” <small>original</small></span><span class="rp-bar" role="img" aria-label="21 of 21 drops"><i style="width:100%"></i></span><b class="rp-n">21</b></li>
-          <li><span class="rp-q">“Put the rubiks cube then the <b>banana</b> <u>in the bowl</u>”</span><span class="rp-bar" role="img" aria-label="21 of 21 drops"><i style="width:100%"></i></span><b class="rp-n">21</b></li>
-          <li><span class="rp-q">“Put the banana then the <b>cube</b> <u>in the bowl</u>”</span><span class="rp-bar" role="img" aria-label="3 of 21 drops"><i style="width:14.29%"></i></span><b class="rp-n">3</b></li>
-          <li><span class="rp-q">“Put the <b>cube</b> <u>in the bowl</u> then the banana”</span><span class="rp-bar" role="img" aria-label="3 of 21 drops"><i style="width:14.29%"></i></span><b class="rp-n">3</b></li>
-          <li><span class="rp-q">“Put the <b>cube</b> <u>in the bowl</u> then put the banana in the bowl”</span><span class="rp-bar" role="img" aria-label="2 of 21 drops"><i style="width:9.52%"></i></span><b class="rp-n">2</b></li>
-          <li><span class="rp-q">“Put the <b>cube</b> <u>in the bowl</u>”</span><span class="rp-bar" role="img" aria-label="1 of 21 drops"><i style="width:4.76%"></i></span><b class="rp-n">1</b></li>
-        </ol>
-        <figcaption class="sr-only" id="rp-cap">Drops at 21 recorded decisions, replayed with only the instruction changed.</figcaption>
-      </figure>
-
-      <p class="pk-foot"><span class="ev">Measured</span>Offline replays of 21 recorded premature releases, with camera images, robot state and noise held fixed and only the instruction changed. The drop follows the noun next to “in the bowl” (in bold), not the cube's name. <a class="pk-more" href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md#52-the-diagnosis-claude-opus">The diagnosis&nbsp;→</a></p>
-    </div>
+  <section id="diagnosis">
+    <h2>Diagnosing it</h2>
+    <p>We replayed 21 recorded premature releases with the camera images, robot state and sampling noise held fixed, changing only the instruction. Renaming the cube left all 21 releases. Moving “in the bowl” next to the cube left one to three. In one attention head of the vision-language model, the destination words attend to the adjacent noun far more than to the first one, 0.69 against 0.02. We read this as a binding error: holding the cube, the policy treats the banana as the object that belongs in the bowl.</p>
+    <p>The explicit wording, “put the cube in the bowl then put the banana in the bowl,” is a known-good instruction. With unchanged weights it succeeds in 22 of 32 episodes, against 3 of 32 for the original on the same seeds. The network can do the task; it misreads the request.</p>
   </section>
 
-  <!-- 01 The fix -->
-  <section class="section stage" id="fix">
-    <div class="wrap">
-      <div class="top">
-        <header class="pk-head">
-          <p class="pk-k"><b>01</b>The fix</p>
-          <h2 class="pk-h">Fix the weights, <em>not the words.</em></h2>
-          <p class="pk-p">A closed-form, minimum-norm update to 17 layers of the vision-language model, computed from 6 recorded decisions so that the original wording is processed like the explicit one, raised success on 128 seeds never used during editing from 27 to 106.</p>
-        </header>
-        <div class="big">
-          <span class="stat pk-num" aria-label="21% to 83%"><span class="b">21%</span><span class="ar" aria-hidden="true">→</span><span class="a">83%</span></span>
-          <span class="unit">Held-out success · 128 seeds</span>
-        </div>
-      </div>
+  <section id="fix">
+    <h2>The fix</h2>
+    <p>Closed-form instruction distillation makes the network process the original instruction the way it processes the known-good one. At each of 17 layers of the vision-language model we take 72 keys, the rows of <i>K</i>: the mean input to the layer’s MLP down-projection under the original instruction, at 40 positions both prompts share (the start of the sequence, “Task:” and the robot-state tokens) and at 32 image cells, averaged over 6 recorded decisions. The matching rows of <i>V</i> hold how much the layer changes the residual stream under the explicit instruction, minus the original. We then apply the minimum-norm update that maps each key to its value:</p>
+    <p class="eq" role="math" aria-label="Delta W equals K transpose times the inverse of K K transpose plus lambda I, times V, with lambda equal to ten to the minus three times the trace of K K transpose over 72">Δ<i>W</i> = <i>K</i><sup>⊤</sup>(<i>KK</i><sup>⊤</sup> + <i>λI</i>)<sup>−1</sup><i>V</i><span class="lam"><i>λ</i> = 10<sup>−3</sup> · tr(<i>KK</i><sup>⊤</sup>) / 72</span></p>
+    <p>There is no optimizer and no training data. The update is computed once per layer from activations, has rank at most 72, and is the multi-key closed form used to rewrite stored associations in language models (<a href="https://arxiv.org/abs/2210.07229">MEMIT</a>). Offline it removed all 21 premature releases and left unchanged all 9 recorded correct carries and all 19 later decisions in which the policy fetches the banana.</p>
+    <figure class="fig wide">
+      <a class="fig-link" href="assets/fig/construction.svg" title="Open Figure 2 at full size"><picture>
+        <source type="image/svg+xml" media="(prefers-color-scheme: dark)" srcset="assets/fig/construction-dark.svg">
+        <source type="image/svg+xml" srcset="assets/fig/construction.svg">
+        <source media="(prefers-color-scheme: dark)" srcset="assets/fig/construction-dark.png">
+        <img src="assets/fig/construction.png" width="717" height="407" loading="lazy" decoding="async" alt="Bars give the share of 21 replayed premature releases that persist. Panel a, rewordings with unchanged weights: original 21 of 21, renamed cube 21, banana then cube 3, cube in the bowl then the banana 3, the explicit wording 2 (and 22 of 32 against 3 of 32 in closed loop), cube in the bowl 1. Panel b, weight edits in the order they were built: steering along a correlated axis 21 of 21, copying the mean shift at the state tokens 6 of 6 checked, copying per-position shifts at 40 prompt and state slots 15, 13 and 8 of 21 at strengths one half, one and two, then adding 32 image cells, the distilled edit, 0 of 21, with 25 of 32 against 3 of 32 on practice seeds and 106 of 128 against 27 of 128 held out. Variants: image cells only 0, all keys in layers 8 to 16 only 0, half strength 2, image cells in layers 8 to 16 (0.16 percent) 2 with 102 of 128 against 19 of 128 held out, image cells plus preservation keys 1 with 24 of 32 against 3 of 32.">
+      </picture></a>
+      <figcaption><span class="fig-n">Figure 2.</span> What it takes to fix the decision. Bars give the share of the 21 recorded premature releases that still happen when replayed offline: (a) under rewordings, (b) under weight edits in the order they were built, then under variants of the distilled edit. Size counts low-rank factors; closed-loop results are edited (unedited) successes on practice · held-out seeds.</figcaption>
+    </figure>
+    <p>Three simpler edits failed first. Steering the image tokens along a cube-versus-banana axis that tracks the wording flipped none of the releases, even at three times the explicit wording’s value: the axis was correlated with the outcome, not causal. Copying the mean shift at the state tokens flipped none, and copying the shift at the 40 prompt and state positions left 8 to 15. Adding the 32 image cells removed all 21. The explicit wording moves the image tokens by only 2–4% of their norm, yet the action expert puts 13–44% of its attention on them. Because the image tokens attend to the instruction, our working hypothesis<sup>†</sup> is that the instruction is read into the image representation the action expert consults when it decides whether to keep holding.</p>
+    <p>In closed loop on practice seeds, success rose from 3/32 to 25/32, with 22 fixed and none broken. We froze the edit, and the operator scored it on 128 seeds never used during editing, alternating which policy ran first: 106/128 against 27/128, 81 fixed and 2 broken. Successful episodes also finish sooner, in 300 steps rather than 412 on average. The edit can be small. Restricted to the image cells in layers 8–16, it has 5.3 million parameters as low-rank factors, 0.16% of the parameter count, and scores 102/128 against 19/128 on the same held-out seeds, with 86 fixed and 3 broken. It is low-rank but not sparse: applied to the weights, the full edit changes 13.4% of the stored values.</p>
+  </section>
 
-      <figure class="pk-body clip solo">
-        <video controls muted playsinline loop preload="metadata" poster="assets/video/cube_then_banana.jpg" width="960" height="540" aria-label="Put the cube then the banana in the bowl, held-out seed 90000. Top: unedited policy. Bottom: after the weight edit.">
-          <source src="assets/video/cube_then_banana.mp4" type="video/mp4">
+  <section id="transfer">
+    <h2>Does it transfer?</h2>
+    <p>The edit’s keys sit at positions every task has, so we ran it unchanged on the other 15 surveyed tasks. On held-out seeds, picking up the eyeglasses rose from 22/64 to 44/64, with 31 fixed and 9 broken, and putting the cube to the left of the bowl rose from 8/64 to 36/64, with 33 fixed and 5 broken. No difference on the other 13 tasks was significant.</p>
+    <div class="clips wide">
+      <figure>
+        <video controls muted playsinline loop preload="metadata" poster="assets/video/eyeglasses.jpg" width="960" height="540" aria-label="Pick up the eyeglasses, held-out start 90000. Top: unedited. Bottom: after the weight edit.">
+          <source src="assets/video/eyeglasses.mp4" type="video/mp4">
         </video>
-        <figcaption><b>Top: unedited policy. Bottom: after the weight edit.</b> Same instruction and held-out seed (90000): one illustrative seed where only the edited policy succeeds, not a summary.</figcaption>
+        <figcaption>Pick up the eyeglasses: 22/64 → 44/64 on held-out seeds. Top: unedited; bottom: edited; held-out start 90000.</figcaption>
       </figure>
-
-      <p class="pk-foot"><span class="ev">Measured</span>81 episodes fixed and 2 broken (exact McNemar p = 7×10⁻²²); the instruction itself was never changed. A 0.16% version (5.3M parameters as low-rank factors, image regions in 9 layers) scores 19/128 → 102/128 on the same seeds. Applied to the weights, every version is dense. <a class="pk-more" href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md#54-the-edit">How the edit works&nbsp;→</a></p>
-    </div>
-  </section>
-
-  <!-- 02 Transfer -->
-  <section class="section stage" id="transfer">
-    <div class="wrap">
-      <header class="pk-head">
-        <p class="pk-k"><b>02</b>Transfer</p>
-        <h2 class="pk-h">Built for one task, <em>it fixed two more.</em></h2>
-        <p class="pk-p">Applied unchanged, the same edit raised held-out success on picking up eyeglasses from 22 to 44 of 64 seeds, and on putting the cube to the left of the bowl from 8 to 36.</p>
-      </header>
-
-      <div class="pk-body pair">
-        <figure class="clip">
-          <div class="clip-h">
-            <p class="clip-t">Pick up the eyeglasses<small>22 → 44 of 64 held-out seeds</small></p>
-            <span class="stat pk-num" aria-label="34% to 69%"><span class="b">34%</span><span class="ar" aria-hidden="true">→</span><span class="a">69%</span></span>
-          </div>
-          <video controls muted playsinline loop preload="metadata" poster="assets/video/eyeglasses.jpg" width="960" height="540" aria-label="Pick up the eyeglasses, held-out seed 90000. Top: unedited policy. Bottom: after the weight edit.">
-            <source src="assets/video/eyeglasses.mp4" type="video/mp4">
-          </video>
-          <figcaption><b>Top: unedited. Bottom: after the edit.</b> Held-out seed 90000, one illustrative seed.</figcaption>
-        </figure>
-        <figure class="clip">
-          <div class="clip-h">
-            <p class="clip-t">Put the cube to the left of the bowl<small>8 → 36 of 64 held-out seeds</small></p>
-            <span class="stat pk-num" aria-label="12% to 56%"><span class="b">12%</span><span class="ar" aria-hidden="true">→</span><span class="a">56%</span></span>
-          </div>
-          <video controls muted playsinline loop preload="metadata" poster="assets/video/cube_left_of_bowl.jpg" width="960" height="540" aria-label="Put the cube to the left of the bowl, held-out seed 90000. Top: unedited policy. Bottom: after the weight edit.">
-            <source src="assets/video/cube_left_of_bowl.mp4" type="video/mp4">
-          </video>
-          <figcaption><b>Top: unedited. Bottom: after the edit.</b> Held-out seed 90000, one illustrative seed.</figcaption>
-        </figure>
-      </div>
-
-      <p class="pk-foot">Putting the cube to the <i>right</i> of the bowl stayed at 0/32 → 0/32, so the edit is not a general switch for spatial language.</p>
-      <p class="pk-foot"><span class="ev">Measured</span>Eyeglasses: 31 fixed, 9 broke (p = 7×10⁻⁴). Left of the bowl: 33 fixed, 5 broke (p = 4×10⁻⁶). Across 15 tasks the edit helped three and harmed none detectably. <span class="ev hyp">Hypothesis</span>It strengthens how the network ties a destination phrase to the object being carried; not yet tested. <a class="pk-more" href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md#55-the-results">Transfer map&nbsp;→</a></p>
-    </div>
-  </section>
-
-  <!-- 03 What did not work -->
-  <section class="section" id="failures">
-    <div class="wrap">
-      <header class="pk-head">
-        <p class="pk-k"><b>03</b>What didn't work</p>
-        <h2 class="pk-h">Perception, missing skills and physics <em>resisted every edit.</em></h2>
-        <p class="pk-p">A lookalike object drew 9 edits from Claude and Astra and none was accepted, a flat box the policy never learned to grasp drew 10 edits and 0 successes, a slipping mustard grasp offered no wrong decision to fix, and one gripper weight left 7 tasks at 117/240 vs 117/240.</p>
-      </header>
-
-      <figure class="pk-body card strip" aria-labelledby="st-cap">
-        <ul class="legend" aria-hidden="true">
-          <li><i class="mk d"></i>The edit that worked (held-out)</li>
-          <li><i class="mk c"></i>Claude Opus edit</li>
-          <li><i class="mk s"></i>GPT-6 Astra edit</li>
-          <li><i class="sw-band"></i>Unedited policy, rerun</li>
-        </ul>
-        <div class="st-plot">
-          <div class="st-row fix">
-            <div class="st-name"><b>Misread instruction</b><span>cube then banana · for contrast</span></div>
-            <div class="st-track" role="group" aria-label="Misread instruction, held-out: plus 61.7 points">
-              <i class="st-band" style="left:20.31%;width:18.75%"></i><i class="st-zero" style="left:25%"></i><i class="st-ci" style="left:77.3%;width:18%"></i>
-              <i class="mk d" style="left:86.72%" tabindex="0" role="img" aria-label="+61.7 points; 95% CI +52.3 to +70.3 · 27 → 106 of 128 held-out seeds; 81 fixed, 2 broke" data-tip="+61.7 points|95% CI +52.3 to +70.3 · 27 → 106 of 128 held-out seeds|81 fixed, 2 broke"></i>
-            </div>
-            <div class="st-val">+62 points</div>
-          </div>
-          <div class="st-row">
-            <div class="st-name"><b>Lookalike object</b><span>stack yellow on red · 9 edits</span></div>
-            <div class="st-track" role="group" aria-label="Lookalike object, 9 edits: changes from minus 18.8 to plus 12.5 points; none accepted">
-              <i class="st-band" style="left:20.31%;width:18.75%"></i><i class="st-zero" style="left:25%"></i>
-              <i class="mk s" style="left:6.25%" tabindex="0" role="img" aria-label="−18.8 points; 17 → 11 of 32 · 5 fixed, 11 broke; GPT-6 Astra, fixed16 p1 (6,225 values)" data-tip="−18.8 points|17 → 11 of 32 · 5 fixed, 11 broke|GPT-6 Astra, fixed16 p1 (6,225 values)"></i>
-              <i class="mk c" style="left:14.06%" tabindex="0" role="img" aria-label="−10.9 points, each of 3 edits; 28 → 21 of 64, each; Claude Opus: attention gain, key/value gain, and both plus a head rewire (rerun: 21/64 again)" data-tip="−10.9 points, each of 3 edits|28 → 21 of 64, each|Claude Opus: attention gain, key/value gain, and both plus a head rewire (rerun: 21/64 again)"></i><span class="st-n" style="left:14.06%">×3</span>
-              <i class="mk c" style="left:21.88%" tabindex="0" role="img" aria-label="−3.1 points; 12 → 11 of 32 · 6 fixed, 7 broke; Claude Opus under Astra&#x27;s protocol, p2 (half dose)" data-tip="−3.1 points|12 → 11 of 32 · 6 fixed, 7 broke|Claude Opus under Astra's protocol, p2 (half dose)"></i>
-              <i class="mk s" style="left:28.13%" tabindex="0" role="img" aria-label="+3.1 points; 11 → 12 of 32 · 7 fixed, 6 broke; GPT-6 Astra, A1 p1 (4,412 values)" data-tip="+3.1 points|11 → 12 of 32 · 7 fixed, 6 broke|GPT-6 Astra, A1 p1 (4,412 values)"></i>
-              <i class="mk s" style="left:31.25%" tabindex="0" role="img" aria-label="+6.3 points, each of 2 edits; 11 → 13 of 32, each; GPT-6 Astra, A2 p1 (1,543 values) and A2 p3 (791 values)" data-tip="+6.3 points, each of 2 edits|11 → 13 of 32, each|GPT-6 Astra, A2 p1 (1,543 values) and A2 p3 (791 values)"></i><span class="st-n" style="left:31.25%">×2</span>
-              <i class="mk c" style="left:37.5%" tabindex="0" role="img" aria-label="+12.5 points; 12 → 16 of 32 · 8 fixed, 4 broke; Claude Opus under Astra&#x27;s protocol, p1: rejected for breaking 4 successes (the gate allows 2)" data-tip="+12.5 points|12 → 16 of 32 · 8 fixed, 4 broke|Claude Opus under Astra's protocol, p1: rejected for breaking 4 successes (the gate allows 2)"></i>
-            </div>
-            <div class="st-val">none accepted</div>
-          </div>
-          <div class="st-row">
-            <div class="st-name"><b>Skill never learned</b><span>pick up a flat box · 10 edits</span></div>
-            <div class="st-track" role="group" aria-label="Skill never learned, 10 edits: 0 points each, 0 successes">
-              <i class="st-band" style="left:20.31%;width:18.75%"></i><i class="st-zero" style="left:25%"></i>
-              <i class="mk c" style="left:25%" tabindex="0" role="img" aria-label="0 points, all 10 edits; 0 of 16 with each edit (one run of 32: 0) · unedited 0 of 64; readout, MLP rows, neuron flips, biases" data-tip="0 points, all 10 edits|0 of 16 with each edit (one run of 32: 0) · unedited 0 of 64|readout, MLP rows, neuron flips, biases"></i><span class="st-n" style="left:25%">×10</span>
-            </div>
-            <div class="st-val">0 successes</div>
-          </div>
-          <div class="st-row">
-            <div class="st-name"><b>Grasp slips</b><span>mustard into bin · 1 edit</span></div>
-            <div class="st-track" role="group" aria-label="Grasp slips, one-weight edit: 0 points, 13 of 64 with and without">
-              <i class="st-band" style="left:20.31%;width:18.75%"></i><i class="st-zero" style="left:25%"></i>
-              <i class="mk c" style="left:25%" tabindex="0" role="img" aria-label="0 points; 13 → 13 of 64 · 10 fixed, 10 broke; one gripper weight; two neuron-flip edits were stopped before any rollout" data-tip="0 points|13 → 13 of 64 · 10 fixed, 10 broke|one gripper weight; two neuron-flip edits were stopped before any rollout"></i>
-            </div>
-            <div class="st-val">13 → 13 of 64</div>
-          </div>
-          <div class="st-row">
-            <div class="st-name"><b>One gripper weight</b><span>7 tasks · 1 value changed</span></div>
-            <div class="st-track" role="group" aria-label="One gripper weight on 7 tasks: minus 3.1 to plus 3.1 points; 117 of 240 with and without">
-              <i class="st-band" style="left:20.31%;width:18.75%"></i><i class="st-zero" style="left:25%"></i>
-              <i class="mk c" style="left:21.88%" tabindex="0" role="img" aria-label="−3.1 points; stack bowls: 19 → 18 of 32" data-tip="−3.1 points|stack bowls: 19 → 18 of 32"></i>
-              <i class="mk c" style="left:25%" tabindex="0" role="img" aria-label="0 points on 5 tasks; stack yellow on red 27/64, mustard 13/64, butter 14/16, cube 16/16 and banana 16/16, with and without" data-tip="0 points on 5 tasks|stack yellow on red 27/64, mustard 13/64, butter 14/16, cube 16/16 and banana 16/16, with and without"></i><span class="st-n" style="left:25%">×5</span>
-              <i class="mk c" style="left:28.13%" tabindex="0" role="img" aria-label="+3.1 points; pick up eyeglasses: 12 → 13 of 32" data-tip="+3.1 points|pick up eyeglasses: 12 → 13 of 32"></i>
-            </div>
-            <div class="st-val">117 → 117 of 240</div>
-          </div>
-          <div class="st-axis" aria-hidden="true">
-            <span></span>
-            <div class="axis-track"><span class="axis-t" style="left:0%">−25</span><span class="axis-t" style="left:25%">0</span><span class="axis-t" style="left:50%">+25</span><span class="axis-t" style="left:75%">+50</span><span class="axis-t" style="left:100%">+75 pts</span></div>
-            <span></span>
-          </div>
-        </div>
-        <figcaption class="sr-only" id="st-cap">Change in success with each edit, in percentage points, on the same seeds, grouped by failure type.</figcaption>
+      <figure>
+        <video controls muted playsinline loop preload="metadata" poster="assets/video/cube_left_of_bowl.jpg" width="960" height="540" aria-label="Put the cube to the left of the bowl, held-out start 90000. Top: unedited. Bottom: after the weight edit.">
+          <source src="assets/video/cube_left_of_bowl.mp4" type="video/mp4">
+        </video>
+        <figcaption>Put the cube to the left of the bowl: 8/64 → 36/64 on held-out seeds. Top: unedited; bottom: edited; held-out start 90000.</figcaption>
       </figure>
-
-      <p class="pk-foot"><span class="ev">Measured</span>Each mark is one edit: success with it minus success without it, on the same seeds. The shaded band is how far the unedited policy moved when simply rerun on 64 seeds (−5 to +14 points). <a class="pk-more" href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md#6-the-failures">The failures&nbsp;→</a></p>
     </div>
+    <p>Putting the cube to the right of the bowl stayed at 0/32, so the edit is not a general switch for spatial language. Our working hypothesis<sup>†</sup> is narrower: it strengthens how the network ties a destination phrase to the object being carried, and in the right-of-bowl task something else fails first.</p>
   </section>
 
-  <!-- 04 Noise -->
-  <section class="section alt" id="noise">
-    <div class="wrap">
-      <header class="pk-head">
-        <p class="pk-k"><b>04</b>Noise</p>
-        <h2 class="pk-h">Same weights, same seeds: <em>14/16, then 8/16.</em></h2>
-        <p class="pk-p">GPU physics is not deterministic and <span class="nw">15-step</span> open-loop action chunks amplify tiny differences, so roughly a third of episodes flip between identical runs, and a <span class="nw">16-episode</span> “gain” is noise until shown otherwise.</p>
-      </header>
-
-      <figure class="pk-body card runs" aria-labelledby="runs-cap">
-        <div class="run">
-          <div class="run-h"><span class="lbl">Run 1</span><b>14/16</b></div>
-          <div class="cells" role="img" aria-label="Run 1: 14 of 16 seeds succeeded"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i></i><i></i></div>
-        </div>
-        <div class="run">
-          <div class="run-h"><span class="lbl">Run 2 · same weights, same seeds</span><b>8/16</b></div>
-          <div class="cells" role="img" aria-label="Run 2: 8 of 16 seeds succeeded; 6 seeds that succeeded in run 1 failed"><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="k"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i class="l"></i><i></i><i></i></div>
-        </div>
-        <ul class="key" aria-hidden="true">
-          <li><i class="sw k"></i>Succeeded</li>
-          <li><i class="sw l"></i>Succeeded in run 1 only</li>
-          <li><i class="sw"></i>Failed</li>
-        </ul>
-        <figcaption class="sr-only" id="runs-cap">The unedited policy on the same 16 seeds, run twice: 8 seeds succeeded both times, 6 succeeded only in the first run and 2 failed both times.</figcaption>
-      </figure>
-
-      <p class="pk-foot"><span class="ev">Measured</span>Butter box onto raisin box, unedited policy, same 16 seeds and hardware; squares are grouped by outcome, not seed order. Two runs of one edit with identical weights and seeds agreed on only 46 of 64 episodes.</p>
-      <p class="pk-foot">With about 30% of pairs flipping, one paired comparison reliably detects only changes of about 27 points at 32 episodes, 19 at 64 and 14 at 128 (80% power, α = 0.05). <a class="pk-more" href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md#7-how-not-to-fool-yourself">How not to fool yourself&nbsp;→</a></p>
-    </div>
+  <section id="failures">
+    <h2>What didn’t work</h2>
+    <p>We sorted the unedited policy’s failures into levels and tried to edit each. None of the other levels moved (Figure 3).</p>
+    <p><b>Perception.</b> Asked to stack the yellow block on the red one, the arm goes first for a Rubik’s cube with a yellow face in 48 of 63 episodes. The vision-language model tells the two objects apart (<i>d′</i> ≈ 10–20); the action expert barely uses the distinction (<i>d′</i> ≈ 2–3). Three Claude edits that amplified the signal each scored 21/64 against 28/64. Four GPT-6 Astra edits stayed within noise, and a fresh Claude Opus editor under the Astra study’s exact protocol made two proposals; none of the nine edits was accepted.</p>
+    <p><b>A missing skill.</b> The flat green box is never picked up, 0 of 64: its long side is wider than the gripper opening. The best of ten edits brought the wrist to a graspable angle in 16 of 16 episodes instead of 9, and still produced no success.</p>
+    <p><b>Contact physics.</b> The mustard bottle slips out of a cap grasp mid-carry, and no recorded decision variable predicted which grasps would hold (|<i>ρ</i>| ≤ 0.26). There was no wrong decision to correct; two neuron-flip edits were stopped offline.</p>
+    <p><b>The gripper threshold.</b> Built into the network as one bias weight, a lower gripper threshold scored 117/240 against 117/240 across seven tasks, with 37 episodes fixed and 37 broken.</p>
+    <figure class="fig wide">
+      <a class="fig-link" href="assets/fig/outcomes.svg" title="Open Figure 3 at full size"><picture>
+        <source type="image/svg+xml" media="(prefers-color-scheme: dark)" srcset="assets/fig/outcomes-dark.svg">
+        <source type="image/svg+xml" srcset="assets/fig/outcomes.svg">
+        <source media="(prefers-color-scheme: dark)" srcset="assets/fig/outcomes-dark.png">
+        <img src="assets/fig/outcomes.png" width="722" height="458" loading="lazy" decoding="async" alt="Stacked bars split each comparison's paired starts into broke, both succeed, both fail and fixed. The distilled edit on its own task is almost entirely fixed or unchanged: 81 fixed and 2 broke held out, 86 and 3 for the 0.16 percent variant. Eyeglasses 31 fixed and 9 broke, cube left of bowl 33 and 5, held out. Perception edits break about as many pairs as they fix, for example 9 fixed and 16 broke. The one-weight gripper edit fixed 37 and broke 37 of 240. Unchanged-weight reruns also flip many pairs both ways, for example 17 and 20.">
+      </picture></a>
+      <figcaption><span class="fig-n">Figure 3.</span> Paired outcomes. Each bar splits a comparison’s paired starts into the four outcome types in the key; at right, the number of pairs and of fixed and broken pairs. Held-out comparisons are in bold; italic rows change no weights. On its own task the distilled edit flips pairs almost only one way; failed edits and unchanged-weight reruns flip many both ways.</figcaption>
+    </figure>
   </section>
 
-  <!-- Takeaway and citation -->
-  <section class="section" id="takeaway">
-    <div class="wrap">
-      <header class="pk-head">
-        <p class="pk-k">The takeaway</p>
-        <h2 class="pk-h">Edit when the network already does the right thing under some input. <em>Train when it doesn't.</em></h2>
-        <p class="pk-p">The edit that worked re-routed something the network already computes correctly under the explicit wording; every edit that failed targeted something it does not compute correctly under any input.</p>
-      </header>
-
-      <ol class="pk-body checks">
-        <li>
-          <span class="ck-n" aria-hidden="true">1</span>
-          <b>A skill it already has</b>
-          <span class="had">Worded explicitly, the same weights succeed 22/32.</span>
-          <span class="lack"><em>Missing for the flat box:</em> no grasp to re-route, so 10 edits made 0 successes.</span>
-        </li>
-        <li>
-          <span class="ck-n" aria-hidden="true">2</span>
-          <b>One computation that goes wrong</b>
-          <span class="had">“In the bowl” attaches to the nearest noun.</span>
-          <span class="lack"><em>Missing for the mustard:</em> the decisions were right; the grasp slipped.</span>
-        </li>
-        <li>
-          <span class="ck-n" aria-hidden="true">3</span>
-          <b>A known-good state to copy</b>
-          <span class="had">The network's own activations under the explicit wording.</span>
-          <span class="lack"><em>Missing for the lookalike object:</em> the signal is there, but no target state used it without breaking a useful habit.</span>
-        </li>
-      </ol>
-
-      <p class="pk-foot"><span class="ev hyp">Hypothesis</span>Our reading of one success and the failures above, on one zero-shot policy in simulation. <span class="ev rep">Reported</span>Guo and Xie report large gains from editing π0.5 checkpoints already fine-tuned on each task, where the skill exists; that fits the same rule. <a class="pk-more" href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md#8-what-it-means">What it means&nbsp;→</a></p>
-
-      <div class="go">
-        <a class="btn primary" href="explore.html">Explore every comparison <span aria-hidden="true">→</span></a>
-        <a class="btn" href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md">Full report</a>
-        <a class="btn" href="paper.pdf">Paper</a>
-        <a class="btn" href="https://github.com/adeeb10abbas/weightsmith">Code</a>
-      </div>
-
-      <div class="cite" id="cite">
-        <div class="cite-head">
-          <h2>Cite</h2>
-          <button class="btn copy" type="button" data-copy="bibtex">Copy BibTeX</button>
-        </div>
-        <pre id="bibtex">@misc{abbas2026weightediting,
-  title        = {Weight Editing Re-Routes, It Doesn't Create: What {LLM} Weight
-                  Edits Can and Can't Fix in the $\pi_{0.5}$ Robot Policy},
-  author       = {Abbas, Ali-Adeeb and Seraj, Esmaeil},
-  year         = {2026},
-  howpublished = {\url{https://adeeb10abbas.github.io/weightsmith/}},
-  note         = {Code and data: \url{https://github.com/adeeb10abbas/weightsmith}}
-}</pre>
-        <p class="copied" role="status" aria-live="polite"></p>
-      </div>
-    </div>
+  <section id="measuring">
+    <h2>Measuring carefully</h2>
+    <p>Running both policies on the same simulator seeds does not make episodes identical. The unedited policy scored 14/16 and then 8/16 on the same 16 seeds, with the same weights and hardware, and two runs of one edited policy agreed on only 46 of 64 paired episodes. With about 30% of pairs flipping, a single paired comparison with 80% power reliably detects only changes of about 27 points with 32 pairs, 19 with 64, 14 with 128 and 10 with 256.</p>
+    <p>A 16-episode screen is a filter, not evidence. The distilled edit clears this bound on held-out seeds; every failed edit and every unchanged-weight rerun falls below it (Figure 4).</p>
+    <figure class="fig wide">
+      <a class="fig-link" href="assets/fig/detectability.svg" title="Open Figure 4 at full size"><picture>
+        <source type="image/svg+xml" media="(prefers-color-scheme: dark)" srcset="assets/fig/detectability-dark.svg">
+        <source type="image/svg+xml" srcset="assets/fig/detectability.svg">
+        <source media="(prefers-color-scheme: dark)" srcset="assets/fig/detectability-dark.png">
+        <img src="assets/fig/detectability.png" width="692" height="250" loading="lazy" decoding="async" alt="Each comparison placed by its number of paired episodes and the size of its difference, against the smallest change detectable with 80 percent power. The distilled edit's held-out results at 128 pairs, about 62 to 65 points, and the transfer tasks lie well above the curve; the other edits and the unchanged reruns lie below it, the butter rerun only just.">
+      </picture></a>
+      <figcaption><span class="fig-n">Figure 4.</span> Which differences a paired comparison can detect. Each marker is one comparison, placed by its paired episodes and the size of its difference, pointing up when the edit did better. Below the curve, a difference is smaller than the change detectable with 80% power (α = 0.05, 30% of pairs discordant; band 20–40%). Teal: the distilled edit, filled when held out. Outlined grey: no weight change. Solid grey: other edits.</figcaption>
+    </figure>
   </section>
+
+  <section id="meaning">
+    <h2>What this means</h2>
+    <p>Distillation re-routed a computation the network already performs; it did not create one that was missing. The success had three ingredients: a skill the policy demonstrably has, a failure traced to one computation, and a known-good internal state to copy. Each failure lacked one. The flat box lacks the skill, the mustard grasp has no wrong decision to correct, and in perception no edit we found routed the correct signal to the action without breaking a useful behaviour. This agrees with the strongest outside reports, which edited checkpoints already fine-tuned on each task<sup>‡</sup>.</p>
+    <p>That suggests a practical rule: edit when you can show the network does the right thing under some input, and train when it cannot.</p>
+    <p>The limits are real. The edit is low-rank but not sparse. Finding it needed a known-good instruction, which turns a prompt fix into a weight fix but does not help when no input succeeds. It was built by an operator session, also Claude Opus, under the editor rules, not by an autonomous editor. Transfer was not predicted in advance, so a deployment would need broad regression checks. And every result comes from one zero-shot checkpoint in simulation.</p>
+  </section>
+
+  <section id="try">
+    <h2>Try it</h2>
+    <ul>
+      <li><a href="https://github.com/adeeb10abbas/weightsmith">Code and data</a>: the harness, the paired comparisons and the held-out runs with per-seed outcomes.</li>
+      <li><a href="https://github.com/adeeb10abbas/weightsmith/blob/main/BENCHMARK.md">Benchmark</a> and <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/LEADERBOARD.md">leaderboard</a>: run your own editor; an operator scores its one frozen edit on held-out seeds. No autonomous editor has an accepted edit yet.</li>
+      <li>The editor’s tool, <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/weightsmith/owsp.py"><code>owsp</code></a>: one command to read weights, capture activations on recorded inputs and run paired practice rollouts, with <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/drivers">drivers</a> for Claude Code and the Codex CLI.</li>
+      <li><a href="https://github.com/adeeb10abbas/weightsmith/blob/main/docs/SETUP.md">Setup</a> and <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/docs/COMPARING_EDITORS.md">comparing editors</a>: pinned dependencies, and matched briefs, budgets and seeds.</li>
+      <li><a href="explore.html">Every comparison</a> in this work, as a chart and a table.</li>
+    </ul>
+  </section>
+
+  <section id="cite">
+    <h2>Citation</h2>
+    <div class="code">
+      <button class="copy" type="button" data-copy="bibtex">Copy</button>
+<pre><code id="bibtex">@misc{abbas2026distilling,
+  title  = {Distilling Instructions into Weights: Closed-Form Edits
+            Fix a Robot Policy's Misreading},
+  author = {Abbas, Ali-Adeeb and Seraj, Esmaeil},
+  year   = {2026},
+  note   = {Preprint},
+  url    = {https://adeeb10abbas.github.io/weightsmith/}
+}</code></pre>
+    </div>
+    <p class="copied note" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="end note" id="notes">
+    <p>Every number on this page comes from the paired comparisons in <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/results/opus/comparisons.json">comparisons.json</a> and the <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results/opus/heldout">held-out result files</a>; the figures are drawn by the paper’s plotting code, re-rendered for the screen. The opening video shows held-out start 90002 (the start in the paper's Figure 1) and the transfer videos show held-out start 90000; each is one illustrative start where only the edited policy succeeds. The editor study with GPT-6 Astra is a companion to this work and is in the same repository.</p>
+    <p>This work builds on weight-space programming (<a href="https://rikiyat.github.io/blog/weight-space-programming/">Takehi et al.</a>) and uses OpenPI’s π0.5 DROID checkpoint and NVIDIA’s RoboLab tasks in Isaac Sim. <sup>‡</sup> Guo and Xie report gains on π0.5 checkpoints fine-tuned on each task; we did not reproduce them.</p>
+  </section>
+
+</article>
 </main>
 
 <footer class="foot">
-  <div class="wrap foot-in">
-    <div>
-      <div class="foot-title">Weight editing re-routes. It doesn't create.</div>
-      <div class="foot-sub">What LLM weight edits can and can't fix in the π0.5 robot policy</div>
-      <div class="foot-sub">Ali-Adeeb Abbas · Esmaeil Seraj</div>
-    </div>
-    <div class="foot-cols">
-      <div>
-        <div class="lbl">Material</div>
-        <a href="paper.pdf">Paper (PDF)</a>
-        <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/blog/failure-levels.md">Full report</a>
-        <a href="https://github.com/adeeb10abbas/weightsmith">Code and data</a>
-        <a href="explore.html">Results explorer</a>
-        <a href="#cite">Cite</a>
-      </div>
-      <div>
-        <div class="lbl">Provenance</div>
-        <p>Every number here comes from <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/study/results/opus/comparisons.json">comparisons.json</a> and the <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results/opus/heldout">held-out result files</a>: paired closed-loop comparisons on identical simulator seeds, one zero-shot policy (π0.5 <code>pi05_droid_jointpos</code>) in RoboLab on Isaac Sim. Results from other groups are marked as reported and our interpretations as hypotheses. The videos show held-out seed 90000, one illustrative seed.</p>
-        <p>Builds on <a href="https://rikiyat.github.io/blog/weight-space-programming/">Weight-Space Programming</a> (Takehi et al.).</p>
-      </div>
-    </div>
+  <div class="foot-in">
+    <span>weightsmith</span>
+    <a href="https://github.com/adeeb10abbas/weightsmith">GitHub</a>
+    <a href="paper.pdf">Paper (PDF)</a>
+    <a href="explore.html">Explore the results</a>
+    <span>Code under the MIT license</span>
   </div>
 </footer>
 
