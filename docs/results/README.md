@@ -1,5 +1,7 @@
 # Results so far
 
+> **Historical snapshot (2026-11-04).** This page records the first Claude runs and is kept unchanged. For current results, see the [leaderboard](../../LEADERBOARD.md) and the [report](../../study/blog/failure-levels.md).
+
 All numbers come from the run logs and editor files of the reference setup (packaged on
 2026-11-04). Policy: OpenPI `pi05_droid_jointpos`, unedited unless stated. RoboLab, Isaac Sim
 `performance` render preset, 900-step limit, success = RoboLab's boolean terminal flag.
