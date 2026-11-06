@@ -2,6 +2,7 @@
 
 **Let an LLM read, probe and edit a robot policy's weights — and measure whether it helped.**
 
+[![CI](https://github.com/adeeb10abbas/weightsmith/actions/workflows/ci.yml/badge.svg)](https://github.com/adeeb10abbas/weightsmith/actions/workflows/ci.yml)
 [![Paper](https://img.shields.io/badge/paper-PDF-b31b1b)](https://adeeb10abbas.github.io/weightsmith/paper.pdf)
 [![Website](https://img.shields.io/badge/website-weightsmith-147d92)](https://adeeb10abbas.github.io/weightsmith/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3c78d8)](LICENSE)
@@ -69,31 +70,32 @@ bin/owsp eval v1 --n 64                            # the candidate in closed loo
 python3 weightsmith/heldout.py --cand v1 --slot-start 90000 --n 128   # operator only: the held-out score
 ```
 
-Requirements (Linux, 24 GB NVIDIA GPU, ~60 GB disk) and the exact pins are in [docs/SETUP.md](docs/SETUP.md). To run an autonomous editor instead, see [`drivers/`](drivers/) and [docs/COMPARING_EDITORS.md](docs/COMPARING_EDITORS.md).
+Requirements (Linux, 24 GB NVIDIA GPU, ~60 GB disk) and the exact pins are in [docs/SETUP.md](docs/SETUP.md). To run an autonomous editor instead, see [drivers/](drivers/README.md).
 
 ## Integrations
 
 | | Status |
 |---|---|
 | MCP server for Claude Code, Claude Desktop, Cursor and the Codex CLI (`weightsmith mcp`) | Ready |
-| Headless editor drivers for Claude Code and the Codex CLI (`drivers/`) | Ready |
 | Portable edit files (`weightsmith edit`): safetensors or npz, exact or low-rank | Ready |
+| Docker image of the editor-side toolkit, CPU only ([`docker/`](docker/README.md)) | Ready |
+| Headless editor drivers: Claude Code (`drivers/claude.sh`) · Codex CLI (`drivers/astra.sh`) | Ready · Experimental |
 | Hugging Face Hub folders for results and edits (`integrations/hub/`) | Experimental |
 | `weightsmith distill`: closed-form instruction distillation as one command | Roadmap |
 
-Setup and client configs: [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md).
+Setup and client configs: [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md). All documentation: [docs/](docs/README.md). Contributions and new leaderboard entries: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Repository map
 
 ```
-weightsmith/    owsp.py (the editor's tool), heldout.py (operator scoring), eval pool, activation capture,
-                edits.py (portable edits), mcp_server.py, cli.py
-bin/owsp        the editor-side wrapper, local or over ssh: the only command an editor gets
-drivers/        headless editors: claude.sh (Claude Code), astra.sh (Codex CLI)
-configs/ briefs/  task configs and editor briefs        scripts/  setup, workspace export, projects, smoke test
-integrations/   MCP launcher, Hugging Face export       tests/    CPU-only tests: python3 -m pytest tests
-study/          results, edit scripts and the full report (results/opus/, blog/failure-levels.md)
-paper/ site/    the paper's LaTeX source and the project page
+weightsmith/      runtime (owsp.py, heldout.py, eval pool, activation capture) + toolkit (edits, mcp_server, cli)
+bin/owsp          editor-side wrapper, local or over ssh: the only command an editor gets
+drivers/          headless editors: claude.sh (Claude Code), astra.sh (Codex CLI)
+configs/ briefs/  task configs and the briefs editors read
+scripts/          GPU-host setup, weight export, projects, smoke test
+integrations/     MCP launcher, Hugging Face export;  docker/: CPU image of the toolkit
+study/            results, edit scripts, full report;  paper/, site/: the paper and its web page
+tests/            CPU-only tests: python3 -m pytest tests
 ```
 
 ## Citation
@@ -108,7 +110,7 @@ paper/ site/    the paper's LaTeX source and the project page
 }
 ```
 
-GitHub's "Cite this repository" reads the same entry from [CITATION.cff](CITATION.cff).
+GitHub's "Cite this repository" button reads the same metadata from [CITATION.cff](CITATION.cff).
 
 ## License
 
