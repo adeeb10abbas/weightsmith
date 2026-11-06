@@ -1,0 +1,11 @@
+# Build context for docker/Dockerfile: only what the image copies.
+*
+!pyproject.toml
+!README.md
+!LICENSE
+!NOTICE
+!weightsmith/
+!bin/
+!integrations/
+**/__pycache__
+**/*.pyc

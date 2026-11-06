@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: ruff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install ruff==0.17.4
+      - run: ruff check --output-format=github .
+
+  test:
+    name: tests (Python ${{ matrix.python-version }}, CPU)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install the toolkit with every optional extra
+        run: python -m pip install -e '.[dev,mcp,hub]'
+      - name: Run the tests (no GPU, simulator or network)
+        run: python -m pytest tests -q -rs
+      - name: Check the command-line entry point
+        run: weightsmith --version && weightsmith edit --help > /dev/null && weightsmith mcp --help > /dev/null
