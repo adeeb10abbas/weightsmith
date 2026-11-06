@@ -642,6 +642,8 @@ def fig_detectability():
         d = 100 * (r["cand"] - r["base"]) / r["n"]
         if r["type"] in ("identity", "prompt", "runtime"):
             kind = "noedit"
+        elif r["label"].startswith("random directions"):  # same-size control: an edit, but not the distilled one
+            kind = "other"
         elif r["level"] in ("Language binding", "Binding edit on other tasks"):
             kind = "edit"
         else:

@@ -1,28 +1,36 @@
 cff-version: 1.2.0
-message: "If you use this benchmark, its code or its results, please cite it as below."
-title: "Re-Routing, Not Creating: What LLM Weight Edits Can Fix in a Robot Policy"
+message: "If you use weightsmith, its benchmark or its results, please cite the paper below (preferred-citation)."
+title: "Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy's Misreading"
 type: software
 authors:
   - given-names: Ali-Adeeb
     family-names: Abbas
   - given-names: Esmaeil
     family-names: Seraj
+version: 0.1.0
+date-released: "2026-11-06"
 repository-code: "https://github.com/adeeb10abbas/weightsmith"
 url: "https://adeeb10abbas.github.io/weightsmith/"
 license: MIT
 keywords:
   - weight editing
   - weight-space programming
-  - robot learning
+  - closed-form instruction distillation
   - vision-language-action models
+  - robot learning
   - benchmark
 preferred-citation:
-  type: generic
-  title: "Re-Routing, Not Creating: What LLM Weight Edits Can Fix in a Robot Policy"
+  type: article
+  # The arXiv identifier is not assigned yet. After the announcement, add
+  # `identifiers` (type: doi, value: 10.48550/arXiv.<id>) and set `url` to the arXiv abstract page.
+  status: preprint
+  title: "Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy's Misreading"
   authors:
     - given-names: Ali-Adeeb
       family-names: Abbas
     - given-names: Esmaeil
       family-names: Seraj
   year: 2026
-  url: "https://github.com/adeeb10abbas/weightsmith"
+  url: "https://adeeb10abbas.github.io/weightsmith/"
+  repository-code: "https://github.com/adeeb10abbas/weightsmith"
+  notes: "arXiv preprint, forthcoming"
