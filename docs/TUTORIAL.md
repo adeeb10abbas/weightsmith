@@ -455,7 +455,7 @@ check other_early_releases       (n=16): gripper closed base  1 | edit 13   flip
 
 | Offline check | `ctb-imgl8` (first edit) | `ctb-first` |
 |---|---|---|
-| unseen early releases held (unedited: 1 of 16) | 11 of 16 | 13 of 16 |
+| early releases it never saw, gripper kept closed (unedited replay: 1 of 16 each) | 11 of 16 | 13 of 16 |
 | grasps that no longer close | 3 of 16 | 1 of 16 |
 | arm targets, distance to the explicit wording's | 6.7 cm (unedited 10.7) | 4.0 cm (unedited 9.0) |
 
@@ -542,9 +542,9 @@ order). The paper's full file is
 
 ## Where next
 
-- **Another task or wording.** Copy [distill.json](../examples/cube_then_banana/distill.json), change
-  `instruction`, `explicit_instruction` and the `select` rule (`early_release` or `grasp`), and start with step 4:
-  if no rewording changes the failing decisions, distillation has nothing to copy.
+- **Another task or wording.** Copy [distill-first-carry.json](../examples/cube_then_banana/distill-first-carry.json),
+  change `name`, `instruction`, `explicit_instruction` and the `select` rule (`early_release` or `grasp`), and start
+  with step 4: if no rewording changes the failing decisions, distillation has nothing to copy.
 - **The method and every config field:** [DISTILL.md](DISTILL.md). The paper's full diagnosis and the attempts
   that failed first: [study/results/opus/ctb/](../study/results/opus/ctb/README.md).
 - **Other edits and how to check them:** copy-paste recipes in [COOKBOOK.md](COOKBOOK.md), and the ideas behind
