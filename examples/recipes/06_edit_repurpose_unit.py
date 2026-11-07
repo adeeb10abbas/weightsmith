@@ -31,6 +31,7 @@ reacts nonlinearly); its final version wrote only at the last step, which needs 
 """
 import json
 import math
+import re
 
 import numpy as np
 
@@ -90,6 +91,14 @@ def rms_norm(x, scale, shift):
     return x / np.sqrt((x ** 2).mean(-1, keepdims=True) + 1e-6) * (1 + scale) + shift
 
 
+def episode_slot(eid):
+    """Slot number of an episode id such as base.base.s20001 or v2mi-f.63db0c.s20001.r2."""
+    m = re.search(r"\.s(\d+)", eid)
+    if not m:
+        raise SystemExit(f"cannot read a slot number from episode id {eid!r}")
+    return int(m.group(1))
+
+
 def main(cfg=SETTINGS):
     blk = f"action.blocks.{cfg['block']:02d}"
     idx, arr = capture(cfg["capture"], ["action.mlp_hidden", "action.resid_out", "actions"])
@@ -140,7 +149,7 @@ def main(cfg=SETTINGS):
     for name, ix in groups.items():
         print(f"  {name:<20} unit activation: median {np.median(h[ix]):6.3f}, largest |h| {np.abs(h[ix]).max():7.4f}, "
               f"above 0.1 on {int((h[ix] > 0.1).sum())}/{len(ix)}")
-    parity = np.array([int(it["episode"].rsplit("s", 1)[-1]) % 2 for it in idx["items"]])
+    parity = np.array([episode_slot(it["episode"]) % 2 for it in idx["items"]])
     for fit in (0, 1):
         gc, uc = build_gate(tgt[parity[tgt] == fit], sil[parity[sil] == fit])
         hh = gelu(X @ gc) * (X @ uc)

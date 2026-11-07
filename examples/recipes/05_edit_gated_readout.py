@@ -25,6 +25,7 @@ any closed-loop run. The prediction assumes the key is the same at all 10 denois
 only, so capture specs/action_readout.json (all steps) for a real build.
 """
 import json
+import re
 
 import numpy as np
 
@@ -82,6 +83,14 @@ def report(title, names, groups, before, after, resp):
                   f"{resp[ix].max():+.2f})  gripper closed {int(before[ix].sum()):2d} -> {int(after[ix].sum()):2d}")
 
 
+def episode_slot(eid):
+    """Slot number of an episode id such as base.base.s20001 or v2mi-f.63db0c.s20001.r2."""
+    m = re.search(r"\.s(\d+)", eid)
+    if not m:
+        raise SystemExit(f"cannot read a slot number from episode id {eid!r}")
+    return int(m.group(1))
+
+
 def main(cfg=SETTINGS):
     idx, arr = capture(cfg["capture"], ["action.head_input", "actions"])
     H = arr["action.head_input"].astype(np.float64)       # [N, S, 15, D]
@@ -102,7 +111,7 @@ def main(cfg=SETTINGS):
     report(f"in-sample (gain {cfg['gain']}): mean key response and predicted gripper-closed decisions", names,
            groups, before, after, resp)
 
-    parity = np.array([int(it["episode"].rsplit("s", 1)[-1]) % 2 for it in idx["items"]])
+    parity = np.array([episode_slot(it["episode"]) % 2 for it in idx["items"]])
     for fit in (0, 1):
         g_fit = {g: ix[parity[ix] == fit] for g, ix in groups.items()}
         g_test = {g: ix[parity[ix] != fit] for g, ix in groups.items()}

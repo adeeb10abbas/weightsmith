@@ -10,8 +10,8 @@ recorded episode of one candidate and splits it into *holds*: runs of replans at
 object is in the hand (its width sets the reading: about 0.35 for the cube, 0.58 for the banana here). A hold that
 ends with a chunk commanding open is a *release decision*; it is labelled by where it happens relative to the goal
 (where successful episodes release). Output: counts, a few episode timelines, and JSON item lists
-(``{"episode": ..., "k": ...}``) ready to paste into an ``owsp acts`` spec: targets (premature releases in failed
-episodes) and preservation sets (releases at the goal, carries and approaches in successful episodes).
+(``{"episode": ..., "k": ...}``) ready to paste into an ``owsp acts`` spec: targets (premature releases) and
+preservation sets (releases at the goal, carries and approaches in successful episodes).
 
 Check it worked: the targets should be the failure you saw in the videos and event timelines (``owsp show``):
 here, the cube let go a few centimetres after the grasp, far from the bowl. On cube-then-banana the default
@@ -20,6 +20,8 @@ settings find 22 targets in 64 base episodes: all 21 of the paper's decisions an
 import json
 
 import numpy as np
+
+DATA_ROOT = "/work/data"  # where `owsp py` mounts the project's episodes and captures
 
 SETTINGS = {
     "cand": "base",                    # whose recorded episodes to scan (`owsp episodes` lists the names)
@@ -61,6 +63,15 @@ def chunk_closed(actions, threshold=0.5):
     return (np.asarray(actions)[..., 7] > threshold).mean(-1) >= 0.5
 
 
+def replans(eid):
+    """Per-replan gripper command chunks, measured gripper, joints and sim step of one recorded episode.
+
+    Reads only these arrays: the prelude's ``obs(eid)`` also loads both camera streams (about 18 MB per episode).
+    """
+    z = np.load(f"{DATA_ROOT}/episodes/{eid}/obs.npz")
+    return {k: z[k] for k in ("actions", "gripper", "joint", "step")}
+
+
 def holds_of(o, lo, hi):
     """Holds of one episode: runs of replans k0..k1 with the measured gripper in [lo, hi].
 
@@ -92,7 +103,7 @@ def main(cfg=SETTINGS):
     rows = sorted(episodes(cand=cfg["cand"]), key=lambda r: r["eid"])
     if not rows:
         raise SystemExit(f"no recorded episodes for {cfg['cand']!r}; run `owsp eval {cfg['cand']}` first")
-    per_ep = {r["eid"]: (r, obs(r["eid"])) for r in rows}
+    per_ep = {r["eid"]: (r, replans(r["eid"])) for r in rows}
     per_ep = {eid: (r, o, holds_of(o, lo, hi)) for eid, (r, o) in per_ep.items()}
 
     succ_rel = [h["end_xyz"][:2] for r, _, hs in per_ep.values() if r["success"] for h in hs

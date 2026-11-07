@@ -1,8 +1,8 @@
 """Recipe 9: offline validation: does the edit flip the target decisions and leave the others alone?
 
-When: after building a candidate and before spending closed-loop episodes on it. Every editor who followed this
-step rejected some candidates here and saved their episode budget (the flat box, stacking and left-of-bowl
-editors, and the paper's three failed edits before the distilled one). See docs/COOKBOOK.md, section 5.
+When: after building a candidate and before spending closed-loop episodes on it. Five of the seven blind editors
+rejected at least one candidate here and kept their episode budget, and the paper's operator stopped seven edits
+here before the distilled one. See docs/COOKBOOK.md, section 5.
 
 Run (read-only):  bin/owsp py base examples/recipes/09_offline_check.py
 
