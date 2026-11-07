@@ -59,20 +59,25 @@ Site + videos: https://ali-adeeb.com/weightsmith/
 Code & benchmark: https://github.com/adeeb10abbas/weightsmith
 With @⟦ESMAEIL_X_HANDLE⟧
 
-## LinkedIn
+## LinkedIn (short, casual; attach the 4:5 video)
 
-**Can AI fix a robot by editing its brain directly? Sometimes, and the "sometimes" is the interesting part.**
+New project: weightsmith, helping robots through misunderstandings 🤖
 
-Over the past week, Esmaeil Seraj and I gave frontier models (Claude Opus and GPT-6 Astra) direct read-write access to the weights of π0.5, a 3.35B-parameter robot policy. There was no training and no new data, only diagnosis and closed-form edits. We tested 16 simulated manipulation tasks.
+We told a robot policy (π0.5, ~3B parameters) to "put the cube then the banana in the bowl." It kept dropping the cube. Turns out it was attaching "in the bowl" to the banana.
 
-**What worked.** On a two-step task, the robot kept dropping the first object. Claude traced it to how the model's language component binds "in the bowl" to the wrong noun. The robot already had the skill: with the instruction spelled out, the same weights succeed. So Claude distilled that reading into the weights. Success rose from 3/32 to 25/32, and from 27/128 to 106/128 on 128 held-out trials, with the original instruction unchanged. A random edit of exactly the same size did nothing (9/64, the same as the unedited policy). The same edit also transferred to two other tasks on held-out trials (eyeglasses 22/64 → 44/64; cube left of bowl 8/64 → 36/64), with no detectable harm across 15 tasks. A version touching 0.16% of the parameters (in low-rank form) works just as well.
+So instead of retraining it, we edited its weights directly. No gradient descent, no new data, same instruction. On starts it had never seen, success went from 21% to 83%.
 
-**What didn't.** Contact physics (grasps that slip), a grasp the policy never learned, and confusion between lookalike objects all resisted every edit. That includes a one-parameter gripper change that was exactly neutral across seven tasks (117/240 vs 117/240).
+A few takeaways:
 
-**The takeaway.** Weight editing re-routes what a network already knows; it doesn't create new skills. That matches the strongest published results, which edited policies already trained on their tasks.
+→ If the robot does the right thing under some wording, you can often program that into the weights. If no input works, editing won't save you; train instead.
 
-**A note on rigor.** In simulation, about one in three episodes flips outcome between identical runs. Small, unpaired evaluations will happily "confirm" fixes that aren't there.
+→ A random edit of the exact same size does nothing. Direction matters, not size.
 
-Paper: https://ali-adeeb.com/weightsmith/paper.pdf
-Project page with videos: https://ali-adeeb.com/weightsmith/
-Code and benchmark: https://github.com/adeeb10abbas/weightsmith
+→ We let 7 LLM editors (Claude Opus) try this blind, one task each. One edit survived held-out testing, and it was on the misreading again.
+
+→ Simulation is noisy: the same robot on the same starts flips about a third of outcomes between runs. Pair your comparisons and hold out your test set.
+
+Blog + paper: https://ali-adeeb.com/weightsmith/
+Code + benchmark: https://github.com/adeeb10abbas/weightsmith
+
+With Esmaeil Seraj. Builds on our earlier work on instruction sensitivity (Same Goal, Different Words) and on weight-space programming by Takehi et al.
