@@ -23,9 +23,9 @@ diff found 0 differing files.
 
 - Linux with an NVIDIA GPU of at least 24 GB (one eval needs about 22 GB) and driver 535 or newer.
 - `git`, `git-lfs`, [`uv`](https://docs.astral.sh/uv/), `ffmpeg` and `bubblewrap` (`bwrap`, the weight sandbox).
-- `numpy` for the system `/usr/bin/python3`: the sandbox runs that interpreter. On Ubuntu:
-  `sudo apt install git git-lfs ffmpeg bubblewrap python3-numpy && git lfs install`.
-- Python 3.10 or newer for the `weightsmith` command.
+- `numpy` for the system `/usr/bin/python3`: the sandbox runs that interpreter.
+- Python 3.10 or newer for the `weightsmith` command, and `venv` to install it.
+- On Ubuntu: `sudo apt install git git-lfs ffmpeg bubblewrap python3-numpy python3-venv && git lfs install`.
 - About 60 GB of disk: RoboLab assets ~10 GB, checkpoint 12 GB, weight export 11 GB, plus the two environments.
 
 `scripts/setup_deps.sh --check` lists everything that is missing in one go.
@@ -36,7 +36,7 @@ diff found 0 differing files.
 git clone https://github.com/adeeb10abbas/weightsmith && cd weightsmith
 python3 -m venv .venv && source .venv/bin/activate   # any Python >= 3.10 environment works
 pip install -e '.[mcp]'                              # the weightsmith command (and numpy for owsp)
-scripts/setup_deps.sh                                # clone + patch OpenPI and RoboLab, install both envs, download + verify the checkpoint
+scripts/setup_deps.sh                                # patched OpenPI + RoboLab, both envs, verified checkpoint
 cp .env.example wsp.env                              # your settings; see "wsp.env" below
 scripts/setup_deps.sh --print-env >> wsp.env         # the six dependency paths setup_deps.sh just installed
 scripts/prepare_workspace.sh                         # the editable layer-split export of the weights (~11 GB, one time)
@@ -154,3 +154,5 @@ Give both editors the same brief (`briefs/stack-yellow-red/`), budget and practi
 | `instruction/task mismatch` | The project's `config.json` names a different task or instruction than the simulator reports. No budget is charged; fix the config. |
 | `prompt overrides are disabled in this project` | The config sets `"prompt_overrides": false` (the smoke and benchmark configs do). Wording experiments need a project without it, such as `configs/cube-then-banana.json`. |
 | `--slot-start must be a multiple of envs = 16` | Held-out slots run in groups of 16. Use e.g. 91008 instead of 91000. |
+| `python3 -m venv` fails with `ensurepip is not available` | Ubuntu ships venv separately: `sudo apt install python3-venv`. |
+| Episodes crash at start; `sim-*.log` complains about Vulkan | Isaac renders headless through Vulkan. Point `WSP_VK_ICD` at your NVIDIA ICD file (`/usr/share/vulkan/icd.d/nvidia_icd.json` or `/etc/vulkan/icd.d/nvidia_icd.json`). |
