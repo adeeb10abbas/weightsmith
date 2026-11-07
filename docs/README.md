@@ -4,6 +4,8 @@ Start with the [README](../README.md). Then pick what you need:
 
 | I want to | Read |
 |---|---|
+| New to weight-space programming? Start here: what it is, what works, what doesn't | [CONCEPTS.md](CONCEPTS.md) |
+| Copy-paste recipes: diagnose by rewording, build an edit, run its controls, read the stats | [COOKBOOK.md](COOKBOOK.md) |
 | Understand the method, the runtime and how the pieces connect | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | Set up a GPU host with the exact pinned stack | [SETUP.md](SETUP.md) |
 | Use weightsmith from Claude Code, Claude Desktop, Cursor or the Codex CLI | [INTEGRATIONS.md](INTEGRATIONS.md#mcp-server) |
@@ -16,6 +18,7 @@ Start with the [README](../README.md). Then pick what you need:
 | Find a result file or submit a result | [results/](../results/README.md) |
 | Read the full report behind every number | [study/blog/failure-levels.md](../study/blog/failure-levels.md) |
 | Distil a known-good rewording into the weights (Experimental) | [DISTILL.md](DISTILL.md) |
+| Download and verify the accepted edits | [edits/](../edits/README.md) |
 | Rebuild the paper's edit | [DISTILL.md](DISTILL.md#status) and [study/results/opus/ctb/](../study/results/opus/ctb/README.md) |
 | Read the paper | [PDF](https://ali-adeeb.com/weightsmith/paper.pdf) · [project page](https://ali-adeeb.com/weightsmith/) · [LaTeX source](../paper/) |
 | Contribute | [CONTRIBUTING.md](../CONTRIBUTING.md) |

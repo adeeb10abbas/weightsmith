@@ -2,7 +2,7 @@
 
 **Question.** With identical tools, budget and protocol, can a blind LLM editor find a weight edit that improves a zero-shot π0.5 policy, and does it survive held-out scoring? One RoboLab task per failure kind.
 
-**Result.** One of seven submissions was accepted: on the two-step instruction task (cube then banana), a 1,024-value edit took held-out success from **11/64 to 27/64** (22 fixed, 6 broken; exact McNemar p = 0.0037, Holm-adjusted over the seven tasks p = 0.026; paired difference +25.0 pp [+9.4, +39.1]). Two more submitted edits stayed within noise on held-out slots. Four editors submitted the unedited policy.
+**Result.** One of seven submissions was accepted: on the two-step instruction task (cube then banana), a 1,024-value edit took held-out success from **11/64 to 27/64** (22 fixed, 6 broken; exact McNemar p = 0.0037, Holm-adjusted over the seven tasks p = 0.026; paired difference +25.0 pp [+9.4, +40.6]). Two more submitted edits stayed within noise on held-out slots. Four editors submitted the unedited policy.
 
 | Task | Failure kind | Submission | Edit | Dev, slots 70000–70031: base → cand (fixed / broke) | Held-out, slots 91008–91071: base → edit (fixed / broke), p |
 |---|---|---|---|---|---|
