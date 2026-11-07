@@ -160,8 +160,31 @@ def fig_construction(theme, part):
 
 
 # ---- Fig. 3: paired outcomes (paper: draw_outcomes) ---------------------------------------------------------------
-def fig_outcomes(theme, pitch=0.092 * K, label_w=1.72 * K):
-    groups = P.outcome_rows()
+def simple_outcome_groups():
+    """The blog's version of Fig. 3: a few plainly labelled rows, same data and statistics as the paper."""
+    editor = dict(n=64, base=11, cand=27, fixed=22, broke=6)  # study/results/ctrl/heldout/ctrl-ctb__p1-...-91008-64.json
+    return [
+        ("The cube fix, on starts it never saw", [
+            ("Our edit", P.ho_row(P.CTB), "held"),
+            ("Compact version (0.16%)", P.ho_row(P.CTB_MIN), "held"),
+            ("AI editor’s own edit", editor, "held"),
+            ("Random edit, same size", P.find("Cube then banana", "random directions"), ""),
+            ("Clearer wording, no edit", P.find("Cube then banana", "Explicit two-step wording, HELD-OUT"), "noedit"),
+        ]),
+        ("The same edit on other tasks", [
+            ("Pick up the eyeglasses", P.ho_row(P.EYE), "held"),
+            ("Cube to the left of the bowl", P.ho_row(P.LEFT), "held"),
+        ]),
+        ("What didn’t work, and plain noise", [
+            ("Lookalike block, an edit", P.find("Stack yellow on red", "v1a1"), ""),
+            ("One gripper weight, 7 tasks", P.GRIP_POOLED, ""),
+            ("Same robot, run twice", P.find("Stack yellow on red", "Astra study: original identity"), "noedit"),
+        ]),
+    ]
+
+
+def fig_outcomes(theme, groups=None, out_name="outcomes", pitch=0.092 * K, label_w=1.72 * K):
+    groups = groups or P.outcome_rows()
     seg = [("broke", C["harm"], C["on_fill"]), ("both succeed", C["both"], C["on_fill"]),
            ("both fail", C["none"], C["ink2"]), ("fixed", C["teal"], C["on_fill"])]
     n_rows = sum(len(g[1]) for g in groups)
@@ -220,7 +243,7 @@ def fig_outcomes(theme, pitch=0.092 * K, label_w=1.72 * K):
     ax.set_xticklabels(["0", "", "50", "", "100% of pairs"])
     ax.set_yticks([])
     plain_axes(ax)
-    save(fig, "outcomes", theme)
+    save(fig, out_name, theme)
 
 
 # ---- Fig. 4: detectability map (paper: fig_detectability) ---------------------------------------------------------
@@ -294,4 +317,5 @@ if __name__ == "__main__":
         fig_construction(theme, "a")
         fig_construction(theme, "b")
         fig_outcomes(theme)
+        fig_outcomes(theme, simple_outcome_groups(), "outcomes-simple", label_w=1.95 * K)
         fig_detectability(theme)
