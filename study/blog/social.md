@@ -4,60 +4,43 @@ Post only after the held-out and regression numbers are final. Every number here
 
 Attach the before/after video (`site/assets/video/cube_then_banana.mp4`) to tweet 1 and to the LinkedIn post; `figures/opus_hero.png` works as a second image. Name the method as in the paper: *closed-form instruction distillation*.
 
-## X / Twitter thread
+## X / Twitter thread (attach the 16:9 video to 1/, carousel slides to 2/–5/)
 
-**1/**
-Can an LLM fix a robot by editing its weights directly, with no training and no gradients?
+1/ [attach: weightsmith_linkedin_16x9.mp4]
+We fixed a robot's misunderstanding by editing its weights. No training, no new data, same instruction.
 
-We tested it on π0.5 across 16 manipulation tasks, with Claude Opus and GPT-6 Astra as the editors.
+π0.5 went from 21% to 83% success on setups it had never seen. 🧵
 
-One clear win. Many instructive failures. 🧵
+2/ [attach: carousel slides/slide_2.png]
+We told π0.5 to "put the cube then the banana in the bowl," and it kept dropping the cube on the way. It was reading "in the bowl" as being about the banana.
 
-**2/**
-The win: "Put the cube then the banana in the bowl."
+Spell it out and it mostly works. Same goal, different words: 3/32 vs 22/32.
 
-The robot kept dropping the cube. Why? Inside the model, "in the bowl" binds to the nearest noun. So while holding the cube, the robot "thinks" it's holding the wrong object, and lets go.
+3/ [attach: carousel slides/slide_3.png]
+So we fixed it inside the model: we recorded what the network does with the clear instruction and wrote that straight into its weights, in closed form.
 
-**3/**
-The robot already knew the task: reword it explicitly and the same weights succeed 22/32.
+Original instruction, new setups: 21% → 83%. A random edit of the same size did nothing.
 
-So Claude wrote that reading into the weights, in closed form, keeping the original instruction.
+4/ [attach: carousel slides/slide_4.png]
+The part I didn't expect: the same edit fixed two tasks we never built it for.
 
-3/32 → 25/32. On 128 unseen seeds: 27/128 → 106/128.
+Picking up eyeglasses: 22 → 44 of 64.
+Putting the cube left of the bowl: 8 → 36.
 
-And a random edit of exactly the same size (same layers, rank and spectrum, random directions)? 9/64. Same as doing nothing.
+Nothing else got measurably worse.
 
-And the explicit rewording itself scores 57/64 on those seeds, so the edit gets most of the prompt's benefit without touching the prompt.
+5/ [attach: carousel slides/slide_5.png]
+What it can't do: teach the robot a new skill. When no wording worked (a lookalike block, a box it can't grip), no edit worked either.
 
-Bonus: the same edit transferred. On held-out seeds, "pick up the eyeglasses" went 22/64 → 44/64 and "put the cube to the left of the bowl" went 8/64 → 36/64. (Right of the bowl: still 0. Mechanisms are humbling.)
+Edit when some wording already gets the robot there. Train when nothing does.
 
-And a 0.16%-of-parameters version of the edit does the same job: 19/128 → 102/128 held-out.
+6/
+Blog + paper: https://ali-adeeb.com/weightsmith/
+Code: https://github.com/adeeb10abbas/weightsmith
 
-**4/**
-The failures were just as informative:
-❌ Grasp slips (contact physics): no gain
-❌ A grasp the policy never learned: 10 edits, 0 successes
-❌ Grabbing a lookalike object: 9 edits across 2 editors (Claude & Astra, same protocol), no gain
-❌ One-weight gripper tweak on 7 tasks: 117/240 → 117/240
+Point your agents at the repo and see if their edit beats the robot on starts it's never seen.
 
-**4b/**
-Then we took ourselves out of the loop: 7 blind Claude Opus editors, one task per failure kind, identical tools and budget.
-
-Only one edit survived held-out scoring, and it was on the misread instruction: the editor found the same bug on its own and wrote a 1,024-value fix (11/64 → 27/64). Perception, stacking, and a missing grasp: no edit.
-
-**5/**
-The pattern: weight editing *re-routes* what a network already knows. It doesn't *create* what it doesn't.
-
-Edit when you can show the network does the right thing under some input. Train when it doesn't.
-
-**6/**
-And a warning: identical weights, identical seeds, and still about 1 in 3 episodes flips outcome (GPU physics). A 16-episode "improvement" means nothing. We paired every comparison and held out the final test.
-
-**7/**
-Paper: https://ali-adeeb.com/weightsmith/paper.pdf
-Site + videos: https://ali-adeeb.com/weightsmith/
-Code & benchmark: https://github.com/adeeb10abbas/weightsmith
-With @⟦ESMAEIL_X_HANDLE⟧
+With [Esmaeil's handle]. Builds on Weight-Space Programming by Takehi et al.
 
 ## LinkedIn (short, casual; attach weightsmith_linkedin_4x5.mp4 or carousel.pdf)
 
