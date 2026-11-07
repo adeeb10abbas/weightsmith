@@ -310,8 +310,8 @@ Read it top to bottom:
 - **The decisions it was built from:** under the original wording, the edited policy now makes the explicit
   wording's call at all 10, holding at the 8 that the rewording changes and still letting go of the banana at
   the other 2. Its arm targets also move toward the explicit wording's (6.7 cm away instead of 10.7).
-- **Releases it never saw:** it holds at 10 of 16 more. That is the first real evidence: the edit is not
-  memorising 8 snapshots.
+- **Releases it never saw:** it keeps the gripper closed at 11 of 16, where the unedited policy holds at 1.
+  So the edit is not just memorising its 8 snapshots.
 - **Grasps:** 3 of 16 grasp decisions no longer close. That is a side effect to watch in closed loop, where the
   policy gets another chance to close 15 steps later.
 
@@ -399,6 +399,33 @@ may be luck. The signal is the balance of fixed against broke over many pairs.
 the edit was built from their recordings. Use a 32-episode run to drop candidates that do nothing or break the
 task. Confirm a survivor on fresh practice slots (`bin/owsp eval base --n 64 --offset 32`, then the candidate
 with the same arguments), and claim nothing before an operator has scored it on held-out slots.
+
+**What this run says.** 8 fixed against 2 broken passes the filter ("worth a closer look") and proves nothing
+yet. The success bit is also a coarse signal; the recorded events say more.
+[carries.py](../examples/cube_then_banana/carries.py) measures how long the robot holds the cube:
+
+```bash
+bin/owsp py base examples/cube_then_banana/carries.py
+```
+
+```
+base        2/32 succeeded   object in the bowl in  3   170 carries, median  8 steps before the drop
+ctb-imgl8   8/32 succeeded   object in the bowl in 14   177 carries, median 31 steps before the drop
+```
+
+The edit does what it was built to do: the robot now carries the cube about four times longer before letting go,
+and gets an object into the bowl in 14 episodes instead of 3. Most episodes still fail later. Two more things
+stand out:
+
+- Both broken slots are the two where the unedited policy succeeded. One of them, `s20011`, opens with a grasp
+  that the offline check flagged: the edit no longer closes there at replan 3. That could be the side effect at
+  work, or noise; 32 pairs cannot tell.
+- The paper's version of this recipe scored 25/32 against 3/32 on its own practice slots, so this edit is
+  clearly weaker. One suspect is the selection: the rule took the first release that fit it in each failed
+  episode, and here those came mostly after many retries (replans 18 to 50). The paper built its edit from
+  releases on the first carry.
+
+ITERATE_SECTION
 
 ## 8. The held-out score (operator only)
 
