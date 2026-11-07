@@ -87,7 +87,8 @@ in the yellow-on-red task, and no motion of the policy ever grasps the flat box.
   succeeds) and *broke* (only the unedited policy succeeds). The exact McNemar test compares fixed with broke.
 - **Practice, then held-out.** Develop on practice slots (20000–20255), freeze the edit, and score it once on
   held-out slots (80000 and above) that were never used during editing, with at least 64 pairs and the run order
-  alternating by half. The benchmark accepts an edit at exact McNemar p < 0.05.
+  alternating by half. The benchmark accepts an edit with more successes than the unedited policy at exact McNemar
+  p < 0.05.
 - **Expect noise.** Paired seeds do not make episodes identical: two runs of identical weights flip about a third
   of paired outcomes (the unedited policy scored 14/16 and then 8/16 on the same butter seeds). With that much
   noise, a paired comparison detects changes of about 27 points with 32 pairs, 19 with 64, 14 with 128 and 10

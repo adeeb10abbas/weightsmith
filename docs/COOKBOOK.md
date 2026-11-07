@@ -179,7 +179,8 @@ using the multi-key closed form of ROME/MEMIT. `weightsmith distill` ([DISTILL.m
 
 **Run.** Capture the target decisions under both wordings with VLM activations (`image_tokens.json`, or
 `prompt_tokens.json` for prompt positions), then `bin/owsp new my-distill` and
-`bin/owsp py my-distill examples/recipes/04_edit_distill.py`.
+`bin/owsp py my-distill examples/recipes/04_edit_distill.py` with `capture`, `orig_items` and `expl_items` set to
+your capture (in both example specs, items 0–5 carry the original wording and 6–11 the explicit one).
 
 **How it works.** For each VLM layer L from a chosen set (0–16; layer 17's MLP output never reaches the actions) and
 each position present in both wordings (an image cell, or a template token such as `State`):
@@ -209,7 +210,10 @@ edit that passed held-out scoring: 11/64 → 27/64, p = 0.0037.*
 **When.** The failure is one output channel (here the gripper opens too early) and the action expert's last hidden
 state h (`action.head_input` in captures) tells the failing decisions apart from the ones that must not change.
 
-**Run.** `bin/owsp new my-readout`, `bin/owsp py my-readout examples/recipes/05_edit_gated_readout.py`.
+**Run.** Capture targets and preservation decisions with `action.head_input` (`action_readout.json`), then
+`bin/owsp new my-readout`, `bin/owsp py my-readout examples/recipes/05_edit_gated_readout.py`. The default groups
+are the item ranges of that spec and of `ctb-ph`: 0–20 premature releases, 21–29 cube carries, 30–36, 37–41 and
+42–48 banana approach, grasp and carry.
 
 **How it works.** The action head computes the flow velocity v = h W + b. The edit adds `gain · a` to column 7 of
 W (the gripper), so the gripper velocity moves by `gain · (h · a)` and nothing else changes. The key a is the
@@ -238,7 +242,9 @@ the same design after its linear readout failed the split-half check.*
 **When.** A linear readout is not selective enough: its response goes negative or stays large on states that must
 not change, so pushing harder breaks them. A GELU unit with a threshold is one-sided: zero below it.
 
-**Run.** `bin/owsp new my-unit`, `bin/owsp py my-unit examples/recipes/06_edit_repurpose_unit.py`.
+**Run.** With the same kind of capture as 4.2 (it needs `action.mlp_hidden` and `action.resid_out` at block 17):
+`bin/owsp new my-unit`, `bin/owsp py my-unit examples/recipes/06_edit_repurpose_unit.py`. It uses the first captured
+denoising step.
 
 **How it works.** It rebuilds the input of block 17's MLP from the captured residual and MLP activations (the
 action expert's norms are adaptive: their scale, shift and gate come from the denoising time), picks the least-used
@@ -388,8 +394,8 @@ Reading it, line by line:
 - **change** is (fixed − broke)/n with a paired bootstrap interval (20,000 multinomial draws over the four types,
   seed 0, as in the paper). At n = 64 the bootstrap lives on a 1/64 = 1.6-point grid, so its ends can move by one
   step between methods (the paper's Appendix F, which resampled pairs, reports +9.4 to +39.1 for this run).
-- **McNemar** is the exact two-sided test on fixed vs broke. The benchmark accepts at p < 0.05 with at least 64
-  held-out pairs.
+- **McNemar** is the exact two-sided test on fixed vs broke. The benchmark accepts an edit with more successes than
+  base at p < 0.05 on at least 64 held-out pairs.
 - **detects** is the smallest change this many pairs detects with 80% power when 30% of pairs flip by chance, the
   rate measured between identical reruns. A non-significant result below that line means "too small to see", not
   "no effect".
@@ -440,11 +446,12 @@ is what gives it the same seeds in every evaluation. A slot range must start at 
 groups, and held-out runs (two halves) need n to be a multiple of 32. The controlled study's first held-out launch
 at slot 91000 (16 × 5687.5) stopped before any episode ran; 91008 works. `stats.validate_slots` checks this.
 
-**bf16 rounding.** Weights are stored in bfloat16, so `save` needs `bf16(W + ΔW)`. Compute ΔW in float64, add it to
-the base weights and round once; rounding twice, or rounding a small ΔW on its own, loses it. The rounding makes a
-low-rank update dense (the 0.16% edit changes 7.4% of stored values), puts a noise floor under the singular values of
-stored changes (section 4.5), and makes tiny edits round to nothing: count the changed values (`owsp diff`). To stack
-edits, start from `load(name)` (the candidate's current value), not `base(name)`.
+**bf16 rounding.** Weights are stored in bfloat16, which keeps 8 significant bits, and `owsp diff` and `owsp eval`
+refuse values that are not exactly representable: save `bf16(W + ΔW)`. Compute ΔW in float64, add it to the weights
+and round the sum once. A change smaller than about 0.2–0.4% of a weight's own magnitude rounds back to the original
+value, so tiny edits can vanish entirely: count the changed values (`owsp diff`). Rounding also makes a low-rank update
+dense (the 0.16% edit changes 7.4% of stored values) and puts a noise floor under the singular values of a stored
+change (section 4.5). To stack edits, start from `load(name)` (the candidate's current value), not `base(name)`.
 
 **Moving the decision is not moving success.** Two editors built edits that did what they targeted and still did not
 help. The blind flat-box editor's readout made the gripper commit (29/39 holding decisions against 20/42) and lifted
