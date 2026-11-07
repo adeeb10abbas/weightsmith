@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>We fixed a robot’s misreading by editing its weights · weightsmith</title>
-<meta name="description" content="A robot kept dropping a cube because it misread one phrase. We found the misreading inside its network and fixed it with a direct edit to its weights: no retraining, no new data, same instruction. Success in 128 unseen situations went from 21% to 83%.">
+<title>Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy’s Misreading</title>
+<meta name="description" content="π0.5 binds “in the bowl” to the wrong object and drops the cube. Distilling an explicit rewording into its weights in closed form, with no training and the instruction unchanged, lifts success on 128 unseen starts from 21% to 83%.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
@@ -16,16 +16,16 @@
 <meta name="citation_pdf_url" content="https://ali-adeeb.com/weightsmith/paper.pdf">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="weightsmith">
-<meta property="og:title" content="We fixed a robot’s misreading by editing its weights">
-<meta property="og:description" content="A robot kept dropping a cube because it misread one phrase. A direct edit to its weights, with no retraining, fixed it: 21% → 83% success in situations it had never seen.">
+<meta property="og:title" content="Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy’s Misreading">
+<meta property="og:description" content="A closed-form weight edit, with no training and the instruction unchanged, fixes π0.5’s misreading: 21% → 83% success on unseen starts.">
 <meta property="og:url" content="https://ali-adeeb.com/weightsmith/">
 <meta property="og:image" content="https://ali-adeeb.com/weightsmith/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="The headline beside two wrist-camera views of the same moment: the unedited policy has let go of the cube; after the edit it still holds it.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="We fixed a robot’s misreading by editing its weights">
-<meta name="twitter:description" content="A robot kept dropping a cube because it misread one phrase. A direct edit to its weights, with no retraining, fixed it: 21% → 83% success in situations it had never seen.">
+<meta name="twitter:title" content="Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy’s Misreading">
+<meta name="twitter:description" content="A closed-form weight edit, with no training and the instruction unchanged, fixes π0.5’s misreading: 21% → 83% success on unseen starts.">
 <meta name="twitter:image" content="https://ali-adeeb.com/weightsmith/assets/og.png">
 <meta name="twitter:image:alt" content="The headline beside two wrist-camera views of the same moment: the unedited policy has let go of the cube; after the edit it still holds it.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -52,9 +52,8 @@
 <article class="post">
 
   <header class="head">
-    <p class="eyebrow">Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy’s Misreading</p>
-    <h1>We fixed a robot’s misreading by editing its weights</h1>
-    <p class="dek">A robot kept dropping a cube because it misread one phrase in its instruction. We found the misreading inside its neural network and fixed it with a small, direct change to the network’s weights: no retraining, no new data, and the same instruction. In 128 situations it had never seen, its success rate went from 21% to 83%.</p>
+    <h1>Distilling Instructions into Weights: Closed&#8209;Form Edits Fix a Robot Policy’s Misreading</h1>
+    <p class="dek">Told to “put the cube then the banana in the bowl,” π0.5 drops the cube: it binds “in the bowl” to the banana. With weight-space programming, we distil an explicit rewording directly into its weights: a closed-form weight edit, with no gradient descent and the instruction unchanged. Success on 128 unseen starts rises from 21% to 83%.</p>
     <p class="byline">Ali-Adeeb Abbas, Esmaeil Seraj<span class="sep">·</span><span class="nw">November 2026</span><span class="sep">·</span><a href="paper.pdf">Paper</a><span class="sep">·</span><a href="https://github.com/adeeb10abbas/weightsmith">Code</a></p>
   </header>
 
@@ -82,7 +81,7 @@
   <section id="failure">
     <h2>The robot misread one phrase</h2>
     <p class="claim">It knew how to do the task. It got confused about which object “in the bowl” referred to.</p>
-    <p>The robot is controlled by π0.5, an open, general-purpose robot model with about 3 billion parameters, and runs in simulation. Told to “put the cube then the banana in the bowl,” it picks up the cube, then lets go of it on the way. It succeeds only about one time in five.</p>
+    <p>π0.5 is an open, generalist vision-language-action policy with about 3 billion parameters; here it runs in simulation. Told to “put the cube then the banana in the bowl,” it picks up the cube, then lets go of it on the way. It succeeds only about one time in five.</p>
     <figure class="fig wide">
       <a class="fig-link" href="assets/fig/rewordings.svg" title="Open the figure at full size"><picture>
         <source type="image/svg+xml" media="(prefers-color-scheme: dark)" srcset="assets/fig/rewordings-dark.svg">
@@ -97,10 +96,10 @@
   </section>
 
   <section id="fix">
-    <h2>We wrote the clear reading into the weights</h2>
-    <p class="claim">Instead of changing the words, we changed how the network reads them.</p>
-    <p>Rewording is not always possible: instructions come from people, or from other software. So we made the network read the original instruction the way it reads the clear one. At the moments the robot let go, we recorded what happens inside the network under each wording. Then we computed a small change to its weights that turns the first into the second.</p>
-    <p>The change is computed directly, with one formula per layer, borrowed from methods that edit facts stored in language models. There is no training, no gradient descent and no new data; the math is in the <a href="paper.pdf">paper</a>. It took four attempts. The one that worked copies the clear wording’s effect on how the network sees the scene.</p>
+    <h2>We programmed the fix into the weights</h2>
+    <p class="claim">Instead of changing the words, we edited how the policy reads them, directly in weight space.</p>
+    <p>Rewording is not always possible: instructions come from people, or from other software. So we read the network’s activations under both wordings at the moments the robot let go, and wrote a weight edit that makes the original instruction produce the clear one’s internal state.</p>
+    <p>This is <a href="https://rikiyat.github.io/blog/weight-space-programming/">weight-space programming</a> (Takehi et al.): an LLM editor, here Claude Opus, reads and writes the weights directly rather than through an optimizer. Our edit, closed-form instruction distillation, is one regularized least-squares solve per layer, the multi-key update used to edit facts stored in language models. There is no gradient descent and no training data; the math is in the <a href="paper.pdf">paper</a>. It took four attempts. The one that worked copies the clear wording’s effect at the image tokens, where the policy reads the instruction into what it sees.</p>
     <p><strong>It works in situations it has never seen.</strong> We tested it on 128 new starting positions that were never used while building it. The edited robot succeeded 106 times, against 27 for the original: 81 runs fixed and only 2 broken.</p>
     <p><strong>It isn’t luck, and it isn’t the size of the change.</strong> An edit of exactly the same size, pointing in random directions, did nothing: 9 successes in 64, like the original robot. Our edit gets most of what the clear wording itself achieves (50 versus 57 in 64) without changing a single word. A much more compact version, storable in 0.16% of the network’s size, works just as well.</p>
   </section>
@@ -127,8 +126,8 @@
 
   <section id="failures">
     <h2>What didn’t work</h2>
-    <p class="claim">Editing can re-route what a robot already knows. It can’t teach it something new.</p>
-    <p>We tried the same kind of surgery on other failures, with Claude and GPT-6 Astra as the editors: a robot that grabs a lookalike block, a box too wide for its usual grip, and a mustard bottle that slips out of its fingers. Dozens of edits, and none helped. Each of these failures lacked what the cube fix had: some version of the input under which the robot already does the right thing. The robot can tell the lookalike blocks apart, but nothing we tried made it act on that. The box needs a grasp it never learned, and the bottle simply slips.</p>
+    <p class="claim">Weight edits re-route what a policy already computes. They don’t create a skill it lacks.</p>
+    <p>We applied weight-space programming to other failures, with Claude Opus and GPT-6 Astra as the LLM editors: a robot that grabs a lookalike block, a box too wide for its usual grip, and a mustard bottle that slips out of its fingers. Dozens of native weight edits, and none helped. Each of these failures lacked what the cube fix had: some version of the input under which the robot already does the right thing. The robot can tell the lookalike blocks apart, but nothing we tried made it act on that. The box needs a grasp it never learned, and the bottle simply slips.</p>
     <figure class="fig wide">
       <a class="fig-link" href="assets/fig/outcomes-simple.svg" title="Open the figure at full size"><picture>
         <source type="image/svg+xml" media="(prefers-color-scheme: dark)" srcset="assets/fig/outcomes-simple-dark.svg">
@@ -141,20 +140,20 @@
   </section>
 
   <section id="study">
-    <h2>Then we let AI editors try on their own</h2>
-    <p class="claim">Seven AI editors worked blind. One edit survived, and it fixed the misreading again.</p>
-    <p>We gave seven fresh Claude Opus editors the same tools and the same small budget. Each got one task, and each task showed a different kind of failure. They couldn’t see each other’s work, and we tested each final edit on 64 starting positions none of them had seen.</p>
-    <p>The editor given the cube task found the misreading on its own, with the same trick of replaying the drops under a clearer wording. It then wrote a different and much smaller fix, changing just 1,024 numbers, which raised success from 11 to 27 in 64. That is less than our fix achieves, but it is the first edit by an autonomous AI editor to pass this test. The other six didn’t pass. Two edits stayed within noise, and four editors decided no edit was worth submitting. On the lookalike task, for example, no rewording changed where the arm went, so there was nothing to copy.</p>
-    <div class="tscroll" tabindex="0" role="region" aria-label="Results of the AI editor study">
+    <h2>Then we let LLM editors try on their own</h2>
+    <p class="claim">Seven LLM editors worked blind. One weight edit survived, and it fixed the misreading again.</p>
+    <p>We gave seven fresh Claude Opus editors the same weight-space programming tools and the same small budget. Each got one task, and each task showed a different kind of failure. They couldn’t see each other’s work, and we scored each submitted weight edit on 64 starting positions none of them had seen.</p>
+    <p>The editor given the cube task found the misreading on its own, with the same trick of replaying the drops under a clearer wording. It then wrote a different, far sparser weight edit, changing just 1,024 weights, which raised success from 11 to 27 in 64. That is less than our edit achieves, but it is the first weight edit by an autonomous LLM editor to pass this test. The other six didn’t pass. Two edits stayed within noise, and four editors decided no edit was worth submitting. On the lookalike task, for example, no rewording changed where the arm went, so there was nothing to copy.</p>
+    <div class="tscroll" tabindex="0" role="region" aria-label="Results of the LLM editor study">
       <table class="dtable study-table">
         <caption>Successes in 64 new starting positions, before → after the editor’s edit. An edit passes when the gain is too large to be noise. Every editor’s notes and code are <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results/ctrl">in the repository</a>.</caption>
         <thead>
           <tr><th scope="col">Task</th><th scope="col">What goes wrong</th><th scope="col">The editor submitted</th><th scope="col">Result</th></tr>
         </thead>
         <tbody>
-          <tr><td>Cube, then banana</td><td>Misreads the instruction</td><td>An edit of 1,024 numbers</td><td><b>11 → 27: passed</b></td></tr>
-          <tr><td>Pick up eyeglasses</td><td>Lifts a thin object too little</td><td>An edit of 3,072 numbers</td><td>18 → 27: could be noise</td></tr>
-          <tr><td>Mustard into the left bin</td><td>The grasp slips while carrying</td><td>An edit of 4,094 numbers</td><td>8 → 11: could be noise</td></tr>
+          <tr><td>Cube, then banana</td><td>Misreads the instruction</td><td>A 1,024-weight edit</td><td><b>11 → 27: passed</b></td></tr>
+          <tr><td>Pick up eyeglasses</td><td>Lifts a thin object too little</td><td>A 3,072-weight edit</td><td>18 → 27: could be noise</td></tr>
+          <tr><td>Mustard into the left bin</td><td>The grasp slips while carrying</td><td>A 4,094-weight edit</td><td>8 → 11: could be noise</td></tr>
           <tr><td>Cube left of the bowl</td><td>Reads “left” as a diagonal</td><td>No edit</td><td>—</td></tr>
           <tr><td>Stack three cubes</td><td>Stalls before the third cube</td><td>No edit</td><td>—</td></tr>
           <tr><td>Yellow block on red</td><td>Grabs a lookalike object</td><td>No edit</td><td>—</td></tr>
@@ -174,13 +173,13 @@
     <h2>What this means</h2>
     <p class="claim">Edit when the robot can already do the right thing under some input. Train when it can’t.</p>
     <p>The fix worked because three things were true. The robot had the skill. The failure came from one specific misreading. And some version of the input made it work. Every failure we couldn’t fix was missing one of these. Others who report big gains from weight edits worked with robots already trained on their task<sup>‡</sup>, which fits the same rule.</p>
-    <p>There are limits. The edit is compact but not tiny, because it nudges many stored numbers slightly. Finding it took a known-good instruction. We couldn’t predict in advance which other tasks it would help. And everything here is one robot model, in simulation.</p>
+    <p>There are limits. The edit is low-rank but not sparse: it nudges many weights slightly. Finding it took a known-good instruction. We couldn’t predict in advance which other tasks it would help. And everything here is one robot model, in simulation.</p>
   </section>
 
   <section id="try">
     <h2>Try it</h2>
     <p class="claim">Everything is open: the code, the benchmark, the edits and every result.</p>
-    <p>weightsmith gives an AI agent, or you, one tool to read, probe and edit a robot model’s weights. It scores every edit fairly, against the original robot, on starts the edit never saw. Start with the <a href="https://github.com/adeeb10abbas/weightsmith#readme">README</a>. The rules for submitting an edit are in the <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/BENCHMARK.md">benchmark</a>, every result so far is on the <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/LEADERBOARD.md">leaderboard</a>, and every comparison in this article is in the <a href="explore.html">explorer</a>.</p>
+    <p>weightsmith is a harness for weight-space programming on robot policies. An LLM editor, or you, reads, probes and writes π0.5’s weights through one tool, and every weight edit is scored against the unedited policy on starts it never saw. Start with the <a href="https://github.com/adeeb10abbas/weightsmith#readme">README</a>. The rules for submitting an edit are in the <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/BENCHMARK.md">benchmark</a>, every result so far is on the <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/LEADERBOARD.md">leaderboard</a>, and every comparison in this article is in the <a href="explore.html">explorer</a>.</p>
 <pre class="cmd"><code>git clone https://github.com/adeeb10abbas/weightsmith &amp;&amp; cd weightsmith
 pip install -e '.[mcp]'
 weightsmith --help</code></pre>
