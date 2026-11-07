@@ -1,5 +1,5 @@
 {
- "notes": "Distil the explicit wording of cube-then-banana into the VLM MLPs: image cells, layers 8-16 (the 0.16% edit, abl-imgl8). Items are the 6 premature-release decisions of capture c2-multi; check_items are decisions NOT used to build the edit. Run: python -m weightsmith.distill run examples/cube_then_banana/distill.json [--dry-run]",
+ "notes": "A record of the decisions behind the paper's 0.16% edit (abl-imgl8). It runs only on the reference project on the authors' GPU host: items and check_items name episodes and replans of that project, and the same episode names in another project hold different decisions. Items are the 6 premature-release decisions of capture c2-multi; check_items are decisions NOT used to build the edit. The bit-for-bit rebuild of the published edits from c2-multi is tests/test_distill_reproduce.py. For your own project use distill.json.",
  "project": "/home/ali/vibes/opus-weight-surgery/projects/cube-then-banana",
  "name": "ex-ctb-imgl8",
  "candidate": "ex-ctb-imgl8",

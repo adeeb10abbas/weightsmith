@@ -1,0 +1,15 @@
+{
+ "notes": "Distil the explicit wording of cube-then-banana into the VLM MLPs of your own project (WSP_ROOT): image cells, layers 8-16, the recipe of the paper's 0.16% edit (abl-imgl8). The decisions come from your base practice episodes (run scripts/base_practice.sh first), picked by the 'select' rule; the check groups are picked the same way and never reuse them. Run: weightsmith distill run examples/cube_then_banana/distill.json [--dry-run]. Walkthrough: docs/TUTORIAL.md.",
+ "name": "ctb-imgl8",
+ "candidate": "ctb-imgl8",
+ "instruction": "Put the cube then the banana in the bowl",
+ "explicit_instruction": "Put the cube in the bowl then put the banana in the bowl",
+ "select": {"rule": "early_release", "cand": "base", "success": false, "max_hold": 2, "min_grip": 0.1, "max_grip": 0.9, "limit": 6},
+ "check_items": {
+  "other_early_releases": {"rule": "early_release", "cand": "base", "success": false, "max_hold": 2, "min_grip": 0.1, "max_grip": 0.9, "limit": 16},
+  "grasps": {"rule": "grasp", "cand": "base", "success": null, "limit": 16}
+ },
+ "edit": {"mode": "image", "layers": [8, 9, 10, 11, 12, 13, 14, 15, 16], "alpha": 1.0, "lam_rel": 0.001},
+ "eval": {"n": 32, "offset": 0},
+ "heldout": {"slot_start": 90000, "n": 64}
+}

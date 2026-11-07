@@ -1,0 +1,11 @@
+{
+ "id": "two-wordings",
+ "cand": "base",
+ "items": [
+  {"episode": "base.base.s20001", "k": 21, "prompt": "Put the cube then the banana in the bowl"},
+  {"episode": "base.base.s20001", "k": 21, "prompt": "Put the cube in the bowl then put the banana in the bowl"}
+ ],
+ "action_layers": [17],
+ "action_tokens": [0],
+ "denoise_steps": [0]
+}
