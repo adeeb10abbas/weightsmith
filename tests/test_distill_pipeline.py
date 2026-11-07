@@ -66,6 +66,7 @@ class FakeHost:
         r = np.random.default_rng(3)
         self.W = {D.MLP_DOWN.format(L): _bf16()(r.normal(size=(F, DM)) * 0.1) for L in range(17)}
         self.cands: set[str] = set()
+        self.unresponsive: set[str] = set()  # episodes whose decision the explicit wording does not change
 
     # ---- bin/owsp
     def run(self, *args, file_text=None, file_name=None):
@@ -133,7 +134,8 @@ class FakeHost:
             res.append(x)
             recorded = obs_chunk = np.load(self.data / "episodes" / it["episode"] / "obs.npz")["actions"][it["k"]]
             a = obs_chunk.copy()
-            if prompt == EXPL or spec["cand"] != "base":  # explicit wording and the edit both keep the gripper closed
+            explicit = prompt == EXPL and it["episode"] not in self.unresponsive
+            if explicit or spec["cand"] != "base":  # the explicit wording and the edit both keep the gripper closed
                 a[:, 7] = 1.0
             act.append(a)
             rows.append({"episode": it["episode"], "k": int(it["k"]), "prompt": prompt, "recorded": recorded.tolist()})
@@ -230,3 +232,19 @@ def test_the_build_reports_edits_it_did_not_write(host, tmp_path):
     res = D.run_pipeline({**CFG, "edit": {**CFG["edit"], "layers": [9]}}, workdir=tmp_path / "wd",
                          steps=("select", "capture", "build"))
     assert res["build"]["other_edits_kept"] == [D.MLP_DOWN.format(8)]
+
+
+def test_responsive_only_builds_from_the_decisions_the_wording_changes(host, tmp_path, capsys):
+    host.unresponsive = {"base.base.s20001"}
+    res = D.run_pipeline({**CFG, "responsive_only": True}, workdir=tmp_path / "wd")
+    out = capsys.readouterr().out
+    assert res["responsive"] == [0] and res["build"]["n_items"] == 1
+    assert "1 of 2 decisions change with the wording" in out
+    assert res["check"]["decisions"]["n"] == 2  # the check still replays every selected decision
+
+
+def test_responsive_only_stops_when_no_decision_changes(host, tmp_path):
+    host.unresponsive = set(EPISODES)
+    with pytest.raises(RuntimeError, match="nothing to distil"):
+        D.run_pipeline({**CFG, "responsive_only": True}, workdir=tmp_path / "wd")
+    assert not (host.root / "cands" / "t-imgl8").exists()  # stopped before creating the candidate

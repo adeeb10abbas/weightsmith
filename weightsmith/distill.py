@@ -734,6 +734,24 @@ def _sb_select(rule, io):
     return {"items": [{"episode": it["episode"], "k": it["k"]} for it in items], "details": items, "scanned": scanned}
 
 
+def _sb_responsive(cfg, io):
+    """Sandbox body: the decisions at which the two wordings disagree on the gripper (closed vs open)."""
+    idx_o, arr_o = _sb_load_capture(io["data_root"], cfg["orig_capture"], ["actions"])
+    idx_x, arr_x = _sb_load_capture(io["data_root"], cfg["expl_capture"], ["actions"])
+    co, cx = gripper_closed(arr_o["actions"]), gripper_closed(arr_x["actions"])
+    keep = []
+    print(f"{'decision':<28} original  explicit")
+    for i, (a, b) in enumerate(zip(idx_o["items"], idx_x["items"], strict=True)):
+        if (a["episode"], a["k"]) != (b["episode"], b["k"]):
+            raise ValueError(f"item {i}: the two captures hold different decisions")
+        if co[i] != cx[i]:
+            keep.append(i)
+        print(f"{a['episode'] + ' k=' + str(a['k']):<28} {'CLOSE' if co[i] else 'open':<9} "
+              f"{'CLOSE' if cx[i] else 'open':<9}{'<- the wording changes the decision' if co[i] != cx[i] else ''}")
+    print(f"{len(keep)} of {len(co)} decisions change with the wording")
+    return {"responsive": keep, "n": int(len(co))}
+
+
 def _sb_fingerprint(cfg, io):
     """Sandbox body: the candidate's ``owsp`` fingerprint (sha256 over its edit files, as ``owsp eval`` prints)."""
     import glob as _gl
@@ -1070,6 +1088,20 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
                 print(out.strip()[-600:])
 
     if "build" in steps:
+        if cfg.get("responsive_only") and bcfg.orig_items is None and bcfg.expl_items is None:
+            out = ow.run("py", "base", file_text=_render(
+                _sb_responsive, {"orig_capture": bcfg.orig_capture, "expl_capture": bcfg.expl_capture},
+                data_root="/work/data", scratch="", title="distill: decisions that change with the wording"),
+                file_name="responsive.py")
+            if out is not None:
+                print(out[:3000].split(_MARK)[0].rstrip())
+                keep = parse_result(out)["responsive"]
+                if not keep:
+                    raise RuntimeError("the explicit wording changes none of the selected decisions, so there is "
+                                       "nothing to distil: try other decisions, another rewording, or another edit")
+                bcfg = dataclasses.replace(bcfg, orig_items=keep, expl_items=keep)
+                result["responsive"] = keep
+                print(f"the edit is built from the {len(keep)} decisions that change with the wording")
         script = render_sandbox_script(bcfg)
         if cand not in status["candidates"]:
             ow.run("new", cand, "--note", f"distill {name}: {json.dumps(cfg['edit'], sort_keys=True)}")
