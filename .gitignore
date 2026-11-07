@@ -35,14 +35,23 @@ workspaces/
 *.err
 *.bak
 *.bak-*
+# portable edit files (weightsmith edit export): large ones are release assets, see edits/README.md
+*.safetensors
+!edits/*.safetensors
+edits/downloads/
+edits/v2mi-f.safetensors
+edits/abl-imgl8.safetensors
+# Hugging Face Hub folders written by integrations/hub/export_to_hub.py
+/hub/
 
 # ...except the curated, published results and figures (the patterns above match at any depth)
 !study/results/data/
 !study/results/data/*.png
-!study/results/opus/heldout/
+!study/results/*/heldout/
 !**/figures/*.png
 !**/figures/*.jpg
 !site/data/
+!site/assets/**
 
 # editor session state
 session_id
@@ -54,10 +63,18 @@ codex-home/
 __pycache__/
 *.pyc
 .venv/
+venv/
 .pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+/build/
+/dist/
 
 # LaTeX build products
 *.aux
+*.blg
+*.toc
 *.fls
 *.fdb_latexmk
 *.synctex.gz

@@ -55,7 +55,7 @@ Protocol: [BENCHMARK.md](BENCHMARK.md). Every run, including the failures: [LEAD
 | Autonomous blind editor (Claude Opus): gated rank-1 gripper edit, 1,024 values | Cube then banana | 11/64 → **27/64**: 22 fixed, 6 broken, p = 0.004 | held-out |
 | Edits aimed at perception, a missing skill, contact physics, the gripper threshold | Stacking, flat box, mustard, 7 tasks | no gain | practice |
 
-Paired outcomes on identical seeds; p is the exact McNemar test. The distilled edit was built by our Claude Opus operator session following the editor rules; the 1,024-value edit came from an autonomous editor working blind. Details: the [paper](paper/main.pdf), the [project page](https://ali-adeeb.com/weightsmith/), and the raw [held-out runs](study/results/opus/heldout/) and [comparisons](study/results/opus/comparisons.json).
+Download, apply and verify the accepted edits bit for bit: [edits/](edits/README.md). Paired outcomes on identical seeds; p is the exact McNemar test. The distilled edit was built by our Claude Opus operator session following the editor rules; the 1,024-value edit came from an autonomous editor working blind. Details: the [paper](paper/main.pdf), the [project page](https://ali-adeeb.com/weightsmith/), and the raw [held-out runs](study/results/opus/heldout/) and [comparisons](study/results/opus/comparisons.json).
 
 ## Quickstart
 
@@ -85,7 +85,7 @@ Requirements (Linux, 24 GB NVIDIA GPU, ~60 GB disk) and the exact pins are in [d
 | Hugging Face Hub folders for results and edits (`integrations/hub/`) | Experimental |
 | [`weightsmith distill`](docs/DISTILL.md): closed-form instruction distillation as one command | Experimental |
 
-Setup and client configs: [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md). All documentation: [docs/](docs/README.md). Contributions and new leaderboard entries: [CONTRIBUTING.md](CONTRIBUTING.md).
+New to this? Read [docs/CONCEPTS.md](docs/CONCEPTS.md), then try the recipes in [docs/COOKBOOK.md](docs/COOKBOOK.md). Setup and client configs: [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md). All documentation: [docs/](docs/README.md). Contributions and new leaderboard entries: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Repository map
 

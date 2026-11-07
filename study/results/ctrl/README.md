@@ -2,7 +2,7 @@
 
 **Question.** With identical tools, budget and protocol, can a blind LLM editor find a weight edit that improves a zero-shot π0.5 policy, and does it survive held-out scoring? One RoboLab task per failure kind.
 
-**Result.** One of seven submissions was accepted: on the two-step instruction task (cube then banana), a 1,024-value edit took held-out success from **11/64 to 27/64** (22 fixed, 6 broken; exact McNemar p = 0.0037, Holm-adjusted over the seven tasks p = 0.026; paired difference +25.0 pp [+9.4, +39.1]). Two more submitted edits stayed within noise on held-out slots. Four editors submitted the unedited policy.
+**Result.** One of seven submissions was accepted: on the two-step instruction task (cube then banana), a 1,024-value edit took held-out success from **11/64 to 27/64** (22 fixed, 6 broken; exact McNemar p = 0.0037, Holm-adjusted over the seven tasks p = 0.026; paired difference +25.0 pp [+9.4, +40.6]). Two more submitted edits stayed within noise on held-out slots. Four editors submitted the unedited policy.
 
 | Task | Failure kind | Submission | Edit | Dev, slots 70000–70031: base → cand (fixed / broke) | Held-out, slots 91008–91071: base → edit (fixed / broke), p |
 |---|---|---|---|---|---|
@@ -32,6 +32,10 @@ Held-out runs alternate order by half (first half base first, second half edit f
 4. **Rule break.** The eyeglasses editor ran one `ls` of its own directory outside the allowed commands, and said so in its report.
 5. **One candidate only.** GPU queue waits of 25–30 minutes per job led four editors (cube then banana, mustard, eyeglasses, cube left of bowl) to stop after one candidate.
 6. **Failed first launch.** The first held-out launch at slot 91000 stopped before any episode ran, because slots must form whole groups of 16. Scoring used slots 91008–91071; the log of the failed launch is not part of any result.
+
+## Round 2: stacking, extended time
+
+After the study, the stacking editor was given more time with the same budget (two candidates) to build the gate it had proposed. Its `p1` (3,072 values: one repurposed unit in `action.blocks.17` that gates the gripper open at the stack) removed the targeted failure, with closes on empty air at the stack falling from 73 to 5 replans, but success did not change: development 17/32 vs 16/32 (6 fixed / 5 broken); held-out slots 91008–91071, 39/64 vs 35/64 (17 fixed / 13 broken, exact p = 0.585). The remaining bottleneck is placing the third cube, a motor-precision problem the edit does not touch. Records: `stack3/FINAL2.md`, `stack3/NOTEBOOK.md`, `stack3/scripts_round2/`, `heldout/ctrl-stack3__*.json`.
 
 ## Findings worth noting
 
