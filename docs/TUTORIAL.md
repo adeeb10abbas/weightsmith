@@ -425,7 +425,43 @@ stand out:
   episode, and here those came mostly after many retries (replans 18 to 50). The paper built its edit from
   releases on the first carry.
 
-ITERATE_SECTION
+### Iterate
+
+When a screen passes but falls short, let the offline check and the events pick the next try, not held-out
+slots. Here the next try is to build from first-carry releases.
+[distill-first-carry.json](../examples/cube_then_banana/distill-first-carry.json) keeps decisions up to sim step
+150 (`max_step`), allows carries of up to 4 replans (`max_hold`), and takes every such release in an episode
+(`first_only: false`). It has its own `name`, so it captures afresh instead of reusing the first edit's captures:
+
+```bash
+weightsmith distill run examples/cube_then_banana/distill-first-carry.json
+bin/owsp eval ctb-first --n 32
+bin/owsp py base examples/cube_then_banana/paired_csv.py > paired.csv
+weightsmith stats paired.csv --arms base,ctb-first
+```
+
+The selection now finds 10 releases between replans 4 and 10, and the rewording changes 7 of them. The offline
+check of the new candidate (`ctb-first`, fingerprint `3047901c3502ffea`), next to the first edit's:
+
+```
+decisions (n=10): gripper closed  base 0 | explicit 7 | edit 7   flips vs base 7   edit agrees with explicit 10/10 (base 3/10)
+  chunk-end end effector: base->explicit 9.0 cm, edit->explicit 4.0 cm, edit moved 7.0 cm
+check grasps                     (n=16): gripper closed base 16 | edit 15   flips  1   edit moved 0.8 cm
+check other_early_releases       (n=16): gripper closed base  1 | edit 13   flips 12   edit moved 4.8 cm
+```
+
+| Offline check | `ctb-imgl8` (first edit) | `ctb-first` |
+|---|---|---|
+| unseen early releases held (unedited: 1 of 16) | 11 of 16 | 13 of 16 |
+| grasps that no longer close | 3 of 16 | 1 of 16 |
+| arm targets, distance to the explicit wording's | 6.7 cm (unedited 10.7) | 4.0 cm (unedited 9.0) |
+
+Better on every line, so it earns a closed-loop run:
+
+ITERATE_EVAL
+
+Comparing candidates on the same 32 practice slots is fine for choosing between them. Choosing on practice slots
+is also exactly why the winner then needs a held-out score.
 
 ## 8. The held-out score (operator only)
 
@@ -468,7 +504,9 @@ recipe (`abl-imgl8`, built from 6 hand-picked decisions; slots 90000–90127):
 ```
 
 Read it like step 7: 86 fixed against 3 broken on 128 unseen pairs is far beyond the noise floor. The Wilson
-intervals bound each success rate. The full file is
+intervals bound each success rate. `weightsmith stats $WSP_ROOT/heldout/<tag>/results.json --halves` prints the
+same report as in step 7 from a held-out run, plus each half of the slot block (the two halves ran in opposite
+order). The paper's full file is
 [study/results/opus/heldout/](../study/results/opus/heldout/cube-then-banana__abl-imgl8-RubiksCubeThenBananaTask-90000-128.json).
 
 ## Where next
@@ -478,6 +516,8 @@ intervals bound each success rate. The full file is
   if no rewording changes the failing decisions, distillation has nothing to copy.
 - **The method and every config field:** [DISTILL.md](DISTILL.md). The paper's full diagnosis and the attempts
   that failed first: [study/results/opus/ctb/](../study/results/opus/ctb/README.md).
+- **Other edits and how to check them:** copy-paste recipes in [COOKBOOK.md](COOKBOOK.md), and the ideas behind
+  them in [CONCEPTS.md](CONCEPTS.md).
 - **Let an LLM do the editing:** the same tools as an MCP server ([INTEGRATIONS.md](INTEGRATIONS.md)), or a
   headless editor under a budget ([drivers/](../drivers/README.md), [BENCHMARK.md](../BENCHMARK.md)).
 - **Share the edit as one file:** `weightsmith edit export $WSP_ROOT/cands/ctb-imgl8 -o ctb-imgl8.safetensors
@@ -494,6 +534,7 @@ intervals bound each success rate. The full file is
 | `bad or existing acts id two-wordings` | Capture ids are unique within a project. Change `"id"` in the spec. |
 | `owsp py` prints `[stderr] Traceback ...` and `[exit 1]` | Your script failed inside the sandbox. owsp itself still exits 0, so read the output. |
 | `capture 'ctb-imgl8-o' already exists but holds other decisions` | You changed the selection after an earlier run. Give the config a new `name`; capture ids derive from it. |
+| `the select rule found no decisions in the project's episodes` | Run step 2 first, or relax the rule (`max_hold`, `max_step`, `success`). |
 | `the explicit wording changes none of the selected decisions` | Distillation has nothing to copy. Check step 4 on more decisions, or try another rewording. |
 | `prompt overrides are disabled in this project` | The project's config sets `"prompt_overrides": false`. Use `configs/cube-then-banana.json`, which allows them. |
 | `--slot-start must be a multiple of envs = 16` | Held-out slots run in groups of 16 (95008, not 95000). |
