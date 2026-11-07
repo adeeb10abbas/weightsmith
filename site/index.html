@@ -81,6 +81,7 @@
   <section id="failure">
     <h2>The robot misread one phrase</h2>
     <p class="claim">It knew how to do the task. It got confused about which object “in the bowl” referred to.</p>
+    <p>If a policy understands the goal, the wording shouldn’t matter. In <a href="https://ali-adeeb.com/same-goal-different-words/">Same Goal, Different Words</a>, we found that it does. Across 864 rollouts of three world-action models, describing the same placement from the reference object’s side, rather than the object being moved, cut stable placements by 12.2 points. That work measured the wording gap. This one asks whether it can be closed inside the policy, in weight space.</p>
     <p>π0.5 is an open, generalist vision-language-action policy with about 3 billion parameters; here it runs in simulation. Told to “put the cube then the banana in the bowl,” it picks up the cube, then lets go of it on the way. It succeeds only about one time in five.</p>
     <figure class="fig wide">
       <a class="fig-link" href="assets/fig/rewordings.svg" title="Open the figure at full size"><picture>
@@ -92,7 +93,7 @@
       <figcaption>We replayed 21 recorded moments where the robot let go of the cube, keeping everything identical except the words. Each bar shows how many of the 21 drops remain.</figcaption>
     </figure>
     <p>To find out why, we replayed the exact moments it let go and changed only the wording. Renaming the cube changed nothing. Moving “in the bowl” right next to the cube made almost every drop disappear. The robot was attaching “in the bowl” to the banana, so while it held the cube it acted as if it held the wrong object.</p>
-    <p>The skill itself was fine. Given a clearer instruction, “put the cube in the bowl then put the banana in the bowl,” the same robot succeeds 22 times out of 32 instead of 3.</p>
+    <p>The skill itself was fine. Given a clearer instruction, “put the cube in the bowl then put the banana in the bowl,” the same policy succeeds 22 times out of 32 instead of 3. Same goal, different words, and a sevenfold difference in success.</p>
   </section>
 
   <section id="fix">
