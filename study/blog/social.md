@@ -59,18 +59,19 @@ Site + videos: https://ali-adeeb.com/weightsmith/
 Code & benchmark: https://github.com/adeeb10abbas/weightsmith
 With @⟦ESMAEIL_X_HANDLE⟧
 
-## LinkedIn (short, casual; attach the video or the title card + results chart)
+## LinkedIn (short, casual; attach the video or carousel.pdf)
 
 Been working on a fun one with Esmaeil Seraj.
 
-We told π0.5 (Physical Intelligence's open robot model) to "put the cube then the banana in the bowl," and it kept dropping the cube. It was reading "in the bowl" as being about the banana. Spell the instruction out and it mostly works.
+π0.5 (Physical Intelligence's open robot model) kept dropping the cube when told to "put the cube then the banana in the bowl." It was reading "in the bowl" as being about the banana.
 
-So we fixed it inside the model: we took what the network does with the clear instruction and wrote it straight into the weights. No training. Same original instruction, and success on setups it had never seen went from 21% to 83%.
+So we fixed it inside the model, no training: we took what the network does with a clearer instruction and wrote it straight into the weights. Same original instruction, and success on setups it had never seen went from 21% to 83%.
 
-What stuck with me:
+The parts I didn't expect:
+- The same edit fixed two tasks we never built it for: picking up eyeglasses (22 → 44 of 64) and putting the cube left of the bowl (8 → 36).
 - A random edit of the same size did nothing.
-- It only works when some wording already gets the robot there.
-- We let 7 Claude agents try this blind. One found the same bug on its own and fixed it.
+- It never taught the robot a new skill. Everything that worked was about how the model read the instruction, not how it moves.
+- We let 7 Claude agents try this blind. One found the same bug on its own and fixed it. Two others, on different tasks, found the same two neurons for the word "left".
 
 Blog + paper: https://ali-adeeb.com/weightsmith/
 Code: https://github.com/adeeb10abbas/weightsmith
