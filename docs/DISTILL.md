@@ -44,13 +44,15 @@ rebuilt edit is never checked against an older replay.
 
 [`examples/cube_then_banana/distill.json`](../examples/cube_then_banana/distill.json) applies the recipe of the
 paper's 0.16% edit (image cells, layers 8–16) to your own project.
+[`distill-first-carry.json`](../examples/cube_then_banana/distill-first-carry.json) does the same from releases on
+the first carry (`max_step`), which worked much better in the tutorial's project.
 
 | Field | Meaning |
 |---|---|
 | `project` | project root on the GPU host; default `$WSP_ROOT` |
 | `name`, `candidate` | prefix of the capture ids (`<name>-o`, `-x`, `-c-<fingerprint>`, `-cb`) and the candidate to create |
 | `instruction`, `explicit_instruction` | the project's wording and the rewording that works |
-| `items` or `select` | the decisions: explicit `{"episode", "k"}` items, or a rule (`early_release`: grasp, then let go within `max_hold` replans with the measured gripper in `[min_grip, max_grip]`; `grasp`: the first close of an open hand), plus `cand`, `success` (`false`: failed episodes, `null`: all), `limit`, `episodes`, `exclude` |
+| `items` or `select` | the decisions: explicit `{"episode", "k"}` items, or a rule (`early_release`: grasp, then let go within `max_hold` replans with the measured gripper in `[min_grip, max_grip]`; `grasp`: the first close of an open hand), plus `cand`, `success` (`false`: failed episodes, `null`: all), `first_only`, `max_step`, `limit`, `episodes`, `exclude` |
 | `responsive_only` | build only from the decisions whose gripper decision changes with the wording; stop if none does |
 | `check_items` | decisions NOT used to build the edit, grouped: `{group: [items]}` or `{group: rule}` |
 | `edit` | `mode` (`image`, `state` or `both`), `layers` (0–16), `alpha`, `lam_rel` |
@@ -65,7 +67,8 @@ project hold different decisions.
 Experimental: it has run end to end on one task.
 
 - **The build step rebuilds the paper's edits bit for bit.** Rebuilt from capture `c2-multi` in fresh candidates, both published edits come out identical, with the same `owsp` fingerprints: `v2mi-f` → `63db0c52a51306c9` and `abl-imgl8` → `5bf8c4329c1e416a`. [`tests/test_distill_reproduce.py`](../tests/test_distill_reproduce.py) repeats this on the GPU host when `WSP_DISTILL_PROJECT` is set.
-- **`run` works end to end on a new project.** On 2026-11-07 it ran select → capture → build → check on a fresh cube-then-banana project with 32 base practice episodes ([TUTORIAL.md](TUTORIAL.md)). It selected 10 early releases, of which the rewording changes 8, and built `ctb-imgl8` (fingerprint `72e042a97074dddc`). Offline, the edit makes the explicit wording's gripper call at 10/10 of those decisions and keeps the gripper closed at 11 of 16 unseen early releases (the unedited replay: 1); 3 of 16 grasp decisions no longer close. In closed loop on the same 32 practice slots it scored 8/32 against 2/32 (8 fixed, 2 broken, exact p = 0.11): a screen that passes, not evidence, and well short of the paper's version of this recipe (25/32 against 3/32 on its practice slots). No held-out score yet. ITER_STATUS
+- **`run` works end to end on a new project.** On 2026-11-07 it ran select → capture → build → check on a fresh cube-then-banana project with 32 base practice episodes ([TUTORIAL.md](TUTORIAL.md)). It selected 10 early releases, of which the rewording changes 8, and built `ctb-imgl8` (fingerprint `72e042a97074dddc`). Offline, the edit makes the explicit wording's gripper call at 10/10 of those decisions and keeps the gripper closed at 11 of 16 unseen early releases (the unedited replay: 1); 3 of 16 grasp decisions no longer close. In closed loop on the same 32 practice slots it scored 8/32 against 2/32 (8 fixed, 2 broken, exact p = 0.11): a screen that passes, not evidence, and well short of the paper's version of this recipe (25/32 against 3/32 on its practice slots).
+- **The decisions matter.** Rebuilt from releases on the first carry ([`distill-first-carry.json`](../examples/cube_then_banana/distill-first-carry.json), `ctb-first`, fingerprint `3047901c3502ffea`), the same recipe kept the gripper closed at 13 of 16 unseen releases, changed 1 of 16 grasps, and scored 19/32 against 2/32 on the same slots (18 fixed, 1 broken, exact p = 7.6×10⁻⁵). Both runs are practice screens: neither edit has a held-out score yet.
 - **Not yet shown:** other tasks, and selection rules beyond gripper decisions (`early_release`, `grasp`).
 - The CPU tests run in CI: [`tests/test_distill.py`](../tests/test_distill.py) (the math and the rendered sandbox scripts) and [`tests/test_distill_pipeline.py`](../tests/test_distill_pipeline.py) (the whole `run` against a fake GPU host).
 

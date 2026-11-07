@@ -3,10 +3,11 @@
 In this tutorial you take π0.5 on one RoboLab task and find the one decision where it goes wrong. You then show
 that a reworded instruction fixes that decision, write the rewording's effect into the weights with
 `weightsmith distill` (closed form, no training), and measure the edited policy against the unedited one on the
-same simulator seeds.
+same simulator seeds. In the run below, the first edit took practice success from 2/32 to 8/32, and one
+iteration guided by the offline check reached 19/32.
 
-Every output below comes from one real run on 2026-11-07 on the reference box (2× RTX 3090), trimmed for
-length, with the project path shortened to `projects/ctb`. Your numbers will differ: the simulator is not
+Every output below comes from real runs on 2026-11-07 on the reference box (2× RTX 3090), trimmed for length,
+with the project path shortened to `projects/ctb`. Your numbers will differ: the simulator is not
 bit-deterministic, which is the subject of [step 7](#7-read-a-paired-result).
 
 **You need** a GPU host where `scripts/smoke_test.sh` passes ([SETUP.md](SETUP.md)), with this repo checked out
@@ -22,7 +23,7 @@ commands are the same.
 | [4](#4-replay-that-decision-under-two-wordings) | Replay that decision under two wordings | under 1 min |
 | [5](#5-distil-the-rewording-into-the-weights) | Distil the rewording into the weights | about 2 min (4 captures) |
 | [6](#6-run-the-edited-policy-on-the-same-seeds) | Run the edited policy on the same 32 seeds | 11–17 min |
-| [7](#7-read-a-paired-result) | Read a paired result | none |
+| [7](#7-read-a-paired-result) | Read a paired result, then iterate: a second edit, checked and evaluated | about 18 min |
 | [8](#8-the-held-out-score-operator-only) | The held-out score (operator only) | about 45 min (not run here) |
 
 GPU jobs queue behind each other through per-GPU locks, so on a shared host the wall time can be much longer.
@@ -317,8 +318,10 @@ Read it top to bottom:
 
 The whole run took 63 minutes of wall time on the shared host. Most of it was waiting for GPU locks: the four
 captures used about 2 minutes of GPU (19, 19, 66 and 16 seconds). Everything it wrote is in
-`distill-runs/ctb-imgl8/`. Rerunning the same command reuses the captures and rebuilds the same candidate;
-changing the selection makes it stop instead of reusing stale captures.
+`distill-runs/ctb-imgl8/`. Rerunning the same command took 30 seconds and no GPU: it checked that each existing
+capture holds the same decisions (`capture ctb-imgl8-o exists with the same 10 decisions: reusing it`) and rebuilt
+the candidate bit for bit (same fingerprint). Had the selection changed, it would have stopped instead of reusing
+stale captures.
 
 ## 6. Run the edited policy on the same seeds
 
@@ -458,7 +461,34 @@ check other_early_releases       (n=16): gripper closed base  1 | edit 13   flip
 
 Better on every line, so it earns a closed-loop run:
 
-ITERATE_EVAL
+```
+[eval ctb-first fp=3047901c3502ffea n=32 success=19/32 (59.4%) wall=15.8 min]
+[paired vs base on 32 shared slots: base 2.0 vs cand 19 | fixed 18, broke 1]
+```
+
+```
+base vs ctb-first: 32 paired slots (20000-20031)
+  base         2/32 =   6.2%   Wilson 95%: 1.7% to 20.1%
+  ctb-first   19/32 =  59.4%   Wilson 95%: 42.3% to 74.5%
+  pairs     both 1, fixed 18, broke 1, neither 12  (59.4% of pairs differ)
+  change    +53.1 points   paired bootstrap 95%: +34.4 to +71.9
+  McNemar   exact p = 7.6e-05   (18 fixed vs 1 broke)
+  detects   about 27 points with 32 pairs (80% power, alpha 0.05, 30% of pairs differing)
+  verdict   ctb-first better than base (p < 0.05)
+  note      fewer than 64 pairs: treat this as a screen, not evidence (BENCHMARK.md scores on >= 64 held-out pairs)
+```
+
+```
+base        2/32 succeeded   object in the bowl in  3   170 carries, median  8 steps before the drop
+ctb-imgl8   8/32 succeeded   object in the bowl in 14   177 carries, median 31 steps before the drop
+ctb-first  19/32 succeeded   object in the bowl in 25   122 carries, median 34 steps before the drop
+```
+
+19 against 2, with 18 fixed and 1 broken: a gain of 53 points, twice what 32 pairs can detect, and close to the
+paper's 25/32 against 3/32 for this recipe. Head to head on the same slots, `ctb-first` beats the first edit too
+(`weightsmith stats paired.csv --arms ctb-imgl8,ctb-first`: 14 fixed, 3 broken, p = 0.013). The decisions an edit
+is distilled from matter: the same recipe, built from the failure you actually care about, more than doubled the
+success rate. The offline check predicted the ranking, and it cost 2 minutes of GPU instead of 16.
 
 Comparing candidates on the same 32 practice slots is fine for choosing between them. Choosing on practice slots
 is also exactly why the winner then needs a held-out score.
@@ -470,9 +500,9 @@ edit, run by an operator: base and candidate on the same unseen slots, in altern
 block. On the GPU host:
 
 ```bash
-WSP_ROOT=$PWD/projects/ctb nohup setsid python3 weightsmith/heldout.py --cand ctb-imgl8 --slot-start 95008 --n 64 \
-    > heldout-ctb-imgl8.log 2>&1 < /dev/null &
-tail -f heldout-ctb-imgl8.log
+WSP_ROOT=$PWD/projects/ctb nohup setsid python3 weightsmith/heldout.py --cand ctb-first --slot-start 95008 --n 64 \
+    > heldout-ctb-first.log 2>&1 < /dev/null &
+tail -f heldout-ctb-first.log
 ```
 
 - `--slot-start`: at least 80000, a multiple of 16, and never used for this candidate before. heldout.py
@@ -483,9 +513,10 @@ tail -f heldout-ctb-imgl8.log
 - `heldout/<tag>/` is never overwritten. A slot block gets one shot: running it again until the numbers look
   better would make them meaningless.
 
-**This tutorial run stopped before this step.** The GPUs were shared with other experiments, and its GPU
-budget was spent. For reference, this is the summary heldout.py printed for the paper's version of the same
-recipe (`abl-imgl8`, built from 6 hand-picked decisions; slots 90000–90127):
+**This tutorial run stopped before this step.** The GPUs were shared with other experiments and its GPU budget
+was spent, so `ctb-first`'s 19/32 is still a practice screen. For reference, this is the summary heldout.py
+printed for the paper's version of the same recipe (`abl-imgl8`, built from 6 hand-picked decisions; slots
+90000–90127):
 
 ```json
 {
