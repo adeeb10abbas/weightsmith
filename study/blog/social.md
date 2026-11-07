@@ -59,21 +59,18 @@ Site + videos: https://ali-adeeb.com/weightsmith/
 Code & benchmark: https://github.com/adeeb10abbas/weightsmith
 With @⟦ESMAEIL_X_HANDLE⟧
 
-## LinkedIn (short, casual; attach the 4:5 video)
+## LinkedIn (short, casual; attach the video or the title card + results chart)
 
 Been working on a fun one with Esmaeil Seraj.
 
-We gave π0.5 (Physical Intelligence's open robot model) the instruction "put the cube then the banana in the bowl", and it kept dropping the cube on the way. After a lot of poking around, we figured out it was reading "in the bowl" as being about the banana. Spell it out ("put the cube in the bowl, then put the banana in the bowl") and it mostly works.
+We told π0.5 (Physical Intelligence's open robot model) to "put the cube then the banana in the bowl," and it kept dropping the cube. It was reading "in the bowl" as being about the banana. Spell the instruction out and it mostly works.
 
-So instead of changing the prompt or retraining, we fixed it inside the model. We looked at what the network does internally with the clear instruction and wrote that straight into its weights. No training involved. With the original instruction, success on setups it had never seen went from 21% to 83%.
+So we fixed it inside the model: we took what the network does with the clear instruction and wrote it straight into the weights. No training. Same original instruction, and success on setups it had never seen went from 21% to 83%.
 
-A few things that stuck with me:
-- A random edit of the same size did nothing. It really is about where you push.
-- It only worked because the model could already do the task with the right wording. Where no wording helped (a lookalike block, a box it can't grip), nothing we tried worked either.
-- We also let 7 Claude Opus agents try this blind, one task each. One of them found the same bug on its own and wrote a much smaller fix that held up on the held-out test.
-- Sim is noisier than I expected: same model, same starts, and about a third of the outcomes flip between runs.
+What stuck with me:
+- A random edit of the same size did nothing.
+- It only works when some wording already gets the robot there.
+- We let 7 Claude agents try this blind. One found the same bug on its own and fixed it.
 
 Blog + paper: https://ali-adeeb.com/weightsmith/
 Code: https://github.com/adeeb10abbas/weightsmith
-
-Builds on our earlier work on how robots handle different wordings of the same goal, and on Takehi et al.'s weight-space programming.
