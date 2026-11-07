@@ -845,6 +845,12 @@ def render_select_script(rule: Mapping[str, Any], *, data_root: str = "/work/dat
     return _render(_sb_select, dict(rule), data_root=data_root, scratch="", title=f"distill select: {rule.get('rule')}")
 
 
+def _human(output: str, limit: int = 3000) -> str:
+    """A sandbox script's output without its machine-readable ``DISTILL_JSON`` line."""
+    text = "\n".join(line for line in output.splitlines() if not line.startswith(_MARK)).strip()
+    return text if len(text) <= limit else text[:limit] + "\n[...]"
+
+
 def parse_result(output: str) -> dict[str, Any]:
     """The ``DISTILL_JSON`` payload printed by a rendered script (raises with the output tail if absent)."""
     for line in reversed(output.splitlines()):
@@ -1062,7 +1068,7 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
             print(f"[dry-run] decision items would come from {wd / 'select.py'}; a placeholder item is used below")
             items = [{"episode": "<selected-episode>", "k": 0}]
         else:
-            print(out[:3000])
+            print(_human(out))
             items = parse_result(out)["items"]
             (wd / "items.json").write_text(json.dumps(items, indent=1))
     elif not items:
@@ -1094,7 +1100,7 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
                 data_root="/work/data", scratch="", title="distill: decisions that change with the wording"),
                 file_name="responsive.py")
             if out is not None:
-                print(out[:3000].split(_MARK)[0].rstrip())
+                print(_human(out))
                 keep = parse_result(out)["responsive"]
                 if not keep:
                     raise RuntimeError("the explicit wording changes none of the selected decisions, so there is "
@@ -1109,7 +1115,7 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
             print(f"candidate {cand} exists; its edits will be overwritten tensor by tensor")
         out = ow.run("py", cand, file_text=script, file_name="build.py")
         if out is not None:
-            print(out[:6000])
+            print(_human(out, 6000))
             result["build"] = parse_result(out)
             (wd / "build.json").write_text(json.dumps(result["build"], indent=1, default=float))
         else:
@@ -1139,7 +1145,7 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
                          "check_groups": ranges})
         out = ow.run("py", "base", file_text=render_check_script(ccfg), file_name="check.py")
         if out is not None:
-            print(out[:3000])
+            print(_human(out))
             result["check"] = parse_result(out)
             (wd / "check.json").write_text(json.dumps(result["check"], indent=1))
 
