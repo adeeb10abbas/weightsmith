@@ -205,7 +205,8 @@ held-out seeds it scored 106 against 27.
 
 *Credit: the blind cube-then-banana editor of the controlled study
 ([`ctb/`](../study/results/ctrl/ctb/FINAL.md), `scripts/build_p1b.py`). Its 1,024-value edit is the one autonomous
-edit that passed held-out scoring: 11/64 → 27/64, p = 0.0037.*
+edit that passed held-out scoring: 11/64 → 27/64, p = 0.0037. It is in the [edit zoo](../edits/README.md) as
+`edits/ctrl-ctb-p1.safetensors`, which `weightsmith edit apply` turns back into the scored candidate.*
 
 **When.** The failure is one output channel (here the gripper opens too early) and the action expert's last hidden
 state h (`action.head_input` in captures) tells the failing decisions apart from the ones that must not change.
@@ -237,7 +238,9 @@ with a norm of 3.41, four times the column's own norm (0.85); the blind editor's
 
 *Credit: the blind eyeglasses editor ([`glasses/`](../study/results/ctrl/glasses/FINAL.md), `scripts/build_p1b.py`;
 3,072 values; development 12/32 → 18/32, held-out 18/64 → 27/64, p = 0.12). The stack-three-cubes editor proposed
-the same design after its linear readout failed the split-half check.*
+the same design after its linear readout failed the split-half check, and built it in a second round
+([`FINAL2.md`](../study/results/ctrl/stack3/FINAL2.md), `scripts_round2/build.py`), constraining the output row at all
+10 denoising steps.*
 
 **When.** A linear readout is not selective enough: its response goes negative or stays large on states that must
 not change, so pushing harder breaks them. A GELU unit with a threshold is one-sided: zero below it.
@@ -260,8 +263,8 @@ editor's first version failed replay (pushing at every denoising step shifts the
 reacts nonlinearly: lifts ranged from −13 to +23 cm); its final version wrote only at the last step, which needs
 captures of all 10 steps.
 
-**On cube-then-banana** (`ctb-ph`, step 0): it picked unit 2437, the same unit the eyeglasses editor picked on a
-different task (usage 0.0008 against a median of 0.29). Rebuilt activations correlate 0.990 with the captured ones.
+**On cube-then-banana** (`ctb-ph`, step 0): it picked unit 2437 (usage 0.0008 against a median of 0.29), the unit
+both the eyeglasses editor and the stacking editor's second round repurposed on their own tasks. Rebuilt activations correlate 0.990 with the captured ones.
 The gate fires on 18 of 21 premature releases and is exactly zero on all 28 silent decisions; split-half, it fires
 on 6/9 and 7/12 held-out targets and stays zero on held-out silent ones. Predicted first order: 14 of 21 releases
 become holds, nothing else changes (other output dims move by less than 10⁻¹⁴). 3,072 values changed. The output
@@ -368,10 +371,11 @@ On cube-then-banana this gives 3/32 → 25/32 for the distilled edit (22 fixed, 
 22/32 for the explicit wording with unchanged weights (20 fixed, 1 broken), the paper's Section 2 numbers.
 
 **Held-out runs.** The operator's `weightsmith/heldout.py` writes `results.json` with per-slot outcomes; read it
-directly. The controlled study's accepted edit:
+directly. The controlled study's accepted edit, from its published record:
 
 ```
-$ weightsmith stats heldout/p1-RubiksCubeThenBananaTask-91008-64/results.json --halves
+$ weightsmith stats study/results/ctrl/heldout/ctrl-ctb__p1-RubiksCubeThenBananaTask-91008-64.json --halves
+[study/results/ctrl/heldout/ctrl-ctb__p1-RubiksCubeThenBananaTask-91008-64.json]
 base vs p1: 64 paired slots (91008-91071)
   base       11/64 =  17.2%   Wilson 95%: 9.9% to 28.2%
   p1         27/64 =  42.2%   Wilson 95%: 30.9% to 54.4%
@@ -402,9 +406,14 @@ Reading it, line by line:
 - **halves**: held-out runs alternate the run order by half; a real effect should point the same way in both.
 - **check**: the numbers recomputed from the per-slot outcomes agree with the summary the file stores.
 
-**Several tasks or edits.** Correct for multiple tests: `weightsmith stats run1.json run2.json --family-size 7` prints
-Holm-adjusted p-values, counting the tests you ran but are not passing in (for example tasks whose editor submitted no
-edit) as p = 1. In the controlled study, p = 0.0037 becomes 0.026 over seven tasks.
+**Several tasks or edits.** Correct for multiple tests. Over the controlled study's three submitted edits, with the
+four editors who submitted the unedited policy counted as p = 1:
+
+```bash
+weightsmith stats study/results/ctrl/heldout/ctrl-{ctb,glasses,mustard}__*.json --family-size 7
+# Holm correction over 7 comparisons (4 not given here count as p = 1):
+#   p = 0.0037  Holm 0.026  *  ctrl-ctb...     p = 0.12  Holm 0.73  ctrl-glasses...     p = 0.61  Holm 1  ctrl-mustard...
+```
 
 **Arms from different runs.** `--ref FILE:ARM --cand FILE:ARM` pairs arms by slot across files, as for the paper's
 control (run later on the first 64 held-out slots):
@@ -453,13 +462,14 @@ value, so tiny edits can vanish entirely: count the changed values (`owsp diff`)
 dense (the 0.16% edit changes 7.4% of stored values) and puts a noise floor under the singular values of a stored
 change (section 4.5). To stack edits, start from `load(name)` (the candidate's current value), not `base(name)`.
 
-**Moving the decision is not moving success.** Two editors built edits that did what they targeted and still did not
-help. The blind flat-box editor's readout made the gripper commit (29/39 holding decisions against 20/42) and lifted
-the box 10–19 cm in six episodes, but the box slipped every time: 0/32. In the first stacking cohort, an edit vetoed
-grasps on the look-alike cube in closed loop (cube-first episodes closing on it fell from 38% to 18%, per the
-editor's notebook, which is not in the repository) and scored 21/64 against 28/64 in two runs. The converse also
-happens: the stacking editor under the companion protocol scored 16/32 against 12/32 while its own check showed the
-targeted first-chunk shift had not occurred, which is noise. Measure the targeted decision and the outcome, and believe a gain only when both move.
+**Moving the decision is not moving success.** Two blind editors built edits that did what they targeted and still
+did not help. The flat-box editor's readout made the gripper commit (29/39 holding decisions against 20/42) and
+lifted the box 10–19 cm in six episodes, but the box slipped every time: 0/32. The stack-three-cubes editor's
+second-round gate cut closes on empty air at the stack from 73 to 5 replans, and success stayed put (17/32 against
+16/32 in development, 39/64 against 35/64 held-out, p = 0.58): placing the third cube, which the edit does not
+touch, was the bottleneck. The converse also happens: the stacking editor under the companion protocol scored 16/32
+against 12/32 while its own check showed the targeted first-chunk shift had not occurred, which is noise. Measure the
+targeted decision and the outcome, and believe a gain only when both move.
 
 **In-sample separation.** A direction fitted on the same decisions it is tested on can separate them perfectly and
 fail on new ones. Hold out episodes (recipes 5 and 6 split by episode parity).

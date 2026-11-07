@@ -23,19 +23,10 @@ V2MIF = HELDOUT / "cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.j
 CONTROL = REPO / "study" / "results" / "opus" / "controls" / "ctl1-90000-64.results.json"
 COMPARISONS = REPO / "study" / "results" / "opus" / "comparisons.json"
 
-# Controlled study, cube then banana: the operator's held-out run of the blind editor's p1 on slots 91008-91071
-# (per_slot of heldout/p1-RubiksCubeThenBananaTask-91008-64/results.json on the GPU host), base then candidate.
-CTRL_BASE = "0000100010000000010001010101000000000000000000001000111000000000"
-CTRL_CAND = "1001101000110001010000010000001001011011110100101110001100101010"
-
-
-def ctrl_results() -> dict:
-    per_slot = {str(91008 + i): [b == "1", c == "1"] for i, (b, c) in enumerate(zip(CTRL_BASE, CTRL_CAND, strict=True))}
-    summary = {"cand": "p1", "task": "RubiksCubeThenBananaTask", "slots": [91008, 91071],
-               "order": "first half: base then cand; second half: cand then base", "paired_n": 64,
-               "base_success": 11, "cand_success": 27, "base_wilson95": [0.099, 0.282],
-               "cand_wilson95": [0.309, 0.544], "fixed": 22, "broke": 6, "mcnemar_exact_p": 0.0037191659212112427}
-    return {"summary": summary, "per_slot": per_slot}
+CTRL = REPO / "study" / "results" / "ctrl" / "heldout"  # the controlled study's held-out records (heldout.py)
+CTRL_CTB = CTRL / "ctrl-ctb__p1-RubiksCubeThenBananaTask-91008-64.json"
+CTRL_SUBMITTED = [CTRL_CTB, CTRL / "ctrl-glasses__p1-PickGlassesTask-91008-64.json",
+                  CTRL / "ctrl-mustard__p1-MustardInLeftBinTask-91008-64.json"]  # the three submitted edits
 
 
 def pts(x: float) -> float:
@@ -201,10 +192,8 @@ def run_cli(capsys, *args) -> tuple[int, str, str]:
     return code, out.out, out.err
 
 
-def test_cli_heldout_file_with_halves(tmp_path, capsys):
-    f = tmp_path / "results.json"
-    f.write_text(json.dumps(ctrl_results()))
-    code, out, _ = run_cli(capsys, f, "--halves")
+def test_cli_heldout_file_with_halves(capsys):
+    code, out, _ = run_cli(capsys, CTRL_CTB, "--halves")
     assert code == 0
     assert "base vs p1: 64 paired slots (91008-91071)" in out
     assert "11/64" in out and "27/64" in out and "9.9% to 28.2%" in out and "30.9% to 54.4%" in out
@@ -214,17 +203,16 @@ def test_cli_heldout_file_with_halves(tmp_path, capsys):
     assert "matches the file's own summary" in out and "p1 better than base" in out
 
 
-def test_cli_holm_family_and_json(tmp_path, capsys):
-    f = tmp_path / "results.json"
-    f.write_text(json.dumps(ctrl_results()))
-    code, out, _ = run_cli(capsys, f, V2MIF, "--family-size", 7)
-    assert code == 0 and "Holm correction over 7 comparisons (5 not given here count as p = 1)" in out
-    code, out, _ = run_cli(capsys, f, "--family-size", 7, "--json")
+def test_cli_holm_over_the_seven_blind_editors(capsys):
+    # the three submitted edits; the four editors who submitted the unedited policy count as p = 1
+    code, out, _ = run_cli(capsys, *CTRL_SUBMITTED, "--family-size", 7)
+    assert code == 0 and "Holm correction over 7 comparisons (4 not given here count as p = 1)" in out
+    assert out.count("matches the file's own summary") == 3
+    code, out, _ = run_cli(capsys, *CTRL_SUBMITTED, "--family-size", 7, "--json")
     d = json.loads(out)
     assert d["family_size"] == 7
-    c = d["comparisons"][0]
-    assert (c["fixed"], c["broke"], c["n"]) == (22, 6, 64) and round(c["holm_p"], 3) == 0.026
-    assert c["summary_check"].startswith("matches")
+    got = [(c["cand_success"], c["fixed"], c["broke"], round(c["holm_p"], 3)) for c in d["comparisons"]]
+    assert got == [(27, 22, 6, 0.026), (27, 18, 9, 0.732), (11, 9, 6, 1.0)]  # Table 6 and Appendix F
 
 
 def test_cli_across_files_and_csv(tmp_path, capsys):

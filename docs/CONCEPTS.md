@@ -1,8 +1,8 @@
 # Concepts: editing a robot policy's weights
 
-A two-page primer for robotics and ML engineers new to weight-space programming. The evidence behind every
-number is in the paper, [*Distilling Instructions into Weights*](https://ali-adeeb.com/weightsmith/paper.pdf)
-([source](../paper/main.tex)). For hands-on steps, see the [cookbook](COOKBOOK.md).
+A two-page primer for engineers new to weight-space programming. The evidence behind every number is in the paper,
+[*Distilling Instructions into Weights*](https://ali-adeeb.com/weightsmith/paper.pdf) ([source](../paper/main.tex));
+hands-on steps are in the [cookbook](COOKBOOK.md).
 
 ## What weight-space programming is
 
@@ -40,8 +40,7 @@ instruction's effect lands almost entirely on its gripper output.
 
 ## Failure levels
 
-A 16-episode survey of the unedited policy on 16 tasks sorted its failures into levels. They predict what editing
-can do.
+A survey of the unedited policy on 16 tasks sorted its failures into levels, which predict what editing can do.
 
 | Level | What goes wrong | Example | Editing so far |
 |---|---|---|---|
@@ -76,15 +75,17 @@ in the yellow-on-red task, and no motion of the policy ever grasps the flat box.
   gated gripper edit: 11/64 → 27/64 held-out (p = 0.0037; 0.026 after Holm correction over seven tasks). None of
   the other six passed.
 - **No edit taught a missing motor skill.** On the flat box, the best of ten edits brought the wrist to a
-  graspable angle in 16/16 episodes instead of 9/16, with no success; a blind editor's edit made the gripper hold
-  and lift the box six times, and it slipped every time. Edits aimed at perception, contact physics and the gripper
-  threshold also gave no gain.
+  graspable angle in 16/16 episodes instead of 9/16, with no success. Edits aimed at perception, contact physics
+  and the gripper threshold also gave no gain.
+- **Fixing the targeted decision is not enough.** A blind editor's flat-box edit made the gripper hold and lift the
+  box six times, and it slipped every time. A blind stacking editor's gate cut closes on empty air from 73 to 5
+  replans, and held-out success did not change (39/64 against 35/64): the third cube's placement was the bottleneck.
 
 ## How to tell whether an edit worked
 
-- **Paired starts.** A simulator *slot* fixes one episode's scene and noise seeds. Run the unedited and the edited
-  policy on the same slots and count the four outcomes per pair: both succeed, both fail, *fixed* (only the edit
-  succeeds) and *broke* (only the unedited policy succeeds). The exact McNemar test compares fixed with broke.
+- **Paired starts.** A simulator *slot* fixes one episode's scene and noise seeds. Run both policies on the same
+  slots and count the four outcomes per pair: both succeed, both fail, *fixed* (only the edit succeeds) and *broke*
+  (only the unedited policy succeeds). The exact McNemar test compares fixed with broke.
 - **Practice, then held-out.** Develop on practice slots (20000–20255), freeze the edit, and score it once on
   held-out slots (80000 and above) that were never used during editing, with at least 64 pairs and the run order
   alternating by half. The benchmark accepts an edit with more successes than the unedited policy at exact McNemar
