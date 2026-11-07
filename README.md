@@ -85,7 +85,7 @@ Requirements (Linux, 24 GB NVIDIA GPU, ~60 GB disk) and the exact pins are in [d
 | Hugging Face Hub folders for results and edits (`integrations/hub/`) | Experimental |
 | [`weightsmith distill`](docs/DISTILL.md): closed-form instruction distillation as one command | Experimental |
 
-Setup and client configs: [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md). All documentation: [docs/](docs/README.md). Contributions and new leaderboard entries: [CONTRIBUTING.md](CONTRIBUTING.md).
+New to this? Read [docs/CONCEPTS.md](docs/CONCEPTS.md), then try the recipes in [docs/COOKBOOK.md](docs/COOKBOOK.md). Setup and client configs: [docs/INTEGRATIONS.md](docs/INTEGRATIONS.md). All documentation: [docs/](docs/README.md). Contributions and new leaderboard entries: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Repository map
 
