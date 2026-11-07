@@ -354,9 +354,36 @@ Every slot ran once under each policy, so compare seed by seed:
 | **base succeeds** | both | **broke** |
 | **base fails** | **fixed** | neither |
 
-Only the two off-diagonal cells say anything about the edit. The exact McNemar test asks how likely a split at
-least as lopsided as *fixed* vs *broke* would be if each changed pair were a coin flip. Here, with 8 fixed and 2 broken, that probability is p = 0.11. In
-Python: `2 * sum(math.comb(10, i) for i in range(3)) / 2**10`, the same exact test that heldout.py reports.
+Only the two off-diagonal cells say anything about the edit. `weightsmith stats` does the arithmetic. Export
+each slot's outcomes from the project with [paired_csv.py](../examples/cube_then_banana/paired_csv.py), then
+compare the two arms:
+
+```bash
+bin/owsp py base examples/cube_then_banana/paired_csv.py > paired.csv
+weightsmith stats paired.csv --arms base,ctb-imgl8
+```
+
+```
+base vs ctb-imgl8: 32 paired slots (20000-20031)
+  base         2/32 =   6.2%   Wilson 95%: 1.7% to 20.1%
+  ctb-imgl8    8/32 =  25.0%   Wilson 95%: 13.3% to 42.1%
+  pairs     both 0, fixed 8, broke 2, neither 22  (31.2% of pairs differ)
+  change    +18.8 points   paired bootstrap 95%: 0.0 to +37.5
+  McNemar   exact p = 0.11   (8 fixed vs 2 broke)
+  detects   about 27 points with 32 pairs (80% power, alpha 0.05, 30% of pairs differing)
+  verdict   no detectable difference at alpha 0.05; the observed change is smaller than what this many pairs can detect
+  note      fewer than 64 pairs: treat this as a screen, not evidence (BENCHMARK.md scores on >= 64 held-out pairs)
+```
+
+Line by line:
+
+- **Wilson 95%**: the range each success rate could plausibly have, given only 32 episodes. The two ranges
+  overlap.
+- **pairs**: the four outcome types. The exact McNemar test asks how likely a split at least as lopsided as
+  8 fixed against 2 broke would be if every changed pair were a coin flip: p = 0.11.
+- **change**: 18.8 points, with a paired bootstrap interval that reaches down to 0.
+- **detects**: the smallest change 32 pairs can reliably see is about 27 points, so a real 19-point gain could
+  easily hide in this run.
 
 Two things to keep in mind before you trust any practice number.
 
