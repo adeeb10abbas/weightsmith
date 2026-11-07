@@ -61,23 +61,19 @@ With @⟦ESMAEIL_X_HANDLE⟧
 
 ## LinkedIn (short, casual; attach the 4:5 video)
 
-New project: weightsmith, helping robots through misunderstandings 🤖
+Been working on a fun one with Esmaeil Seraj.
 
-We told a robot policy (π0.5, ~3B parameters) to "put the cube then the banana in the bowl." It kept dropping the cube. Turns out it was attaching "in the bowl" to the banana.
+We gave π0.5 (Physical Intelligence's open robot model) the instruction "put the cube then the banana in the bowl", and it kept dropping the cube on the way. After a lot of poking around, we figured out it was reading "in the bowl" as being about the banana. Spell it out ("put the cube in the bowl, then put the banana in the bowl") and it mostly works.
 
-So instead of retraining it, we edited its weights directly. No gradient descent, no new data, same instruction. On starts it had never seen, success went from 21% to 83%.
+So instead of changing the prompt or retraining, we fixed it inside the model. We looked at what the network does internally with the clear instruction and wrote that straight into its weights. No training involved. With the original instruction, success on setups it had never seen went from 21% to 83%.
 
-A few takeaways:
-
-→ If the robot does the right thing under some wording, you can often program that into the weights. If no input works, editing won't save you; train instead.
-
-→ A random edit of the exact same size does nothing. Direction matters, not size.
-
-→ We let 7 LLM editors (Claude Opus) try this blind, one task each. One edit survived held-out testing, and it was on the misreading again.
-
-→ Simulation is noisy: the same robot on the same starts flips about a third of outcomes between runs. Pair your comparisons and hold out your test set.
+A few things that stuck with me:
+- A random edit of the same size did nothing. It really is about where you push.
+- It only worked because the model could already do the task with the right wording. Where no wording helped (a lookalike block, a box it can't grip), nothing we tried worked either.
+- We also let 7 Claude Opus agents try this blind, one task each. One of them found the same bug on its own and wrote a much smaller fix that held up on the held-out test.
+- Sim is noisier than I expected: same model, same starts, and about a third of the outcomes flip between runs.
 
 Blog + paper: https://ali-adeeb.com/weightsmith/
-Code + benchmark: https://github.com/adeeb10abbas/weightsmith
+Code: https://github.com/adeeb10abbas/weightsmith
 
-With Esmaeil Seraj. Builds on our earlier work on instruction sensitivity (Same Goal, Different Words) and on weight-space programming by Takehi et al.
+Builds on our earlier work on how robots handle different wordings of the same goal, and on Takehi et al.'s weight-space programming.
