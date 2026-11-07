@@ -21,9 +21,9 @@ commands are the same.
 | [3](#3-find-the-decision-that-fails) | Find the decision that fails | none |
 | [4](#4-replay-that-decision-under-two-wordings) | Replay that decision under two wordings | under 1 min |
 | [5](#5-distil-the-rewording-into-the-weights) | Distil the rewording into the weights | about 2 min (4 captures) |
-| [6](#6-run-the-edited-policy-on-the-same-seeds) | Run the edited policy on the same 32 seeds | EVAL_GPU |
+| [6](#6-run-the-edited-policy-on-the-same-seeds) | Run the edited policy on the same 32 seeds | 11–17 min |
 | [7](#7-read-a-paired-result) | Read a paired result | none |
-| [8](#8-the-held-out-score-operator-only) | The held-out score (operator only) | HELDOUT_GPU |
+| [8](#8-the-held-out-score-operator-only) | The held-out score (operator only) | about 45 min (not run here) |
 
 GPU jobs queue behind each other through per-GPU locks, so on a shared host the wall time can be much longer.
 In this run a 17-second capture waited 13 minutes behind other people's evals.
@@ -322,7 +322,28 @@ changing the selection makes it stop instead of reusing stale captures.
 
 ## 6. Run the edited policy on the same seeds
 
-EVAL_SECTION
+```bash
+bin/owsp eval ctb-imgl8 --n 32
+```
+
+```
+[eval ctb-imgl8 fp=72e042a97074dddc n=32 success=8/32 (25.0%) wall=16.7 min]
+[paired vs base on 32 shared slots: base 2.0 vs cand 8 | fixed 8, broke 2]
+  ctb-imgl8.72e042.s20000            OK   steps=774 Completed subtask 'pick_and_place' 2/2 | WRONG_GRABBED_FAILURE@120,...
+  ctb-imgl8.72e042.s20001            OK   steps=641 Completed subtask 'pick_and_place' 2/2 | GRABBED@46,TARGET_DROPPED@50,...
+  ctb-imgl8.72e042.s20002            FAIL steps=900 Condition not satisfied: object_grabbed( | WRONG_GRABBED_FAILURE@120,...
+  ...
+  ctb-imgl8.72e042.s20011            FAIL steps=900 Condition not satisfied: object_grabbed( | GRABBED@54,TARGET_DROPPED@145,...
+  ...
+```
+
+Same 32 slots, same original instruction: the change is in the weights only. Episode ids now start with the
+candidate and its fingerprint (`ctb-imgl8.72e042.s20000`), so every result stays tied to the exact weights that
+produced it, and `bin/owsp show` and `gripper_timeline.py` work on these episodes too. No GPU was free for a
+second lane this time (no `extra GPU lane` line), so the run took 16.7 minutes instead of 11.
+
+The edited policy succeeded 8 times against 2: **8 fixed, 2 broken**. Step 7 explains whether that means
+anything.
 
 ## 7. Read a paired result
 
@@ -334,7 +355,8 @@ Every slot ran once under each policy, so compare seed by seed:
 | **base fails** | **fixed** | neither |
 
 Only the two off-diagonal cells say anything about the edit. The exact McNemar test asks how likely a split at
-least as lopsided as *fixed* vs *broke* would be if each changed pair were a coin flip. READ_NUMBERS
+least as lopsided as *fixed* vs *broke* would be if each changed pair were a coin flip. Here, with 8 fixed and 2 broken, that probability is p = 0.11. In
+Python: `2 * sum(math.comb(10, i) for i in range(3)) / 2**10`, the same exact test that heldout.py reports.
 
 Two things to keep in mind before you trust any practice number.
 
@@ -353,7 +375,47 @@ with the same arguments), and claim nothing before an operator has scored it on 
 
 ## 8. The held-out score (operator only)
 
-HELDOUT_SECTION
+Practice slots are for the editor. The score that counts comes from slots nobody looked at while building the
+edit, run by an operator: base and candidate on the same unseen slots, in alternating order, one shot per slot
+block. On the GPU host:
+
+```bash
+WSP_ROOT=$PWD/projects/ctb nohup setsid python3 weightsmith/heldout.py --cand ctb-imgl8 --slot-start 95008 --n 64 \
+    > heldout-ctb-imgl8.log 2>&1 < /dev/null &
+tail -f heldout-ctb-imgl8.log
+```
+
+- `--slot-start`: at least 80000, a multiple of 16, and never used for this candidate before. heldout.py
+  rejects anything else before it starts.
+- `--n`: a multiple of 32, at least 64 pairs, and 128 for a headline claim.
+- It first freezes a copy of the candidate and checks its fingerprint, then runs 4 batches of 32 episodes. That
+  is about 45 minutes on two free GPUs and 90 on one, so start it detached as above.
+- `heldout/<tag>/` is never overwritten. A slot block gets one shot: running it again until the numbers look
+  better would make them meaningless.
+
+**This tutorial run stopped before this step.** The GPUs were shared with other experiments, and its GPU
+budget was spent. For reference, this is the summary heldout.py printed for the paper's version of the same
+recipe (`abl-imgl8`, built from 6 hand-picked decisions; slots 90000–90127):
+
+```json
+{
+ "cand": "abl-imgl8",
+ "fingerprint": "5bf8c4329c1e416a",
+ "paired_n": 128,
+ "base_success": 19,
+ "cand_success": 102,
+ "base_wilson95": [0.097, 0.22],
+ "cand_wilson95": [0.719, 0.857],
+ "fixed": 86,
+ "broke": 3,
+ "mcnemar_exact_p": 3.7988915866351353e-22,
+ "crashed_slots": 0
+}
+```
+
+Read it like step 7: 86 fixed against 3 broken on 128 unseen pairs is far beyond the noise floor. The Wilson
+intervals bound each success rate. The full file is
+[study/results/opus/heldout/](../study/results/opus/heldout/cube-then-banana__abl-imgl8-RubiksCubeThenBananaTask-90000-128.json).
 
 ## Where next
 
