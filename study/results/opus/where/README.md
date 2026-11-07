@@ -94,3 +94,14 @@ Analysis plan: successes per arm; fixed/broke against the shared base; exact two
 pairs; paired bootstrap 95% interval of the difference (20,000 resamples of slots, seed 0), as in
 `study/results/opus/controls/ctl_analyze.py`. Main comparisons: each arm vs base; A1, H1, P1, VA vs V1-full;
 V1-0.16% vs V1-full. No correction is applied for the number of arms; p-values are reported as they are.
+
+### Deviation noted during the run (added 2026-11-07 15:30, before any arm other than base had finished)
+
+`ctl_run.py` takes the second GPU only if it is free when a chunk starts. Other projects share the GPUs, so some
+32-slot chunks run on one lane: both groups of 16 slots then run in one simulator process, the second group as that
+process's second episode. The first observations show that a process's second episode starts from a different initial
+scene than its first (mean absolute wrist-image difference 4.4 grey levels, as large as the difference between two
+environments, against 1.3 for the same slot in two processes). The first group of each chunk (slots 94016-94031 and
+94048-94063) is the first episode of lane 0 in every case, so it is identical across arms. Pre-specified handling: the
+primary analysis uses all 64 slots as planned; a sensitivity analysis repeats every comparison on those 32 slots. The
+lane count of every chunk is recorded. (Stopping the runner to enforce two lanes was not possible in this session.)
