@@ -946,3 +946,6 @@ figcaption b {
     display: none !important;
   }
 }
+
+/* breathing room between a table and the paragraph that follows it */
+.tscroll + p { margin-top: 1.5em; }

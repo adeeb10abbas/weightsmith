@@ -145,24 +145,21 @@
     <h2>Then we let LLM editors try on their own</h2>
     <p class="claim">Seven LLM editors worked blind. One weight edit survived, and it fixed the misreading again.</p>
     <p>We gave seven fresh Claude Opus editors the same weight-space programming tools and the same small budget. Each got one task, and each task showed a different kind of failure. They couldn’t see each other’s work, and we scored each submitted weight edit on 64 starting positions none of them had seen.</p>
-    <p>The editor given the cube task found the misreading on its own, with the same trick of replaying the drops under a clearer wording. It then wrote a different, far sparser weight edit, changing just 1,024 weights, which raised success from 11 to 27 in 64. That is less than our edit achieves, but it is the first weight edit by an autonomous LLM editor to pass this test. The other six didn’t pass. Two edits stayed within noise, and four editors decided no edit was worth submitting. On the lookalike task, for example, no rewording changed where the arm went, so there was nothing to copy.</p>
-    <div class="tscroll" tabindex="0" role="region" aria-label="Results of the LLM editor study">
+    <p>The editor given the cube task found the misreading on its own, with the same trick of replaying the drops under a clearer wording. It then wrote a different, far sparser weight edit, changing just 1,024 weights, which raised success from 11 to 27 in 64. That is less than our edit achieves, but it is the first weight edit by an autonomous LLM editor to pass this test.</p>
+    <div class="tscroll" tabindex="0" role="region" aria-label="Weight edits submitted by the LLM editors">
       <table class="dtable study-table">
-        <caption>Successes in 64 new starting positions, before → after the editor’s edit. An edit passes when the gain is too large to be noise. Editors that found no convincing edit submitted none, as the protocol asks. Every editor’s notes and code are <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results/ctrl">in the repository</a>.</caption>
+        <caption>The submitted weight edits, scored on 64 starting positions no editor saw.</caption>
         <thead>
-          <tr><th scope="col">Task</th><th scope="col">What goes wrong</th><th scope="col">The editor submitted</th><th scope="col">Result</th></tr>
+          <tr><th scope="col">Task</th><th scope="col">Weight edit</th><th scope="col">Successes, before → after</th></tr>
         </thead>
         <tbody>
-          <tr><td>Cube, then banana</td><td>Misreads the instruction</td><td>A 1,024-weight edit</td><td><b>11 → 27: passed</b></td></tr>
-          <tr><td>Pick up eyeglasses</td><td>Lifts a thin object too little</td><td>A 3,072-weight edit</td><td>18 → 27: could be noise</td></tr>
-          <tr><td>Mustard into the left bin</td><td>The grasp slips while carrying</td><td>A 4,094-weight edit</td><td>8 → 11: could be noise</td></tr>
-          <tr><td>Cube left of the bowl</td><td>Reads “left” as a diagonal</td><td>No edit: its fix broke grasping</td><td>— (our cube edit: 8 → 36)</td></tr>
-          <tr><td>Stack three cubes</td><td>Stalls before the third cube</td><td>No edit: failed its offline check</td><td>—</td></tr>
-          <tr><td>Yellow block on red</td><td>Grabs a lookalike object</td><td>No edit: no wording helped, nothing to distil</td><td>—</td></tr>
-          <tr><td>Pick up a flat box</td><td>Needs a grasp it never learned</td><td>No edit: grasp held, box still slipped</td><td>—</td></tr>
+          <tr><td>Cube, then banana</td><td>1,024 weights</td><td><b>11 → 27, passed</b></td></tr>
+          <tr><td>Pick up eyeglasses</td><td>3,072 weights</td><td>18 → 27, within noise</td></tr>
+          <tr><td>Mustard into the left bin</td><td>4,094 weights</td><td>8 → 11, within noise</td></tr>
         </tbody>
       </table>
     </div>
+    <p>The other four editors submitted no edit, as the protocol asks when nothing holds up. On cube left of the bowl the fix broke grasping; on stacking three cubes the edit failed its offline check; on the lookalike block no wording helped, so there was nothing to distil; and on the flat box the grasp held but the box still slipped. Every editor’s notes and code are <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results/ctrl">in the repository</a>.</p>
   </section>
 
   <section id="measuring">
