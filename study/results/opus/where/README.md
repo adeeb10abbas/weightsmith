@@ -114,3 +114,10 @@ so all slots are first episodes of their process) on fresh slots 94016-94047 in 
 retention), with the unedited policy under the task's own instruction as the shared base. Arms: V1-full, P1 and A1, one
 per location; H1 is added if its held-out difference from base has a bootstrap interval above zero; VA and V1-0.16% only
 if GPU time remains.
+
+### Deviation: transfer runner lock pattern (added 2026-11-07 15:50)
+
+`where_run.py --all-lanes` takes the two GPU locks in a fixed order and blocks on each, so while it waits for GPU1 it
+holds GPU0 idle. Launched at 15:34 to interleave with the held-out run, it made later held-out chunks run on one lane
+and delayed other projects' GPU0 jobs while it waited. Stopping it was not permitted in this session, so it runs to the
+end (3 tasks x 4 arms x 32 slots). The pre-specified sensitivity analysis above covers the one-lane held-out chunks.
