@@ -949,22 +949,3 @@ figcaption b {
 
 /* breathing room between a table and the paragraph that follows it */
 .tscroll + p { margin-top: 1.5em; }
-
-/* key findings: four numbers at the top of the article */
-.findings {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: 4px;
-  margin-bottom: 34px;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-.findings .kf { padding: 18px 16px 16px; border-left: 1px solid var(--rule); }
-.findings .kf:first-child { border-left: 0; padding-left: 0; }
-.findings .kf-n { font: 600 28px/1.1 var(--sans); color: var(--accent); letter-spacing: -0.02em; margin: 0 0 10px; }
-.findings .kf-t { font: 400 14.5px/1.45 var(--sans); color: var(--ink-2); margin: 0; }
-@media (max-width: 760px) {
-  .findings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .findings .kf:nth-child(3) { border-left: 0; padding-left: 0; }
-  .findings .kf:nth-child(n+3) { border-top: 1px solid var(--rule); }
-}
