@@ -1,0 +1,8 @@
+# Recipes run inside `owsp py`, whose prelude (weightsmith/lab/sandbox.py and PRELUDE_EXTRA in
+# weightsmith/owsp.py) defines these names before the script starts. Declaring them keeps ruff's
+# undefined-name check on for everything else.
+extend = "../../pyproject.toml"
+builtins = [
+  "acts", "base", "bf16", "drop_edit", "episodes", "load", "obs", "save", "saved",
+  "NAMES", "READABLE_NAMES", "TENSORS",
+]

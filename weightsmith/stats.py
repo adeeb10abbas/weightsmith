@@ -688,11 +688,11 @@ def read_arm_file(path: str | Path) -> ArmFile:
     * control-arm runs: ``{"per_arm": {arm: {slot: {"ok": bool, "success": bool, ...}}}}`` (crashed episodes,
       ``ok: false``, count as missing), or a plain ``{arm: {slot: outcome}}`` object.
     * CSV with a header: a ``slot`` column (or the first column) and one column per arm, outcomes as 1/0,
-      true/false or success/fail; an empty cell is a missing slot.
+      true/false or success/fail; an empty cell is a missing slot, and lines starting with ``#`` are comments.
     """
     p = Path(path)
     text = p.read_text()
-    if p.suffix.lower() in (".csv", ".tsv") or not text.lstrip().startswith(("{", "[")):
+    if p.suffix.lower() in (".csv", ".tsv") or not text.lstrip().startswith(("{", "[")):  # CSV
         return _read_csv(p, text)
     data = json.loads(text)
     if not isinstance(data, dict):
@@ -714,9 +714,9 @@ def read_arm_file(path: str | Path) -> ArmFile:
 
 
 def _read_csv(p: Path, text: str) -> ArmFile:
-    dialect = csv.excel_tab if p.suffix.lower() == ".tsv" or ("\t" in text.splitlines()[0] if text else False) \
-        else csv.excel
-    rows = [r for r in csv.reader(text.splitlines(), dialect) if r and any(x.strip() for x in r)]
+    lines = [ln for ln in text.splitlines() if ln.strip() and not ln.lstrip().startswith("#")]  # drop comments
+    tabs = p.suffix.lower() == ".tsv" or (bool(lines) and "\t" in lines[0])
+    rows = [r for r in csv.reader(lines, csv.excel_tab if tabs else csv.excel) if any(x.strip() for x in r)]
     if len(rows) < 2:
         raise ValueError(f"{p}: need a header row and at least one data row")
     header = [h.strip() for h in rows[0]]
