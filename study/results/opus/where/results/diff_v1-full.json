@@ -1,0 +1,148 @@
+{
+ "edit_scope": "VLM blocks, action expert, action projections, and time MLP",
+ "edited_tensors": {
+  "language.blocks.00.mlp.linear": {
+   "changed": 10640866,
+   "numel": 33554432,
+   "changed_fraction": 0.31712251901626587,
+   "max_abs_delta": 0.186279296875,
+   "l2_delta": 1.0375107906316092,
+   "relative_l2_delta": 0.005195467055804766
+  },
+  "language.blocks.01.mlp.linear": {
+   "changed": 22570806,
+   "numel": 33554432,
+   "changed_fraction": 0.6726624369621277,
+   "max_abs_delta": 0.23828125,
+   "l2_delta": 1.927032378420338,
+   "relative_l2_delta": 0.009256191139204433
+  },
+  "language.blocks.02.mlp.linear": {
+   "changed": 23603233,
+   "numel": 33554432,
+   "changed_fraction": 0.7034311592578888,
+   "max_abs_delta": 0.107421875,
+   "l2_delta": 2.289724395398157,
+   "relative_l2_delta": 0.01085957567416112
+  },
+  "language.blocks.03.mlp.linear": {
+   "changed": 24161594,
+   "numel": 33554432,
+   "changed_fraction": 0.7200716137886047,
+   "max_abs_delta": 0.108154296875,
+   "l2_delta": 2.0630116760334047,
+   "relative_l2_delta": 0.009652554865582122
+  },
+  "language.blocks.04.mlp.linear": {
+   "changed": 24812410,
+   "numel": 33554432,
+   "changed_fraction": 0.739467442035675,
+   "max_abs_delta": 0.08251953125,
+   "l2_delta": 2.0590430907712096,
+   "relative_l2_delta": 0.009780121975698029
+  },
+  "language.blocks.05.mlp.linear": {
+   "changed": 25110923,
+   "numel": 33554432,
+   "changed_fraction": 0.7483638226985931,
+   "max_abs_delta": 0.0582275390625,
+   "l2_delta": 2.2172001125267204,
+   "relative_l2_delta": 0.010570782976087423
+  },
+  "language.blocks.06.mlp.linear": {
+   "changed": 27375548,
+   "numel": 33554432,
+   "changed_fraction": 0.8158549070358276,
+   "max_abs_delta": 0.1114501953125,
+   "l2_delta": 3.611846914318897,
+   "relative_l2_delta": 0.017201585344987294
+  },
+  "language.blocks.07.mlp.linear": {
+   "changed": 27099021,
+   "numel": 33554432,
+   "changed_fraction": 0.8076137602329254,
+   "max_abs_delta": 0.0625,
+   "l2_delta": 3.0074163173141413,
+   "relative_l2_delta": 0.014292784676560033
+  },
+  "language.blocks.08.mlp.linear": {
+   "changed": 28236365,
+   "numel": 33554432,
+   "changed_fraction": 0.8415092527866364,
+   "max_abs_delta": 0.0625,
+   "l2_delta": 3.6094205295101722,
+   "relative_l2_delta": 0.017101886833529555
+  },
+  "language.blocks.09.mlp.linear": {
+   "changed": 28697239,
+   "numel": 33554432,
+   "changed_fraction": 0.855244368314743,
+   "max_abs_delta": 0.13720703125,
+   "l2_delta": 4.304595863733231,
+   "relative_l2_delta": 0.02072437307287864
+  },
+  "language.blocks.10.mlp.linear": {
+   "changed": 29129401,
+   "numel": 33554432,
+   "changed_fraction": 0.8681237995624542,
+   "max_abs_delta": 0.123046875,
+   "l2_delta": 4.840479587324778,
+   "relative_l2_delta": 0.023286511486727144
+  },
+  "language.blocks.11.mlp.linear": {
+   "changed": 29795362,
+   "numel": 33554432,
+   "changed_fraction": 0.8879709839820862,
+   "max_abs_delta": 0.1728515625,
+   "l2_delta": 6.265777802606752,
+   "relative_l2_delta": 0.029549404418060376
+  },
+  "language.blocks.12.mlp.linear": {
+   "changed": 30180092,
+   "numel": 33554432,
+   "changed_fraction": 0.8994368314743042,
+   "max_abs_delta": 0.14697265625,
+   "l2_delta": 7.365596616782667,
+   "relative_l2_delta": 0.034611536079534606
+  },
+  "language.blocks.13.mlp.linear": {
+   "changed": 29916382,
+   "numel": 33554432,
+   "changed_fraction": 0.8915776610374451,
+   "max_abs_delta": 0.3896484375,
+   "l2_delta": 8.418151518442425,
+   "relative_l2_delta": 0.039199012374381344
+  },
+  "language.blocks.14.mlp.linear": {
+   "changed": 29838440,
+   "numel": 33554432,
+   "changed_fraction": 0.8892548084259033,
+   "max_abs_delta": 0.388671875,
+   "l2_delta": 9.334788282424807,
+   "relative_l2_delta": 0.04374977097844145
+  },
+  "language.blocks.15.mlp.linear": {
+   "changed": 30237783,
+   "numel": 33554432,
+   "changed_fraction": 0.9011561572551727,
+   "max_abs_delta": 1.78125,
+   "l2_delta": 17.67189386996064,
+   "relative_l2_delta": 0.08248421074066736
+  },
+  "language.blocks.16.mlp.linear": {
+   "changed": 29063372,
+   "numel": 33554432,
+   "changed_fraction": 0.8661559820175171,
+   "max_abs_delta": 1.15625,
+   "l2_delta": 15.101789100262186,
+   "relative_l2_delta": 0.07100391311051862
+  }
+ },
+ "changed_elements": 450468837,
+ "total_parameters_and_buffers": 3353433872,
+ "changed_fraction": 0.13433061577902497,
+ "max_changed_fraction": 1.0,
+ "base_vlm_sha256": "7f887d213226dbb576a450c618314ef07ed168ae69521b131248dac99b8793a7",
+ "action_expert_and_head_frozen": false,
+ "vlm_embeddings_and_final_norms_frozen": true
+}

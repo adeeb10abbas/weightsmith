@@ -1,0 +1,23 @@
+{
+ "cfg": {
+  "student": "a-orig",
+  "teacher": "a-expl",
+  "dims": [
+   7
+  ],
+  "lam_rel": 0.001,
+  "tag": "h1-grip"
+ },
+ "tensor": "action.action_out_proj.kernel",
+ "keys": 150,
+ "rank": 1,
+ "lam": 0.28480391339279354,
+ "fit_rel_err": 0.015787217303791,
+ "dW_rel_norm_cols": 0.5791360449314883,
+ "dW_rel_norm_kernel": 0.10814796253271464,
+ "changed": 1016,
+ "max_abs_delta": 0.0908660888671875,
+ "V_mean_per_dim": [
+  -1.3966661966058984
+ ]
+}

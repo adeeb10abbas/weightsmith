@@ -48,10 +48,12 @@ def main(out=Path(__file__).resolve().parent / "specs"):
         "a-orig": {"cand": "base", "prompt": ORIG, "items": items(SIX), **FULL},
         "a-expl": {"cand": "base", "prompt": EXPL, "items": items(SIX), **FULL},
         "va-orig": {"cand": "v1-full", "prompt": ORIG, "items": items(SIX), **FULL},
+        "a1-trace": {"cand": "a1", "prompt": ORIG, "items": items(SIX), **FULL},          # A1's own action-expert trace
+        "va-trace": {"cand": "va", "prompt": ORIG, "items": items(SIX), **FULL},
         "chk-base": {"cand": "base", "prompt": ORIG, "items": items(D49), **LIGHT},
         "chk-teacher": {"cand": "base", "prompt": EXPL, "items": items(D49), **LIGHT},
     }
-    for c in ["v1-full", "v1-img816", "p1-blind", "a1", "a1-nogate", "h1", "h1-grip", "va"]:
+    for c in ["v1-full", "v1-img816", "p1-blind", "a1", "a1-nogate", "a1-late", "h1", "h1-grip", "va"]:
         specs[f"chk-{c}"] = {"cand": c, "prompt": ORIG, "items": items(D49), **LIGHT}
     for k, v in specs.items():
         (out / f"{k}.json").write_text(json.dumps({"id": k, **v}, indent=1) + "\n")

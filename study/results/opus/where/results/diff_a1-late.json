@@ -1,0 +1,52 @@
+{
+ "edit_scope": "VLM blocks, action expert, action projections, and time MLP",
+ "edited_tensors": {
+  "action.blocks.13.mlp_1.linear": {
+   "changed": 4014406,
+   "numel": 4194304,
+   "changed_fraction": 0.9571089744567871,
+   "max_abs_delta": 4.2918701171875,
+   "l2_delta": 42.43228793628494,
+   "relative_l2_delta": 1.1081166328793992
+  },
+  "action.blocks.14.mlp_1.linear": {
+   "changed": 4041620,
+   "numel": 4194304,
+   "changed_fraction": 0.963597297668457,
+   "max_abs_delta": 4.7545166015625,
+   "l2_delta": 39.82938238974028,
+   "relative_l2_delta": 1.0495428606088935
+  },
+  "action.blocks.15.mlp_1.linear": {
+   "changed": 4046829,
+   "numel": 4194304,
+   "changed_fraction": 0.9648392200469971,
+   "max_abs_delta": 2.18792724609375,
+   "l2_delta": 36.145029194561104,
+   "relative_l2_delta": 0.9381544436652145
+  },
+  "action.blocks.16.mlp_1.linear": {
+   "changed": 4070953,
+   "numel": 4194304,
+   "changed_fraction": 0.9705908298492432,
+   "max_abs_delta": 12.9312744140625,
+   "l2_delta": 85.36173572344909,
+   "relative_l2_delta": 2.224032393948758
+  },
+  "action.blocks.17.mlp_1.linear": {
+   "changed": 365061,
+   "numel": 4194304,
+   "changed_fraction": 0.08703732490539551,
+   "max_abs_delta": 0.14697265625,
+   "l2_delta": 1.2534686422734835,
+   "relative_l2_delta": 0.038851074951020984
+  }
+ },
+ "changed_elements": 16538869,
+ "total_parameters_and_buffers": 3353433872,
+ "changed_fraction": 0.004931920422851863,
+ "max_changed_fraction": 1.0,
+ "base_vlm_sha256": "7f887d213226dbb576a450c618314ef07ed168ae69521b131248dac99b8793a7",
+ "action_expert_and_head_frozen": false,
+ "vlm_embeddings_and_final_norms_frozen": true
+}

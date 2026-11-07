@@ -1,0 +1,20 @@
+{
+ "edit_scope": "VLM blocks, action expert, action projections, and time MLP",
+ "edited_tensors": {
+  "action.action_out_proj.kernel": {
+   "changed": 1016,
+   "numel": 32768,
+   "changed_fraction": 0.031005859375,
+   "max_abs_delta": 0.0908660888671875,
+   "l2_delta": 0.4942353139331758,
+   "relative_l2_delta": 0.10813691091373073
+  }
+ },
+ "changed_elements": 1016,
+ "total_parameters_and_buffers": 3353433872,
+ "changed_fraction": 3.029730237066085e-07,
+ "max_changed_fraction": 1.0,
+ "base_vlm_sha256": "7f887d213226dbb576a450c618314ef07ed168ae69521b131248dac99b8793a7",
+ "action_expert_and_head_frozen": false,
+ "vlm_embeddings_and_final_norms_frozen": true
+}

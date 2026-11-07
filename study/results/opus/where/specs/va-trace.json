@@ -1,0 +1,81 @@
+{
+ "id": "va-trace",
+ "cand": "va",
+ "prompt": "Put the cube then the banana in the bowl",
+ "items": [
+  {
+   "episode": "base.base.s20001",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20007",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20009",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20022",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20023",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20040",
+   "k": 4
+  }
+ ],
+ "vlm_layers": [],
+ "action_layers": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17
+ ],
+ "action_tokens": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14
+ ],
+ "denoise_steps": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ]
+}
