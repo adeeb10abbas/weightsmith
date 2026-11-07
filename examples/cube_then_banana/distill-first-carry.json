@@ -1,0 +1,16 @@
+{
+ "notes": "Like distill.json, but built from releases during the first attempt: decisions up to sim step 150 (max_step), carries of up to 4 replans (max_hold), every such release of an episode (first_only false). In the tutorial's project distill.json's rule mostly picked late releases, after many retries; this targets the failure the paper describes, letting go of the cube on the first carry. See docs/TUTORIAL.md, step 7.",
+ "name": "ctb-first",
+ "candidate": "ctb-first",
+ "instruction": "Put the cube then the banana in the bowl",
+ "explicit_instruction": "Put the cube in the bowl then put the banana in the bowl",
+ "select": {"rule": "early_release", "cand": "base", "success": false, "max_hold": 4, "min_grip": 0.1, "max_grip": 0.9, "first_only": false, "max_step": 150, "limit": 12},
+ "responsive_only": true,
+ "check_items": {
+  "other_early_releases": {"rule": "early_release", "cand": "base", "success": false, "max_hold": 2, "min_grip": 0.1, "max_grip": 0.9, "limit": 16},
+  "grasps": {"rule": "grasp", "cand": "base", "success": null, "limit": 16}
+ },
+ "edit": {"mode": "image", "layers": [8, 9, 10, 11, 12, 13, 14, 15, 16], "alpha": 1.0, "lam_rel": 0.001},
+ "eval": {"n": 32, "offset": 0},
+ "heldout": {"slot_start": 90000, "n": 64}
+}

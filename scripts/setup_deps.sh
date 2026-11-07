@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # Reproduce the exact policy + simulator stack used for the weightsmith results.
 #
-#   scripts/setup_deps.sh            # clone + patch + install everything into third_party/
-#   scripts/setup_deps.sh --no-sync  # clone + patch only (skip uv sync / downloads)
+#   scripts/setup_deps.sh              # clone + patch + install everything into third_party/
+#   scripts/setup_deps.sh --no-sync    # clone + patch only (skip uv sync / downloads)
+#   scripts/setup_deps.sh --check      # only check the system requirements
+#   scripts/setup_deps.sh --print-env  # only print the wsp.env lines for this layout:
+#                                      #   scripts/setup_deps.sh --print-env >> wsp.env
 #
 # Result (all under third_party/, git-ignored):
 #   openpi/   xuningy/openpi @ aa64205 + 1 patch (request-scoped sampling seeds)
@@ -16,7 +19,43 @@
 set -euo pipefail
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TP="$repo/third_party"
-SYNC=1; [ "${1:-}" = "--no-sync" ] && SYNC=0
+MODE="${1:-}"
+case "$MODE" in ''|--no-sync|--check|--print-env) ;; *) echo "usage: $0 [--no-sync|--check|--print-env]"; exit 2 ;; esac
+SYNC=1; [ "$MODE" = "--no-sync" ] && SYNC=0
+CKPT_DEFAULT="${OPENPI_DATA_HOME:-$HOME/.cache/openpi}/openpi-assets-simeval/pi05_droid_jointpos"
+
+print_env() {  # the wsp.env lines for the layout this script creates (checkpoint path: $1)
+  printf '%s\n' "OPENPI_DIR=$TP/openpi" "OPENPI_PYTHON=$TP/openpi/.venv/bin/python" "ROBOLAB_DIR=$TP/RoboLab" \
+    "SIM_PYTHON=$repo/envs/robolab-sim/.venv/bin/python" "CHECKPOINT_DIR=$1" \
+    "BASE_WORKSPACE=$HOME/weightsmith-workspace/pi05_droid_jointpos-full"
+}
+if [ "$MODE" = "--print-env" ]; then print_env "$CKPT_DEFAULT"; exit 0; fi
+
+check_requirements() {  # report every missing requirement at once; return 1 if any is missing
+  local missing=0 c drv
+  for c in git git-lfs uv ffmpeg bwrap; do
+    if ! command -v "$c" >/dev/null; then echo "  missing: $c"; missing=1; fi
+  done
+  if ! /usr/bin/python3 -c 'import numpy' 2>/dev/null; then
+    echo "  missing: numpy for /usr/bin/python3 (the owsp py sandbox runs it)"
+    missing=1
+  fi
+  if command -v nvidia-smi >/dev/null; then
+    drv=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader 2>/dev/null | head -1)
+    if [ -n "$drv" ] && [ "${drv%%.*}" -lt 535 ]; then echo "  NVIDIA driver $drv is older than 535"; missing=1; fi
+  else
+    echo "  missing: nvidia-smi (the GPU host needs an NVIDIA driver >= 535)"; missing=1
+  fi
+  if [ "$missing" = 1 ]; then
+    echo "  Ubuntu: sudo apt install git git-lfs ffmpeg bubblewrap python3-numpy && git lfs install"
+    echo "  uv: https://docs.astral.sh/uv/getting-started/installation/"
+    return 1
+  fi
+  echo "  requirements: OK"
+}
+echo "[0/5] system requirements"
+if ! check_requirements; then exit 1; fi
+if [ "$MODE" = "--check" ]; then exit 0; fi
 
 OPENPI_URL=https://github.com/xuningy/openpi.git
 OPENPI_BASE=aa6420561529593114160d05e5ad155792b272f3
@@ -41,7 +80,6 @@ if [ "$(git -C "$TP/openpi" rev-parse HEAD~1 2>/dev/null)" != "$OPENPI_BASE" ]; 
 fi
 
 echo "[2/5] RoboLab (git-lfs assets, ~10 GB)"
-command -v git-lfs >/dev/null || { echo "git-lfs is required (apt install git-lfs; git lfs install)"; exit 1; }
 [ -d "$TP/RoboLab/.git" ] || git clone -q "$ROBOLAB_URL" "$TP/RoboLab"
 if [ "$(git -C "$TP/RoboLab" rev-parse HEAD~6 2>/dev/null)" != "$ROBOLAB_BASE" ]; then
   apply "$TP/RoboLab" "$ROBOLAB_BASE" "$repo/third_party/patches/robolab"
@@ -64,15 +102,11 @@ if [ "$SYNC" = 1 ]; then
   fi
 fi
 
-cat <<EOF
-
-Done. Put these lines in $repo/wsp.env (see .env.example for the rest):
-  OPENPI_DIR=$TP/openpi
-  OPENPI_PYTHON=$TP/openpi/.venv/bin/python
-  ROBOLAB_DIR=$TP/RoboLab
-  SIM_PYTHON=$repo/envs/robolab-sim/.venv/bin/python
-  CHECKPOINT_DIR=${ckpt:-<OPENPI_DATA_HOME>/openpi-assets-simeval/pi05_droid_jointpos}
-  BASE_WORKSPACE=<a path with ~11 GB free>/pi05_droid_jointpos-full
-Then: scripts/prepare_workspace.sh   (exports the editable layer-split weights)
-      scripts/smoke_test.sh          (end-to-end check on 16 simulated episodes)
-EOF
+echo
+echo "Done. Next, at the repo root:"
+echo "  cp .env.example wsp.env                       # if you have no wsp.env yet"
+echo "  scripts/setup_deps.sh --print-env >> wsp.env  # appends these lines:"
+print_env "${ckpt:-$CKPT_DEFAULT}" | sed 's/^/    /'
+echo "  (edit BASE_WORKSPACE if the ~11 GB export should live elsewhere)"
+echo "Then: scripts/prepare_workspace.sh   (exports the editable layer-split weights, ~11 GB)"
+echo "      scripts/smoke_test.sh          (end-to-end check on 16 simulated episodes)"

@@ -5,6 +5,7 @@ Start with the [README](../README.md). Then pick what you need:
 | I want to | Read |
 |---|---|
 | New to weight-space programming? Start here: what it is, what works, what doesn't | [CONCEPTS.md](CONCEPTS.md) |
+| Make your first weight edit, step by step, with real outputs | [TUTORIAL.md](TUTORIAL.md) |
 | Copy-paste recipes: diagnose by rewording, build an edit, run its controls, read the stats | [COOKBOOK.md](COOKBOOK.md) |
 | Understand the method, the runtime and how the pieces connect | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | Set up a GPU host with the exact pinned stack | [SETUP.md](SETUP.md) |

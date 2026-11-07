@@ -652,6 +652,13 @@ def _sb_build(cfg, io):
               f"|dW|/|W| {row['dW_rel_norm']:.4f}  changed {100 * row['changed_fraction']:.1f}%{vs_stored}", flush=True)
     summary = {"config": cfg, "layers": report, "n_items": len(oi), **slot_info,
                "factor_params": int(n_factor)}
+    if io.get("saved") and not cfg.get("compare"):
+        written = {r["tensor"] for r in report}
+        kept = sorted(n for n in io["saved"]() if n not in written)
+        summary["other_edits_kept"] = kept
+        if kept:
+            print(f"note: the candidate also keeps {len(kept)} earlier edits that this build did not write: "
+                  f"{kept[:6]}{' ...' if len(kept) > 6 else ''}", flush=True)
     if factors and io.get("scratch"):
         np.savez(f"{io['scratch']}/distill_factors.npz", **factors)
     if io.get("scratch") and not cfg.get("compare"):
@@ -696,6 +703,7 @@ def _sb_select(rule, io):
     """Sandbox body of item selection: scan practice episodes and pick decision replans by rule."""
     rows = io["episodes"](cand=rule.get("cand", "base"), success=rule.get("success", False))
     rows = sorted(rows, key=lambda r: r["eid"])
+    exclude = {(str(e), int(k)) for e, k in rule.get("exclude") or []}
     items, scanned = [], 0
     for r in rows:
         if rule.get("episodes") and r["eid"] not in rule["episodes"]:
@@ -713,6 +721,8 @@ def _sb_select(rule, io):
         else:
             raise ValueError(f"unknown selection rule {rule['rule']!r}")
         for k in ks:
+            if (r["eid"], int(k)) in exclude or int(o["step"][k]) > int(rule.get("max_step", 10 ** 9)):
+                continue
             items.append({"episode": r["eid"], "k": int(k), "step": int(o["step"][k]),
                           "gripper": round(float(np.asarray(o["gripper"][k]).ravel()[0]), 3)})
     lim = rule.get("limit")
@@ -722,6 +732,45 @@ def _sb_select(rule, io):
     for it in items:
         print(f"  {it['episode']!s} k={it['k']:d} step={it['step']:d} gripper={it['gripper']:.3f}")
     return {"items": [{"episode": it["episode"], "k": it["k"]} for it in items], "details": items, "scanned": scanned}
+
+
+def _sb_responsive(cfg, io):
+    """Sandbox body: the decisions at which the two wordings disagree on the gripper (closed vs open)."""
+    idx_o, arr_o = _sb_load_capture(io["data_root"], cfg["orig_capture"], ["actions"])
+    idx_x, arr_x = _sb_load_capture(io["data_root"], cfg["expl_capture"], ["actions"])
+    co, cx = gripper_closed(arr_o["actions"]), gripper_closed(arr_x["actions"])
+    keep = []
+    print(f"{'decision':<28} original  explicit")
+    for i, (a, b) in enumerate(zip(idx_o["items"], idx_x["items"], strict=True)):
+        if (a["episode"], a["k"]) != (b["episode"], b["k"]):
+            raise ValueError(f"item {i}: the two captures hold different decisions")
+        if co[i] != cx[i]:
+            keep.append(i)
+        print(f"{a['episode'] + ' k=' + str(a['k']):<28} {'CLOSE' if co[i] else 'open':<9} "
+              f"{'CLOSE' if cx[i] else 'open':<9}{'<- the wording changes the decision' if co[i] != cx[i] else ''}")
+    print(f"{len(keep)} of {len(co)} decisions change with the wording")
+    return {"responsive": keep, "n": int(len(co))}
+
+
+def _sb_fingerprint(cfg, io):
+    """Sandbox body: the candidate's ``owsp`` fingerprint (sha256 over its edit files, as ``owsp eval`` prints)."""
+    import glob as _gl
+    import hashlib as _hl
+    h = _hl.sha256()
+    for f in sorted(_gl.glob(f"{cfg['edits']}/*.npy")):
+        h.update(os.path.basename(f).encode())
+        with open(f, "rb") as fh:
+            h.update(fh.read())
+    return {"fingerprint": h.hexdigest()[:16]}
+
+
+def _sb_capture_items(cfg, io):
+    """Sandbox body: the decisions ``[episode, k, prompt]`` held by existing captures (read from index.json)."""
+    out = {}
+    for aid in cfg["captures"]:
+        with open(f"{io['data_root']}/acts/{aid}/index.json") as f:
+            out[aid] = [[it["episode"], int(it["k"]), it["prompt"]] for it in json.load(f)["items"]]
+    return out
 
 
 _CORE_FUNCS: list[Callable[..., Any]] = [closed_form_edit, layer_increments, align_slots, pi05_slot_map,
@@ -750,6 +799,7 @@ def _render(body: Callable[..., Any], cfg: Mapping[str, Any], *, data_root: str,
         f"CFG = json.loads({cfg_json!r})",
         "_IO = dict(load=globals().get('load'), base=globals().get('base'), save=globals().get('save'),",
         "           bf16=globals().get('bf16'), episodes=globals().get('episodes'), obs=globals().get('obs'),",
+        "           saved=globals().get('saved'),",
         f"           data_root={data_root!r}, scratch={scratch!r})",
         f"_RESULT = {body.__name__}(CFG, _IO)",
         f"print({_MARK!r} + json.dumps(_RESULT, default=float))",
@@ -789,9 +839,17 @@ def render_select_script(rule: Mapping[str, Any], *, data_root: str = "/work/dat
 
     Rules: ``{"rule": "early_release", "max_hold": 2, "min_grip": 0.1, "max_grip": 0.9}`` (grasp then drop) or
     ``{"rule": "grasp", "max_open_grip": 0.05}``; common keys ``cand`` (default "base"), ``success`` (default
-    false: failed episodes), ``first_only`` (default true), ``limit``, ``episodes`` (restrict to these ids).
+    false: failed episodes; null: all episodes), ``first_only`` (default true), ``max_step`` (only decisions up to
+    this sim step, e.g. the first attempt), ``limit``, ``episodes`` (restrict to these ids), ``exclude``
+    (``[episode, k]`` pairs never to select, e.g. the decisions an edit is built from).
     """
     return _render(_sb_select, dict(rule), data_root=data_root, scratch="", title=f"distill select: {rule.get('rule')}")
+
+
+def _human(output: str, limit: int = 3000) -> str:
+    """A sandbox script's output without its machine-readable ``DISTILL_JSON`` line."""
+    text = "\n".join(line for line in output.splitlines() if not line.startswith(_MARK)).strip()
+    return text if len(text) <= limit else text[:limit] + "\n[...]"
 
 
 def parse_result(output: str) -> dict[str, Any]:
@@ -815,27 +873,46 @@ def capture_specs(cfg: Mapping[str, Any], items: Sequence[Mapping[str, Any]]) ->
             {"id": f"{cfg['name']}-x", "cand": "base", "prompt": cfg["explicit_instruction"], **common}]
 
 
-def check_groups(cfg: Mapping[str, Any]) -> tuple[list[dict[str, Any]], dict[str, list[int]]]:
-    """Flatten ``cfg['check_items']`` (a list, or ``{group: [items]}``) into items plus ``{group: [lo, hi]}``."""
+def _check_item_groups(cfg: Mapping[str, Any]) -> dict[str, Any]:
     ci = cfg.get("check_items") or []
-    groups = ci if isinstance(ci, Mapping) else ({"check": ci} if ci else {})
+    return dict(ci) if isinstance(ci, Mapping) else ({"check": ci} if ci else {})
+
+
+def check_groups(cfg: Mapping[str, Any]) -> tuple[list[dict[str, Any]], dict[str, list[int]]]:
+    """Flatten ``cfg['check_items']`` (a list, or ``{group: [items]}``) into items plus ``{group: [lo, hi]}``.
+
+    Groups given as a selection rule (a dict) must be resolved to items first (:func:`run_pipeline` does that).
+    """
     flat: list[dict[str, Any]] = []
     ranges: dict[str, list[int]] = {}
-    for g, its in groups.items():
+    for g, its in _check_item_groups(cfg).items():
+        if isinstance(its, Mapping):
+            raise ValueError(f"check group {g!r} is a selection rule; resolve it to items first")
         ranges[g] = [len(flat), len(flat) + len(its)]
         flat += [dict(it) for it in its]
     return flat, ranges
 
 
-def check_specs(cfg: Mapping[str, Any], items: Sequence[Mapping[str, Any]], cand: str) -> list[dict[str, Any]]:
-    """Action-only captures for the offline check: the candidate on decision + check items, base on check items."""
+def check_specs(cfg: Mapping[str, Any], items: Sequence[Mapping[str, Any]], cand: str,
+                fingerprint: str | None = None) -> list[dict[str, Any]]:
+    """Action-only captures for the offline check: the candidate on decision + check items, base on check items.
+
+    With the candidate's ``fingerprint`` the candidate capture id is ``<name>-c-<fp[:6]>``, so a rebuilt edit is
+    never checked against the replay of an earlier version.
+    """
     light = {"prompt": cfg["instruction"], "vlm_layers": [], "action_layers": [17], "action_tokens": [0],
              "denoise_steps": [0]}
     check, _ = check_groups(cfg)
-    specs = [{"id": f"{cfg['name']}-c", "cand": cand, "items": [dict(it) for it in items] + check, **light}]
+    cid = f"{cfg['name']}-c" + (f"-{fingerprint[:6]}" if fingerprint else "")
+    specs = [{"id": cid, "cand": cand, "items": [dict(it) for it in items] + check, **light}]
     if check:
         specs.append({"id": f"{cfg['name']}-cb", "cand": "base", "items": check, **light})
     return specs
+
+
+def _q(path: str) -> str:
+    """Shell-quoted path; the dry-run placeholder ``$WSP_ROOT`` stays expandable."""
+    return '"$WSP_ROOT"' if path == "$WSP_ROOT" else shlex.quote(path)
 
 
 class Owsp:
@@ -850,7 +927,7 @@ class Owsp:
             path = self.workdir / (file_name or "input.txt")
             path.write_text(file_text)
             argv.append(str(path))
-        shown = f"WSP_ROOT={shlex.quote(self.root)} " + " ".join(shlex.quote(a) for a in argv)
+        shown = f"WSP_ROOT={_q(self.root)} " + " ".join(shlex.quote(a) for a in argv)
         if self.dry_run:
             print(f"[dry-run] {shown}")
             return None
@@ -862,12 +939,85 @@ class Owsp:
         return out
 
 
+def _setting(key: str, repo: Path) -> str:
+    """A bin/owsp setting: the environment wins, then the first ``KEY=VALUE`` line of wsp.env (or $WSP_ENV_FILE)."""
+    if key in os.environ:
+        return os.environ[key]
+    path = Path(os.environ.get("WSP_ENV_FILE") or repo / "wsp.env")
+    if path.is_file():
+        for line in path.read_text().splitlines():
+            k, sep, v = line.strip().partition("=")
+            if sep and k.strip().removeprefix("export ").strip() == key:
+                return v.strip().strip("\"'")
+    return ""
+
+
 def _load_config(path: str | Path) -> dict[str, Any]:
     text = Path(path).read_text()
     if str(path).endswith((".yaml", ".yml")):
         import yaml  # optional dependency, only for YAML configs
         return yaml.safe_load(text)
     return json.loads(text)
+
+
+def _reusable_captures(ow: Owsp, specs: Sequence[Mapping[str, Any]], existing: Sequence[str],
+                       project: str) -> set[str]:
+    """Ids of ``specs`` that already exist and hold exactly the decisions and wordings of the spec.
+
+    Raises if an existing capture holds other decisions: reusing it would silently build or check the edit on
+    stale data (e.g. after the selection rule changed).
+    """
+    old = [s for s in specs if s["id"] in existing]
+    if not old:
+        return set()
+    script = _render(_sb_capture_items, {"captures": [s["id"] for s in old]}, data_root="/work/data", scratch="",
+                     title="distill: decisions held by existing captures")
+    out = ow.run("py", "base", file_text=script, file_name="existing-captures.py")
+    if out is None:
+        return {s["id"] for s in old}
+    have = parse_result(out)
+    for s in old:
+        want = [(it["episode"], it.get("k"), it.get("prompt") or s.get("prompt")) for it in s["items"]]
+        got = have[s["id"]]
+        same = len(want) == len(got) and all(
+            e == g[0] and (k is None or int(k) == g[1]) and (p is None or p == g[2])
+            for (e, k, p), g in zip(want, got, strict=True))
+        if not same:
+            raise RuntimeError(
+                f"capture {s['id']!r} already exists but holds other decisions than this run selected. Give the "
+                f"config a new 'name' (capture ids are '<name>-o', '<name>-x', '<name>-c', '<name>-cb'), or move "
+                f"{project}/data/acts/{s['id']} away.")
+        print(f"capture {s['id']} exists with the same {len(want)} decisions: reusing it")
+    return {s["id"] for s in old}
+
+
+def _resolve_check_items(cfg: Mapping[str, Any], items: Sequence[Mapping[str, Any]], ow: Owsp, wd: Path, *,
+                         fresh: bool) -> dict[str, list[dict[str, Any]]]:
+    """``cfg['check_items']`` with every rule group (a dict) replaced by the items its rule selects.
+
+    Rule groups run the select script in the base sandbox and never pick the build decisions ``items``. The
+    result is cached in ``wd/check_items.json`` and reused unless ``fresh`` (the select step ran again).
+    """
+    groups = _check_item_groups(cfg)
+    rules = {g: r for g, r in groups.items() if isinstance(r, Mapping)}
+    cache = wd / "check_items.json"
+    found: dict[str, Any] = {}
+    if rules and not fresh and cache.exists():
+        found = json.loads(cache.read_text())
+    exclude = [[it["episode"], int(it["k"])] for it in items]
+    for g, rule in rules.items():
+        if g in found:
+            continue
+        out = ow.run("py", "base", file_text=render_select_script({**rule, "exclude": exclude}),
+                     file_name=f"select-check-{g}.py")
+        if out is None:
+            found[g] = [{"episode": f"<{g}-episode>", "k": 0}]
+            continue
+        found[g] = parse_result(out)["items"]
+        print(f"check group {g}: {len(found[g])} decisions selected by rule {rule.get('rule')!r}")
+    if rules and not ow.dry_run:
+        cache.write_text(json.dumps({g: found[g] for g in rules}, indent=1))
+    return {g: [dict(it) for it in (found[g] if g in rules else v)] for g, v in groups.items()}
 
 
 def _build_config(cfg: Mapping[str, Any]) -> BuildConfig:
@@ -887,16 +1037,22 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
     ``check`` (action-only replays of the edited policy, compared offline). Ends by printing the closed-loop and
     held-out commands. Existing captures with the same ids are reused. Returns what each step produced.
     """
-    for k in ("project", "name", "instruction", "explicit_instruction", "edit"):
+    for k in ("name", "instruction", "explicit_instruction", "edit"):
         if k not in cfg:
             raise KeyError(f"config needs {k!r}")
+    project = cfg.get("project") or os.environ.get("WSP_ROOT")
+    if not project:
+        if not dry_run:
+            raise KeyError("set WSP_ROOT to the project root on the GPU host (or give 'project' in the config)")
+        project = "$WSP_ROOT"
     name, cand = cfg["name"], cfg.get("candidate") or cfg["name"]
     wd = Path(workdir or Path("distill-runs") / name)
     wd.mkdir(parents=True, exist_ok=True)
     repo = Path(__file__).resolve().parents[1]
-    ow = Owsp(cfg["project"], owsp_bin or repo / "bin" / "owsp", wd, dry_run)
+    ow = Owsp(project, owsp_bin or repo / "bin" / "owsp", wd, dry_run)
     bcfg = _build_config(cfg)
-    result: dict[str, Any] = {"candidate": cand, "workdir": str(wd)}
+    print(f"project {project} ({'config' if cfg.get('project') else 'WSP_ROOT'}), candidate {cand}, work dir {wd}")
+    result: dict[str, Any] = {"candidate": cand, "workdir": str(wd), "project": project}
     status = {"acts": [], "candidates": [], "instruction": cfg["instruction"]}
     out = ow.run("status")
     if out is not None:
@@ -913,8 +1069,11 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
             print(f"[dry-run] decision items would come from {wd / 'select.py'}; a placeholder item is used below")
             items = [{"episode": "<selected-episode>", "k": 0}]
         else:
-            print(out[:3000])
+            print(_human(out))
             items = parse_result(out)["items"]
+            if not items:
+                raise RuntimeError("the select rule found no decisions in the project's episodes: record more base "
+                                   "episodes (scripts/base_practice.sh) or relax the rule")
             (wd / "items.json").write_text(json.dumps(items, indent=1))
     elif not items:
         if not (wd / "items.json").exists():
@@ -922,11 +1081,15 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
         items = json.loads((wd / "items.json").read_text())
     result["items"] = items
     print(f"{len(items)} decision items")
+    if "check" in steps or ("select" in steps and not cfg.get("items")):
+        cfg = {**cfg, "check_items": _resolve_check_items(cfg, items, ow, wd, fresh="select" in steps)}
+        result["check_items"] = {g: len(v) for g, v in cfg["check_items"].items()}
 
     if "capture" in steps:
-        for spec in capture_specs(cfg, items):
-            if spec["id"] in status["acts"]:
-                print(f"capture {spec['id']} exists: reusing it")
+        specs = capture_specs(cfg, items)
+        reuse = _reusable_captures(ow, specs, status["acts"], project)
+        for spec in specs:
+            if spec["id"] in reuse:
                 continue
             if dry_run:
                 print(json.dumps({k: v for k, v in spec.items() if k != "items"}), f"+ {len(spec['items'])} items")
@@ -935,6 +1098,20 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
                 print(out.strip()[-600:])
 
     if "build" in steps:
+        if cfg.get("responsive_only") and bcfg.orig_items is None and bcfg.expl_items is None:
+            out = ow.run("py", "base", file_text=_render(
+                _sb_responsive, {"orig_capture": bcfg.orig_capture, "expl_capture": bcfg.expl_capture},
+                data_root="/work/data", scratch="", title="distill: decisions that change with the wording"),
+                file_name="responsive.py")
+            if out is not None:
+                print(_human(out))
+                keep = parse_result(out)["responsive"]
+                if not keep:
+                    raise RuntimeError("the explicit wording changes none of the selected decisions, so there is "
+                                       "nothing to distil: try other decisions, another rewording, or another edit")
+                bcfg = dataclasses.replace(bcfg, orig_items=keep, expl_items=keep)
+                result["responsive"] = keep
+                print(f"the edit is built from the {len(keep)} decisions that change with the wording")
         script = render_sandbox_script(bcfg)
         if cand not in status["candidates"]:
             ow.run("new", cand, "--note", f"distill {name}: {json.dumps(cfg['edit'], sort_keys=True)}")
@@ -942,21 +1119,31 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
             print(f"candidate {cand} exists; its edits will be overwritten tensor by tensor")
         out = ow.run("py", cand, file_text=script, file_name="build.py")
         if out is not None:
-            print(out[:6000])
+            print(_human(out, 6000))
             result["build"] = parse_result(out)
             (wd / "build.json").write_text(json.dumps(result["build"], indent=1, default=float))
         else:
             print(f"[dry-run] build script: {wd / 'build.py'} ({len(script.splitlines())} lines)")
 
     if "check" in steps:
-        specs = check_specs(cfg, items, cand)
+        fp = None
+        out = ow.run("py", cand, file_text=_render(_sb_fingerprint, {"edits": "/work/edits"}, data_root="/work/data",
+                                                    scratch="", title="distill: candidate fingerprint"),
+                     file_name="fingerprint.py")
+        if out is not None:
+            fp = parse_result(out)["fingerprint"]
+            result["fingerprint"] = fp
+            print(f"candidate {cand} fingerprint {fp}")
+        specs = check_specs(cfg, items, cand, fp)
+        reuse = _reusable_captures(ow, specs, status["acts"], project)
         for spec in specs:
-            if spec["id"] in status["acts"]:
-                print(f"capture {spec['id']} exists: reusing it")
+            if spec["id"] in reuse:
                 continue
-            ow.run("acts", file_text=json.dumps(spec, indent=1), file_name=f"{spec['id']}.json")
+            out = ow.run("acts", file_text=json.dumps(spec, indent=1), file_name=f"{spec['id']}.json")
+            if out:
+                print(out.strip()[-600:])
         n = len(items)
-        ccfg = {"orig_capture": f"{name}-o", "expl_capture": f"{name}-x", "cand_capture": f"{name}-c",
+        ccfg = {"orig_capture": f"{name}-o", "expl_capture": f"{name}-x", "cand_capture": specs[0]["id"],
                 "cand_items": list(range(n))}
         flat, ranges = check_groups(cfg)
         if flat:
@@ -964,34 +1151,42 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
                          "check_groups": ranges})
         out = ow.run("py", "base", file_text=render_check_script(ccfg), file_name="check.py")
         if out is not None:
-            print(out[:3000])
+            print(_human(out))
             result["check"] = parse_result(out)
             (wd / "check.json").write_text(json.dumps(result["check"], indent=1))
 
     ev = cfg.get("eval", {})
     ho = cfg.get("heldout", {})
-    host = os.environ.get("WSP_HOST", "<gpu-host>")
-    root, n, off = cfg["project"], ev.get("n", 32), ev.get("offset", 0)
-    ho_start, ho_n = ho.get("slot_start", 90000), ho.get("n", 128)
-    log = f"heldout-{cand}.log"
+    root, n, off = project, ev.get("n", 32), ev.get("offset", 0)
+    ho_start, ho_n = ho.get("slot_start", 90000), ho.get("n", 64)
+    log = f"heldout-{cand}-{ho_start}.log"
+    heldout = (f"WSP_ROOT={_q(root)} nohup setsid python3 weightsmith/heldout.py --cand {cand} "
+               f"--slot-start {ho_start} --n {ho_n} > {log} 2>&1 < /dev/null &")
+    host = _setting("WSP_HOST", repo)
+    if host:
+        remote = (_setting("WSP_REMOTE_REPO", repo) or "weightsmith").removeprefix("~/")
+        heldout = f"ssh {host} {shlex.quote(f'cd {remote} && {heldout}')}"
+    else:
+        heldout = f"cd {shlex.quote(str(repo))} && {heldout}"
     print(textwrap.dedent(f"""
         next steps
-          1. closed loop, practice slots, ORIGINAL instruction, paired with base on the same slots:
-               WSP_ROOT={root} bin/owsp eval base --n {n} --offset {off}   # if not run yet
-               WSP_ROOT={root} bin/owsp eval {cand} --n {n} --offset {off}
-          2. if it clearly helps: operator held-out run on unseen slots (on the GPU host, long; poll the log):
-               ssh {host} 'cd ~/weightsmith && WSP_ROOT={root} nohup setsid python3 weightsmith/heldout.py \\
-                   --cand {cand} --slot-start {ho_start} --n {ho_n} > {log} 2>&1 < /dev/null &'
-          3. regression checks: copy the candidate's edits into other task projects and run step 1 there.
+          1. closed loop on practice slots, ORIGINAL instruction, paired with base on the same slots:
+               WSP_ROOT={_q(root)} bin/owsp eval {cand} --n {n} --offset {off}
+             (run `bin/owsp eval base --n {n} --offset {off}` first if base has no episodes on those slots)
+          2. if it clearly helps: the operator's held-out score on unseen slots (slot start: a multiple of 16,
+             >= 80000, never used before; runs base and candidate, {2 * ho_n} episodes; poll the log):
+               {heldout}
+          3. side effects: copy the candidate's edits into other task projects and run step 1 there.
         """))
     return result
 
 
 STATUS = """\
-Experimental. Proven: the build step. Rebuilt from their recorded capture, the paper's two published edits
-(v2mi-f, abl-imgl8) come out bit for bit identical: same owsp fingerprints. Only dry-run so far: the select,
-capture and check steps of `run`. Closed-loop and held-out evaluation are never started by this command; it
-prints those commands for you. Docs: docs/DISTILL.md."""
+Experimental. The build step rebuilds the paper's two published edits (v2mi-f, abl-imgl8) bit for bit from their
+recorded capture: same owsp fingerprints. `run` has gone end to end (select -> capture -> build -> check) on one new
+cube-then-banana project (docs/TUTORIAL.md); other tasks are untested. Start with `run CONFIG --dry-run`, which
+prints every command, spec and script and touches nothing. Closed-loop and held-out evaluation are never started
+by this command; it prints those commands for you. Docs: docs/DISTILL.md."""
 
 
 def main(argv: Sequence[str] | None = None, *, prog: str = "python -m weightsmith.distill") -> int:

@@ -87,3 +87,6 @@ venv/
 third_party/openpi/
 third_party/RoboLab/
 envs/*/.venv/
+
+# weightsmith distill working folders
+distill-runs/
