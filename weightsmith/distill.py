@@ -721,7 +721,7 @@ def _sb_select(rule, io):
         else:
             raise ValueError(f"unknown selection rule {rule['rule']!r}")
         for k in ks:
-            if (r["eid"], int(k)) in exclude:
+            if (r["eid"], int(k)) in exclude or int(o["step"][k]) > int(rule.get("max_step", 10 ** 9)):
                 continue
             items.append({"episode": r["eid"], "k": int(k), "step": int(o["step"][k]),
                           "gripper": round(float(np.asarray(o["gripper"][k]).ravel()[0]), 3)})
@@ -839,8 +839,9 @@ def render_select_script(rule: Mapping[str, Any], *, data_root: str = "/work/dat
 
     Rules: ``{"rule": "early_release", "max_hold": 2, "min_grip": 0.1, "max_grip": 0.9}`` (grasp then drop) or
     ``{"rule": "grasp", "max_open_grip": 0.05}``; common keys ``cand`` (default "base"), ``success`` (default
-    false: failed episodes; null: all episodes), ``first_only`` (default true), ``limit``, ``episodes`` (restrict
-    to these ids), ``exclude`` (``[episode, k]`` pairs never to select, e.g. the decisions an edit is built from).
+    false: failed episodes; null: all episodes), ``first_only`` (default true), ``max_step`` (only decisions up to
+    this sim step, e.g. the first attempt), ``limit``, ``episodes`` (restrict to these ids), ``exclude``
+    (``[episode, k]`` pairs never to select, e.g. the decisions an edit is built from).
     """
     return _render(_sb_select, dict(rule), data_root=data_root, scratch="", title=f"distill select: {rule.get('rule')}")
 
@@ -1070,6 +1071,9 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
         else:
             print(_human(out))
             items = parse_result(out)["items"]
+            if not items:
+                raise RuntimeError("the select rule found no decisions in the project's episodes: record more base "
+                                   "episodes (scripts/base_practice.sh) or relax the rule")
             (wd / "items.json").write_text(json.dumps(items, indent=1))
     elif not items:
         if not (wd / "items.json").exists():

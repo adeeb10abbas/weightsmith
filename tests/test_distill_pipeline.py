@@ -248,3 +248,12 @@ def test_responsive_only_stops_when_no_decision_changes(host, tmp_path):
     with pytest.raises(RuntimeError, match="nothing to distil"):
         D.run_pipeline({**CFG, "responsive_only": True}, workdir=tmp_path / "wd")
     assert not (host.root / "cands" / "t-imgl8").exists()  # stopped before creating the candidate
+
+
+def test_select_max_step_keeps_only_early_decisions(host, tmp_path):
+    res = D.run_pipeline({**CFG, "select": {"rule": "early_release", "first_only": False, "max_step": 45}},
+                         workdir=tmp_path / "wd", steps=("select",))
+    assert res["items"] == [{"episode": "base.base.s20000", "k": 3}, {"episode": "base.base.s20001", "k": 3}]
+    with pytest.raises(RuntimeError, match="found no decisions"):
+        D.run_pipeline({**CFG, "select": {"rule": "early_release", "max_step": 30}}, workdir=tmp_path / "wd2")
+    assert "acts" not in host.calls
