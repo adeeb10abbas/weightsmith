@@ -7,10 +7,12 @@ This page lists where every published result lives and what a submission must in
 | What | Where |
 |---|---|
 | Every paired comparison from our cohort, plus Astra reference rows | [`study/results/opus/comparisons.json`](../study/results/opus/comparisons.json) |
-| Held-out scores, one file per `heldout.py` run | [`study/results/opus/heldout/`](../study/results/opus/heldout/) |
+| Held-out scores, one file per `heldout.py` run | [`study/results/opus/heldout/`](../study/results/opus/heldout/), [`study/results/ctrl/heldout/`](../study/results/ctrl/heldout/) |
+| The accepted edits as portable files, with checksums and a verifier | [`edits/`](../edits/README.md) |
 | Evidence record: protocol, budgets, costs and every proposal | [`study/results/opus/EVIDENCE.md`](../study/results/opus/EVIDENCE.md) |
 | Scripts that build the language-binding edit and its variants | [`study/results/opus/ctb/`](../study/results/opus/ctb/README.md) |
 | Claude under the Astra protocol: brief, notebook and final answer | [`study/results/opus/claude-astra-protocol-*.md`](../study/results/opus/claude-astra-protocol-FINAL.md) |
+| Controlled study of seven blind editors: per-task brief, notebook, final answer and scripts, plus a summary | [`study/results/ctrl/`](../study/results/ctrl/README.md) |
 | Early Claude runs (banana then cube, cube then banana) | [`docs/results/`](../docs/results/README.md) |
 | Astra study: results and limitations (frozen) | [`study/RESULTS.md`](../study/RESULTS.md) |
 | Astra measurement records (frozen; do not edit) | [`study/results/data/`](../study/results/data/) |
@@ -18,6 +20,7 @@ This page lists where every published result lives and what a submission must in
 | Figures and plotting scripts | `study/results/figures/`, `study/blog/figures/`, [`study/results/scripts/`](../study/results/scripts/) |
 | Large downloads (Astra raw archives and videos) | [`study/ARTIFACTS.md`](../study/ARTIFACTS.md) |
 | Raw episodes and activation captures from our cohort | Not in Git; they stay on the reference GPU host |
+| What each study folder holds, and which are sealed or frozen | [`study/README.md`](../study/README.md) |
 
 To redraw the summary figure from `comparisons.json`, run `python3 study/results/scripts/plot_opus_forest.py`. It writes to `study/results/figures/` and `study/blog/figures/`.
 
@@ -42,6 +45,8 @@ To redraw the summary figure from `comparisons.json`, run `python3 study/results
   - the crashed slots and the mean steps to success.
 - `per_slot` maps each slot to `[base_success, candidate_success]`.
 
+Next to a results file, `<same name>.plan.json` (kept for the controlled study) is the plan `heldout.py` wrote before the first episode: candidate, fingerprint, task, slots, run order and start time.
+
 ## Submitting a result
 
 Put each run in `results/submissions/<YYYY-MM-DD>-<editor>-<task>/`:
@@ -52,7 +57,7 @@ Put each run in `results/submissions/<YYYY-MM-DD>-<editor>-<task>/`:
 | `config.json` | The project config |
 | `FINAL.md`, `NOTEBOOK.md` | The editor's own files, verbatim |
 | `heldout-<Task>-<first slot>-<n>.json` | `heldout.py`'s `results.json`, unmodified. Omit it if the final answer was `base`. |
-| `edit/` | The `owsp py` scripts that build the candidate from base, plus the `owsp diff` output. Do not commit weight arrays; link large files with their sha256. |
+| `edit/` | The `owsp py` scripts that build the candidate from base, plus the `owsp diff` output. Do not commit weight arrays. To share the edit itself, export it with `weightsmith edit export` and link the file with its sha256, as in [`edits/`](../edits/README.md). |
 | `practice.json` (optional) | Every evaluated candidate, as rows with the `comparisons.json` fields |
 
 The run's `README.md` states:
@@ -65,4 +70,4 @@ The run's `README.md` states:
 
 Then add your row to [LEADERBOARD.md](../LEADERBOARD.md). A maintainer may ask for the edit so they can re-score it.
 
-The runtime's directory names (`data/`, `heldout/`, `notes/`, `frames/`, `logs/`, `state/`, `cands/`, `acts/`, `episodes/`) are git-ignored at any depth. So are `*.npy` and `*.npz` files, and images outside a `figures/` folder. Use the flat file names above.
+The runtime's directory names (`data/`, `heldout/`, `notes/`, `frames/`, `logs/`, `state/`, `cands/`, `acts/`, `episodes/`) are git-ignored at any depth, except the curated `study/results/data/` and `study/results/*/heldout/`. So are `*.npy`, `*.npz` and `*.safetensors` files (except in `edits/`), and images outside a `figures/` folder. Use the flat file names above.

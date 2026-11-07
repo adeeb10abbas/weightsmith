@@ -1,0 +1,293 @@
+{
+ "summary": {
+  "cand": "p1",
+  "fingerprint": "c493a948721a64d4",
+  "task": "MustardInLeftBinTask",
+  "slots": [
+   91008,
+   91071
+  ],
+  "order": "first half: base then cand; second half: cand then base",
+  "started": "Fri Nov  6 13:28:38 2026",
+  "finished": "Fri Nov  6 14:56:58 2026",
+  "paired_n": 64,
+  "base_success": 8,
+  "cand_success": 11,
+  "base_rate": 0.125,
+  "cand_rate": 0.1719,
+  "base_wilson95": [
+   0.065,
+   0.228
+  ],
+  "cand_wilson95": [
+   0.099,
+   0.282
+  ],
+  "fixed": 9,
+  "broke": 6,
+  "mcnemar_exact_p": 0.60723876953125,
+  "crashed_slots": 0,
+  "mean_steps_success": {
+   "base": 190.4,
+   "cand": 222.3
+  }
+ },
+ "per_slot": {
+  "91008": [
+   true,
+   false
+  ],
+  "91009": [
+   false,
+   true
+  ],
+  "91010": [
+   false,
+   false
+  ],
+  "91011": [
+   false,
+   false
+  ],
+  "91012": [
+   false,
+   false
+  ],
+  "91013": [
+   false,
+   false
+  ],
+  "91014": [
+   false,
+   false
+  ],
+  "91015": [
+   false,
+   false
+  ],
+  "91016": [
+   false,
+   false
+  ],
+  "91017": [
+   false,
+   false
+  ],
+  "91018": [
+   false,
+   false
+  ],
+  "91019": [
+   false,
+   false
+  ],
+  "91020": [
+   false,
+   false
+  ],
+  "91021": [
+   false,
+   true
+  ],
+  "91022": [
+   false,
+   true
+  ],
+  "91023": [
+   false,
+   false
+  ],
+  "91024": [
+   false,
+   false
+  ],
+  "91025": [
+   false,
+   false
+  ],
+  "91026": [
+   true,
+   false
+  ],
+  "91027": [
+   false,
+   false
+  ],
+  "91028": [
+   false,
+   false
+  ],
+  "91029": [
+   true,
+   true
+  ],
+  "91030": [
+   false,
+   false
+  ],
+  "91031": [
+   false,
+   false
+  ],
+  "91032": [
+   false,
+   true
+  ],
+  "91033": [
+   false,
+   false
+  ],
+  "91034": [
+   false,
+   false
+  ],
+  "91035": [
+   false,
+   false
+  ],
+  "91036": [
+   false,
+   false
+  ],
+  "91037": [
+   false,
+   false
+  ],
+  "91038": [
+   true,
+   true
+  ],
+  "91039": [
+   false,
+   false
+  ],
+  "91040": [
+   false,
+   true
+  ],
+  "91041": [
+   false,
+   false
+  ],
+  "91042": [
+   true,
+   false
+  ],
+  "91043": [
+   false,
+   true
+  ],
+  "91044": [
+   true,
+   false
+  ],
+  "91045": [
+   true,
+   false
+  ],
+  "91046": [
+   false,
+   false
+  ],
+  "91047": [
+   false,
+   false
+  ],
+  "91048": [
+   false,
+   false
+  ],
+  "91049": [
+   false,
+   true
+  ],
+  "91050": [
+   true,
+   false
+  ],
+  "91051": [
+   false,
+   false
+  ],
+  "91052": [
+   false,
+   false
+  ],
+  "91053": [
+   false,
+   false
+  ],
+  "91054": [
+   false,
+   false
+  ],
+  "91055": [
+   false,
+   false
+  ],
+  "91056": [
+   false,
+   false
+  ],
+  "91057": [
+   false,
+   false
+  ],
+  "91058": [
+   false,
+   false
+  ],
+  "91059": [
+   false,
+   false
+  ],
+  "91060": [
+   false,
+   false
+  ],
+  "91061": [
+   false,
+   false
+  ],
+  "91062": [
+   false,
+   true
+  ],
+  "91063": [
+   false,
+   false
+  ],
+  "91064": [
+   false,
+   false
+  ],
+  "91065": [
+   false,
+   false
+  ],
+  "91066": [
+   false,
+   true
+  ],
+  "91067": [
+   false,
+   false
+  ],
+  "91068": [
+   false,
+   false
+  ],
+  "91069": [
+   false,
+   false
+  ],
+  "91070": [
+   false,
+   false
+  ],
+  "91071": [
+   false,
+   false
+  ]
+ }
+}

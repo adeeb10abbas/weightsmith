@@ -33,6 +33,10 @@ Held-out runs alternate order by half (first half base first, second half edit f
 5. **One candidate only.** GPU queue waits of 25–30 minutes per job led four editors (cube then banana, mustard, eyeglasses, cube left of bowl) to stop after one candidate.
 6. **Failed first launch.** The first held-out launch at slot 91000 stopped before any episode ran, because slots must form whole groups of 16. Scoring used slots 91008–91071; the log of the failed launch is not part of any result.
 
+## Round 2: stacking, extended time
+
+After the study, the stacking editor was given more time with the same budget (two candidates) to build the gate it had proposed. Its `p1` (3,072 values: one repurposed unit in `action.blocks.17` that gates the gripper open at the stack) removed the targeted failure, with closes on empty air at the stack falling from 73 to 5 replans, but success did not change: development 17/32 vs 16/32 (6 fixed / 5 broken); held-out slots 91008–91071, 39/64 vs 35/64 (17 fixed / 13 broken, exact p = 0.585). The remaining bottleneck is placing the third cube, a motor-precision problem the edit does not touch. Records: `stack3/FINAL2.md`, `stack3/NOTEBOOK.md`, `stack3/scripts_round2/`, `heldout/ctrl-stack3__*.json`.
+
 ## Findings worth noting
 
 - **Same diagnosis, smaller edit.** The cube-then-banana editor independently found the misreading behind the paper's main result. Replaying 16 premature releases under "Put the cube in the bowl" turned all 16 into holds. It then wrote a different edit, 1,024 values gated to premature-release states. That edit recovers part of the effect (held-out 42% against 17%); the paper's operator-built distilled edit reaches 83% on this task.

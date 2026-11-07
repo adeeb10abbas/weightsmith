@@ -1,0 +1,293 @@
+{
+ "summary": {
+  "cand": "p1",
+  "fingerprint": "4ca8023b0592b79f",
+  "task": "RubiksCubeThenBananaTask",
+  "slots": [
+   91008,
+   91071
+  ],
+  "order": "first half: base then cand; second half: cand then base",
+  "started": "Fri Nov  6 13:28:38 2026",
+  "finished": "Fri Nov  6 14:44:50 2026",
+  "paired_n": 64,
+  "base_success": 11,
+  "cand_success": 27,
+  "base_rate": 0.1719,
+  "cand_rate": 0.4219,
+  "base_wilson95": [
+   0.099,
+   0.282
+  ],
+  "cand_wilson95": [
+   0.309,
+   0.544
+  ],
+  "fixed": 22,
+  "broke": 6,
+  "mcnemar_exact_p": 0.0037191659212112427,
+  "crashed_slots": 0,
+  "mean_steps_success": {
+   "base": 357.8,
+   "cand": 443.0
+  }
+ },
+ "per_slot": {
+  "91008": [
+   false,
+   true
+  ],
+  "91009": [
+   false,
+   false
+  ],
+  "91010": [
+   false,
+   false
+  ],
+  "91011": [
+   false,
+   true
+  ],
+  "91012": [
+   true,
+   true
+  ],
+  "91013": [
+   false,
+   false
+  ],
+  "91014": [
+   false,
+   true
+  ],
+  "91015": [
+   false,
+   false
+  ],
+  "91016": [
+   true,
+   false
+  ],
+  "91017": [
+   false,
+   false
+  ],
+  "91018": [
+   false,
+   true
+  ],
+  "91019": [
+   false,
+   true
+  ],
+  "91020": [
+   false,
+   false
+  ],
+  "91021": [
+   false,
+   false
+  ],
+  "91022": [
+   false,
+   false
+  ],
+  "91023": [
+   false,
+   true
+  ],
+  "91024": [
+   false,
+   false
+  ],
+  "91025": [
+   true,
+   true
+  ],
+  "91026": [
+   false,
+   false
+  ],
+  "91027": [
+   false,
+   false
+  ],
+  "91028": [
+   false,
+   false
+  ],
+  "91029": [
+   true,
+   false
+  ],
+  "91030": [
+   false,
+   false
+  ],
+  "91031": [
+   true,
+   true
+  ],
+  "91032": [
+   false,
+   false
+  ],
+  "91033": [
+   true,
+   false
+  ],
+  "91034": [
+   false,
+   false
+  ],
+  "91035": [
+   true,
+   false
+  ],
+  "91036": [
+   false,
+   false
+  ],
+  "91037": [
+   false,
+   false
+  ],
+  "91038": [
+   false,
+   true
+  ],
+  "91039": [
+   false,
+   false
+  ],
+  "91040": [
+   false,
+   false
+  ],
+  "91041": [
+   false,
+   true
+  ],
+  "91042": [
+   false,
+   false
+  ],
+  "91043": [
+   false,
+   true
+  ],
+  "91044": [
+   false,
+   true
+  ],
+  "91045": [
+   false,
+   false
+  ],
+  "91046": [
+   false,
+   true
+  ],
+  "91047": [
+   false,
+   true
+  ],
+  "91048": [
+   false,
+   true
+  ],
+  "91049": [
+   false,
+   true
+  ],
+  "91050": [
+   false,
+   false
+  ],
+  "91051": [
+   false,
+   true
+  ],
+  "91052": [
+   false,
+   false
+  ],
+  "91053": [
+   false,
+   false
+  ],
+  "91054": [
+   false,
+   true
+  ],
+  "91055": [
+   false,
+   false
+  ],
+  "91056": [
+   true,
+   true
+  ],
+  "91057": [
+   false,
+   true
+  ],
+  "91058": [
+   false,
+   true
+  ],
+  "91059": [
+   false,
+   false
+  ],
+  "91060": [
+   true,
+   false
+  ],
+  "91061": [
+   true,
+   false
+  ],
+  "91062": [
+   true,
+   true
+  ],
+  "91063": [
+   false,
+   true
+  ],
+  "91064": [
+   false,
+   false
+  ],
+  "91065": [
+   false,
+   false
+  ],
+  "91066": [
+   false,
+   true
+  ],
+  "91067": [
+   false,
+   false
+  ],
+  "91068": [
+   false,
+   true
+  ],
+  "91069": [
+   false,
+   false
+  ],
+  "91070": [
+   false,
+   true
+  ],
+  "91071": [
+   false,
+   false
+  ]
+ }
+}

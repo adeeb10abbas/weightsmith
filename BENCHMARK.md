@@ -60,7 +60,7 @@ Each task was surveyed with the unedited policy on 16 episodes (slots 60000–60
 
 - "Wrong object first" relies on a RoboLab event that the [Astra audit](study/RESULTS.md) found unreliable, so treat those counts as upper bounds.
 - Base rates measured on more episodes are 9/64 for cube then banana, 28/64 for stack yellow on red, 16/96 for mustard and 0/64 for the flat green box (report §5–6).
-- Ready-made configs and briefs exist for `stack-yellow-red`, `cube-then-banana` and `banana-then-cube` (`BananaThenRubiksCubeTask`, 99/128 base) in `configs/` and `briefs/`. For any other task, copy a config and set `task` and `instruction` from the table above.
+- Ready-made configs and briefs exist for `stack-yellow-red`, `cube-then-banana` and `banana-then-cube` (`BananaThenRubiksCubeTask`, 99/128 base) in `configs/` and `briefs/`. For any other task, copy a config and set `task` and `instruction` from the table above. The controlled study's seven briefs, one per task, are in `study/results/ctrl/<task>/BRIEF.md` ([study](study/results/ctrl/README.md)).
 
 ## 3. Failure levels
 
@@ -68,7 +68,7 @@ Levels were assigned from diagnosis (kinematics, camera frames and activation ca
 
 | Level | What goes wrong | Example task | Weight editing so far |
 |---|---|---|---|
-| Language binding | The instruction is parsed so that the wrong object counts as "current" | Cube then banana | Fixed: held-out 27/128 → 106/128 |
+| Language binding | The instruction is parsed so that the wrong object counts as "current" | Cube then banana | Fixed: held-out 27/128 → 106/128 (operator-built); a blind editor's 1,024-value edit, 11/64 → 27/64 |
 | Perception | The policy goes for a similar-looking wrong object | Stack yellow on red | No accepted edit in 9 attempts by two editors |
 | Missing skill | The policy never produces a working motion | Pick up flat green box | 10 edits, 0 successes |
 | Contact physics | The decisions are right, but the grasp slips | Mustard into left bin | No decision-level lever found |
@@ -83,6 +83,7 @@ A **slot** fixes one episode's policy-noise stream. Slot `s` runs in group `g = 
 |---|---|---|
 | 20000–20255 | Practice: `owsp eval NAME --n N --offset K`, in multiples of 16 | Editor |
 | 60000–60015 | Operator base survey. Some of our later projects also practised from 60000. | Operator |
+| 70000–70031 | Development slots of the controlled study of seven blind editors, and of the `distill2` task screen | Editor |
 | ≥ 80000 (90000+ by convention) | Held-out scoring. `heldout.py` rejects lower slots, and `owsp` cannot read the results. | Operator only |
 | 20032–20063 | Astra original protocol: development | Editor |
 | 30016–30047 and 100000–100063 | Astra fixed16 protocol: development and held-out | Editor and operator only, respectively |
@@ -90,7 +91,7 @@ A **slot** fixes one episode's policy-noise stream. Slot `s` runs in group `g = 
 ## 5. Editor rules
 
 1. **No gradients, no training, no search.** No autodiff, optimizers, fine-tuning, or regressions fitted over many samples to produce weights. No mass-evaluated random perturbations or evolutionary search.
-2. **Closed-form edits only**, computed from weights and activations: means and contrasts, projections, SVD/PCA, rank-1 edits along an identified direction, neuron scaling, silencing or sign flips, and head rewiring. The accepted binding edit is a minimum-norm key→value update, `ΔW = Kᵀ(KKᵀ + λI)⁻¹V`, built from 6 recorded decisions. The report treats it as closed-form ([§5.4](study/blog/failure-levels.md#54-the-edit)). Disclose any similar solve.
+2. **Closed-form edits only**, computed from weights and activations: means and contrasts, projections, SVD/PCA, rank-1 edits along an identified direction, neuron scaling, silencing or sign flips, and head rewiring. The distilled binding edit (`v2mi-f`) is a minimum-norm key→value update, `ΔW = Kᵀ(KKᵀ + λI)⁻¹V`, built from 6 recorded decisions. The report treats it as closed-form ([§5.4](study/blog/failure-levels.md#54-the-edit)). The blind editor's accepted edit uses a least-norm key solved from class-mean constraints on recorded activations. Disclose any similar solve.
 3. **Hypothesis first.** Before evaluating an edit, write its mechanism, the effect you expect and the breakages you expect in `NOTEBOOK.md`. Afterwards, record whether the prediction held.
 4. **Fixed instruction.** Candidates are scored with the task's own instruction. Do not change prompts, inference code, wrappers, the gripper threshold, task predicates or the simulator. Prompt overrides are diagnostics only (`prompt_overrides` in the config; they are disabled on capability tasks such as `stack-yellow-red`).
 5. **bf16-exact edits**, validated by `owsp diff` against the original checkpoint.
@@ -108,6 +109,7 @@ A **slot** fixes one episode's policy-noise stream. Slot `s` runs in group `g = 
 | `configs/cube-then-banana.json` | 1,200 | 6,000 (96) | on |
 | `configs/banana-then-cube.json` | 1,600 | 6,000 (96) | on |
 | Our green-box and mustard projects | 800 | 6,000 (96) | off |
+| Controlled study, per task ([study/results/ctrl/](study/results/ctrl/README.md)) | 96, base included; at most 2 candidates | 192 (96) | diagnosis only |
 
 **Astra fixed16 protocol** (sealed in [`study/reproduction/fixed16/`](study/reproduction/fixed16/README.md); [protocol](study/reproduction/fixed16/reference/protocol.json), [brief](study/reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/BRIEF.md)).
 
