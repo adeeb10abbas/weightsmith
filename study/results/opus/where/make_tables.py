@@ -25,6 +25,11 @@ def j(name):
     return json.loads(p.read_text()) if p.exists() else None
 
 
+def fmt_pct(f):
+    x = 100 * f
+    return f"{x:.1f}%" if x >= 1 else (f"{x:.2f}%" if x >= 0.01 else f"{x:.2g}%")
+
+
 def fmt_p(p):
     return f"{p:.2g}" if p >= 1e-3 else f"{p:.1e}"
 
@@ -41,7 +46,7 @@ def offline_table():
         loc = _rest[-1]
         o, d = off[cap], j(f"diff_{cand}.json")
         p2 = o["P2app_flips"] + o["P2grasp_flips"] + o["P2carry_flips"]
-        lines.append(f"| {lab} | {loc} | {d['changed_elements']:,} ({100 * d['changed_fraction']:.2g}%) | {RANK[cand]} | {o['PREM_open']} | "
+        lines.append(f"| {lab} | {loc} | {d['changed_elements']:,} ({fmt_pct(d['changed_fraction'])}) | {RANK[cand]} | {o['PREM_open']} | "
                      f"{o['PREM_open_other15']} | {o['CARRY_open']} | {p2} | {o['PREM_ee_to_teacher_cm']} |")
     return "\n".join(lines)
 

@@ -88,6 +88,8 @@ def main():
     chunks = sorted({(s0, s1) for _, s0, s1 in plan["schedule"]})
     for s0, s1 in chunks:
         cs = [s for s in slots if s0 <= s <= s1]
+        if not cs:
+            continue
         order = [nm for nm, a0, _ in plan["schedule"] if a0 == s0]
         out["by_chunk"].append({"slots": [s0, s1], "order": order,
                                 "success": {nm: sum(bool(arms[nm][s]["success"]) for s in cs) for nm in names},
