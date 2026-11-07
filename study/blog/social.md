@@ -59,7 +59,7 @@ Site + videos: https://ali-adeeb.com/weightsmith/
 Code & benchmark: https://github.com/adeeb10abbas/weightsmith
 With @⟦ESMAEIL_X_HANDLE⟧
 
-## LinkedIn (short, casual; attach the video or carousel.pdf)
+## LinkedIn (short, casual; attach weightsmith_linkedin_4x5.mp4 or carousel.pdf)
 
 Been working on a fun one with Esmaeil Seraj.
 
@@ -71,7 +71,8 @@ The parts I didn't expect:
 - The same edit fixed two tasks we never built it for: picking up eyeglasses (22 → 44 of 64) and putting the cube left of the bowl (8 → 36).
 - A random edit of the same size did nothing.
 - It never taught the robot a new skill. Everything that worked was about how the model read the instruction, not how it moves.
-- We let 7 Claude agents try this blind. One found the same bug on its own and fixed it. Two others, on different tasks, found the same two neurons for the word "left".
 
 Blog + paper: https://ali-adeeb.com/weightsmith/
 Code: https://github.com/adeeb10abbas/weightsmith
+
+To give it a go, point your agents at the repo and see if their edit beats the robot on starts it's never seen.
