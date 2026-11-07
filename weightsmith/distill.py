@@ -1135,7 +1135,9 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
         for spec in specs:
             if spec["id"] in reuse:
                 continue
-            ow.run("acts", file_text=json.dumps(spec, indent=1), file_name=f"{spec['id']}.json")
+            out = ow.run("acts", file_text=json.dumps(spec, indent=1), file_name=f"{spec['id']}.json")
+            if out:
+                print(out.strip()[-600:])
         n = len(items)
         ccfg = {"orig_capture": f"{name}-o", "expl_capture": f"{name}-x", "cand_capture": specs[0]["id"],
                 "cand_items": list(range(n))}
@@ -1176,10 +1178,11 @@ def run_pipeline(cfg: Mapping[str, Any], *, steps: Sequence[str] = ("select", "c
 
 
 STATUS = """\
-Experimental. Proven: the build step. Rebuilt from their recorded capture, the paper's two published edits
-(v2mi-f, abl-imgl8) come out bit for bit identical: same owsp fingerprints. Only dry-run so far: the select,
-capture and check steps of `run`. Closed-loop and held-out evaluation are never started by this command; it
-prints those commands for you. Docs: docs/DISTILL.md."""
+Experimental. The build step rebuilds the paper's two published edits (v2mi-f, abl-imgl8) bit for bit from their
+recorded capture: same owsp fingerprints. `run` has gone end to end (select -> capture -> build -> check) on one new
+cube-then-banana project (docs/TUTORIAL.md); other tasks are untested. Start with `run CONFIG --dry-run`, which
+prints every command, spec and script and touches nothing. Closed-loop and held-out evaluation are never started
+by this command; it prints those commands for you. Docs: docs/DISTILL.md."""
 
 
 def main(argv: Sequence[str] | None = None, *, prog: str = "python -m weightsmith.distill") -> int:
