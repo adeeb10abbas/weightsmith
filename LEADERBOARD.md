@@ -1,6 +1,6 @@
 # Leaderboard
 
-Every editor run on the [weightsmith benchmark](BENCHMARK.md), as of 2026-11-06. An edit is **accepted** when it beats the unedited policy on at least 64 unseen paired slots with an exact McNemar p < 0.05.
+Every editor run on the [weightsmith benchmark](BENCHMARK.md), as of 2026-11-07. An edit is **accepted** when it beats the unedited policy on at least 64 unseen paired slots with an exact McNemar p < 0.05.
 
 | Task | Editor · protocol | Edit | Edit size (values) | Split | Base → edit | Fixed / broke | p | Status |
 |---|---|---|---|---|---|---|---|---|
@@ -13,6 +13,7 @@ Every editor run on the [weightsmith benchmark](BENCHMARK.md), as of 2026-11-06.
 | Mustard into left bin | Claude Opus (xhigh) · controlled study, blind | two layer-0 MLP rows strengthen "left" | 4,094 | held-out ³ | 8/64 → 11/64 | 9 / 6 | 0.61 | rejected |
 | Cube left of bowl | Claude Opus (xhigh) · controlled study, blind | rank-1 push of "left" toward "front", layer 8 | 130,764 | dev | 5/32 → 3/32 | 3 / 5 | 0.73 | none submitted (`base`) |
 | Stack three cubes | Claude Opus (xhigh) · controlled study, blind | gated gripper edit, rejected offline | — | — | 16/32 (base) | — | — | none submitted (`base`) |
+| Stack three cubes | Claude Opus (xhigh) · controlled study, blind, round 2 ⁴ | repurposed action-expert MLP unit (gripper open at the stack) | 3,072 | held-out ³ | 35/64 → 39/64 | 17 / 13 | 0.58 | rejected |
 | Stack yellow on red | Claude Opus (xhigh) · controlled study, blind | steering edit, no offline effect | — | — | 13/32 (base) | — | — | none submitted (`base`) |
 | Pick up flat box | Claude Opus (xhigh) · controlled study, blind | rank-1 gripper readout | 1,021 | dev | 0/32 → 0/32 | 0 / 0 | 1.00 | none submitted (`base`) |
 | Stack yellow on red | Claude Opus · owsp | 3 attention and key/value edits | 12–30M | practice | 28/64 → 21/64 (each) | 8–11 / 15–18 | 0.21–0.26 | rejected |
@@ -26,9 +27,9 @@ Every editor run on the [weightsmith benchmark](BENCHMARK.md), as of 2026-11-06.
 | Banana then cube | Claude Opus · owsp | 3 candidates, all rejected offline | — | — | — | — | — | none submitted |
 | Cube then banana | Claude Opus · owsp | stopped before any weight candidate | — | — | — | — | — | none submitted |
 
-¹ Built by the operator session (Claude Opus) under the editor rules, not by an autonomous editor run. ³ Controlled study of seven blind editors (one task per failure kind, 96 practice episodes, two candidates); the operator scored each submission on held-out slots 91008–91071. Records: [study/results/ctrl/](study/results/ctrl/README.md). ² Scored after `v2mi-f`, on the same held-out slots (90000–90127).
+¹ Built by the operator session (Claude Opus) under the editor rules, not by an autonomous editor run. ² Scored after `v2mi-f`, on the same held-out slots (90000–90127). ³ Controlled study of seven blind editors (one task per failure kind, 96 practice episodes, two candidates); the operator scored each submission on held-out slots 91008–91071. Records: [study/results/ctrl/](study/results/ctrl/README.md). ⁴ The same editor as the row above, resumed for a second round with more time and the rest of the same budget (96 practice episodes and 192 activation items in all). Development: 16/32 → 17/32 (6 fixed, 5 broke). Its notes: [FINAL2.md](study/results/ctrl/stack3/FINAL2.md).
 
-*Rejected*: the edits ran in closed loop and did not beat base; *(gate)* means they failed the protocol's development gate. *None submitted*: no weight edit reached closed loop. All of these runs ended with `base` or with no candidate. Held-out p values come from `weightsmith/heldout.py`; the others are computed from the published counts. Sources: [`comparisons.json`](study/results/opus/comparisons.json), [`heldout/`](study/results/opus/heldout/), [study/RESULTS.md](study/RESULTS.md). The transfer map and the unchanged-policy controls are in the [report](study/blog/failure-levels.md#55-the-results) (§5.5, §7).
+*Rejected*: the edits ran in closed loop and did not beat base; *(gate)* means they failed the protocol's development gate. *None submitted*: no weight edit reached closed loop. All of these runs ended with `base` or with no candidate. Held-out p values come from `weightsmith/heldout.py`; the others are computed from the published counts. Sources: [`comparisons.json`](study/results/opus/comparisons.json), held-out records in [`opus/heldout/`](study/results/opus/heldout/) and [`ctrl/heldout/`](study/results/ctrl/heldout/), [study/RESULTS.md](study/RESULTS.md). The transfer map and the unchanged-policy controls are in the [report](study/blog/failure-levels.md#55-the-results) (§5.5, §7). Every accepted edit is published as a file you can download, apply and verify bit for bit: `v2mi-f` (also behind the two transfer rows), `abl-imgl8` and the blind editor's 1,024-value edit, in [edits/](edits/README.md).
 
 ## How to submit
 

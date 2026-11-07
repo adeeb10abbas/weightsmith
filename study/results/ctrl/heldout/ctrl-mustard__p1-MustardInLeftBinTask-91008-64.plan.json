@@ -1,0 +1,11 @@
+{
+ "cand": "p1",
+ "fingerprint": "c493a948721a64d4",
+ "task": "MustardInLeftBinTask",
+ "slots": [
+  91008,
+  91071
+ ],
+ "order": "first half: base then cand; second half: cand then base",
+ "started": "Fri Nov  6 13:28:38 2026"
+}

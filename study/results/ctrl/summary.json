@@ -119,18 +119,84 @@
   "task": "Stack3RubiksCubeTask",
   "instruction": "Stack the rubiks cubes in a tower",
   "budget": {
-   "episodes": 32,
-   "acts_calls": 1,
-   "acts_items": 84,
-   "evals": 1
+   "episodes": 64,
+   "acts_calls": 3,
+   "acts_items": 192,
+   "evals": 2
   },
   "dev": {
    "base": {
     "success": 16,
     "n": 32
+   },
+   "p1": {
+    "success": 17,
+    "n": 32,
+    "paired_n": 32,
+    "paired_base": 16,
+    "fixed": 6,
+    "broke": 5,
+    "p": 1.0,
+    "note": "Gate unit: action.blocks.17.mlp_1 unit 2437 repurposed; fires on empty-gripper-high-at-stack state (MLP17 input contrast, within-item noise subspace k=256 removed, threshold from constant feature); writes least-norm gripper-open (v7) direction with zero 1st-order joint and rms change",
+    "size": {
+     "changed_elements": 3072,
+     "changed_fraction": 9.160759141995093e-07,
+     "edited_tensors": {
+      "action.blocks.17.mlp_1.gating_einsum": {
+       "changed": 2048,
+       "numel": 8388608,
+       "changed_fraction": 0.000244140625,
+       "max_abs_delta": 3.2078857421875,
+       "l2_delta": 28.019413251347643,
+       "relative_l2_delta": 0.3013323011884275
+      },
+      "action.blocks.17.mlp_1.linear": {
+       "changed": 1024,
+       "numel": 4194304,
+       "changed_fraction": 0.000244140625,
+       "max_abs_delta": 280.0255126953125,
+       "l2_delta": 1034.919247506171,
+       "relative_l2_delta": 32.07716882345742
+      }
+     }
+    }
    }
   },
-  "heldout": []
+  "heldout": [
+   {
+    "cand": "p1",
+    "fingerprint": "ebe45caa33e57d07",
+    "task": "Stack3RubiksCubeTask",
+    "slots": [
+     91008,
+     91071
+    ],
+    "order": "first half: base then cand; second half: cand then base",
+    "started": "Fri Nov  6 20:49:48 2026",
+    "finished": "Fri Nov  6 21:46:25 2026",
+    "paired_n": 64,
+    "base_success": 35,
+    "cand_success": 39,
+    "base_rate": 0.5469,
+    "cand_rate": 0.6094,
+    "base_wilson95": [
+     0.426,
+     0.663
+    ],
+    "cand_wilson95": [
+     0.487,
+     0.719
+    ],
+    "fixed": 17,
+    "broke": 13,
+    "mcnemar_exact_p": 0.584664711728692,
+    "crashed_slots": 0,
+    "mean_steps_success": {
+     "base": 412.4,
+     "cand": 390.6
+    }
+   }
+  ]
  },
  "yellowred": {
   "task": "StackYellowOnRedTask",

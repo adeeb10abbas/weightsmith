@@ -1,0 +1,11 @@
+{
+ "cand": "p1",
+ "fingerprint": "ebe45caa33e57d07",
+ "task": "Stack3RubiksCubeTask",
+ "slots": [
+  91008,
+  91071
+ ],
+ "order": "first half: base then cand; second half: cand then base",
+ "started": "Fri Nov  6 20:49:48 2026"
+}
