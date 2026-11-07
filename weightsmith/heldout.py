@@ -57,7 +57,15 @@ def main():
     a = ap.parse_args()
     if a.slot_start < 80000:
         sys.exit("held-out slots must be >= 80000 (practice slots are 20000..20255)")
+    # check everything before the run folder exists: a failed run can never be repeated under its tag
+    if a.slot_start % a.envs:
+        sys.exit(f"--slot-start must be a multiple of envs = {a.envs} (slots run in whole groups); "
+                 f"e.g. {a.slot_start - a.slot_start % a.envs + a.envs}")
+    if a.n <= 0 or a.n % (2 * a.envs):
+        sys.exit(f"--n must be a positive multiple of 2*envs = {2 * a.envs} (both halves must be whole groups); e.g. 192")
     src = R / "cands" / a.cand
+    if not (src / "edits").is_dir():
+        sys.exit(f"no candidate {a.cand!r} in {R / 'cands'}")
     tag = a.tag or f"{a.cand}-{a.task}-{a.slot_start}-{a.n}"
     out = R / "heldout" / tag
     if out.exists():
@@ -74,8 +82,6 @@ def main():
     plan = {"cand": a.cand, "fingerprint": fp, "task": a.task, "slots": [a.slot_start, a.slot_start + a.n - 1],
             "order": "first half: base then cand; second half: cand then base", "started": time.ctime()}
     (out / "plan.json").write_text(json.dumps(plan, indent=1))
-    if a.n % (2 * a.envs):
-        sys.exit(f"--n must be a multiple of 2*envs = {2 * a.envs} (both halves must be whole groups); e.g. 192")
     half = a.n // 2
     s1 = list(range(a.slot_start, a.slot_start + half))
     s2 = list(range(a.slot_start + half, a.slot_start + a.n))
