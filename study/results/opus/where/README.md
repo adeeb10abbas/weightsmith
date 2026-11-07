@@ -105,3 +105,12 @@ environments, against 1.3 for the same slot in two processes). The first group o
 94048-94063) is the first episode of lane 0 in every case, so it is identical across arms. Pre-specified handling: the
 primary analysis uses all 64 slots as planned; a sensitivity analysis repeats every comparison on those 32 slots. The
 lane count of every chunk is recorded. (Stopping the runner to enforce two lanes was not possible in this session.)
+
+### Transfer plan (added 2026-11-07 15:36; only base and V1-full had finished one 32-slot chunk of the held-out)
+
+Transfer and retention runs use `where_run.py` (a copy of `ctl_run.py` that holds both evaluation GPUs for every chunk,
+so all slots are first episodes of their process) on fresh slots 94016-94047 in new projects `where-glasses`
+(PickGlassesTask), `where-left` (RubiksCubeLeftOfBowlTask) and `where-cube` (RubiksCubeTask, "Put the cube in the bowl";
+retention), with the unedited policy under the task's own instruction as the shared base. Arms: V1-full, P1 and A1, one
+per location; H1 is added if its held-out difference from base has a bootstrap interval above zero; VA and V1-0.16% only
+if GPU time remains.
