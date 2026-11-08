@@ -309,6 +309,50 @@
   "experiment": "wording",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeThenBananaTask",
+  "code": "T1",
+  "wording_pair": [
+   "Put the cube then the banana in the bowl",
+   "Put the cube in the bowl then put the banana in the bowl"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 10,
+  "edited_k": null,
+  "fixed": 1,
+  "broke": 1,
+  "p": 1.0,
+  "ci": {
+   "diff_pts": 0.0,
+   "bootstrap95_pts": [
+    -18.75,
+    18.75
+   ],
+   "wilson95_orig_pct": [
+    38.6,
+    81.5
+   ],
+   "wilson95_alt_pct": [
+    38.6,
+    81.5
+   ]
+  },
+  "control_k": null,
+  "teacher_k": 10,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": null,
+  "values_changed": null,
+  "notes": "same weights, wording via prompt override; fixed = only the alternative wording succeeds. pi0.5's known-good explicit wording (paper, Section 2)"
+ },
+ {
+  "experiment": "wording",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
   "task": "MustardRightOfRaisinRFTask",
   "code": "T8",
   "wording_pair": [

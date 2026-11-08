@@ -391,6 +391,28 @@
    "k": 39,
    "n": 64
   },
+  "ali-ms/T1-wexp": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 10,
+   "n": 16
+  },
   "ali-ms/T2-Et8und": {
    "slots": [
     30000,
@@ -1742,6 +1764,28 @@
  "wording": [
   {
    "machine": "ali-ms",
+   "code": "T1",
+   "alt": "Put the cube in the bowl then put the banana in the bowl",
+   "n": 16,
+   "ref_k": 10,
+   "cand_k": 10,
+   "fixed": 1,
+   "broke": 1,
+   "both": 9,
+   "neither": 5,
+   "p": 1.0,
+   "diff_pts": 0.0,
+   "diff_ci95_pts": [
+    -18.75,
+    18.75
+   ],
+   "slots": [
+    30000,
+    30015
+   ]
+  },
+  {
+   "machine": "ali-ms",
    "code": "T8",
    "alt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
    "n": 16,
@@ -2896,6 +2940,26 @@
     "gpu_s": 1056.2,
     "started": "2026-11-08 08:31:55",
     "finished": "2026-11-08 08:49:31"
+   }
+  ],
+  "ali-ms/T1-wexp": [
+   {
+    "tag": "T1-wexp-s30000",
+    "task": "RubiksCubeThenBananaTask",
+    "prompt": "Put the cube in the bowl then put the banana in the bowl",
+    "edit": null,
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 10,
+    "gpu_s": 1038.1,
+    "started": "2026-11-08 13:15:19",
+    "finished": "2026-11-08 13:32:38"
    }
   ],
   "ali-ms/T2-Et8und": [
@@ -4151,5 +4215,5 @@
    }
   ]
  },
- "records": 41
+ "records": 42
 }
