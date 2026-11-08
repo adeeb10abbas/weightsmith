@@ -146,6 +146,10 @@ unaffected slots with the same ordering.
 Practice rows ran through `owsp eval` with the edit after the unedited arm in the same project; chunks of more than 16
 slots could start later groups from other scenes, which weakens their pairing (not their counts).
 
+![Provisional side-effect map of v2mi-f](plots/provisional_side_effects_v2mi-f.png)
+
+Per shared task, the largest earlier paired run (held-out first). T8 was never run with `v2mi-f` before tonight.
+
 ### T8: the wording gap and its own edit
 
 | Comparison | Slots | Result | Fixed / broke | Exact p |

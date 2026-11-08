@@ -349,7 +349,23 @@ def plot_failure_map(table, prov):
     plt.close(fig)
 
 
-def plot_dumbbell(table, arm, name, title, block="practice"):
+def prov_table(prov, arm="v2mi-f"):
+    """Provisional side-effect map: per shared task the largest earlier paired run of the edit (held-out first)."""
+    out = {}
+    for r in prov:
+        if r["experiment"] not in ("side_effect", "edit_target") or not r.get("code") or not r.get("edit"):
+            continue
+        if r["edit"]["name"] != arm:
+            continue
+        cur = out.get(r["code"], {}).get("practice", {}).get(arm)
+        if cur is None or r["n"] > cur["n"]:
+            out.setdefault(r["code"], {}).setdefault("practice", {})[arm] = {
+                "ref_k": r["unedited_k"], "cand_k": r["edited_k"], "n": r["n"], "fixed": r["fixed"],
+                "broke": r["broke"], "p": r["p"], "slots": r["slots"]}
+    return out
+
+
+def plot_dumbbell(table, arm, name, title, block="practice", slot_labels=False):
     rows = [(c, table[c][block][arm]) for c in ORDER if arm in table.get(c, {}).get(block, {})]
     if not rows:
         return
@@ -368,7 +384,8 @@ def plot_dumbbell(table, arm, name, title, block="practice"):
         ax.text(176, y, f"p = {stats.format_p(c['p'])}", va="center", fontsize=8.3,
                 color=INK if sig else INK2, fontweight="bold" if sig else "normal")
     ax.set_yticks(range(len(rows)))
-    ax.set_yticklabels([LABELS[c] for c, _ in reversed(rows)])
+    ax.set_yticklabels([LABELS[c] + (f"\nslots {d['slots'][0]}-{d['slots'][1]}" if slot_labels else "")
+                        for c, d in reversed(rows)], linespacing=1.1)
     ax.set_xlim(-2, 200)
     ax.set_xticks([0, 25, 50, 75, 100])
     ax.set_xticklabels(["0%", "25%", "50%", "75%", "100%"])
@@ -429,6 +446,9 @@ def main():
                   "π0.5 DROID: the T1 edit v2mi-f on every task (same paired starts, slots 30000-30031)")
     plot_dumbbell(table, "abl-imgl8", "side_effects_abl-imgl8",
                   "π0.5 DROID: the 0.16% variant abl-imgl8 on every task (slots 30000-30031)")
+    plot_dumbbell(prov_table(prov), "v2mi-f", "provisional_side_effects_v2mi-f",
+                  "PROVISIONAL: earlier paired runs of v2mi-f (own slots, performance preset, RTX 3090)",
+                  slot_labels=True)
     for b, slots in (("heldout", "96000-96063"), ("practice", "30000-30031")):
         if "T1" in table and b in table["T1"]:
             plot_arms(table["T1"][b], [("base", "unedited"), ("ctl-rand", "random-direction control"),
