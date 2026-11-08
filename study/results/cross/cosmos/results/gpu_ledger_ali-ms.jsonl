@@ -138,3 +138,4 @@
 {"tag": "S1L-Es1lund-s96032", "machine": "ali-ms", "gpu": 1, "start": 1794173396.5982966, "end": 1794174022.3598204, "gpu_s": 625.8, "kind": "eval", "n": 16}
 {"tag": "S1L-Cs1lund-s96032", "machine": "ali-ms", "gpu": 1, "start": 1794174022.3607695, "end": 1794174627.0804536, "gpu_s": 604.7, "kind": "eval", "n": 16}
 {"tag": "S1L-tf-s96032", "machine": "ali-ms", "gpu": 1, "start": 1794174627.0813665, "end": 1794175253.8413503, "gpu_s": 626.8, "kind": "eval", "n": 16}
+{"tag": "S1L-rf-s96048", "machine": "ali-ms", "gpu": 1, "start": 1794175253.8528998, "end": 1794175850.5859084, "gpu_s": 596.7, "kind": "eval", "n": 16}

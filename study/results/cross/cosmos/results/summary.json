@@ -382,10 +382,26 @@
     96044,
     96045,
     96046,
-    96047
+    96047,
+    96048,
+    96049,
+    96050,
+    96051,
+    96052,
+    96053,
+    96054,
+    96055,
+    96056,
+    96057,
+    96058,
+    96059,
+    96060,
+    96061,
+    96062,
+    96063
    ],
    "k": 2,
-   "n": 32
+   "n": 48
   },
   "ali-ms/S1L-tf": {
    "slots": [
@@ -3562,6 +3578,24 @@
     "gpu_s": 581.7,
     "started": "2026-11-08 16:20:14",
     "finished": "2026-11-08 16:29:56"
+   },
+   {
+    "tag": "S1L-rf-s96048",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "prompt": "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
+    "edit": null,
+    "slots": [
+     96048,
+     96063
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 0,
+    "gpu_s": 596.7,
+    "started": "2026-11-08 17:00:53",
+    "finished": "2026-11-08 17:10:50"
    }
   ],
   "ali-ms/S1L-tf": [
