@@ -9,7 +9,7 @@
    "name": "Cosmos3 Edge Policy",
    "short": "world-action model",
    "kind": "NVIDIA world-action model",
-   "status": "partial",
+   "status": "final",
    "checkpoint": "`nvidia/Cosmos3-Edge-Policy-DROID` at `a7c7288`, 3.37B parameters",
    "architecture": "One transformer denoises an action chunk together with future video latents, conditioned on the instruction: a mixture of transformers with 28 layers of width 2048, each holding a text pathway and a generation pathway for video and action tokens. It sees the wrist and both shoulder cameras as one composite image and returns 32 joint-position steps per request, run open loop at 15 Hz.",
    "entry": "Text tokens attend only to text; video and action tokens attend to the text keys and values in every layer, so the instruction reaches the actions only through those keys and values (read from the code that served Cosmos3 Nano).",
@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "f82074bbe177"
+    "commit": "2444083b32c2"
    }
   },
   {
@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "060c90d14f8a"
+    "commit": "48b635a1ecf6"
    }
   }
  ],
@@ -151,14 +151,14 @@
     "lead": "π0.5",
     "kind": "OpenPI VLA, control",
     "tag": "earlier records",
-    "text": "Edits lifted success on Cube then banana from 2 to 20 of 32 unseen starts (p = 7.6 × 10⁻⁶) and on Mustard right of raisin box from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). On 16 of those starts a random edit of the same size scored 0, against 9 for the edit and 1 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
+    "text": "Edits lifted success on Cube then banana from 2 to 20 of 32 unseen starts (p = 7.6 × 10⁻⁶) and on Mustard right of raisin box from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). A random edit of the same size scored 0 of 32 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
    },
    {
     "id": "cosmos",
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Edits lifted success on Mustard right of raisin box from 0 to 56 of 64 unseen starts (p = 2.8 × 10⁻¹⁷). A random edit of the same size scored 0 of 64 on Mustard right of raisin box, against 0 unedited. Other tasks: {running}."
+    "text": "Edits lifted success on Mustard right of raisin box from 0 to 56 of 64 unseen starts (p = 2.8 × 10⁻¹⁷). A random edit of the same size scored 0 of 64 on Mustard right of raisin box, against 0 unedited."
    },
    {
     "id": "groot",
@@ -456,8 +456,8 @@
     "sub": true,
     "cells": {
      "cosmos": {
-      "v": "running",
-      "s": "running"
+      "v": "—",
+      "s": "na"
      },
      "groot": {
       "v": "5 → 16 of 16",
@@ -486,7 +486,7 @@
       "prac": true
      },
      "pi05": {
-      "v": "control 0, unedited 1, edit 9 of 16",
+      "v": "control 0, unedited 2, edit 20 of 32",
       "s": "ok",
       "d": "Cube then banana"
      }
@@ -1031,7 +1031,7 @@
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ]
  },
- "when_text": "The edit copies the clear wording’s effect onto the same words of the original wording, and that effect lives in the words that differ. So it works where the two wordings line up word for word: on Mustard right of raisin box both have 171 tokens, and the edit took Cosmos3 Edge from 0 to 56 of 64 unseen starts, as many as the clear wording itself. It fails where the clear wording adds or removes words, because the added words have no counterpart to copy their effect onto: Cube left of bowl on Cosmos3 Edge (159 and 167 tokens) and Cube then banana on GR00T N1.7 (the clear wording inserts “in the bowl then put”). Copying only the words both wordings share does nothing: 1.9% of the clear wording’s effect in replays, about the same as a random edit of the same size (2.6%). π0.5 is different: its clear wording for Cube then banana also adds words, yet the edit worked, because in π0.5 the camera images are read together with the whole instruction, so the wording’s effect also reaches positions both wordings share, and the edit copies it there (in the paper, the image positions alone carry the fix). A prediction we tested. Before building anything, we wrote down a prediction (the Cosmos3 Edge track’s README, commit e01cbfe): an edit for a new pair of wordings of equal length would pass the offline check and fix the task; one for wordings of unequal length would fail the check. Cube left of bowl, worded bowl-first vs cube-first, 169 and 169 tokens; unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07), a modest gap: in replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38); on 32 unseen starts it went from 1 to 12, against 3 for the random edit (p = 9.8 × 10⁻⁴); the clearer wording, run on the first 16 of them, 2. The prediction held. Cube in front of bowl, worded bowl-first vs cube-first, 166 and 168 tokens: in replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check. The prediction held. Case Do the wordings line up? Result Mustard right of raisin box, Cosmos3 Edge Yes: 171 and 171 tokens, every word matched 0 → 56 of 64 unseen starts; the clear wording itself: 56 Cube left of bowl, Cosmos3 Edge No: 159 and 167 tokens Didn’t pass the offline check; not run on the robot in replays it moved the planned motion away from the clear wording’s (−86% of the gap) Cube then banana, GR00T N1.7 No: the clear wording inserts “in the bowl then put” Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, Cosmos3 Edge, only the words both wordings share Only the shared words: 159 of 171 tokens 1.9% of the clear wording’s effect in replays; a random edit 2.6% not run on the robot Tested after a written prediction Cube left of bowl, worded bowl-first vs cube-first Yes: 169 and 169 tokens predicted before the build: it works In replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38); on 32 unseen starts it went from 1 to 12, against 3 for the random edit (p = 9.8 × 10⁻⁴); the clearer wording, run on the first 16 of them, 2 Unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07). The prediction held. Cube in front of bowl, worded bowl-first vs cube-first No: 166 and 168 tokens predicted before the build: it fails In replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check The prediction held.",
+ "when_text": "The edit copies the clear wording’s effect onto the same words of the original wording, and that effect lives in the words that differ. So it works where the two wordings line up word for word: on Mustard right of raisin box both have 171 tokens, and the edit took Cosmos3 Edge from 0 to 56 of 64 unseen starts, as many as the clear wording itself. It fails where the clear wording adds or removes words, because the added words have no counterpart to copy their effect onto: Cube left of bowl on Cosmos3 Edge (159 and 167 tokens) and Cube then banana on GR00T N1.7 (the clear wording inserts “in the bowl then put”). Copying only the words both wordings share does nothing: 1.9% of the clear wording’s effect in replays, about the same as a random edit of the same size (2.6%). π0.5 is different: its clear wording for Cube then banana also adds words, yet the edit worked, because in π0.5 the camera images are read together with the whole instruction, so the wording’s effect also reaches positions both wordings share, and the edit copies it there (in the paper, the image positions alone carry the fix). A prediction we tested. Before building anything, we wrote down a prediction (the Cosmos3 Edge track’s README, commit e01cbfe): an edit for a new pair of wordings of equal length would pass the offline check and fix the task; one for wordings of unequal length would fail the check. Cube left of bowl, worded bowl-first vs cube-first, 169 and 169 tokens; unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07), a modest gap: in replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38); on 32 unseen starts it went from 1 to 12, against 3 for the random edit and 8 for the clearer wording (p = 9.8 × 10⁻⁴); the edit did at least as well as the clearer wording (12 vs 8 of 32; not a clear difference). The prediction held. Cube in front of bowl, worded bowl-first vs cube-first, 166 and 168 tokens: in replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check. The prediction held. Case Do the wordings line up? Result Mustard right of raisin box, Cosmos3 Edge Yes: 171 and 171 tokens, every word matched 0 → 56 of 64 unseen starts; the clear wording itself: 56 Cube left of bowl, Cosmos3 Edge No: 159 and 167 tokens Didn’t pass the offline check; not run on the robot in replays it moved the planned motion away from the clear wording’s (−86% of the gap) Cube then banana, GR00T N1.7 No: the clear wording inserts “in the bowl then put” Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, Cosmos3 Edge, only the words both wordings share Only the shared words: 159 of 171 tokens 1.9% of the clear wording’s effect in replays; a random edit 2.6% not run on the robot Tested after a written prediction Cube left of bowl, worded bowl-first vs cube-first Yes: 169 and 169 tokens predicted before the build: it works In replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38); on 32 unseen starts it went from 1 to 12, against 3 for the random edit and 8 for the clearer wording (p = 9.8 × 10⁻⁴); the edit did at least as well as the clearer wording (12 vs 8 of 32; not a clear difference) Unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07). The prediction held. Cube in front of bowl, worded bowl-first vs cube-first No: 166 and 168 tokens predicted before the build: it fails In replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check The prediction held.",
  "diagrams": {
   "where": [
    {
@@ -1484,8 +1484,8 @@
      "label": "Same starts: performance → default preset",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "5 → 16 of 16",
@@ -1554,6 +1554,7 @@
        "a": 13,
        "b": 57,
        "n": 64,
+       "pv": 1.3358203432289883e-12,
        "fl": "Cube then banana (64 unseen)",
        "prov": true
       }
@@ -1594,8 +1595,8 @@
      "label": "Yellow on red",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -1643,6 +1644,7 @@
        "a": 0,
        "b": 27,
        "n": 32,
+       "pv": 1.4901161193847656e-08,
        "fl": "Mustard right of raisin box (32 practice)",
        "prov": true
       }
@@ -1665,8 +1667,8 @@
      "label": "Cube then banana",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "9 → 0 of 32",
@@ -1801,8 +1803,8 @@
      "label": "Eyeglasses",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -1838,8 +1840,8 @@
      "label": "Cube left of bowl",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -1861,8 +1863,8 @@
      "label": "Yellow on red",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -1884,8 +1886,8 @@
      "label": "Mustard in left bin",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -1921,8 +1923,8 @@
      "label": "Three-cube tower",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -1958,8 +1960,8 @@
      "label": "Flat box",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -2063,8 +2065,8 @@
      "label": "Cube then banana",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "control 11, unedited 9, edit 0 of 32",
@@ -2081,15 +2083,16 @@
        "fl": "Cube then banana, VLM backbone edit (32 practice)"
       },
       "pi05": {
-       "v": "control 0, unedited 1, edit 9 of 16",
+       "v": "control 0, unedited 2, edit 20 of 32",
        "s": "ok",
-       "d": "the control ran on 16 of the 32 starts; slots 96000–96015; edit against control p = 0.0039; earlier slots: control 9, unedited 13, edit 50 of 64",
-       "u": 1,
+       "d": "slots 96000–96031; earlier slots: control 9, unedited 13, edit 50 of 64",
+       "u": 2,
        "r": 0,
-       "e": 9,
-       "n": 16,
-       "sub": true,
-       "fl": "Cube then banana (16 unseen)"
+       "e": 20,
+       "n": 32,
+       "tn": 32,
+       "loc": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+       "fl": "Cube then banana (32 unseen)"
       }
      }
     },
@@ -2146,18 +2149,19 @@
      "label": "Cube then banana",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
-       "v": "−129%",
+       "v": "The edit did clearly less well than the clearer wording (0 vs 16 of 32)",
        "s": "ok",
-       "d": "as reported; (0 − 9) / (16 − 9) of 32; on practice starts",
+       "d": "no recovery %: the clearer wording’s own gain (9 → 16 of 32) is not a clear difference (p = 0.12); practice starts",
        "prac": true,
        "a": 9,
        "b": 0,
        "t": 16,
-       "n": 32
+       "n": 32,
+       "words": true
       },
       "pi05": {
        "v": "84%",
@@ -2166,6 +2170,10 @@
        "src": [
         "study/results/opus/controls/ctl1-90000-64.analysis.json"
        ],
+       "a": 13,
+       "b": 50,
+       "t": 57,
+       "n": 64,
        "prov": true
       }
      }
@@ -2195,6 +2203,10 @@
         "study/results/sgdw/results/practice_rf_grp3_vs_base.json",
         "study/results/sgdw/results/practice_tf_grp3_vs_base.json"
        ],
+       "a": 0,
+       "b": 16,
+       "t": 27,
+       "n": 32,
        "prov": true
       }
      }
@@ -2310,8 +2322,8 @@
      "label": "Both",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -2377,8 +2389,8 @@
      "label": "Which one transfers",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -2401,8 +2413,8 @@
      "label": "Size of each",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -2440,8 +2452,8 @@
      "label": "Cube then banana",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "167,481,274 values",
@@ -2931,8 +2943,8 @@
      "label": "Unedited, run twice on the same starts",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "groot": {
        "v": "—",
@@ -4933,8 +4945,8 @@
      ]
     },
     "control_k": 3,
-    "teacher_k": 2,
-    "recovery_pct": null,
+    "teacher_k": 8,
+    "recovery_pct": 157.1,
     "transfer": null,
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26), --align all (169 = 169 tokens, every position matched)",
@@ -4947,7 +4959,7 @@
     "extra": {
      "machine": "ali-ms",
      "control_n": 32,
-     "teacher_n": 16,
+     "teacher_n": 32,
      "edit_vs_control": {
       "n": 32,
       "ref_k": 3,
@@ -4961,15 +4973,15 @@
       ]
      },
      "edit_vs_teacher": {
-      "n": 16,
-      "ref_k": 2,
-      "cand_k": 4,
-      "fixed": 3,
-      "broke": 1,
-      "p": 0.625,
+      "n": 32,
+      "ref_k": 8,
+      "cand_k": 12,
+      "fixed": 8,
+      "broke": 4,
+      "p": 0.3876953125,
       "slots": [
        96032,
-       96047
+       96063
       ]
      },
      "control_slots": [
@@ -4978,7 +4990,7 @@
      ],
      "teacher_slots": [
       96032,
-      96047
+      96063
      ]
     }
    },
@@ -9190,7 +9202,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9214,7 +9226,10 @@
       "30013": 0,
       "30014": 0,
       "30015": 0
-     }
+     },
+     "gpus": [
+      0
+     ]
     }
    },
    {
@@ -9256,7 +9271,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9280,7 +9295,10 @@
       "30013": 1,
       "30014": 0,
       "30015": 0
-     }
+     },
+     "gpus": [
+      0
+     ]
     }
    },
    {
@@ -9322,7 +9340,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9346,7 +9364,10 @@
       "30013": 0,
       "30014": 0,
       "30015": 0
-     }
+     },
+     "gpus": [
+      0
+     ]
     }
    },
    {
@@ -9388,7 +9409,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9412,7 +9433,10 @@
       "30013": 1,
       "30014": 0,
       "30015": 0
-     }
+     },
+     "gpus": [
+      0
+     ]
     }
    },
    {
@@ -9454,7 +9478,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9478,7 +9502,10 @@
       "30013": 1,
       "30014": 0,
       "30015": 0
-     }
+     },
+     "gpus": [
+      0
+     ]
     }
    },
    {
@@ -9520,7 +9547,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9544,7 +9571,10 @@
       "30013": 0,
       "30014": 0,
       "30015": 1
-     }
+     },
+     "gpus": [
+      0
+     ]
     }
    },
    {
@@ -9586,7 +9616,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9610,7 +9640,10 @@
       "30013": 0,
       "30014": 0,
       "30015": 0
-     }
+     },
+     "gpus": [
+      0
+     ]
     }
    },
    {
@@ -9652,7 +9685,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9676,7 +9709,10 @@
       "30013": 0,
       "30014": 0,
       "30015": 0
-     }
+     },
+     "gpus": [
+      0
+     ]
     }
    },
    {
@@ -9718,7 +9754,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9742,7 +9778,10 @@
       "30013": 1,
       "30014": 1,
       "30015": 1
-     }
+     },
+     "gpus": [
+      0
+     ]
     }
    },
    {
@@ -9792,7 +9831,7 @@
     "extra": {
      "status": "fresh",
      "run": "C-prime-default",
-     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
      "render_preset": "default",
      "envs_per_process": 8,
      "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -9885,67 +9924,83 @@
       ],
       "96016": [
        0,
+       0,
        0
       ],
       "96017": [
+       0,
        0,
        0
       ],
       "96018": [
        0,
-       1
+       1,
+       0
       ],
       "96019": [
+       0,
        0,
        0
       ],
       "96020": [
        0,
-       1
+       1,
+       0
       ],
       "96021": [
+       0,
        0,
        0
       ],
       "96022": [
        0,
-       1
+       1,
+       0
       ],
       "96023": [
        0,
-       1
+       1,
+       0
       ],
       "96024": [
        0,
-       1
+       1,
+       0
       ],
       "96025": [
        0,
-       1
+       1,
+       0
       ],
       "96026": [
        1,
-       1
+       1,
+       0
       ],
       "96027": [
        0,
-       1
+       1,
+       0
       ],
       "96028": [
        0,
-       1
+       1,
+       0
       ],
       "96029": [
+       0,
        0,
        0
       ],
       "96030": [
        0,
-       1
+       1,
+       0
       ],
       "96031": [
        0,
-       1
+       1,
+       0
       ]
      },
      "control": {
@@ -9953,43 +10008,46 @@
       "fingerprint": "1efd3512a92642f7",
       "slots": [
        96000,
-       96015
+       96031
       ],
-      "n": 16,
+      "n": 32,
       "k": 0,
       "wilson95_pct": [
        0.0,
-       19.4
+       10.7
       ],
-      "unedited_k_same_slots": 1,
-      "edited_k_same_slots": 9,
+      "unedited_k_same_slots": 2,
+      "edited_k_same_slots": 20,
       "vs_unedited": {
        "fixed": 0,
-       "broke": 1,
-       "p": 1.0
+       "broke": 2,
+       "p": 0.5
       },
       "edit_vs_control": {
-       "edit_only": 9,
+       "edit_only": 20,
        "control_only": 0,
-       "p": 0.00390625
+       "p": 1.9073486328125e-06
       },
       "edit_location": "same layers as v2mi-f",
       "values_changed": 502291925,
       "values_changed_note": "random-direction control: v2mi-f's layers, rank and singular values, random orthonormal directions (seed 0)"
      },
-     "control_n": 16,
+     "gpus": [
+      0
+     ],
+     "control_n": 32,
      "control_slots": [
       96000,
-      96015
+      96031
      ],
-     "control_unedited_k": 1,
+     "control_unedited_k": 2,
      "edit_vs_control": {
-      "cand_k": 9,
+      "cand_k": 20,
       "ref_k": 0,
-      "p": 0.00390625,
+      "p": 1.9073486328125e-06,
       "slots": [
        96000,
-       96015
+       96031
       ]
      }
     }
@@ -10036,7 +10094,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "f82074bbe177"
+   "commit": "2444083b32c2"
   },
   "groot": {
    "kind": "branch",
@@ -10050,13 +10108,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "060c90d14f8a"
+   "commit": "48b635a1ecf6"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "6412eecc6f4c5702",
- "numbers_hash": "e78d6bbdb220cfb2",
- "updated": "2026-11-08T22:36Z",
- "updated_text": "8 Nov 2026, 22:36 UTC",
- "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
+ "content_hash": "674c124256d32ba4",
+ "numbers_hash": "77e104f44ad80d39",
+ "updated": "2026-11-08T22:48Z",
+ "updated_text": "8 Nov 2026, 22:48 UTC",
+ "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: first results"
 }

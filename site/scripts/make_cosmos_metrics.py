@@ -51,6 +51,10 @@ Outputs (all under site/cosmos/)
   fig/<name>[-dark].svg|png    six figures, SVG and PNG at 2x, light and dark; fig/brief-*.svg for the PDF
   weightsmith-cosmos-brief.pdf one-page brief printed from brief.html by headless Chrome
 
+Teacher recovery, (edited - unedited) / (clear wording - unedited), is shown as a % only where the clear wording's own
+gain is clearly significant (exact McNemar p < 0.05, teacher_gain_p); elsewhere the cell says in words how the edit
+compares with the clear wording (guard_recovery, edit_vs_clear).
+
 Statistics follow the paper (paper/scripts/make_figures.py): exact two-sided McNemar on fixed vs broke pairs, Wilson
 95% intervals, and a paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired
 outcome types, seed 0). Every number is read from a record or computed from a record's counts by these methods
@@ -247,6 +251,52 @@ def mcnemar(f, b):
     if m == 0:
         return 1.0
     return min(1.0, 2 * sum(comb(m, i) for i in range(min(f, b) + 1)) / 2 ** m)
+
+
+def teacher_gain_p(a, t, n, explicit=None, wording=None):
+    """The exact McNemar p of the clearer wording's own gain over the unedited robot (a -> t of n): from a record that
+    gives it, else from the wording screen on the same starts, else exactly when every discordant pair must point one
+    way (unedited 0, or the clearer wording solving every start). None when the records cannot say."""
+    if explicit is not None:
+        return explicit
+    if wording and wording.get("s", "ok") == "ok" and (wording.get("a"), wording.get("b"), wording.get("n")) == (a, t, n) \
+            and wording.get("pv") is not None:
+        return wording["pv"]
+    if a == 0 and t > 0:
+        return mcnemar(t, 0)
+    if t == n and a < n:
+        return mcnemar(n - a, 0)
+    return None
+
+
+def edit_vs_clear(b, t, n, p_cmp=None):
+    """The edit against the clearer wording, in words: 'the edit did at least as well as the clearer wording (12 vs 8
+    of 32; not a clear difference)'."""
+    if p_cmp is None:   # exact when every discordant pair must point one way
+        p_cmp = (mcnemar(max(b, t), 0) if 0 in (b, t) and b != t else
+                 mcnemar(n - min(b, t), 0) if n in (b, t) and b != t else None)
+    known = p_cmp is not None
+    clear = known and p_cmp < SIG
+    note = "" if not known or clear else "; not a clear difference"
+    if b >= t:
+        return (f"the edit did {'clearly better than' if clear and b > t else 'at least as well as'} the clearer "
+                f"wording ({b} vs {t} of {n}" + ("" if clear and b > t else note) + ")")
+    return f"the edit did {'clearly ' if clear else ''}less well than the clearer wording ({b} vs {t} of {n}{note})"
+
+
+def guard_recovery(cell, wording=None, explicit=None, p_cmp=None):
+    """A recovery % only where the clearer wording's own gain is clearly significant (p < 0.05); elsewhere the ratio
+    of two small differences means little, so the cell says in words how the edit compares with the clearer wording."""
+    if not cell or cell.get("s") != "ok" or None in (cell.get("a"), cell.get("b"), cell.get("t"), cell.get("n")):
+        return cell
+    a, b, t, n = cell["a"], cell["b"], cell["t"], cell["n"]
+    pt = teacher_gain_p(a, t, n, explicit, wording)
+    if pt is not None and pt < SIG and t > a:
+        return cell
+    words = edit_vs_clear(b, t, n, p_cmp)
+    return dict(cell, v=words[0].upper() + words[1:], words=True,
+                d=f"no recovery %: the clearer wording’s own gain ({a} → {t} of {n}) is not a clear difference"
+                  + (f" (p = {fp(pt)})" if pt is not None else "") + ("; practice starts" if cell.get("prac") else ""))
 
 
 def mde(n, q=0.3, z=1.959964 + 0.841621):
@@ -531,11 +581,11 @@ def pi05_cells(P):
     T["wording"]["T1"] = C(f"{c['base']} → {c['teacher']} of {c['n']}",
                            f"{tv['fixed']} / {tv['broke']}, p = {fp(tv['mcnemar_p'])}; {fci(tv['diff_pp'], *tv['boot95_pp'])}; "
                            f"{slots_txt(c['slots'])}; “{c['instruction']}” → “{c['teacher_prompt']}”", src=c["src"],
-                           a=c["base"], b=c["teacher"], n=c["n"], fl=f"{SHORT['T1']} ({c['n']} unseen)")
+                           a=c["base"], b=c["teacher"], n=c["n"], pv=tv["mcnemar_p"], fl=f"{SHORT['T1']} ({c['n']} unseen)")
     T["wording"]["T8"] = C(f"{s4['rf']} → {s4['tf']} of {s4['n']}",
                            f"{s4['tf_only']} / {s4['rf_only']}, p = {fp(s4['p'])}; {fci(s4['diff'], *s4['ci'])}; "
                            f"{slots_txt(s4['slots'], 'practice')}; reference-first → target-first: “{s4['rf_prompt']}” → "
-                           f"“{s4['tf_prompt']}”", src=s4["src"], a=s4["rf"], b=s4["tf"], n=s4["n"],
+                           f"“{s4['tf_prompt']}”", src=s4["src"], a=s4["rf"], b=s4["tf"], n=s4["n"], pv=s4["p"],
                            fl=f"{SHORT['T8']} ({s4['n']} practice)")
     T["wording"]["T4"] = C("no clear wording found", TEXT["t4_wording"])
 
@@ -588,10 +638,13 @@ def pi05_cells(P):
     rec8 = 100 * (sp["cand"] - sp["base"]) / (sp["tf"] - sp["base"])
     T["recovery"]["T1"] = C(f"{rec1:.0f}%", f"({c['edit']} − {c['base']}) / ({c['teacher']} − {c['base']}) of {c['n']}, "
                             f"computed here; edit vs teacher {tve['broke']} / {tve['fixed']}, p = {fp(tve['mcnemar_p'])}; "
-                            f"{slots_txt(c['slots'])}", src=c["src"])
+                            f"{slots_txt(c['slots'])}", src=c["src"], a=c["base"], b=c["edit"], t=c["teacher"], n=c["n"])
     T["recovery"]["T8"] = C(f"{rec8:.0f}%", f"({sp['cand']} − {sp['base']}) / ({sp['tf']} − {sp['base']}) of {sp['n']}, "
                             f"{slots_txt(sp['slots'], 'practice')}, which were used to build the edit; the teacher was not "
-                            "run on unseen starts", src=sp["src"])
+                            "run on unseen starts", src=sp["src"], a=sp["base"], b=sp["cand"], t=sp["tf"], n=sp["n"])
+    T["recovery"]["T1"] = guard_recovery(T["recovery"]["T1"], T["wording"].get("T1"),
+                                         p_cmp=tve.get("mcnemar_p"))
+    T["recovery"]["T8"] = guard_recovery(T["recovery"]["T8"], T["wording"].get("T8"))
 
     cm = w["cmp"]
     W_ = T["where"]
@@ -922,7 +975,8 @@ def read_cross(args, meta_out):
                                    or (next(iter(same)) if len(same) == 1 else None))
         final = str(meta.get("status", "")).lower() in ("final", "done", "complete", "finished")
         readme = None if override else git("show", f"origin/{branch}:{str(Path(rel).parent)}/{mid}/README.md")
-        m_st = re.search(r"^Status:\s*\*\*([^*]*\bcomplete\b[^*]*)\*\*", readme or "", re.M | re.I)
+        m_st = (re.search(r"^Status:\s*\*\*([^*]*\bcomplete\b[^*]*)\*\*", readme or "", re.M | re.I)
+                or re.search(r"^Status \(([^)]*\bfinal)\)", readme or "", re.M | re.I))   # "Status (date, final): ..."
         if m_st:
             final = True
             meta["status_note"] = f"{m_st.group(1).strip()} ({branch} README)"
@@ -1210,7 +1264,15 @@ def row_cells(src):
                 T["recovery"][tid] = C(
                     f"{100 * (it['edited_k'] - it['unedited_k']) / (it['teacher_k'] - it['unedited_k']):.0f}%",
                     f"({it['edited_k']} − {it['unedited_k']}) / ({it['teacher_k']} − {it['unedited_k']}), computed here"
-                    + ("; on practice starts" if pt else ""), prac=pt or None)
+                    + ("; on practice starts" if pt else ""), prac=pt or None,
+                    a=it["unedited_k"], b=it["edited_k"], t=it["teacher_k"], n=it["n"])
+            if tid in T["recovery"]:
+                tx = xg(rt, "teacher")
+                evt = xg(rt, "edit_vs_teacher")
+                T["recovery"][tid] = guard_recovery(
+                    T["recovery"][tid], T["wording"].get(tid),
+                    explicit=as_float(tx.get("p")) if isinstance(tx, dict) else None,
+                    p_cmp=as_float(evt.get("p")) if isinstance(evt, dict) else None)
         vc = r.get("values_changed")
         if vc is not None:
             T["size"][tid] = C(num(as_int(vc)) + " values" if as_int(vc) is not None else describe(vc), loc)
@@ -1589,10 +1651,10 @@ def prevention(cross):
         for k, _, _ in PCOLS:
             if cells[k] is None and gate_failed:
                 cells[k] = C("—", "not run: in replays it reproduced too little of the clear wording’s effect", s="na")
-            if cells[k] is None:
-                cells[k] = (NA if final else
-                            C("—", f"not run: we went on only if a rebuild saved {tn('T5')}", s="na")
-                            if name != PREVENT["base"] and broke and k in (PREVENT["target"], *PREVENT["left"]) else RUN)
+            if cells[k] is None:   # a known reason first; a final record turns the rest to "—"
+                cells[k] = (C("—", f"not run: we went on only if a rebuild saved {tn('T5')}", s="na")
+                            if name != PREVENT["base"] and broke and k in (PREVENT["target"], *PREVENT["left"]) else
+                            NA if final else RUN)
         m = re.search(r"from (\d+) ", pe(name)["label"])
         for r in mine if m else []:
             m2 = re.search(r"from (\d+) [\w/ -]*instructions", describe(r.get("notes")) or "")
@@ -3992,6 +4054,11 @@ def when_html(tables, cross, prevent, second, P=None):
                if len(rows) > 1 else ""))
 
 
+def xg_(row, k):
+    """A field of a row, from its known keys or the ones kept aside."""
+    return row.get(k) if row.get(k) is not None else (row.get("_extra") or {}).get(k)
+
+
 def prospect(cross, tables):
     """Track A's prospective test of the token-count rule (pre-registered in the Cosmos README, PROSPECT["commit"],
     before any screen or build): per pair, its screen (unedited, original vs clear wording), its build record (token
@@ -4042,7 +4109,10 @@ def prospect(cross, tables):
                 closed[kind] = dict(a=i["unedited_k"], b=i["edited_k"], n=i["n"], p=p,
                                     ctl=i["control_k"] if cn_ in (None, i["n"]) else None,
                                     t=i["teacher_k"] if tn_ in (None, i["n"]) else None,
-                                    t_part=(i["teacher_k"], tn_) if tn_ and tn_ < i["n"] else None)
+                                    t_part=(i["teacher_k"], tn_) if tn_ and tn_ < i["n"] else None,
+                                    p_cmp=as_float((xg_(r, "edit_vs_teacher") or {}).get("p")),
+                                    p_t=as_float(screen.get("p")) if screen and kind == "practice"
+                                    and as_int(screen.get("n")) == i["n"] else None)
         if gap is None and not closed:
             continue
         sc = ints(screen) if screen else None
@@ -4087,7 +4157,9 @@ def prospect_html(P):
                            + (f" and {c['t']} for the clearer wording" if c.get("t") is not None else "")
                            + (f" (p = {fp(c['p'])})" if c.get("p") is not None else "")
                            + (f"; the clearer wording, run on the first {c['t_part'][1]} of them, {c['t_part'][0]}"
-                              if c.get("t_part") else ""))
+                              if c.get("t_part") else "")
+                           + (f"; {edit_vs_clear(c['b'], c['t'], c['n'], c.get('p_cmp'))}"
+                              if kind == "unseen" and c.get("t") is not None else ""))
         # the verdict follows the README's rules: the offline check first; then, on practice starts, the bar for the
         # unseen-start runs (at least half of the clearer wording's paired gain, and more than the random edit); then
         # the fix itself on unseen starts (exact McNemar p < 0.05, and more than the random edit)
@@ -4095,6 +4167,8 @@ def prospect_html(P):
         beats = lambda c: c.get("ctl") is None or c["b"] > c["ctl"]
         fixed = lambda c: c.get("p") is not None and c["p"] < SIG and c["b"] > c["a"] and beats(c)
         rec = (lambda c: (c["b"] - c["a"]) / (c["t"] - c["a"]) if c.get("t") is not None and c["t"] > c["a"] else None)
+        # a recovery % only where the clearer wording's own gain is clear (as in the tables); else the bar in words
+        show = lambda c: (teacher_gain_p(c["a"], c["t"], c["n"], c.get("p_t")) or 1) < SIG
         bar = lambda c: rec(c) is not None and rec(c) >= 0.5 and beats(c)
         verdict = ""
         if not x["equal"]:
@@ -4110,13 +4184,16 @@ def prospect_html(P):
         elif cp and not bar(cp):
             held = False
             verdict = (f"On practice starts it recovered only {100 * rec(cp):.0f}% of the clearer wording’s gain"
+                       if rec(cp) is not None and show(cp) else "On practice starts it fell short of the bar"
                        if rec(cp) is not None else "On practice starts it did no better than the random edit") + \
                       ", short of the bar for the unseen-start runs. "
         elif cp:
             held = None
-            verdict = (f"On practice starts it recovered {100 * rec(cp):.0f}% of the clearer wording’s gain and beat the "
-                       "random edit, the bar set beforehand for running it on unseen starts; whether it fixes the task "
-                       "is decided there, and those runs are next.")
+            verdict = ((f"On practice starts it recovered {100 * rec(cp):.0f}% of the clearer wording’s gain and beat the "
+                        "random edit" if show(cp) else "On practice starts it met the bar")
+                       + ", the bar set beforehand for running it on unseen starts (at least half of the clearer wording’s "
+                       "gain, and more than the random edit); whether it fixes the task is decided there, and those "
+                       "runs are next.")
         else:
             held = None
             verdict = "So far the prediction holds; the runs on the robot are next." if x["passed"] else ""
