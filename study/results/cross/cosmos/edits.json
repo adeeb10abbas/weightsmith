@@ -54,9 +54,9 @@
   "good_wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
   "teacher_arm": "wtf",
   "summary": "sequential closed-form distillation mapping only the RF/TF prompts' shared template prefix and suffix states (the differing instruction words unconstrained), plus the 65 generic preservation prompts of t8und-p (every 3rd position) and the unconditional-pass keys; lam_rel 1e-3; built to test whether the word-for-word alignment (left onto right, raisin onto mustard) causes the T5/T3 break",
-  "values_changed": null,
-  "stored_values": null,
-  "sha256_16": null,
-  "control_sha256_16": null
+  "values_changed": 435316027,
+  "stored_values": 529486848,
+  "sha256_16": "5f72089d4a068bf1",
+  "control_sha256_16": "55ec8a5be9d1d38d"
  }
 ]

@@ -23,7 +23,8 @@ $PY scripts/make_spec.py caps/unds_t5.json --runs runs/q/T5-base-s30000.json --k
 T3="Put the rubiks cube to the left of the bowl"
 $PY scripts/make_spec.py caps/unds_t3.json --runs runs/q/T3-base-s30000.json --k 1-5 --episodes 8 --outcome success \
    --variant O3="$T3" --variant "O3+und=$T3@$E/t8und.pt" --variant "O3+unds=$T3@$E/t8unds.pt"
-for c in t8 t5 t3; do scripts/gpu.sh 0 unds-chk-$c check $PY scripts/capture.py caps/unds_$c.json caps/unds_$c.npz; done
+# one GPU0 lock hold for the three captures (so the pool does not slip in between them)
+scripts/gpu.sh 0 unds-chk check bash -c "for c in t8 t5 t3; do $PY scripts/capture.py caps/unds_\$c.json caps/unds_\$c.npz || exit 1; done"
 $PY scripts/offline_check.py caps/unds_t8.npz --teacher G --student O --variants O+unds,O+unds-ctl \
    --out offline/t8unds_t8_check.json > offline/t8unds_t8_check.txt
 $PY scripts/offline_check.py caps/unds_t5.npz --teacher O5 --student O5+und --variants O5+unds \

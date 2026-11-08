@@ -696,6 +696,28 @@
    "k": 17,
    "n": 48
   },
+  "ali-ms/T6-Et8und": {
+   "slots": [
+    96000,
+    96001,
+    96002,
+    96003,
+    96004,
+    96005,
+    96006,
+    96007,
+    96008,
+    96009,
+    96010,
+    96011,
+    96012,
+    96013,
+    96014,
+    96015
+   ],
+   "k": 0,
+   "n": 16
+  },
   "ali-ms/T6-base": {
    "slots": [
     30000,
@@ -1828,6 +1850,29 @@
   {
    "machine": "ali-ms",
    "edit": "t8und",
+   "code": "T6",
+   "split": "heldout",
+   "n": 16,
+   "ref_k": 1,
+   "cand_k": 0,
+   "fixed": 0,
+   "broke": 1,
+   "both": 0,
+   "neither": 15,
+   "p": 1.0,
+   "diff_pts": -6.25,
+   "diff_ci95_pts": [
+    -18.75,
+    0.0
+   ],
+   "slots": [
+    96000,
+    96015
+   ]
+  },
+  {
+   "machine": "ali-ms",
+   "edit": "t8und",
    "code": "R1",
    "split": "heldout",
    "n": 32,
@@ -2525,6 +2570,26 @@
     "finished": "2026-11-08 07:03:40"
    }
   ],
+  "ali-ms/T6-Et8und": [
+   {
+    "tag": "T6-Et8und-s96000",
+    "task": "Stack3RubiksCubeTask",
+    "prompt": null,
+    "edit": "edits/t8und.pt",
+    "slots": [
+     96000,
+     96015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 0,
+    "gpu_s": 1286.6,
+    "started": "2026-11-08 09:47:29",
+    "finished": "2026-11-08 10:08:55"
+   }
+  ],
   "ali-ms/T6-base": [
    {
     "tag": "T6-base-s30000",
@@ -2980,5 +3045,5 @@
    }
   ]
  },
- "records": 35
+ "records": 36
 }
