@@ -105,6 +105,13 @@ def backbone_kv(groups, files, a, layers):
         assert all(pmap.get(p) == p for p in c)                     # images precede the instruction: same positions
     Lidx = {int(L): i for i, L in enumerate(o0["lm_layers"])}
     img_pos = sorted(img)
+    # span alignment: explicit positions between two matched positions belong to the later matched orig position, so
+    # every explicit token (including an inserted clause) contributes to some orig position's value
+    spans, prev = {}, -1
+    for p in sorted(tok_pos):
+        q = pmap[p]
+        spans[p] = list(range(prev + 1, q + 1)) if p >= d else [q]
+        prev = q
     K, V = {L: [] for L in layers}, {L: [] for L in layers}
     if a.image_keys == "tokens":  # every image token of every build decision, value 0 (images precede the text)
         for its in groups.values():
@@ -127,7 +134,10 @@ def backbone_kv(groups, files, a, layers):
                 else:                    # the layer's own share of the gap (paper Eq. 1, all layers edited)
                     io, ix = o["lm_inc"][li].astype(np.float64), x["lm_inc"][li].astype(np.float64)
                 k = [mo[p] for p in tok_pos] + [mo[c].mean(0) for c in cells]
-                v = [ix[pmap[p]] - io[p] for p in tok_pos] + [(ix[c] - io[c]).mean(0) for c in cells]
+                if a.align == "span":  # each orig position after the difference takes the mean of its explicit span
+                    v = [ix[spans[p]].mean(0) - io[p] for p in tok_pos] + [(ix[c] - io[c]).mean(0) for c in cells]
+                else:
+                    v = [ix[pmap[p]] - io[p] for p in tok_pos] + [(ix[c] - io[c]).mean(0) for c in cells]
                 Ks[L].append(np.stack(k))
                 Vs[L].append(np.stack(v))
         for L in layers:
@@ -135,7 +145,8 @@ def backbone_kv(groups, files, a, layers):
             V[L].append(a.alpha * np.mean(Vs[L], axis=0))
     meta = {"first_difference": d, "orig_len": len(ids_o), "expl_len": len(ids_x), "token_positions": tok_pos,
             "token_positions_expl": [pmap[p] for p in tok_pos], "changed_positions": [p for p in tok_pos if p >= d],
-            "image_cells": len(cells), "keys_per_group": len(tok_pos) + len(cells), "image_keys": a.image_keys,
+            "image_cells": len(cells), "keys_per_group": len(tok_pos) + len(cells), "image_keys": a.image_keys, "align": a.align,
+            "spans": {int(p): spans[p] for p in tok_pos if p >= d},
             "image_token_keys": len(img_pos) * sum(len(v) for v in groups.values()) if a.image_keys == "tokens" else 0,
             "aligned_token_ids": [int(ids_o[p]) for p in tok_pos]}
     name = "backbone.model.model.language_model.layers.{}.mlp.down_proj.weight"
@@ -172,6 +183,8 @@ def main():
     ap.add_argument("--image-keys", default="cells", choices=["cells", "tokens"],
                     help="tokens: also pin every image token of every build decision to a zero value (keeps the edit "
                          "out of the visual tokens, which the action head reads directly)")
+    ap.add_argument("--align", default="token", choices=["token", "span"],
+                    help="token: value at the LCS-matched explicit position; span: mean over the explicit span ending there")
     ap.add_argument("--lam-rel", type=float, default=1e-3)
     ap.add_argument("--lam-stat", default="mean", choices=["mean", "median"], help="lambda = lam_rel * mean|median diag(KK^T)")
     ap.add_argument("--values", default="increment", choices=["increment", "total"],

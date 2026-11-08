@@ -5,6 +5,7 @@
 | T1 | RubiksCubeThenBananaTask | 9/32 | 28% | 16-45% |
 | T3 | RubiksCubeLeftOfBowlTask | 1/32 | 3% | 1-16% |
 | T8 | MustardRightOfRaisinRFTask | 0/32 | 0% | 0-11% |
+| R1 | RubiksCubeTask | 28/32 | 88% | 72-95% |
 
 ## Metric 2: wording sensitivity (unedited, paired on slots 30000-30031)
 

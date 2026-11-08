@@ -1,0 +1,307 @@
+{
+ "items": [
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e0.npz",
+   "k": 4,
+   "slot": 30016
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e0.npz",
+   "k": 8,
+   "slot": 30016
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e0.npz",
+   "k": 12,
+   "slot": 30016
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e0.npz",
+   "k": 16,
+   "slot": 30016
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e1.npz",
+   "k": 4,
+   "slot": 30017
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e1.npz",
+   "k": 8,
+   "slot": 30017
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e1.npz",
+   "k": 12,
+   "slot": 30017
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e1.npz",
+   "k": 16,
+   "slot": 30017
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e2.npz",
+   "k": 4,
+   "slot": 30018
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e2.npz",
+   "k": 8,
+   "slot": 30018
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e2.npz",
+   "k": 12,
+   "slot": 30018
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e2.npz",
+   "k": 16,
+   "slot": 30018
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e3.npz",
+   "k": 4,
+   "slot": 30019
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e3.npz",
+   "k": 8,
+   "slot": 30019
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e3.npz",
+   "k": 12,
+   "slot": 30019
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e3.npz",
+   "k": 16,
+   "slot": 30019
+  }
+ ],
+ "wordings": {
+  "orig": "Put the cube then the banana in the bowl"
+ },
+ "edit": {
+  "edit": "/home/ali/cross/groot/wsp/t1/bb.pt",
+  "sha256": "b5523fe55b6d94a22ab62406029f9a587b577d7021aaaf740a82804d454abe8d",
+  "fingerprint": "b5523fe55b6d94a2",
+  "tensors": 16,
+  "values_changed": 167481274,
+  "values_total": 201326592,
+  "meta": {
+   "first_difference": 234,
+   "orig_len": 242,
+   "expl_len": 246,
+   "token_positions": [
+    0,
+    1,
+    2,
+    3,
+    116,
+    117,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    240,
+    241
+   ],
+   "token_positions_expl": [
+    0,
+    1,
+    2,
+    3,
+    116,
+    117,
+    230,
+    231,
+    232,
+    233,
+    237,
+    239,
+    240,
+    241,
+    242,
+    243,
+    244,
+    245
+   ],
+   "changed_positions": [
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    240,
+    241
+   ],
+   "image_cells": 56,
+   "keys_per_group": 74,
+   "aligned_token_ids": [
+    151644,
+    872,
+    198,
+    151652,
+    151653,
+    151652,
+    151653,
+    628,
+    279,
+    23739,
+    1221,
+    279,
+    43096,
+    304,
+    279,
+    19212,
+    151645,
+    198
+   ],
+   "site": "backbone",
+   "capture": "/home/ali/cross/groot/wsp/t1/cap",
+   "groups": {
+    "all": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5
+    ]
+   },
+   "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "lam_rel": 0.001,
+   "alpha": 1.0,
+   "image_cells_grid": "4x7",
+   "wordings": {
+    "orig": "Put the cube then the banana in the bowl",
+    "expl": "Put the cube in the bowl then put the banana in the bowl"
+   }
+  }
+ },
+ "files": [
+  {
+   "item": 0,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i000_orig.npz",
+   "seed": 12006404
+  },
+  {
+   "item": 1,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i001_orig.npz",
+   "seed": 12006408
+  },
+  {
+   "item": 2,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i002_orig.npz",
+   "seed": 12006412
+  },
+  {
+   "item": 3,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i003_orig.npz",
+   "seed": 12006416
+  },
+  {
+   "item": 4,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i004_orig.npz",
+   "seed": 12006504
+  },
+  {
+   "item": 5,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i005_orig.npz",
+   "seed": 12006508
+  },
+  {
+   "item": 6,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i006_orig.npz",
+   "seed": 12006512
+  },
+  {
+   "item": 7,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i007_orig.npz",
+   "seed": 12006516
+  },
+  {
+   "item": 8,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i008_orig.npz",
+   "seed": 12006604
+  },
+  {
+   "item": 9,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i009_orig.npz",
+   "seed": 12006608
+  },
+  {
+   "item": 10,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i010_orig.npz",
+   "seed": 12006612
+  },
+  {
+   "item": 11,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i011_orig.npz",
+   "seed": 12006616
+  },
+  {
+   "item": 12,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i012_orig.npz",
+   "seed": 12006704
+  },
+  {
+   "item": 13,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i013_orig.npz",
+   "seed": 12006708
+  },
+  {
+   "item": 14,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i014_orig.npz",
+   "seed": 12006712
+  },
+  {
+   "item": 15,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/early/chk_bb/i015_orig.npz",
+   "seed": 12006716
+  }
+ ]
+}

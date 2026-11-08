@@ -10,6 +10,29 @@ resolves to `balanced`), the primary setting for all tracks. Performance-preset 
 Machine: every result so far is from ali-ms GPU0 (RTX 3090, label `ali-ms-rtx3090`); arms are paired only within one
 machine.
 
+## Results so far (numbers regenerated in [`results/tables.md`](results/tables.md))
+
+**Failure map** (unedited, each task's own wording, slots 30000-30031): T1 cube-then-banana 9/32, T3 cube left of bowl
+1/32, T8 mustard right of raisin box (reference-first) 0/32, R1 cube in bowl 28/32; T2, T5, T7, T4, T6 running.
+
+**Wording screens** (same slots, paired): T1 9/32 -> 16/32 under "Put the cube in the bowl then put the banana in the
+bowl" (11 fixed / 4 broke, exact p = 0.12), GR00T's only wording-sensitive task. T3 1/32 -> 0/32 under "Pick up the
+rubiks cube and place it on the table to the left of the bowl"; T8 0/32 -> 0/32 under the target-first wording. In T3
+GR00T grasps the cube and holds it until the episode ends; in T8 it grasps the mustard (always under TF) but never ends
+with it right of the raisin box. These are execution failures that rewording does not change, unlike Cosmos3 Edge on
+T8 (Track A).
+
+**Backbone edit on T1 (negative).** The closed-form distillation of the explicit wording into Cosmos-Reason2's LLM
+MLPs (layers 0-15, `mlp.down_proj`; 6 build decisions; details in `results/edits.json`) recovered 0.28 of the teacher's
+action change offline on 17 check decisions (matched random control 0.00), but on practice it scored **0/32 vs 9/32
+unedited (0 fixed / 9 broke, exact p = 0.0039)**: every edited episode reaches for the banana first and never grabs the
+cube (clips `videos/RubiksCubeThenBananaTask_30004_{unedited,edited-bb,teacher-explicit}.mp4`). On the 11 failed
+episodes used by no build the offline recovery is -0.15, so the 0.28 did not predict transfer. Token alignment covers
+only the 8 original positions after the first difference; the explicit wording's inserted clause ("in the bowl then
+put") has no position in the original prompt, so the transferred change at "the banana in the bowl" arrives without
+the cube clause. The same distillation in the action head (32 DiT blocks, `ff.net.2`) recovers +0.22 on those 11
+episodes and is being scored closed loop (where-to-edit).
+
 ## Run scheme
 
 One GPU lane (`scripts/worker.sh GPU PORT`) runs jobs from an editable queue (`results/jobs/queue.txt` is the copy
