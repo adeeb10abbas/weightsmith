@@ -919,8 +919,8 @@ z
    </g>
    <g id="matplotlib.axis_2"/>
    <g id="line2d_20">
-    <path d="M 443.24775 63.18 
-L 472.2795 63.18 
+    <path d="M 444.80025 63.18 
+L 471.50325 63.18 
 " clip-path="url(#p5b3da95935)" style="fill: none; stroke: #2aa5bc; stroke-width: 2.2; stroke-linecap: round"/>
    </g>
    <g id="line2d_21">
@@ -1622,7 +1622,7 @@ z
     </g>
    </g>
    <g id="text_13">
-    <!-- 0 → 42 of 48 -->
+    <!-- 0 → 56 of 64 -->
     <g style="fill: #c4c1ba" transform="translate(487.44 65.454937) scale(0.088 -0.088)">
      <defs>
       <path id="ArialMT-2192" d="M 4859 2738 
@@ -1646,14 +1646,14 @@ z
      <use xlink:href="#ArialMT-20" transform="translate(55.615234 0)"/>
      <use xlink:href="#ArialMT-2192" transform="translate(83.398438 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(183.398438 0)"/>
-     <use xlink:href="#ArialMT-34" transform="translate(211.181641 0)"/>
-     <use xlink:href="#ArialMT-32" transform="translate(266.796875 0)"/>
+     <use xlink:href="#ArialMT-35" transform="translate(211.181641 0)"/>
+     <use xlink:href="#ArialMT-36" transform="translate(266.796875 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(322.412109 0)"/>
      <use xlink:href="#ArialMT-6f" transform="translate(350.195312 0)"/>
      <use xlink:href="#ArialMT-66" transform="translate(405.810547 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(433.59375 0)"/>
-     <use xlink:href="#ArialMT-34" transform="translate(461.376953 0)"/>
-     <use xlink:href="#ArialMT-38" transform="translate(516.992188 0)"/>
+     <use xlink:href="#ArialMT-36" transform="translate(461.376953 0)"/>
+     <use xlink:href="#ArialMT-34" transform="translate(516.992188 0)"/>
     </g>
    </g>
    <g id="text_14">
