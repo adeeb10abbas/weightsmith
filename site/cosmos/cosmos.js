@@ -1,5 +1,5 @@
 /* The cross-model draft page.
-   1. Renders the comparison tables from metrics.json. The page ships the same tables pre-rendered (no-JS fallback,
+   1. Renders the TL;DR and the comparison tables from metrics.json. The page ships the same tables pre-rendered (no-JS fallback,
       written by site/scripts/make_cosmos_metrics.py), so this only matters when metrics.json is newer than the HTML.
    2. Clips: a placeholder becomes a player as soon as its MP4 exists in video/, and players run only while in view,
       never for readers who ask for reduced motion. */
@@ -63,7 +63,14 @@
         var c = r.cells[id] || { v: '—', s: 'na' };
         var td = el('td', 'c' + (c.s === 'running' ? ' st-run' : c.s === 'na' ? ' st-na' : '') + (c.prov ? ' prov' : ''));
         td.setAttribute('data-model', models[id].name);
-        td.appendChild(inline(el('span', 'v'), c.v));
+        var v = inline(el('span', 'v'), c.v);
+        if (c.prov) {
+          var tag = el('span', 'tag');
+          tag.textContent = 'earlier slots';
+          v.appendChild(document.createTextNode(' '));
+          v.appendChild(tag);
+        }
+        td.appendChild(v);
         if (c.d) td.appendChild(inline(el('span', 'd'), c.d));
         tr.appendChild(td);
       });
@@ -79,9 +86,12 @@
     list.forEach(function (s, i) {
       if (i) p.appendChild(document.createTextNode(', '));
       var a = el('a');
-      a.href = REPO + (/\.[a-z]+$/i.test(s) ? '/blob/main/' : '/tree/main/') + s;
+      var at = s.lastIndexOf(':');
+      var branch = at > 0 ? s.slice(0, at) : 'main';
+      var path = at > 0 ? s.slice(at + 1) : s;
+      a.href = REPO + (/\.[a-z]+$/i.test(path) ? '/blob/' : '/tree/') + branch + '/' + path;
       var c = el('code');
-      c.textContent = s.replace('study/results/', '');
+      c.textContent = path.replace('study/results/', '');
       a.appendChild(c);
       p.appendChild(a);
     });
@@ -109,6 +119,44 @@
       b.textContent = '';
       b.appendChild(frag);
     });
+    // TL;DR: bullets read from the tables by the generator; "{running}" marks what is not measured yet
+    var tl = document.querySelector('[data-tldr]');
+    if (tl && m.tldr && m.tldr.items) {
+      tl.textContent = '';
+      m.tldr.items.forEach(function (it) {
+        var li = el('li');
+        li.setAttribute('data-id', it.id);
+        var lead = el('span', 'tl');
+        var b = el('b');
+        b.textContent = it.lead;
+        lead.appendChild(b);
+        if (it.kind) {
+          var k = el('span', 'tk');
+          k.textContent = it.kind;
+          lead.appendChild(document.createTextNode(' '));
+          lead.appendChild(k);
+        }
+        if (it.tag) {
+          var tg = el('span', 'tag');
+          tg.textContent = it.tag;
+          lead.appendChild(document.createTextNode(' '));
+          lead.appendChild(tg);
+        }
+        li.appendChild(lead);
+        li.appendChild(document.createTextNode(' '));
+        String(it.text).split('{running}').forEach(function (part, i) {
+          if (i) {
+            var r = el('span', 'run');
+            r.textContent = 'running';
+            li.appendChild(r);
+          }
+          if (part) li.appendChild(document.createTextNode(part));
+        });
+        tl.appendChild(li);
+      });
+      var tn = document.querySelector('[data-tldr-note]');
+      if (tn && m.tldr.note) tn.textContent = m.tldr.note;
+    }
     var st = document.getElementById('stamp');
     if (st && m.status_text) st.textContent = m.status_text + ' · updated ' + m.updated_text;
   }
