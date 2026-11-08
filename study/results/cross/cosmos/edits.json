@@ -1,7 +1,26 @@
 [
- {"name": "t8und", "code": "T8", "location": "text pathway (und mlp.down_proj, layers 0-26)",
+ {
+  "name": "t8und",
+  "code": "T8",
+  "location": "text pathway (und mlp.down_proj, layers 0-26)",
   "good_wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
   "teacher_arm": "wtf",
   "summary": "sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3",
-  "values_changed": 179010015, "stored_values": 58088448, "sha256_16": "c1abc9187f892310", "control_sha256_16": "281d2212c1129b6b"}
+  "values_changed": 179010015,
+  "stored_values": 58088448,
+  "sha256_16": "c1abc9187f892310",
+  "control_sha256_16": "281d2212c1129b6b"
+ },
+ {
+  "name": "t8gen",
+  "code": "T8",
+  "location": "video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20)",
+  "good_wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
+  "teacher_arm": "wtf",
+  "summary": "closed-form distillation of the TF wording's effect on the action tokens and pooled video cells (per denoising pass, averaged over 30 RF-failure decisions of slots 30000-30005, replans 1-5), lam_rel 1e-3",
+  "values_changed": null,
+  "stored_values": 50519040,
+  "sha256_16": "83660712d725e349",
+  "control_sha256_16": "7ab45e30b9cd32fa"
+ }
 ]
