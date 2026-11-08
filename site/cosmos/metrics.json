@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "fc3901f47f51"
+    "commit": "0f28adcdd4af"
    }
   },
   {
@@ -28,16 +28,18 @@
    "name": "GR00T N1.7",
    "short": "reasoning-backbone VLA",
    "kind": "NVIDIA vision-language-action policy",
-   "status": "running",
+   "status": "partial",
    "checkpoint": "`nvidia/GR00T-N1.7-DROID` at `05e7cc9`, 3.14B parameters",
    "architecture": "A Cosmos-Reason2-2B vision-language backbone (Qwen3-VL), cut to its first 16 language layers, reads an exterior and a wrist camera (180 × 320 each) and the instruction. The action head, 4 self-attention layers and 32 diffusion-transformer blocks, turns the backbone's tokens and the robot state into 40-step chunks by flow matching; the first 8 steps run at 15 Hz.",
    "entry": "As text tokens in the Cosmos-Reason2 backbone, next to the image tokens (lowercased, punctuation removed). The action head reads the instruction only through the backbone's tokens.",
    "where": "Cosmos-Reason2 backbone / diffusion action head",
    "evaluation": "Closed loop on the shared RoboLab DROID tasks and slots, NVIDIA's validated client and embodiment setting.",
    "source": {
-    "kind": "none",
+    "kind": "branch",
     "branch": "cross-groot/v1",
-    "path": "study/results/cross/metrics_groot.json"
+    "path": "study/results/cross/metrics_groot.json",
+    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
+    "commit": "eedd16bff9fc"
    }
   },
   {
@@ -56,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "8f4a5ac7300c"
+    "commit": "3d0cee120a43"
    },
    "fig_short": "control · earlier slots"
   }
@@ -124,28 +126,28 @@
     "lead": "π0.5",
     "kind": "OpenPI VLA, control",
     "tag": "earlier records",
-    "text": "Edits lifted success on T1 from 27 to 106 of 128 unseen starts (p = 7.2 × 10⁻²²) and on T8 from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). A random edit of the same size scored 9 of 64 on T1, against 13 unedited. No detectable gain on T4–T7, failures of perception, contact or missing skill."
+    "text": "Edits lifted success on T1 from 27 to 106 of 128 unseen starts (p = 7.2 × 10⁻²²) and on T8 from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). A random edit of the same size scored 9 of 64 on T1, against 13 unedited. No detectable gain on T4–T7, failures of perception, contact or missing skill."
    },
    {
     "id": "cosmos",
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Unedited so far: T8 0 of 16 starts. Other tasks and edits: {running}."
+    "text": "Unedited so far: T8 0 of 16 starts. Clearer wording, same weights: T8 0 → 15 of 16 (p = 6.1 × 10⁻⁵). Other tasks and edits: {running}."
    },
    {
     "id": "groot",
     "lead": "GR00T N1.7",
     "kind": "reasoning-backbone VLA",
     "tag": null,
-    "text": "Failure map and edits: {running}. First finding: on the same 16 starts of banana onto plate it succeeded 5 times under RoboLab’s performance render preset and 16 under the default preset, so all three models are compared under the default."
+    "text": "Unedited so far: T1 9 of 32 starts. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12). Other tasks and edits: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
     "id": "side-effects",
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy and GR00T N1.7: {running}."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy and GR00T N1.7: {running}."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -220,8 +222,9 @@
       "s": "running"
      },
      "groot": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 9 of 32",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "pi05": {
       "v": "fixed: 27 → 106 of 128",
@@ -471,8 +474,11 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "9 of 32",
+       "s": "ok",
+       "d": "28%; slots 30000–30031",
+       "k": 9,
+       "n": 32
       },
       "pi05": {
        "v": "27 of 128",
@@ -722,8 +728,14 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "9 → 16 of 32",
+       "s": "ok",
+       "d": "11 / 4, p = 0.12; +21.9 points [0.0, 43.8]; slots 30000–30031; “Put the cube then the banana in the bowl” → “Put the cube in the bowl then put the banana in the bowl”",
+       "a": 9,
+       "b": 16,
+       "n": 32,
+       "pv": 0.11846923828125,
+       "fl": "T1 Cube then banana (32 practice)"
       },
       "pi05": {
        "v": "13 → 57 of 64",
@@ -765,8 +777,14 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "0 → 15 of 16",
+       "s": "ok",
+       "d": "15 / 0, p = 6.1 × 10⁻⁵; +93.8 points [81.2, 100.0]; slots 30000–30015; “Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.” → “Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.”",
+       "a": 0,
+       "b": 15,
+       "n": 16,
+       "pv": 6.103515625e-05,
+       "fl": "T8 Mustard, reference-first (16 practice)"
       },
       "groot": {
        "v": "running",
@@ -2033,6 +2051,135 @@
     "_prov": false,
     "extra": {
      "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "wording",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": 15,
+    "broke": 0,
+    "p": 6.103515625e-05,
+    "ci": {
+     "diff_pts": 93.75,
+     "bootstrap95_pts": [
+      81.25,
+      100.0
+     ],
+     "wilson95_orig_pct": [
+      0.0,
+      19.4
+     ],
+     "wilson95_alt_pct": [
+      71.7,
+      98.9
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 15,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "same weights, wording via prompt override; fixed = only the alternative wording succeeds. target-first wording of the same goal (Same Goal, Different Words; known-good for pi0.5)",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   }
+  ],
+  "groot": [
+   {
+    "experiment": "failure_map",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T1 RubiksCubeThenBananaTask",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     null
+    ],
+    "n": 32,
+    "unedited_k": 9,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "unedited_wilson95": [
+      0.1556458049774277,
+      0.4537450942591657
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "tag fm-T1; envs 16; env seed 0; one fresh simulator process per 16-slot group",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "wording_sensitivity",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T1 RubiksCubeThenBananaTask",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "n": 32,
+    "unedited_k": 9,
+    "edited_k": null,
+    "fixed": 11,
+    "broke": 4,
+    "p": 0.11846923828125,
+    "ci": {
+     "diff_bootstrap95": [
+      0.0,
+      0.4375
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 16,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T1 vs wd-T1-expl",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
     }
    }
   ],
@@ -4254,24 +4401,26 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "fc3901f47f51"
+   "commit": "0f28adcdd4af"
   },
   "groot": {
-   "kind": "none",
+   "kind": "branch",
    "branch": "cross-groot/v1",
-   "path": "study/results/cross/metrics_groot.json"
+   "path": "study/results/cross/metrics_groot.json",
+   "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
+   "commit": "eedd16bff9fc"
   },
   "pi05": {
    "kind": "branch",
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "8f4a5ac7300c"
+   "commit": "3d0cee120a43"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "9e36983cc3f2df88",
- "updated": "2026-11-08T05:57Z",
- "updated_text": "8 Nov 2026, 05:57 UTC",
- "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: running · π0.5: earlier records"
+ "content_hash": "bb2d35f58e3129b5",
+ "updated": "2026-11-08T06:09Z",
+ "updated_text": "8 Nov 2026, 06:09 UTC",
+ "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: earlier records"
 }
