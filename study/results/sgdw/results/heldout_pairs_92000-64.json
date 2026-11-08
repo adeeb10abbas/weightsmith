@@ -1,0 +1,184 @@
+{
+ "arms": {
+  "base": {
+   "n": 64,
+   "success": 0
+  },
+  "cand": {
+   "n": 64,
+   "success": 19
+  },
+  "g3": {
+   "n": 64,
+   "success": 27
+  },
+  "rand3": {
+   "n": 64,
+   "success": 0
+  }
+ },
+ "pairs": {
+  "cand vs base": {
+   "paired_n": 64,
+   "slots": [
+    92000,
+    92063
+   ],
+   "success_a": 0,
+   "success_b": 19,
+   "wilson95_a": [
+    0.0,
+    0.0566
+   ],
+   "wilson95_b": [
+    0.199,
+    0.4177
+   ],
+   "both": 0,
+   "neither": 45,
+   "fixed": 19,
+   "broke": 0,
+   "diff_pp": 29.7,
+   "diff_boot95_pp": [
+    18.8,
+    40.6
+   ],
+   "mcnemar_exact_p": 3.814697265625e-06
+  },
+  "g3 vs base": {
+   "paired_n": 64,
+   "slots": [
+    92000,
+    92063
+   ],
+   "success_a": 0,
+   "success_b": 27,
+   "wilson95_a": [
+    0.0,
+    0.0566
+   ],
+   "wilson95_b": [
+    0.3087,
+    0.5439
+   ],
+   "both": 0,
+   "neither": 37,
+   "fixed": 27,
+   "broke": 0,
+   "diff_pp": 42.2,
+   "diff_boot95_pp": [
+    29.7,
+    54.7
+   ],
+   "mcnemar_exact_p": 1.4901161193847656e-08
+  },
+  "rand3 vs base": {
+   "paired_n": 64,
+   "slots": [
+    92000,
+    92063
+   ],
+   "success_a": 0,
+   "success_b": 0,
+   "wilson95_a": [
+    0.0,
+    0.0566
+   ],
+   "wilson95_b": [
+    0.0,
+    0.0566
+   ],
+   "both": 0,
+   "neither": 64,
+   "fixed": 0,
+   "broke": 0,
+   "diff_pp": 0.0,
+   "diff_boot95_pp": [
+    0.0,
+    0.0
+   ],
+   "mcnemar_exact_p": 1.0
+  },
+  "g3 vs cand": {
+   "paired_n": 64,
+   "slots": [
+    92000,
+    92063
+   ],
+   "success_a": 19,
+   "success_b": 27,
+   "wilson95_a": [
+    0.199,
+    0.4177
+   ],
+   "wilson95_b": [
+    0.3087,
+    0.5439
+   ],
+   "both": 6,
+   "neither": 24,
+   "fixed": 21,
+   "broke": 13,
+   "diff_pp": 12.5,
+   "diff_boot95_pp": [
+    -6.2,
+    29.7
+   ],
+   "mcnemar_exact_p": 0.22948101302608848
+  },
+  "rand3 vs cand": {
+   "paired_n": 64,
+   "slots": [
+    92000,
+    92063
+   ],
+   "success_a": 19,
+   "success_b": 0,
+   "wilson95_a": [
+    0.199,
+    0.4177
+   ],
+   "wilson95_b": [
+    0.0,
+    0.0566
+   ],
+   "both": 0,
+   "neither": 45,
+   "fixed": 0,
+   "broke": 19,
+   "diff_pp": -29.7,
+   "diff_boot95_pp": [
+    -40.6,
+    -18.8
+   ],
+   "mcnemar_exact_p": 3.814697265625e-06
+  },
+  "rand3 vs g3": {
+   "paired_n": 64,
+   "slots": [
+    92000,
+    92063
+   ],
+   "success_a": 27,
+   "success_b": 0,
+   "wilson95_a": [
+    0.3087,
+    0.5439
+   ],
+   "wilson95_b": [
+    0.0,
+    0.0566
+   ],
+   "both": 0,
+   "neither": 37,
+   "fixed": 0,
+   "broke": 27,
+   "diff_pp": -42.2,
+   "diff_boot95_pp": [
+    -54.7,
+    -29.7
+   ],
+   "mcnemar_exact_p": 1.4901161193847656e-08
+  }
+ }
+}

@@ -71,9 +71,36 @@ robolab.constants.RECORD_IMAGE_DATA = args_cli.record_image_data
 robolab.constants.VERBOSE = args_cli.enable_verbose
 robolab.constants.DEBUG = args_cli.enable_debug
 
+
+def external_task_files(names):
+    """Resolve task class names against task modules kept outside the RoboLab checkout.
+
+    ``WSP_TASK_DIRS`` (``os.pathsep``-separated) lists directories of RoboLab task modules. A task given by class
+    name that a ``*.py`` file there defines is registered from that file (RoboLab accepts task file paths); the
+    runner still selects it by class name, so the RoboLab checkout itself is never modified. Unset = no change.
+    """
+    import os
+    if names is None:
+        return None
+    dirs = [d for d in os.environ.get("WSP_TASK_DIRS", "").split(os.pathsep) if d.strip()]
+    out = []
+    for name in names:
+        hit = None
+        if dirs and "/" not in name and not name.endswith(".py"):
+            for d in dirs:
+                for f in sorted(pathlib.Path(d).expanduser().glob("*.py")):
+                    if f"class {name}(" in f.read_text():
+                        hit = str(f.resolve())
+                        break
+                if hit:
+                    break
+        out.append(hit or name)
+    return out
+
+
 auto_register_droid_envs(
     task_dirs=args_cli.task_dirs,
-    task=args_cli.task,
+    task=external_task_files(args_cli.task),
     randomize_background=args_cli.randomize_background,
     background_seed=args_cli.background_seed,
 )

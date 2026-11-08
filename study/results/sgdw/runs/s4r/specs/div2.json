@@ -1,0 +1,466 @@
+{
+ "id": "div2",
+ "cand": "base",
+ "items": [
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 3,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 3,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 4,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 4,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 5,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 5,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 6,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 6,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 7,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 7,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 8,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 8,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 9,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 9,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 10,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 10,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 11,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 11,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 12,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 12,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 13,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 13,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 3,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 3,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 4,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 4,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 5,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 5,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 6,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 6,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 7,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 7,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 8,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 8,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 9,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 9,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 10,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 10,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 11,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 11,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 12,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 12,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 13,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 13,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 3,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 3,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 4,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 4,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 5,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 5,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 6,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 6,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 7,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 7,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 8,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 8,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 9,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 9,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 10,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 10,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 11,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 11,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 12,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 12,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 13,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 13,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 3,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 3,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 4,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 4,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 5,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 5,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 6,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 6,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 7,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 7,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 8,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 8,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 9,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 9,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 10,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 10,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 11,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 11,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 12,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 12,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 13,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 13,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 14,
+   "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 14,
+   "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  }
+ ],
+ "vlm_layers": [],
+ "action_layers": [
+  17
+ ],
+ "action_tokens": [
+  0
+ ],
+ "denoise_steps": [
+  0
+ ]
+}
