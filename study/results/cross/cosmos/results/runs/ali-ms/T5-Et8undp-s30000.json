@@ -1,0 +1,486 @@
+{
+ "tag": "T5-Et8undp-s30000",
+ "machine": "ali-ms",
+ "gpu": 0,
+ "task": "MustardInLeftBinTask",
+ "prompt": null,
+ "edit": "edits/t8undp.pt",
+ "slots": [
+  30000,
+  30015
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 0,
+ "groups": [
+  {
+   "group": 1875,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 348.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.robolab/cosmosx-T5-Et8undp-s30000-g1875o0-1108-081046"
+  },
+  {
+   "group": 1875,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 339.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.robolab/cosmosx-T5-Et8undp-s30000-g1875o8-1108-081634"
+  }
+ ],
+ "server_load": {
+  "edit": {
+   "file": "edits/t8undp.pt",
+   "sha256_16": "c899d8981734159a",
+   "params": {
+    "net.language_model.model.layers.0.mlp.down_proj.weight": {
+     "before": "1d39ef5603a6f978",
+     "after": "ae451cc5665d8a45",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17665799,
+     "rel_fro": 0.2777075071135658
+    },
+    "net.language_model.model.layers.1.mlp.down_proj.weight": {
+     "before": "391726b0f6ce600d",
+     "after": "166a079122848985",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 6986174,
+     "rel_fro": 0.008217865039049393
+    },
+    "net.language_model.model.layers.2.mlp.down_proj.weight": {
+     "before": "5f13aae5da43e3db",
+     "after": "a3ce7799c865b7ef",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17269080,
+     "rel_fro": 0.14096324801087962
+    },
+    "net.language_model.model.layers.3.mlp.down_proj.weight": {
+     "before": "8b66d5174d9e3dd7",
+     "after": "99298ed0812f5a07",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 15479190,
+     "rel_fro": 0.08641418528520793
+    },
+    "net.language_model.model.layers.4.mlp.down_proj.weight": {
+     "before": "9db48a6f35258710",
+     "after": "e349ce9c2713ce94",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 14199670,
+     "rel_fro": 0.05241792194749455
+    },
+    "net.language_model.model.layers.5.mlp.down_proj.weight": {
+     "before": "0d51d74d0f8daac7",
+     "after": "ecb050eb292fe05c",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 15685873,
+     "rel_fro": 0.08117350691928497
+    },
+    "net.language_model.model.layers.6.mlp.down_proj.weight": {
+     "before": "5bd7035fb223095d",
+     "after": "304aad4eea1586e5",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 15250372,
+     "rel_fro": 0.06519207069091074
+    },
+    "net.language_model.model.layers.7.mlp.down_proj.weight": {
+     "before": "ab727ad94296aef6",
+     "after": "d72730b24279740c",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 16430911,
+     "rel_fro": 0.08929845456772134
+    },
+    "net.language_model.model.layers.8.mlp.down_proj.weight": {
+     "before": "74cd2e356e4867ba",
+     "after": "7f54dc982a97ace1",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 16562026,
+     "rel_fro": 0.08293140575617487
+    },
+    "net.language_model.model.layers.9.mlp.down_proj.weight": {
+     "before": "a0ed89101004e555",
+     "after": "ea963e55c8a0b91d",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 15696002,
+     "rel_fro": 0.08522975159433664
+    },
+    "net.language_model.model.layers.10.mlp.down_proj.weight": {
+     "before": "bbd735403d342bf4",
+     "after": "862f96e0cf919ceb",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 16653068,
+     "rel_fro": 0.07704787446033393
+    },
+    "net.language_model.model.layers.11.mlp.down_proj.weight": {
+     "before": "36241a3cb268d490",
+     "after": "ffee254f7ff818a7",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17049248,
+     "rel_fro": 0.08526896449495347
+    },
+    "net.language_model.model.layers.12.mlp.down_proj.weight": {
+     "before": "fc00fcc1d09fcbc5",
+     "after": "770961e86c19dbbf",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 16995387,
+     "rel_fro": 0.05841954439996698
+    },
+    "net.language_model.model.layers.13.mlp.down_proj.weight": {
+     "before": "efd7df5f28ff359e",
+     "after": "0559c89f80230d48",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17716286,
+     "rel_fro": 0.09156150360161744
+    },
+    "net.language_model.model.layers.14.mlp.down_proj.weight": {
+     "before": "1eb21952024e720a",
+     "after": "afda024883664801",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 16812568,
+     "rel_fro": 0.03790165721766172
+    },
+    "net.language_model.model.layers.15.mlp.down_proj.weight": {
+     "before": "eabef15a9d45f5d4",
+     "after": "b149646fb351c804",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 18079646,
+     "rel_fro": 0.10721036124922736
+    },
+    "net.language_model.model.layers.16.mlp.down_proj.weight": {
+     "before": "8fe1bfb53c7e12d4",
+     "after": "f1c67d4fda96ae3e",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17992363,
+     "rel_fro": 0.09309382657079562
+    },
+    "net.language_model.model.layers.17.mlp.down_proj.weight": {
+     "before": "e7ea1d6f0204955d",
+     "after": "d54d629e9f33043f",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17926172,
+     "rel_fro": 0.09435575281209256
+    },
+    "net.language_model.model.layers.18.mlp.down_proj.weight": {
+     "before": "cbb9165c17c5be7a",
+     "after": "8efbff75c62fc1a0",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17882944,
+     "rel_fro": 0.08578935611032595
+    },
+    "net.language_model.model.layers.19.mlp.down_proj.weight": {
+     "before": "6caa3f6d87e10535",
+     "after": "aa2b87cdb151014e",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 18018159,
+     "rel_fro": 0.10081111662118786
+    },
+    "net.language_model.model.layers.20.mlp.down_proj.weight": {
+     "before": "6c170ee596770496",
+     "after": "0fed9d9102bdc6c6",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17577922,
+     "rel_fro": 0.07705803214124803
+    },
+    "net.language_model.model.layers.21.mlp.down_proj.weight": {
+     "before": "482755ac9431f291",
+     "after": "1806630a43556291",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17643937,
+     "rel_fro": 0.08760701605528004
+    },
+    "net.language_model.model.layers.22.mlp.down_proj.weight": {
+     "before": "b87e6ef3147df623",
+     "after": "80896abe1b839a49",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17576447,
+     "rel_fro": 0.07640431989489731
+    },
+    "net.language_model.model.layers.23.mlp.down_proj.weight": {
+     "before": "9e45ef6a40769b69",
+     "after": "2853d918150d1b28",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17447389,
+     "rel_fro": 0.07235402841865664
+    },
+    "net.language_model.model.layers.24.mlp.down_proj.weight": {
+     "before": "a0489b9b94a41f73",
+     "after": "c18b1cb40125dc02",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17612544,
+     "rel_fro": 0.08016144579957236
+    },
+    "net.language_model.model.layers.25.mlp.down_proj.weight": {
+     "before": "7409fd875211c58a",
+     "after": "3028fbd8402ab717",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17646287,
+     "rel_fro": 0.07571481257475862
+    },
+    "net.language_model.model.layers.26.mlp.down_proj.weight": {
+     "before": "5b66551a9de57c3d",
+     "after": "471a4ef93b1fd65d",
+     "rank": 1753,
+     "stored_values": 19745792,
+     "changed_values": 17443785,
+     "rel_fro": 0.07031178099273297
+    }
+   },
+   "stored_values": 533136384,
+   "changed_values": 449299249
+  },
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 26.7
+ },
+ "wait_lock_s": 694.4,
+ "gpu_s": 745.9,
+ "server_ready_s": 28.0,
+ "started": "2026-11-08 08:10:18",
+ "finished": "2026-11-08 08:22:44",
+ "rows": [
+  {
+   "slot": 30000,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30001,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30002,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30003,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30004,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30005,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30006,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_in_container(object=mustard, container=grey_bin_left, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30007,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_in_container(object=mustard, container=grey_bin_left, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 30008,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30009,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30010,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30011,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30012,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30013,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30014,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30015,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-Et8undp-s30000.obs/g1875o8/obs_r0_e7.npz"
+  }
+ ]
+}
