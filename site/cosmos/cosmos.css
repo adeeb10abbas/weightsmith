@@ -1020,6 +1020,7 @@
 .dg .dg-bar-acc { fill: var(--accent); }
 .dg .dg-axis { stroke: var(--ink-2); stroke-width: 1; }
 .dg .dg-bar-loss { fill: var(--mark-other); }
+.dg .dg-bar-ref { fill: none; stroke: var(--ink-2); stroke-width: 1.25; }
 
 .dg-sidefig .dg {
   max-width: 520px;

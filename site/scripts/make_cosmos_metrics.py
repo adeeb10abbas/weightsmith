@@ -1155,8 +1155,12 @@ def row_cells(src):
             if rp is not None:
                 if abs(rp) <= 1.5 and not float(rp).is_integer():
                     rp *= 100
-                T["recovery"][tid] = C(f"{sgn(rp, False, 0)}%", "as reported" + ("; on practice starts" if pt else ""),
-                                       prac=pt or None)
+                tn_ = as_int(xg(rt, "teacher_n")) or it["n"]
+                same = it["teacher_k"] is not None and tn_ == it["n"] and it["edited_k"] is not None
+                T["recovery"][tid] = C(f"{sgn(rp, False, 0)}%", "as reported" + (
+                    f"; ({it['edited_k']} − {it['unedited_k']}) / ({it['teacher_k']} − {it['unedited_k']}) of {it['n']}"
+                    if same else "") + ("; on practice starts" if pt else ""), prac=pt or None,
+                    **(dict(a=it["unedited_k"], b=it["edited_k"], t=it["teacher_k"], n=it["n"]) if same else {}))
             elif as_int(xg(rt, "teacher_n")) and as_int(xg(rt, "teacher_n")) != it["n"]:
                 # the clear wording ran on fewer starts than the edit: compare on those starts only
                 tn_, ts = as_int(xg(rt, "teacher_n")), xg(rt, "teacher_slots")
@@ -3046,6 +3050,10 @@ def tldr_story(tables, models, prevent, sites):
         tid, c, rc0 = fx
         ctl = (f" A random edit of the same size, a placebo: {rc0['r']}." if _ok(rc0, ("r", "n")) and rc0["n"] == c["n"]
                and not rc0.get("prac") else "")
+        rec = _cells(tables)["recovery"].get(tid, {}).get("cosmos")
+        if rec and rec.get("s") == "ok" and not rec.get("prac") and rec.get("n") == c["n"] and rec.get("b") == c["b"] \
+                and isinstance(rec.get("t"), int):
+            ctl += f" Rewording the instruction itself, from the same starts: {rec['t']}."
         items.append(dict(id="fix", lead="The fix",
                           text=f"On NVIDIA’s Cosmos3 Edge, a weight edit fixed a task the robot failed only because of "
                                f"how its instruction was worded: {c['a']} → {c['b']} successes from {c['n']} unseen "
@@ -3119,11 +3127,14 @@ def fix_text(tables, cross):
            and rc0["n"] == c["n"] else "")
     s.append(f"From {c['n']} unseen starts it succeeds {c['b']} times; unedited, {c['a']} times{ctl}.")
     rec = T["recovery"].get(tid, {}).get("cosmos")
-    if rec and rec.get("s") == "ok" and rec.get("sub") and not rec.get("prac") and \
+    if rec and rec.get("s") == "ok" and not rec.get("prac") and \
             all(isinstance(rec.get(k), int) for k in ("a", "b", "t", "n")):
-        s.append(("From the same starts" if rec["n"] == c["n"] else f"On {rec['n']} of these starts")
-                 + f", the unedited robot given the clear wording succeeds {rec['t']} times and the edited robot "
-                 f"{rec['b']}: the edit gets {rec['v']} of the way to the clear wording.")
+        if rec["n"] == c["n"] and rec["b"] == c["b"]:
+            s.append(f"From the same starts, the unedited robot given the clear wording succeeds {rec['t']} times: the "
+                     f"edit gets {rec['v']} of the way to the clear wording.")
+        else:
+            s.append(f"On {rec['n']} of these starts, the unedited robot given the clear wording succeeds {rec['t']} times "
+                     f"and the edited robot {rec['b']}: the edit gets {rec['v']} of the way to the clear wording.")
     return f"<p>{esc(' '.join(s))}</p>"
 
 
@@ -3138,6 +3149,9 @@ def dg_fix_chart(tables):
     if _ok(rc0, ("r", "n")) and rc0["n"] == c["n"]:
         bars.append(("with a random edit of the same size", rc0["r"], "dg-bar-base"))
     bars.append(("with the edit", c["b"], "dg-bar-acc"))
+    rec = _cells(tables)["recovery"].get(tid, {}).get("cosmos")
+    if rec and rec.get("s") == "ok" and not rec.get("prac") and rec.get("n") == c["n"] and isinstance(rec.get("t"), int):
+        bars.append(("without any edit, given the clear wording", rec["t"], "dg-bar-ref"))
     VW, x0, L, W = 350, 150, 110, []
     ttl = f"{tn(tid)}: starts the robot completed, of {c['n']} unseen starts"
     y = 6
@@ -3157,8 +3171,12 @@ def dg_fix_chart(tables):
     desc = "; ".join(f"robot {lab}: {k} of {c['n']} starts completed" for lab, k, _ in bars)
     svg = _svg(VW, y, ttl, desc + ".", "".join(W), "dg-fixchart", "dg-fix")
     who = {"without any edit": "without any edit", "with a random edit of the same size":
-           "with a random edit of the same size (a placebo)"}
+           "with a random edit of the same size (a placebo)",
+           "without any edit, given the clear wording": "without any edit but given the clear wording"}
     cap = (f"Each bar counts the starts the robot completed, from the same {c['n']} unseen starts: {c['b']} with the edit, "
+           + and_list(f"{k} {who.get(lab, lab)}" for lab, k, _ in bars if lab != "with the edit") + ". The robot "
+           "always received the original wording, except in the last bar.") if bars[-1][2] == "dg-bar-ref" else (
+           f"Each bar counts the starts the robot completed, from the same {c['n']} unseen starts: {c['b']} with the edit, "
            + and_list(f"{k} {who.get(lab, lab)}" for lab, k, _ in bars[:-1]) + ".")
     return f'<figure class="dgfig dg-fix"><p class="dg-ttl">{esc(ttl)}</p>{svg}<figcaption>{esc(cap)}</figcaption></figure>'
 
