@@ -39,6 +39,119 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ---------- TL;DR and section overview (top of the page) ---------- */
+.post .tldr {
+  margin-top: 2rem;
+  padding: 16px 20px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg-2);
+}
+
+.post .tldr h2,
+.post .toc h2 {
+  margin: 0 0 0.5rem;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.post .tldr ul {
+  margin: 0;
+}
+
+.post .tldr ul > li {
+  margin: 0 0 0.7rem;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.post .tldr ul > li::before {
+  top: 0.78em;
+}
+
+.tldr .tl {
+  display: block;
+  margin-bottom: 1px;
+}
+
+.tldr .tl b {
+  font-weight: 600;
+}
+
+.tldr .tk {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.tldr .tk::before {
+  content: '· ';
+}
+
+.tldr .tag {
+  margin-left: 4px;
+  font-family: var(--sans);
+}
+
+.run {
+  font-style: italic;
+  color: var(--muted);
+}
+
+.tldr-note {
+  margin: 0.2rem 0 0.8rem;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.post .toc {
+  margin-top: 1.9rem;
+}
+
+.toc ul {
+  margin: 0;
+  padding: 8px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+  columns: 2;
+  column-gap: 32px;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.toc li {
+  break-inside: avoid;
+  padding: 0 0 10px;
+}
+
+.toc a {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.toc .tline {
+  display: block;
+  margin-top: 1px;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+@media (max-width: 700px) {
+  .post .tldr {
+    padding: 14px 16px 4px;
+  }
+
+  .toc ul {
+    columns: 1;
+  }
+}
+
 /* ---------- model cards ---------- */
 .models {
   display: grid;

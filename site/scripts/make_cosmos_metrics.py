@@ -477,7 +477,8 @@ def pi05_cells(P):
     def ho_cell(r, what, color="teal", fl=None, fb=None):
         return C(f"{r['base']} → {r['cand']} of {r['n']}",
                  f"{what}; {r['fixed']} / {r['broke']}, p = {fp(r['p'])}; {fci(*r['ci'])}; {slots_txt(r['slots'])}",
-                 src=r["src"], a=r["base"], b=r["cand"], n=r["n"], ci=list(r["ci"]), color=color, fl=fl, fb=fb)
+                 src=r["src"], a=r["base"], b=r["cand"], n=r["n"], ci=list(r["ci"]), color=color, fl=fl, fb=fb,
+                 fx=r["fixed"], br=r["broke"], pv=r["p"])
 
     t4, t7, bd3 = P["t4_edits"], P["t7_edits"], P["blind_dev"]["T3"]
     G = T["edit_gain"]
@@ -2020,6 +2021,174 @@ def brief_lines(P, rc, models, cross, tables=None):
     return "".join(lines)
 
 
+# ---------------------------------------------------------------- TL;DR and section overview (top of the page)
+RUNNING = "{running}"   # rendered as the italic "running" marker; never a number
+SIG = 0.05              # "lifted" / "worse": exact McNemar p below this, paired by start
+TLDR_ORDER = ["pi05", "cosmos", "groot"]   # the control's established result first, then the NVIDIA models
+
+
+def task_list(keys):
+    """['T4','T5','T6','T7'] -> 'T4–T7'; ['T2','T3'] -> 'T2 and T3'."""
+    ts = sorted(int(k[1:]) for k in keys if re.fullmatch(r"T\d", k))
+    runs = []
+    for i in ts:
+        if runs and i == runs[-1][-1] + 1:
+            runs[-1].append(i)
+        else:
+            runs.append([i])
+    out = []
+    for r in runs:
+        out += [f"T{r[0]}–T{r[-1]}"] if len(r) >= 3 else [f"T{i}" for i in r]
+    out += [k for k in keys if not re.fullmatch(r"T\d", k)]
+    return out[0] if len(out) == 1 else ", ".join(out[:-1]) + " and " + out[-1]
+
+
+def and_list(xs):
+    xs = list(xs)
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+
+
+def tldr(tables, models):
+    """3-5 bullets for the top of the page, read only from the tables; anything not measured yet says running."""
+    T = {t["id"]: {r["key"]: r["cells"] for r in t["rows"]} for t in tables}
+    edit_of = next(t for t in tables if t["id"] == "side_effects").get("edit", {})
+    ok = lambda c: bool(c) and c.get("s") == "ok"
+    nums = lambda c, f=("a", "b", "n"): ok(c) and all(isinstance(c.get(x), int) for x in f)
+    cell = lambda tid, key, mid: T[tid].get(key, {}).get(mid)
+    tasks = [t[0] for t in TASKS if t[0] != "R1"]
+
+    def side(mid):
+        """(edit task, [(task, cell)] off-target with counts, R1 cell) of a model's side-effect map."""
+        got = [(k, cell("side_effects", k, mid)) for k in [t[0] for t in TASKS]]
+        got = [(k, c) for k, c in got if nums(c, ("a", "b", "n", "delta"))]
+        tgt = next((k for k, c in got if c.get("target")), None)
+        return tgt, [(k, c) for k, c in got if not c.get("target") and k != "R1"], dict(got).get("R1")
+
+    def lifted(c):
+        return c.get("p") is not None and c["p"] < SIG and c["delta"] > 0
+
+    items = []
+    for mid in TLDR_ORDER:
+        m = models[mid]
+        prov = False
+        gains, flat = [], []
+        for k in tasks:
+            c = cell("edit_gain", k, mid)
+            if nums(c):
+                prov |= bool(c.get("prov"))
+                (gains if (c.get("pv") is not None and c["pv"] < SIG and c["b"] > c["a"]) else flat).append((k, c))
+            elif ok(c) and c["v"].startswith("no gain"):
+                prov |= bool(c.get("prov"))
+                flat.append((k, c))
+        _, off, _ = side(mid)
+        transfer = {k for k, c in off if lifted(c)}
+        bits = []
+        if gains:
+            bits.append("Edits lifted success " + and_list(
+                f"on {k} from {c['a']} to {c['b']} of {c['n']}{' unseen starts' if i == 0 else ''} (p = {fp(c['pv'])})"
+                for i, (k, c) in enumerate(gains)) + ".")
+            rcn = next((cell("random_control", k, mid) for k, _ in gains if nums(cell("random_control", k, mid), ("u", "r", "n"))), None)
+            if rcn:
+                k0 = next(k for k, _ in gains if cell("random_control", k, mid) is rcn)
+                bits.append(f"A random edit of the same size scored {rcn['r']} of {rcn['n']} on {k0}, against "
+                            f"{rcn['u']} unedited.")
+        ng = [k for k, _ in flat if k not in transfer]
+        if ng:
+            why = ", failures of perception, contact or missing skill" if (mid == "pi05" and ng == ["T4", "T5", "T6", "T7"]) else ""
+            bits.append(f"No detectable gain on {task_list(ng)}{why}.")
+        done = {k for k, _ in gains} | {k for k, _ in flat}
+        if not done:
+            fm = [k for k in [t[0] for t in TASKS] if nums(cell("failure_map", k, mid), ("k", "n"))]
+            if fm:
+                bits.append(f"Unedited success is in for {len(fm)} of {len(TASKS)} tasks; edits {RUNNING}.")
+            elif m["status"] == "final":
+                bits.append("No edit results.")
+            else:
+                bits.append(f"Failure map and edits: {RUNNING}.")
+        elif m["status"] != "final" and any(cell("edit_gain", k, mid) and cell("edit_gain", k, mid)["s"] == "running"
+                                            for k in tasks):
+            bits.append(f"Other tasks: {RUNNING}.")
+        r = cell("render", "render", mid)
+        if nums(r):
+            bits.append(f"First finding: on the same {r['n']} starts of {(r.get('task') or 'one task').lower()} it "
+                        f"succeeded {r['a']} times under RoboLab’s performance render preset and {r['b']} under the "
+                        f"default preset, so all three models are compared under the default.")
+        items.append(dict(id=mid, lead=m["name"], kind=MODELS[mid]["short"],
+                          tag="earlier records" if prov else None, text=" ".join(bits)))
+
+    # side effects: each model's main edit, unchanged, on the other tasks
+    parts, waiting = [], []
+    for mid in TLDR_ORDER:
+        tgt, off, r1 = side(mid)
+        if not tgt or not off:
+            waiting.append(models[mid]["name"])
+            continue
+        up = [(k, c) for k, c in off if lifted(c)]
+        down = [(k, c) for k, c in off if c.get("p") is not None and c["p"] < SIG and c["delta"] < 0]
+        on = task_list([k for k, _ in off]) + (" and R1" if r1 else "")
+        t = f"{models[mid]['name']}’s {tgt} edit, run unchanged on {on}, "
+        t += ("lifted " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in up)) if up else "lifted no task"
+        t += (", made none detectably worse" if not down else
+              ", lowered " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in down))
+        if r1:
+            t += (f", and kept the retention task R1 at {r1['b']} of {r1['n']}" if r1["delta"] == 0 else
+                  f", and moved the retention task R1 from {r1['a']} to {r1['b']} of {r1['n']}")
+        parts.append(t + ".")
+    if waiting:
+        parts.append(f"{and_list(waiting)}: {RUNNING}.")
+    items.append(dict(id="side-effects", lead="Side effects", kind=None, tag=None, text=" ".join(parts)))
+
+    note = ("Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. "
+            + ("π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs "
+               "replace them as they land." if models["pi05"]["status"] == "measured" else
+               "All three models are scored on the shared slots."))
+    return dict(items=items, note=note)
+
+
+def tldr_html(t):
+    run = '<span class="run">running</span>'
+    out = []
+    for it in t["items"]:
+        lead = f'<b>{esc(it["lead"])}</b>' + (f' <span class="tk">{esc(it["kind"])}</span>' if it.get("kind") else "")
+        tag = f' <span class="tag">{esc(it["tag"])}</span>' if it.get("tag") else ""
+        out.append(f'<li data-id="{esc(it["id"])}"><span class="tl">{lead}{tag}</span> '
+                   f'{esc(it["text"]).replace(esc(RUNNING), run)}</li>')
+    return "".join(out)
+
+
+# One line per section: what it shows. Titles are read from the page's h2s so the list follows the page.
+SECTION_LINES = {
+    "question": "What editing did on π0.5, and what we ask of the NVIDIA models.",
+    "models": "Architecture, where the instruction enters, where an edit can go.",
+    "experiments": "The six experiments every model runs, one line each.",
+    "glance": "One table: what an edit did on each task, per model.",
+    "clips": "Video: the three models on one start; each before and after its edit.",
+    "failure-map": "Unedited success on each task; the render-preset check.",
+    "wording": "Original against clearer wording, unedited: the gap to distil.",
+    "edits": "Gain on unseen starts, random control, recovery, where to edit, size.",
+    "after": "The main edit on every other task: transfer, harm, retention.",
+    "caveats": "Simulation, checkpoints, sample sizes, earlier records, noise floor.",
+    "method": "The closed-form edit, statistics, and links to paper, code, records.",
+}
+
+
+def page_sections(page):
+    secs = []
+    for sid, title in re.findall(r'<section id="([a-z0-9-]+)"[^>]*>\s*<h2[^>]*>(.*?)</h2>', page, re.S):
+        if sid == "tldr":
+            continue
+        title = html.unescape(re.sub(r"<[^>]+>", "", title)).strip()
+        if sid not in SECTION_LINES:
+            print(f"  WARNING: no overview line for section #{sid}; add it to SECTION_LINES")
+        secs.append(dict(id=sid, title=title, line=SECTION_LINES.get(sid, "")))
+    return secs
+
+
+def toc_html(secs):
+    return "".join(f'<li><a href="#{esc(x["id"])}">{esc(x["title"])}</a><span class="tline">{esc(x["line"])}</span></li>'
+                   for x in secs)
+
+
 def print_pdf(src_html, pdf):
     """Print brief.html to one Letter page: step down the zoom (body data-fit 0-3) until it fits."""
     if not Path(CHROME).exists():
@@ -2099,6 +2268,7 @@ def main():
     for mid in ("cosmos", "groot"):
         if rc[mid]["where"].get("_bars"):
             WHERE_OTHER[mid] = rc[mid]["where"]["_bars"]
+    page = (OUT / "index.html").read_text()
     data = {
         "title": "Weight editing across robot models",
         "question": "A world-action model and a reasoning-backbone VLA: where does weight-space programming fix failures?",
@@ -2106,6 +2276,8 @@ def main():
         "shared_slots": SHARED_SLOTS,
         "models": [dict(id=mid, **models[mid]) for mid in ORDER],
         "tasks": [dict(id=t[0], name=t[1], robolab=t[2], pi05_failure=t[4]) for t in TASKS],
+        "tldr": tldr(tables, models),
+        "sections": page_sections(page),
         "summary": summary,
         "tables": tables,
         "cross_rows": {mid: [{k: v for k, v in r.items() if k != "_extra"} | ({"extra": r["_extra"]} if r["_extra"] else {})
@@ -2135,7 +2307,9 @@ def main():
         print(f"checked {len(FIGS) * 4 + len(BRIEF_FIGS)} figure files in {FIG.relative_to(ROOT)}/")
 
     idx = OUT / "index.html"
-    page = idx.read_text()
+    page = replace_region(page, "tldr", tldr_html(data["tldr"]))
+    page = replace_region(page, "tldr-note", esc(data["tldr"]["note"]))
+    page = replace_region(page, "toc", toc_html(data["sections"]))
     page = replace_region(page, "stamp", esc(f"{data['status_text']} · updated {data['updated_text']}"))
     page = replace_region(page, "models", models_html(models))
     page = replace_region(page, "render-note", render_note(tables))

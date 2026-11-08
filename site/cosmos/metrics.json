@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "8f97aa4cbf67"
+    "commit": "3800a2b1f4bb"
    }
   },
   {
@@ -56,7 +56,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "d352a51ab67f"
+    "commit": "a95ec9ca10b2"
    }
   }
  ],
@@ -114,6 +114,96 @@
    "name": "Retention task",
    "robolab": "RubiksCubeTask",
    "pi05_failure": "already solved"
+  }
+ ],
+ "tldr": {
+  "items": [
+   {
+    "id": "pi05",
+    "lead": "π0.5",
+    "kind": "OpenPI VLA, control",
+    "tag": "earlier records",
+    "text": "Edits lifted success on T1 from 27 to 106 of 128 unseen starts (p = 7.2 × 10⁻²²) and on T8 from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). A random edit of the same size scored 9 of 64 on T1, against 13 unedited. No detectable gain on T4–T7, failures of perception, contact or missing skill."
+   },
+   {
+    "id": "cosmos",
+    "lead": "Cosmos3 Edge Policy",
+    "kind": "world-action model",
+    "tag": null,
+    "text": "Failure map and edits: {running}."
+   },
+   {
+    "id": "groot",
+    "lead": "GR00T N1.7",
+    "kind": "reasoning-backbone VLA",
+    "tag": null,
+    "text": "Failure map and edits: {running}. First finding: on the same 16 starts of banana onto plate it succeeded 5 times under RoboLab’s performance render preset and 16 under the default preset, so all three models are compared under the default."
+   },
+   {
+    "id": "side-effects",
+    "lead": "Side effects",
+    "kind": null,
+    "tag": null,
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy and GR00T N1.7: {running}."
+   }
+  ],
+  "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
+ },
+ "sections": [
+  {
+   "id": "question",
+   "title": "The question",
+   "line": "What editing did on π0.5, and what we ask of the NVIDIA models."
+  },
+  {
+   "id": "models",
+   "title": "Three models",
+   "line": "Architecture, where the instruction enters, where an edit can go."
+  },
+  {
+   "id": "experiments",
+   "title": "Experiments in this comparison",
+   "line": "The six experiments every model runs, one line each."
+  },
+  {
+   "id": "glance",
+   "title": "At a glance",
+   "line": "One table: what an edit did on each task, per model."
+  },
+  {
+   "id": "clips",
+   "title": "Same start, three models",
+   "line": "Video: the three models on one start; each before and after its edit."
+  },
+  {
+   "id": "failure-map",
+   "title": "1. Failure map",
+   "line": "Unedited success on each task; the render-preset check."
+  },
+  {
+   "id": "wording",
+   "title": "2. Wording sensitivity",
+   "line": "Original against clearer wording, unedited: the gap to distil."
+  },
+  {
+   "id": "edits",
+   "title": "3. The edit and its controls",
+   "line": "Gain on unseen starts, random control, recovery, where to edit, size."
+  },
+  {
+   "id": "after",
+   "title": "4. After the edit: does everything else still work?",
+   "line": "The main edit on every other task: transfer, harm, retention."
+  },
+  {
+   "id": "caveats",
+   "title": "5. Caveats",
+   "line": "Simulation, checkpoints, sample sizes, earlier records, noise floor."
+  },
+  {
+   "id": "method",
+   "title": "Method and reproducibility",
+   "line": "The closed-form edit, statistics, and links to paper, code, records."
   }
  ],
  "summary": {
@@ -734,6 +824,9 @@
        "color": "teal",
        "fl": "T1 Cube then banana",
        "fb": "T1 distilled",
+       "fx": 81,
+       "br": 2,
+       "pv": 7.210946989931019e-22,
        "prov": true
       }
      }
@@ -768,6 +861,9 @@
        "color": "teal",
        "fl": "T1, packaged tool, end to end",
        "fb": "T1 packaged tool",
+       "fx": 33,
+       "br": 5,
+       "pv": 4.255962267052382e-06,
        "prov": true
       }
      }
@@ -802,6 +898,9 @@
        "color": "dark",
        "fl": "T1, blind editor's own edit",
        "fb": "T1 blind editor",
+       "fx": 22,
+       "br": 6,
+       "pv": 0.0037191659212112427,
        "prov": true
       }
      }
@@ -836,6 +935,9 @@
        "color": "dark",
        "fl": "T2 Eyeglasses, blind editor",
        "fb": "T2 blind editor",
+       "fx": 18,
+       "br": 9,
+       "pv": 0.12207812070846558,
        "prov": true
       }
      }
@@ -916,6 +1018,9 @@
        "color": "dark",
        "fl": "T5 Mustard into left bin, blind editor",
        "fb": "T5 blind editor",
+       "fx": 9,
+       "br": 6,
+       "pv": 0.60723876953125,
        "prov": true
       }
      }
@@ -950,6 +1055,9 @@
        "color": "dark",
        "fl": "T6 Stack three cubes, blind editor",
        "fb": "T6 blind editor",
+       "fx": 17,
+       "br": 13,
+       "pv": 0.584664711728692,
        "prov": true
       }
      }
@@ -1007,6 +1115,9 @@
        "color": "teal",
        "fl": "T8 Mustard, reference-first",
        "fb": "T8 distilled",
+       "fx": 27,
+       "br": 0,
+       "pv": 1.4901161193847656e-08,
        "prov": true
       }
      }
@@ -4098,7 +4209,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "8f97aa4cbf67"
+   "commit": "3800a2b1f4bb"
   },
   "groot": {
    "kind": "none",
@@ -4110,12 +4221,12 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "d352a51ab67f"
+   "commit": "a95ec9ca10b2"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "2f7f85fa31881a5f",
- "updated": "2026-11-08T05:30Z",
- "updated_text": "8 Nov 2026, 05:30 UTC",
+ "content_hash": "1b65ec8d9fb6bc05",
+ "updated": "2026-11-08T05:44Z",
+ "updated_text": "8 Nov 2026, 05:44 UTC",
  "status_text": "Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records"
 }

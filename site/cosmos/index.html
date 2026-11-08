@@ -21,7 +21,7 @@
 
 <div class="draft" role="note">
   <div class="draft-in">
-    <p><b>Draft for discussion, numbers update as runs finish.</b> <span class="stamp" id="stamp"><!-- gen:stamp -->Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records · updated 8 Nov 2026, 05:30 UTC<!-- /gen:stamp --></span></p>
+    <p><b>Draft for discussion, numbers update as runs finish.</b> <span class="stamp" id="stamp"><!-- gen:stamp -->Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records · updated 8 Nov 2026, 05:44 UTC<!-- /gen:stamp --></span></p>
   </div>
 </div>
 
@@ -44,6 +44,17 @@
     <h1>Where does weight-space programming fix failures?</h1>
     <p class="dek">A world-action model, NVIDIA Cosmos3 Edge Policy, and a VLA on a reasoning backbone, NVIDIA GR00T N1.7, on the same RoboLab DROID tasks and starts, scored the same way, with π0.5 as the control.</p>
   </header>
+
+  <section id="tldr" class="tldr" aria-labelledby="tldr-h">
+    <h2 id="tldr-h">TL;DR</h2>
+    <ul data-tldr><!-- gen:tldr --><li data-id="pi05"><span class="tl"><b>π0.5</b> <span class="tk">OpenPI VLA, control</span> <span class="tag">earlier records</span></span> Edits lifted success on T1 from 27 to 106 of 128 unseen starts (p = 7.2 × 10⁻²²) and on T8 from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). A random edit of the same size scored 9 of 64 on T1, against 13 unedited. No detectable gain on T4–T7, failures of perception, contact or missing skill.</li><li data-id="cosmos"><span class="tl"><b>Cosmos3 Edge Policy</b> <span class="tk">world-action model</span></span> Failure map and edits: <span class="run">running</span>.</li><li data-id="groot"><span class="tl"><b>GR00T N1.7</b> <span class="tk">reasoning-backbone VLA</span></span> Failure map and edits: <span class="run">running</span>. First finding: on the same 16 starts of banana onto plate it succeeded 5 times under RoboLab’s performance render preset and 16 under the default preset, so all three models are compared under the default.</li><li data-id="side-effects"><span class="tl"><b>Side effects</b></span> π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy and GR00T N1.7: <span class="run">running</span>.</li><!-- /gen:tldr --></ul>
+    <p class="tldr-note" data-tldr-note><!-- gen:tldr-note -->Lifted and worse mean an exact McNemar p &lt; 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land.<!-- /gen:tldr-note --></p>
+  </section>
+
+  <nav id="contents" class="toc" aria-labelledby="toc-h">
+    <h2 id="toc-h">On this page</h2>
+    <ul><!-- gen:toc --><li><a href="#question">The question</a><span class="tline">What editing did on π0.5, and what we ask of the NVIDIA models.</span></li><li><a href="#models">Three models</a><span class="tline">Architecture, where the instruction enters, where an edit can go.</span></li><li><a href="#experiments">Experiments in this comparison</a><span class="tline">The six experiments every model runs, one line each.</span></li><li><a href="#glance">At a glance</a><span class="tline">One table: what an edit did on each task, per model.</span></li><li><a href="#clips">Same start, three models</a><span class="tline">Video: the three models on one start; each before and after its edit.</span></li><li><a href="#failure-map">1. Failure map</a><span class="tline">Unedited success on each task; the render-preset check.</span></li><li><a href="#wording">2. Wording sensitivity</a><span class="tline">Original against clearer wording, unedited: the gap to distil.</span></li><li><a href="#edits">3. The edit and its controls</a><span class="tline">Gain on unseen starts, random control, recovery, where to edit, size.</span></li><li><a href="#after">4. After the edit: does everything else still work?</a><span class="tline">The main edit on every other task: transfer, harm, retention.</span></li><li><a href="#caveats">5. Caveats</a><span class="tline">Simulation, checkpoints, sample sizes, earlier records, noise floor.</span></li><li><a href="#method">Method and reproducibility</a><span class="tline">The closed-form edit, statistics, and links to paper, code, records.</span></li><!-- /gen:toc --></ul>
+  </nav>
 
   <section id="question">
     <h2>The question</h2>
