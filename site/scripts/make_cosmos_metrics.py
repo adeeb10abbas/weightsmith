@@ -88,15 +88,16 @@ MODELS = {
     ),
     "groot": dict(
         name="GR00T N1.7", short="reasoning-backbone VLA", kind="NVIDIA vision-language-action policy",
-        status="running", checkpoint="GR00T N1.7 DROID",
-        architecture="A Cosmos-Reason2-2B vision-language backbone reads the camera images and the instruction; a "
-                     "diffusion-transformer action head generates the action chunk from the backbone's token "
-                     "embeddings and the robot state. Layer counts, and which backbone layer feeds the head, are "
-                     "recorded with its run.",
-        entry="As text tokens in the Cosmos-Reason2 backbone, next to the image tokens. The action head sees the "
-              "instruction only through the backbone's embeddings.",
+        status="running", checkpoint="`nvidia/GR00T-N1.7-DROID` at `05e7cc9`, 3.14B parameters",
+        architecture="A Cosmos-Reason2-2B vision-language backbone (Qwen3-VL), cut to its first 16 language layers, reads an "
+                     "exterior and a wrist camera (180 × 320 each) and the instruction. The action head, 4 self-attention "
+                     "layers and 32 diffusion-transformer blocks, turns the backbone's tokens and the robot state into "
+                     "40-step chunks by flow matching; the first 8 steps run at 15 Hz.",
+        entry="As text tokens in the Cosmos-Reason2 backbone, next to the image tokens (lowercased, punctuation removed). "
+              "The action head reads the instruction only through the backbone's tokens.",
         where="Cosmos-Reason2 backbone / diffusion action head",
-        evaluation="Closed loop on the shared RoboLab DROID tasks and slots.",
+        evaluation="Closed loop on the shared RoboLab DROID tasks and slots, NVIDIA's validated client and embodiment "
+                   "setting.",
     ),
     "pi05": dict(
         name="π0.5", short="OpenPI VLA, control", kind="OpenPI vision-language-action policy, the control",
@@ -108,8 +109,9 @@ MODELS = {
               "bidirectional attention, so the image tokens read the instruction. The distilled edit goes into the "
               "VLM's MLP weights.",
         where="VLM / action expert / action head",
-        evaluation="Closed loop on RoboLab in Isaac Sim. Until its shared-slot runs land, its cells are earlier records, "
-                   "each labelled with its own slots and number of starts. Trained on DROID data and none of these tasks.",
+        evaluation="Closed loop on RoboLab in Isaac Sim. Until its shared-slot runs land, its cells are earlier records "
+                   "(RTX 3090, performance render preset), each tagged with its own slots and number of starts. Trained on "
+                   "DROID data and none of these tasks.",
     ),
 }
 
@@ -475,7 +477,8 @@ def pi05_cells(P):
     def ho_cell(r, what, color="teal", fl=None, fb=None):
         return C(f"{r['base']} → {r['cand']} of {r['n']}",
                  f"{what}; {r['fixed']} / {r['broke']}, p = {fp(r['p'])}; {fci(*r['ci'])}; {slots_txt(r['slots'])}",
-                 src=r["src"], a=r["base"], b=r["cand"], n=r["n"], ci=list(r["ci"]), color=color, fl=fl, fb=fb)
+                 src=r["src"], a=r["base"], b=r["cand"], n=r["n"], ci=list(r["ci"]), color=color, fl=fl, fb=fb,
+                 fx=r["fixed"], br=r["broke"], pv=r["p"])
 
     t4, t7, bd3 = P["t4_edits"], P["t7_edits"], P["blind_dev"]["T3"]
     G = T["edit_gain"]
@@ -658,6 +661,8 @@ def nk(s):
 
 
 def as_int(x):
+    if isinstance(x, dict):
+        return as_int(x.get("k", x.get("success")))
     if isinstance(x, bool) or x is None:
         return None
     if isinstance(x, (int, float)):
@@ -723,8 +728,16 @@ def edit_task_of(r):
     t = task_id(r.get("edit_task"))
     if t:
         return t
-    m = re.search(r"\b([TR][1-8])\b\s*(?:edit|'s edit)", describe(r.get("experiment")) or "", re.I)
-    return m.group(1).upper() if m else None
+    for f in ("experiment", "notes"):
+        m = re.search(r"\b([TR][1-8])\b\s*(?:edit|'s edit)", describe(r.get(f)) or "", re.I)
+        if m:
+            return m.group(1).upper()
+    return None
+
+
+def edit_name(r):
+    e = r.get("experiment_edit") if "experiment_edit" in r else r["_extra"].get("edit")
+    return (e.get("name") if isinstance(e, dict) else describe(e)) or None
 
 
 def normalize(row):
@@ -801,15 +814,23 @@ def read_cross(args, meta_out):
             if rows is None:
                 rows = [data]
         norm, unknown = [], set()
+        file_status = str(meta.get("status", "")).lower()
         for r in rows or []:
             if not isinstance(r, dict):
                 continue
             nr, extra = normalize(r)
-            unknown |= set(extra)
+            unknown |= set(extra) - {"status", "edit", "hardware", "source", "values_changed_note"}
             nr["_extra"] = extra
             nr["_task"] = task_id(nr.get("code")) or task_id(nr.get("task"))
             nr["_edit_task"] = edit_task_of(nr)
+            nr["_prov"] = str(extra.get("status") or file_status).lower() == "provisional"
             norm.append(nr)
+        # side-effect rows that name the edit (e.g. "v2mi-f") instead of its task: map the name to the task it was built for
+        built = {edit_name(r): r["_task"] for r in norm if edit_name(r) and r["_task"]
+                 and not re.search(r"side|transfer", nk(describe(r.get("experiment")) or ""))}
+        for r in norm:
+            if not r["_edit_task"] and re.search(r"side|transfer", nk(describe(r.get("experiment")) or "")):
+                r["_edit_task"] = built.get(edit_name(r))
         out[mid] = dict(rows=norm, meta=meta, unknown=sorted(unknown),
                         final=str(meta.get("status", "")).lower() in ("final", "done", "complete", "finished"))
         meta_out[mid] = where
@@ -834,8 +855,14 @@ def loc_class(s):
 
 
 def ints(r):
-    return {k: as_int(r.get(k)) for k in ("n", "unedited_k", "edited_k", "fixed", "broke", "control_k", "teacher_k",
-                                          "rerun_k")}
+    """Counts of one row. A control or teacher given as {k, n} on a different number of starts is not paired."""
+    out = {k: as_int(r.get(k)) for k in ("n", "unedited_k", "edited_k", "fixed", "broke", "control_k", "teacher_k",
+                                         "rerun_k")}
+    for k in ("control_k", "teacher_k"):
+        v = r.get(k)
+        if isinstance(v, dict) and as_int(v.get("n")) not in (None, out["n"]):
+            out[k] = None
+    return out
 
 
 def stat(r):
@@ -876,12 +903,13 @@ def row_cells(src):
     for tid, rs in by_task.items():
         rs = sorted(rs, key=lambda r: not (r.get("headline") is True or as_int(r.get("headline")) == 1))
         un = [r for r in rs if None not in (as_int(r.get("unedited_k")), as_int(r.get("n")))]
-        un = [r for r in un if "failure" in nk(describe(r.get("experiment")) or "")] or un
+        un = ([r for r in un if "failure" in nk(describe(r.get("experiment")) or "")]
+              or [r for r in un if as_int(r.get("edited_k")) is None and as_int(r.get("teacher_k")) is None] or un)
         if un:
             r = max(un, key=lambda r: as_int(r.get("n")))
             k, n = as_int(r.get("unedited_k")), as_int(r.get("n"))
             T["failure_map"][tid] = C(f"{k} of {n}", "; ".join(x for x in (pct(k, n), where_txt(r)) if x), k=k, n=n)
-        tw = [r for r in rs if None not in (as_int(r.get("unedited_k")), as_int(r.get("teacher_k")), as_int(r.get("n")))]
+        tw = [r for r in rs if None not in (ints(r)["unedited_k"], ints(r)["teacher_k"], ints(r)["n"])]
         if tw:
             r = tw[0]
             i = ints(r)
@@ -916,11 +944,13 @@ def row_cells(src):
         det += [where_txt(r)] + [x for x in (p_note, ci_note) if x]
         if len(ed) > 1:
             det.append(f"{len(ed) - 1} more edit(s) on this task in the where-to-edit table")
+        short_loc = (loc[:26] + "…") if loc and len(loc) > 27 else loc
         cell = C(f"{i['unedited_k']} → {i['edited_k']}" + (f" of {i['n']}" if i["n"] else ""),
-                 "; ".join(x for x in det if x), a=i["unedited_k"], b=i["edited_k"], n=i["n"],
+                 "; ".join(x for x in det if x), a=i["unedited_k"], b=i["edited_k"], n=i["n"], fx=i["fixed"], br=i["broke"],
+                 pv=p,
                  ci=[d, *ci] if (ci is not None and d is not None) else None,
                  color="teal" if loc_class(loc) in (None, "backbone", "both") else "dark",
-                 fl=f"{tid} {SHORT[tid]}" + (f", {loc}" if loc else ""), fb=f"{tid}" + (f" {loc}"[:18] if loc else ""))
+                 fl=f"{tid} {SHORT[tid]}" + (f", {short_loc}" if loc else ""), fb=f"{tid}" + (f" {loc}"[:18] if loc else ""))
         if tid == "R1":
             T["retention"]["R1"] = cell
         else:
@@ -955,13 +985,16 @@ def row_cells(src):
         et = main["_task"]
         items = [(et, main, True)]
         items += [(r["_task"], r, False) for r in rows if r["_edit_task"] == et and r["_task"] and r["_task"] != et]
-        tr = main.get("transfer")
-        for it in (tr if isinstance(tr, list) else [tr] if isinstance(tr, dict) else []):
-            if isinstance(it, dict):
-                nr, _ = normalize(it)
-                tid = task_id(nr.get("task"))
-                if tid and tid != et:
-                    items.append((tid, nr, False))
+        for field in ("transfer", "retention"):
+            tr = main.get(field)
+            if isinstance(tr, dict) and tr and all(task_id(k) for k in tr):
+                tr = [dict(v, task=k) for k, v in tr.items() if isinstance(v, dict)]
+            for it in (tr if isinstance(tr, list) else [tr] if isinstance(tr, dict) else []):
+                if isinstance(it, dict):
+                    nr, _ = normalize(it)
+                    tid = task_id(nr.get("task"))
+                    if tid and tid != et:
+                        items.append((tid, nr, False))
         for tid, r, target in items:
             i, p, p_note, _, _, _ = stat(r)
             if i["edited_k"] is None or i["unedited_k"] is None:
@@ -977,9 +1010,11 @@ def row_cells(src):
                                                           if main.get("edit_location") else ""))
     # where to edit: every edit with a location, on its task
     locs = [r for r in own if loc_class(describe(r.get("edit_location"))) and as_int(r.get("edited_k")) is not None]
+    locs = [r for r in locs if "where" in nk(describe(r.get("experiment")) or "")] or locs
     if locs:
         t0 = locs[0]["_task"]
-        same = [r for r in locs if r["_task"] == t0]
+        same = [r for r in locs if r["_task"] == t0 and as_int(r.get("n")) == as_int(locs[0].get("n"))
+                and describe(r.get("slots")) == describe(locs[0].get("slots"))]
         n0 = as_int(same[0].get("n"))
         T["where"]["starts"] = C(f"{t0}, {n0} starts" if n0 else t0, where_txt(same[0]) or None)
         if as_int(same[0].get("unedited_k")) is not None:
@@ -996,9 +1031,69 @@ def row_cells(src):
     return T
 
 
+# ---------------------------------------------------------------- rendering sensitivity (validation records)
+RENDER = {  # per model: the same starts under RoboLab's performance preset and its default preset
+    "groot": dict(branch="cross-groot/v1", task="Banana onto plate", robolab="BananaOnPlateTask",
+                  perf="study/results/cross/groot/results/validation/smoke-bop-s0.json",
+                  default="study/results/cross/groot/results/validation/smoke-bop-s0-default.json",
+                  official="study/results/cross/groot/results/validation/official-bop16.episode_results.jsonl"),
+}
+
+
+def branch_text(branch, rel):
+    """A file from origin/<branch>, or from this checkout once merged."""
+    if git("rev-parse", "--verify", "--quiet", f"origin/{branch}"):
+        t = git("show", f"origin/{branch}:{rel}")
+        if t is not None:
+            return t, f"{branch}:{rel}"
+    if (ROOT / rel).exists():
+        return (ROOT / rel).read_text(), rel
+    return None, None
+
+
+def render_cells(cross):
+    """{model: cell} for the render-preset pair, from validation records or from rows marked render / preset."""
+    out = {}
+    for mid, spec in RENDER.items():
+        tp, sp = branch_text(spec["branch"], spec["perf"])
+        td, sd = branch_text(spec["branch"], spec["default"])
+        if not (tp and td):
+            continue
+        perf, dflt = json.loads(tp), json.loads(td)
+        assert perf.get("rendering") in (None, "performance") and dflt.get("rendering") == "default", "render presets"
+        a = {r["slot"]: bool(r["success"]) for r in perf["rows"] if r.get("ok", True)}
+        b = {r["slot"]: bool(r["success"]) for r in dflt["rows"] if r.get("ok", True)}
+        assert sorted(a) == sorted(b) and perf["task"] == dflt["task"] == spec["robolab"]
+        n, ka, kb = len(a), sum(a.values()), sum(b.values())
+        fx, br = sum((not a[s_]) and b[s_] for s_ in a), sum(a[s_] and not b[s_] for s_ in a)
+        srcs = [sp, sd]
+        extra = ""
+        to, so = branch_text(spec["branch"], spec["official"])
+        if to:
+            eps = [json.loads(l) for l in to.splitlines() if l.strip()]
+            extra = f"; NVIDIA's own serving path, default preset: {sum(bool(e['success']) for e in eps)} of {len(eps)}"
+            srcs.append(so)
+        out[mid] = C(f"{ka} → {kb} of {n}", f"performance → default; {spec['task']}, the same {n} starts (slots "
+                     f"{min(a)}–{max(a)}); {fx} / {br}, p = {fp(mcnemar(fx, br))}{extra}", src=srcs,
+                     a=ka, b=kb, n=n, task=spec["task"])
+    for mid in ORDER:  # rows a track adds to its metrics file: experiment "render..." with performance / default counts
+        if mid in out or not cross.get(mid):
+            continue
+        rr = [r for r in cross[mid]["rows"] if re.search(r"render|preset", nk(describe(r.get("experiment")) or ""))]
+        pk = [r for r in rr if as_int(r["_extra"].get("performance_k")) is not None and as_int(r["_extra"].get("default_k")) is not None]
+        if pk:
+            r = pk[0]
+            ka, kb, n = as_int(r["_extra"]["performance_k"]), as_int(r["_extra"]["default_k"]), as_int(r.get("n"))
+            out[mid] = C(f"{ka} → {kb}" + (f" of {n}" if n else ""), "; ".join(x for x in (
+                "performance → default", describe(r.get("task")), where_txt(r)) if x), a=ka, b=kb, n=n)
+    return out
+
+
 # ---------------------------------------------------------------- tables
 TABLES = [
     ("failure_map", "Failure map", "Success of the unedited model on each task, and how it fails where diagnosed."),
+    ("render", "Rendering sensitivity",
+     "The unedited model on the same starts under RoboLab's performance render preset and its default preset."),
     ("wording", "Wording sensitivity",
      "The unedited model under the original and the clear wording of the same goal, on the same starts."),
     ("edit_gain", "Edits on unseen starts",
@@ -1030,9 +1125,12 @@ ROW_ORDER = {
 PI_ONLY = {"T1b", "T1c", "T1v", "clear", "offline", "edited2", "butter", "typical"}
 
 NOTES = {
-    "failure_map": "Until its shared-slot runs land, π0.5's cells are earlier records: 32 development starts per task for "
-                   "T1–T7 (the blind-editor study), 32 practice starts for T8, 32 starts for R1 (cube into the bowl). Its "
-                   "unedited rate on T1 ranged from 8% to 21% across six start sets, so compare models on the shared slots.",
+    "render": "The performance preset renders without the RTX denoiser, which leaves speckle noise on every surface; the "
+              "default preset is NVIDIA's validated configuration. All three models are compared under the default "
+              "preset. π0.5's earlier records, including the paper's, used the performance preset.",
+    "failure_map": "Until its shared-slot runs land, π0.5's cells are earlier records: for each task the largest earlier "
+                   "run, on its own slots, as the π0.5 track lists them with every other measurement. Its unedited rate "
+                   "on T1 ranged from 8% to 21% across six start sets, so compare models on the shared slots.",
     "wording": "Reference-first describes the placement from the reference object's side, target-first from the moved "
                "object's side. In the earlier Same Goal, Different Words study (8 starting layouts per goal, no paired "
                "starts), reference-first wording lowered stable placement by 8.1 points for Cosmos3 Edge across 12 goals; "
@@ -1058,24 +1156,65 @@ NOTES = {
 }
 
 
-def merge_pi(prov, shared):
-    """pi0.5: a shared-slot cell wins; the earlier record stays in its detail line."""
-    if shared and shared["s"] == "ok":
-        c = dict(shared)
-        if prov and prov["s"] == "ok":
-            c["d"] = "; ".join(x for x in (c.get("d"), f"earlier record: {prov['v']}") if x)
+def merge_cell(tid, key, fresh, track_prov, mine):
+    """A shared-slot (fresh) cell wins and names the earlier record; otherwise the earlier record, tagged as such.
+    The track's own provisional rows fill the failure map and side-effect map; elsewhere the records read here do."""
+    earlier = None
+    if track_prov and tid in ("failure_map", "side_effects"):
+        earlier = dict(track_prov)
+        if mine and tid == "failure_map":
+            how = TASK.get(key, (None,) * 5)[4]
+            earlier["d"] = "; ".join(x for x in (earlier.get("d"), how if key in TASK and how != "already solved" else None) if x)
+    earlier = earlier or (dict(mine) if mine else (dict(track_prov) if track_prov else None))
+    if fresh and fresh["s"] == "ok":
+        c = dict(fresh)
+        if earlier and earlier["s"] == "ok":
+            c["d"] = "; ".join(x for x in (c.get("d"), f"earlier slots: {earlier['v']}") if x)
         return c
-    if prov:
-        return dict(prov, prov=True)
+    if earlier:
+        if earlier["s"] == "ok":
+            earlier["prov"] = True
+        return earlier
     return None
+
+
+def cross_check(prov, rcp):
+    """Numbers that both the records read here and the pi0.5 track's provisional file give must agree."""
+    bad = []
+    for tid in ("edit_gain", "side_effects", "wording"):
+        for key, mine in prov[tid].items():
+            theirs = rcp["pi05"][tid].get(key)
+            if not theirs or mine["s"] != "ok" or theirs["s"] != "ok":
+                continue
+            fields = [f for f in ("a", "b", "n", "delta") if f in mine and f in theirs]
+            if any(mine[f] != theirs[f] for f in fields):
+                bad.append(f"{tid}/{key}: {mine['v']} here vs {theirs['v']} in metrics_pi05.json")
+    for b in bad:
+        print("  CHECK", b)
+    return bad
 
 
 def build_tables(P, cross):
     prov, labels = pi05_cells(P)
-    rc = {mid: row_cells(cross.get(mid)) for mid in ORDER}
+
+    def subset(src, provisional):
+        return dict(src, rows=[r for r in src["rows"] if r["_prov"] == provisional]) if src else None
+
+    rc = {mid: row_cells(subset(cross.get(mid), False)) for mid in ORDER}   # shared-slot runs
+    rcp = {mid: row_cells(subset(cross.get(mid), True)) for mid in ORDER}   # a track's earlier records
+    cross_check(prov, rcp)
     tables = []
     order = {t[0]: i for i, t in enumerate(TASKS)}
+    rcell = render_cells(cross)
     for tid, title, definition in TABLES:
+        if tid == "render":
+            row = {"key": "render", "label": "Same starts: performance → default preset", "cells": {}}
+            for mid in ORDER:
+                src = cross.get(mid)
+                row["cells"][mid] = rcell.get(mid) or (NA if (src and src["final"]) else RUN)
+            srcs = sorted({x for c in row["cells"].values() for x in c.get("src", [])})
+            tables.append(dict(id=tid, title=title, definition=definition, rows=[row], note=NOTES.get(tid), sources=srcs))
+            continue
         keys = list(dict.fromkeys(ROW_ORDER.get(tid, []) + list(prov[tid])
                                   + [k for m in ORDER for k in rc[m][tid] if k in TASK]))
         if tid in TASK_TABLES:
@@ -1088,8 +1227,8 @@ def build_tables(P, cross):
             cells = {}
             for mid in ORDER:
                 src = cross.get(mid)
-                got = rc[mid][tid].get(key)
-                cell = merge_pi(prov[tid].get(key), got) if mid == "pi05" else got
+                cell = merge_cell(tid, key, rc[mid][tid].get(key), rcp[mid][tid].get(key),
+                                  prov[tid].get(key) if mid == "pi05" else None)
                 if cell is None:
                     cell = NA if (key in PI_ONLY or (src and src["final"])) else RUN
                 cells[mid] = cell
@@ -1105,10 +1244,11 @@ def build_tables(P, cross):
         srcs = sorted({s for r in rows for c in r["cells"].values() for s in c.get("src", [])})
         t = dict(id=tid, title=title, definition=definition, rows=rows, note=NOTES.get(tid), sources=srcs)
         if tid == "side_effects":
-            t["edit"] = {mid: (rc[mid]["side_effects"].get("_edit") or {}).get("v") or
-                         (labels["side_effects_edit"] if mid == "pi05" else None) for mid in ORDER}
+            t["edit"] = {mid: (rc[mid]["side_effects"].get("_edit") or {}).get("v")
+                         or (labels["side_effects_edit"] if mid == "pi05" else None)
+                         or (rcp[mid]["side_effects"].get("_edit") or {}).get("v") for mid in ORDER}
         tables.append(t)
-    return tables, rc, prov
+    return tables, rc, prov, rcp
 
 
 def summary_table(P, tables, cross, rc):
@@ -1116,13 +1256,13 @@ def summary_table(P, tables, cross, rc):
     e, c, w, s4ho, bl, tx = P["edit"], P["ctl"], P["where"], P["s4ho"], P["blind"], P["where"]["tx"]
     pi = {
         "T1": C(f"fixed: {e['base']} → {e['cand']} of {e['n']}", f"distilled edit; {e['fixed']} / {e['broke']}, p = {fp(e['p'])}"),
-        "T2": C(f"lifted by the T1 edit: {P['eye']['base']} → {P['eye']['cand']} of {P['eye']['n']}",
-                f"its own edit: {bl['T2']['base']} → {bl['T2']['cand']} of {bl['T2']['n']}, not significant"),
-        "T3": C(f"lifted by the T1 edit: {P['left']['base']} → {P['left']['cand']} of {P['left']['n']}", "no own edit submitted"),
-        "T4": C("no gain", "lookalike perception; no clear wording to distil"),
-        "T5": C("no gain", f"its own edit: {bl['T5']['base']} → {bl['T5']['cand']} of {bl['T5']['n']}; the grasp slips"),
-        "T6": C("no gain", f"its own edit: {bl['T6']['base']} → {bl['T6']['cand']} of {bl['T6']['n']}"),
-        "T7": C("no gain", "a skill the policy lacks; 0 of 64 unedited"),
+        "T2": C(f"T1 edit: {P['eye']['base']} → {P['eye']['cand']} of {P['eye']['n']}",
+                f"own edit {bl['T2']['base']} → {bl['T2']['cand']} of {bl['T2']['n']}, not significant"),
+        "T3": C(f"T1 edit: {P['left']['base']} → {P['left']['cand']} of {P['left']['n']}", "no own edit submitted"),
+        "T4": C("no gain", "lookalike perception; no clear wording"),
+        "T5": C("no gain", f"own edit {bl['T5']['base']} → {bl['T5']['cand']} of {bl['T5']['n']}; the grasp slips"),
+        "T6": C("no gain", f"own edit {bl['T6']['base']} → {bl['T6']['cand']} of {bl['T6']['n']}"),
+        "T7": C("no gain", "a missing skill; 0 of 64 unedited"),
         "T8": C(f"fixed: {s4ho['base']} → {s4ho['cand']} of {s4ho['n']}", f"distilled edit; {s4ho['fixed']} / {s4ho['broke']}, "
                                                                           f"p = {fp(s4ho['p'])}"),
         "R1": C(f"kept: {tx['cube']['base']} → {tx['cube']['arms']['v1full']} of {tx['cube']['n']}", "cube into the bowl, T1 edit"),
@@ -1138,17 +1278,24 @@ def summary_table(P, tables, cross, rc):
             g = rc[mid]["edit_gain" if tid != "R1" else "retention"].get(tid)
             u = rc[mid]["failure_map"].get(tid)
             if g:
-                cell = C(g["v"], g.get("d"))
-            elif u:
-                cell = C(f"unedited {u['v']}", "not edited" if (src and src["final"]) else "not edited yet")
+                bits = [f"{g['fx']} / {g['br']}" if g.get("fx") is not None and g.get("br") is not None else None,
+                        f"p = {fp(g['pv'])}" if g.get("pv") is not None else None]
+                cell = C(g["v"], ", ".join(x for x in bits if x) or None)
+                if mid == "pi05":
+                    cell["d"] = "; ".join(x for x in (cell.get("d"), f"earlier record: {pi[tid]['v']}") if x)
             elif mid == "pi05":
                 cell = dict(pi[tid], prov=True)
+                if u:
+                    cell["d"] = "; ".join(x for x in (cell.get("d"), f"shared slots, unedited: {u['v']}") if x)
+            elif u:
+                cell = C(f"unedited {u['v']}", "not edited" if (src and src["final"]) else "not edited yet")
             else:
                 cell = NA if (src and src["final"]) else RUN
-            if mid == "pi05" and (g or u):
-                cell["d"] = "; ".join(x for x in (cell.get("d"), f"earlier record: {pi[tid]['v']}") if x)
             r["cells"][mid] = cell
         rows.append(r)
+    rtab = next(t for t in tables if t["id"] == "render")["rows"][0]["cells"]
+    rows.append({"key": "render", "label": "Rendering: performance → default preset", "sub": True,
+                 "cells": {m: (C(rtab[m]["v"], rtab[m].get("task")) if rtab[m]["s"] == "ok" else rtab[m]) for m in ORDER}})
     for key, label, tid in (("control", "Random control, same size", "random_control"), ("where", "Where to edit", "where")):
         r = {"key": key, "label": label, "cells": {}, "sub": True}
         for mid in ORDER:
@@ -1178,7 +1325,8 @@ def inline(s):
 
 def cell_html(cell, mid, models):
     cls = {"ok": "c", "running": "c st-run", "na": "c st-na"}[cell["s"]] + (" prov" if cell.get("prov") else "")
-    inner = f'<span class="v">{inline(cell["v"])}</span>'
+    tag = ' <span class="tag">earlier slots</span>' if cell.get("prov") else ""
+    inner = f'<span class="v">{inline(cell["v"])}{tag}</span>'
     if cell.get("d"):
         inner += f'<span class="d">{inline(cell["d"])}</span>'
     return f'<td class="{cls}" data-model="{esc(models[mid]["name"])}">{inner}</td>'
@@ -1197,13 +1345,16 @@ def table_html(t, models):
 
 
 def gh(rel):
-    return f"{REPO}/blob/main/{rel}" if Path(rel).suffix else f"{REPO}/tree/main/{rel}"
+    """A record's GitHub URL; 'branch:path' points into a branch that is not merged yet."""
+    branch, _, rel = rel.rpartition(":") if ":" in rel else ("main", "", rel)
+    return f"{REPO}/blob/{branch}/{rel}" if Path(rel).suffix else f"{REPO}/tree/{branch}/{rel}"
 
 
 def sources_html(srcs):
     if not srcs:
         return ""
-    links = ", ".join(f'<a href="{esc(gh(s))}"><code>{esc(s.replace("study/results/", ""))}</code></a>' for s in srcs)
+    links = ", ".join(f'<a href="{esc(gh(s))}"><code>{esc(s.split(":")[-1].replace("study/results/", ""))}</code></a>'
+                      for s in srcs)
     return f'<p class="src">Records: {links}</p>'
 
 
@@ -1317,13 +1468,30 @@ def legend(fig, items, T, H, L, ncol=None):
         t.set_color(T["ink2"])
 
 
+CHANGED = set()
+
+
+def write_if_changed(path, data):
+    """Write bytes only when they differ, so unchanged figures keep their mtime and git sees no change."""
+    if path.exists() and path.read_bytes() == data:
+        return False
+    path.write_bytes(data)
+    CHANGED.add(path.name)
+    return True
+
+
 def save_fig(fig, stem, T, png=True):
+    import io
     import matplotlib.pyplot as plt
     FIG.mkdir(parents=True, exist_ok=True)
     fig.patch.set_facecolor(T["bg"])
-    fig.savefig(FIG / f"{stem}.svg", facecolor=T["bg"], metadata={"Date": None})
+    buf = io.BytesIO()
+    fig.savefig(buf, format="svg", facecolor=T["bg"], metadata={"Date": None})
+    write_if_changed(FIG / f"{stem}.svg", buf.getvalue())
     if png:
-        fig.savefig(FIG / f"{stem}.png", facecolor=T["bg"], dpi=192, metadata={"Software": None})
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png", facecolor=T["bg"], dpi=192, metadata={"Software": None})
+        write_if_changed(FIG / f"{stem}.png", buf.getvalue())
     plt.close(fig)
 
 
@@ -1332,7 +1500,8 @@ def grouped(models, cells_by_model, L):
     rows = []
     for mid in ORDER:
         name = FIGNAME[mid] if L is LAYOUTS["brief"] else models[mid]["name"]
-        rows.append(("head", name + (" (control)" if mid == "pi05" else "")))
+        rows.append(("head", name + ((" (control, earlier slots)" if models["pi05"]["status"] == "measured" else
+                                      " (control)") if mid == "pi05" else "")))
         items = cells_by_model.get(mid) or []
         rows += [("row", it) for it in items] if items else [("run", "running")]
     return rows
@@ -1511,7 +1680,8 @@ def fig_random_control(tb, models, T, L):
 def fig_where(tb, models, T, L):
     from matplotlib.patches import Rectangle
     ref = WHERE_REF
-    rows = [("head", f"π0.5 (control): T1, {ref['n']} unseen starts"), ("bar", "Unedited", ref["base"], ref["n"], "grey")]
+    rows = [("head", f"π0.5 (control, earlier slots): T1, {ref['n']} unseen starts"),
+            ("bar", "Unedited", ref["base"], ref["n"], "grey")]
     rows += [("bar", lab, k, ref["n"], col) for lab, k, col in ref["bars"]]
     rows.append(("head", f"π0.5: the same edits on other tasks, {ref['tx']['glasses']['n']} starts each"))
     for key, lab in (("glasses", "T2 Eyeglasses"), ("left", "T3 Cube left of bowl"), ("cube", "R1 Cube into bowl (retention)")):
@@ -1582,6 +1752,7 @@ def fig_side_effects(tb, models, T, L):
             ax.text(j + 0.5, -0.78, models[m]["name"], ha="center", va="bottom", fontsize=L["FS"], weight="bold",
                     color=T["ink"])
             ed = (t.get("edit") or {}).get(m)
+            ed = re.match(r"the [TR]\d edit", ed).group(0) if ed and re.match(r"the [TR]\d edit", ed) else ed
             ax.text(j + 0.5, -0.16, ed or "edit: running", ha="center", va="bottom", fontsize=L["FS_S"] - 0.6,
                     color=T["mute"])
     grey = mix(T["empty"], T["grey"], 0.55)
@@ -1743,9 +1914,10 @@ def prepare_clips():
         mp4 = VID / f"{best}.mp4"
         stale = (not gif.exists() or not src_note.exists() or src_note.read_text().strip() != best
                  or gif.stat().st_mtime < mp4.stat().st_mtime)
-        if stale and ff("-t", "6", "-i", str(mp4), "-vf", "fps=8,scale=480:-2:flags=lanczos,split[a][b];"
-                        "[a]palettegen=max_colors=96[p];[b][p]paletteuse=dither=bayer", "-loop", "0", str(gif)):
+        if stale and ff("-t", "4", "-i", str(mp4), "-vf", "fps=6,scale=360:-2:flags=lanczos,split[a][b];"
+                        "[a]palettegen=max_colors=64[p];[b][p]paletteuse=dither=bayer:bayer_scale=3", "-loop", "0", str(gif)):
             src_note.write_text(best + "\n")
+            CHANGED.add(gif.name)
             print(f"  brief GIF from {best}.mp4")
     info["_gif"] = best if gif.exists() else None
     return info
@@ -1808,7 +1980,18 @@ def models_html(models):
     return "".join(out)
 
 
-def brief_lines(P, rc, models, cross):
+def render_note(tables):
+    c = next(t for t in tables if t["id"] == "render")["rows"][0]["cells"].get("groot")
+    if not c or c["s"] != "ok":
+        return ""
+    return (f'<p class="finding"><strong>A first cross-model finding.</strong> GR00T N1.7 depends on how the simulator '
+            f'renders: on the same {c["n"]} starts of {esc(c["task"].lower())} it succeeded {c["a"]} times under RoboLab’s '
+            f'performance preset, which renders without the RTX denoiser, and {c["b"]} times under the default preset, '
+            f'NVIDIA’s validated configuration. All three models are therefore compared under the default preset; '
+            f'π0.5’s earlier records used the performance preset. <a href="#render">Rendering sensitivity</a></p>')
+
+
+def brief_lines(P, rc, models, cross, tables=None):
     e, c, s4ho = P["edit"], P["ctl"], P["s4ho"]
     lines = [
         "<li><b>Method.</b> When a clearer wording of the same goal makes a robot model succeed, copy that wording's "
@@ -1828,30 +2011,210 @@ def brief_lines(P, rc, models, cross):
             parts.append(f"{esc(models[mid]['name'])}: unedited rates in, edits running")
         else:
             parts.append(f"{esc(models[mid]['name'])}: running")
-    lines.append(f"<li><b>NVIDIA models.</b> {'; '.join(parts)}. Same tasks, slots, metrics and statistics; this brief "
-                 "refreshes as runs finish.</li>")
+    rn = ""
+    c = next((t for t in tables or [] if t["id"] == "render"), {"rows": [{"cells": {}}]})["rows"][0]["cells"].get("groot")
+    if c and c["s"] == "ok":
+        rn = (f" First finding: GR00T N1.7 succeeded on {c['a']} of {c['n']} starts under RoboLab's performance render "
+              f"preset and {c['b']} of {c['n']} under the default preset, so all three are compared under the default.")
+    lines.append(f"<li><b>NVIDIA models.</b> {'; '.join(parts)}.{rn} Same tasks, slots, metrics and statistics; this "
+                 "brief refreshes as runs finish.</li>")
     return "".join(lines)
 
 
+# ---------------------------------------------------------------- TL;DR and section overview (top of the page)
+RUNNING = "{running}"   # rendered as the italic "running" marker; never a number
+SIG = 0.05              # "lifted" / "worse": exact McNemar p below this, paired by start
+TLDR_ORDER = ["pi05", "cosmos", "groot"]   # the control's established result first, then the NVIDIA models
+
+
+def task_list(keys):
+    """['T4','T5','T6','T7'] -> 'T4–T7'; ['T2','T3'] -> 'T2 and T3'."""
+    ts = sorted(int(k[1:]) for k in keys if re.fullmatch(r"T\d", k))
+    runs = []
+    for i in ts:
+        if runs and i == runs[-1][-1] + 1:
+            runs[-1].append(i)
+        else:
+            runs.append([i])
+    out = []
+    for r in runs:
+        out += [f"T{r[0]}–T{r[-1]}"] if len(r) >= 3 else [f"T{i}" for i in r]
+    out += [k for k in keys if not re.fullmatch(r"T\d", k)]
+    return out[0] if len(out) == 1 else ", ".join(out[:-1]) + " and " + out[-1]
+
+
+def and_list(xs):
+    xs = list(xs)
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+
+
+def tldr(tables, models):
+    """3-5 bullets for the top of the page, read only from the tables; anything not measured yet says running."""
+    T = {t["id"]: {r["key"]: r["cells"] for r in t["rows"]} for t in tables}
+    edit_of = next(t for t in tables if t["id"] == "side_effects").get("edit", {})
+    ok = lambda c: bool(c) and c.get("s") == "ok"
+    nums = lambda c, f=("a", "b", "n"): ok(c) and all(isinstance(c.get(x), int) for x in f)
+    cell = lambda tid, key, mid: T[tid].get(key, {}).get(mid)
+    tasks = [t[0] for t in TASKS if t[0] != "R1"]
+
+    def side(mid):
+        """(edit task, [(task, cell)] off-target with counts, R1 cell) of a model's side-effect map."""
+        got = [(k, cell("side_effects", k, mid)) for k in [t[0] for t in TASKS]]
+        got = [(k, c) for k, c in got if nums(c, ("a", "b", "n", "delta"))]
+        tgt = next((k for k, c in got if c.get("target")), None)
+        return tgt, [(k, c) for k, c in got if not c.get("target") and k != "R1"], dict(got).get("R1")
+
+    def lifted(c):
+        return c.get("p") is not None and c["p"] < SIG and c["delta"] > 0
+
+    items = []
+    for mid in TLDR_ORDER:
+        m = models[mid]
+        prov = False
+        gains, flat = [], []
+        for k in tasks:
+            c = cell("edit_gain", k, mid)
+            if nums(c):
+                prov |= bool(c.get("prov"))
+                (gains if (c.get("pv") is not None and c["pv"] < SIG and c["b"] > c["a"]) else flat).append((k, c))
+            elif ok(c) and c["v"].startswith("no gain"):
+                prov |= bool(c.get("prov"))
+                flat.append((k, c))
+        _, off, _ = side(mid)
+        transfer = {k for k, c in off if lifted(c)}
+        bits = []
+        if gains:
+            bits.append("Edits lifted success " + and_list(
+                f"on {k} from {c['a']} to {c['b']} of {c['n']}{' unseen starts' if i == 0 else ''} (p = {fp(c['pv'])})"
+                for i, (k, c) in enumerate(gains)) + ".")
+            rcn = next((cell("random_control", k, mid) for k, _ in gains if nums(cell("random_control", k, mid), ("u", "r", "n"))), None)
+            if rcn:
+                k0 = next(k for k, _ in gains if cell("random_control", k, mid) is rcn)
+                bits.append(f"A random edit of the same size scored {rcn['r']} of {rcn['n']} on {k0}, against "
+                            f"{rcn['u']} unedited.")
+        ng = [k for k, _ in flat if k not in transfer]
+        if ng:
+            why = ", failures of perception, contact or missing skill" if (mid == "pi05" and ng == ["T4", "T5", "T6", "T7"]) else ""
+            bits.append(f"No detectable gain on {task_list(ng)}{why}.")
+        done = {k for k, _ in gains} | {k for k, _ in flat}
+        if not done:
+            fm = [k for k in [t[0] for t in TASKS] if nums(cell("failure_map", k, mid), ("k", "n"))]
+            if fm:
+                bits.append(f"Unedited success is in for {len(fm)} of {len(TASKS)} tasks; edits {RUNNING}.")
+            elif m["status"] == "final":
+                bits.append("No edit results.")
+            else:
+                bits.append(f"Failure map and edits: {RUNNING}.")
+        elif m["status"] != "final" and any(cell("edit_gain", k, mid) and cell("edit_gain", k, mid)["s"] == "running"
+                                            for k in tasks):
+            bits.append(f"Other tasks: {RUNNING}.")
+        r = cell("render", "render", mid)
+        if nums(r):
+            bits.append(f"First finding: on the same {r['n']} starts of {(r.get('task') or 'one task').lower()} it "
+                        f"succeeded {r['a']} times under RoboLab’s performance render preset and {r['b']} under the "
+                        f"default preset, so all three models are compared under the default.")
+        items.append(dict(id=mid, lead=m["name"], kind=MODELS[mid]["short"],
+                          tag="earlier records" if prov else None, text=" ".join(bits)))
+
+    # side effects: each model's main edit, unchanged, on the other tasks
+    parts, waiting = [], []
+    for mid in TLDR_ORDER:
+        tgt, off, r1 = side(mid)
+        if not tgt or not off:
+            waiting.append(models[mid]["name"])
+            continue
+        up = [(k, c) for k, c in off if lifted(c)]
+        down = [(k, c) for k, c in off if c.get("p") is not None and c["p"] < SIG and c["delta"] < 0]
+        on = task_list([k for k, _ in off]) + (" and R1" if r1 else "")
+        t = f"{models[mid]['name']}’s {tgt} edit, run unchanged on {on}, "
+        t += ("lifted " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in up)) if up else "lifted no task"
+        t += (", made none detectably worse" if not down else
+              ", lowered " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in down))
+        if r1:
+            t += (f", and kept the retention task R1 at {r1['b']} of {r1['n']}" if r1["delta"] == 0 else
+                  f", and moved the retention task R1 from {r1['a']} to {r1['b']} of {r1['n']}")
+        parts.append(t + ".")
+    if waiting:
+        parts.append(f"{and_list(waiting)}: {RUNNING}.")
+    items.append(dict(id="side-effects", lead="Side effects", kind=None, tag=None, text=" ".join(parts)))
+
+    note = ("Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. "
+            + ("π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs "
+               "replace them as they land." if models["pi05"]["status"] == "measured" else
+               "All three models are scored on the shared slots."))
+    return dict(items=items, note=note)
+
+
+def tldr_html(t):
+    run = '<span class="run">running</span>'
+    out = []
+    for it in t["items"]:
+        lead = f'<b>{esc(it["lead"])}</b>' + (f' <span class="tk">{esc(it["kind"])}</span>' if it.get("kind") else "")
+        tag = f' <span class="tag">{esc(it["tag"])}</span>' if it.get("tag") else ""
+        out.append(f'<li data-id="{esc(it["id"])}"><span class="tl">{lead}{tag}</span> '
+                   f'{esc(it["text"]).replace(esc(RUNNING), run)}</li>')
+    return "".join(out)
+
+
+# One line per section: what it shows. Titles are read from the page's h2s so the list follows the page.
+SECTION_LINES = {
+    "question": "What editing did on π0.5, and what we ask of the NVIDIA models.",
+    "models": "Architecture, where the instruction enters, where an edit can go.",
+    "experiments": "The six experiments every model runs, one line each.",
+    "glance": "One table: what an edit did on each task, per model.",
+    "clips": "Video: the three models on one start; each before and after its edit.",
+    "failure-map": "Unedited success on each task; the render-preset check.",
+    "wording": "Original against clearer wording, unedited: the gap to distil.",
+    "edits": "Gain on unseen starts, random control, recovery, where to edit, size.",
+    "after": "The main edit on every other task: transfer, harm, retention.",
+    "caveats": "Simulation, checkpoints, sample sizes, earlier records, noise floor.",
+    "method": "The closed-form edit, statistics, and links to paper, code, records.",
+}
+
+
+def page_sections(page):
+    secs = []
+    for sid, title in re.findall(r'<section id="([a-z0-9-]+)"[^>]*>\s*<h2[^>]*>(.*?)</h2>', page, re.S):
+        if sid == "tldr":
+            continue
+        title = html.unescape(re.sub(r"<[^>]+>", "", title)).strip()
+        if sid not in SECTION_LINES:
+            print(f"  WARNING: no overview line for section #{sid}; add it to SECTION_LINES")
+        secs.append(dict(id=sid, title=title, line=SECTION_LINES.get(sid, "")))
+    return secs
+
+
+def toc_html(secs):
+    return "".join(f'<li><a href="#{esc(x["id"])}">{esc(x["title"])}</a><span class="tline">{esc(x["line"])}</span></li>'
+                   for x in secs)
+
+
 def print_pdf(src_html, pdf):
+    """Print brief.html to one Letter page: step down the zoom (body data-fit 0-3) until it fits."""
     if not Path(CHROME).exists():
         print(f"  skip PDF: Chrome not found at {CHROME} (set CHROME=...)")
         return
+    text = src_html.read_text()
     with tempfile.TemporaryDirectory() as td:
-        tmp = Path(td) / "brief.pdf"
-        cmd = [CHROME, "--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
-               f"--user-data-dir={td}/profile", "--no-pdf-header-footer", "--virtual-time-budget=10000",
-               f"--print-to-pdf={tmp}", src_html.resolve().as_uri()]
-        subprocess.run(cmd, capture_output=True, text=True, timeout=180)
-        if not tmp.exists():
-            print("  PDF failed: Chrome wrote nothing")
-            return
-        b = tmp.read_bytes()
-        pages = len(re.findall(rb"/Type\s*/Page[^s]", b))
+        for fit in range(4):
+            html_fit = re.sub(r'<body[^>]*>', f'<body data-fit="{fit}">', text, count=1)
+            src_html.write_text(html_fit)
+            tmp = Path(td) / f"brief{fit}.pdf"
+            cmd = [CHROME, "--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
+                   f"--user-data-dir={td}/profile", "--no-pdf-header-footer", "--virtual-time-budget=10000",
+                   f"--print-to-pdf={tmp}", src_html.resolve().as_uri()]
+            subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+            if not tmp.exists():
+                print("  PDF failed: Chrome wrote nothing")
+                return
+            b = tmp.read_bytes()
+            pages = len(re.findall(rb"/Type\s*/Page[^s]", b))
+            if pages == 1:
+                break
         shutil.copyfile(tmp, pdf)
-        print(f"wrote {pdf.relative_to(ROOT)} ({pages} page{'s' if pages != 1 else ''}, {len(b) // 1024} KB)")
+        print(f"wrote {pdf.relative_to(ROOT)} ({pages} page{'s' if pages != 1 else ''}, zoom step {fit}, {len(b) // 1024} KB)")
         if pages != 1:
-            print("  WARNING: the brief should be one page; tighten brief.html")
+            print("  WARNING: the brief does not fit one page even at the smallest zoom; shorten brief.html")
 
 
 # ---------------------------------------------------------------- main
@@ -1881,8 +2244,10 @@ def main():
     for mid in ORDER:
         m = dict(MODELS[mid])
         src = cross.get(mid)
-        if src and src["rows"]:
+        if src and any(not r["_prov"] for r in src["rows"]):
             m["status"] = "final" if src["final"] else "partial"
+        elif src and src["rows"]:
+            m["status"] = "measured"
             for k in ("checkpoint", "architecture"):
                 if src["meta"].get(k):
                     m[k] = describe(src["meta"][k])
@@ -1890,9 +2255,11 @@ def main():
             if ck:
                 m["checkpoint"] = describe(ck)
         m["source"] = meta.get(mid)
+        if mid == "pi05" and m["status"] == "measured":
+            m["short"] = "OpenPI VLA, control · earlier slots"
         models[mid] = m
 
-    tables, rc, prov = build_tables(P, cross)
+    tables, rc, prov, rcp = build_tables(P, cross)
     summary = summary_table(P, tables, cross, rc)
     w = P["where"]
     WHERE_REF.update(n=w["n"], base=w["arms"]["base"], tx=w["tx"], bars=[
@@ -1901,6 +2268,7 @@ def main():
     for mid in ("cosmos", "groot"):
         if rc[mid]["where"].get("_bars"):
             WHERE_OTHER[mid] = rc[mid]["where"]["_bars"]
+    page = (OUT / "index.html").read_text()
     data = {
         "title": "Weight editing across robot models",
         "question": "A world-action model and a reasoning-backbone VLA: where does weight-space programming fix failures?",
@@ -1908,6 +2276,8 @@ def main():
         "shared_slots": SHARED_SLOTS,
         "models": [dict(id=mid, **models[mid]) for mid in ORDER],
         "tasks": [dict(id=t[0], name=t[1], robolab=t[2], pi05_failure=t[4]) for t in TASKS],
+        "tldr": tldr(tables, models),
+        "sections": page_sections(page),
         "summary": summary,
         "tables": tables,
         "cross_rows": {mid: [{k: v for k, v in r.items() if k != "_extra"} | ({"extra": r["_extra"]} if r["_extra"] else {})
@@ -1934,12 +2304,15 @@ def main():
         alts = {n: c for n, c in FIGS}
     else:
         alts = draw_figures(tables, models)
-        print(f"wrote {len(FIGS) * 4 + len(BRIEF_FIGS)} figure files to {FIG.relative_to(ROOT)}/")
+        print(f"checked {len(FIGS) * 4 + len(BRIEF_FIGS)} figure files in {FIG.relative_to(ROOT)}/")
 
     idx = OUT / "index.html"
-    page = idx.read_text()
+    page = replace_region(page, "tldr", tldr_html(data["tldr"]))
+    page = replace_region(page, "tldr-note", esc(data["tldr"]["note"]))
+    page = replace_region(page, "toc", toc_html(data["sections"]))
     page = replace_region(page, "stamp", esc(f"{data['status_text']} · updated {data['updated_text']}"))
     page = replace_region(page, "models", models_html(models))
+    page = replace_region(page, "render-note", render_note(tables))
     page = replace_region(page, "table:summary", table_html(summary, models))
     for t in tables:
         page = replace_region(page, f"table:{t['id']}", block_html(t, models))
@@ -1952,9 +2325,9 @@ def main():
     print(f"wrote {idx.relative_to(ROOT)}")
 
     br = OUT / "brief.html"
-    btxt = br.read_text()
+    btxt = old_brief = br.read_text()
     btxt = replace_region(btxt, "stamp", esc(f"Draft for discussion · {data['status_text']} · {data['updated_text']}"))
-    btxt = replace_region(btxt, "summary-lines", brief_lines(P, rc, models, cross))
+    btxt = replace_region(btxt, "summary-lines", brief_lines(P, rc, models, cross, tables))
     btxt = replace_region(btxt, "gif", gif_html(clips))
     btxt = replace_region(btxt, "table:summary", table_html(summary, models))
     caps = dict(FIGS)
@@ -1964,8 +2337,11 @@ def main():
     print(f"wrote {br.relative_to(ROOT)}")
 
     pdf = OUT / "weightsmith-cosmos-brief.pdf"
-    if not args.no_pdf and (changed or args.force or not pdf.exists()):
+    inputs_changed = btxt != old_brief or any(n.startswith("brief") for n in CHANGED)
+    if not args.no_pdf and (inputs_changed or args.force or not pdf.exists()):
         print_pdf(br, pdf)
+    print(f"  figures rewritten: {len(CHANGED)}" + (f" ({', '.join(sorted(CHANGED)[:6])}{', ...' if len(CHANGED) > 6 else ''})"
+                                                     if CHANGED else ""))
 
 
 if __name__ == "__main__":
