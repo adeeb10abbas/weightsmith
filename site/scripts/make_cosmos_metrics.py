@@ -157,6 +157,14 @@ TASK = {t[0]: t for t in TASKS}
 TASK_NAME = {"T1": "Cube then banana", "T2": "Eyeglasses", "T3": "Cube left of bowl", "T4": "Yellow on red",
              "T5": "Mustard in left bin", "T6": "Three-cube tower", "T7": "Flat box",
              "T8": "Mustard right of raisin box", "R1": "Cube in bowl"}
+# Track A's prospective test of the token-count rule (README, pre-registered in e01cbfe) uses its own codes for new
+# wording pairs on stock RoboLab tasks; S1L shares T3's RoboLab class, so these codes never fall back to a class name.
+PROSPECT = dict(model="cosmos", commit="e01cbfe", gate=85, pairs={
+    "S1L": dict(plain="Cube left of bowl, worded bowl-first vs cube-first", equal=True, cls="RubiksCubeLeftOfBowlTask"),
+    "S1R": dict(plain="Cube right of bowl, worded bowl-first vs cube-first", equal=True, cls="RubiksCubeRightOfBowlTask"),
+    "S1F": dict(plain="Cube in front of bowl, worded bowl-first vs cube-first", equal=False,
+                cls="RubiksCubeInFrontOfBowlTask")})
+PTASK_NAME = {k: v["plain"] for k, v in PROSPECT["pairs"].items()}
 OLD_SHORT = {"T1": "Cube then banana", "T2": "Eyeglasses", "T3": "Cube left of bowl", "T4": "Stack yellow on red",
              "T5": "Mustard into left bin", "T6": "Stack three cubes", "T7": "Flat box",
              "T8": "Mustard, reference-first", "R1": "Retention task"}
@@ -185,6 +193,7 @@ def dename(s):
         s = s.replace(a, b)
     s = _RANGE.sub(lambda m: ", ".join(tn(f"T{i}") for i in range(int(m.group(1)), int(m.group(2)) + 1)), s)
     s = _CODE.sub(lambda m: tn(m.group(1)), s)
+    s = re.sub(r"(?<![-\w/.])(S1[LRF])(?![-\w]|\.\w)", lambda m: PTASK_NAME[m.group(1)], s)
     s = re.sub(r"\breference-first\b", "raisin-box-first", s)
     s = re.sub(r"\btarget-first\b", "mustard-first", s)
     s = re.sub(r"\bRF\b", "raisin-box-first", s)
@@ -877,7 +886,9 @@ def read_cross(args, meta_out):
             nr, extra = normalize(r)
             unknown |= set(extra) - {"status", "edit", "hardware", "source", "values_changed_note"}
             nr["_extra"] = extra
-            nr["_task"] = task_id(nr.get("code")) or task_id(nr.get("task"))
+            pc = (describe(nr.get("code")) or "").upper()
+            nr["_ptask"] = pc if pc in PROSPECT["pairs"] else None
+            nr["_task"] = None if nr["_ptask"] else (task_id(nr.get("code")) or task_id(nr.get("task")))
             nr["_edit_task"] = edit_task_of(nr)
             nr["_prov"] = str(extra.get("status") or file_status).lower() == "provisional"
             norm.append(nr)
@@ -1437,6 +1448,7 @@ SECOND = dict(
     readme="cross-cosmos/v1:study/results/cross/cosmos/README.md",
 )
 SECOND_LAST = {}   # this run's second-edit rows, for the TL;DR
+PROSPECT_LAST = {}  # the prospective test's pairs with records, for the task legend
 WHEN_LAST = {}     # whether the records show both sides of "when does the edit work?", for the TL;DR
 
 
@@ -3452,6 +3464,11 @@ def legend_html(cross):
                    f'<code>{t}</code></span></td><td class="c" data-model="RoboLab class"><span class="v"><code>'
                    f'{esc(TASK[t][2])}</code></span></td><td class="c" data-model="Default instruction"><span class="v">'
                    f'{esc(instr.get(t, "—"))}</span></td></tr>' for t in TASK_NAME)
+    body += "".join(f'<tr><th scope="row">{esc(x["plain"])}</th><td class="c" data-model="Code"><span class="v"><code>'
+                    f'{x["code"]}</code></span></td><td class="c" data-model="RoboLab class"><span class="v"><code>'
+                    f'{esc(PROSPECT["pairs"][x["code"]]["cls"])}</code></span></td><td class="c" data-model="Default '
+                    f'instruction"><span class="v">{esc((x.get("wording") or ["—"])[0])}</span></td></tr>'
+                    for x in (PROSPECT_LAST.get("p") or []))
     table = ('<table class="ctable ltable"><thead><tr><th scope="col">Task</th><th scope="col"><span class="mn">Code'
              '</span></th><th scope="col"><span class="mn">RoboLab class</span></th><th scope="col"><span class="mn">'
              f'Default instruction</span></th></tr></thead><tbody>{body}</tbody></table>')
@@ -3853,7 +3870,7 @@ def edit_records(src, mid, name):
     return b, g
 
 
-def when_html(tables, cross, prevent, second):
+def when_html(tables, cross, prevent, second, P=None):
     """'When does the edit work?': the edit copies the clear wording's effect onto the same words of the original, so
     it works where the two wordings line up word for word and fails where the clear wording adds or removes words.
     Every number from the records (Cosmos3 Edge build and gate records, GR00T N1.7's wording pair and edit, the
@@ -3913,11 +3930,122 @@ def when_html(tables, cross, prevent, second):
              "alone carry the fix).")
     head = ('<thead><tr><th scope="col"><span class="vh">Case</span></th><th scope="col"><span class="mn">Do the '
             'wordings line up?</span></th><th scope="col"><span class="mn">Result</span></th></tr></thead>')
-    body = "".join(f'<tr><th scope="row">{esc(a)}</th>{td_html(b, "Do the wordings line up?")}{td_html(c, "Result")}</tr>'
-                   for a, b, c in rows)
-    return (f"<p>{esc(' '.join(s))}</p>"
+    row = lambda a, b, c: f'<tr><th scope="row">{esc(a)}</th>{td_html(b, "Do the wordings line up?")}{td_html(c, "Result")}</tr>'
+    body = "".join(row(a, b, c) for a, b, c in rows)
+    ph, prow = prospect_html(P)
+    if prow:
+        body += ('<tr class="grp"><th scope="rowgroup" colspan="3">Tested after a written prediction</th></tr>'
+                 + "".join(row(a, b, c) for a, b, c in prow))
+    return (f"<p>{esc(' '.join(s))}</p>" + ph
             + (f'<div class="tblock wide"><table class="ctable ptable wtable">{head}<tbody>{body}</tbody></table></div>'
                if len(rows) > 1 else ""))
+
+
+def prospect(cross, tables):
+    """Track A's prospective test of the token-count rule (pre-registered in the Cosmos README, PROSPECT["commit"],
+    before any screen or build): per pair, its screen (unedited, original vs clear wording), its build record (token
+    counts), its offline gate and any closed-loop runs, by the track's own task codes (S1L, S1R, S1F). None until a
+    pair has an offline or closed-loop record, so the page shows nothing before then."""
+    src = cross.get(PROSPECT["model"])
+    if not src:
+        return None
+    rows = [r for r in src["rows"] if not r["_prov"]]
+    out = []
+    for code, e in PROSPECT["pairs"].items():
+        mine = [r for r in rows if r.get("_ptask") == code]
+        screen = next((r for r in mine if as_int(r.get("teacher_k")) is not None and as_int(r.get("edited_k")) is None),
+                      None)
+        names = sorted({edit_id(r) for r in mine if edit_id(r)} | {f"{code.lower()}und"})
+        build = gate = name = None
+        for nm in names:
+            b, _ = edit_records(src, PROSPECT["model"], nm)
+            g = next((d for d in (track_json(PROSPECT["model"], f"results/offline/{m}/{nm}_gate.json")
+                                  for m in sorted({r.get("machine") or r["_extra"].get("machine") for r in rows} - {None}))
+                      if d), None)
+            if b or g:
+                build, gate, name = b, g, nm
+                break
+        gap = ctl = None
+        if isinstance(gate, dict):
+            for k, v in gate.items():
+                if re.fullmatch(r"(?:[a-z0-9]+_)?gap_closed_pct", k) and not k.startswith("control") and \
+                        as_float(v) is not None and gap is None:
+                    gap = as_float(v)
+            ctl = as_float(gate.get("control_gap_closed_pct"))
+        for r in mine:   # an offline row in the records, if the gate file is not there
+            o = offline_of(r)
+            if gap is None and o and nk(o.get("edit") or "") in {nk(x) for x in names}:
+                gap, ctl = as_float(o.get("gap_closed_pct")), as_float(o.get("control_gap_closed_pct"))
+        passed = (bool(gate["pass"]) if isinstance(gate, dict) and "pass" in gate else
+                  None if gap is None else gap >= PROSPECT["gate"] and (ctl is None or abs(ctl) <= 15))
+        closed = {}
+        for r in mine:
+            i = ints(r)
+            if None in (i["edited_k"], i["unedited_k"], i["n"]):
+                continue
+            kind = "practice" if is_practice(r) else "unseen"
+            if kind not in closed:
+                _, p, _, _, _, _ = stat(r)
+                closed[kind] = dict(a=i["unedited_k"], b=i["edited_k"], n=i["n"], p=p, ctl=i["control_k"],
+                                    t=i["teacher_k"])
+        if gap is None and not closed:
+            continue
+        sc = ints(screen) if screen else None
+        out.append(dict(code=code, name=name, plain=e["plain"], equal=e["equal"], build=build, gap=gap, ctl=ctl,
+                        passed=passed, closed=closed, wording=screen.get("wording_pair") if screen else None,
+                        screen=dict(a=sc["unedited_k"], b=sc["teacher_k"], n=sc["n"], p=as_float(screen.get("p")))
+                        if sc else None))
+    return out or None
+
+
+def prospect_html(P):
+    """'A prediction we tested': the prediction as written before any build, then each pair's result from its records
+    (offline check, then practice and unseen starts against the random edit), and whether the prediction held; plus the
+    rows for the table of "When does the edit work?"."""
+    if not P:
+        return "", []
+    s = [f"Before building anything, we wrote down a prediction (the Cosmos3 Edge track’s "
+         f"README, commit {PROSPECT['commit']}): an edit for a new pair of wordings of equal length would pass the "
+         "offline check and fix the task; one for wordings of unequal length would fail the check."]
+    rows = []
+    for x in P:
+        b = x["build"]
+        toks = f"{b['orig']} and {b['good']} tokens" if b and b.get("good") is not None else None
+        sc = x["screen"]
+        modest = (f"unedited, the clearer wording lifts it only from {sc['a']} to {sc['b']} of {sc['n']} practice starts"
+                  + (f" (p = {fp(sc['p'])})" if sc.get("p") is not None else "")) if sc else None
+        res = []
+        if x["gap"] is not None:
+            res.append((f"in replays the edit closed {sgn(x['gap'], False, 0)}% of the gap to the clearer wording"
+                        if x["gap"] >= 0 else f"in replays the edit moved the planned motion away from the clearer "
+                                              f"wording’s ({sgn(x['gap'], True, 0)}% of the gap)")
+                       + (f" (a random edit of the same size: {sgn(x['ctl'], True, 1)}%)" if x["ctl"] is not None else "")
+                       + (", passing the offline check" if x["passed"] else ", failing the offline check"
+                          if x["passed"] is False else ""))
+        for kind in ("practice", "unseen"):
+            c = x["closed"].get(kind)
+            if c:
+                res.append(f"on {c['n']} {kind} starts it went from {c['a']} to {c['b']}"
+                           + (f", against {c['ctl']} for the random edit" if c.get("ctl") is not None else "")
+                           + (f" (p = {fp(c['p'])})" if c.get("p") is not None else ""))
+        last = x["closed"].get("unseen") or x["closed"].get("practice")
+        fixed = bool(last and last.get("p") is not None and last["p"] < SIG and last["b"] > last["a"]
+                     and (last.get("ctl") is None or last["b"] > last["ctl"]))
+        if x["equal"]:
+            held = (False if x["passed"] is False or (last and not fixed) else True if x["passed"] and fixed else None)
+        else:
+            held = None if x["passed"] is None else (x["passed"] is False)
+        verdict = {True: "The prediction held.", False: "The prediction did not hold.",
+                   None: "So far the prediction holds; the runs on the robot are next." if x["equal"] and x["passed"]
+                   else ""}[held]
+        s.append(f"{x['plain']}" + (f", {toks}" if toks else "") + (f"; {modest}, a modest gap" if modest else "")
+                 + ": " + "; ".join(res) + ". " + verdict)
+        rows.append((x["plain"], C(("Yes: " if x["equal"] else "No: ") + (toks or ("equal length" if x["equal"]
+                                                                                   else "unequal length")),
+                                   "predicted before the build: " + ("it works" if x["equal"] else "it fails")),
+                     C("; ".join(res)[:1].upper() + "; ".join(res)[1:] if res else "—",
+                       (f"{modest[0].upper()}{modest[1:]}. " if modest else "") + verdict or None)))
+    return (f"<p><b>A prediction we tested.</b> {esc(' '.join(t.strip() for t in s if t.strip()))}</p>", rows)
 
 VID = OUT / "video"
 # Each clip: stem (video/<stem>.mp4, or "src" for a clip the main page already serves), group (where it goes on the
@@ -4770,7 +4898,9 @@ def main():
     second = second_edit(cross, tables)
     SECOND_LAST.update(s=second)
     WHEN_LAST.clear()
-    when = when_html(tables, cross, prevent, second)
+    pros = prospect(cross, tables)
+    PROSPECT_LAST.update(p=pros)
+    when = when_html(tables, cross, prevent, second, pros)
     w = P["where"]
     WHERE_REF.update(n=w["n"], base=w["arms"]["base"], tx=w["tx"], bars=[
         ("Backbone: VLM MLPs", w["arms"]["v1full"], "teal"), ("Action expert MLPs", w["arms"]["a1"], "dark"),
