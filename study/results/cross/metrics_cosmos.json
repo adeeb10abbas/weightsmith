@@ -219,24 +219,24 @@
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
-  "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 0 broke 0 p = 1; edit vs control p = 4.55e-13",
-  "control_n": 48,
+  "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 0 broke 0 p = 1; edit vs control p = 2.78e-17",
+  "control_n": 64,
   "teacher_n": null,
   "edit_vs_control": {
-   "n": 48,
+   "n": 64,
    "ref_k": 0,
-   "cand_k": 42,
-   "fixed": 42,
+   "cand_k": 56,
+   "fixed": 56,
    "broke": 0,
-   "p": 4.547473508864641e-13,
+   "p": 2.7755575615628914e-17,
    "slots": [
     96000,
-    96047
+    96063
    ]
   },
   "control_slots": [
    96000,
-   96047
+   96063
   ],
   "teacher_slots": null
  },

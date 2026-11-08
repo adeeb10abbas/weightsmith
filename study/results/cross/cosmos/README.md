@@ -1,9 +1,9 @@
 # Track A: weight-space programming on Cosmos3 Edge Policy DROID
 
-Status (2026-11-08 02:00 ET): closed loop runs on ali-ms GPU1 at RoboLab's default render preset (the primary setting for
-every model and track). Running now, in this order: the random control on practice starts, the held-out set (64 new
-starts x unedited / edited / control), the rest of the failure map, the side-effect map, the video/action-pathway edit
-in closed loop. Every number here comes from `results/` and `../metrics_cosmos.json` (run `analyze.py`); the
+Status (2026-11-08 04:30 ET): closed loop runs on ali-ms at RoboLab's default render preset (the primary setting for
+every model and track). Done: T8 practice (unedited / TF wording / edit / control) and T8 held-out (64 starts x
+unedited / edit / control). Running now: the side-effect map (t8und vs unedited on R1 and T1-T7, which is also the
+failure map), then the video/action-pathway edit in closed loop. Every number here comes from `results/` and `../metrics_cosmos.json` (run `analyze.py`); the
 latest table is in [Results](#results).
 
 Question: how well does weight-space programming (WSP, closed-form instruction distillation) fix the failures of
@@ -67,6 +67,15 @@ All numbers: ali-ms GPU1, default render, 8 envs per sim process, paired on the 
 | unedited, TF wording (known-good) | 15/16 | 15 fixed / 0 broke, p = 6.1e-5 |
 | **edited `t8und`, RF wording** | **13/16** | 13 fixed / 0 broke, p = 2.4e-4; recovers 86.7% of the TF wording's gain |
 | random-direction control of `t8und` (same rank and singular values per layer) | 1/16 | 1 fixed / 0 broke, p = 1 |
+
+| Arm (slots 96000-96063, held-out: never used for any choice) | Success | Paired |
+|---|---|---|
+| unedited, RF wording | 0/64 (Wilson 95% 0.0-5.7%) | |
+| **edited `t8und`, RF wording** | **56/64 (77.2-93.5%)** | vs unedited: 56 fixed / 0 broke, p = 2.8e-17; +87.5 points (paired bootstrap 95% 78.1-95.3) |
+| random-direction control of `t8und` | 0/64 | vs edit: 56 fixed / 0 broke, p = 2.8e-17 |
+
+Per 16-start group (edited): 15/16, 13/16, 14/16, 14/16; unedited and control 0/16 in every group.
+Clip: `videos/t8_96003_unedited_vs_t8und.mp4` (held-out start 96003).
 
 `t8und`: closed-form distillation of the TF wording's text-token states into the RF wording's, in the text pathway
 (`mlp.down_proj` of layers 0-26, the weights the instruction tokens pass through), 171 matched positions plus 19
