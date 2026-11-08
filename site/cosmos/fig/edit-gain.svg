@@ -1161,7 +1161,7 @@ L 304.14375 103.68
 " clip-path="url(#p5b3da95935)" style="fill: none; stroke-dasharray: 4.84,3.52; stroke-dashoffset: 0; stroke: #147d92; stroke-width: 2.2"/>
    </g>
    <g id="line2d_22">
-    <path d="M 386.5815 144.18 
+    <path d="M 396.36225 144.18 
 L 435.17475 144.18 
 " clip-path="url(#p5b3da95935)" style="fill: none; stroke: #147d92; stroke-width: 2.2; stroke-linecap: round"/>
    </g>
@@ -2377,24 +2377,24 @@ z
    </g>
    <g id="line2d_31">
     <g clip-path="url(#p5b3da95935)">
-     <use xlink:href="#m780224f4e4" x="410.8005" y="144.18" style="fill: #147d92; stroke: #ffffff; stroke-width: 1.3"/>
+     <use xlink:href="#m780224f4e4" x="415.7685" y="144.18" style="fill: #147d92; stroke: #ffffff; stroke-width: 1.3"/>
     </g>
    </g>
    <g id="text_20">
-    <!-- 2 → 20 of 32 -->
+    <!-- 2 → 40 of 64 -->
     <g style="fill: #4a4944" transform="translate(487.44 146.454937) scale(0.088 -0.088)">
      <use xlink:href="#ArialMT-32"/>
      <use xlink:href="#ArialMT-20" transform="translate(55.615234 0)"/>
      <use xlink:href="#ArialMT-2192" transform="translate(83.398438 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(183.398438 0)"/>
-     <use xlink:href="#ArialMT-32" transform="translate(211.181641 0)"/>
+     <use xlink:href="#ArialMT-34" transform="translate(211.181641 0)"/>
      <use xlink:href="#ArialMT-30" transform="translate(266.796875 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(322.412109 0)"/>
      <use xlink:href="#ArialMT-6f" transform="translate(350.195312 0)"/>
      <use xlink:href="#ArialMT-66" transform="translate(405.810547 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(433.59375 0)"/>
-     <use xlink:href="#ArialMT-33" transform="translate(461.376953 0)"/>
-     <use xlink:href="#ArialMT-32" transform="translate(516.992188 0)"/>
+     <use xlink:href="#ArialMT-36" transform="translate(461.376953 0)"/>
+     <use xlink:href="#ArialMT-34" transform="translate(516.992188 0)"/>
     </g>
    </g>
    <g id="text_21">
