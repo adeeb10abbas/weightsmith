@@ -1,0 +1,2 @@
+{"tag": "T1-v2mi-f-s30000", "gpu": 0, "lock_requested": 1794114184.0014222, "lock_acquired": 1794114398.7744477, "released": 1794114515.9248066, "held_s": 117.2}
+{"tag": "T1-base-s30000", "gpu": 1, "lock_requested": 1794114183.0273874, "lock_acquired": 1794114183.0274315, "released": 1794114689.744657, "held_s": 506.7}

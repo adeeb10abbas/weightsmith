@@ -1,0 +1,29 @@
+{
+ "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+ "hardware": "rented pod, 2x RTX 4080 SUPER 32 GB (driver 595), weightsmith @ ad31044",
+ "jobs": [],
+ "jobs_ali_ms": [
+  {
+   "tag": "T1-base-s30000",
+   "code": "T1",
+   "task": "RubiksCubeThenBananaTask",
+   "arm": "base",
+   "slot_start": 30000,
+   "n": 16,
+   "prompt": null,
+   "fp": null,
+   "fp_checked": null,
+   "server_fingerprint": null,
+   "completed": 16,
+   "success": 5,
+   "gpu": 1,
+   "lock_wait_s": 0.0,
+   "gpu_s": 506.6,
+   "started": 1794114183.0282352,
+   "finished": 1794114689.640851,
+   "host": "ali-MS-7D25"
+  }
+ ],
+ "gpu_hours_pod_jobs": 0.0,
+ "table": {}
+}

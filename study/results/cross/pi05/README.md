@@ -1,0 +1,183 @@
+# Track C: π0.5 DROID, the weight-space-programming control
+
+Track C of the three-model WSP comparison: Cosmos3 Edge Policy DROID (Track A), GR00T N1.7 DROID (Track B) and
+π0.5 DROID (this track), the model on which weight-space programming was developed. This page has two parts that
+are kept strictly apart:
+
+1. **PROVISIONAL**: results that already existed before this comparison. Each comes from its own slots and run, on
+   ali-ms (RTX 3090) under RoboLab's `performance` render preset. None was run on the shared slots.
+2. **FRESH**: new runs on the shared slots (30000–30031 per task, every 16-slot group as the first and only run of a
+   fresh Isaac process, environment seed 0), on the rented pod (2× RTX 4080 SUPER) under RoboLab's **default**
+   render preset. This part is in progress; see the status line.
+
+Machine-readable: [`../metrics_pi05.json`](../metrics_pi05.json) (one record per experiment; `"status"` is
+`"provisional"` or `"fresh"`), [`results/provisional.json`](results/provisional.json), `results/runs/` (fresh per-job
+records, one row per slot), [`results/summary.json`](results/summary.json).
+
+**Status (2026-11-08 00:40 ET).** Provisional column complete. Pod: setup in progress (OpenPI, RoboLab, Isaac Sim
+environments, checkpoint). Candidate files are being exported on ali-ms and relayed to the pod. No fresh pod result
+yet. On ali-ms, one 16-slot group (T1, unedited, slots 30000–30015) ran under the `performance` preset before the GPU
+work moved to the pod; it is kept as an ali-ms record, but it is not a valid hardware calibration because the primary
+preset is now the default one (see below).
+
+## Shared design
+
+| Code | RoboLab task | Default instruction | Episode |
+|---|---|---|---|
+| T1 | `RubiksCubeThenBananaTask` | Put the cube then the banana in the bowl | 60 s (900 steps) |
+| T2 | `PickGlassesTask` | Pick up the eye glasses | 30 s |
+| T3 | `RubiksCubeLeftOfBowlTask` | Put the rubiks cube to the left of the bowl | 30 s |
+| T4 | `StackYellowOnRedTask` | Stack the yellow block on the red block | 60 s |
+| T5 | `MustardInLeftBinTask` | Put the mustard in the left bin | 30 s |
+| T6 | `Stack3RubiksCubeTask` | Stack the rubiks cubes in a tower | 60 s |
+| T7 | `PickUpGreenObjectTask` | Pick up the green vegetable block | 30 s |
+| T8 | `MustardRightOfRaisinRFTask` (`study/results/sgdw/tasks/`, via `WSP_TASK_DIRS`) | Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle. (reference-first, RF) | 40 s |
+| R1 | `RubiksCubeTask` (retention) | Put the cube in the bowl | 40 s |
+
+R1 follows Track A's choice (cube into the bowl, `RubiksCubeTask`), which is also the retention task of π0.5's
+earlier where-to-edit study. Known-good ("teacher") wordings for the unedited weights: T1 "Put the cube in the bowl
+then put the banana in the bowl" (the explicit wording `v2mi-f` was distilled from); T8 target-first "Move the
+mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+
+## PROVISIONAL: existing π0.5 results (own slots, ali-ms RTX 3090, `performance` preset)
+
+Built by [`scripts/provisional.py`](scripts/provisional.py) from result files already in this repository, plus
+[`results/prior_pairs_ali-ms.json`](results/prior_pairs_ali-ms.json), which [`scripts/prior_pairs.py`](scripts/prior_pairs.py)
+recomputed from ali-ms's episode records for the earlier side-effect runs. Statistics are recomputed with
+`weightsmith.stats`: exact two-sided McNemar test, Wilson 95% intervals, paired bootstrap (20,000 draws, seed 0).
+
+### Unedited success (failure map)
+
+One headline per task (the largest n); every other unedited measurement is listed with its slots. Different blocks
+and runs of the same task differ by more than their intervals suggest: identical reruns flip about 30% of pairs.
+
+| Task | Unedited | Wilson 95% | Slots | Other unedited measurements |
+|---|---|---|---|---|
+| T1 cube then banana | 27/128 | 14.9–29.0% | 90000–90127 | 19/128 on the same slots (second run); 11/64 on 91008–91071; 5/64 on 94016–94079; 4/32 on 70000–70031 |
+| T2 pick glasses | 18/64 | 18.6–40.1% | 91008–91071 | 22/64 on 90000–90063; 26/64 on 60000–60063; 12/32 on 70000–70031; 14/32 on 94016–94047 |
+| T3 cube left of bowl | 8/64 | 6.5–22.8% | 90000–90063 | 5/32 on 70000–70031; 4/32 on 94016–94047; 3/32 on 60000–60031 |
+| T4 stack yellow on red | 13/32 | 25.5–57.7% | 70000–70031 | 14/32 on 20000–20031 |
+| T5 mustard in left bin | 8/64 | 6.5–22.8% | 91008–91071 | 6/32 on 70000–70031; 7/32 on 60000–60031 |
+| T6 stack 3 cubes | 35/64 | 42.6–66.3% | 91008–91071 | 16/32 on 70000–70031; 14/32 on 60000–60031 |
+| T7 pick green block | 0/32 | 0–10.7% | 70000–70031 | 0/32 on 60000–60031 |
+| T8 mustard right of raisin (RF) | 0/64 | 0–5.7% | 92000–92063 | 0/32 on 20000–20031 |
+| R1 cube in bowl | 32/32 | 89.3–100% | 94016–94047 | 16/16 on 60000–60015 |
+
+### T1: the paper's distilled edits, control and teacher (held-out)
+
+| Edit | Slots | Unedited → edited | Fixed / broke | Exact p | Paired difference, 95% CI | Control | Teacher | Recovery |
+|---|---|---|---|---|---|---|---|---|
+| `v2mi-f` (VLM layers 0–16; 450,468,837 values, 13.4%) | 90000–90127 | 27/128 → **106/128** | 81 / 2 | 7.2 × 10⁻²² | +61.7 [+52.3, +70.3] pts | 9/64 | 57/64 | 84.1% |
+| `abl-imgl8` (image cells, layers 8–16; 0.16% as factors) | 90000–90127 | 19/128 → **102/128** | 86 / 3 | 3.8 × 10⁻²² | +64.8 [+55.5, +73.4] pts | 9/64 | 57/64 | 93.8% |
+
+Control: a random-direction update with `v2mi-f`'s layers, rank and singular values, on slots 90000–90063 (the
+unedited runs scored 13/64 and 9/64 there). Teacher: the explicit wording given to the unedited weights, on the
+same 64 slots. Recovery = (edited − unedited) / (teacher − unedited) on 90000–90063: `v2mi-f` (50 − 13) / (57 − 13),
+`abl-imgl8` (54 − 9) / (57 − 9). Teacher vs `v2mi-f` there: 11 teacher-only and 4 edit-only pairs, p = 0.12.
+
+**Where the edit goes** (T1, held-out 94016–94079, all arms paired with one unedited run, 5/64):
+
+| Location | Edited | Fixed / broke | Exact p | Values changed |
+|---|---|---|---|---|
+| VLM (`v2mi-f`) | **55/64** | 50 / 0 | 1.8 × 10⁻¹⁵ | 450,468,837 |
+| VLM image cells (`abl-imgl8`) | 41/64 | 38 / 2 | 1.5 × 10⁻⁹ | 248,057,499 |
+| VLM + action expert | 43/64 | 41 / 3 | 1.6 × 10⁻⁹ | 505,694,140 |
+| action head, gated rank-1 (blind editor) | 30/64 | 28 / 3 | 4.6 × 10⁻⁶ | 1,024 |
+| action expert | 20/64 | 20 / 5 | 0.0041 | 60,378,838 |
+| action head, least-norm | 0/64 | 0 / 5 | 0.062 | 8,056 |
+
+Only the VLM edit transferred to other tasks (next table); 12 of these 14 chunks ran on one GPU lane, so their second
+16 slots started from other scenes, and `study/results/opus/where/README.md` repeats every comparison on the 32
+unaffected slots with the same ordering.
+
+### The existing side-effect map of `v2mi-f` (the T1 edit on other tasks, task's own instruction)
+
+| Task | Slots | Unedited → edited | Fixed / broke | Exact p | Run |
+|---|---|---|---|---|---|
+| T2 pick glasses | 90000–90063 | 22/64 → **44/64** | 31 / 9 | 6.8 × 10⁻⁴ | held-out (`heldout.py`) |
+| T2 pick glasses | 94016–94047 | 14/32 → 25/32 | 15 / 4 | 0.019 | where-to-edit transfer |
+| T2 pick glasses | 60000–60063 | 26/64 → 46/64 | 28 / 8 | 0.0012 | practice (2 runs) |
+| T3 cube left of bowl | 90000–90063 | 8/64 → **36/64** | 33 / 5 | 4.3 × 10⁻⁶ | held-out (`heldout.py`) |
+| T3 cube left of bowl | 94016–94047 | 4/32 → 20/32 | 16 / 0 | 3.1 × 10⁻⁵ | where-to-edit transfer |
+| T3 cube left of bowl | 60000–60031 | 3/32 → 22/32 | 20 / 1 | 2.1 × 10⁻⁵ | practice |
+| T4 stack yellow on red | 20000–20031 | 14/32 → 17/32 | 9 / 6 | 0.61 | practice |
+| T5 mustard in left bin | 60000–60031 | 7/32 → 12/32 | 11 / 6 | 0.33 | practice |
+| T6 stack 3 cubes | 60000–60031 | 14/32 → 19/32 | 9 / 4 | 0.27 | practice |
+| T7 pick green block | 60000–60031 | 0/32 → 0/32 | 0 / 0 | 1 | practice |
+| T8 mustard right of raisin | – | not run | – | – | – |
+| R1 cube in bowl | 94016–94047 | 32/32 → 32/32 | 0 / 0 | 1 | where-to-edit retention |
+| R1 cube in bowl | 60000–60015 | 16/16 → 16/16 | 0 / 0 | 1 | practice |
+| Cube right of bowl | 60000–60031 | 0/32 → 0/32 | 0 / 0 | 1 | practice |
+| Block tower (order-agnostic) | 60000–60031 | 15/32 → 14/32 | 7 / 8 | 1 | practice |
+| Bowl stacking | 60000–60031 | 19/32 → 21/32 | 8 / 6 | 0.79 | practice |
+| Yogurt in bowl | 60000–60031 | 3/32 → 2/32 | 2 / 3 | 1 | practice |
+| Grab a bagel | 60000–60031 | 0/32 → 1/32 | 1 / 0 | 1 | practice |
+| Marker in mug | 60000–60031 | 0/32 → 1/32 | 1 / 0 | 1 | practice |
+| Butter onto raisin box | 60000–60015 | 14/16 → 10/16 | 0 / 4 | 0.12 | practice; an unedited rerun scored 8/16 |
+| Banana onto plate | 60000–60015 | 16/16 → 16/16 | 0 / 0 | 1 | practice |
+
+Practice rows ran through `owsp eval` with the edit after the unedited arm in the same project; chunks of more than 16
+slots could start later groups from other scenes, which weakens their pairing (not their counts).
+
+### T8: the wording gap and its own edit
+
+| Comparison | Slots | Result | Fixed / broke | Exact p |
+|---|---|---|---|---|
+| unedited, RF vs TF wording | 20000–20031 | RF 0/32, TF **27/32** | 27 TF-only / 0 | 1.5 × 10⁻⁸ |
+| `s4r-grp3` (TF distilled into VLM layers 8–16, 3 key groups) vs unedited, RF | 92000–92063 (held-out) | 0/64 → **27/64** | 27 / 0 | 1.5 × 10⁻⁸ |
+| random-direction control of `s4r-grp3`, RF | 92000–92063 | 0/64 | 0 / 0 | 1 |
+| `s4r-grp3` vs unedited, under TF (no harm) | 20000–20031 | 27/32 → 23/32 | 5 / 9 | 0.42 |
+
+Recovery (practice slots, the only ones with a teacher arm): RF + `s4r-grp3` 16/32 against RF 0/32 and TF 27/32,
+59.3%. The paper's T1 edit `v2mi-f` was never run on T8. Source: `study/results/sgdw/`.
+
+## FRESH: shared slots on the rented pod (in progress)
+
+**Runtime.** weightsmith @ `ad31044` (the commit this branch starts from), installed on the pod by
+`scripts/setup_deps.sh` (pinned OpenPI `aa64205` + 1 patch, RoboLab `0aef241` + 6 patches, Isaac Sim 5.0 / Isaac Lab
+2.2, checkpoint verified by sha256). Evaluation driver: [`scripts/pool_pi05.py`](scripts/pool_pi05.py), which calls
+weightsmith's own `run_pool` with exactly one 16-slot group per call, so every group is the first and only run of a
+fresh Isaac process. Before every candidate job it recomputes the candidate's fingerprint and refuses to run on a
+mismatch; after it, it checks that the policy server loaded exactly that workspace. Job list and projects:
+[`scripts/tasks.py`](scripts/tasks.py).
+
+**Render preset (primary setting, changed 2026-11-08 at the coordinator's request).** RoboLab's default: no
+`--rendering-type` flag, so Isaac Lab's `RenderCfg` default applies (`balanced`, per
+`robolab/core/environments/runtime.py`), with the default realtime renderer. π0.5's paper results, and every
+provisional number above, used `--rendering-type performance`. Track B found GR00T at 5/16 under `performance` and
+16/16 under the default preset on the same slots; we check π0.5 on T1 (16 slots) under both.
+
+**Hardware.** π0.5 runs on RTX 4080 SUPER (32 GB) on the pod; Tracks A and B run on RTX 3090s on ali-ms.
+Within-model paired comparisons are unaffected; cross-model comparisons carry the hardware difference.
+
+**Order of work.** (1) unedited failure map, (2) side-effect map of `v2mi-f` (fingerprint `63db0c52a51306c9`) on
+every task, same slots, plus the teacher wordings for T1 and T8, (3) the 0.16% variant `abl-imgl8`
+(`5bf8c4329c1e416a`). T1, T3, T8 and R1 first.
+
+### Machine records kept from ali-ms
+
+| Run | Machine | Preset | Slots | Result |
+|---|---|---|---|---|
+| T1 unedited (`results/runs_ali-ms/T1-base-s30000.json`) | ali-ms GPU1, RTX 3090, 507 s | `performance` | 30000–30015 | 5/16 |
+
+A second ali-ms job (T1 `v2mi-f`, slots 30000–30015, GPU0) was stopped after 117 s when the GPU work moved to the
+pod; it produced no result.
+
+## GPU time
+
+| Machine | GPU time | What |
+|---|---|---|
+| ali-ms | 10.4 GPU-min (GPU1 506.7 s, GPU0 117.2 s) | the T1 group above; the stopped job |
+| pod | 0 so far | |
+
+## Files
+
+| Path | What |
+|---|---|
+| `scripts/tasks.py` | task set, teacher wordings, projects, candidates and fingerprints, job queue |
+| `scripts/pool_pi05.py` | evaluation worker (one per GPU; flocks; one fresh Isaac process per 16-slot group) |
+| `scripts/provisional.py` | the provisional column from existing results |
+| `scripts/prior_pairs.py` | earlier paired runs of the paper's edits, recomputed from ali-ms episode records |
+| `scripts/analyze.py` | `../metrics_pi05.json`, `results/summary.json`, plots |
+| `results/` | `provisional.json`, `prior_pairs_ali-ms.json`, `runs/` (pod), `runs_ali-ms/` (ali-ms) |
+| `plots/` | SVG and PNG (2×) |
