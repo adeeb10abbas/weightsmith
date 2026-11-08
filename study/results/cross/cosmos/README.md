@@ -219,3 +219,48 @@ T3. No closed loop for `t8und-s` (gate failed).
 
 (T5 and T3 deviation = chunk-end end-effector distance of the edited policy's action chunk from the unedited one, on 38 / 20
 decisions of practice episodes the unedited policy solved. Practice = slots 30000-30015, paired with the unedited runs.)
+
+### Second wording-sensitive task: `t3und` and the stacked edit `t8t3und` (rules fixed 14:05 ET, before either build)
+
+The T3 wording screen makes T3 wording-sensitive too: RoboLab's own "specific" instruction "Pick up the rubiks cube and
+place it on the table to the left side of the bowl" solves 11/16 practice starts where the default "Put the rubiks cube
+to the left of the bowl" solves 4/16 (8 fixed / 1 broke, p = 0.039, slots 30000-30015). T3 is also one of the two tasks
+`t8und` breaks. Coordinator's request (13:50 ET), with the rules below fixed before any build:
+
+**`t3und`** = `t8und`'s recipe (`scripts/seq_build.py`: sequential closed-form distillation into `mlp.down_proj` of the
+text layers 0-26, lam_rel 1e-3, unconditional-pass keys, its random-direction control with the same rank and singular
+values per layer), with O = T3's default wording and G = the specific wording, one prompt pair.
+- Alignment: `--align auto`. The two wordings have different token counts, so the recipe falls back to `ps`, which
+  matches the shared template prefix and suffix and leaves the differing words unconstrained. That is the only
+  alignment the recipe defines for unequal lengths. On T8 the template-only alignment closed only 1.9% of the gap
+  (`t8und-s`), so this is a real test of whether the recipe carries over. Expect a negative result, and record it plainly.
+- Decisions: T3 practice failures of the unedited policy (`T3-base-s30000`: 30001, 30002, 30004, 30006-30011,
+  30013-30015), in slot order. The build uses the first failure (30001, replan 1), with check decisions 30002:1,
+  30004:2 and 30006:3. The offline gate set is held aside from the build: skip the first 6 failure slots (30001, 30002,
+  30004, 30006, 30007, 30008) and take the next 6 failure episodes (30009, 30010, 30011, 30013, 30014, 30015), replans
+  1-5, so 30 decisions.
+- Offline gate: at least 85% of the T3 O -> G action gap closed (chunk-end end-effector distance to G's chunk, same
+  seed), and the random control's gap closed within +/-15%. If the gate fails, there is no closed loop.
+- If the gate passes: T3 practice 30000-30015, edit and control (GPU1, paired with `T3-base-s30000`). Side effects on
+  practice only: T8 (RF wording, GPU1, paired with `T8-base-s30000`) and T5 (GPU0, paired with `T5-base-s30000`).
+- Held-out runs need both of the following on practice: the edit recovers at least 50% of the specific wording's paired
+  gain (at least 8/16), and it solves more starts than its control. Held-out = T3 96032-96063 (32 starts that no T3 run
+  has used): unedited, edit and control, all on one GPU.
+
+**`t8t3und`** (stacked). Load `t8und`, then build the T3 update on the T8-edited weights, sequentially, layer by layer
+(`seq_build.py --base-edit edits/t8und.pt`). Same wordings, alignment, decisions and lam_rel as `t3und`. The teacher
+states are those of the **unedited** model under the specific wording. Under `t8und` the specific wording also says
+"left", so the target is what T3's good wording does on the original policy. The served file `t8t3und-stack.pt` holds
+the dense difference between the stacked weights and the original weights. The build checks that `edge_common.apply_edit`
+reproduces the stacked weights exactly from that file (bf16, bit for bit). No random control for the stack.
+- Offline gate, both required: (a) T3: at least 85% of the gap closed between the T8-edited policy under T3's default
+  wording and the unedited policy under the specific wording, on the same 30 held-aside T3 decisions; (b) T8: at least
+  85% of the RF -> TF gap closed on `t8und`'s 30 held-aside T8 decisions (slots 30006-30011, replans 1-5).
+- If the gate passes: practice T8 and T3 (GPU1, paired with `T8-base-s30000` / `T3-base-s30000` and with
+  `T8-Et8und-s30000` / `T3-Et8und-s30000`) and T5 (GPU0, paired with `T5-base-s30000` / `T5-Et8und-s30000`).
+- Held-out runs need both of the following on practice. T8 holds: the stack beats the unedited policy (McNemar p < 0.05)
+  and is not significantly worse than `t8und` (p >= 0.05). T3 recovers: at least 8/16, as for `t3und`. Held-out = T8
+  96064-96095 (unedited and stack; 96000-96063 were spent on `t8und`) and T3 96032-96063 (the stack paired with the
+  `t3und` held-out unedited runs on the same GPU).
+
+Timebox: about 3 h of GPU time across both GPUs. The new jobs go ahead of the remaining practice-extension jobs.
