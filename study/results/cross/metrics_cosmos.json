@@ -246,10 +246,10 @@
   "wording_pair": [
    "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
   "unedited_k": 0,
   "edited_k": null,
@@ -259,7 +259,7 @@
   "ci": {
    "wilson95_pct": [
     0.0,
-    19.4
+    10.7
    ]
   },
   "control_k": null,
@@ -403,33 +403,33 @@
    "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
    "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
   "unedited_k": 0,
   "edited_k": null,
-  "fixed": 15,
+  "fixed": 31,
   "broke": 0,
-  "p": 6.103515625e-05,
+  "p": 9.313225746154785e-10,
   "ci": {
-   "diff_pts": 93.75,
+   "diff_pts": 96.88,
    "bootstrap95_pts": [
-    81.25,
+    90.62,
     100.0
    ],
    "wilson95_orig_pct": [
     0.0,
-    19.4
+    10.7
    ],
    "wilson95_alt_pct": [
-    71.7,
-    98.9
+    84.3,
+    99.4
    ]
   },
   "control_k": null,
-  "teacher_k": 15,
+  "teacher_k": 31,
   "recovery_pct": null,
   "transfer": null,
   "retention": null,

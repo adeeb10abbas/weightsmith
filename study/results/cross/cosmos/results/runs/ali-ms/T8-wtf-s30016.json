@@ -1,0 +1,261 @@
+{
+ "tag": "T8-wtf-s30016",
+ "task": "MustardRightOfRaisinRFTask",
+ "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
+ "edit": null,
+ "slots": [
+  30016,
+  30031
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 16,
+ "groups": [
+  {
+   "group": 1876,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 180.2,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.robolab/cosmosx-T8-wtf-s30016-g1876o0-1108-135424"
+  },
+  {
+   "group": 1876,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 207.2,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.robolab/cosmosx-T8-wtf-s30016-g1876o8-1108-135724"
+  }
+ ],
+ "server_load": {
+  "edit": null,
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 13.1
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 431.5,
+ "server_ready_s": 14.0,
+ "started": "2026-11-08 13:54:10",
+ "finished": "2026-11-08 14:01:22",
+ "rows": [
+  {
+   "slot": 30016,
+   "group": 1876,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 214,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30017,
+   "group": 1876,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 242,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30018,
+   "group": 1876,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 220,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30019,
+   "group": 1876,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 189,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30020,
+   "group": 1876,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 307,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30021,
+   "group": 1876,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 252,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30022,
+   "group": 1876,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 211,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30023,
+   "group": 1876,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 224,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 30024,
+   "group": 1876,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 203,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30025,
+   "group": 1876,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 356,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30026,
+   "group": 1876,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 337,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30027,
+   "group": 1876,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 238,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30028,
+   "group": 1876,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 179,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30029,
+   "group": 1876,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 347,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30030,
+   "group": 1876,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 244,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30031,
+   "group": 1876,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 275,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-wtf-s30016.obs/g1876o8/obs_r0_e7.npz"
+  }
+ ]
+}

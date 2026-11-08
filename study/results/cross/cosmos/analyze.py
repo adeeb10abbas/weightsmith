@@ -288,10 +288,11 @@ def main():
                 c = paired(base or {}, ed or {}, slots) if base and ed else {}
                 if not c:
                     continue
-                cc = paired(base, ctl, slots) if ctl else {}
-                ct = paired(base, tch, slots) if tch else {}
-                ec = paired(ctl, ed, slots) if ctl else {}
-                et = paired(tch, ed, slots) if tch else {}  # edited weights vs the unedited policy under the good wording
+                eslots = [s for s in slots if s in ed]  # control and teacher are compared on the edit's own starts
+                cc = paired(base, ctl, eslots) if ctl else {}
+                ct = paired(base, tch, eslots) if tch else {}
+                ec = paired(ctl, ed, eslots) if ctl else {}
+                et = paired(tch, ed, eslots) if tch else {}  # edited weights vs the unedited policy under the good wording
                 rec_pct = None
                 if ct and ct["cand_k"] != ct["ref_k"] and ct["n"] == c["n"]:
                     rec_pct = round(100 * (c["cand_k"] - c["ref_k"]) / (ct["cand_k"] - ct["ref_k"]), 1)
