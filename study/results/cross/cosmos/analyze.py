@@ -291,12 +291,13 @@ def main():
                 cc = paired(base, ctl, slots) if ctl else {}
                 ct = paired(base, tch, slots) if tch else {}
                 ec = paired(ctl, ed, slots) if ctl else {}
+                et = paired(tch, ed, slots) if tch else {}  # edited weights vs the unedited policy under the good wording
                 rec_pct = None
                 if ct and ct["cand_k"] != ct["ref_k"] and ct["n"] == c["n"]:
                     rec_pct = round(100 * (c["cand_k"] - c["ref_k"]) / (ct["cand_k"] - ct["ref_k"]), 1)
                 row = {"machine": m, "code": code, "edit": name, "split": split, "location": e["location"], **c,
                        "control": cc or None, "teacher": ct or None, "edit_vs_control": ec or None,
-                       "recovery_pct": rec_pct}
+                       "edit_vs_teacher": et or None, "recovery_pct": rec_pct}
                 edit_rows.append(row)
                 records.append(record(
                     experiment=f"edit_{split}", machine=m, task=TASKS[code][0], code=code,
@@ -309,6 +310,8 @@ def main():
                     control_n=cc.get("n") if cc else None, teacher_n=ct.get("n") if ct else None,
                     edit_vs_control={k: ec[k] for k in ("n", "ref_k", "cand_k", "fixed", "broke", "p", "slots")}
                     if ec else None,
+                    edit_vs_teacher={k: et[k] for k in ("n", "ref_k", "cand_k", "fixed", "broke", "p", "slots")}
+                    if et else None,
                     control_slots=cc.get("slots") if cc else None, teacher_slots=ct.get("slots") if ct else None,
                     recovery_pct=rec_pct, edit_location=e["location"], values_changed=e.get("values_changed"),
                     notes=f"edit {name} ({e.get('summary', '')}); control: same rank and singular values, random "

@@ -12,9 +12,11 @@ tasks and slots?
 ## Headline (all ali-ms, default render, paired on the same starts)
 
 1. **Fix.** T8 (move the mustard right of the raisin box, reference-first wording). Unedited Cosmos3 Edge solves 0/16
-   practice and 0/64 held-out starts. The target-first wording solves 15/16. The closed-form text-pathway edit `t8und`
-   (RF wording unchanged) solves **13/16 practice and 56/64 held-out** (56 fixed / 0 broke, p = 2.8e-17). Its
-   same-size random-direction control solves 1/16 and **0/64**.
+   practice and 0/64 held-out starts. The target-first (TF) wording solves 15/16 practice and 56/64 held-out. The
+   closed-form text-pathway edit `t8und` (RF wording unchanged) solves **13/16 practice and 56/64 held-out** (56 fixed /
+   0 broke, p = 2.8e-17): it recovers 86.7% of the TF wording's gain on practice and **100.0% on held-out starts** (edit
+   vs TF wording on the same 64 starts: 5 / 5 discordant, p = 1). Its same-size random-direction control solves 1/16
+   and **0/64**.
 2. **Where to edit.** Offline, the text pathway closes 91% of the RF -> TF action gap and the video/action pathway 23%.
    In closed loop the video/action edit `t8gen` solves 0/16.
 3. **Side effects (held-out 96000-96031).** The edit breaks the other two instructions that say "left": T5, mustard in
@@ -95,8 +97,12 @@ All numbers: ali-ms GPU1, default render, 8 envs per sim process, paired on the 
 | unedited, RF wording | 0/64 (Wilson 95% 0.0-5.7%) | |
 | **edited `t8und`, RF wording** | **56/64 (77.2-93.5%)** | vs unedited: 56 fixed / 0 broke, p = 2.8e-17; +87.5 points (paired bootstrap 95% 78.1-95.3) |
 | random-direction control of `t8und` | 0/64 | vs edit: 56 fixed / 0 broke, p = 2.8e-17 |
+| unedited, TF wording (known-good, teacher) | 56/64 (77.2-93.5%) | vs unedited: 56 fixed / 0 broke, p = 2.8e-17; vs edit: 5 / 5 starts where only one of the two succeeds, p = 1 (51 both, 3 neither) |
 
-Per 16-start group (edited): 15/16, 13/16, 14/16, 14/16; unedited and control 0/16 in every group.
+**Recovery on held-out starts: 100.0%** of the TF wording's gain (edit +56, TF wording +56 over the unedited RF wording, same
+64 starts). The edited policy under the RF wording and the unedited policy under the TF wording succeed equally often, but
+not always on the same starts (each fails 8; they share 3 failures, 96028, 96047 and 96053).
+Per 16-start group (edited): 15/16, 13/16, 14/16, 14/16; TF wording: 15/16, 14/16, 14/16, 13/16; unedited and control 0/16 in every group.
 Clip: `videos/t8_96003_unedited_vs_t8und.mp4` (held-out start 96003).
 
 `t8und`: closed-form distillation of the TF wording's text-token states into the RF wording's, in the text pathway
