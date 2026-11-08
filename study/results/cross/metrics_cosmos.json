@@ -212,10 +212,10 @@
   "wording_pair": [
    "Pick up the green vegetable block"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
   "unedited_k": 0,
   "edited_k": null,
@@ -225,7 +225,7 @@
   "ci": {
    "wilson95_pct": [
     0.0,
-    19.4
+    10.7
    ]
   },
   "control_k": null,

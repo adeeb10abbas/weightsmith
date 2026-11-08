@@ -1,0 +1,261 @@
+{
+ "tag": "T7-base-s30016",
+ "task": "PickUpGreenObjectTask",
+ "prompt": null,
+ "edit": null,
+ "slots": [
+  30016,
+  30031
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 0,
+ "groups": [
+  {
+   "group": 1876,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 279.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.robolab/cosmosx-T7-base-s30016-g1876o0-1108-125532"
+  },
+  {
+   "group": 1876,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 273.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.robolab/cosmosx-T7-base-s30016-g1876o8-1108-130011"
+  }
+ ],
+ "server_load": {
+  "edit": null,
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 13.1
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 596.7,
+ "server_ready_s": 14.0,
+ "started": "2026-11-08 12:55:18",
+ "finished": "2026-11-08 13:05:15",
+ "rows": [
+  {
+   "slot": 30016,
+   "group": 1876,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Conditions not satisfied: object_grabbed(object=frozen_vegetable_block) (step 1/1); object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30017,
+   "group": 1876,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30018,
+   "group": 1876,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30019,
+   "group": 1876,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30020,
+   "group": 1876,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30021,
+   "group": 1876,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30022,
+   "group": 1876,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30023,
+   "group": 1876,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 30024,
+   "group": 1876,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30025,
+   "group": 1876,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30026,
+   "group": 1876,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30027,
+   "group": 1876,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30028,
+   "group": 1876,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30029,
+   "group": 1876,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30030,
+   "group": 1876,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30031,
+   "group": 1876,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the green vegetable block",
+   "reason": "Condition not satisfied: object_above(object=frozen_vegetable_block, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T7-base-s30016.obs/g1876o8/obs_r0_e7.npz"
+  }
+ ]
+}
