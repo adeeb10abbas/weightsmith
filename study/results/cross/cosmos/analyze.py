@@ -316,21 +316,23 @@ def main():
                                            f"{cc['p']:.3g}" if cc else "") +
                           (f"; edit vs control p = {ec['p']:.3g}" if ec else "")))
             # side effects: the edited weights on every other task, practice slots, default wording
-            for oc in TASKS:
+            for oc, (split, slots) in [(oc, sp) for sp in (("practice", PRACTICE), ("heldout", HELDOUT))
+                                       for oc in TASKS]:
                 if oc == code:
                     continue
                 b2, e2 = arms.get((m, f"{oc}-base")), arms.get((m, f"{oc}-E{name}"))
-                c = paired(b2 or {}, e2 or {}, PRACTICE) if b2 and e2 else {}
+                c = paired(b2 or {}, e2 or {}, slots) if b2 and e2 else {}
                 if not c:
                     continue
-                side.append({"machine": m, "edit": name, "code": oc, **c})
+                side.append({"machine": m, "edit": name, "code": oc, "split": split, **c})
                 records.append(record(
-                    experiment="side_effect", machine=m, task=TASKS[oc][0], code=oc, wording_pair=[TASKS[oc][1]],
+                    experiment="side_effect" if split == "practice" else "side_effect_heldout", machine=m, task=TASKS[oc][0], code=oc, wording_pair=[TASKS[oc][1]],
                     n=c["n"], slots=c["slots"], unedited_k=c["ref_k"], edited_k=c["cand_k"], fixed=c["fixed"],
                     broke=c["broke"], p=c["p"], ci={"diff_pts": c["diff_pts"], "bootstrap95_pts": c["diff_ci95_pts"]},
                     transfer=c["diff_pts"] if oc != "R1" else None, retention=c["diff_pts"] if oc == "R1" else None,
                     edit_location=e["location"], values_changed=e.get("values_changed"),
-                    notes=f"edit {name} built for {code}, run on {oc} with {oc}'s default instruction"))
+                    notes=f"edit {name} built for {code}, run on {oc} with {oc}'s default instruction, {split} slots"
+                          + (" (never used for any choice on this task)" if split == "heldout" else "")))
     # where to edit, offline: replayed RF-failure decisions, action-chunk distance to the teacher (TF wording)
     where = []
     for m in machines:
@@ -390,15 +392,24 @@ def main():
             plot_bars(groups, f"edit_{e['name']}_{m}", f"{LABELS[e['code']]}: edit {e['name']} ({e['location']}), {m}")
             own = [r for r in edit_rows if r["machine"] == m and r["edit"] == e["name"] and r["split"] == "practice"]
             order = list(TASKS)
-            allrows = sorted(own + [r for r in side if r["machine"] == m and r["edit"] == e["name"]],
-                             key=lambda r: order.index(r["code"]))
+            allrows = sorted(own + [r for r in side if r["machine"] == m and r["edit"] == e["name"]
+                                    and r["split"] == "practice"], key=lambda r: order.index(r["code"]))
             if len(allrows) > 1:
                 plot_pairs(allrows, f"tasks_{e['name']}_{m}",
                            f"Every task, unedited vs edited {e['name']} (built for {e['code']}), same practice starts ({m})",
                            "unedited", "edited", lambda r: LABELS[r["code"]])
-            plot_side_effects([r for r in side if r["machine"] == m and r["edit"] == e["name"]],
+            plot_side_effects([r for r in side if r["machine"] == m and r["edit"] == e["name"] and r["split"] == "practice"],
                               f"side_effects_{e['name']}_{m}",
                               f"Edit {e['name']} on the other tasks, practice starts ({m})")
+            own_h = [r for r in edit_rows if r["machine"] == m and r["edit"] == e["name"] and r["split"] == "heldout"]
+            hrows = sorted(own_h + [r for r in side if r["machine"] == m and r["edit"] == e["name"]
+                                    and r["split"] == "heldout"], key=lambda r: order.index(r["code"]))
+            if len(hrows) > 1:
+                plot_pairs(hrows, f"tasks_heldout_{e['name']}_{m}",
+                           f"Every task, unedited vs edited {e['name']} (built for {e['code']}), held-out starts ({m})",
+                           "unedited", "edited", lambda r: f"{LABELS[r['code']]} ({r['slots'][0]}-{r['slots'][1]})")
+                plot_side_effects([r for r in hrows if r["code"] != e["code"]], f"side_effects_heldout_{e['name']}_{m}",
+                                  f"Edit {e['name']} on the other tasks, held-out starts ({m})")
     for r in fmap:
         print(f"{r['machine']:7s} {r['code']:3s} {r['task']:28s} {r['k']:3d}/{r['n']:<3d} Wilson95 {r['wilson95']}")
     for r in wrows:
@@ -414,7 +425,7 @@ def main():
         print(f"{r['machine']:7s} where {r['edit']} {r['group']}: ee {r['unedited_ee_cm']} -> {r['edited_ee_cm']} cm "
               f"(gap closed {r['gap_closed_pct']}%, control {r['control_gap_closed_pct']}%), n={r['n']}")
     for r in side:
-        print(f"{r['machine']:7s} side {r['edit']} {r['code']}: {r['ref_k']}/{r['n']} -> {r['cand_k']}/{r['n']} "
+        print(f"{r['machine']:7s} side {r['split']} {r['edit']} {r['code']}: {r['ref_k']}/{r['n']} -> {r['cand_k']}/{r['n']} "
               f"+{r['fixed']}/-{r['broke']} p={r['p']:.3g}")
 
 

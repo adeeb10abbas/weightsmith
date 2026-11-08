@@ -477,7 +477,7 @@
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
-  "notes": "edit t8und built for T8, run on T1 with T1's default instruction"
+  "notes": "edit t8und built for T8, run on T1 with T1's default instruction, practice slots"
  },
  {
   "experiment": "side_effect",
@@ -512,7 +512,7 @@
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
-  "notes": "edit t8und built for T8, run on T2 with T2's default instruction"
+  "notes": "edit t8und built for T8, run on T2 with T2's default instruction, practice slots"
  },
  {
   "experiment": "side_effect",
@@ -547,7 +547,7 @@
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
-  "notes": "edit t8und built for T8, run on T3 with T3's default instruction"
+  "notes": "edit t8und built for T8, run on T3 with T3's default instruction, practice slots"
  },
  {
   "experiment": "side_effect",
@@ -582,7 +582,7 @@
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
-  "notes": "edit t8und built for T8, run on T4 with T4's default instruction"
+  "notes": "edit t8und built for T8, run on T4 with T4's default instruction, practice slots"
  },
  {
   "experiment": "side_effect",
@@ -617,7 +617,42 @@
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
-  "notes": "edit t8und built for T8, run on T5 with T5's default instruction"
+  "notes": "edit t8und built for T8, run on T5 with T5's default instruction, practice slots"
+ },
+ {
+  "experiment": "side_effect",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "PickUpGreenObjectTask",
+  "code": "T7",
+  "wording_pair": [
+   "Pick up the green vegetable block"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 0,
+  "edited_k": 0,
+  "fixed": 0,
+  "broke": 0,
+  "p": 1.0,
+  "ci": {
+   "diff_pts": 0.0,
+   "bootstrap95_pts": [
+    0.0,
+    0.0
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": 0.0,
+  "retention": null,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+  "values_changed": 179010015,
+  "notes": "edit t8und built for T8, run on T7 with T7's default instruction, practice slots"
  },
  {
   "experiment": "side_effect",
@@ -652,7 +687,7 @@
   "retention": 25.0,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
-  "notes": "edit t8und built for T8, run on R1 with R1's default instruction"
+  "notes": "edit t8und built for T8, run on R1 with R1's default instruction, practice slots"
  },
  {
   "experiment": "where_to_edit_offline",
