@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "c9b2dd9a6062"
+    "commit": "21de93843d3d"
    }
   },
   {
@@ -394,8 +394,9 @@
     "label": "T7 Pick up the flat box",
     "cells": {
      "cosmos": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 0 of 16",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -698,8 +699,11 @@
      "label": "T7 Pick up the flat box",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "0 of 16",
+       "s": "ok",
+       "d": "0%; slots 30000–30015",
+       "k": 0,
+       "n": 16
       },
       "groot": {
        "v": "0 of 32",
@@ -2512,6 +2516,45 @@
     "values_changed": null,
     "notes": "unedited policy, task's default instruction, practice slots, default render",
     "_task": "T5",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "PickUpGreenObjectTask",
+    "code": "T7",
+    "wording_pair": [
+     "Pick up the green vegetable block"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      0.0,
+      19.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction, practice slots, default render",
+    "_task": "T7",
     "_edit_task": null,
     "_prov": false,
     "extra": {
@@ -6986,7 +7029,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "c9b2dd9a6062"
+   "commit": "21de93843d3d"
   },
   "groot": {
    "kind": "branch",
@@ -7004,8 +7047,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "2988b187655e5d6b",
- "updated": "2026-11-08T10:53Z",
- "updated_text": "8 Nov 2026, 10:53 UTC",
+ "content_hash": "56a540175f2bdf7c",
+ "updated": "2026-11-08T11:04Z",
+ "updated_text": "8 Nov 2026, 11:04 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
