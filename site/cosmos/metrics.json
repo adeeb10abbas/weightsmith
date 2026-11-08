@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "f65d83a8a5a0"
+    "commit": "cb669f759e22"
    }
   },
   {
@@ -1034,6 +1034,7 @@
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ]
  },
+ "when_text": "The edit copies the clear wording’s effect onto the same words of the original wording, and that effect lives in the words that differ. So it works where the two wordings line up word for word: on Mustard right of raisin box both have 171 tokens, and the edit took Cosmos3 Edge from 0 to 56 of 64 unseen starts, as many as the clear wording itself. It fails where the clear wording adds or removes words, because the added words have no counterpart to copy their effect onto: Cube left of bowl on Cosmos3 Edge (159 and 167 tokens) and Cube then banana on GR00T N1.7 (the clear wording inserts “in the bowl then put”). Copying only the words both wordings share does nothing: 1.9% of the clear wording’s effect in replays, about the same as a random edit of the same size (2.6%). π0.5 is different: its clear wording for Cube then banana also adds words, yet the edit worked, because in π0.5 the camera images are read together with the whole instruction, so the wording’s effect also reaches positions both wordings share, and the edit copies it there (in the paper, the image positions alone carry the fix). A prediction we tested. Before building anything, we wrote down a prediction (the Cosmos3 Edge track’s README, commit e01cbfe): an edit for a new pair of wordings of equal length would pass the offline check and fix the task; one for wordings of unequal length would fail the check. Cube left of bowl, worded bowl-first vs cube-first, 169 and 169 tokens; unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07), a modest gap: in replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check. So far the prediction holds; the runs on the robot are next. Case Do the wordings line up? Result Mustard right of raisin box, Cosmos3 Edge Yes: 171 and 171 tokens, every word matched 0 → 56 of 64 unseen starts; the clear wording itself: 56 Cube left of bowl, Cosmos3 Edge No: 159 and 167 tokens Didn’t pass the offline check; not run on the robot in replays it moved the planned motion away from the clear wording’s (−86% of the gap) Cube then banana, GR00T N1.7 No: the clear wording inserts “in the bowl then put” Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, Cosmos3 Edge, only the words both wordings share Only the shared words: 159 of 171 tokens 1.9% of the clear wording’s effect in replays; a random edit 2.6% not run on the robot Tested after a written prediction Cube left of bowl, worded bowl-first vs cube-first Yes: 169 and 169 tokens predicted before the build: it works In replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check Unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07). So far the prediction holds; the runs on the robot are next.",
  "diagrams": {
   "where": [
    {
@@ -9443,7 +9444,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "f65d83a8a5a0"
+   "commit": "cb669f759e22"
   },
   "groot": {
    "kind": "branch",
@@ -9461,9 +9462,9 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "290e2832cee6b4ef",
- "numbers_hash": "e3b2246e0af7451c",
- "updated": "2026-11-08T20:53Z",
- "updated_text": "8 Nov 2026, 20:53 UTC",
+ "content_hash": "8f02841a5dfaf50d",
+ "numbers_hash": "d83952dbc47a7e2e",
+ "updated": "2026-11-08T21:00Z",
+ "updated_text": "8 Nov 2026, 21:00 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
