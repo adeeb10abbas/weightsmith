@@ -1,0 +1,289 @@
+{
+ "source": "/home/ali/vibes/opus-weight-surgery/projects/where-left/heldout/where-tx16-94016-32/results.json",
+ "task": "RubiksCubeLeftOfBowlTask",
+ "slot_filter": null,
+ "lanes_per_chunk": {
+  "base-94016": [
+   0
+  ],
+  "v1full-94016": [
+   0
+  ],
+  "p1-94016": [
+   0
+  ],
+  "a1-94016": [
+   0
+  ],
+  "a1-94032": [
+   0
+  ],
+  "p1-94032": [
+   0
+  ],
+  "v1full-94032": [
+   0
+  ],
+  "base-94032": [
+   0
+  ]
+ },
+ "n_slots": 32,
+ "slot_range": [
+  94016,
+  94047
+ ],
+ "fingerprints": {
+  "base": null,
+  "v1full": "63db0c52a51306c9",
+  "p1": "4ca8023b0592b79f",
+  "a1": "09b7c9f5bfe26912"
+ },
+ "arms": {
+  "base": {
+   "success": 4,
+   "n": 32,
+   "wilson95": [
+    0.05,
+    0.281
+   ],
+   "mean_steps_success": 211.5
+  },
+  "v1full": {
+   "success": 20,
+   "n": 32,
+   "wilson95": [
+    0.453,
+    0.771
+   ],
+   "mean_steps_success": 208.7
+  },
+  "p1": {
+   "success": 1,
+   "n": 32,
+   "wilson95": [
+    0.006,
+    0.157
+   ],
+   "mean_steps_success": 425.0
+  },
+  "a1": {
+   "success": 2,
+   "n": 32,
+   "wilson95": [
+    0.017,
+    0.201
+   ],
+   "mean_steps_success": 275.0
+  }
+ },
+ "comparisons": [
+  {
+   "cand": "v1full",
+   "ref": "base",
+   "n": 32,
+   "cand_succ": 20,
+   "ref_succ": 4,
+   "fixed": 16,
+   "broke": 0,
+   "diff_pp": 50.0,
+   "boot95_pp": [
+    34.4,
+    68.8
+   ],
+   "mcnemar_p": 3.0517578125e-05
+  },
+  {
+   "cand": "p1",
+   "ref": "base",
+   "n": 32,
+   "cand_succ": 1,
+   "ref_succ": 4,
+   "fixed": 1,
+   "broke": 4,
+   "diff_pp": -9.4,
+   "boot95_pp": [
+    -21.9,
+    3.1
+   ],
+   "mcnemar_p": 0.375
+  },
+  {
+   "cand": "a1",
+   "ref": "base",
+   "n": 32,
+   "cand_succ": 2,
+   "ref_succ": 4,
+   "fixed": 1,
+   "broke": 3,
+   "diff_pp": -6.2,
+   "boot95_pp": [
+    -18.8,
+    6.2
+   ],
+   "mcnemar_p": 0.625
+  },
+  {
+   "cand": "p1",
+   "ref": "v1full",
+   "n": 32,
+   "cand_succ": 1,
+   "ref_succ": 20,
+   "fixed": 0,
+   "broke": 19,
+   "diff_pp": -59.4,
+   "boot95_pp": [
+    -75.0,
+    -43.8
+   ],
+   "mcnemar_p": 3.814697265625e-06
+  },
+  {
+   "cand": "a1",
+   "ref": "v1full",
+   "n": 32,
+   "cand_succ": 2,
+   "ref_succ": 20,
+   "fixed": 0,
+   "broke": 18,
+   "diff_pp": -56.2,
+   "boot95_pp": [
+    -75.0,
+    -40.6
+   ],
+   "mcnemar_p": 7.62939453125e-06
+  }
+ ],
+ "by_chunk": [
+  {
+   "slots": [
+    94016,
+    94031
+   ],
+   "order": [
+    "base",
+    "v1full",
+    "p1",
+    "a1"
+   ],
+   "success": {
+    "base": 0,
+    "v1full": 12,
+    "p1": 0,
+    "a1": 1
+   },
+   "vs_ref": {
+    "v1full": {
+     "cand": "v1full",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 12,
+     "ref_succ": 0,
+     "fixed": 12,
+     "broke": 0,
+     "diff_pp": 75.0,
+     "boot95_pp": [
+      50.0,
+      93.8
+     ],
+     "mcnemar_p": 0.00048828125
+    },
+    "p1": {
+     "cand": "p1",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 0,
+     "ref_succ": 0,
+     "fixed": 0,
+     "broke": 0,
+     "diff_pp": 0.0,
+     "boot95_pp": [
+      0.0,
+      0.0
+     ],
+     "mcnemar_p": 1.0
+    },
+    "a1": {
+     "cand": "a1",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 1,
+     "ref_succ": 0,
+     "fixed": 1,
+     "broke": 0,
+     "diff_pp": 6.2,
+     "boot95_pp": [
+      0.0,
+      18.8
+     ],
+     "mcnemar_p": 1.0
+    }
+   }
+  },
+  {
+   "slots": [
+    94032,
+    94047
+   ],
+   "order": [
+    "a1",
+    "p1",
+    "v1full",
+    "base"
+   ],
+   "success": {
+    "base": 4,
+    "v1full": 8,
+    "p1": 1,
+    "a1": 1
+   },
+   "vs_ref": {
+    "v1full": {
+     "cand": "v1full",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 8,
+     "ref_succ": 4,
+     "fixed": 4,
+     "broke": 0,
+     "diff_pp": 25.0,
+     "boot95_pp": [
+      6.2,
+      50.0
+     ],
+     "mcnemar_p": 0.125
+    },
+    "p1": {
+     "cand": "p1",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 1,
+     "ref_succ": 4,
+     "fixed": 1,
+     "broke": 4,
+     "diff_pp": -18.8,
+     "boot95_pp": [
+      -43.8,
+      6.2
+     ],
+     "mcnemar_p": 0.375
+    },
+    "a1": {
+     "cand": "a1",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 1,
+     "ref_succ": 4,
+     "fixed": 0,
+     "broke": 3,
+     "diff_pp": -18.8,
+     "boot95_pp": [
+      -37.5,
+      0.0
+     ],
+     "mcnemar_p": 0.25
+    }
+   }
+  }
+ ]
+}

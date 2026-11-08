@@ -1,0 +1,77 @@
+{
+ "arms": {
+  "base": {
+   "cand": null,
+   "workspace": null,
+   "fingerprint": null,
+   "prompt": ""
+  },
+  "v1full": {
+   "cand": "v1-full",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/where-cube/heldout/where-tx16-94016-32/frozen-v1full",
+   "fingerprint": "63db0c52a51306c9",
+   "prompt": null
+  },
+  "p1": {
+   "cand": "p1-blind",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/where-cube/heldout/where-tx16-94016-32/frozen-p1",
+   "fingerprint": "4ca8023b0592b79f",
+   "prompt": null
+  },
+  "a1": {
+   "cand": "a1",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/where-cube/heldout/where-tx16-94016-32/frozen-a1",
+   "fingerprint": "09b7c9f5bfe26912",
+   "prompt": null
+  }
+ },
+ "task": "RubiksCubeTask",
+ "default_instruction": "Put the cube in the bowl",
+ "slots": [
+  94016,
+  94047
+ ],
+ "schedule": [
+  [
+   "base",
+   94016,
+   94031
+  ],
+  [
+   "v1full",
+   94016,
+   94031
+  ],
+  [
+   "p1",
+   94016,
+   94031
+  ],
+  [
+   "a1",
+   94016,
+   94031
+  ],
+  [
+   "a1",
+   94032,
+   94047
+  ],
+  [
+   "p1",
+   94032,
+   94047
+  ],
+  [
+   "v1full",
+   94032,
+   94047
+  ],
+  [
+   "base",
+   94032,
+   94047
+  ]
+ ],
+ "started": "Sat Nov  7 19:26:22 2026"
+}
