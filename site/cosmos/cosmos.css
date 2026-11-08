@@ -1042,3 +1042,18 @@
 .ptable-s thead th:first-child {
   width: 40%;
 }
+
+/* what each edit scored: a dot chart */
+.dg .dg-grid { stroke: var(--rule); stroke-width: 1; }
+.dg .dg-track { stroke: var(--grid); stroke-width: 6; stroke-linecap: round; }
+.dg .dg-base { stroke: var(--ink); stroke-width: 1.5; }
+.dg .dg-o-none2 { fill: var(--mark-base); stroke: var(--mark-base); stroke-width: 1.5; }
+
+.dg2b .dg {
+  max-width: 460px;
+}
+
+/* the task legend: four columns */
+.ltable thead th:first-child {
+  width: 24%;
+}
