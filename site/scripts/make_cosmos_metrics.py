@@ -4764,7 +4764,7 @@ def main():
     fresh = [r["key"] for r in fmrows if r["cells"]["pi05"].get("s") == "ok" and not r["cells"]["pi05"].get("prov")]
     if 0 < pv < len(fmrows):   # some fresh shared-slot cells, the rest earlier records: name the fresh ones in the head
         models["pi05"]["fig_short"] = (f"control · shared slots: {', '.join(fresh)}" if len(fresh) <= 2
-                                       else f"control · {pv}/{len(fmrows)} earlier")
+                                       else f"control · {pv} of {len(fmrows)} cells from earlier runs")
     summary = summary_table(P, tables, cross, rc)
     prevent = prevention(cross)
     second = second_edit(cross, tables)
@@ -4885,7 +4885,13 @@ def main():
     btxt = replace_region(btxt, "stamp", esc(f"Draft for discussion · {data['status_text']} · {data['updated_text']}"))
     btxt = replace_region(btxt, "summary-lines", brief_lines(P, rc, models, cross, tables))
     btxt = replace_region(btxt, "gif", gif_html(clips))
-    btxt = replace_region(btxt, "table:summary", table_html(summary, models))
+    # the brief keeps to one page: the π0.5 cells there leave out the fresh shared-slot unedited counts (on the page)
+    sb = json.loads(json.dumps(summary))
+    for r in sb["rows"]:
+        c = r["cells"].get("pi05") or {}
+        if c.get("d"):
+            c["d"] = re.sub(r"(?:^|; )shared slots, unedited: [^;]*", "", c["d"]) or None
+    btxt = replace_region(btxt, "table:summary", table_html(sb, models))
     caps = dict(FIGS)
     for name in BRIEF_FIGS:
         btxt = replace_region(btxt, f"fig:{name}", figure_html(name, alts[name], caps[name], pdf=True))
