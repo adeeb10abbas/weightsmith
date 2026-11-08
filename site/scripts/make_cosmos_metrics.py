@@ -193,7 +193,7 @@ def dename(s):
 
 
 def dename_deep(x, skip=("key", "id", "src", "sources", "cross_rows", "url", "path", "branch", "commit", "kind",
-                         "name", "loc", "s", "left", "target", "base", "model", "let", "cams", "oc")):
+                         "name", "loc", "s", "left", "target", "base", "model", "let", "cams", "oc", "cols")):
     if isinstance(x, dict):
         return {k: (v if k in skip else dename_deep(v, skip)) for k, v in x.items()}
     if isinstance(x, list):
@@ -1422,6 +1422,21 @@ PREVENT = dict(
     readme="cross-cosmos/v1:study/results/cross/cosmos/README.md",
     records="cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
 )
+
+
+# "Can a second edit undo the damage?": Cosmos3 Edge's T3 is wording-sensitive too (README, rules 591459d), so the
+# track built T3 its own edit (t3und) and the T3 update on top of the T8 edit (t8t3und, stacked; stays out of the
+# main tables, see stacked()). Rows: the edits; columns: T8, T3 and T5.
+SECOND = dict(
+    model="cosmos", target="T8", second="T3", cols=("T8", "T3", "T5"), gate=85,
+    edits=[dict(name="t8und", plain="The mustard edit", built="built for Mustard right of raisin box"),
+           dict(name="t3und", plain="The cube-left edit", built="built for Cube left of bowl"),
+           dict(name="t8t3und", plain="Both edits together", built="the cube-left edit built on top of the mustard edit")],
+    col_note={"T8": "the mustard edit’s task", "T3": "the cube-left edit’s task", "T5": "a “left” task"},
+    records="cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
+    readme="cross-cosmos/v1:study/results/cross/cosmos/README.md",
+)
+SECOND_LAST = {}   # this run's second-edit rows, for the TL;DR
 
 
 def pe(name):
@@ -3076,6 +3091,12 @@ def tldr_story(tables, models, prevent, sites):
         if rec and rec.get("s") == "ok" and not rec.get("prac") and rec.get("n") == c["n"] and rec.get("b") == c["b"] \
                 and isinstance(rec.get("t"), int):
             ctl += f" Rewording the instruction itself, from the same starts: {rec['t']}."
+        s2 = next((r for r in (SECOND_LAST.get("s") or {}).get("rows", []) if r["name"] == SECOND["edits"][1]["name"]),
+                  None)
+        c3 = s2["cells"][SECOND["second"]] if s2 else None
+        if c3 and c3["s"] == "ok" and not c3.get("prac") and c3.get("p") is not None and c3["p"] < SIG \
+                and c3["b"] > c3["a"]:
+            ctl += f" A second edit did the same for {tn(SECOND['second'])} ({c3['a']} → {c3['b']} of {c3['n']} unseen starts)."
         items.append(dict(id="fix", lead="The fix",
                           text=f"On NVIDIA’s Cosmos3 Edge, a weight edit fixed a task the robot failed only because of "
                                f"how its instruction was worded: {c['a']} → {c['b']} successes from {c['n']} unseen "
@@ -3452,7 +3473,9 @@ def legend_html(cross):
                         "head: the final output layer. Cosmos3 Edge: text pathway (reading part), video/action or "
                         "generation pathway (motion part). GR00T N1.7: backbone, Cosmos-Reason2 (reading part); DiT, "
                         "the diffusion action head (motion part)."),
-        ("Edit names", "t8und: the edit for Mustard right of raisin box; t8gen: the same copy written into Cosmos3 "
+        ("Edit names", "t8und: the edit for Mustard right of raisin box, “the mustard edit”; t3und: the edit for Cube "
+                       "left of bowl, “the cube-left edit”, built the same way from its more specific wording; t8t3und: "
+                       "the cube-left edit built on top of the mustard edit, “both edits together”; t8gen: the same copy written into Cosmos3 "
                        "Edge’s motion part; t8undp: + 65 unrelated instructions kept unchanged (preservation keys); "
                        "t8undr: + 24 left/right instructions from other tasks kept unchanged; t8unds: only the words "
                        "both wordings share (template positions) + the 65 unrelated instructions."),
@@ -3639,6 +3662,114 @@ def _f5_layout(sites, wide):
             y = bottom + (16 if wide else 24)
         y += 30 if wide else 22
     return "".join(W), VW, y - (30 if wide else 22) - (16 if wide else 24) + 8
+
+
+def second_edit(cross, tables):
+    """"Can a second edit undo the damage?": the T8 edit, Cosmos3 Edge's own edit for T3 (the second wording-sensitive
+    task) and the two applied together (the T3 update built on the T8-edited weights), each on T8, T3 and T5. A cell is
+    unedited → edited on unseen starts where run, else practice (tagged); "running" until a record exists; "—" once
+    the model's record is final, or when the build failed its replay check (no closed loop, README rules)."""
+    src = cross.get(SECOND["model"])
+    rows = [r for r in (src["rows"] if src else []) if not r["_prov"]]
+    final = bool(src and src["final"])
+    out = []
+    for e in SECOND["edits"]:
+        mine = [r for r in rows if edit_key(r) == e["name"]]
+        cells = {}
+        for tid in SECOND["cols"]:
+            rs = [r for r in mine if r["_task"] == tid and None not in (ints(r)["unedited_k"], ints(r)["edited_k"],
+                                                                         ints(r)["n"])]
+            cells[tid] = prevent_closed(rs)
+        closed = any(cells.values())
+        offl = [(r["_task"], ofind(o, "gap_closed_pct")[0]) for r, o in ((r, offline_of(r)) for r in rows)
+                if o and nk(o.get("edit") or "") == e["name"] and str(o.get("group") or "check").lower() == "check"]
+        failed = [(t, v) for t, v in offl if v is not None and v < SECOND["gate"]]
+        for tid in SECOND["cols"]:
+            if cells[tid] is None:
+                cells[tid] = (C("—", "not run: in replays it reproduced only " + and_list(
+                    f"{sgn(v, False, 0)}% of the clear wording’s effect on {tn(t)}" for t, v in failed), s="na")
+                              if failed and not closed else NA if final else RUN)
+        out.append(dict(name=e["name"], plain=e["plain"], built=e["built"], cells=cells, measured=bool(mine)))
+    T = _cells(tables)
+    w = T["wording"].get(SECOND["second"], {}).get(SECOND["model"])
+    wp = next((r.get("wording_pair") for r in rows if r["_task"] == SECOND["second"]
+               and isinstance(r.get("wording_pair"), list) and len(r["wording_pair"]) == 2 and all(r["wording_pair"])),
+              None)
+    return dict(model=SECOND["model"], cols=list(SECOND["cols"]), rows=out, wording=w if _ok(w) else None,
+                wording_pair=wp, text=second_finding(out),
+                sources=[SECOND["records"], SECOND["readme"]])
+
+
+def second_finding(rows):
+    """One sentence from the closed-loop records, once they exist: what the second edit did on its own task, and what
+    the two edits together did to the three tasks. Empty before any record."""
+    by = {r["name"]: r["cells"] for r in rows}
+    ok = lambda c: c and c["s"] == "ok"
+    sig = lambda c: c.get("p") is not None and c["p"] < SIG
+    kind = lambda c: " practice" if c.get("prac") else " unseen"
+
+    def moved(t, c):
+        if sig(c) and c["b"] < c["a"]:
+            return f"{tn(t)} fell from {c['a']} to {c['b']} of {c['n']}{kind(c)} starts"
+        if sig(c) and c["b"] > c["a"]:
+            return f"{tn(t)} rose from {c['a']} to {c['b']} of {c['n']}{kind(c)} starts"
+        return f"{tn(t)} went from {c['a']} to {c['b']} of {c['n']}{kind(c)} starts, no clear change"
+    bits = []
+    two = by.get(SECOND["edits"][1]["name"]) or {}
+    c3 = two.get(SECOND["second"])
+    if ok(c3):
+        bits.append(f"on its own, the cube-left edit {'lifted' if sig(c3) and c3['b'] > c3['a'] else 'took'} "
+                    f"{tn(SECOND['second'])} from {c3['a']} to {c3['b']} of {c3['n']}{kind(c3)} starts"
+                    + ("" if sig(c3) else ", a change these starts cannot tell from chance"))
+    both = by.get(SECOND["edits"][2]["name"]) or {}
+    parts = []
+    c8 = both.get(SECOND["target"])
+    if ok(c8):
+        parts.append(("kept the mustard fix" if sig(c8) and c8["b"] > c8["a"] else "lost the mustard fix")
+                     + f" ({c8['a']} → {c8['b']} of {c8['n']}{kind(c8)} starts)")
+    parts += [moved(t, both[t]) for t in SECOND["cols"] if t != SECOND["target"] and ok(both.get(t))]
+    if parts:
+        bits.append("together, the two edits " + parts[0] + (": " + "; ".join(parts[1:]) if len(parts) > 1 else ""))
+    if not bits:
+        return ""
+    s = "; ".join(bits)
+    return s[0].upper() + s[1:] + "."
+
+
+def second_html(S, full=True):
+    """The subsection: two or three plain sentences, the table (edits as rows; Mustard right of raisin box, Cube left
+    of bowl, Mustard in left bin as columns), and the takeaway once closed-loop records exist. full: the records'
+    version, with the edits' codes, details and sources."""
+    run = '<span class="run">running</span>'
+    cols = [(t, TASK_NAME[t], SECOND["col_note"][t]) for t in S["cols"]]
+    head = "".join(f'<th scope="col"><span class="mn">{esc(a)}</span><span class="mk">{esc(b)}</span></th>'
+                   for _, a, b in cols)
+    body = []
+    for r in S["rows"]:
+        rh = (f'<code>{esc(r["name"])}</code><span class="rd">{esc(r["plain"])}, {esc(r["built"])}</span>' if full
+              else f'{esc(r["plain"])}<span class="rd">{esc(r["built"])}</span>')
+        body.append(f'<tr><th scope="row">{rh}</th>'
+                    + "".join(td_html(r["cells"][k] if full or r["cells"][k]["s"] == "na" else
+                                      {x: v for x, v in r["cells"][k].items() if x != "d"}, f"{a}, {b}")
+                              for k, a, b in cols) + "</tr>")
+    table = (f'<table class="ctable ptable ptable-s"><thead><tr><th scope="col"><span class="vh">Edit</span></th>{head}'
+             f'</tr></thead><tbody>{"".join(body)}</tbody></table>')
+    w, wp = S.get("wording"), S.get("wording_pair")
+    t3 = tn(SECOND["second"])
+    first = (f"Cosmos3 Edge also misreads {t3}: a more specific wording"
+             + (f", “{wp[1].rstrip('.')}”," if wp and full else "")
+             + (f" lifts it from {w['a']} to {w['b']} of {w['n']} practice starts." if w else " helps it."))
+    intro = (f"<p>{esc(first)} So we gave that task its own edit, built the same way as the mustard edit, and then "
+             f"applied both edits together, the second built on top of the first. Cells are unedited → edited, from the "
+             f"same starts: unseen starts unless tagged practice.</p>")
+    finding = f'<p>{esc(S["text"])}</p>' if S.get("text") else ""
+    if not full:
+        return intro + f'<div class="tblock wide">{table}</div>' + finding
+    note = ("Closed loop only. Rules fixed before either build (README): the edits run on the robot only if, in "
+            f"replays, they reproduce at least {SECOND['gate']}% of the clearer wording’s effect; unseen starts only if "
+            "practice passes.")
+    return (intro + f'<div class="tblock wide">{table}{sources_html(S["sources"])}<p class="tnote">{esc(note)}</p></div>'
+            + finding)
 
 VID = OUT / "video"
 # Each clip: stem (video/<stem>.mp4, or "src" for a clip the main page already serves), group (where it goes on the
@@ -4488,6 +4619,8 @@ def main():
                                        else f"control · {pv}/{len(fmrows)} earlier")
     summary = summary_table(P, tables, cross, rc)
     prevent = prevention(cross)
+    second = second_edit(cross, tables)
+    SECOND_LAST.update(s=second)
     w = P["where"]
     WHERE_REF.update(n=w["n"], base=w["arms"]["base"], tx=w["tx"], bars=[
         ("Backbone: VLM MLPs", w["arms"]["v1full"], "teal"), ("Action expert MLPs", w["arms"]["a1"], "dark"),
@@ -4508,6 +4641,7 @@ def main():
         "sections": page_sections(page),
         "summary": summary,
         "prevention": prevent,
+        "second_edit": second,
         "diagrams": {"where": where_sites(P, rc, tables)},
         "tables": tables,
         "cross_rows": {mid: [{k: v for k, v in r.items() if k != "_extra"} | ({"extra": r["_extra"]} if r["_extra"] else {})
@@ -4555,6 +4689,8 @@ def main():
     page = replace_region(page, "conclusion", conclusion_html(tables, models, data["prevention"]))
     page = replace_region(page, "prevent", prevent_html(data["prevention"], full=False))
     page = replace_region(page, "prevent-full", prevent_html(data["prevention"]))
+    page = replace_region(page, "second", second_html(data["second_edit"], full=False))
+    page = replace_region(page, "second-full", second_html(data["second_edit"]))
     page = replace_region(page, "tldr-models", "<ul>" + tldr_html(data["tldr_models"]) + "</ul>")
     page = replace_region(page, "fix-text", fix_text(tables, cross))
     page = replace_region(page, "dg:fix", dg_fix_chart(tables))

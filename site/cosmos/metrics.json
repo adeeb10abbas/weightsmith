@@ -215,6 +215,11 @@
    "level": 3
   },
   {
+   "id": "second-edit",
+   "title": "Can a second edit undo the damage?",
+   "level": 3
+  },
+  {
    "id": "groot",
    "title": "GR00T N1.7: why there is no fix",
    "level": 2
@@ -814,6 +819,161 @@
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ],
   "text": "`t8undp` (preservation keys from 65 generic instructions) keeps the Mustard right of raisin box fix (0 → 12 of 16 practice starts) but does not prevent the break: Mustard in left bin still falls from 8 to 0 of 16 practice starts (p = 0.0078); offline it closes 93% of the Mustard right of raisin box gap and moves Mustard in left bin’s actions 13.9 cm (`t8und`: 13.7 cm) from the unedited policy’s. `t8undr` (preservation keys from 24 left/right instructions of other tasks) keeps the Mustard right of raisin box fix (0 → 13 of 16 practice starts) but does not prevent the break: Mustard in left bin still falls from 8 to 2 of 16 practice starts (p = 0.031) and Cube left of bowl goes from 4 to 1 of 16 practice starts (p = 0.38; `t8und`: 0); offline it closes 94% of the Mustard right of raisin box gap and moves Mustard in left bin’s actions 5.9 cm (`t8und`: 13.7 cm) and Cube left of bowl’s 6.5 cm (`t8und`: 29.6 cm) from the unedited policy’s, so the smaller offline deviation on Mustard in left bin and Cube left of bowl does not carry over to the closed loop. `t8unds` (only the instruction template aligned and the 65 generic preservation keys): offline it closes 1.9% of the Mustard right of raisin box gap and moves Mustard in left bin’s actions 2.0 cm (`t8und`: 13.7 cm) and Cube left of bowl’s 0.8 cm (`t8und`: 29.6 cm) from the unedited policy’s; closed loop {running}."
+ },
+ "second_edit": {
+  "model": "cosmos",
+  "cols": [
+   "T8",
+   "T3",
+   "T5"
+  ],
+  "rows": [
+   {
+    "name": "t8und",
+    "plain": "The mustard edit",
+    "built": "built for Mustard right of raisin box",
+    "cells": {
+     "T8": {
+      "v": "0 → 56 of 64",
+      "s": "ok",
+      "d": "p = 2.8 × 10⁻¹⁷; practice 0 → 13 of 16; random control 0 of 64",
+      "a": 0,
+      "b": 56,
+      "n": 64,
+      "p": 2.7755575615628914e-17,
+      "delta": 56,
+      "held": true,
+      "runs": {
+       "practice": [
+        0,
+        13,
+        16,
+        "30000; 30015"
+       ],
+       "unseen": [
+        0,
+        56,
+        64,
+        "96000; 96063"
+       ]
+      },
+      "slots": "96000; 96063"
+     },
+     "T3": {
+      "v": "13 → 0 of 32",
+      "s": "ok",
+      "d": "p = 2.4 × 10⁻⁴; practice 13 → 0 of 32",
+      "a": 13,
+      "b": 0,
+      "n": 32,
+      "p": 0.000244140625,
+      "delta": -13,
+      "held": true,
+      "runs": {
+       "practice": [
+        13,
+        0,
+        32,
+        "30000; 30031"
+       ],
+       "unseen": [
+        13,
+        0,
+        32,
+        "96000; 96031"
+       ]
+      },
+      "slots": "96000; 96031"
+     },
+     "T5": {
+      "v": "9 → 0 of 32",
+      "s": "ok",
+      "d": "p = 0.0039; practice 11 → 0 of 32",
+      "a": 9,
+      "b": 0,
+      "n": 32,
+      "p": 0.00390625,
+      "delta": -9,
+      "held": true,
+      "runs": {
+       "practice": [
+        11,
+        0,
+        32,
+        "30000; 30031"
+       ],
+       "unseen": [
+        9,
+        0,
+        32,
+        "96000; 96031"
+       ]
+      },
+      "slots": "96000; 96031"
+     }
+    },
+    "measured": true
+   },
+   {
+    "name": "t3und",
+    "plain": "The cube-left edit",
+    "built": "built for Cube left of bowl",
+    "cells": {
+     "T8": {
+      "v": "running",
+      "s": "running"
+     },
+     "T3": {
+      "v": "running",
+      "s": "running"
+     },
+     "T5": {
+      "v": "running",
+      "s": "running"
+     }
+    },
+    "measured": false
+   },
+   {
+    "name": "t8t3und",
+    "plain": "Both edits together",
+    "built": "the cube-left edit built on top of the mustard edit",
+    "cells": {
+     "T8": {
+      "v": "running",
+      "s": "running"
+     },
+     "T3": {
+      "v": "running",
+      "s": "running"
+     },
+     "T5": {
+      "v": "running",
+      "s": "running"
+     }
+    },
+    "measured": false
+   }
+  ],
+  "wording": {
+   "v": "4 → 11 of 16",
+   "s": "ok",
+   "d": "8 / 1, p = 0.039; +43.8 points [12.5, 75.0]; slots 30000–30015; “Put the rubiks cube to the left of the bowl” → “Pick up the rubiks cube and place it on the table to the left side of the bowl”",
+   "a": 4,
+   "b": 11,
+   "n": 16,
+   "pv": 0.0390625,
+   "fl": "Cube left of bowl (16 practice)"
+  },
+  "wording_pair": [
+   "Put the rubiks cube to the left of the bowl",
+   "Pick up the rubiks cube and place it on the table to the left side of the bowl"
+  ],
+  "text": "",
+  "sources": [
+   "cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
+   "cross-cosmos/v1:study/results/cross/cosmos/README.md"
+  ]
  },
  "diagrams": {
   "where": [
@@ -8644,8 +8804,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "9c460875aee063a7",
- "updated": "2026-11-08T19:04Z",
- "updated_text": "8 Nov 2026, 19:04 UTC",
+ "content_hash": "700bca9dd61220f9",
+ "updated": "2026-11-08T19:09Z",
+ "updated_text": "8 Nov 2026, 19:09 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
