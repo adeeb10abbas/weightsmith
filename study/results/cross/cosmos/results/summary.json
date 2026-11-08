@@ -58,6 +58,28 @@
   "ali-ms": "RTX 3090 24 GB"
  },
  "arms": {
+  "ali-ms/T1-Et8und": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 12,
+   "n": 16
+  },
   "ali-ms/T1-base": {
    "slots": [
     30000,
@@ -565,8 +587,51 @@
    "recovery_pct": null
   }
  ],
- "side_effects": [],
+ "side_effects": [
+  {
+   "machine": "ali-ms",
+   "edit": "t8und",
+   "code": "T1",
+   "n": 16,
+   "ref_k": 10,
+   "cand_k": 12,
+   "fixed": 4,
+   "broke": 2,
+   "both": 8,
+   "neither": 2,
+   "p": 0.6875,
+   "diff_pts": 12.5,
+   "diff_ci95_pts": [
+    -18.75,
+    43.75
+   ],
+   "slots": [
+    30000,
+    30015
+   ]
+  }
+ ],
  "runs": {
+  "ali-ms/T1-Et8und": [
+   {
+    "tag": "T1-Et8und-s30000",
+    "task": "RubiksCubeThenBananaTask",
+    "prompt": null,
+    "edit": "edits/t8und.pt",
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 12,
+    "gpu_s": 1019.1,
+    "started": "2026-11-08 04:26:03",
+    "finished": "2026-11-08 04:43:02"
+   }
+  ],
   "ali-ms/T1-base": [
    {
     "tag": "T1-base-s30000",
@@ -884,5 +949,5 @@
    }
   ]
  },
- "records": 9
+ "records": 10
 }

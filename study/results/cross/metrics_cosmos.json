@@ -241,6 +241,41 @@
   "teacher_slots": null
  },
  {
+  "experiment": "side_effect",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeThenBananaTask",
+  "code": "T1",
+  "wording_pair": [
+   "Put the cube then the banana in the bowl"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 10,
+  "edited_k": 12,
+  "fixed": 4,
+  "broke": 2,
+  "p": 0.6875,
+  "ci": {
+   "diff_pts": 12.5,
+   "bootstrap95_pts": [
+    -18.75,
+    43.75
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": 12.5,
+  "retention": null,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+  "values_changed": 179010015,
+  "notes": "edit t8und built for T8, run on T1 with T1's default instruction"
+ },
+ {
   "experiment": "where_to_edit_offline",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
