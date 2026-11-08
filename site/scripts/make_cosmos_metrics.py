@@ -806,7 +806,7 @@ def read_cross(args, meta_out):
         if isinstance(data, list):
             rows = data
         elif isinstance(data, dict):
-            for k in ("experiments", "rows", "results", "metrics", "runs"):
+            for k in ("experiments", "rows", "records", "results", "metrics", "runs"):
                 if isinstance(data.get(k), list):
                     rows = data[k]
                     break
@@ -890,6 +890,13 @@ def where_txt(r):
     return "; ".join(x for x in (describe(r.get("split")), f"slots {sl}" if sl else None) if x)
 
 
+def slot_kind(r):
+    """' practice' / ' unseen' for the shared slot ranges, as the figure labels say it."""
+    sl = r.get("slots")
+    lo = sl[0] if isinstance(sl, (list, tuple)) and sl and isinstance(sl[0], int) else None
+    return " unseen" if lo is not None and lo >= 96000 else " practice" if lo is not None and 30000 <= lo < 30032 else ""
+
+
 def row_cells(src):
     """Cells of one model from its cross-model rows, keyed like the tables."""
     T = {k: {} for k in TABLE_IDS}
@@ -921,6 +928,7 @@ def row_cells(src):
                 cl = wp.get("clear") or wp.get("teacher") or wp.get("tf") or wp.get("to")
                 wp = f"“{o}” → “{cl}”" if o and cl else describe(wp)
             wd = [f"{sgn(100 * (i['teacher_k'] - i['unedited_k']) / i['n'])} points"]
+            pw = None
             if as_int(r.get("edited_k")) is None and None not in (i["fixed"], i["broke"]):
                 pw = as_float(r.get("p"))
                 wd = [f"{i['fixed']} / {i['broke']}" + (f", p = {fp(pw)}" if pw is not None else "")]
@@ -929,7 +937,8 @@ def row_cells(src):
                 wd.append(fci(d0, *cw) if cw else f"{sgn(d0)} points")
             T["wording"][tid] = C(f"{i['unedited_k']} → {i['teacher_k']} of {i['n']}",
                                   "; ".join(x for x in (*wd, where_txt(r), describe(wp)) if x),
-                                  a=i["unedited_k"], b=i["teacher_k"], n=i["n"], fl=f"{tid} {SHORT[tid]}, {i['n']}")
+                                  a=i["unedited_k"], b=i["teacher_k"], n=i["n"], pv=pw,
+                                  fl=f"{tid} {SHORT[tid]} ({i['n']}{slot_kind(r)})")
         ed = [r for r in rs if as_int(r.get("edited_k")) is not None and as_int(r.get("unedited_k")) is not None]
         if not ed:
             continue
@@ -2100,10 +2109,17 @@ def tldr(tables, models):
         done = {k for k, _ in gains} | {k for k, _ in flat}
         if not done:
             fm = [k for k in [t[0] for t in TASKS] if nums(cell("failure_map", k, mid), ("k", "n"))]
+            wd = [k for k in [t[0] for t in TASKS] if nums(cell("wording", k, mid))]
             if 0 < len(fm) <= 3:
                 bits.append("Unedited so far: " + and_list(
                     f"{k} {cell('failure_map', k, mid)['k']} of {cell('failure_map', k, mid)['n']}" for k in fm)
-                    + f" starts. Other tasks and edits: {RUNNING}.")
+                    + " starts.")
+            if wd and len(fm) <= 3:
+                bits.append("Clearer wording, same weights: " + and_list(
+                    f"{k} {c['a']}\u00a0→ {c['b']} of {c['n']}" + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "")
+                    for k, c in ((k, cell("wording", k, mid)) for k in wd)) + ".")
+            if 0 < len(fm) <= 3:
+                bits.append(f"Other tasks and edits: {RUNNING}.")
             elif fm:
                 bits.append(f"Unedited success is in for {len(fm)} of {len(TASKS)} tasks; edits {RUNNING}.")
             elif m["status"] == "final":
@@ -2115,9 +2131,9 @@ def tldr(tables, models):
             bits.append(f"Other tasks: {RUNNING}.")
         r = cell("render", "render", mid)
         if nums(r):
-            bits.append(f"First finding: on the same {r['n']} starts of {(r.get('task') or 'one task').lower()} it "
-                        f"succeeded {r['a']} times under RoboLab’s performance render preset and {r['b']} under the "
-                        f"default preset, so all three models are compared under the default.")
+            bits.append(f"Render check: {(r.get('task') or 'one task').lower()} succeeded on {r['a']} of {r['n']} starts "
+                        f"under RoboLab’s performance preset and {r['b']} of {r['n']} under the default preset, which all "
+                        f"three models now use.")
         items.append(dict(id=mid, lead=m["name"], kind=MODELS[mid]["short"],
                           tag="earlier records" if prov else None, text=" ".join(bits)))
 
@@ -2143,6 +2159,8 @@ def tldr(tables, models):
         parts.append(f"{and_list(waiting)}: {RUNNING}.")
     items.append(dict(id="side-effects", lead="Side effects", kind=None, tag=None, text=" ".join(parts)))
 
+    for it in items:  # keep "p = 0.12" and "9 → 16" on one line
+        it["text"] = re.sub(r"\s*→\s*", "\u00a0→\u00a0", it["text"].replace("p = ", "p\u00a0=\u00a0"))
     early = [it["lead"] for it in items if it.get("tag")]
     note = ("Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. "
             + (f"{and_list(x + '’s' for x in early)} numbers are earlier records, each on its own slots and number of "
