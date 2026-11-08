@@ -1,0 +1,538 @@
+{
+ "orig": "Put the rubiks cube to the left of the bowl",
+ "good": "Pick up the rubiks cube and place it on the table to the left side of the bowl",
+ "obs": "runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e1.npz",
+ "k": 1,
+ "seed": 12000101,
+ "layers": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26
+ ],
+ "align": "ps",
+ "lam_rel": 0.001,
+ "n_tokens_orig": 159,
+ "n_tokens_good": 167,
+ "n_tokens_uncond": 19,
+ "matched": 151,
+ "uncond_keys": 19,
+ "per_layer": [
+  {
+   "layer": 0,
+   "keys": 171,
+   "rank": null,
+   "fro": 2.1187713990185038,
+   "rel_fro_w": 0.023280778748789813,
+   "lam": 0.003211066823723445,
+   "gap_before": 1.1810513456926615,
+   "uncond_drift_before": 0.0,
+   "preserve_drift_before": 0.0,
+   "changed_values": 9778473
+  },
+  {
+   "layer": 1,
+   "keys": 171,
+   "rank": null,
+   "fro": 0.6094304342361331,
+   "rel_fro_w": 0.006745970381870193,
+   "lam": 18.40830394043039,
+   "gap_before": 9.13684202399792,
+   "uncond_drift_before": 5.236002437320019,
+   "preserve_drift_before": 0.0,
+   "changed_values": 1319642
+  },
+  {
+   "layer": 2,
+   "keys": 171,
+   "rank": null,
+   "fro": 45.874818243844864,
+   "rel_fro_w": 0.5049829324406969,
+   "lam": 0.00135655132541446,
+   "gap_before": 5.30897261405596,
+   "uncond_drift_before": 4.9841489693554015,
+   "preserve_drift_before": 0.0,
+   "changed_values": 13329008
+  },
+  {
+   "layer": 3,
+   "keys": 171,
+   "rank": null,
+   "fro": 11.12515721679153,
+   "rel_fro_w": 0.1238193315841272,
+   "lam": 0.01075887953666787,
+   "gap_before": 4.7272587898781175,
+   "uncond_drift_before": 5.007819491886272,
+   "preserve_drift_before": 0.0,
+   "changed_values": 9685566
+  },
+  {
+   "layer": 4,
+   "keys": 171,
+   "rank": null,
+   "fro": 3.852697320215447,
+   "rel_fro_w": 0.04304889931605355,
+   "lam": 0.06514833871373048,
+   "gap_before": 4.974726312949521,
+   "uncond_drift_before": 5.785521458509151,
+   "preserve_drift_before": 0.0,
+   "changed_values": 8627804
+  },
+  {
+   "layer": 5,
+   "keys": 171,
+   "rank": null,
+   "fro": 10.314739730348963,
+   "rel_fro_w": 0.11542447234030911,
+   "lam": 0.016697698590979297,
+   "gap_before": 5.088358463730168,
+   "uncond_drift_before": 5.788428510910311,
+   "preserve_drift_before": 0.0,
+   "changed_values": 10100151
+  },
+  {
+   "layer": 6,
+   "keys": 171,
+   "rank": null,
+   "fro": 3.05750962896406,
+   "rel_fro_w": 0.03436868418435187,
+   "lam": 0.08563202420412834,
+   "gap_before": 4.317557717757655,
+   "uncond_drift_before": 5.323660423118855,
+   "preserve_drift_before": 0.0,
+   "changed_values": 9663108
+  },
+  {
+   "layer": 7,
+   "keys": 171,
+   "rank": null,
+   "fro": 15.446367129354085,
+   "rel_fro_w": 0.17389197051811997,
+   "lam": 0.014139037783455433,
+   "gap_before": 7.546365075719076,
+   "uncond_drift_before": 5.350203276282863,
+   "preserve_drift_before": 0.0,
+   "changed_values": 11301257
+  },
+  {
+   "layer": 8,
+   "keys": 171,
+   "rank": null,
+   "fro": 16.562684402793025,
+   "rel_fro_w": 0.18677616281989182,
+   "lam": 0.01571745770979439,
+   "gap_before": 8.260870799192654,
+   "uncond_drift_before": 5.107750658784252,
+   "preserve_drift_before": 0.0,
+   "changed_values": 11352540
+  },
+  {
+   "layer": 9,
+   "keys": 171,
+   "rank": null,
+   "fro": 10.91966915880937,
+   "rel_fro_w": 0.12196032710647793,
+   "lam": 0.016769617529476696,
+   "gap_before": 7.000762219974897,
+   "uncond_drift_before": 3.1812208150364287,
+   "preserve_drift_before": 0.0,
+   "changed_values": 11015728
+  },
+  {
+   "layer": 10,
+   "keys": 171,
+   "rank": null,
+   "fro": 3.824352992903665,
+   "rel_fro_w": 0.04315922297083587,
+   "lam": 0.07833236321425278,
+   "gap_before": 7.459103325607374,
+   "uncond_drift_before": 2.7727846847951496,
+   "preserve_drift_before": 0.0,
+   "changed_values": 10685706
+  },
+  {
+   "layer": 11,
+   "keys": 171,
+   "rank": null,
+   "fro": 4.834282259497291,
+   "rel_fro_w": 0.05500570394147089,
+   "lam": 0.05849868544704504,
+   "gap_before": 12.089546621446912,
+   "uncond_drift_before": 3.4537702392894034,
+   "preserve_drift_before": 0.0,
+   "changed_values": 11770772
+  },
+  {
+   "layer": 12,
+   "keys": 171,
+   "rank": null,
+   "fro": 1.7553300928751343,
+   "rel_fro_w": 0.020536655971610793,
+   "lam": 0.6172357412723238,
+   "gap_before": 8.678416701686281,
+   "uncond_drift_before": 6.957237343247049,
+   "preserve_drift_before": 0.0,
+   "changed_values": 10351330
+  },
+  {
+   "layer": 13,
+   "keys": 171,
+   "rank": null,
+   "fro": 3.893676581325002,
+   "rel_fro_w": 0.04720772870354887,
+   "lam": 0.18286832113139942,
+   "gap_before": 14.142749777569303,
+   "uncond_drift_before": 5.998593866509895,
+   "preserve_drift_before": 0.0,
+   "changed_values": 12893991
+  },
+  {
+   "layer": 14,
+   "keys": 171,
+   "rank": null,
+   "fro": 1.261397278353987,
+   "rel_fro_w": 0.015644585254887447,
+   "lam": 4.541528724734565,
+   "gap_before": 12.951198293787607,
+   "uncond_drift_before": 11.320188146442765,
+   "preserve_drift_before": 0.0,
+   "changed_values": 11756887
+  },
+  {
+   "layer": 15,
+   "keys": 171,
+   "rank": null,
+   "fro": 5.675690000116497,
+   "rel_fro_w": 0.07189342095085398,
+   "lam": 0.11252121589081956,
+   "gap_before": 14.775995606899743,
+   "uncond_drift_before": 10.818349319776067,
+   "preserve_drift_before": 0.0,
+   "changed_values": 14198836
+  },
+  {
+   "layer": 16,
+   "keys": 171,
+   "rank": null,
+   "fro": 4.929298676936387,
+   "rel_fro_w": 0.06235814716278268,
+   "lam": 0.09869519895313751,
+   "gap_before": 11.278017247583408,
+   "uncond_drift_before": 10.38735774085542,
+   "preserve_drift_before": 0.0,
+   "changed_values": 12912332
+  },
+  {
+   "layer": 17,
+   "keys": 171,
+   "rank": null,
+   "fro": 4.350562857782561,
+   "rel_fro_w": 0.054391227435229575,
+   "lam": 0.10979322312889779,
+   "gap_before": 14.123813299499412,
+   "uncond_drift_before": 10.406596931702168,
+   "preserve_drift_before": 0.0,
+   "changed_values": 13135508
+  },
+  {
+   "layer": 18,
+   "keys": 171,
+   "rank": null,
+   "fro": 3.657355877376252,
+   "rel_fro_w": 0.04651662657473324,
+   "lam": 0.13356159621067662,
+   "gap_before": 13.010430379397448,
+   "uncond_drift_before": 10.456766279993383,
+   "preserve_drift_before": 0.0,
+   "changed_values": 12684024
+  },
+  {
+   "layer": 19,
+   "keys": 171,
+   "rank": null,
+   "fro": 3.090706466885932,
+   "rel_fro_w": 0.038881379890379236,
+   "lam": 0.1833950698571188,
+   "gap_before": 16.243962578791084,
+   "uncond_drift_before": 10.405125845031751,
+   "preserve_drift_before": 0.0,
+   "changed_values": 12668353
+  },
+  {
+   "layer": 20,
+   "keys": 171,
+   "rank": null,
+   "fro": 2.7532598952246206,
+   "rel_fro_w": 0.03389444800838845,
+   "lam": 0.24899859200385077,
+   "gap_before": 13.06916811317248,
+   "uncond_drift_before": 7.6601518856416515,
+   "preserve_drift_before": 0.0,
+   "changed_values": 10909463
+  },
+  {
+   "layer": 21,
+   "keys": 171,
+   "rank": null,
+   "fro": 1.7938605080124286,
+   "rel_fro_w": 0.021779379199040265,
+   "lam": 0.27083377772439454,
+   "gap_before": 14.970492281373541,
+   "uncond_drift_before": 7.879441114811784,
+   "preserve_drift_before": 0.0,
+   "changed_values": 11336804
+  },
+  {
+   "layer": 22,
+   "keys": 171,
+   "rank": null,
+   "fro": 1.4267592507474798,
+   "rel_fro_w": 0.01690491364998918,
+   "lam": 0.43755842280281176,
+   "gap_before": 11.75130689097482,
+   "uncond_drift_before": 7.884536382081864,
+   "preserve_drift_before": 0.0,
+   "changed_values": 10203760
+  },
+  {
+   "layer": 23,
+   "keys": 171,
+   "rank": null,
+   "fro": 1.281158064344098,
+   "rel_fro_w": 0.014888030716702779,
+   "lam": 0.5205858251866439,
+   "gap_before": 12.972988731342223,
+   "uncond_drift_before": 7.856001952359008,
+   "preserve_drift_before": 0.0,
+   "changed_values": 9882296
+  },
+  {
+   "layer": 24,
+   "keys": 171,
+   "rank": null,
+   "fro": 1.2904667452432415,
+   "rel_fro_w": 0.014508236820704816,
+   "lam": 0.7005304867973757,
+   "gap_before": 16.712442631901343,
+   "uncond_drift_before": 7.893871097020335,
+   "preserve_drift_before": 0.0,
+   "changed_values": 10607342
+  },
+  {
+   "layer": 25,
+   "keys": 171,
+   "rank": null,
+   "fro": 1.1405942457806029,
+   "rel_fro_w": 0.012661420399851086,
+   "lam": 0.8343439677364278,
+   "gap_before": 16.604265977882548,
+   "uncond_drift_before": 7.824401325452114,
+   "preserve_drift_before": 0.0,
+   "changed_values": 9975070
+  },
+  {
+   "layer": 26,
+   "keys": 171,
+   "rank": null,
+   "fro": 1.5262129431298916,
+   "rel_fro_w": 0.017265670021476862,
+   "lam": 0.961844349174131,
+   "gap_before": 22.671196208642254,
+   "uncond_drift_before": 8.03554947380005,
+   "preserve_drift_before": 0.0,
+   "changed_values": 10719674
+  }
+ ],
+ "base_edit": {
+  "file": "edits/t8und.pt",
+  "sha256_16": "c1abc9187f892310",
+  "changed_values": 179010015,
+  "teacher_weights": "unedited",
+  "check_O_G_weights": "base-edited"
+ },
+ "text_states_image_independent_maxabs": 0.0,
+ "preserve": {
+  "file": null,
+  "prompts": 0,
+  "keys": 0
+ },
+ "final": [
+  {
+   "layer": 0,
+   "rel_gap": 0.09456354433292782,
+   "uncond_rel_drift": 0.002476789309744042
+  },
+  {
+   "layer": 1,
+   "rel_gap": 0.6717265557865482,
+   "uncond_rel_drift": 0.001897913201836145
+  },
+  {
+   "layer": 2,
+   "rel_gap": 0.5430037512994459,
+   "uncond_rel_drift": 0.0019057193366058191
+  },
+  {
+   "layer": 3,
+   "rel_gap": 0.595321760459065,
+   "uncond_rel_drift": 0.002184726430810009
+  },
+  {
+   "layer": 4,
+   "rel_gap": 0.5321302223872234,
+   "uncond_rel_drift": 0.002174072323995853
+  },
+  {
+   "layer": 5,
+   "rel_gap": 0.46854587977611206,
+   "uncond_rel_drift": 0.0019738838312303537
+  },
+  {
+   "layer": 6,
+   "rel_gap": 0.5946246246615264,
+   "uncond_rel_drift": 0.001987765214856487
+  },
+  {
+   "layer": 7,
+   "rel_gap": 0.49838931443495277,
+   "uncond_rel_drift": 0.0018958203590672884
+  },
+  {
+   "layer": 8,
+   "rel_gap": 0.3175957062687825,
+   "uncond_rel_drift": 0.0011786143816274557
+  },
+  {
+   "layer": 9,
+   "rel_gap": 0.2705000479513798,
+   "uncond_rel_drift": 0.0010284254330567698
+  },
+  {
+   "layer": 10,
+   "rel_gap": 0.21385589131065116,
+   "uncond_rel_drift": 0.0012641974265144092
+  },
+  {
+   "layer": 11,
+   "rel_gap": 0.18288054891156397,
+   "uncond_rel_drift": 0.0013746157064019173
+  },
+  {
+   "layer": 12,
+   "rel_gap": 0.21611894867179365,
+   "uncond_rel_drift": 0.0021095520819560533
+  },
+  {
+   "layer": 13,
+   "rel_gap": 0.16027979309340187,
+   "uncond_rel_drift": 0.003094322098857794
+  },
+  {
+   "layer": 14,
+   "rel_gap": 0.17854493528294363,
+   "uncond_rel_drift": 0.00424475592004737
+  },
+  {
+   "layer": 15,
+   "rel_gap": 0.1547504933586773,
+   "uncond_rel_drift": 0.0040665144069111136
+  },
+  {
+   "layer": 16,
+   "rel_gap": 0.14142834657474168,
+   "uncond_rel_drift": 0.004031317231602268
+  },
+  {
+   "layer": 17,
+   "rel_gap": 0.1276901597135266,
+   "uncond_rel_drift": 0.004079924259810847
+  },
+  {
+   "layer": 18,
+   "rel_gap": 0.11909227932393848,
+   "uncond_rel_drift": 0.004055368247063211
+  },
+  {
+   "layer": 19,
+   "rel_gap": 0.14812165304586095,
+   "uncond_rel_drift": 0.0029765469290171276
+  },
+  {
+   "layer": 20,
+   "rel_gap": 0.09775432737150293,
+   "uncond_rel_drift": 0.0030516960039982575
+  },
+  {
+   "layer": 21,
+   "rel_gap": 0.0881411935786919,
+   "uncond_rel_drift": 0.0030556237928090306
+  },
+  {
+   "layer": 22,
+   "rel_gap": 0.0794246933948851,
+   "uncond_rel_drift": 0.003032523867708465
+  },
+  {
+   "layer": 23,
+   "rel_gap": 0.0701078008676719,
+   "uncond_rel_drift": 0.0030376923116995297
+  },
+  {
+   "layer": 24,
+   "rel_gap": 0.06095433380618601,
+   "uncond_rel_drift": 0.0030080193669392587
+  },
+  {
+   "layer": 25,
+   "rel_gap": 0.04518779086338748,
+   "uncond_rel_drift": 0.0030317973503440317
+  },
+  {
+   "layer": 26,
+   "rel_gap": 0.04748004277351392,
+   "uncond_rel_drift": 0.0026132759106335048
+  }
+ ],
+ "sha256_16": {
+  ".pt": "6cbe1a1c75257588"
+ },
+ "stored_values": 52005888,
+ "changed_values": 292865425,
+ "stack": {
+  "file": "edits/t8t3und-stack.pt",
+  "exact": true,
+  "changed_values_vs_original": 302368328,
+  "sha256_16": "52922f472fc9c480"
+ },
+ "restore_matches_unedited_first_decision": true,
+ "decisions": [
+  "runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e1.npz:1",
+  "runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e2.npz:1",
+  "runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e4.npz:2",
+  "runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e6.npz:3"
+ ],
+ "s": 84.7
+}

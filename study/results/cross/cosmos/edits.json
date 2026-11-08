@@ -70,5 +70,18 @@
   "stored_values": 52005888,
   "sha256_16": "755f16e44b63e3fb",
   "control_sha256_16": "86a0414d4b764f7e"
+ },
+ {
+  "name": "t8t3und",
+  "code": "T3",
+  "location": "text pathway (und mlp.down_proj, layers 0-26): t8und, then t3und's recipe (--align ps, 151 positions) built on the T8-edited weights",
+  "good_wording": "Pick up the rubiks cube and place it on the table to the left side of the bowl",
+  "teacher_arm": "wspec",
+  "summary": "stacked edit: t8und applied, then the T3 specific-wording distillation built sequentially on top (teacher states from the unedited model), served as the exact dense stack file t8t3und-stack.pt; failed its offline gate (no closed loop)",
+  "values_changed": 302368328,
+  "stored_values": 52005888,
+  "sha256_16": "6cbe1a1c75257588",
+  "stack_sha256_16": "52922f472fc9c480",
+  "stack_exact": true
  }
 ]

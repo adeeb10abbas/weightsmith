@@ -273,3 +273,20 @@ moves the actions (8.4 cm from the unedited chunks), but not toward the good wor
 Its random control: -2.5% (0.9 cm from unedited). As with `t8und-s` on T8, matching only the shared positions does not
 carry the wording's effect. With unequal token counts the recipe has no word-aligned positions to match. Per the rules:
 no closed loop, and no side-effect runs for `t3und`.
+
+**`t8t3und` (stacked) fails its offline gate (14:38 ET; `results/offline/ali-ms/t8t3und_gate.json`).** The served stack
+file reproduces the stacked weights exactly (`stack.exact: true`, 302,368,328 values changed against the original
+weights). (a) T3: on the same 30 held-aside decisions, the T8-edited policy under T3's default wording ends 19.66 cm
+from the unedited policy under the specific wording. The stack brings this to 15.56 cm, closing **20.9%** of the gap;
+20 of 30 decisions end closer. (b) T8: on `t8und`'s 30 held-aside decisions, the stack closes **60.8%** of the RF -> TF gap
+(3.43 cm to TF; `t8und` alone closes 91.2%, 0.77 cm). The second edit takes back a third of the first one's T8 fix without
+repairing T3. Per the rules: no closed loop for the stack.
+(The first build attempt, at 14:13 ET, wrote the stack file in float32. Its exactness check failed, because entries that
+nearly cancel lose bits in float32, so that attempt was discarded and the file is now float64. The build log is kept as
+`edits/t8t3und.attempt1_float32.build.txt` on ali-ms.)
+
+So neither second edit gets a closed-loop run. On Cosmos3 Edge, this recipe needs the two wordings to align word for word.
+On T8 that is possible (equal token counts), and the edit is both strong and leaky. On T3 it is not possible, and
+matching the shared positions moves the actions away from the good wording (`t3und`) or undoes part of `t8und`
+(`t8t3und`). GPU time used for this block: about 13 min (two builds, three captures, one attempt discarded), far
+inside the 3 h timebox.

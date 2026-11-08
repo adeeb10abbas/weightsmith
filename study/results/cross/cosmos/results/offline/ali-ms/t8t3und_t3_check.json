@@ -1,0 +1,30 @@
+{
+ "capture": "caps/t8t3und_t3.npz",
+ "teacher": "G",
+ "student": "O8",
+ "decisions": 30,
+ "groups": {
+  "all": {
+   "student_vs_teacher": {
+    "ee_end_cm": 19.658153892065908,
+    "joint_mean_rad": 0.09088746458292007,
+    "grip_agree": 0.846875
+   },
+   "O+st": {
+    "vs_teacher": {
+     "ee_end_cm": 15.556792002879787,
+     "joint_mean_rad": 0.07864058762788773,
+     "grip_agree": 0.8854166666666666
+    },
+    "vs_student": {
+     "ee_end_cm": 6.880034267978704,
+     "joint_mean_rad": 0.04340001568198204,
+     "grip_agree": 0.915625
+    },
+    "closer_to_teacher_ee": 20,
+    "n": 30,
+    "gap_closed_ee_pct": 20.863413277283595
+   }
+  }
+ }
+}

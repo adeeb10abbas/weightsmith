@@ -1,0 +1,11 @@
+{
+ "t3_n": 30,
+ "t3_t8und_to_specific_cm": 19.658153892065908,
+ "t3_stack_to_specific_cm": 15.556792002879787,
+ "t3_gap_closed_pct": 20.863413277283595,
+ "t8_n": 30,
+ "t8_gap_closed_pct": 60.83571808150297,
+ "t8_t8und_gap_closed_pct": 91.16889868770983,
+ "rule": "T3 gap (T8-edited default -> unedited specific) closed >= 85% and T8 RF -> TF gap closed >= 85%",
+ "pass": false
+}

@@ -1,0 +1,45 @@
+{
+ "capture": "caps/t8t3und_t8.npz",
+ "teacher": "G",
+ "student": "O",
+ "decisions": 30,
+ "groups": {
+  "all": {
+   "student_vs_teacher": {
+    "ee_end_cm": 8.747336807384347,
+    "joint_mean_rad": 0.05206417664885521,
+    "grip_agree": 0.9645833333333333
+   },
+   "O+und": {
+    "vs_teacher": {
+     "ee_end_cm": 0.7724861755873604,
+     "joint_mean_rad": 0.007847575470805168,
+     "grip_agree": 0.996875
+    },
+    "vs_student": {
+     "ee_end_cm": 8.80972191567543,
+     "joint_mean_rad": 0.05280759185552597,
+     "grip_agree": 0.9614583333333333
+    },
+    "closer_to_teacher_ee": 25,
+    "n": 30,
+    "gap_closed_ee_pct": 91.16889868770983
+   },
+   "O+st": {
+    "vs_teacher": {
+     "ee_end_cm": 3.4258316476044635,
+     "joint_mean_rad": 0.026243750005960464,
+     "grip_agree": 0.9927083333333333
+    },
+    "vs_student": {
+     "ee_end_cm": 8.803289217858252,
+     "joint_mean_rad": 0.049414243549108505,
+     "grip_agree": 0.9572916666666667
+    },
+    "closer_to_teacher_ee": 21,
+    "n": 30,
+    "gap_closed_ee_pct": 60.83571808150297
+   }
+  }
+ }
+}
