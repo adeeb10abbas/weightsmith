@@ -1,0 +1,1 @@
+{"batch": ["T1-base-s30000", "T3-base-s30000", "T5-base-s30000", "T8-base-s30000", "R1-base-s30000", "T2-base-s30000", "T4-base-s30000", "T6-base-s30000", "T7-base-s30000", "T1-base-s96000"], "gpu": 0, "lock_requested": 1794168241.522217, "lock_acquired": 1794168241.522259, "released": 1794169064.314543, "held_s": 822.8}

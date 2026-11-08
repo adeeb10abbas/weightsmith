@@ -30,7 +30,11 @@ METRICS = Path(os.environ.get("XPI05_METRICS") or PI05.parent / "metrics_pi05.js
 SUMMARY = Path(os.environ.get("XPI05_SUMMARY") or PI05 / "results/fresh/summary.json")
 RUN_ID = "C-prime-default"
 MODEL = "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)"
-HW = "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 (+ OWSP_ENV_OFFSET client patch, inactive at 16 envs)"
+HW = "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py"
+LAYOUT = ("8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds "
+          "slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds "
+          "((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside "
+          "the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)")
 EDIT_INFO = {
     "v2mi-f": {"edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
                "values_changed": 450468837,
@@ -42,7 +46,11 @@ EDIT_INFO = {
 }
 
 
+ENVS = None
+
+
 def load_runs():
+    global ENVS
     T = {}  # (code, arm) -> {slot: bool}
     recs = {}
     for f in sorted(RUNS.glob("*.json")):
@@ -56,6 +64,13 @@ def load_runs():
         for row in r["rows"]:
             d[row["slot"]] = bool(row["success"])
         recs[r["tag"]] = r
+    envs = sorted({r.get("envs_per_process") for r in recs.values()})
+    if len(envs) > 1:
+        raise SystemExit(f"mixed process layouts {envs}: pair only like with like")
+    ENVS = envs[0] if envs else None
+    if ENVS == 16:
+        global LAYOUT
+        LAYOUT = "16 envs per Isaac process, one fresh process per 16-slot group"
     return T, recs
 
 
@@ -97,7 +112,7 @@ def span(slots):
 
 def base_record(code, experiment, slots, wording):
     return {"experiment": experiment, "status": "fresh", "run": RUN_ID, "model": MODEL, "hardware": HW,
-            "render_preset": "default", "envs_per_process": 16, "env_seed": 0,
+            "render_preset": "default", "envs_per_process": ENVS, "process_layout": LAYOUT, "env_seed": 0,
             "task": TASKS[code][0], "code": code, "wording_pair": wording, "slots": span(slots), "n": len(slots),
             "unedited_k": None, "edited_k": None, "fixed": None, "broke": None, "p": None, "ci": None,
             "control_k": None, "teacher_k": None, "recovery_pct": None, "transfer": None, "retention": None,
@@ -107,6 +122,67 @@ def base_record(code, experiment, slots, wording):
 def bs_ci(b):
     lo, hi = b
     return [round(100 * lo, 1), round(100 * hi, 1)]
+
+
+def fmt_p(p):
+    if p is None:
+        return "–"
+    if p >= 0.001:
+        return f"{p:.2g}" if p < 0.1 else f"{p:.2f}"
+    m, e = f"{p:.1e}".split("e")
+    return f"{m} × 10<sup>{int(e)}</sup>"
+
+
+def readme_block(out, summary):
+    """Markdown for the README section between <!-- fresh2:begin --> and <!-- fresh2:end -->."""
+    lay = ("two fresh 8-env Isaac processes per group" if ENVS == 8 else "one fresh 16-env Isaac process per group")
+    L = [f"Jobs finished: **{summary['jobs']}** (16 slots each, {lay}); GPU time in "
+         f"finished jobs: **{summary['gpu_hours']} GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, "
+         "environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided "
+         "McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).", ""]
+    fm = [r for r in out if r["experiment"] == "failure_map"]
+    if fm:
+        L += ["**Failure map** (unedited π0.5, task's default instruction, practice slots):", "",
+              "| Task | Unedited | Wilson 95% | Slots |", "|---|---|---|---|"]
+        for r in fm:
+            lo, hi = r["ci"]["wilson95_pct"]
+            L.append(f"| {r['code']} {r['task']} | **{r['unedited_k']}/{r['n']}** | {lo:.0f}–{hi:.0f}% | "
+                     f"{r['slots'][0]}–{r['slots'][1]} |")
+        L.append("")
+    et = [r for r in out if r["experiment"] == "edit_target"]
+    for r in et:
+        d = r["ci"]["paired_diff_bootstrap95_pts"]
+        L += ["**T1 held-out: the distilled edit `v2mi-f` (instruction unchanged)**", "",
+              "| Arm | Success | Paired |", "|---|---|---|",
+              f"| unedited | {r['unedited_k']}/{r['n']} | |",
+              f"| **`v2mi-f`** | **{r['edited_k']}/{r['n']}** | vs unedited: {r['fixed']} fixed / {r['broke']} broke, "
+              f"p = {fmt_p(r['p'])}; difference {d[0]:+.1f} to {d[1]:+.1f} pts |"]
+        c = r.get("control")
+        if c:
+            L.append(f"| random-direction control `ctl-rand` | {c['k']}/{c['n']} | vs unedited "
+                     f"({c['unedited_k_same_slots']}/{c['n']}): {c['vs_unedited']['fixed']} fixed / "
+                     f"{c['vs_unedited']['broke']} broke, p = {fmt_p(c['vs_unedited']['p'])}; edit vs control: "
+                     f"{c['edit_vs_control']['edit_only']} edit-only / {c['edit_vs_control']['control_only']} "
+                     f"control-only, p = {fmt_p(c['edit_vs_control']['p'])} |")
+        t = r.get("teacher")
+        if t:
+            L.append(f"| unedited, explicit wording (teacher) | {t['k']}/{t['n']} | recovery "
+                     f"{r['recovery_pct']}% |")
+        L += ["", f"Slots {r['slots'][0]}–{r['slots'][1]} (held-out, never used for any choice)"
+              + (f"; control on {c['slots'][0]}–{c['slots'][1]}" if c else "") + ".", ""]
+    se = [r for r in out if r["experiment"] == "side_effect"]
+    if se:
+        L += ["**Side effects of `v2mi-f`** (held-out, each task's own default instruction):", "",
+              "| Task | Unedited → edited | Fixed / broke | Exact p | Slots |", "|---|---|---|---|---|"]
+        for r in se:
+            L.append(f"| {r['code']} {r['task']} | {r['unedited_k']}/{r['n']} → **{r['edited_k']}/{r['n']}** | "
+                     f"{r['fixed']} / {r['broke']} | {fmt_p(r['p'])} | {r['slots'][0]}–{r['slots'][1]} |")
+        L.append("")
+    for r in [x for x in out if x["experiment"] == "wording"]:
+        L += [f"**T8 wording gap** (unedited, practice {r['slots'][0]}–{r['slots'][1]}): reference-first "
+              f"{r['unedited_k']}/{r['n']} vs target-first **{r['teacher_k']}/{r['n']}** ({r['fixed']} TF-only / "
+              f"{r['broke']} RF-only, p = {fmt_p(r['p'])}).", ""]
+    return "\n".join(L)
 
 
 def main():
@@ -237,6 +313,11 @@ def main():
     M = json.loads(METRICS.read_text())
     M = [x for x in M if x.get("run") != RUN_ID] + out
     METRICS.write_text(json.dumps(M, indent=1, ensure_ascii=False) + "\n")
+    readme = PI05 / "README.md"
+    txt = readme.read_text()
+    a, b = "<!-- fresh2:begin -->", "<!-- fresh2:end -->"
+    if a in txt and b in txt and not os.environ.get("XPI05_SUMMARY"):
+        readme.write_text(txt.split(a)[0] + a + "\n" + readme_block(out, summary) + "\n" + b + txt.split(b)[1])
     for x in summary["records"]:
         print(json.dumps(x))
     print("jobs", summary["jobs"], "gpu_h", summary["gpu_hours"])

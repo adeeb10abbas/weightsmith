@@ -54,7 +54,35 @@ earlier where-to-edit study. Known-good ("teacher") wordings for the unedited we
 then put the banana in the bowl" (the explicit wording `v2mi-f` was distilled from); T8 target-first "Move the
 mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
 
-## FRESH: shared slots, default render preset, RTX 4080 SUPER pod
+## FRESH (Track C'): ali-ms GPU0, default render preset, the slots of Tracks A and B
+
+These are the π0.5 numbers to compare with Cosmos3 Edge (Track A) and GR00T N1.7 (Track B): same RoboLab tasks and
+instructions, same slots, same render preset, same GPU model.
+
+| Item | Value |
+|---|---|
+| Model | `pi05_droid_jointpos` (OpenPI π0.5 DROID, joint position), checkpoint as in the paper; weightsmith @ `ad31044` (`~/cross/pi05/weightsmith`), batched policy server on the same GPU as the simulator (40% memory fraction) |
+| Simulator | RoboLab on Isaac Sim (`~/vibes/weight-space-policy-lab/robolab_checkout`), **default render preset** (no `--rendering-type` flag, as Tracks A and B); recorded as `render_preset` in every record |
+| GPU | ali-ms GPU0, RTX 3090 24 GB (Tracks A and B also run on ali-ms RTX 3090s); within-model comparisons always run both arms on GPU0 |
+| Slots | slot s = 16 g + j: group g is the sampling-seed base, slot s gets the noise stream ((g · 64 + j) · 100 + k), environment seed 0. Every 16-slot group is the first and only episode set of a fresh Isaac process (num_runs 1). The first-episode scene is identical across envs and processes (checked from the recorded initial object and robot poses of Track A's T1 run and an earlier π0.5 run), so a slot fixes the scene and the policy's noise seeds; Track A's 8-env processes and our 16-env processes hold the same slots |
+| Process layout | **8 envs per Isaac process, two fresh processes per 16-slot group**, as Track A runs Cosmos3 Edge. Env e of the process with offset o (0 or 8) holds slot 16 g + o + e; a one-line patch to this host's `weightsmith/batched_client.py` (`OWSP_ENV_OFFSET`, original kept as `batched_client.py.orig-ad31044`) keeps each slot's noise seeds ((g · 64 + o + e) · 100 + k) identical to a 16-env process. 16 envs did not fit: beside the 9.8 GB policy server the 16-env default-preset process ran out of GPU memory while creating the environment (20:02 UTC; that attempt is in `fresh/aborted/` on ali-ms and is not counted). Every record carries `envs_per_process` and `process_layout` |
+| Worker | [`scripts/pool_fresh.py`](scripts/pool_fresh.py): takes the GPU0 flocks (`~/.cache/weightsmith/locks/gpu0.lock`, then `~/vibes/opus-weight-surgery/state/gpu0.lock`), starts the policy server once per run of consecutive jobs with the same weights, runs each group in a new Isaac process, checks the candidate's fingerprint on disk and the server's load report; a crashed process is rerun once in another fresh process |
+| Candidates | `v2mi-f` (fingerprint `63db0c52a51306c9`, the paper's T1 edit) and its random-direction control `ctl-rand` (`1efd3512a92642f7`, the same bytes as the paper's `ctl1` control), byte copies in `projects/cross-pi05-t1/cands/` |
+| Queue | [`scripts/tasks.py`](scripts/tasks.py) `queue_fresh()`: (1) failure map T1–T8 + R1, unedited, practice 30000–30015; (2) T1 held-out 96000–96063: unedited, `v2mi-f`, `ctl-rand`; (3) side effects of `v2mi-f` on held-out 96000–96031 (T3, T5, then R1, T2, T4, then T6, T7, T8); (4) T8 target-first wording on practice; (5) T1 teacher wording on held-out |
+| Metrics | [`scripts/fresh.py`](scripts/fresh.py) → records with `"status": "fresh"`, `"run": "C-prime-default"` in [`../metrics_pi05.json`](../metrics_pi05.json) and [`results/fresh/summary.json`](results/fresh/summary.json); per-job records in `results/fresh/runs/` |
+
+<!-- fresh2:begin -->
+Jobs finished: **1** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **0.21 GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
+
+**Failure map** (unedited π0.5, task's default instruction, practice slots):
+
+| Task | Unedited | Wilson 95% | Slots |
+|---|---|---|---|
+| T1 RubiksCubeThenBananaTask | **3/16** | 7–43% | 30000–30015 |
+
+<!-- fresh2:end -->
+
+## FRESH but not run: the pod plan (shared slots, default render preset, RTX 4080 SUPER pod)
 
 **Runtime.** weightsmith @ `ad31044` (this branch's base), installed on the pod by `scripts/fast_setup.sh` (pinned
 OpenPI + 1 patch, RoboLab + 6 patches, Isaac Sim 5.0 / Isaac Lab 2.2, checkpoint verified by sha256, base weights

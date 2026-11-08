@@ -199,7 +199,7 @@ def queue():
     return out
 
 
-def queue_fresh():
+def queue_fresh(order="priority"):
     """Track C' (2026-11-08 evening, ali-ms GPU0, default preset): fresh pi0.5 numbers on the slots of Tracks A and B.
     Every candidate job uses ONE workspace per candidate (cross-pi05-t1/cands/<name>: the same bytes as every other
     project's copy, fingerprint checked), so the worker can keep one policy server up across tasks.
@@ -208,7 +208,9 @@ def queue_fresh():
        so a partial result is still paired);
     3. side effects of v2mi-f on held-out 96000-96031: T3, T5, then R1, T2, T4, then T6, T7, T8;
     4. T8 wording gap: target-first wording on practice 30000-30015 (reference-first = the failure-map run);
-    5. T1 teacher wording on held-out (recovery %)."""
+    5. T1 teacher wording on held-out (recovery %).
+    order "deadline": 1, T1 held-out on 96000-96031 (three arms), T3 and T5 side effects, then T1 on 96032-96063,
+    then the other side effects."""
     def fj(code, arm, s, prompt=None):
         j = job(code, arm, s, prompt)
         if arm in CANDS:
@@ -217,12 +219,15 @@ def queue_fresh():
     P0 = PRACTICE[0]
     H = groups(HELDOUT)
     jobs = [fj(c, "base", P0) for c in ["T1", "T3", "T5", "T8", "R1", "T2", "T4", "T6", "T7"]]       # 1
-    for pair in (H[:2], H[2:]):                                                                      # 2
-        for arm in ("base", "v2mi-f", "ctl-rand"):
-            jobs += [fj("T1", arm, s) for s in pair]
-    for codes in (["T3", "T5"], ["R1", "T2", "T4"], ["T6", "T7", "T8"]):                             # 3
-        for arm in ("base", "v2mi-f"):
-            jobs += [fj(c, arm, s) for c in codes for s in H[:2]]
+    t1 = {i: [fj("T1", arm, s) for arm in ("base", "v2mi-f", "ctl-rand") for s in pair]
+          for i, pair in enumerate((H[:2], H[2:]))}
+    se = {}
+    for i, codes in enumerate((["T3", "T5"], ["R1", "T2", "T4"], ["T6", "T7", "T8"])):               # 3
+        se[i] = [fj(c, arm, s) for arm in ("base", "v2mi-f") for c in codes for s in H[:2]]
+    if order == "deadline":  # 2026-11-08 20:10 UTC: the 23:00 stop leaves ~3 h of GPU0 at 8 envs per process
+        jobs += t1[0] + se[0] + t1[1] + se[1] + se[2]
+    else:
+        jobs += t1[0] + t1[1] + se[0] + se[1] + se[2]
     jobs.append(fj("T8", "teacher", P0, TEACHERS["T8"]))                                             # 4
     jobs += [fj("T1", "teacher", s, TEACHERS["T1"]) for s in H]                                      # 5
     return jobs
@@ -234,7 +239,7 @@ if __name__ == "__main__":
     elif sys.argv[1] == "setup-pod":
         setup_pod(sys.argv[2], sys.argv[3])
     elif sys.argv[1] == "queue-fresh":
-        q = queue_fresh()
+        q = queue_fresh(*sys.argv[3:4])
         Path(sys.argv[2]).write_text(json.dumps(q, indent=1) + "\n")
         print(len(q), "jobs")
     elif sys.argv[1] == "queue":

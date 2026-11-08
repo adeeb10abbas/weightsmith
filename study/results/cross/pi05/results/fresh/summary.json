@@ -1,0 +1,27 @@
+{
+ "run": "C-prime-default",
+ "render_preset": "default",
+ "jobs": 1,
+ "gpu_hours": 0.21,
+ "cells": {
+  "T1/base/practice": "3/16"
+ },
+ "records": [
+  {
+   "experiment": "failure_map",
+   "code": "T1",
+   "slots": [
+    30000,
+    30015
+   ],
+   "n": 16,
+   "unedited_k": 3,
+   "edited_k": null,
+   "control_k": null,
+   "teacher_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null
+  }
+ ]
+}
