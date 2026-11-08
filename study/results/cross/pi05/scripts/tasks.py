@@ -7,7 +7,8 @@ N1.7) and C (pi0.5). Stdlib only; runs on the GPU host and on a laptop.
     XPI05_PROJECTS=/workspace/cross/pi05/projects python3 tasks.py setup-pod /workspace/cross/pi05/cands BASE_DIR
                                                 # pod: link every cands/<name>/base to the pod's base export, check
                                                 # every candidate's fingerprint, link projects/<p>/cands/<name> to it
-    python3 tasks.py queue OUT.json             # write the job queue in priority order
+    python3 tasks.py queue OUT.json             # write the (pod) job queue in priority order
+    python3 tasks.py queue-fresh OUT.json       # Track C' queue (ali-ms GPU0, default preset; pool_fresh.py)
 """
 from __future__ import annotations
 
@@ -198,11 +199,44 @@ def queue():
     return out
 
 
+def queue_fresh():
+    """Track C' (2026-11-08 evening, ali-ms GPU0, default preset): fresh pi0.5 numbers on the slots of Tracks A and B.
+    Every candidate job uses ONE workspace per candidate (cross-pi05-t1/cands/<name>: the same bytes as every other
+    project's copy, fingerprint checked), so the worker can keep one policy server up across tasks.
+    1. failure map: unedited, T1-T8 + R1, practice 30000-30015;
+    2. T1 held-out 96000-96063: unedited, v2mi-f, its random-direction control ctl-rand (two groups per arm at a time,
+       so a partial result is still paired);
+    3. side effects of v2mi-f on held-out 96000-96031: T3, T5, then R1, T2, T4, then T6, T7, T8;
+    4. T8 wording gap: target-first wording on practice 30000-30015 (reference-first = the failure-map run);
+    5. T1 teacher wording on held-out (recovery %)."""
+    def fj(code, arm, s, prompt=None):
+        j = job(code, arm, s, prompt)
+        if arm in CANDS:
+            j["workspace"] = str(project("T1") / "cands" / arm)
+        return j
+    P0 = PRACTICE[0]
+    H = groups(HELDOUT)
+    jobs = [fj(c, "base", P0) for c in ["T1", "T3", "T5", "T8", "R1", "T2", "T4", "T6", "T7"]]       # 1
+    for pair in (H[:2], H[2:]):                                                                      # 2
+        for arm in ("base", "v2mi-f", "ctl-rand"):
+            jobs += [fj("T1", arm, s) for s in pair]
+    for codes in (["T3", "T5"], ["R1", "T2", "T4"], ["T6", "T7", "T8"]):                             # 3
+        for arm in ("base", "v2mi-f"):
+            jobs += [fj(c, arm, s) for c in codes for s in H[:2]]
+    jobs.append(fj("T8", "teacher", P0, TEACHERS["T8"]))                                             # 4
+    jobs += [fj("T1", "teacher", s, TEACHERS["T1"]) for s in H]                                      # 5
+    return jobs
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "setup":
         setup(tuple(sys.argv[2:]) or ("v2mi-f",))
     elif sys.argv[1] == "setup-pod":
         setup_pod(sys.argv[2], sys.argv[3])
+    elif sys.argv[1] == "queue-fresh":
+        q = queue_fresh()
+        Path(sys.argv[2]).write_text(json.dumps(q, indent=1) + "\n")
+        print(len(q), "jobs")
     elif sys.argv[1] == "queue":
         q = queue()
         Path(sys.argv[2]).write_text(json.dumps(q, indent=1) + "\n")
