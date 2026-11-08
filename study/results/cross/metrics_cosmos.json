@@ -76,20 +76,20 @@
   "wording_pair": [
    "Put the rubiks cube to the left of the bowl"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 4,
+  "unedited_k": 13,
   "edited_k": null,
   "fixed": null,
   "broke": null,
   "p": null,
   "ci": {
    "wilson95_pct": [
-    10.2,
-    49.5
+    25.5,
+    57.7
    ]
   },
   "control_k": null,
