@@ -1003,6 +1003,41 @@
   "notes": "edit t8undp built for T8, run on T5 with T5's default instruction, practice slots"
  },
  {
+  "experiment": "side_effect",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeLeftOfBowlTask",
+  "code": "T3",
+  "wording_pair": [
+   "Put the rubiks cube to the left of the bowl"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 4,
+  "edited_k": 1,
+  "fixed": 1,
+  "broke": 4,
+  "p": 0.375,
+  "ci": {
+   "diff_pts": -18.75,
+   "bootstrap95_pts": [
+    -43.75,
+    6.25
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": -18.75,
+  "retention": null,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26), with relation-aware preservation keys",
+  "values_changed": 443281016,
+  "notes": "edit t8undr built for T8, run on T3 with T3's default instruction, practice slots"
+ },
+ {
   "experiment": "where_to_edit_offline",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
