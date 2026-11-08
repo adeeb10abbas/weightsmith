@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "7b122e6525e5"
+    "commit": "a6460422b07d"
    }
   },
   {
@@ -133,7 +133,7 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Edits lifted success on T8 from 0 to 42 of 48 unseen starts (p = 4.5 × 10⁻¹³). A random edit of the same size scored 0 of 48 on T8, against 0 unedited. Other tasks: {running}."
+    "text": "Edits lifted success on T8 from 0 to 56 of 64 unseen starts (p = 2.8 × 10⁻¹⁷). On 48 of those starts a random edit of the same size scored 0, against 42 for the edit and 0 unedited. Other tasks: {running}."
    },
    {
     "id": "groot",
@@ -407,9 +407,9 @@
     "label": "T8 Mustard right of the raisin box, reference-first",
     "cells": {
      "cosmos": {
-      "v": "0 → 42 of 48",
+      "v": "0 → 56 of 64",
       "s": "ok",
-      "d": "42 / 0, p = 4.5 × 10⁻¹³"
+      "d": "56 / 0, p = 2.8 × 10⁻¹⁷"
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -492,9 +492,9 @@
     "label": "Where to edit",
     "cells": {
      "cosmos": {
-      "v": "text pathway 42 of 48",
+      "v": "text pathway 56 of 64",
       "s": "ok",
-      "d": "T8, 48 unseen starts; unedited 0"
+      "d": "T8, 64 unseen starts; unedited 0"
      },
      "groot": {
       "v": "Cosmos-Reason2 backbone 0, diffusion action head 0 of 32",
@@ -1249,19 +1249,19 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "0 → 42 of 48",
+       "v": "0 → 56 of 64",
        "s": "ok",
-       "d": "text pathway (und mlp.down_proj, layers 0-26); 42 / 0, p = 4.5 × 10⁻¹³; +87.5 points [77.1, 95.8]; slots 96000–96047; on the practice starts it was built from: 0 → 13 of 16",
+       "d": "text pathway (und mlp.down_proj, layers 0-26); 56 / 0, p = 2.8 × 10⁻¹⁷; +87.5 points [78.1, 95.3]; slots 96000–96063; on the practice starts it was built from: 0 → 13 of 16",
        "a": 0,
-       "b": 42,
-       "n": 48,
-       "fx": 42,
+       "b": 56,
+       "n": 64,
+       "fx": 56,
        "br": 0,
-       "pv": 4.547473508864641e-13,
+       "pv": 2.7755575615628914e-17,
        "ci": [
         87.5,
-        77.1,
-        95.8
+        78.1,
+        95.3
        ],
        "color": "teal",
        "loc": "text pathway (und mlp.down_proj, layers 0-26)",
@@ -1353,11 +1353,12 @@
       "cosmos": {
        "v": "control 0, unedited 0, edit 42 of 48",
        "s": "ok",
-       "d": "slots 96000–96047",
+       "d": "the control ran on 48 of the 64 starts; slots 96000–96047; edit against control p = 4.5 × 10⁻¹³",
        "u": 0,
        "r": 0,
        "e": 42,
        "n": 48,
+       "sub": true,
        "fl": "T8 Mustard, reference-first (48 unseen)"
       },
       "groot": {
@@ -1462,9 +1463,9 @@
      "label": "Task, starts",
      "cells": {
       "cosmos": {
-       "v": "T8, 48 unseen starts",
+       "v": "T8, 64 unseen starts",
        "s": "ok",
-       "d": "slots 96000–96047"
+       "d": "slots 96000–96063"
       },
       "groot": {
        "v": "T1, 32 practice starts",
@@ -1487,7 +1488,7 @@
      "label": "Unedited",
      "cells": {
       "cosmos": {
-       "v": "0 of 48",
+       "v": "0 of 64",
        "s": "ok"
       },
       "groot": {
@@ -1509,7 +1510,7 @@
      "label": "Backbone / text pathway",
      "cells": {
       "cosmos": {
-       "v": "text pathway (und mlp.down_proj, layers 0-26): 42 of 48",
+       "v": "text pathway (und mlp.down_proj, layers 0-26): 56 of 64",
        "s": "ok"
       },
       "groot": {
@@ -1982,14 +1983,14 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "+42: 0 → 42 of 48",
+       "v": "+56: 0 → 56 of 64",
        "s": "ok",
-       "d": "42 / 0; p = 4.5 × 10⁻¹³; the target task; slots 96000–96047",
-       "delta": 42,
+       "d": "56 / 0; p = 2.8 × 10⁻¹⁷; the target task; slots 96000–96063",
+       "delta": 56,
        "a": 0,
-       "b": 42,
-       "n": 48,
-       "p": 4.547473508864641e-13,
+       "b": 56,
+       "n": 64,
+       "p": 2.7755575615628914e-17,
        "target": true
       },
       "groot": {
@@ -2221,7 +2222,7 @@
      "label": "Smallest detectable change",
      "cells": {
       "cosmos": {
-       "v": "22 points at 48 pairs",
+       "v": "19 points at 64 pairs",
        "s": "ok",
        "d": "if about 30% of pairs differ"
       },
@@ -2455,29 +2456,29 @@
      "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
      "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
     ],
-    "n": 48,
+    "n": 64,
     "slots": [
      96000,
-     96047
+     96063
     ],
     "unedited_k": 0,
-    "edited_k": 42,
-    "fixed": 42,
+    "edited_k": 56,
+    "fixed": 56,
     "broke": 0,
-    "p": 4.547473508864641e-13,
+    "p": 2.7755575615628914e-17,
     "ci": {
      "diff_pts": 87.5,
      "bootstrap95_pts": [
-      77.08,
-      95.83
+      78.12,
+      95.31
      ],
      "wilson95_unedited_pct": [
       0.0,
-      7.4
+      5.7
      ],
      "wilson95_edited_pct": [
-      75.3,
-      94.1
+      77.2,
+      93.5
      ]
     },
     "control_k": 0,
@@ -6486,7 +6487,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "7b122e6525e5"
+   "commit": "a6460422b07d"
   },
   "groot": {
    "kind": "branch",
@@ -6504,8 +6505,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "4a7f6033d0c366f5",
- "updated": "2026-11-08T09:08Z",
- "updated_text": "8 Nov 2026, 09:08 UTC",
+ "content_hash": "73469e55df8d9b6f",
+ "updated": "2026-11-08T09:15Z",
+ "updated_text": "8 Nov 2026, 09:15 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }

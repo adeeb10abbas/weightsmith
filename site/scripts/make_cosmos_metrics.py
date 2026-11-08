@@ -2091,7 +2091,7 @@ def cap_edit_heldout(where, slot, base, edited, mid, tid):
              f"below, both given the original wording. Unedited: {outcome(a)}; edited: {outcome(b)}.")
         c = table_cell(tables, "edit_gain", tid, mid)
         if c and not c.get("prac"):
-            s += (f" Over all {c['n']} held-out starts so far: {c['a']} → {c['b']} successes"
+            s += (f" Over all {c['n']} held-out starts{' so far' if c['n'] < 64 else ''}: {c['a']} → {c['b']} successes"
                   + (f" (exact McNemar p = {fp(c['pv'])})." if c.get("pv") is not None else "."))
         return s, [sa, sb]
     return f
