@@ -144,20 +144,20 @@
   "wording_pair": [
    "Put the mustard in the left bin"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 8,
+  "unedited_k": 11,
   "edited_k": null,
   "fixed": null,
   "broke": null,
   "p": null,
   "ci": {
    "wilson95_pct": [
-    28.0,
-    72.0
+    20.4,
+    51.7
    ]
   },
   "control_k": null,
