@@ -1,9 +1,10 @@
 # Track A: weight-space programming on Cosmos3 Edge Policy DROID
 
-Status (2026-11-08 11:35 ET): T8 practice and held-out, the failure map (practice), the where-to-edit comparison, three
-preservation variants and the held-out side-effect map of `t8und` are done. Still running: the unedited policy under the
-TF wording on held-out starts (teacher, for recovery %), the T6 practice side-effect cell, and the extension of the
-practice map to slots 30016-30031.
+Status (2026-11-08 17:45 ET, final): everything below is done, both Track A job queues are empty, and Track A holds neither GPU (GPU0 handed back at 15:00 ET, GPU1 idle since 17:42 ET).
+Done: T8 practice and held-out with the TF-wording teacher on all 64 held-out starts; the failure map, wording screens
+and `t8und` side-effect map on practice 30000-30031 (n = 32) and held-out 96000-96031; three preservation variants;
+the T3 second edit and the stacked edit (both stopped at the offline gate); and a pre-registered prospective test of the
+token-count rule (S1L, S1F).
 
 Question: how well does weight-space programming (WSP, closed-form instruction distillation) fix the failures of
 NVIDIA's Cosmos3 Edge Policy DROID, against GR00T (Track B) and π0.5 (Track C, the reference) on the same RoboLab
@@ -19,15 +20,26 @@ tasks and slots?
    and **0/64**.
 2. **Where to edit.** Offline, the text pathway closes 91% of the RF -> TF action gap and the video/action pathway 23%.
    In closed loop the video/action edit `t8gen` solves 0/16.
-3. **Side effects (held-out 96000-96031).** The edit breaks the other two instructions that say "left": T5, mustard in
-   the left bin, **9/32 -> 0/32** (p = 0.0039), and T3, cube left of the bowl, **13/32 -> 0/32** (p = 2.4e-4). Elsewhere
-   there is no significant change: R1 24 -> 28/32, T1 18 -> 18/32, T4 24 -> 22/32, T6 1 -> 1/32, T2 4 -> 1/16, T7 0 -> 0/16.
+3. **Side effects.** The edit breaks the other two instructions that say "left". T5, mustard in the left bin: practice
+   **11/32 -> 0/32** (p = 9.8e-4), held-out **9/32 -> 0/32** (p = 0.0039). T3, cube left of the bowl: practice **13/32 ->
+   0/32** (p = 2.4e-4), held-out **13/32 -> 0/32** (p = 2.4e-4). No other task changes significantly (practice / held-out):
+   R1 21 -> 27 / 24 -> 28 of 32, T1 21 -> 18 / 18 -> 18, T4 22 -> 26 / 24 -> 22, T6 2 -> 3 / 1 -> 1, T2 2 -> 0 of 32 /
+   4 -> 1 of 16, T7 0 -> 0.
 4. **Why, and what does not fix it.** RF and TF have equal token counts, so the distillation maps word onto word ("left"
    onto "right", "raisin" onto "mustard"). Preservation keys from 65 generic instructions (`t8und-p`) change nothing for
    T5 (practice 0/16). Keys from 24 left/right instructions of other tasks (`t8und-r`) keep T8 (13/16) and cut the offline
    deviation by 57-78%, but T5 (2/16) and T3 (1/16) stay broken. Mapping only the shared template positions
    (`t8und-s`) leaves T5 and T3 alone but also leaves T8 unfixed (1.9% of the gap). The wording's effect is carried by
    the instruction-word states themselves.
+5. **A second edit cannot repair T3 with this recipe.** T3 is wording-sensitive too (RoboLab's specific wording: 13/32 ->
+   26/32, p = 0.0023), but that wording adds 8 tokens. `t3und` can only match the shared template positions, and it
+   moves the actions *away* from the good wording offline (gap closed -85.6%, n = 30). Stacking it on `t8und` (`t8t3und`)
+   closes 20.9% of the T3 gap and cuts T8's offline fix from 91.2% to 60.8%. Neither got a closed-loop run.
+6. **The token-count rule predicts new cases (pre-registered).** On a new goal, S1L (cube left of the bowl, RF 1/16 vs
+   TF 7/16), the RF and TF wordings have equal token counts (169 = 169). The unchanged recipe closes **96.0%** of the
+   gap offline and lifts held-out starts from **1/32 to 12/32** (11 fixed / 0 broke, p = 9.8e-4; random control 3/32;
+   TF wording 8/32). The unequal-length pair S1F (166 vs 168 tokens) closes 11.1% offline, no better than its random
+   control (12.6%), as predicted.
 
 ## Setup
 
@@ -366,3 +378,23 @@ control 1/16, TF 7/16. Recovery: 50.0% of TF's paired gain. That meets the held-
 the control), so the held-out runs on S1L 96032-96063 are queued (RF, edit, control and TF, two 16-start groups, GPU1).
 The fix is partial on practice: offline the edit lands within 0.6 cm of TF's actions, and in closed loop it recovers half
 of TF's successes.
+
+**`s1lund` on held-out starts S1L 96032-96063 (n = 32, never used for S1L or any choice; GPU1).**
+
+| Arm (RF wording unless stated) | Success | Paired |
+|---|---|---|
+| unedited, RF | 1/32 (Wilson 95% 0.6-15.7%) | |
+| **edited `s1lund`** | **12/32 (22.9-54.7%)** | vs unedited: 11 fixed / 0 broke, p = 9.8e-4; +34.4 points (paired bootstrap 95% 18.8-50.0) |
+| random-direction control | 3/32 | edit vs control: 11 / 2, p = 0.022 |
+| unedited, TF wording | 8/32 | edit vs TF: 8 edit-only / 4 TF-only, p = 0.39 |
+
+Per 16-start group, RF / edit / control / TF: 96032-96047 1 / 4 / 1 / 2; 96048-96063 0 / 8 / 2 / 6. On held-out starts
+the edited policy under RF does at least as well as the unedited policy under TF: 12/32 vs 8/32, not significantly
+different. Recovery is 157% of TF's gain, a ratio over a small denominator (TF +7 over RF). On practice it was
+4/16 vs TF 7/16.
+
+**Verdict on the pre-registered prediction.** Both halves held. The equal-length pair (S1L, 169 = 169 tokens) closed
+96.0% of the gap offline and fixed the task in closed loop on unseen starts (1/32 -> 12/32, p = 9.8e-4, above its random
+control). The unequal-length pair (S1F, 166 vs 168) closed 11.1% offline, no better than its control. GPU time for the
+whole test: 2.7 h on GPU1 (five screens, two builds with captures, two practice runs, eight held-out runs; from
+`results/gpu_ledger_ali-ms.jsonl`).

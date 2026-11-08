@@ -1652,15 +1652,15 @@
    ]
   },
   "control_k": 3,
-  "teacher_k": 2,
-  "recovery_pct": null,
+  "teacher_k": 8,
+  "recovery_pct": 157.1,
   "transfer": null,
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26), --align all (169 = 169 tokens, every position matched)",
   "values_changed": 207159927,
   "notes": "edit s1lund (prospective test of the token-count rule: t8und's recipe unchanged on S1L's reference-first -> target-first pair (equal length), one prompt pair, unconditional-pass keys, lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 3 broke 1 p = 0.625; edit vs control p = 0.0225",
   "control_n": 32,
-  "teacher_n": 16,
+  "teacher_n": 32,
   "edit_vs_control": {
    "n": 32,
    "ref_k": 3,
@@ -1674,15 +1674,15 @@
    ]
   },
   "edit_vs_teacher": {
-   "n": 16,
-   "ref_k": 2,
-   "cand_k": 4,
-   "fixed": 3,
-   "broke": 1,
-   "p": 0.625,
+   "n": 32,
+   "ref_k": 8,
+   "cand_k": 12,
+   "fixed": 8,
+   "broke": 4,
+   "p": 0.3876953125,
    "slots": [
     96032,
-    96047
+    96063
    ]
   },
   "control_slots": [
@@ -1691,7 +1691,7 @@
   ],
   "teacher_slots": [
    96032,
-   96047
+   96063
   ]
  },
  {

@@ -468,10 +468,26 @@
     96044,
     96045,
     96046,
-    96047
+    96047,
+    96048,
+    96049,
+    96050,
+    96051,
+    96052,
+    96053,
+    96054,
+    96055,
+    96056,
+    96057,
+    96058,
+    96059,
+    96060,
+    96061,
+    96062,
+    96063
    ],
-   "k": 9,
-   "n": 32
+   "k": 15,
+   "n": 48
   },
   "ali-ms/S1R-rf": {
    "slots": [
@@ -2831,22 +2847,22 @@
     ]
    },
    "teacher": {
-    "n": 16,
+    "n": 32,
     "ref_k": 1,
-    "cand_k": 2,
-    "fixed": 2,
+    "cand_k": 8,
+    "fixed": 8,
     "broke": 1,
     "both": 0,
-    "neither": 13,
-    "p": 1.0,
-    "diff_pts": 6.25,
+    "neither": 23,
+    "p": 0.0390625,
+    "diff_pts": 21.88,
     "diff_ci95_pts": [
-     -12.5,
-     25.0
+     6.25,
+     37.5
     ],
     "slots": [
      96032,
-     96047
+     96063
     ]
    },
    "edit_vs_control": {
@@ -2869,25 +2885,25 @@
     ]
    },
    "edit_vs_teacher": {
-    "n": 16,
-    "ref_k": 2,
-    "cand_k": 4,
-    "fixed": 3,
-    "broke": 1,
-    "both": 1,
-    "neither": 11,
-    "p": 0.625,
+    "n": 32,
+    "ref_k": 8,
+    "cand_k": 12,
+    "fixed": 8,
+    "broke": 4,
+    "both": 4,
+    "neither": 16,
+    "p": 0.3876953125,
     "diff_pts": 12.5,
     "diff_ci95_pts": [
-     -12.5,
-     37.5
+     -9.38,
+     34.38
     ],
     "slots": [
      96032,
-     96047
+     96063
     ]
    },
-   "recovery_pct": null
+   "recovery_pct": 157.1
   }
  ],
  "side_effects": [
@@ -3702,6 +3718,24 @@
     "gpu_s": 626.8,
     "started": "2026-11-08 16:50:27",
     "finished": "2026-11-08 17:00:53"
+   },
+   {
+    "tag": "S1L-tf-s96048",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "prompt": "Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl.",
+    "edit": null,
+    "slots": [
+     96048,
+     96063
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 6,
+    "gpu_s": 635.8,
+    "started": "2026-11-08 17:31:05",
+    "finished": "2026-11-08 17:41:40"
    }
   ],
   "ali-ms/S1R-rf": [
