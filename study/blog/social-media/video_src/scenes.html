@@ -1,0 +1,292 @@
+<!doctype html>
+<!-- Every still layer of the weightsmith LinkedIn video. build.py screenshots this page with headless Chrome, once per
+     layer, choosing the layer with the query string (each layer is a full frame; where footage plays, a rounded
+     window is left transparent and the footage is composited underneath in ffmpeg):
+       fmt    4x5 | 16x9                       frame size (1080x1350 or 1920x1080)
+       scene  title | fix | result | surprise | transfer | agents | end
+       state  comma-separated, scene-specific: fix before|after (+ tag), result a|b, transfer a|b, agents a|b|c
+       vx,vy,vw,vh                             where the footage goes; that rectangle is left transparent
+       bar    1 to draw the running header (wordmark + URL)
+     Colours and type follow the site (site/style.css): Inter for headings, Source Serif 4 for body text, paper #faf9f5,
+     ink #1a1915, one teal accent #147d92 used only for the edit and its numbers. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>weightsmith video layers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&display=swap">
+<style>
+  :root {
+    --bg: #faf9f5;
+    --ink: #1a1915;
+    --ink-2: #3b3a36;
+    --muted: #6b6a66;
+    --rule: #e6e3da;
+    --accent: #147d92;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+
+  /* ---- frame sizes and type scale per format ---- */
+  html.f-4x5 {
+    --W: 1080px; --H: 1350px;
+    --cx: 60px; --cw: 960px;            /* text column = footage column */
+    --barH: 104px; --bar-wm: 31px; --bar-url: 27px;
+    --cap: 49px; --cap-lh: 1.3;         /* captions under/over the footage */
+    --told: 54px;
+    --gapA: 34px; --gapB: 40px;         /* caption-to-footage gaps */
+    --radius: 12px;
+    --h1: 92px; --dek: 50px;
+    --big: 160px; --unit: 72px; --sub: 46px;
+    --eyebrow: 42px; --h2: 86px;
+    --num: 136px; --num-unit: 36px;
+    --h3: 70px; --body: 50px;
+    --link: 50px; --lab: 31px; --auth: 31px;
+  }
+  html.f-16x9 {
+    --W: 1920px; --H: 1080px;
+    --cx: 384px; --cw: 1152px;
+    --barH: 88px; --bar-wm: 28px; --bar-url: 25px;
+    --cap: 44px; --cap-lh: 1.3;
+    --told: 46px;
+    --gapA: 26px; --gapB: 30px;
+    --radius: 12px;
+    --h1: 100px; --dek: 50px;
+    --big: 200px; --unit: 80px; --sub: 46px;
+    --eyebrow: 42px; --h2: 92px;
+    --num: 104px; --num-unit: 34px;
+    --h3: 76px; --body: 50px;
+    --link: 58px; --lab: 30px; --auth: 30px;
+  }
+
+  html, body { margin: 0; padding: 0; background: transparent; }
+  body {
+    width: var(--W); height: var(--H);
+    position: relative; overflow: hidden;
+    color: var(--ink);
+    font-family: var(--serif);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-optical-sizing: auto;
+    font-kerning: normal;
+  }
+  p, h1, h2 { margin: 0; font-weight: inherit; }
+
+  /* the paper: a full sheet, or a sheet with a rounded window cut out for the footage */
+  .paper { position: absolute; inset: 0; background: var(--bg); }
+  .hole {
+    position: absolute; display: none;
+    left: var(--vx); top: var(--vy); width: var(--vw); height: var(--vh);
+    border-radius: var(--radius);
+    box-shadow: 0 0 0 6000px var(--bg);
+  }
+  html.has-hole .paper { display: none; }
+  html.has-hole .hole { display: block; }
+
+  section { display: none; position: absolute; inset: 0; }
+  html.scene-title    #title,
+  html.scene-fix      #fix,
+  html.scene-result   #result,
+  html.scene-surprise #surprise,
+  html.scene-transfer #transfer,
+  html.scene-agents   #agents,
+  html.scene-end      #end { display: block; }
+  .fg { z-index: 1; }   /* sections and the bar are absolutely positioned, so they paint over the paper */
+
+  /* ---- running header, like the site's top bar ---- */
+  .bar { display: none; position: absolute; left: var(--cx); width: var(--cw); top: 0; height: var(--barH);
+         font-family: var(--sans); border-bottom: 2px solid var(--rule); box-sizing: border-box; }
+  html.has-bar .bar { display: flex; align-items: center; justify-content: space-between; }
+  .bar .wm { font-size: var(--bar-wm); font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+  .bar .url { font-size: var(--bar-url); font-weight: 400; color: var(--muted); }
+
+  /* ---- text over / under the footage ---- */
+  .above, .below { position: absolute; left: var(--cx); width: var(--cw); }
+  .above { bottom: calc(var(--H) - var(--vy) + var(--gapA)); }
+  .below { top: calc(var(--vy) + var(--vh) + var(--gapB)); }
+  .cap { font-size: var(--cap); line-height: var(--cap-lh); letter-spacing: -0.004em; text-wrap: pretty; }
+  .cap b { font-weight: 600; }
+  .cap .acc { color: var(--accent); }
+  .told { font-size: var(--told); line-height: 1.2; letter-spacing: -0.008em; text-wrap: balance; }
+  .told .lead { color: var(--muted); }
+  .nw { white-space: nowrap; }
+
+  /* text cards: a left-aligned block, vertically centred (below the header when there is one) */
+  .block {
+    position: absolute; left: var(--cx); width: var(--cw); top: 0; bottom: 0;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  html.has-bar .block { top: var(--barH); padding-bottom: 40px; box-sizing: border-box; }
+
+  /* ---- 1. title card ---- */
+  #title h1 {
+    font-family: var(--sans); font-size: var(--h1); font-weight: 600; line-height: 1.04;
+    letter-spacing: -0.028em; text-wrap: balance;
+  }
+  #title .dek { margin-top: 0.8em; font-size: var(--dek); line-height: 1.3; color: var(--ink-2); text-wrap: pretty;
+                max-width: 19em; }
+  html.f-16x9 #title .dek { max-width: 24em; }
+  #title .dek .first { display: block; text-wrap: balance; }
+  #title .dek .then { display: block; margin-top: 0.15em; color: var(--ink); }
+
+  /* ---- 2. the fix: the caption under the footage changes once the cube has dropped ---- */
+  #fix .below { display: none; }
+  html.st-before #fix .s-before,
+  html.st-after #fix .s-after { display: block; }
+
+  /* "slow motion" note, beside the top-right corner of the footage */
+  .tag { display: none; position: absolute; font-family: var(--sans); font-weight: 500; color: var(--muted);
+         font-size: 27px; line-height: 1; letter-spacing: 0.005em; }
+  html.f-4x5 .tag { right: calc(var(--W) - var(--cx) - var(--cw)); bottom: calc(var(--H) - var(--vy) + 16px); }
+  html.f-16x9 .tag { left: calc(var(--vx) + var(--vw) + 28px); top: calc(var(--vy) + 4px); font-size: 26px; }
+  html.st-tag .tag { display: block; }
+
+  /* ---- 3. result card ---- */
+  #result .big {
+    font-family: var(--sans); font-weight: 600; color: var(--accent);
+    font-size: var(--big); line-height: 1; letter-spacing: -0.04em; white-space: nowrap;
+    margin-left: -0.05em;
+  }
+  #result .big .arr { font-weight: 400; letter-spacing: 0; margin: 0 0.06em; }
+  #result .unit { font-family: var(--sans); font-weight: 600; color: var(--accent); font-size: var(--unit);
+                  line-height: 1; letter-spacing: -0.025em; margin-top: 0.2em; }
+  #result .sub { font-size: var(--sub); line-height: 1.32; color: var(--ink-2); margin-top: 1.25em; text-wrap: balance; }
+  #result .sub .dot { color: var(--muted); padding: 0 0.12em; }
+  html.f-16x9 #result .sub .br1, html.f-4x5 #result .sub .d1 { display: none; }
+  html.st-a #result .sub { visibility: hidden; }
+
+  /* ---- 4. the surprise ---- */
+  #surprise .eyebrow { font-family: var(--sans); font-weight: 500; font-size: var(--eyebrow); color: var(--muted);
+                       line-height: 1.2; letter-spacing: -0.01em; }
+  #surprise h2 { font-family: var(--sans); font-weight: 600; font-size: var(--h2); line-height: 1.06;
+                 letter-spacing: -0.026em; margin-top: 0.3em; text-wrap: balance; }
+
+  /* ---- 5. the two tasks it was never built for, one clip after the other ---- */
+  #transfer .above, #transfer .below { display: none; }
+  html.st-a #transfer .t-a, html.st-b #transfer .t-b { display: block; }
+  #transfer .num { font-family: var(--sans); }
+  html.f-16x9 #transfer .num { display: none; }
+  html.f-16x9.st-a #transfer .num.t-a, html.f-16x9.st-b #transfer .num.t-b {
+    display: flex; align-items: baseline; gap: 30px; }
+  #transfer .big2 { font-weight: 600; color: var(--accent); font-size: var(--num); line-height: 1;
+                    letter-spacing: -0.035em; white-space: nowrap; margin-left: -0.04em; }
+  #transfer .big2 .arr { font-weight: 400; letter-spacing: 0; word-spacing: -0.12em; }
+  #transfer .unit2 { display: block; font-weight: 500; font-size: var(--num-unit); color: var(--muted);
+                     line-height: 1.2; margin-top: 0.4em; }
+  html.f-16x9 #transfer .unit2 { margin-top: 0; }
+
+  /* ---- 6. the blind editors ---- */
+  #agents h2 { font-family: var(--sans); font-weight: 600; font-size: var(--h3); line-height: 1.08;
+               letter-spacing: -0.024em; text-wrap: balance; }
+  #agents .line { font-size: var(--body); line-height: 1.3; color: var(--ink-2); margin-top: 0.7em; text-wrap: pretty; }
+  html.st-a #agents .s2, html.st-a #agents .s3, html.st-b #agents .s3 { visibility: hidden; }
+
+  /* ---- 7. end card ---- */
+  #end .lab { font-family: var(--sans); font-weight: 500; font-size: var(--lab); color: var(--muted); line-height: 1.2; }
+  #end .link { font-family: var(--sans); font-weight: 600; font-size: var(--link); line-height: 1.15; color: var(--ink);
+               letter-spacing: -0.02em; margin-top: 0.18em; white-space: nowrap;
+               text-decoration: underline; text-decoration-thickness: 0.05em; text-underline-offset: 0.17em;
+               text-decoration-color: rgba(26, 25, 21, 0.28); }
+  #end .lab + .link + .lab { margin-top: 1.5em; }
+  #end .authors { font-family: var(--sans); font-weight: 400; font-size: var(--auth); color: var(--muted);
+                  margin-top: 2.6em; line-height: 1.3; }
+  #end .authors .dot { padding: 0 0.3em; }
+
+  /* if the web fonts did not load, make it impossible to miss */
+  #fontfail { display: none; position: absolute; inset: 0; background: #d00; color: #fff; z-index: 9;
+              font: 700 80px/1.2 sans-serif; padding: 60px; }
+  html.fontfail #fontfail { display: block; }
+</style>
+</head>
+<body>
+<div class="paper"></div>
+<div class="hole"></div>
+
+<header class="bar fg"><span class="wm">weightsmith</span><span class="url">ali-adeeb.com/weightsmith</span></header>
+
+<section id="title" class="fg">
+  <div class="block">
+    <h1>weightsmith: helping robots through misunderstandings</h1>
+    <p class="dek"><span class="first">We fixed a robot’s misreading by editing its weights.</span> <span class="then">No training.</span></p>
+  </div>
+</section>
+
+<section id="fix" class="fg">
+  <p class="above told"><span class="lead">Told:</span> “Put the cube then the banana in the&nbsp;bowl.”</p>
+  <p class="tag">Slow motion</p>
+  <p class="below cap s-before"><b>Before:</b> it drops the cube. It reads “in the bowl” as belonging to the&nbsp;banana.</p>
+  <p class="below cap s-after"><b class="acc">After the weight edit:</b> same instruction, it&nbsp;carries the cube to the&nbsp;bowl.</p>
+</section>
+
+<section id="result" class="fg">
+  <div class="block">
+    <p class="big">21%<span class="arr"> → </span>83%</p>
+    <p class="unit">success</p>
+    <p class="sub"><span class="nw">on 128 starts it never saw</span><span class="dot d1"> · </span><br class="br1"><span class="nw">same instruction</span><span class="dot"> · </span><span class="nw">no retraining</span></p>
+  </div>
+</section>
+
+<section id="surprise" class="fg">
+  <div class="block">
+    <p class="eyebrow">The surprise:</p>
+    <h2>the same edit fixed two tasks it&nbsp;was never built&nbsp;for</h2>
+  </div>
+</section>
+
+<section id="transfer" class="fg">
+  <p class="above told t-a">Pick up the eyeglasses:</p>
+  <p class="above told t-b">Put the cube left of the bowl:</p>
+  <div class="below num t-a"><span class="big2">22<span class="arr"> → </span>44</span><span class="unit2">successes in 64 new starts</span></div>
+  <div class="below num t-b"><span class="big2">8<span class="arr"> → </span>36</span><span class="unit2">successes in 64 new starts</span></div>
+</section>
+
+<section id="agents" class="fg">
+  <div class="block">
+    <h2 class="s1">We gave 7 Claude agents our tools, one task each, without our&nbsp;answers.</h2>
+    <p class="line s2">The one on the cube task rediscovered the misreading by itself and wrote its own fix: 17%&nbsp;→&nbsp;42%.</p>
+    <p class="line s3">Two others, on different tasks, found the same neurons for the word&nbsp;‘left’.</p>
+  </div>
+</section>
+
+<section id="end" class="fg">
+  <div class="block">
+    <p class="lab">Blog + paper</p>
+    <p class="link">ali-adeeb.com/weightsmith</p>
+    <p class="lab">Code</p>
+    <p class="link">github.com/adeeb10abbas/weightsmith</p>
+    <p class="authors">Ali-Adeeb Abbas<span class="dot">·</span>Esmaeil Seraj</p>
+  </div>
+</section>
+
+<div id="fontfail">Web fonts did not load (Inter / Source Serif 4). Check the network and rebuild.</div>
+
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    var h = document.documentElement;
+    var fmt = q.get('fmt') || '4x5';
+    var scene = q.get('scene') || 'title';
+    h.classList.add('f-' + fmt, 'scene-' + scene);
+    (q.get('state') || '').split(',').filter(Boolean).forEach(function (s) { h.classList.add('st-' + s); });
+    if (q.get('bar') === '1') h.classList.add('has-bar');
+    if (q.has('vw')) h.classList.add('has-hole');
+    ['vx', 'vy', 'vw', 'vh'].forEach(function (k) { h.style.setProperty('--' + k, (q.get(k) || 0) + 'px'); });
+    // Font check: both families must have come from Google Fonts (load them even where a layer uses only one).
+    // build.py reads data-fonts with --dump-dom before rendering anything.
+    Promise.all([
+      document.fonts.load('400 40px Inter'), document.fonts.load('600 40px Inter'),
+      document.fonts.load('400 40px "Source Serif 4"'), document.fonts.load('600 40px "Source Serif 4"')
+    ]).then(function () { return document.fonts.ready; }).then(function () {
+      var loaded = {};
+      document.fonts.forEach(function (f) {
+        if (f.status === 'loaded') loaded[f.family.replace(/["']/g, '')] = true;
+      });
+      var ok = loaded['Inter'] && loaded['Source Serif 4'];
+      document.body.setAttribute('data-fonts', ok ? 'ok' : 'missing:' + JSON.stringify(loaded));
+      if (!ok) h.classList.add('fontfail');
+    });
+  })();
+</script>
+</body>
+</html>

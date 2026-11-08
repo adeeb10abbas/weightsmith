@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>weightsmith cross-model brief (draft)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&amp;display=swap">
+<style>
+  /* One Letter page, printed by site/scripts/make_cosmos_metrics.py with headless Chrome. */
+  @page { size: Letter; margin: 0.42in 0.5in 0.4in; }
+  :root { --ink: #1a1915; --ink-2: #3b3a36; --muted: #6b6a66; --rule: #e2dfd6; --bg-2: #f2f0e9; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; color: var(--ink); background: #fff; font-family: 'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+         font-size: 7.9pt; line-height: 1.36; font-variant-numeric: tabular-nums; }
+  .page { max-width: 7.5in; margin: 0 auto; }
+  .kicker { margin: 0; font-size: 7.3pt; color: var(--muted); }
+  h1 { margin: 3pt 0 2pt; font-size: 15pt; line-height: 1.15; font-weight: 600; letter-spacing: -0.01em; }
+  .sub { margin: 0 0 6pt; font-size: 8.6pt; color: var(--ink-2); }
+  .lines { margin: 0 0 8pt; padding: 6pt 9pt; list-style: none; background: var(--bg-2); border-radius: 4pt; }
+  .lines li { margin: 0; padding: 1.5pt 0; font-size: 8.1pt; }
+  .lines b { font-weight: 600; }
+  h2 { margin: 0 0 3pt; font-size: 8.8pt; font-weight: 600; }
+  .ctable { width: 100%; border-collapse: collapse; font-size: 7.1pt; line-height: 1.3; }
+  .ctable thead th { padding: 0 5pt 3pt; border-bottom: 0.8pt solid var(--ink); text-align: left; vertical-align: bottom; font-weight: 600; }
+  .ctable thead th:first-child { width: 22%; padding-left: 0; }
+  .ctable .mn { display: block; font-size: 7.8pt; }
+  .ctable .mk { display: block; font-weight: 400; color: var(--muted); font-size: 6.6pt; }
+  .ctable tbody th { padding: 2.6pt 5pt 2.6pt 0; border-bottom: 0.5pt solid var(--rule); text-align: left; vertical-align: top; font-weight: 500; }
+  .ctable td { padding: 2.6pt 5pt; border-bottom: 0.5pt solid var(--rule); vertical-align: top; }
+  .ctable td .v { display: block; }
+  .ctable td .d { display: block; color: var(--muted); font-size: 6.4pt; }
+  .ctable td.st-run .v, .ctable td.st-na .v { color: var(--muted); }
+  .ctable td.st-run .v { font-style: italic; }
+  .ctable tr.sub th { font-weight: 400; color: var(--ink-2); }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .figs { display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; margin-top: 9pt; }
+  .bfig { margin: 0; }
+  .bfig img { display: block; width: 100%; height: auto; }
+  .bfig figcaption { margin-top: 2pt; font-size: 6.6pt; color: var(--muted); line-height: 1.3; }
+  .links { margin-top: 8pt; padding-top: 5pt; border-top: 0.5pt solid var(--rule); font-size: 7pt; color: var(--ink-2); }
+  .links p { margin: 0 0 1.5pt; }
+  .links a { color: var(--ink); text-decoration: none; }
+  .links .fine { color: var(--muted); }
+  code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 0.92em; }
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="kicker"><!-- gen:stamp -->Draft for discussion · Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records · 8 Nov 2026, 05:11 UTC<!-- /gen:stamp --></p>
+  <h1>Where does weight-space programming fix failures?</h1>
+  <p class="sub">NVIDIA Cosmos3 Edge Policy (world-action model) and NVIDIA GR00T N1.7 DROID (VLA on a Cosmos-Reason2-2B backbone), with OpenPI π0.5 as the control, on the same RoboLab DROID tasks T1–T8 and a retention task R1.</p>
+  <ul class="lines"><!-- gen:summary-lines --><li><b>Method.</b> When a clearer wording of the same goal makes a robot model succeed, copy that wording's internal effect into the weights in closed form, one least-squares solve per layer: no training, and the instruction stays the same.</li><li><b>π0.5, the control (earlier records).</b> Distillation fixed its two language failures: T1 27 → 106 of 128 unseen starts (81 fixed, 2 broke, p = 7.2 × 10⁻²²) and T8 0 → 27 of 64. A random edit of the same size did nothing (9 vs 13 of 64); the T1 edit also lifted T2 and T3 and harmed nothing detectably; no edit helped T4–T7.</li><li><b>NVIDIA models.</b> Cosmos3 Edge Policy: running; GR00T N1.7: running. Same tasks, slots, metrics and statistics; this brief refreshes as runs finish.</li><!-- /gen:summary-lines --></ul>
+  <h2>What weight-space programming did on each task, on unseen starts</h2>
+  <!-- gen:table:summary --><table class="ctable"><thead><tr><th scope="col"><span class="vh">Row</span></th><th scope="col"><span class="mn">Cosmos3 Edge Policy</span><span class="mk">world-action model</span></th><th scope="col"><span class="mn">GR00T N1.7</span><span class="mk">reasoning-backbone VLA</span></th><th scope="col"><span class="mn">π0.5</span><span class="mk">OpenPI VLA, control</span></th></tr></thead><tbody><tr><th scope="row">T1 Cube then banana</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">fixed: 27 → 106 of 128</span><span class="d">distilled edit; 81 / 2, p = 7.2 × 10⁻²²</span></td></tr><tr><th scope="row">T2 Pick up the eyeglasses</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">lifted by the T1 edit: 22 → 44 of 64</span><span class="d">its own edit: 18 → 27 of 64, not significant</span></td></tr><tr><th scope="row">T3 Cube left of the bowl</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">lifted by the T1 edit: 8 → 36 of 64</span><span class="d">no own edit submitted</span></td></tr><tr><th scope="row">T4 Stack yellow on red</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">no gain</span><span class="d">lookalike perception; no clear wording to distil</span></td></tr><tr><th scope="row">T5 Mustard into the left bin</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">no gain</span><span class="d">its own edit: 8 → 11 of 64; the grasp slips</span></td></tr><tr><th scope="row">T6 Stack three cubes</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">no gain</span><span class="d">its own edit: 35 → 39 of 64</span></td></tr><tr><th scope="row">T7 Pick up the flat box</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">no gain</span><span class="d">a skill the policy lacks; 0 of 64 unedited</span></td></tr><tr><th scope="row">T8 Mustard right of the raisin box, reference-first</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">fixed: 0 → 27 of 64</span><span class="d">distilled edit; 27 / 0, p = 1.5 × 10⁻⁸</span></td></tr><tr><th scope="row">R1 Retention task</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">kept: 32 → 32 of 32</span><span class="d">cube into the bowl, T1 edit</span></td></tr><tr class="sub"><th scope="row">Random control, same size</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">9 of 64</span><span class="d">T1; unedited 13, edit 50</span></td></tr><tr class="sub"><th scope="row">Where to edit</th><td class="c st-run" data-model="Cosmos3 Edge Policy"><span class="v">running</span></td><td class="c st-run" data-model="GR00T N1.7"><span class="v">running</span></td><td class="c prov" data-model="π0.5"><span class="v">VLM 55, action expert 20, head 0 of 64</span><span class="d">T1; unedited 5; only the VLM edit transfers</span></td></tr></tbody></table><!-- /gen:table:summary -->
+  <div class="figs"><!-- gen:fig:failure-map --><figure class="bfig"><img src="fig/brief-failure-map.svg" alt="Unedited success per task and model. Cosmos3 Edge Policy: running. GR00T N1.7: running. π0.5: T1 Cube then banana 4 of 32; T2 Pick up the eyeglasses 12 of 32; T3 Cube left of the bowl 5 of 32; T4 Stack yellow on red 13 of 32; T5 Mustard into the left bin 6 of 32; T6 Stack three cubes 16 of 32; T7 Pick up the flat box 0 of 32; T8 Mustard right of the raisin box, reference-first 0 of 32; R1 Retention task 32 of 32."><figcaption>Unedited success on each shared task; darker is higher. Each cell gives successes of starts.</figcaption></figure><!-- /gen:fig:failure-map --><!-- gen:fig:side-effects --><figure class="bfig"><img src="fig/brief-side-effects.svg" alt="Change in successes after each model&#x27;s main edit, on every task, paired on the same starts. Cosmos3 Edge Policy: running. GR00T N1.7: running. π0.5: T1 +79: 27 → 106 of 128 (significant); T2 +22: 22 → 44 of 64 (significant); T3 +28: 8 → 36 of 64 (significant); T4 +3: 14 → 17 of 32; T5 +5: 7 → 12 of 32; T6 +5: 14 → 19 of 32; T7 ±0: 0 → 0 of 32; R1 ±0: 32 → 32 of 32."><figcaption>Each model&#x27;s main edit, unchanged, on every suite task: edited minus unedited successes on the same starts. Teal: a gain, dark: a loss (exact McNemar p &lt; 0.05); grey: no detectable change; the outlined cell is the task the edit was built for.</figcaption></figure><!-- /gen:fig:side-effects --></div>
+  <div class="links">
+    <p>Live page with every table, figure and record: <a href="https://ali-adeeb.com/weightsmith/cosmos/">ali-adeeb.com/weightsmith/cosmos</a> · Paper: <a href="https://ali-adeeb.com/weightsmith/paper.pdf">ali-adeeb.com/weightsmith/paper.pdf</a> · Code and records: <a href="https://github.com/adeeb10abbas/weightsmith">github.com/adeeb10abbas/weightsmith</a></p>
+    <p class="fine">Draft for discussion. Simulation only (RoboLab, Isaac Sim); one released checkpoint per model; shared slots 30000–30031 (practice) and 96000–96063 (held-out), with identical initial scenes. π0.5 cells are earlier records on their own slots until its shared-slot runs land. Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% intervals.</p>
+  </div>
+</div>
+</body>
+</html>

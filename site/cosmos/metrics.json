@@ -1,0 +1,1941 @@
+{
+ "title": "Weight editing across robot models",
+ "question": "A world-action model and a reasoning-backbone VLA: where does weight-space programming fix failures?",
+ "status": "draft",
+ "shared_slots": "practice 30000–30031, held-out 96000–96063",
+ "models": [
+  {
+   "id": "cosmos",
+   "name": "Cosmos3 Edge Policy",
+   "short": "world-action model",
+   "kind": "NVIDIA world-action model",
+   "status": "running",
+   "checkpoint": "`nvidia/Cosmos3-Edge-Policy-DROID` at `a7c7288`, 3.37B parameters",
+   "architecture": "One transformer denoises an action chunk together with future video latents, conditioned on the instruction: a mixture of transformers with 28 layers of width 2048, each holding a text pathway and a generation pathway for video and action tokens. It sees the wrist and both shoulder cameras as one composite image and returns 32 joint-position steps per request, run open loop at 15 Hz.",
+   "entry": "Text tokens attend only to text; video and action tokens attend to the text keys and values in every layer, so the instruction reaches the actions only through those keys and values (read from the code that served Cosmos3 Nano).",
+   "where": "text pathway / video-action (generation) pathway",
+   "evaluation": "Closed loop on the shared RoboLab DROID tasks and slots; settings of the Same Goal, Different Words study (4 sampling steps, guidance 3).",
+   "source": {
+    "kind": "branch",
+    "branch": "cross-cosmos/v1",
+    "path": "study/results/cross/metrics_cosmos.json",
+    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
+    "commit": "8f97aa4cbf67"
+   }
+  },
+  {
+   "id": "groot",
+   "name": "GR00T N1.7",
+   "short": "reasoning-backbone VLA",
+   "kind": "NVIDIA vision-language-action policy",
+   "status": "running",
+   "checkpoint": "GR00T N1.7 DROID",
+   "architecture": "A Cosmos-Reason2-2B vision-language backbone reads the camera images and the instruction; a diffusion-transformer action head generates the action chunk from the backbone's token embeddings and the robot state. Layer counts, and which backbone layer feeds the head, are recorded with its run.",
+   "entry": "As text tokens in the Cosmos-Reason2 backbone, next to the image tokens. The action head sees the instruction only through the backbone's embeddings.",
+   "where": "Cosmos-Reason2 backbone / diffusion action head",
+   "evaluation": "Closed loop on the shared RoboLab DROID tasks and slots.",
+   "source": {
+    "kind": "none",
+    "branch": "cross-groot/v1",
+    "path": "study/results/cross/metrics_groot.json"
+   }
+  },
+  {
+   "id": "pi05",
+   "name": "π0.5",
+   "short": "OpenPI VLA, control",
+   "kind": "OpenPI vision-language-action policy, the control",
+   "status": "measured",
+   "checkpoint": "`pi05_droid_jointpos` (OpenPI), about 3.35 billion parameters",
+   "architecture": "An 18-layer PaliGemma vision-language model (VLM) and an 18-layer Gemma action expert. The action expert attends to the VLM's keys and values and produces 15-step action chunks, including a gripper command, by flow matching.",
+   "entry": "As text tokens in the VLM, together with image tokens from two cameras and robot-state tokens, under bidirectional attention, so the image tokens read the instruction. The distilled edit goes into the VLM's MLP weights.",
+   "where": "VLM / action expert / action head",
+   "evaluation": "Closed loop on RoboLab in Isaac Sim. Until its shared-slot runs land, its cells are earlier records, each labelled with its own slots and number of starts. Trained on DROID data and none of these tasks.",
+   "source": {
+    "kind": "none",
+    "branch": "cross-pi05/v1",
+    "path": "study/results/cross/metrics_pi05.json"
+   }
+  }
+ ],
+ "tasks": [
+  {
+   "id": "T1",
+   "name": "Cube then banana",
+   "robolab": "RubiksCubeThenBananaTask",
+   "pi05_failure": "lets go of the cube early: binds “in the bowl” to the banana"
+  },
+  {
+   "id": "T2",
+   "name": "Pick up the eyeglasses",
+   "robolab": "PickGlassesTask",
+   "pi05_failure": "grasps one temple arm and lifts too little"
+  },
+  {
+   "id": "T3",
+   "name": "Cube left of the bowl",
+   "robolab": "RubiksCubeLeftOfBowlTask",
+   "pi05_failure": "carries along a diagonal and leaves the cube behind the bowl"
+  },
+  {
+   "id": "T4",
+   "name": "Stack yellow on red",
+   "robolab": "StackYellowOnRedTask",
+   "pi05_failure": "goes first for a lookalike yellow object"
+  },
+  {
+   "id": "T5",
+   "name": "Mustard into the left bin",
+   "robolab": "MustardInLeftBinTask",
+   "pi05_failure": "the bottle slips from a cap grasp mid-carry"
+  },
+  {
+   "id": "T6",
+   "name": "Stack three cubes",
+   "robolab": "Stack3RubiksCubeTask",
+   "pi05_failure": "builds two cubes, then closes on air above the stack"
+  },
+  {
+   "id": "T7",
+   "name": "Pick up the flat box",
+   "robolab": "PickUpGreenObjectTask",
+   "pi05_failure": "never lifts it: the box is wider than the open gripper"
+  },
+  {
+   "id": "T8",
+   "name": "Mustard right of the raisin box, reference-first",
+   "robolab": "MustardRightOfRaisinRFTask",
+   "pi05_failure": "takes the wrong object or carries it the wrong way"
+  },
+  {
+   "id": "R1",
+   "name": "Retention task",
+   "robolab": "RubiksCubeTask",
+   "pi05_failure": "already solved"
+  }
+ ],
+ "summary": {
+  "id": "summary",
+  "title": "Where weight-space programming fixed failures",
+  "rows": [
+   {
+    "key": "T1",
+    "label": "T1 Cube then banana",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "fixed: 27 → 106 of 128",
+      "s": "ok",
+      "d": "distilled edit; 81 / 2, p = 7.2 × 10⁻²²",
+      "prov": true
+     }
+    }
+   },
+   {
+    "key": "T2",
+    "label": "T2 Pick up the eyeglasses",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "lifted by the T1 edit: 22 → 44 of 64",
+      "s": "ok",
+      "d": "its own edit: 18 → 27 of 64, not significant",
+      "prov": true
+     }
+    }
+   },
+   {
+    "key": "T3",
+    "label": "T3 Cube left of the bowl",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "lifted by the T1 edit: 8 → 36 of 64",
+      "s": "ok",
+      "d": "no own edit submitted",
+      "prov": true
+     }
+    }
+   },
+   {
+    "key": "T4",
+    "label": "T4 Stack yellow on red",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "no gain",
+      "s": "ok",
+      "d": "lookalike perception; no clear wording to distil",
+      "prov": true
+     }
+    }
+   },
+   {
+    "key": "T5",
+    "label": "T5 Mustard into the left bin",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "no gain",
+      "s": "ok",
+      "d": "its own edit: 8 → 11 of 64; the grasp slips",
+      "prov": true
+     }
+    }
+   },
+   {
+    "key": "T6",
+    "label": "T6 Stack three cubes",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "no gain",
+      "s": "ok",
+      "d": "its own edit: 35 → 39 of 64",
+      "prov": true
+     }
+    }
+   },
+   {
+    "key": "T7",
+    "label": "T7 Pick up the flat box",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "no gain",
+      "s": "ok",
+      "d": "a skill the policy lacks; 0 of 64 unedited",
+      "prov": true
+     }
+    }
+   },
+   {
+    "key": "T8",
+    "label": "T8 Mustard right of the raisin box, reference-first",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "fixed: 0 → 27 of 64",
+      "s": "ok",
+      "d": "distilled edit; 27 / 0, p = 1.5 × 10⁻⁸",
+      "prov": true
+     }
+    }
+   },
+   {
+    "key": "R1",
+    "label": "R1 Retention task",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "kept: 32 → 32 of 32",
+      "s": "ok",
+      "d": "cube into the bowl, T1 edit",
+      "prov": true
+     }
+    }
+   },
+   {
+    "key": "control",
+    "label": "Random control, same size",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "9 of 64",
+      "s": "ok",
+      "d": "T1; unedited 13, edit 50",
+      "prov": true
+     }
+    },
+    "sub": true
+   },
+   {
+    "key": "where",
+    "label": "Where to edit",
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "running",
+      "s": "running"
+     },
+     "pi05": {
+      "v": "VLM 55, action expert 20, head 0 of 64",
+      "s": "ok",
+      "d": "T1; unedited 5; only the VLM edit transfers",
+      "prov": true
+     }
+    },
+    "sub": true
+   }
+  ]
+ },
+ "tables": [
+  {
+   "id": "failure_map",
+   "title": "Failure map",
+   "definition": "Success of the unedited model on each task, and how it fails where diagnosed.",
+   "rows": [
+    {
+     "key": "T1",
+     "label": "T1 Cube then banana",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "4 of 32",
+       "s": "ok",
+       "d": "13%; lets go of the cube early: binds “in the bowl” to the banana; development slots 70000–70031",
+       "src": [
+        "study/results/ctrl/summary.json"
+       ],
+       "k": 4,
+       "n": 32,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T2",
+     "label": "T2 Pick up the eyeglasses",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "12 of 32",
+       "s": "ok",
+       "d": "38%; grasps one temple arm and lifts too little; development slots 70000–70031",
+       "src": [
+        "study/results/ctrl/summary.json"
+       ],
+       "k": 12,
+       "n": 32,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T3",
+     "label": "T3 Cube left of the bowl",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "5 of 32",
+       "s": "ok",
+       "d": "16%; carries along a diagonal and leaves the cube behind the bowl; development slots 70000–70031",
+       "src": [
+        "study/results/ctrl/summary.json"
+       ],
+       "k": 5,
+       "n": 32,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T4",
+     "label": "T4 Stack yellow on red",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "13 of 32",
+       "s": "ok",
+       "d": "41%; goes first for a lookalike yellow object; development slots 70000–70031",
+       "src": [
+        "study/results/ctrl/summary.json"
+       ],
+       "k": 13,
+       "n": 32,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T5",
+     "label": "T5 Mustard into the left bin",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "6 of 32",
+       "s": "ok",
+       "d": "19%; the bottle slips from a cap grasp mid-carry; development slots 70000–70031",
+       "src": [
+        "study/results/ctrl/summary.json"
+       ],
+       "k": 6,
+       "n": 32,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T6",
+     "label": "T6 Stack three cubes",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "16 of 32",
+       "s": "ok",
+       "d": "50%; builds two cubes, then closes on air above the stack; development slots 70000–70031",
+       "src": [
+        "study/results/ctrl/summary.json"
+       ],
+       "k": 16,
+       "n": 32,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T7",
+     "label": "T7 Pick up the flat box",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "0 of 32",
+       "s": "ok",
+       "d": "0%; never lifts it: the box is wider than the open gripper; development slots 70000–70031",
+       "src": [
+        "study/results/ctrl/summary.json"
+       ],
+       "k": 0,
+       "n": 32,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T8",
+     "label": "T8 Mustard right of the raisin box, reference-first",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "0 of 32",
+       "s": "ok",
+       "d": "0%; takes the wrong object or carries it the wrong way; practice slots 20000–20031",
+       "src": [
+        "study/results/sgdw/results/screen_s4r_tf_vs_rf.json"
+       ],
+       "k": 0,
+       "n": 32,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "R1",
+     "label": "R1 Retention task",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "32 of 32",
+       "s": "ok",
+       "d": "100%; cube into the bowl, already solved; slots 94016–94047",
+       "src": [
+        "study/results/opus/where/results/transfer_cube_analysis.json"
+       ],
+       "k": 32,
+       "n": 32,
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "Until its shared-slot runs land, π0.5's cells are earlier records: 32 development starts per task for T1–T7 (the blind-editor study), 32 practice starts for T8, 32 starts for R1 (cube into the bowl). Its unedited rate on T1 ranged from 8% to 21% across six start sets, so compare models on the shared slots.",
+   "sources": [
+    "study/results/ctrl/summary.json",
+    "study/results/opus/where/results/transfer_cube_analysis.json",
+    "study/results/sgdw/results/screen_s4r_tf_vs_rf.json"
+   ]
+  },
+  {
+   "id": "wording",
+   "title": "Wording sensitivity",
+   "definition": "The unedited model under the original and the clear wording of the same goal, on the same starts.",
+   "rows": [
+    {
+     "key": "T1",
+     "label": "T1 Cube then banana",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "13 → 57 of 64",
+       "s": "ok",
+       "d": "45 / 1, p = 1.3 × 10⁻¹²; +68.8 points [56.2, 79.7]; held-out slots 90000–90063; “Put the cube then the banana in the bowl” → “Put the cube in the bowl then put the banana in the bowl”",
+       "src": [
+        "study/results/opus/controls/ctl1-90000-64.analysis.json"
+       ],
+       "a": 13,
+       "b": 57,
+       "n": 64,
+       "fl": "T1 Cube then banana (64 unseen)",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T4",
+     "label": "T4 Stack yellow on red",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "no clear wording found",
+       "s": "ok",
+       "d": "no rewording moved the arm in the blind editor's replays, so there was nothing to distil",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T8",
+     "label": "T8 Mustard right of the raisin box, reference-first",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "0 → 27 of 32",
+       "s": "ok",
+       "d": "27 / 0, p = 1.5 × 10⁻⁸; +84.4 points [71.9, 96.9]; practice slots 20000–20031; reference-first → target-first: “Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.” → “Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.”",
+       "src": [
+        "study/results/sgdw/results/screen_s4r_tf_vs_rf.json"
+       ],
+       "a": 0,
+       "b": 27,
+       "n": 32,
+       "fl": "T8 Mustard, reference-first (32 practice)",
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "Reference-first describes the placement from the reference object's side, target-first from the moved object's side. In the earlier Same Goal, Different Words study (8 starting layouts per goal, no paired starts), reference-first wording lowered stable placement by 8.1 points for Cosmos3 Edge across 12 goals; on this goal Edge placed 4 of 8 under target-first and 0 of 8 under reference-first.",
+   "sources": [
+    "study/results/opus/controls/ctl1-90000-64.analysis.json",
+    "study/results/sgdw/results/screen_s4r_tf_vs_rf.json"
+   ]
+  },
+  {
+   "id": "edit_gain",
+   "title": "Edits on unseen starts",
+   "definition": "Unedited → edited on held-out starts never used to build the edit: fixed / broke pairs, exact McNemar p, paired bootstrap 95% CI of the difference.",
+   "rows": [
+    {
+     "key": "T1",
+     "label": "T1 Cube then banana",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "27 → 106 of 128",
+       "s": "ok",
+       "d": "distilled edit, operator-built; 81 / 2, p = 7.2 × 10⁻²²; +61.7 points [52.3, 70.3]; held-out slots 90000–90127",
+       "src": [
+        "study/results/opus/heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json"
+       ],
+       "a": 27,
+       "b": 106,
+       "n": 128,
+       "ci": [
+        61.7,
+        52.3,
+        70.3
+       ],
+       "color": "teal",
+       "fl": "T1 Cube then banana",
+       "fb": "T1 distilled",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T1b",
+     "label": "T1, built end to end by the packaged tool (`weightsmith distill`)",
+     "cells": {
+      "cosmos": {
+       "v": "—",
+       "s": "na"
+      },
+      "groot": {
+       "v": "—",
+       "s": "na"
+      },
+      "pi05": {
+       "v": "8 → 36 of 64",
+       "s": "ok",
+       "d": "decisions chosen by rule; 33 / 5, p = 4.3 × 10⁻⁶; +43.8 points [28.1, 59.4]; held-out slots 95008–95071",
+       "src": [
+        "study/results/tutorial/tutorial-ctb__ctb-first-95008-64.results.json"
+       ],
+       "a": 8,
+       "b": 36,
+       "n": 64,
+       "ci": [
+        43.8,
+        28.1,
+        59.4
+       ],
+       "color": "teal",
+       "fl": "T1, packaged tool, end to end",
+       "fb": "T1 packaged tool",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T1c",
+     "label": "T1, a blind autonomous editor's own edit",
+     "cells": {
+      "cosmos": {
+       "v": "—",
+       "s": "na"
+      },
+      "groot": {
+       "v": "—",
+       "s": "na"
+      },
+      "pi05": {
+       "v": "11 → 27 of 64",
+       "s": "ok",
+       "d": "gated action-head change, 1,024 values; 22 / 6, p = 0.0037; +25.0 points [9.4, 40.6]; held-out slots 91008–91071",
+       "src": [
+        "study/results/ctrl/heldout/ctrl-ctb__p1-RubiksCubeThenBananaTask-91008-64.json"
+       ],
+       "a": 11,
+       "b": 27,
+       "n": 64,
+       "ci": [
+        25.0,
+        9.4,
+        40.6
+       ],
+       "color": "dark",
+       "fl": "T1, blind editor's own edit",
+       "fb": "T1 blind editor",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T2",
+     "label": "T2 Pick up the eyeglasses",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "18 → 27 of 64",
+       "s": "ok",
+       "d": "blind editor's edit; not significant; 18 / 9, p = 0.12; +14.1 points [−1.6, 29.7]; held-out slots 91008–91071",
+       "src": [
+        "study/results/ctrl/heldout/ctrl-glasses__p1-PickGlassesTask-91008-64.json"
+       ],
+       "a": 18,
+       "b": 27,
+       "n": 64,
+       "ci": [
+        14.1,
+        -1.6,
+        29.7
+       ],
+       "color": "dark",
+       "fl": "T2 Eyeglasses, blind editor",
+       "fb": "T2 blind editor",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T3",
+     "label": "T3 Cube left of the bowl",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "no edit submitted",
+       "s": "ok",
+       "d": "the blind editor's candidate scored 5 → 3 of 32 on practice starts and broke grasping",
+       "src": [
+        "study/results/ctrl/summary.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T4",
+     "label": "T4 Stack yellow on red",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "no gain",
+       "s": "ok",
+       "d": "three edits, 28 → 21 of 64 each on practice starts; no clear wording to distil",
+       "src": [
+        "study/results/opus/comparisons.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T5",
+     "label": "T5 Mustard into the left bin",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "8 → 11 of 64",
+       "s": "ok",
+       "d": "blind editor's edit; not significant; 9 / 6, p = 0.61; +4.7 points [−6.2, 17.2]; held-out slots 91008–91071",
+       "src": [
+        "study/results/ctrl/heldout/ctrl-mustard__p1-MustardInLeftBinTask-91008-64.json"
+       ],
+       "a": 8,
+       "b": 11,
+       "n": 64,
+       "ci": [
+        4.7,
+        -6.2,
+        17.2
+       ],
+       "color": "dark",
+       "fl": "T5 Mustard into left bin, blind editor",
+       "fb": "T5 blind editor",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T6",
+     "label": "T6 Stack three cubes",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "35 → 39 of 64",
+       "s": "ok",
+       "d": "blind editor's edit; not significant; 17 / 13, p = 0.58; +6.2 points [−10.9, 23.4]; held-out slots 91008–91071",
+       "src": [
+        "study/results/ctrl/heldout/ctrl-stack3__p1-Stack3RubiksCubeTask-91008-64.json"
+       ],
+       "a": 35,
+       "b": 39,
+       "n": 64,
+       "ci": [
+        6.2,
+        -10.9,
+        23.4
+       ],
+       "color": "dark",
+       "fl": "T6 Stack three cubes, blind editor",
+       "fb": "T6 blind editor",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T7",
+     "label": "T7 Pick up the flat box",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "no gain",
+       "s": "ok",
+       "d": "unedited 0 of 64; 10 edits, none succeeded (a skill the policy lacks)",
+       "src": [
+        "study/results/opus/comparisons.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T8",
+     "label": "T8 Mustard right of the raisin box, reference-first",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "0 → 27 of 64",
+       "s": "ok",
+       "d": "distilled edit from the target-first wording; 27 / 0, p = 1.5 × 10⁻⁸; +42.2 points [29.7, 54.7]; held-out slots 92000–92063",
+       "src": [
+        "study/results/sgdw/results/heldout_pairs_92000-64.json"
+       ],
+       "a": 0,
+       "b": 27,
+       "n": 64,
+       "ci": [
+        42.2,
+        29.7,
+        54.7
+       ],
+       "color": "teal",
+       "fl": "T8 Mustard, reference-first",
+       "fb": "T8 distilled",
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "Distilled edits copy the clear wording's internal effect (teal in the figures); the blind editors designed their own edits under the same rules (dark). The packaged tool's 2 × 2 table happens to equal the T1 edit's transfer to T3 (8 → 36 of 64, 33 / 5): different tasks, different starts.",
+   "sources": [
+    "study/results/ctrl/heldout/ctrl-ctb__p1-RubiksCubeThenBananaTask-91008-64.json",
+    "study/results/ctrl/heldout/ctrl-glasses__p1-PickGlassesTask-91008-64.json",
+    "study/results/ctrl/heldout/ctrl-mustard__p1-MustardInLeftBinTask-91008-64.json",
+    "study/results/ctrl/heldout/ctrl-stack3__p1-Stack3RubiksCubeTask-91008-64.json",
+    "study/results/ctrl/summary.json",
+    "study/results/opus/comparisons.json",
+    "study/results/opus/heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json",
+    "study/results/sgdw/results/heldout_pairs_92000-64.json",
+    "study/results/tutorial/tutorial-ctb__ctb-first-95008-64.results.json"
+   ]
+  },
+  {
+   "id": "random_control",
+   "title": "Random-direction control",
+   "definition": "The edit's layers, rank and singular values in random directions, the same size, scored on the same starts.",
+   "rows": [
+    {
+     "key": "T1",
+     "label": "T1 Cube then banana",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "control 9, unedited 13, edit 50 of 64",
+       "s": "ok",
+       "d": "control vs unedited 6 / 10, p = 0.45; values changed 502,291,925 (control) vs 450,468,837 (edit); held-out slots 90000–90063",
+       "src": [
+        "study/results/opus/comparisons.json",
+        "study/results/opus/controls/ctl1-90000-64.analysis.json"
+       ],
+       "u": 13,
+       "r": 9,
+       "e": 50,
+       "n": 64,
+       "t": 57,
+       "fl": "T1 Cube then banana (64 unseen)",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T8",
+     "label": "T8 Mustard right of the raisin box, reference-first",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "control 0, unedited 0, edit 27 of 64",
+       "s": "ok",
+       "d": "held-out slots 92000–92063",
+       "src": [
+        "study/results/sgdw/results/heldout_pairs_92000-64.json"
+       ],
+       "u": 0,
+       "r": 0,
+       "e": 27,
+       "n": 64,
+       "fl": "T8 Mustard, reference-first (64 unseen)",
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "The control keeps every layer's singular values and replaces the singular vectors with random orthonormal bases (seed 0), so its Frobenius norm matches the edit's in every layer.",
+   "sources": [
+    "study/results/opus/comparisons.json",
+    "study/results/opus/controls/ctl1-90000-64.analysis.json",
+    "study/results/sgdw/results/heldout_pairs_92000-64.json"
+   ]
+  },
+  {
+   "id": "recovery",
+   "title": "Teacher recovery",
+   "definition": "(edited − unedited) / (teacher − unedited), where the teacher is the unedited model given the clear wording.",
+   "rows": [
+    {
+     "key": "T1",
+     "label": "T1 Cube then banana",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "84%",
+       "s": "ok",
+       "d": "(50 − 13) / (57 − 13) of 64, computed here; edit vs teacher 4 / 11, p = 0.12; held-out slots 90000–90063",
+       "src": [
+        "study/results/opus/controls/ctl1-90000-64.analysis.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T8",
+     "label": "T8 Mustard right of the raisin box, reference-first",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "59%",
+       "s": "ok",
+       "d": "(16 − 0) / (27 − 0) of 32, practice slots 20000–20031, which were used to build the edit; the teacher was not run on unseen starts",
+       "src": [
+        "study/results/sgdw/results/practice_rf_grp3_vs_base.json",
+        "study/results/sgdw/results/practice_tf_grp3_vs_base.json"
+       ],
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "100% would mean the edit does everything the clear wording does while the original wording stays.",
+   "sources": [
+    "study/results/opus/controls/ctl1-90000-64.analysis.json",
+    "study/results/sgdw/results/practice_rf_grp3_vs_base.json",
+    "study/results/sgdw/results/practice_tf_grp3_vs_base.json"
+   ]
+  },
+  {
+   "id": "where",
+   "title": "Where to edit",
+   "definition": "The same distillation written into the backbone / text pathway or into the action pathway, on the same starts.",
+   "rows": [
+    {
+     "key": "starts",
+     "label": "Task, starts",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "T1, 64 unseen starts",
+       "s": "ok",
+       "d": "held-out slots 94016–94079",
+       "src": [
+        "study/results/opus/where/results/heldout_analysis.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "unedited",
+     "label": "Unedited",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "5 of 64",
+       "s": "ok",
+       "src": [
+        "study/results/opus/where/results/heldout_analysis.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "backbone",
+     "label": "Backbone / text pathway",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "VLM MLPs: 55 of 64",
+       "s": "ok",
+       "d": "50 / 0, p = 1.8 × 10⁻¹⁵; the VLM's weights also process the image tokens, where this edit is keyed",
+       "src": [
+        "study/results/opus/where/results/heldout_analysis.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "action",
+     "label": "Action pathway",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "action expert 20, action head 0 of 64",
+       "s": "ok",
+       "d": "expert 20 / 5, p = 0.0041; head 0 / 5; a head edit with a hand-built gate (blind editor): 30",
+       "src": [
+        "study/results/opus/where/results/heldout_analysis.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "both",
+     "label": "Both",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "VLM + action expert: 43 of 64",
+       "s": "ok",
+       "d": "below the VLM edit alone, p = 0.017",
+       "src": [
+        "study/results/opus/where/results/heldout_analysis.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "transfers",
+     "label": "Which one transfers",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "only the backbone edit",
+       "s": "ok",
+       "d": "eyeglasses 14 → 25, cube left of the bowl 4 → 20 of 32; action expert 11 and 2, gated head 12 and 1 (all p ≥ 0.38); slots 94016–94047",
+       "src": [
+        "study/results/opus/where/results/transfer_glasses_analysis.json",
+        "study/results/opus/where/results/transfer_left_analysis.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "size",
+     "label": "Size of each",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "VLM 13.4%, expert 1.8% of values; head 8,056",
+       "s": "ok",
+       "d": "median change per layer: VLM 1.7% of the weight norm, action expert 99%",
+       "src": [
+        "study/results/opus/comparisons.json",
+        "study/results/opus/where/results/size_summary.json"
+       ],
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "In π0.5 the VLM's weights process image and text tokens alike, and the edit is keyed at the image tokens. In Cosmos3 the video and action tokens have their own weights (the generation pathway), so its closest counterpart is the video-action pathway; the text pathway is the other candidate. In GR00T the backbone is Cosmos-Reason2-2B and the action pathway is the diffusion head.",
+   "sources": [
+    "study/results/opus/comparisons.json",
+    "study/results/opus/where/results/heldout_analysis.json",
+    "study/results/opus/where/results/size_summary.json",
+    "study/results/opus/where/results/transfer_glasses_analysis.json",
+    "study/results/opus/where/results/transfer_left_analysis.json"
+   ]
+  },
+  {
+   "id": "size",
+   "title": "Edit size",
+   "definition": "Values changed, rank per layer, and share of the parameters, also as low-rank factors.",
+   "rows": [
+    {
+     "key": "T1",
+     "label": "T1 Cube then banana",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "450,468,837 values (13.4%)",
+       "s": "ok",
+       "d": "VLM MLP down-projections, layers 0–16, rank ≤ 72 per layer; as factors 22.6M (0.67%); median change 1.7% of each layer's norm",
+       "src": [
+        "study/results/opus/comparisons.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T1v",
+     "label": "T1, smaller variant (image cells, layers 8–16)",
+     "cells": {
+      "cosmos": {
+       "v": "—",
+       "s": "na"
+      },
+      "groot": {
+       "v": "—",
+       "s": "na"
+      },
+      "pi05": {
+       "v": "5.3M as factors (0.16%)",
+       "s": "ok",
+       "d": "image cells, layers 8–16, rank ≤ 32 per layer; 19 → 102 of 128 unseen starts; stored values changed 248,057,499; the packaged tool's edit uses this recipe",
+       "src": [
+        "study/results/opus/heldout/cube-then-banana__abl-imgl8-RubiksCubeThenBananaTask-90000-128.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T1c",
+     "label": "T1, smallest edit that passed unseen starts",
+     "cells": {
+      "cosmos": {
+       "v": "—",
+       "s": "na"
+      },
+      "groot": {
+       "v": "—",
+       "s": "na"
+      },
+      "pi05": {
+       "v": "1,024 values",
+       "s": "ok",
+       "d": "the blind editor's gated action-head change",
+       "src": [
+        "study/results/ctrl/summary.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T8",
+     "label": "T8 Mustard right of the raisin box, reference-first",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "15.9M as factors (0.47%)",
+       "s": "ok",
+       "d": "VLM layers 8–16, rank ≤ 96 per layer, image cells; three decision phases as separate key groups",
+       "src": [
+        "study/results/sgdw/runs/s4r/build_grp3.json"
+       ],
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "A low-rank update is dense in its weight matrix: the 0.16% variant changes 7.4% of stored values; as factors it is 0.16% of the parameters.",
+   "sources": [
+    "study/results/ctrl/summary.json",
+    "study/results/opus/comparisons.json",
+    "study/results/opus/heldout/cube-then-banana__abl-imgl8-RubiksCubeThenBananaTask-90000-128.json",
+    "study/results/sgdw/runs/s4r/build_grp3.json"
+   ]
+  },
+  {
+   "id": "side_effects",
+   "title": "Side-effect map",
+   "definition": "Change in successes, edited minus unedited, on every suite task, paired on the same slots; significant at exact p < 0.05.",
+   "rows": [
+    {
+     "key": "T1",
+     "label": "T1 Cube then banana",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "+79: 27 → 106 of 128",
+       "s": "ok",
+       "d": "81 / 2, p = 7.2 × 10⁻²²; the target task; held-out slots 90000–90127",
+       "src": [
+        "study/results/opus/heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json"
+       ],
+       "delta": 79,
+       "a": 27,
+       "b": 106,
+       "n": 128,
+       "p": 7.210946989931019e-22,
+       "target": true,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T2",
+     "label": "T2 Pick up the eyeglasses",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "+22: 22 → 44 of 64",
+       "s": "ok",
+       "d": "31 / 9, p = 6.8 × 10⁻⁴; held-out slots 90000–90063",
+       "src": [
+        "study/results/opus/heldout/thr-pickglasses__ctb-v2mi-PickGlassesTask-90000-64.json"
+       ],
+       "delta": 22,
+       "a": 22,
+       "b": 44,
+       "n": 64,
+       "p": 0.0006795482549932785,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T3",
+     "label": "T3 Cube left of the bowl",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "+28: 8 → 36 of 64",
+       "s": "ok",
+       "d": "33 / 5, p = 4.3 × 10⁻⁶; held-out slots 90000–90063",
+       "src": [
+        "study/results/opus/heldout/tx-rubikscubeleftofbowl__ctb-v2mi-RubiksCubeLeftOfBowlTask-90000-64.json"
+       ],
+       "delta": 28,
+       "a": 8,
+       "b": 36,
+       "n": 64,
+       "p": 4.255962267052382e-06,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T4",
+     "label": "T4 Stack yellow on red",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "+3: 14 → 17 of 32",
+       "s": "ok",
+       "d": "9 / 6, p = 0.61; 32 practice starts, compared with an earlier unedited run",
+       "src": [
+        "study/results/opus/comparisons.json"
+       ],
+       "delta": 3,
+       "a": 14,
+       "b": 17,
+       "n": 32,
+       "p": 0.60723876953125,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T5",
+     "label": "T5 Mustard into the left bin",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "+5: 7 → 12 of 32",
+       "s": "ok",
+       "d": "11 / 6, p = 0.33; 32 practice starts, compared with an earlier unedited run",
+       "src": [
+        "study/results/opus/comparisons.json"
+       ],
+       "delta": 5,
+       "a": 7,
+       "b": 12,
+       "n": 32,
+       "p": 0.332305908203125,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T6",
+     "label": "T6 Stack three cubes",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "+5: 14 → 19 of 32",
+       "s": "ok",
+       "d": "9 / 4, p = 0.27; 32 practice starts, unedited and edited back to back",
+       "src": [
+        "study/results/opus/comparisons.json"
+       ],
+       "delta": 5,
+       "a": 14,
+       "b": 19,
+       "n": 32,
+       "p": 0.266845703125,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T7",
+     "label": "T7 Pick up the flat box",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "±0: 0 → 0 of 32",
+       "s": "ok",
+       "d": "0 / 0, p = 1; 32 practice starts, unedited and edited back to back",
+       "src": [
+        "study/blog/failure-levels.md"
+       ],
+       "delta": 0,
+       "a": 0,
+       "b": 0,
+       "n": 32,
+       "p": 1.0,
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "T8",
+     "label": "T8 Mustard right of the raisin box, reference-first",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "not run",
+       "s": "ok",
+       "d": "the T1 edit was not run on T8, which has its own edit",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "R1",
+     "label": "R1 Retention task",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "±0: 32 → 32 of 32",
+       "s": "ok",
+       "d": "0 / 0, p = 1; cube into the bowl; slots 94016–94047",
+       "src": [
+        "study/results/opus/where/results/transfer_cube_analysis.json"
+       ],
+       "delta": 0,
+       "a": 32,
+       "b": 32,
+       "n": 32,
+       "p": 1.0,
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "Each model's main edit, unchanged, on every suite task. π0.5's earlier records use the T1 edit: T1–T3 on unseen starts (128 or 64), T4–T7 on 32 practice starts, R1 on 32 fresh starts; it was not run on T8. Across fifteen other surveyed tasks it harmed none detectably.",
+   "sources": [
+    "study/blog/failure-levels.md",
+    "study/results/opus/comparisons.json",
+    "study/results/opus/heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json",
+    "study/results/opus/heldout/thr-pickglasses__ctb-v2mi-PickGlassesTask-90000-64.json",
+    "study/results/opus/heldout/tx-rubikscubeleftofbowl__ctb-v2mi-RubiksCubeLeftOfBowlTask-90000-64.json",
+    "study/results/opus/where/results/transfer_cube_analysis.json"
+   ],
+   "edit": {
+    "cosmos": null,
+    "groot": null,
+    "pi05": "the T1 edit (distilled, VLM)"
+   }
+  },
+  {
+   "id": "retention",
+   "title": "Retention",
+   "definition": "After the edit: a task the model already solves, and the clear wording itself.",
+   "rows": [
+    {
+     "key": "R1",
+     "label": "R1 Retention task",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "32 → 32 of 32",
+       "s": "ok",
+       "d": "cube into the bowl, the T1 edit; slots 94016–94047; also 16 → 16 of 16, and banana onto plate 16 → 16 of 16",
+       "src": [
+        "study/results/opus/comparisons.json",
+        "study/results/opus/where/results/transfer_cube_analysis.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "clear",
+     "label": "The clear wording, after the edit",
+     "cells": {
+      "cosmos": {
+       "v": "—",
+       "s": "na"
+      },
+      "groot": {
+       "v": "—",
+       "s": "na"
+      },
+      "pi05": {
+       "v": "27 → 23 of 32",
+       "s": "ok",
+       "d": "T8 under the target-first wording, with the T8 edit; 5 / 9, p = 0.42: not detectable at 32 pairs, not excluded; practice slots 20000–20031",
+       "src": [
+        "study/results/sgdw/results/practice_rf_grp3_vs_base.json",
+        "study/results/sgdw/results/practice_tf_grp3_vs_base.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "offline",
+     "label": "Recorded decisions it must not change",
+     "cells": {
+      "cosmos": {
+       "v": "—",
+       "s": "na"
+      },
+      "groot": {
+       "v": "—",
+       "s": "na"
+      },
+      "pi05": {
+       "v": "unchanged",
+       "s": "ok",
+       "d": "all 9 recorded correct carries and all 19 banana-phase decisions unchanged (T1 edit, offline replay)",
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "At these sample sizes a retention check rules out only large losses (see the noise floor).",
+   "sources": [
+    "study/results/opus/comparisons.json",
+    "study/results/opus/where/results/transfer_cube_analysis.json",
+    "study/results/sgdw/results/practice_rf_grp3_vs_base.json",
+    "study/results/sgdw/results/practice_tf_grp3_vs_base.json"
+   ]
+  },
+  {
+   "id": "noise",
+   "title": "Noise floor",
+   "definition": "Paired outcomes that differ when identical weights are rerun on the same starts; it sets the smallest detectable change.",
+   "rows": [
+    {
+     "key": "unedited2",
+     "label": "Unedited, run twice on the same starts",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "13 vs 9 of 64",
+       "s": "ok",
+       "d": "12 of 64 pairs differ (19%); T1, held-out slots 90000–90063",
+       "src": [
+        "study/results/opus/controls/ctl1-90000-64.analysis.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "edited2",
+     "label": "Identical edited weights, run twice",
+     "cells": {
+      "cosmos": {
+       "v": "—",
+       "s": "na"
+      },
+      "groot": {
+       "v": "—",
+       "s": "na"
+      },
+      "pi05": {
+       "v": "agreed on 46 of 64",
+       "s": "ok",
+       "d": "28% of pairs differ (paper, Appendix B)",
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "butter",
+     "label": "Unedited rerun, butter on the raisin box",
+     "cells": {
+      "cosmos": {
+       "v": "—",
+       "s": "na"
+      },
+      "groot": {
+       "v": "—",
+       "s": "na"
+      },
+      "pi05": {
+       "v": "14 vs 8 of 16",
+       "s": "ok",
+       "d": "38% of pairs differ; exact p = 0.031 with nothing changed",
+       "src": [
+        "study/results/opus/comparisons.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "typical",
+     "label": "Typical share of pairs that differ",
+     "cells": {
+      "cosmos": {
+       "v": "—",
+       "s": "na"
+      },
+      "groot": {
+       "v": "—",
+       "s": "na"
+      },
+      "pi05": {
+       "v": "about 30%",
+       "s": "ok",
+       "d": "a near-neutral one-weight edit: 70 of 192",
+       "src": [
+        "study/results/opus/comparisons.json"
+       ],
+       "prov": true
+      }
+     }
+    },
+    {
+     "key": "mde",
+     "label": "Smallest detectable change",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "27 / 19 / 14 / 10 points",
+       "s": "ok",
+       "d": "at 32 / 64 / 128 / 256 pairs, 80% power, α = 0.05, 30% of pairs differing",
+       "prov": true
+      }
+     }
+    }
+   ],
+   "note": "Simulated physics on GPUs is not bit-repeatable, and a policy that executes many actions between looks amplifies small differences. Every comparison pairs starts and uses exact tests for that reason.",
+   "sources": [
+    "study/results/opus/comparisons.json",
+    "study/results/opus/controls/ctl1-90000-64.analysis.json"
+   ]
+  }
+ ],
+ "cross_rows": {
+  "cosmos": []
+ },
+ "sources": {
+  "pi05_earlier_records": {
+   "study/blog/failure-levels.md": "working tree",
+   "study/results/ctrl/heldout/ctrl-ctb__p1-RubiksCubeThenBananaTask-91008-64.json": "working tree",
+   "study/results/ctrl/heldout/ctrl-glasses__p1-PickGlassesTask-91008-64.json": "working tree",
+   "study/results/ctrl/heldout/ctrl-mustard__p1-MustardInLeftBinTask-91008-64.json": "working tree",
+   "study/results/ctrl/heldout/ctrl-stack3__p1-Stack3RubiksCubeTask-91008-64.json": "working tree",
+   "study/results/ctrl/summary.json": "working tree",
+   "study/results/opus/comparisons.json": "working tree",
+   "study/results/opus/controls/ctl1-90000-64.analysis.json": "working tree",
+   "study/results/opus/controls/ctl1-90000-64.results.json": "working tree",
+   "study/results/opus/heldout/cube-then-banana__abl-imgl8-RubiksCubeThenBananaTask-90000-128.json": "working tree",
+   "study/results/opus/heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json": "working tree",
+   "study/results/opus/heldout/thr-pickglasses__ctb-v2mi-PickGlassesTask-90000-64.json": "working tree",
+   "study/results/opus/heldout/tx-rubikscubeleftofbowl__ctb-v2mi-RubiksCubeLeftOfBowlTask-90000-64.json": "working tree",
+   "study/results/opus/where/results/diff_a1.json": "working tree",
+   "study/results/opus/where/results/diff_h1.json": "working tree",
+   "study/results/opus/where/results/diff_p1-blind.json": "working tree",
+   "study/results/opus/where/results/diff_v1-full.json": "working tree",
+   "study/results/opus/where/results/diff_v1-img816.json": "working tree",
+   "study/results/opus/where/results/diff_va.json": "working tree",
+   "study/results/opus/where/results/heldout_analysis.json": "working tree",
+   "study/results/opus/where/results/heldout_results.json": "working tree",
+   "study/results/opus/where/results/size_summary.json": "working tree",
+   "study/results/opus/where/results/transfer_cube_analysis.json": "working tree",
+   "study/results/opus/where/results/transfer_glasses_analysis.json": "working tree",
+   "study/results/opus/where/results/transfer_left_analysis.json": "working tree",
+   "study/results/sgdw/results/heldout_pairs_92000-64.json": "working tree",
+   "study/results/sgdw/results/practice_rf_grp3_vs_base.json": "working tree",
+   "study/results/sgdw/results/practice_tf_grp3_vs_base.json": "working tree",
+   "study/results/sgdw/results/screen_s4r_tf_vs_rf.json": "working tree",
+   "study/results/sgdw/runs/s4r/build_grp3.json": "working tree",
+   "study/results/sgdw/runs/s4r/build_grp3.report.txt": "working tree",
+   "study/results/tutorial/tutorial-ctb__ctb-first-95008-64.results.json": "working tree"
+  },
+  "cosmos": {
+   "kind": "branch",
+   "branch": "cross-cosmos/v1",
+   "path": "study/results/cross/metrics_cosmos.json",
+   "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
+   "commit": "8f97aa4cbf67"
+  },
+  "groot": {
+   "kind": "none",
+   "branch": "cross-groot/v1",
+   "path": "study/results/cross/metrics_groot.json"
+  },
+  "pi05": {
+   "kind": "none",
+   "branch": "cross-pi05/v1",
+   "path": "study/results/cross/metrics_pi05.json"
+  }
+ },
+ "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
+ "content_hash": "74f105b8fd92cd21",
+ "updated": "2026-11-08T05:11Z",
+ "updated_text": "8 Nov 2026, 05:11 UTC",
+ "status_text": "Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records"
+}
