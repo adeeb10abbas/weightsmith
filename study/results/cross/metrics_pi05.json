@@ -2763,7 +2763,7 @@
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -2816,14 +2816,17 @@
    "30013": 0,
    "30014": 0,
    "30015": 0
-  }
+  },
+  "gpus": [
+   0
+  ]
  },
  {
   "experiment": "failure_map",
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -2876,14 +2879,17 @@
    "30013": 1,
    "30014": 0,
    "30015": 0
-  }
+  },
+  "gpus": [
+   0
+  ]
  },
  {
   "experiment": "failure_map",
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -2936,14 +2942,17 @@
    "30013": 0,
    "30014": 0,
    "30015": 0
-  }
+  },
+  "gpus": [
+   0
+  ]
  },
  {
   "experiment": "failure_map",
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -2996,14 +3005,17 @@
    "30013": 1,
    "30014": 0,
    "30015": 0
-  }
+  },
+  "gpus": [
+   0
+  ]
  },
  {
   "experiment": "failure_map",
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -3056,14 +3068,17 @@
    "30013": 1,
    "30014": 0,
    "30015": 0
-  }
+  },
+  "gpus": [
+   0
+  ]
  },
  {
   "experiment": "failure_map",
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -3116,14 +3131,17 @@
    "30013": 0,
    "30014": 0,
    "30015": 1
-  }
+  },
+  "gpus": [
+   0
+  ]
  },
  {
   "experiment": "failure_map",
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -3176,14 +3194,17 @@
    "30013": 0,
    "30014": 0,
    "30015": 0
-  }
+  },
+  "gpus": [
+   0
+  ]
  },
  {
   "experiment": "failure_map",
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -3236,14 +3257,17 @@
    "30013": 0,
    "30014": 0,
    "30015": 0
-  }
+  },
+  "gpus": [
+   0
+  ]
  },
  {
   "experiment": "failure_map",
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -3296,14 +3320,17 @@
    "30013": 1,
    "30014": 1,
    "30015": 1
-  }
+  },
+  "gpus": [
+   0
+  ]
  },
  {
   "experiment": "edit_target",
   "status": "fresh",
   "run": "C-prime-default",
   "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
-  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
   "render_preset": "default",
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
@@ -3540,6 +3567,9 @@
    "edit_location": "same layers as v2mi-f",
    "values_changed": 502291925,
    "values_changed_note": "random-direction control: v2mi-f's layers, rank and singular values, random orthonormal directions (seed 0)"
-  }
+  },
+  "gpus": [
+   0
+  ]
  }
 ]

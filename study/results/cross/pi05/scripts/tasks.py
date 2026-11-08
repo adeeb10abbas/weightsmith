@@ -233,6 +233,28 @@ def queue_fresh(order="priority"):
     return jobs
 
 
+def queue_lanes():
+    """2026-11-08 22:45 UTC: ali-ms GPU1 freed by Track A. Two disjoint queues (pool_fresh.py --queue), every
+    base-vs-edit pair of a task on one GPU:
+    GPU0: T1 held-out 96032-96063 (unedited, v2mi-f, ctl-rand), then the T8 target-first wording on practice
+          30000-30015, the T6 side-effect pair, then the T1 teacher wording on held-out 96000-96063;
+    GPU1: side effects of v2mi-f on held-out 96000-96031: T3 and T5, then R1, T2, T4, then T7, T8."""
+    def fj(code, arm, s, prompt=None):
+        j = job(code, arm, s, prompt)
+        if arm in CANDS:
+            j["workspace"] = str(project("T1") / "cands" / arm)
+        return j
+    H = groups(HELDOUT)
+    g0 = [fj("T1", arm, s) for arm in ("base", "v2mi-f", "ctl-rand") for s in H[2:]]
+    g0.append(fj("T8", "teacher", PRACTICE[0], TEACHERS["T8"]))
+    g0 += [fj("T6", arm, s) for arm in ("base", "v2mi-f") for s in H[:2]]
+    g0 += [fj("T1", "teacher", s, TEACHERS["T1"]) for s in H]
+    g1 = [fj(c, arm, s) for arm in ("base", "v2mi-f") for c in ("T3", "T5") for s in H[:2]]
+    for c in ("R1", "T2", "T4", "T7", "T8"):
+        g1 += [fj(c, arm, s) for arm in ("base", "v2mi-f") for s in H[:2]]
+    return g0, g1
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "setup":
         setup(tuple(sys.argv[2:]) or ("v2mi-f",))
@@ -242,6 +264,10 @@ if __name__ == "__main__":
         q = queue_fresh(*sys.argv[3:4])
         Path(sys.argv[2]).write_text(json.dumps(q, indent=1) + "\n")
         print(len(q), "jobs")
+    elif sys.argv[1] == "queue-lanes":
+        for f, q in zip(sys.argv[2:4], queue_lanes()):
+            Path(f).write_text(json.dumps(q, indent=1) + "\n")
+            print(f, len(q), "jobs")
     elif sys.argv[1] == "queue":
         q = queue()
         Path(sys.argv[2]).write_text(json.dumps(q, indent=1) + "\n")

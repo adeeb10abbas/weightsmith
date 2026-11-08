@@ -30,7 +30,9 @@ METRICS = Path(os.environ.get("XPI05_METRICS") or PI05.parent / "metrics_pi05.js
 SUMMARY = Path(os.environ.get("XPI05_SUMMARY") or PI05 / "results/fresh/summary.json")
 RUN_ID = "C-prime-default"
 MODEL = "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)"
-HW = "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py"
+HW = ("ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ "
+      "ad31044 + OWSP_ENV_OFFSET patch in batched_client.py")
+GPU = {}  # (code, arm, slot) -> GPU index
 LAYOUT = ("8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds "
           "slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds "
           "((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside "
@@ -63,6 +65,7 @@ def load_runs():
         d = T.setdefault(key, {})
         for row in r["rows"]:
             d[row["slot"]] = bool(row["success"])
+            GPU[(r["code"], r["arm"], row["slot"])] = r.get("gpu")
         recs[r["tag"]] = r
         ce = (r.get("server") or {}).get("changed_elements")
         if r["arm"] in EDIT_INFO and ce is not None:
@@ -143,7 +146,8 @@ def readme_block(out, summary):
     """Markdown for the README section between <!-- fresh2:begin --> and <!-- fresh2:end -->."""
     lay = ("two fresh 8-env Isaac processes per group" if ENVS == 8 else "one fresh 16-env Isaac process per group")
     L = [f"Jobs finished: **{summary['jobs']}** (16 slots each, {lay}); GPU time in "
-         f"finished jobs: **{summary['gpu_hours']} GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, "
+         f"finished jobs: **{summary['gpu_hours']} GPU-h** (ali-ms RTX 3090s: GPU0, and GPU1 from 22:45 UTC; "
+         "both arms of every pair on one GPU, `gpus` in each record). All rows: default render preset, "
          "environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided "
          "McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).", ""]
     fm = [r for r in out if r["experiment"] == "failure_map"]
@@ -322,6 +326,11 @@ def main():
         out.append(r)
         summary["cells"]["T8/teacher(TF)/practice"] = f"{k2}/{len(sl)}"
 
+    for r in out:
+        arms = {"failure_map": ["base"], "edit_target": ["base", "v2mi-f", "ctl-rand", "teacher"],
+                "side_effect": ["base", "v2mi-f"], "wording": ["base", "teacher"]}[r["experiment"]]
+        r["gpus"] = sorted({GPU[(r["code"], a, int(sl))] for a in arms for sl in r["per_slot"]
+                            if (r["code"], a, int(sl)) in GPU})
     for r in out:
         for k in ("p",):
             if isinstance(r.get(k), float):
