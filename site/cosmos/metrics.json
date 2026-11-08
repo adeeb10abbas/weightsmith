@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "419d40d859f0"
+    "commit": "1e9603771533"
    }
   },
   {
@@ -506,9 +506,9 @@
     "label": "Where to edit",
     "cells": {
      "cosmos": {
-      "v": "text pathway 56 of 64",
+      "v": "text pathway 13, video-action (generation) pathway 0 of 16",
       "s": "ok",
-      "d": "T8, 64 unseen starts; unedited 0"
+      "d": "T8, 16 practice starts; unedited 0"
      },
      "groot": {
       "v": "Cosmos-Reason2 backbone 0, diffusion action head 0 of 32",
@@ -1284,7 +1284,7 @@
       "cosmos": {
        "v": "0 → 56 of 64",
        "s": "ok",
-       "d": "text pathway (und mlp.down_proj, layers 0-26); 56 / 0, p = 2.8 × 10⁻¹⁷; +87.5 points [78.1, 95.3]; slots 96000–96063; on the practice starts it was built from: 0 → 13 of 16",
+       "d": "text pathway (und mlp.down_proj, layers 0-26); 56 / 0, p = 2.8 × 10⁻¹⁷; +87.5 points [78.1, 95.3]; slots 96000–96063; on the practice starts it was built from: 0 → 13 of 16; 1 more edit(s) on this task in the where-to-edit table",
        "a": 0,
        "b": 56,
        "n": 64,
@@ -1298,6 +1298,17 @@
        ],
        "color": "teal",
        "loc": "text pathway (und mlp.down_proj, layers 0-26)",
+       "alts": [
+        {
+         "loc": "video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20)",
+         "a": 0,
+         "b": 0,
+         "n": 16,
+         "p": 1.0,
+         "prac": true,
+         "ctl": null
+        }
+       ],
        "fl": "T8 Mustard, reference-first, text pathway (und mlp.down…",
        "fb": "T8 text pathway (und"
       },
@@ -1368,7 +1379,7 @@
        "t": 16,
        "prac": true,
        "loc": "Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (VLM backbone)",
-       "fl": "T1, backbone edit (32 practice)"
+       "fl": "T1, VLM backbone edit (32 practice)"
       },
       "pi05": {
        "v": "control 9, unedited 13, edit 50 of 64",
@@ -1401,7 +1412,7 @@
        "e": 56,
        "n": 64,
        "loc": "text pathway (und mlp.down_proj, layers 0-26)",
-       "fl": "T8 Mustard, reference-first (64 unseen)"
+       "fl": "T8, text pathway edit (64 unseen)"
       },
       "groot": {
        "v": "—",
@@ -1505,9 +1516,9 @@
      "label": "Task, starts",
      "cells": {
       "cosmos": {
-       "v": "T8, 64 unseen starts",
+       "v": "T8, 16 practice starts",
        "s": "ok",
-       "d": "slots 96000–96063"
+       "d": "slots 30000–30015"
       },
       "groot": {
        "v": "T1, 32 practice starts",
@@ -1530,7 +1541,7 @@
      "label": "Unedited",
      "cells": {
       "cosmos": {
-       "v": "0 of 64",
+       "v": "0 of 16",
        "s": "ok"
       },
       "groot": {
@@ -1552,7 +1563,7 @@
      "label": "Backbone / text pathway",
      "cells": {
       "cosmos": {
-       "v": "text pathway (und mlp.down_proj, layers 0-26): 56 of 64",
+       "v": "text pathway (und mlp.down_proj, layers 0-26): 13 of 16",
        "s": "ok"
       },
       "groot": {
@@ -1575,8 +1586,8 @@
      "label": "Action pathway",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20): 0 of 16",
+       "s": "ok"
       },
       "groot": {
        "v": "GR00T action head: 32 AlternateVLDiT blocks, ff.net.2 (diffusion transformer): 0 of 32",
@@ -3121,6 +3132,63 @@
     "_prov": false,
     "extra": {
      "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "edit_practice",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 0,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "diff_pts": 0.0,
+     "bootstrap95_pts": [
+      0.0,
+      0.0
+     ],
+     "wilson95_unedited_pct": [
+      0.0,
+      19.4
+     ],
+     "wilson95_edited_pct": [
+      0.0,
+      19.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 15,
+    "recovery_pct": 0.0,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20)",
+    "values_changed": null,
+    "notes": "edit t8gen (closed-form distillation of the TF wording's effect on the action tokens and pooled video cells (per denoising pass, averaged over 30 RF-failure decisions of slots 30000-30005, replans 1-5), lam_rel 1e-3); control: same rank and singular values, random directions",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms",
+     "control_n": null,
+     "teacher_n": 16,
+     "edit_vs_control": null,
+     "control_slots": null,
+     "teacher_slots": [
+      30000,
+      30015
+     ]
     }
    },
    {
@@ -7125,7 +7193,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "419d40d859f0"
+   "commit": "1e9603771533"
   },
   "groot": {
    "kind": "branch",
@@ -7143,8 +7211,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "7af5f323c3b5929c",
- "updated": "2026-11-08T11:17Z",
- "updated_text": "8 Nov 2026, 11:17 UTC",
+ "content_hash": "83daa6bc7fe8200f",
+ "updated": "2026-11-08T11:29Z",
+ "updated_text": "8 Nov 2026, 11:29 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
