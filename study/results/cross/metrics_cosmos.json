@@ -660,6 +660,41 @@
   "experiment": "side_effect",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "Stack3RubiksCubeTask",
+  "code": "T6",
+  "wording_pair": [
+   "Stack the rubiks cubes in a tower"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 1,
+  "edited_k": 2,
+  "fixed": 2,
+  "broke": 1,
+  "p": 1.0,
+  "ci": {
+   "diff_pts": 6.25,
+   "bootstrap95_pts": [
+    -12.5,
+    25.0
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": 6.25,
+  "retention": null,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+  "values_changed": 179010015,
+  "notes": "edit t8und built for T8, run on T6 with T6's default instruction, practice slots"
+ },
+ {
+  "experiment": "side_effect",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
   "task": "PickUpGreenObjectTask",
   "code": "T7",
   "wording_pair": [
