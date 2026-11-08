@@ -1,14 +1,31 @@
 # Track A: weight-space programming on Cosmos3 Edge Policy DROID
 
-Status (2026-11-08 04:30 ET): closed loop runs on ali-ms at RoboLab's default render preset (the primary setting for
-every model and track). Done: T8 practice (unedited / TF wording / edit / control) and T8 held-out (64 starts x
-unedited / edit / control). Running now: the side-effect map (t8und vs unedited on R1 and T1-T7, which is also the
-failure map), then the video/action-pathway edit in closed loop. Every number here comes from `results/` and `../metrics_cosmos.json` (run `analyze.py`); the
-latest table is in [Results](#results).
+Status (2026-11-08 11:35 ET): T8 practice and held-out, the failure map (practice), the where-to-edit comparison, three
+preservation variants and the held-out side-effect map of `t8und` are done. Still running: the unedited policy under the
+TF wording on held-out starts (teacher, for recovery %), the T6 practice side-effect cell, and the extension of the
+practice map to slots 30016-30031.
 
 Question: how well does weight-space programming (WSP, closed-form instruction distillation) fix the failures of
 NVIDIA's Cosmos3 Edge Policy DROID, against GR00T (Track B) and π0.5 (Track C, the reference) on the same RoboLab
 tasks and slots?
+
+## Headline (all ali-ms, default render, paired on the same starts)
+
+1. **Fix.** T8 (move the mustard right of the raisin box, reference-first wording). Unedited Cosmos3 Edge solves 0/16
+   practice and 0/64 held-out starts. The target-first wording solves 15/16. The closed-form text-pathway edit `t8und`
+   (RF wording unchanged) solves **13/16 practice and 56/64 held-out** (56 fixed / 0 broke, p = 2.8e-17). Its
+   same-size random-direction control solves 1/16 and **0/64**.
+2. **Where to edit.** Offline, the text pathway closes 91% of the RF -> TF action gap and the video/action pathway 23%.
+   In closed loop the video/action edit `t8gen` solves 0/16.
+3. **Side effects (held-out 96000-96031).** The edit breaks the other two instructions that say "left": T5, mustard in
+   the left bin, **9/32 -> 0/32** (p = 0.0039), and T3, cube left of the bowl, **13/32 -> 0/32** (p = 2.4e-4). Elsewhere
+   there is no significant change: R1 24 -> 28/32, T1 18 -> 18/32, T4 24 -> 22/32, T6 1 -> 1/32, T2 4 -> 1/16, T7 0 -> 0/16.
+4. **Why, and what does not fix it.** RF and TF have equal token counts, so the distillation maps word onto word ("left"
+   onto "right", "raisin" onto "mustard"). Preservation keys from 65 generic instructions (`t8und-p`) change nothing for
+   T5 (practice 0/16). Keys from 24 left/right instructions of other tasks (`t8und-r`) keep T8 (13/16) and cut the offline
+   deviation by 57-78%, but T5 (2/16) and T3 (1/16) stay broken. Mapping only the shared template positions
+   (`t8und-s`) leaves T5 and T3 alone but also leaves T8 unfixed (1.9% of the gap). The wording's effect is carried by
+   the instruction-word states themselves.
 
 ## Setup
 
