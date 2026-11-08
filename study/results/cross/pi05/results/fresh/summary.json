@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 31,
- "gpu_hours": 4.69,
+ "jobs": 32,
+ "gpu_hours": 4.74,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
@@ -20,8 +20,8 @@
   "T3/v2mi-f/heldout": "6/32",
   "T5/base/heldout": "7/32",
   "T5/v2mi-f/heldout": "6/32",
-  "R1/base/heldout": "15/16",
-  "R1/v2mi-f/heldout": "15/16"
+  "R1/base/heldout": "31/32",
+  "R1/v2mi-f/heldout": "31/32"
  },
  "records": [
   {
@@ -221,11 +221,11 @@
    "code": "R1",
    "slots": [
     96000,
-    96015
+    96031
    ],
-   "n": 16,
-   "unedited_k": 15,
-   "edited_k": 15,
+   "n": 32,
+   "unedited_k": 31,
+   "edited_k": 31,
    "control_k": null,
    "teacher_k": null,
    "fixed": 0,
