@@ -732,27 +732,27 @@
   "wording_pair": [
    "Put the cube then the banana in the bowl"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    96000,
-   96015
+   96031
   ],
-  "unedited_k": 9,
-  "edited_k": 10,
-  "fixed": 4,
-  "broke": 3,
+  "unedited_k": 18,
+  "edited_k": 18,
+  "fixed": 9,
+  "broke": 9,
   "p": 1.0,
   "ci": {
-   "diff_pts": 6.25,
+   "diff_pts": 0.0,
    "bootstrap95_pts": [
     -25.0,
-    37.5
+    25.0
    ]
   },
   "control_k": null,
   "teacher_k": null,
   "recovery_pct": null,
-  "transfer": 6.25,
+  "transfer": 0.0,
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
