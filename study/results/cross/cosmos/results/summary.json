@@ -1356,10 +1356,26 @@
     96012,
     96013,
     96014,
-    96015
+    96015,
+    96016,
+    96017,
+    96018,
+    96019,
+    96020,
+    96021,
+    96022,
+    96023,
+    96024,
+    96025,
+    96026,
+    96027,
+    96028,
+    96029,
+    96030,
+    96031
    ],
-   "k": 30,
-   "n": 32
+   "k": 44,
+   "n": 48
   }
  },
  "failure_map": [
@@ -1649,22 +1665,22 @@
     ]
    },
    "teacher": {
-    "n": 16,
+    "n": 32,
     "ref_k": 0,
-    "cand_k": 15,
-    "fixed": 15,
+    "cand_k": 29,
+    "fixed": 29,
     "broke": 0,
     "both": 0,
-    "neither": 1,
-    "p": 6.103515625e-05,
-    "diff_pts": 93.75,
+    "neither": 3,
+    "p": 3.725290298461914e-09,
+    "diff_pts": 90.62,
     "diff_ci95_pts": [
-     81.25,
+     78.12,
      100.0
     ],
     "slots": [
      96000,
-     96015
+     96031
     ]
    },
    "edit_vs_control": {
@@ -3543,6 +3559,24 @@
     "gpu_s": 548.7,
     "started": "2026-11-08 11:30:43",
     "finished": "2026-11-08 11:39:52"
+   },
+   {
+    "tag": "T8-wtf-s96016",
+    "task": "MustardRightOfRaisinRFTask",
+    "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
+    "edit": null,
+    "slots": [
+     96016,
+     96031
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 14,
+    "gpu_s": 647.8,
+    "started": "2026-11-08 11:39:52",
+    "finished": "2026-11-08 11:50:39"
    }
   ]
  },
