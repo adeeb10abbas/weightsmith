@@ -141,3 +141,10 @@ clearly below `t8und`'s. If it passes: T5 and T3 practice, then T8 practice. If 
 (96000-96031) and T8 (96000-96063), each with the control.
 (A broader targeted variant, `t8und-a`, preserving every non-shared-set RoboLab instruction including the mirror
 "Put the mustard in the right bin", was started at 07:49 and stopped at 07:55 before its first layer; it is not used.)
+
+**`t8und-r` passed its offline gates (08:59 ET; `results/offline/ali-ms/t8undr_gate.json`).** It closes 93.6% of the T8 RF -> TF gap
+(its random control: -10.5%). On T5 decisions its chunks end 5.9 cm from the unedited policy's (`t8und`: 13.7 cm). On
+20 decisions from T3 practice episodes the unedited policy solved, they end 6.5 cm away (`t8und`: 29.6 cm). Closed loop now:
+T5 practice (GPU0), T3 and T8 practice (GPU1). A rerun of T8-base-s96000 on GPU0 (`T8-detg0`) tests whether
+simulator outcomes are identical across the two GPUs, so the held-out runs of `t8und-r` can use both.
+`t8und-p` in closed loop: T8 practice 12/16 (unedited 0/16), T5 practice 0/16 (unedited 8/16). It does not recover T5.

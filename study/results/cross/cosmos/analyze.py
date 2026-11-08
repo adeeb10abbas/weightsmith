@@ -370,7 +370,7 @@ def main():
     # preservation variants, offline: T8 gap closed (held-aside decisions) and T5 deviation from the unedited policy
     pres = []
     for m in machines:
-        for ed, var in (("t8undp", "O+undp"), ("t8unda", "O+unda")):
+        for ed, var in (("t8undp", "O+undp"), ("t8undr", "O+undr")):
             f8 = RUNS.parent / "offline" / m / f"{ed}_t8_check.json"
             f5 = RUNS.parent / "offline" / m / f"{ed}_t5_check.json"
             if not (f8.exists() and f5.exists()):
@@ -378,7 +378,14 @@ def main():
             g8 = json.loads(f8.read_text())["groups"]["all"]
             g5 = json.loads(f5.read_text())["groups"]["all"]
             v5 = g5[var.replace("O+", "O5+")]
+            f3 = RUNS.parent / "offline" / m / f"{ed}_t3_check.json"
+            g3 = json.loads(f3.read_text())["groups"]["all"] if f3.exists() else None
+            v3 = g3[var.replace("O+", "O3+")] if g3 else None
             row = {"machine": m, "edit": ed, "t8_n": g8[var]["n"],
+                   "t8_control_gap_closed_pct": round(g8[var + "-ctl"]["gap_closed_ee_pct"], 1) if var + "-ctl" in g8 else None,
+                   "t3_n": v3["n"] if v3 else None,
+                   "t3_t8und_dev_cm": round(g3["student_vs_teacher"]["ee_end_cm"], 2) if g3 else None,
+                   "t3_variant_dev_cm": round(v3["vs_teacher"]["ee_end_cm"], 2) if v3 else None,
                    "t8_unedited_ee_cm": round(g8["student_vs_teacher"]["ee_end_cm"], 2),
                    "t8_edited_ee_cm": round(g8[var]["vs_teacher"]["ee_end_cm"], 2),
                    "t8_gap_closed_pct": round(g8[var]["gap_closed_ee_pct"], 1),
@@ -451,7 +458,8 @@ def main():
               f"recovery={r['recovery_pct']}")
     for r in pres:
         print(f"{r['machine']:7s} preserve {r['edit']}: T8 gap closed {r['t8_gap_closed_pct']}% (t8und "
-              f"{r['t8und_gap_closed_pct']}%); T5 deviation {r['t5_variant_dev_cm']} cm vs t8und {r['t5_t8und_dev_cm']} cm")
+              f"{r['t8und_gap_closed_pct']}%); T5 deviation {r['t5_variant_dev_cm']} cm vs t8und {r['t5_t8und_dev_cm']} cm; "
+              f"T3 deviation {r['t3_variant_dev_cm']} vs {r['t3_t8und_dev_cm']} cm")
     for r in where:
         print(f"{r['machine']:7s} where {r['edit']} {r['group']}: ee {r['unedited_ee_cm']} -> {r['edited_ee_cm']} cm "
               f"(gap closed {r['gap_closed_pct']}%, control {r['control_gap_closed_pct']}%), n={r['n']}")

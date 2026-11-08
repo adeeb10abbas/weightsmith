@@ -59,6 +59,10 @@
    "machine": "ali-ms",
    "edit": "t8undp",
    "t8_n": 30,
+   "t8_control_gap_closed_pct": null,
+   "t3_n": null,
+   "t3_t8und_dev_cm": null,
+   "t3_variant_dev_cm": null,
    "t8_unedited_ee_cm": 8.75,
    "t8_edited_ee_cm": 0.61,
    "t8_gap_closed_pct": 93.1,
@@ -67,6 +71,23 @@
    "t5_t8und_dev_cm": 13.73,
    "t5_variant_dev_cm": 13.89,
    "t5_dev_removed_pct": -1.2
+  },
+  {
+   "machine": "ali-ms",
+   "edit": "t8undr",
+   "t8_n": 30,
+   "t8_control_gap_closed_pct": -10.5,
+   "t3_n": 20,
+   "t3_t8und_dev_cm": 29.64,
+   "t3_variant_dev_cm": 6.46,
+   "t8_unedited_ee_cm": 8.75,
+   "t8_edited_ee_cm": 0.56,
+   "t8_gap_closed_pct": 93.6,
+   "t8und_gap_closed_pct": null,
+   "t5_n": 38,
+   "t5_t8und_dev_cm": 13.73,
+   "t5_variant_dev_cm": 5.88,
+   "t5_dev_removed_pct": 57.2
   }
  ],
  "machines": {
@@ -106,10 +127,26 @@
     96012,
     96013,
     96014,
-    96015
+    96015,
+    96016,
+    96017,
+    96018,
+    96019,
+    96020,
+    96021,
+    96022,
+    96023,
+    96024,
+    96025,
+    96026,
+    96027,
+    96028,
+    96029,
+    96030,
+    96031
    ],
-   "k": 28,
-   "n": 32
+   "k": 41,
+   "n": 48
   },
   "ali-ms/R1-base": {
    "slots": [
@@ -1611,22 +1648,22 @@
    "edit": "t8und",
    "code": "R1",
    "split": "heldout",
-   "n": 16,
-   "ref_k": 13,
-   "cand_k": 15,
-   "fixed": 3,
-   "broke": 1,
-   "both": 12,
-   "neither": 0,
-   "p": 0.625,
+   "n": 32,
+   "ref_k": 24,
+   "cand_k": 28,
+   "fixed": 7,
+   "broke": 3,
+   "both": 21,
+   "neither": 1,
+   "p": 0.34375,
    "diff_pts": 12.5,
    "diff_ci95_pts": [
-    -12.5,
-    37.5
+    -6.25,
+    31.25
    ],
    "slots": [
     96000,
-    96015
+    96031
    ]
   },
   {
@@ -1690,6 +1727,24 @@
     "gpu_s": 641.8,
     "started": "2026-11-08 07:48:02",
     "finished": "2026-11-08 07:58:44"
+   },
+   {
+    "tag": "R1-Et8und-s96016",
+    "task": "RubiksCubeTask",
+    "prompt": null,
+    "edit": "edits/t8und.pt",
+    "slots": [
+     96016,
+     96031
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 13,
+    "gpu_s": 767.9,
+    "started": "2026-11-08 08:44:21",
+    "finished": "2026-11-08 08:57:09"
    }
   ],
   "ali-ms/R1-base": [
@@ -2563,5 +2618,5 @@
    }
   ]
  },
- "records": 31
+ "records": 32
 }
