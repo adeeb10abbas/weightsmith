@@ -148,3 +148,8 @@ clearly below `t8und`'s. If it passes: T5 and T3 practice, then T8 practice. If 
 T5 practice (GPU0), T3 and T8 practice (GPU1). A rerun of T8-base-s96000 on GPU0 (`T8-detg0`) tests whether
 simulator outcomes are identical across the two GPUs, so the held-out runs of `t8und-r` can use both.
 `t8und-p` in closed loop: T8 practice 12/16 (unedited 0/16), T5 practice 0/16 (unedited 8/16). It does not recover T5.
+
+**`t8und-r` in closed loop (practice starts): it keeps T8 but does not repair T5 or T3.** T8 13/16 (unedited 0/16, `t8und` 13/16);
+T5 2/16 (unedited 8/16, `t8und` 0/16; 6 broke, 0 fixed); T3 1/16 (unedited 4/16, `t8und` 0/16; 4 broke, 1 fixed).
+Relation-aware preservation removes 57-78% of the offline action deviation on T5 and T3, which is not enough to keep
+those tasks working. Per the plan, no held-out runs were made for it.
