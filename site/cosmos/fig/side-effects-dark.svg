@@ -3086,16 +3086,16 @@ z
   </g>
   <g id="legend_1">
    <g id="patch_30">
-    <path d="M 213.616 295.764 
-L 222.416 295.764 
-L 222.416 288.46 
-L 213.616 288.46 
+    <path d="M 215.92 295.764 
+L 224.72 295.764 
+L 224.72 288.46 
+L 215.92 288.46 
 z
 " style="fill: #2aa5bc"/>
    </g>
    <g id="text_44">
     <!-- gain, p &lt; 0.05 -->
-    <g style="fill: #c4c1ba" transform="translate(225.936 295.148) scale(0.088 -0.088)">
+    <g style="fill: #c4c1ba" transform="translate(228.24 295.148) scale(0.088 -0.088)">
      <use xlink:href="#ArialMT-67"/>
      <use xlink:href="#ArialMT-61" transform="translate(55.615234 0)"/>
      <use xlink:href="#ArialMT-69" transform="translate(111.230469 0)"/>
@@ -3113,16 +3113,16 @@ z
     </g>
    </g>
    <g id="patch_31">
-    <path d="M 290.070125 295.764 
-L 298.870125 295.764 
-L 298.870125 288.46 
-L 290.070125 288.46 
+    <path d="M 292.374125 295.764 
+L 301.174125 295.764 
+L 301.174125 288.46 
+L 292.374125 288.46 
 z
 " style="fill: #d4d2cb"/>
    </g>
    <g id="text_45">
     <!-- loss, p &lt; 0.05 -->
-    <g style="fill: #c4c1ba" transform="translate(302.390125 295.148) scale(0.088 -0.088)">
+    <g style="fill: #c4c1ba" transform="translate(304.694125 295.148) scale(0.088 -0.088)">
      <use xlink:href="#ArialMT-6c"/>
      <use xlink:href="#ArialMT-6f" transform="translate(22.216797 0)"/>
      <use xlink:href="#ArialMT-73" transform="translate(77.832031 0)"/>
@@ -3140,16 +3140,16 @@ z
     </g>
    </g>
    <g id="patch_32">
-    <path d="M 365.537 295.764 
-L 374.337 295.764 
-L 374.337 288.46 
-L 365.537 288.46 
+    <path d="M 367.841 295.764 
+L 376.641 295.764 
+L 376.641 288.46 
+L 367.841 288.46 
 z
 " style="fill: #43423e"/>
    </g>
    <g id="text_46">
     <!-- no detectable change -->
-    <g style="fill: #c4c1ba" transform="translate(377.857 295.148) scale(0.088 -0.088)">
+    <g style="fill: #c4c1ba" transform="translate(380.161 295.148) scale(0.088 -0.088)">
      <use xlink:href="#ArialMT-6e"/>
      <use xlink:href="#ArialMT-6f" transform="translate(55.615234 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(111.230469 0)"/>

@@ -119,6 +119,7 @@
 
 .ctable {
   width: 100%;
+  table-layout: fixed; /* the same column widths in every table, so the models line up down the page */
   border-collapse: collapse;
   font-family: var(--sans);
   font-size: 0.8125rem;
@@ -136,7 +137,7 @@
 }
 
 .ctable thead th:first-child {
-  width: 25%;
+  width: 22%;
   padding-left: 0;
 }
 
@@ -233,9 +234,71 @@
   color: var(--muted);
 }
 
+/* ---------- clips ---------- */
+.clipgrid {
+  display: grid;
+  gap: 18px;
+  margin: 1.1rem auto 1.4rem;
+}
+
+.clipgrid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.clipgrid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.clip {
+  margin: 0;
+}
+
+.clip video,
+.clip .ph {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg-2);
+}
+
+.clip .ph {
+  position: relative;
+  overflow: hidden;
+}
+
+.clip .ph img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.45;
+}
+
+.clip .ph-t {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.clip figcaption {
+  font-size: 0.8125rem;
+}
+
 /* ---------- small screens: each table row becomes a block, one line per model ---------- */
 @media (max-width: 720px) {
-  .models {
+  .models,
+  .clipgrid.two,
+  .clipgrid.three {
     grid-template-columns: minmax(0, 1fr);
   }
 }
