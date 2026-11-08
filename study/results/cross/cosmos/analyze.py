@@ -173,7 +173,10 @@ def plot_pairs(rows, name, title, a_lab, b_lab, label_fn):
     ax.set_yticklabels([f"{label_fn(r)}\n{r['fixed']} fixed / {r['broke']} broke, p = {stats.format_p(r['p'])}"
                         for r in reversed(rows)], fontsize=8.2)
     _axes_common(ax, "success, % of the same paired starts, Wilson 95% interval", 135)
-    ax.set_title(title, fontsize=9.5, color=INK, loc="left")
+    from matplotlib.patches import Patch
+    ax.legend(handles=[Patch(color=LIGHT, label=a_lab), Patch(color=TEAL, label=b_lab)], loc="lower left",
+              fontsize=7.5, frameon=False, ncol=2, bbox_to_anchor=(0.0, 1.0), borderaxespad=0.2, handlelength=1.2)
+    ax.set_title(title, fontsize=9.5, color=INK, loc="left", pad=22)
     _save(fig, name)
     plt.close(fig)
 
@@ -385,6 +388,14 @@ def main():
                     bars.append(("unedited, good wording", r["teacher"]["cand_k"], r["teacher"]["n"], TEAL_PALE))
                 groups.append((f"{r['split']}\n{r['slots'][0]}-{r['slots'][1]}", bars))
             plot_bars(groups, f"edit_{e['name']}_{m}", f"{LABELS[e['code']]}: edit {e['name']} ({e['location']}), {m}")
+            own = [r for r in edit_rows if r["machine"] == m and r["edit"] == e["name"] and r["split"] == "practice"]
+            order = list(TASKS)
+            allrows = sorted(own + [r for r in side if r["machine"] == m and r["edit"] == e["name"]],
+                             key=lambda r: order.index(r["code"]))
+            if len(allrows) > 1:
+                plot_pairs(allrows, f"tasks_{e['name']}_{m}",
+                           f"Every task, unedited vs edited {e['name']} (built for {e['code']}), same practice starts ({m})",
+                           "unedited", "edited", lambda r: LABELS[r["code"]])
             plot_side_effects([r for r in side if r["machine"] == m and r["edit"] == e["name"]],
                               f"side_effects_{e['name']}_{m}",
                               f"Edit {e['name']} on the other tasks, practice starts ({m})")
