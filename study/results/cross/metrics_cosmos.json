@@ -173,6 +173,40 @@
   "experiment": "failure_map",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "PickUpGreenObjectTask",
+  "code": "T7",
+  "wording_pair": [
+   "Pick up the green vegetable block"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 0,
+  "edited_k": null,
+  "fixed": null,
+  "broke": null,
+  "p": null,
+  "ci": {
+   "wilson95_pct": [
+    0.0,
+    19.4
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": null,
+  "values_changed": null,
+  "notes": "unedited policy, task's default instruction, practice slots, default render"
+ },
+ {
+  "experiment": "failure_map",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
   "task": "MustardRightOfRaisinRFTask",
   "code": "T8",
   "wording_pair": [
