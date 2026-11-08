@@ -1,0 +1,11 @@
+{
+ "cand": "ctb-first",
+ "fingerprint": "3047901c3502ffea",
+ "task": "RubiksCubeThenBananaTask",
+ "slots": [
+  95008,
+  95071
+ ],
+ "order": "first half: base then cand; second half: cand then base",
+ "started": "Sat Nov  7 18:38:19 2026"
+}

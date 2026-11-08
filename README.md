@@ -49,6 +49,7 @@ Protocol: [BENCHMARK.md](BENCHMARK.md). Every run, including the failures: [LEAD
 |---|---|---|---|
 | Closed-form instruction distillation (`v2mi-f`) | Cube then banana | 27/128 → **106/128**: 81 fixed, 2 broken, p = 7×10⁻²² | held-out |
 | Same, image cells in layers 8–16 only; factors = 0.16% of parameters (`abl-imgl8`) | Cube then banana | 19/128 → **102/128**: 86 fixed, 3 broken | held-out |
+| `weightsmith distill`, run end to end by the tutorial (automatic decisions, `ctb-first`) | Cube then banana | 8/64 → **36/64**: 33 fixed, 5 broken, p = 4×10⁻⁶ | held-out |
 | Control: random directions, same layers, rank and singular values as `v2mi-f` | Cube then banana | 13/64 → 9/64: no gain (6 fixed, 10 broken, p = 0.45) | held-out |
 | `v2mi-f`, unchanged | Pick up eyeglasses | 22/64 → **44/64** | held-out |
 | `v2mi-f`, unchanged | Cube left of the bowl | 8/64 → **36/64** | held-out |

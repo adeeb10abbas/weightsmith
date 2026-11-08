@@ -24,7 +24,7 @@ commands are the same.
 | [5](#5-distil-the-rewording-into-the-weights) | Distil the rewording into the weights | about 2 min (4 captures) |
 | [6](#6-run-the-edited-policy-on-the-same-seeds) | Run the edited policy on the same 32 seeds | 11–17 min |
 | [7](#7-read-a-paired-result) | Read a paired result, then iterate: a second edit, checked and evaluated | about 18 min |
-| [8](#8-the-held-out-score-operator-only) | The held-out score (operator only) | about 45 min (not run here) |
+| [8](#8-the-held-out-score-operator-only) | The held-out score (operator only) | about 45 min; 8/64 → 36/64 |
 
 GPU jobs queue behind each other through per-GPU locks, so on a shared host the wall time can be much longer.
 In this run a 17-second capture waited 13 minutes behind other people's evals.
@@ -513,8 +513,15 @@ tail -f heldout-ctb-first.log
 - `heldout/<tag>/` is never overwritten. A slot block gets one shot: running it again until the numbers look
   better would make them meaningless.
 
-**This tutorial run stopped before this step.** The GPUs were shared with other experiments and its GPU budget
-was spent, so `ctb-first`'s 19/32 is still a practice screen. For reference, this is the summary heldout.py
+**The held-out score for this tutorial's edit.** The operator ran exactly the command above afterwards. `ctb-first`,
+built end to end by `weightsmith distill` with no hand-picked decisions, held up on 64 slots nobody had seen:
+
+```text
+base 8/64 -> ctb-first 36/64   fixed 33, broke 5   exact McNemar p = 4.3e-6
+Wilson 95%: 6.5-22.8% unedited, 44.1-67.7% edited   fingerprint 3047901c3502ffea   slots 95008-95071
+```
+
+That clears the benchmark's bar (at least 64 held-out pairs, p < 0.05). For reference, this is the summary heldout.py
 printed for the paper's version of the same recipe (`abl-imgl8`, built from 6 hand-picked decisions; slots
 90000–90127):
 
