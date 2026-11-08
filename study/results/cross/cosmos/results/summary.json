@@ -234,6 +234,28 @@
    "k": 4,
    "n": 16
   },
+  "ali-ms/T4-Et8und": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 14,
+   "n": 16
+  },
   "ali-ms/T4-base": {
    "slots": [
     30000,
@@ -967,6 +989,28 @@
   {
    "machine": "ali-ms",
    "edit": "t8und",
+   "code": "T4",
+   "n": 16,
+   "ref_k": 12,
+   "cand_k": 14,
+   "fixed": 3,
+   "broke": 1,
+   "both": 11,
+   "neither": 1,
+   "p": 0.625,
+   "diff_pts": 12.5,
+   "diff_ci95_pts": [
+    -12.5,
+    37.5
+   ],
+   "slots": [
+    30000,
+    30015
+   ]
+  },
+  {
+   "machine": "ali-ms",
+   "edit": "t8und",
    "code": "T5",
    "n": 16,
    "ref_k": 8,
@@ -1168,6 +1212,26 @@
     "gpu_s": 596.7,
     "started": "2026-11-08 05:05:34",
     "finished": "2026-11-08 05:15:30"
+   }
+  ],
+  "ali-ms/T4-Et8und": [
+   {
+    "tag": "T4-Et8und-s30000",
+    "task": "StackYellowOnRedTask",
+    "prompt": null,
+    "edit": "edits/t8und.pt",
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 14,
+    "gpu_s": 1107.3,
+    "started": "2026-11-08 05:50:02",
+    "finished": "2026-11-08 06:08:29"
    }
   ],
   "ali-ms/T4-base": [
@@ -1547,5 +1611,5 @@
    }
   ]
  },
- "records": 20
+ "records": 21
 }
