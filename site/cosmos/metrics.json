@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "b0979de6b80a"
+    "commit": "9b655bf4188c"
    }
   },
   {
@@ -147,7 +147,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5, T7 and R1, lifted no task, lowered T3 (13 → 0 of 32) and T5 (9 → 0 of 32), and moved the retention task R1 from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept T8 (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 generic instructions, T5 fell from 8 to 0 of 16; with keys from 24 left/right instructions of other tasks, T5 fell from 8 to 2 of 16 and T3 from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T7 and R1, lifted no task, lowered T3 (13 → 0 of 32) and T5 (9 → 0 of 32), and moved the retention task R1 from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept T8 (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 generic instructions, T5 fell from 8 to 0 of 16; with keys from 24 left/right instructions of other tasks, T5 fell from 8 to 2 of 16 and T3 from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -376,9 +376,9 @@
     "label": "T6 Stack three cubes",
     "cells": {
      "cosmos": {
-      "v": "unedited 1 of 16",
+      "v": "T8 edit: 1 → 0 of 16",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "0 / 1; p = 1"
      },
      "groot": {
       "v": "unedited 0 of 16",
@@ -785,6 +785,222 @@
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ],
   "text": "`t8undp` (preservation keys from 65 generic instructions) keeps the T8 fix (0 → 12 of 16 practice starts) but does not prevent the break: T5 still falls from 8 to 0 of 16 practice starts (p = 0.0078); offline it closes 93% of the T8 gap and moves T5’s actions 13.9 cm (`t8und`: 13.7 cm) from the unedited policy’s. `t8undr` (preservation keys from 24 left/right instructions of other tasks) keeps the T8 fix (0 → 13 of 16 practice starts) but does not prevent the break: T5 still falls from 8 to 2 of 16 practice starts (p = 0.031) and T3 goes from 4 to 1 of 16 practice starts (p = 0.38; `t8und`: 0); offline it closes 94% of the T8 gap and moves T5’s actions 5.9 cm (`t8und`: 13.7 cm) and T3’s 6.5 cm (`t8und`: 29.6 cm) from the unedited policy’s, so the smaller offline deviation on T5 and T3 does not carry over to the closed loop."
+ },
+ "diagrams": {
+  "where": [
+   {
+    "id": "pi05",
+    "name": "π0.5",
+    "sub": "T1 · 64 unseen starts · unedited 5",
+    "cams": "A",
+    "kv": "keys and values",
+    "out": "15-step action chunks",
+    "src": "study/results/opus/where/results/heldout_analysis.json",
+    "blocks": [
+     {
+      "let": "A",
+      "name": "VLM",
+      "detail": "PaliGemma, 18 layers",
+      "sites": [
+       {
+        "rows": [
+         [
+          "55/64",
+          "all VLM layers"
+         ]
+        ],
+        "oc": "fixed",
+        "title": "all VLM layers: 55 of 64 unseen starts (unedited 5), p = 1.8 × 10⁻¹⁵"
+       },
+       {
+        "rows": [
+         [
+          "41/64",
+          "image cells only (0.16%)"
+         ]
+        ],
+        "oc": "partial",
+        "title": "image cells only (0.16%): 41 of 64 unseen starts (unedited 5), p = 1.5 × 10⁻⁹"
+       }
+      ]
+     },
+     {
+      "let": "B",
+      "name": "action expert",
+      "detail": "Gemma, 18 layers",
+      "sites": [
+       {
+        "rows": [
+         [
+          "20/64",
+          "closes the gripper early"
+         ]
+        ],
+        "oc": "partial",
+        "title": "closes the gripper early: 20 of 64 unseen starts (unedited 5), p = 0.0041"
+       },
+       {
+        "rows": [
+         [
+          "43/64",
+          "VLM + action expert"
+         ]
+        ],
+        "oc": "partial",
+        "title": "VLM + action expert: 43 of 64 unseen starts (unedited 5), p = 1.6 × 10⁻⁹"
+       }
+      ]
+     },
+     {
+      "let": "C",
+      "name": "action head",
+      "detail": "output projection",
+      "sites": [
+       {
+        "rows": [
+         [
+          "0/64",
+          "least norm, no gate"
+         ]
+        ],
+        "oc": "none",
+        "title": "least norm, no gate: 0 of 64 unseen starts (unedited 5), p = 0.062"
+       },
+       {
+        "rows": [
+         [
+          "30/64",
+          "gated (blind editor)"
+         ]
+        ],
+        "oc": "partial",
+        "title": "gated (blind editor): 30 of 64 unseen starts (unedited 5), p = 4.6 × 10⁻⁶"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "cosmos",
+    "name": "Cosmos3 Edge",
+    "sub": "T8 · 16 practice starts · unedited 0",
+    "cams": "B",
+    "kv": "text keys and values",
+    "out": "32-step action chunks",
+    "blocks": [
+     {
+      "let": "A",
+      "name": "text pathway",
+      "detail": "text tokens",
+      "sites": [
+       {
+        "rows": [
+         [
+          "13/16",
+          "practice starts"
+         ],
+         [
+          "56/64",
+          "unseen starts"
+         ],
+         [
+          "91%",
+          "of the gap, offline"
+         ]
+        ],
+        "oc": "fixed",
+        "title": "text pathway: 13 of 16 practice starts (unedited 0), p = 2.4 × 10⁻⁴"
+       }
+      ]
+     },
+     {
+      "let": "B",
+      "name": "video/action pathway",
+      "detail": "video and action tokens",
+      "sites": [
+       {
+        "rows": [
+         [
+          "0/16",
+          "practice starts"
+         ],
+         [
+          "23%",
+          "of the gap, offline"
+         ]
+        ],
+        "oc": "none",
+        "title": "video/action pathway: 0 of 16 practice starts (unedited 0), p = 1"
+       }
+      ]
+     },
+     {
+      "let": "C",
+      "name": "action output",
+      "detail": "",
+      "sites": []
+     }
+    ]
+   },
+   {
+    "id": "groot",
+    "name": "GR00T N1.7",
+    "sub": "T1 · 32 practice starts · unedited 9",
+    "cams": "A",
+    "kv": "backbone tokens",
+    "out": "40-step action chunks",
+    "blocks": [
+     {
+      "let": "A",
+      "name": "Cosmos-Reason2 backbone",
+      "detail": "16 LLM layers",
+      "sites": [
+       {
+        "rows": [
+         [
+          "0/32",
+          "practice starts"
+         ],
+         [
+          "11/32",
+          "random edit, same size"
+         ]
+        ],
+        "oc": "broke",
+        "title": "Cosmos-Reason2 backbone: 0 of 32 practice starts (unedited 9), p = 0.0039"
+       }
+      ]
+     },
+     {
+      "let": "B",
+      "name": "DiT action head",
+      "detail": "32 diffusion blocks",
+      "sites": [
+       {
+        "rows": [
+         [
+          "0/32",
+          "practice starts"
+         ],
+         [
+          "10/32",
+          "random edit, same size"
+         ]
+        ],
+        "oc": "broke",
+        "title": "DiT action head: 0 of 32 practice starts (unedited 9), p = 0.0039"
+       }
+      ]
+     },
+     {
+      "let": "C",
+      "name": "action output",
+      "detail": "",
+      "sites": []
+     }
+    ]
+   }
+  ]
  },
  "tables": [
   {
@@ -2280,8 +2496,14 @@
      "label": "T6 Stack three cubes",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "−1: 1 → 0 of 16",
+       "s": "ok",
+       "d": "0 / 1; p = 1; slots 96000–96015",
+       "delta": -1,
+       "a": 1,
+       "b": 0,
+       "n": 16,
+       "p": 1.0
       },
       "groot": {
        "v": "not run",
@@ -3545,6 +3767,46 @@
     "values_changed": 179010015,
     "notes": "edit t8und built for T8, run on T5 with T5's default instruction, heldout slots (never used for any choice on this task)",
     "_task": "T5",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "side_effect_heldout",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "Stack3RubiksCubeTask",
+    "code": "T6",
+    "wording_pair": [
+     "Stack the rubiks cubes in a tower"
+    ],
+    "n": 16,
+    "slots": [
+     96000,
+     96015
+    ],
+    "unedited_k": 1,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 1,
+    "p": 1.0,
+    "ci": {
+     "diff_pts": -6.25,
+     "bootstrap95_pts": [
+      -18.75,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": -6.25,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und built for T8, run on T6 with T6's default instruction, heldout slots (never used for any choice on this task)",
+    "_task": "T6",
     "_edit_task": "T8",
     "_prov": false,
     "extra": {
@@ -7976,7 +8238,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "b0979de6b80a"
+   "commit": "9b655bf4188c"
   },
   "groot": {
    "kind": "branch",
@@ -7994,8 +8256,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "57ff0268c3ca51f3",
- "updated": "2026-11-08T15:02Z",
- "updated_text": "8 Nov 2026, 15:02 UTC",
+ "content_hash": "92dc6f062e00be15",
+ "updated": "2026-11-08T15:20Z",
+ "updated_text": "8 Nov 2026, 15:20 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
