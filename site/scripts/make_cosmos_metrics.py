@@ -2161,7 +2161,7 @@ def cap_side(where, slot, base, edited, mid, tid, et):
              f"panels and the task’s own instruction: unedited (top) {outcome(a)}; edited (bottom) {outcome(b)}.")
         c = table_cell(tables, "side_effects", tid, mid)
         if c and c.get("n"):
-            s += (f" Over all {c['n']} practice starts: {c['a']} → {c['b']}"
+            s += (f" Over all {c['n']} {'practice' if c.get('prac') else 'held-out'} starts: {c['a']} → {c['b']}"
                   + (f" (exact McNemar p = {fp(c['p'])})." if c.get("p") is not None else "."))
         return s, [sa, sb]
     return f

@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "1e9603771533"
+    "commit": "dbbf1088de16"
    }
   },
   {
@@ -353,8 +353,7 @@
      "cosmos": {
       "v": "T8 edit: 8 → 0 of 16",
       "s": "ok",
-      "d": "0 / 8; p = 0.0078",
-      "prac": true
+      "d": "0 / 8; p = 0.0078"
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -1989,13 +1988,12 @@
       "cosmos": {
        "v": "−8: 8 → 0 of 16",
        "s": "ok",
-       "d": "0 / 8; p = 0.0078; practice starts; slots 30000–30015",
+       "d": "0 / 8; p = 0.0078; slots 96000–96015",
        "delta": -8,
        "a": 8,
        "b": 0,
        "n": 16,
-       "p": 0.0078125,
-       "prac": true
+       "p": 0.0078125
       },
       "groot": {
        "v": "not run",
@@ -3128,6 +3126,46 @@
     "values_changed": 179010015,
     "notes": "edit t8und built for T8, run on R1 with R1's default instruction, practice slots",
     "_task": "R1",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "side_effect_heldout",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardInLeftBinTask",
+    "code": "T5",
+    "wording_pair": [
+     "Put the mustard in the left bin"
+    ],
+    "n": 16,
+    "slots": [
+     96000,
+     96015
+    ],
+    "unedited_k": 8,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 8,
+    "p": 0.0078125,
+    "ci": {
+     "diff_pts": -50.0,
+     "bootstrap95_pts": [
+      -75.0,
+      -25.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": -50.0,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und built for T8, run on T5 with T5's default instruction, heldout slots (never used for any choice on this task)",
+    "_task": "T5",
     "_edit_task": "T8",
     "_prov": false,
     "extra": {
@@ -7193,7 +7231,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "1e9603771533"
+   "commit": "dbbf1088de16"
   },
   "groot": {
    "kind": "branch",
@@ -7211,8 +7249,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "83daa6bc7fe8200f",
- "updated": "2026-11-08T11:29Z",
- "updated_text": "8 Nov 2026, 11:29 UTC",
+ "content_hash": "627038e1f9903b4c",
+ "updated": "2026-11-08T11:55Z",
+ "updated_text": "8 Nov 2026, 11:55 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
