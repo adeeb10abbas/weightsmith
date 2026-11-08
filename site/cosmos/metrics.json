@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "47e9b54d13ac"
+    "commit": "b36a11689b67"
    }
   },
   {
@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "670e6a225564"
+    "commit": "6a258854b0a5"
    },
    "fig_short": "control · shared slots: Cube then banana"
   }
@@ -951,6 +951,7 @@
        -85.62569667613064
       ]
      ],
+     "refs": {},
      "ctl": -2.5011124555874398,
      "n": 30,
      "rule": "Cube left of bowl gap closed >= 85% and |control gap closed| <= 15%",
@@ -969,21 +970,48 @@
     "built": "the cube-left edit built on top of the mustard edit",
     "cells": {
      "T8": {
-      "v": "running",
-      "s": "running"
+      "v": "—",
+      "s": "na",
+      "d": "didn’t pass the offline check, not run on the robot"
      },
      "T3": {
-      "v": "running",
-      "s": "running"
+      "v": "—",
+      "s": "na",
+      "d": "didn’t pass the offline check, not run on the robot"
      },
      "T5": {
-      "v": "running",
-      "s": "running"
+      "v": "—",
+      "s": "na",
+      "d": "didn’t pass the offline check, not run on the robot"
      }
     },
     "measured": false,
-    "gate_failed": null,
-    "build": null
+    "gate_failed": {
+     "passed": false,
+     "gaps": [
+      [
+       "T3",
+       20.863413277283595
+      ],
+      [
+       "T8",
+       60.83571808150297
+      ]
+     ],
+     "refs": {
+      "T8": 91.16889868770983
+     },
+     "ctl": null,
+     "n": 30,
+     "rule": "Cube left of bowl gap (T8-edited default -> unedited specific) closed >= 85% and Mustard right of raisin box raisin-box-first -> mustard-first gap closed >= 85%",
+     "path": "results/offline/ali-ms/t8t3und_gate.json"
+    },
+    "build": {
+     "orig": 159,
+     "good": 167,
+     "matched": 151,
+     "align": "ps"
+    }
    }
   ],
   "wording": {
@@ -1000,7 +1028,7 @@
    "Put the rubiks cube to the left of the bowl",
    "Pick up the rubiks cube and place it on the table to the left side of the bowl"
   ],
-  "text": "The cube-left edit didn’t pass the offline check, so it never ran on the robot: on 30 held-aside moments, it moved the robot’s planned motion further from the clearer wording’s on Cube left of bowl (−86% of the gap); a random edit of the same size, −2.5%. The two wordings are 159 and 167 tokens long, so the edit could only copy the 151 template positions they share, as in the rebuild above that copies only the words both wordings share.",
+  "text": "The cube-left edit didn’t pass the offline check, so it never ran on the robot: in replays of 30 held-aside moments, it moved the robot’s planned motion further from the clearer wording’s on Cube left of bowl (−86% of the gap); a random edit of the same size, −2.5%. The two wordings are 159 and 167 tokens long, so the edit could only copy the 151 template positions they share, as in the rebuild above that copies only the words both wordings share. Both edits together didn’t pass the offline check either: in replays of 30 held-aside moments, they moved the robot’s planned motion 21% of the way toward the clearer wording’s on Cube left of bowl and 61% of the way toward the clearer wording’s on Mustard right of raisin box, down from 91% with the mustard edit alone.",
   "sources": [
    "cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
@@ -1345,11 +1373,11 @@
      "label": "Three-cube tower",
      "cells": {
       "cosmos": {
-       "v": "1 of 16",
+       "v": "2 of 32",
        "s": "ok",
-       "d": "6%; slots 30000–30015",
-       "k": 1,
-       "n": 16
+       "d": "6%; slots 30000–30031",
+       "k": 2,
+       "n": 32
       },
       "groot": {
        "v": "0 of 16",
@@ -2711,7 +2739,7 @@
       "cosmos": {
        "v": "±0: 1 → 1 of 32",
        "s": "ok",
-       "d": "1 / 1; p = 1; slots 96000–96031; practice starts: 1 → 2 of 16, p = 1 (slots 30000–30015)",
+       "d": "1 / 1; p = 1; slots 96000–96031; practice starts: 2 → 3 of 32, p = 1 (slots 30000–30031)",
        "delta": 0,
        "a": 1,
        "b": 1,
@@ -3249,20 +3277,20 @@
     "wording_pair": [
      "Stack the rubiks cubes in a tower"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
-    "unedited_k": 1,
+    "unedited_k": 2,
     "edited_k": null,
     "fixed": null,
     "broke": null,
     "p": null,
     "ci": {
      "wilson95_pct": [
-      1.1,
-      28.3
+      1.7,
+      20.1
      ]
     },
     "control_k": null,
@@ -3918,27 +3946,27 @@
     "wording_pair": [
      "Stack the rubiks cubes in a tower"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
-    "unedited_k": 1,
-    "edited_k": 2,
-    "fixed": 2,
-    "broke": 1,
+    "unedited_k": 2,
+    "edited_k": 3,
+    "fixed": 3,
+    "broke": 2,
     "p": 1.0,
     "ci": {
-     "diff_pts": 6.25,
+     "diff_pts": 3.12,
      "bootstrap95_pts": [
-      -12.5,
-      25.0
+      -9.38,
+      15.62
      ]
     },
     "control_k": null,
     "teacher_k": null,
     "recovery_pct": null,
-    "transfer": 6.25,
+    "transfer": 3.12,
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
@@ -8817,7 +8845,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "47e9b54d13ac"
+   "commit": "b36a11689b67"
   },
   "groot": {
    "kind": "branch",
@@ -8831,12 +8859,12 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "670e6a225564"
+   "commit": "6a258854b0a5"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "97d86118cad06986",
- "updated": "2026-11-08T19:36Z",
- "updated_text": "8 Nov 2026, 19:36 UTC",
+ "content_hash": "c80f0d29654a63a8",
+ "updated": "2026-11-08T20:09Z",
+ "updated_text": "8 Nov 2026, 20:09 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }

@@ -3712,21 +3712,29 @@ def second_edit(cross, tables):
 def second_finding(rows):
     """One sentence from the closed-loop records, once they exist: what the second edit did on its own task, and what
     the two edits together did to the three tasks. Empty before any record."""
-    pre = []
+    pre, told = [], set()
     for i, r in enumerate(x for x in rows if x.get("gate_failed")):
         g, b = r["gate_failed"], r.get("build")
-        gaps = [(t, v) for t, v in g["gaps"] if t]
-        moved = and_list(f"{'further from' if v < 0 else 'only part of the way toward'} the clearer wording’s on "
-                         f"{tn(t)} ({sgn(v, True, 0)}% of the gap)" for t, v in gaps)
-        s = (f"{r['plain']} didn’t pass the offline check, so {'it' if i == 0 else 'they'} never ran on the robot"
-             + (f": on {g['n']} held-aside moments, " if g.get("n") else ": ") + f"it moved the robot’s planned motion "
-             + moved + (f"; a random edit of the same size, {sgn(g['ctl'], True, 1)}%" if g.get("ctl") is not None else "")
-             + ".") if gaps else f"{r['plain']} didn’t pass the offline check, so it never ran on the robot."
-        if b and b["orig"] != b["good"] and b.get("matched"):
-            s += (f" The two wordings are {b['orig']} and {b['good']} tokens long, so the edit could only copy the "
-                  f"{b['matched']} template positions they share, as in the rebuild above that copies only the words "
-                  "both wordings share.")
-        pre.append(s)
+        they = "they" if r["plain"].startswith("Both") else "it"
+        parts = []
+        for t, v in g["gaps"]:
+            ref = g.get("refs", {}).get(t)
+            parts.append((f"further from the clearer wording’s on {tn(t)} ({sgn(v, True, 0)}% of the gap)" if v < 0 else
+                          f"{v:.0f}% of the way toward the clearer wording’s on {tn(t)}")
+                         + (f", down from {ref:.0f}% with the mustard edit alone" if ref is not None and ref > v else ""))
+        lead = (f"{r['plain']} didn’t pass the offline check, so {they} never ran on the robot" if i == 0 else
+                f"{r['plain']} didn’t pass the offline check either")
+        s_ = lead + (": in replays" + (f" of {g['n']} held-aside moments" if g.get("n") else "") + f", {they} moved the "
+                     "robot’s planned motion " + and_list(parts)
+                     + (f"; a random edit of the same size, {sgn(g['ctl'], True, 1)}%" if g.get("ctl") is not None else "")
+                     if parts else "") + "."
+        key = (b["orig"], b["good"], b.get("matched")) if b else None
+        if b and b["orig"] != b["good"] and b.get("matched") and key not in told:
+            s_ += (f" The two wordings are {b['orig']} and {b['good']} tokens long, so the edit could only copy the "
+                   f"{b['matched']} template positions they share, as in the rebuild above that copies only the words "
+                   "both wordings share.")
+            told.add(key)
+        pre.append(s_)
     by = {r["name"]: r["cells"] for r in rows}
     ok = lambda c: c and c["s"] == "ok"
     sig = lambda c: c.get("p") is not None and c["p"] < SIG
@@ -3826,10 +3834,17 @@ def edit_records(src, mid, name):
     gate = next((d for d in (track_json(mid, f"results/offline/{m}/{name}_gate.json") for m in ms) if d), None)
     g = None
     if isinstance(gate, dict) and "pass" in gate:
-        gaps = [(k[:-len("_gap_closed_pct")].upper(), as_float(v)) for k, v in gate.items()
-                if k.endswith("_gap_closed_pct") and not k.startswith("control") and as_float(v) is not None]
-        g = dict(passed=bool(gate["pass"]), gaps=[(t if t in TASK_NAME else None, v) for t, v in gaps],
-                 ctl=as_float(gate.get("control_gap_closed_pct")), n=as_int(gate.get("n")), rule=gate.get("rule"),
+        gaps, refs = [], {}
+        for k, v in gate.items():
+            m = re.fullmatch(r"([tr][1-8])_(?:(\w+?)_)?gap_closed_pct", k)
+            if m and as_float(v) is not None and m.group(1).upper() in TASK_NAME:
+                if m.group(2):
+                    refs[m.group(1).upper()] = as_float(v)      # the same gap closed by another edit, for comparison
+                else:
+                    gaps.append((m.group(1).upper(), as_float(v)))
+        n = as_int(gate.get("n")) or next((as_int(v) for k, v in gate.items() if re.fullmatch(r"[tr][1-8]_n", k)), None)
+        g = dict(passed=bool(gate["pass"]), gaps=gaps, refs=refs,
+                 ctl=as_float(gate.get("control_gap_closed_pct")), n=n, rule=gate.get("rule"),
                  path=f"results/offline/{ms[0]}/{name}_gate.json" if ms else None)
     b = None
     if isinstance(build, dict) and as_int(build.get("n_tokens_orig")) is not None:
