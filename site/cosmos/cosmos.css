@@ -901,3 +901,8 @@
 .cz .post section li a {
   overflow-wrap: anywhere;
 }
+
+/* a clip of four stacked panels stays narrower so it fits a screen */
+.clip.tall video {
+  max-width: 620px;
+}

@@ -620,6 +620,7 @@ def pi05_cells(P):
              butter="Unedited rerun, butter on the raisin box", typical="Typical share of pairs that differ",
              mde="Smallest detectable change", starts="Task, starts", unedited="Unedited",
              backbone="Backbone / text pathway", action="Action pathway", both="Both", transfers="Which one transfers",
+             offline_where="Offline check: share of the wording’s action change reproduced",
              size="Size of each")
     return T, L
 
@@ -975,9 +976,13 @@ def row_cells(src):
             T["edit_gain"][tid] = cell
         if i["control_k"] is not None:
             T["random_control"][tid] = C(f"control {i['control_k']}, unedited {i['unedited_k']}, edit {i['edited_k']}"
-                                         + (f" of {i['n']}" if i["n"] else ""), where_txt(r) or None,
+                                         + (f" of {i['n']}" if i["n"] else ""),
+                                         "; ".join(x for x in ("practice starts the edit was built from" if prac else None,
+                                                               where_txt(r)) if x) or None,
                                          u=i["unedited_k"], r=i["control_k"], e=i["edited_k"], n=i["n"], t=i["teacher_k"],
-                                         fl=f"{tid} {SHORT[tid]}" + (f", {i['n']}" if i["n"] else ""))
+                                         prac=prac or None,
+                                         fl=f"{tid} {SHORT[tid]}" + (f", {i['n']}" if i["n"] else "")
+                                         + (" practice" if prac else ""))
         rp = as_float(r.get("recovery_pct"))
         if rp is not None:
             if abs(rp) <= 1.5 and not float(rp).is_integer():
@@ -1025,8 +1030,30 @@ def row_cells(src):
                                       (f"p = {fp(p)}" if p is not None else None), "the target task" if target else None,
                                       "practice starts" if is_practice(r) else None, where_txt(r), p_note) if x),
                 delta=dlt, a=i["unedited_k"], b=i["edited_k"], n=i["n"], p=p, target=target or None))
-        T["side_effects"]["_edit"] = C(f"the {et} edit" + (f" ({describe(main.get('edit_location'))})"
+        T["side_effects"]["_edit"] = C(f"the {et} edit" + (" on practice starts" if is_practice(main) else "")
+                                       + (f" ({describe(main.get('edit_location'))})"
                                                           if main.get("edit_location") else ""))
+    # where to edit, offline: how much of the clearer wording's action change each edit reproduces on recorded
+    # decisions (no rollouts); the held-aside "check" decisions are preferred over the ones the edit was built from
+    offl = []
+    for r in own:
+        o = r.get("offline") or (r.get("_extra") or {}).get("offline")
+        if isinstance(o, dict) and as_float(o.get("gap_closed_pct")) is not None:
+            offl.append((r, o))
+    if offl:
+        chk = [(r, o) for r, o in offl if str(o.get("group")).lower() == "check"] or offl
+        t0 = chk[0][0]["_task"]
+        chk = [(r, o) for r, o in chk if r["_task"] == t0]
+        o0 = chk[0][1]
+        held = str(o0.get("group")).lower() == "check"
+        T["where"]["offline_where"] = C(
+            "; ".join(f"{describe(r.get('edit_location'))}: {sgn(as_float(o['gap_closed_pct']), False, 0)}%"
+                      + (f" (random, same size: {sgn(as_float(o['control_gap_closed_pct']), False, 0)}%)"
+                         if as_float(o.get("control_gap_closed_pct")) is not None else "") for r, o in chk),
+            f"{t0}, {as_int(o0.get('n'))} recorded decisions"
+            + (" held aside, never used to build either edit" if held else " the edits were built from")
+            + "; share of the clearer wording’s action change reproduced, by end-effector distance at the end of "
+              "the action chunk; offline, no rollouts")
     # where to edit: every edit with a location, on its task
     locs = [r for r in own if loc_class(describe(r.get("edit_location"))) and as_int(r.get("edited_k")) is not None]
     locs = [r for r in locs if "where" in nk(describe(r.get("experiment")) or "")] or locs
@@ -1138,7 +1165,7 @@ TASK_TABLES = ("failure_map", "wording", "edit_gain", "random_control", "recover
 ROW_ORDER = {
     "edit_gain": ["T1", "T1b", "T1c", "T2", "T3", "T4", "T5", "T6", "T7", "T8"],
     "size": ["T1", "T1v", "T1c", "T8"],
-    "where": ["starts", "unedited", "backbone", "action", "both", "transfers", "size"],
+    "where": ["starts", "unedited", "backbone", "action", "both", "offline_where", "transfers", "size"],
     "retention": ["R1", "clear", "offline"],
     "noise": ["unedited2", "edited2", "butter", "typical", "mde"],
 }
@@ -1250,7 +1277,7 @@ def build_tables(P, cross):
                 cell = merge_cell(tid, key, rc[mid][tid].get(key), rcp[mid][tid].get(key),
                                   prov[tid].get(key) if mid == "pi05" else None)
                 if cell is None:
-                    cell = NA if (key in PI_ONLY or (src and src["final"])) else RUN
+                    cell = NA if (key in PI_ONLY or (src and src["final"]) or (mid == "pi05" and key == "offline_where")) else RUN
                 cells[mid] = cell
             label = labels.get(key) or (task_label(key) if key in TASK else key)
             if tid == "size" and key == "T1c":
@@ -1780,7 +1807,8 @@ def fig_side_effects(tb, models, T, L):
             ax.text(j + 0.5, -0.78, models[m]["name"], ha="center", va="bottom", fontsize=L["FS"], weight="bold",
                     color=T["ink"])
             ed = (t.get("edit") or {}).get(m)
-            ed = re.match(r"the [TR]\d edit", ed).group(0) if ed and re.match(r"the [TR]\d edit", ed) else ed
+            hd = re.match(r"the [TR]\d edit(?: on practice starts)?", ed) if ed else None
+            ed = hd.group(0) if hd else ed
             ax.text(j + 0.5, -0.16, ed or "edit: running", ha="center", va="bottom", fontsize=L["FS_S"] - 0.6,
                     color=T["mute"])
     grey = mix(T["empty"], T["grey"], 0.55)
@@ -1965,6 +1993,29 @@ def cap_same_start(slot):
     return f
 
 
+PI05_CLIPS = ("cross-pi05/v1", "study/results/cross/pi05/videos/clips.json")
+
+
+def cap_pi05(file, lead):
+    """A π0.5 track clip: its panels and outcomes from videos/clips.json, which records every panel's verdict."""
+    def f(tables):
+        txt = git("show", f"origin/{PI05_CLIPS[0]}:{PI05_CLIPS[1]}")
+        try:
+            c = next((x for x in json.loads(txt) if x.get("file") == file), None) if txt else None
+        except ValueError:
+            c = None
+        if not c:
+            return None, []
+        def lab(x):
+            return x["label"].replace("edited: ", "edited, ").replace("unedited + ", "unedited, with the ")
+        panels = "; ".join(f"{lab(x)}: {outcome(x)}" for x in c["panels"])
+        hw = ", ".join(x for x in (c.get("hardware"), (c.get("render_preset") or "") + " render preset") if x)
+        s = (f"{lead} Held-out start {c['slot']} on π0.5’s earlier slots, the same scene and noise seeds in every "
+             f"panel. Top to bottom: {panels}. An earlier record ({hw}), {c.get('speed', 3):g}× speed.")
+        return s, [f"{PI05_CLIPS[0]}:{PI05_CLIPS[1]}"]
+    return f
+
+
 def fixed_cap(text):
     return lambda tables: (text, [])
 
@@ -1979,23 +2030,23 @@ CLIPS = [
          cap=cap_wording(X_GROOT, "T1", 30003, "fm-T1", "wd-T1-expl", "groot", "T1",
                          "the original wording", "the explicit two-step wording")),
     dict(stem="t1_same_start", group="demo", title="T1, one start, two NVIDIA models", cap=cap_same_start(30000)),
-    dict(stem="pi05_t1_edit", group="demo", title="π0.5, T1: before and after the edit",
-         src="../assets/video/cube_then_banana.mp4", poster="../assets/video/cube_then_banana.jpg", size=(960, 540),
-         cap=fixed_cap("Held-out start 90002, an earlier record on π0.5’s own slots: the unedited policy (top) lets go "
-                       "of the cube soon after picking it up; after the edit (bottom) it carries the cube to the bowl, "
-                       "then the banana. The instruction is the same in both.")),
+    dict(stem="pi05_t1_edit_control_teacher", group="demo", title="π0.5, T1: the edit against its controls",
+         cap=cap_pi05("t1_v2mi-f_vs_control_vs_teacher_90000.mp4",
+                      "The unedited policy, a random edit of the same size, the distilled edit and the clearer wording.")),
+    dict(stem="pi05_t8_edit_control", group="demo", title="π0.5, T8: the edit against a random edit",
+         cap=cap_pi05("t8_s4r-grp3_vs_control_92001.mp4",
+                      "The reference-first wording throughout; the edit distils the target-first wording.")),
     dict(stem="cosmos_before_after", group="before", title="Cosmos3 Edge Policy",
          cap=fixed_cap("Unedited and edited, on a held-out start where the edit helped.")),
     dict(stem="groot_before_after", group="before", title="GR00T N1.7",
          cap=fixed_cap("Unedited and edited, on a held-out start where the edit helped.")),
-    dict(stem="pi05_t2_transfer", group="transfer", title="π0.5, T2 Pick up the eyeglasses",
-         src="../assets/video/eyeglasses.mp4", poster="../assets/video/eyeglasses.jpg", size=(960, 540),
-         cap=fixed_cap("The T1 edit, unchanged, on a task it was not built for; unedited on top, edited below. "
-                       "Earlier record.")),
-    dict(stem="pi05_t3_transfer", group="transfer", title="π0.5, T3 Cube left of the bowl",
-         src="../assets/video/cube_left_of_bowl.mp4", poster="../assets/video/cube_left_of_bowl.jpg", size=(960, 540),
-         cap=fixed_cap("The T1 edit, unchanged, on a task it was not built for; unedited on top, edited below. "
-                       "Earlier record.")),
+    dict(stem="pi05_t2_fixed", group="transfer", title="π0.5, T2 Pick up the eyeglasses: a start the T1 edit fixes",
+         cap=cap_pi05("t2_v2mi-f_side_effect_fixed_90000.mp4", "The T1 edit, unchanged, on a task it was not built for.")),
+    dict(stem="pi05_t3_fixed", group="transfer", title="π0.5, T3 Cube left of the bowl: a start the T1 edit fixes",
+         cap=cap_pi05("t3_v2mi-f_side_effect_fixed_90000.mp4", "The T1 edit, unchanged, on a task it was not built for.")),
+    dict(stem="pi05_t2_broke", group="transfer", title="π0.5, T2 Pick up the eyeglasses: a start the T1 edit breaks",
+         cap=cap_pi05("t2_v2mi-f_side_effect_broke_90001.mp4",
+                      "Transfer is not free: the same edit also breaks some T2 starts.")),
 ]
 GIF_ORDER = ["cosmos_t8_wording", "cosmos_t8_edit_practice", "groot_t1_wording", "t1_same_start", "cosmos_before_after", "groot_before_after"]
 
@@ -2062,7 +2113,8 @@ def clip_html(c, info, tables):
     if i["exists"] and caption:
         w, h = i["size"] or (960, 540)
         poster = f' poster="{esc(i["poster"])}"' if i["poster"] else ""
-        return (f'<figure class="clip"><video controls muted loop playsinline preload="metadata"{poster} width="{w}" '
+        cls = "clip tall" if h > w else "clip"
+        return (f'<figure class="{cls}"><video controls muted loop playsinline preload="metadata"{poster} width="{w}" '
                 f'height="{h}" aria-label="{esc(title + ". " + caption)}"><source src="{esc(i["src"])}" type="video/mp4">'
                 f'</video><figcaption><b>{esc(title)}.</b> {esc(caption)}{rec}</figcaption></figure>')
     caption = caption or ""
@@ -2247,8 +2299,12 @@ def tldr(tables, models):
                     f"{k} {c['a']}\u00a0→ {c['b']} of {c['n']}" + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "")
                     for k, c in ((k, cell("wording", k, mid)) for k in wd)) + ".")
             for k, c in practice:
+                rc0 = cell("random_control", k, mid)
+                ctl = (f"; a random edit of the same size, {rc0['r']} of {rc0['n']}" if nums(rc0, ("u", "r", "n"))
+                       and rc0.get("prac") else "")
                 bits.append(f"The {k} edit, on the {c['n']} practice starts it was built from: {c['a']} → {c['b']}"
-                            + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "") + f"; on unseen starts, {RUNNING}.")
+                            + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "") + ctl
+                            + f"; on unseen starts, {RUNNING}.")
             if 0 < len(fm) <= 3:
                 bits.append(f"Other tasks{'' if practice else ' and edits'}: {RUNNING}.")
             elif fm:
@@ -2392,14 +2448,22 @@ def conclusion_html(tables, models):
         pe = [(k, c) for k, c in e if c.get("prac")]
         e = [(k, c) for k, c in e if not c.get("prac")]
         bits = []
-        for tid, c in w:
+        helps = [(tid, c) for tid, c in w if c["b"] > c["a"]]
+        flat = [tid for tid, c in w if c["b"] <= c["a"]]
+        for tid, c in helps:
             sig = c.get("pv") is not None and c["pv"] < SIG
             bits.append(f"a clearer wording, with the same weights, takes {tid} from {c['a']} to {c['b']} of {c['n']} "
                         f"practice starts (p\u00a0=\u00a0{fp(c['pv'])})"
                         + (", a gap to distil" if sig else ", a gap these starts cannot yet tell from noise"))
+        if flat:
+            bits.append(f"on {task_list(flat)} the clearer wording tried does not help, so there is nothing to distil")
+        RC = {r["label"].split(" ")[0]: r["cells"].get(mid) for r in T["random_control"]["rows"]}
         for tid, c in pe:
+            r0 = RC.get(tid)
             bits.append(f"on the {c['n']} practice starts it was built from, the {tid} edit lifts success from {c['a']} "
-                        f"to {c['b']}" + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else ""))
+                        f"to {c['b']}" + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else "")
+                        + (f", where a random edit of the same size reaches {r0['r']}" if r0 and r0.get("s") == "ok"
+                           and r0.get("r") is not None else ""))
         for tid, c in e:
             bits.append(f"the {tid} edit on unseen starts: {c['v']}")
         if not bits:
