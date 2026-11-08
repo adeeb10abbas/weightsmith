@@ -1,0 +1,538 @@
+{
+ "tag": "T1-base-s96048",
+ "code": "T1",
+ "task": "RubiksCubeThenBananaTask",
+ "slot_start": 96048,
+ "n": 16,
+ "arm": "base",
+ "workspace": null,
+ "fp": null,
+ "prompt": null,
+ "rendering_type": null,
+ "video_mode": "sensor",
+ "status": "fresh",
+ "render_preset": "default",
+ "rendering_flag": "none (RoboLab default preset)",
+ "envs_per_process": 8,
+ "processes": [
+  {
+   "group": 6003,
+   "env_offset": 0,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T1-base-s96048-g6003o0a0-1108-175751",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T1-base-s96048-1108-175751/sim-g6003o0a0.log"
+  },
+  {
+   "group": 6003,
+   "env_offset": 8,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T1-base-s96048-g6003o8a0-1108-180342",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T1-base-s96048-1108-175751/sim-g6003o8a0.log"
+  }
+ ],
+ "fp_checked": null,
+ "server": {
+  "workspace": null
+ },
+ "server_fingerprint": null,
+ "server_log": "/home/ali/cross/pi05/fresh/logs/server-T1-base-s96032-1108-174538.log",
+ "server_started": 1794177938.8627555,
+ "server_ready_s": 24.0,
+ "rows": [
+  {
+   "slot": 96048,
+   "group": 6003,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_in_container(object=rubiks_cube, container=bowl, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 5,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 4,
+    "TARGET_OBJECT_DROPPED": 2,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "MULTIPLE_OBJECTS_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "bowl"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env0.mp4"
+  },
+  {
+   "slot": 96049,
+   "group": 6003,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 2,
+    "TARGET_OBJECT_DROPPED": 1,
+    "MULTIPLE_OBJECTS_GRABBED": 1,
+    "GRIPPER_HIT_TABLE": 1,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env1.mp4"
+  },
+  {
+   "slot": 96050,
+   "group": 6003,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 2,
+    "WRONG_OBJECT_GRABBED": 2,
+    "OBJECT_BUMPED": 5,
+    "TARGET_OBJECT_DROPPED": 4,
+    "GRIPPER_HIT_TABLE": 1,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env2.mp4"
+  },
+  {
+   "slot": 96051,
+   "group": 6003,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 2,
+    "TARGET_OBJECT_DROPPED": 5,
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 6,
+    "MULTIPLE_OBJECTS_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env3.mp4"
+  },
+  {
+   "slot": 96052,
+   "group": 6003,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 1.0,
+   "reason": "Condition not satisfied: object_grabbed(object=banana) (step 1/2)",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 2,
+    "WRONG_OBJECT_GRABBED": 1,
+    "OBJECT_BUMPED": 1,
+    "GRIPPER_FULLY_CLOSED": 3,
+    "TARGET_OBJECT_DROPPED": 8,
+    "wrong_objects_grabbed": [
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env4.mp4"
+  },
+  {
+   "slot": 96053,
+   "group": 6003,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "TARGET_OBJECT_DROPPED": 3,
+    "WRONG_OBJECT_GRABBED": 2,
+    "OBJECT_BUMPED": 2,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env5.mp4"
+  },
+  {
+   "slot": 96054,
+   "group": 6003,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "GRIPPER_HIT_TABLE": 3,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "WRONG_OBJECT_GRABBED": 7,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 5,
+    "TARGET_OBJECT_DROPPED": 1,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env6.mp4"
+  },
+  {
+   "slot": 96055,
+   "group": 6003,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 1,
+    "GRIPPER_HIT_OBJECT": 2,
+    "WRONG_OBJECT_GRABBED": 1,
+    "OBJECT_BUMPED": 1,
+    "TARGET_OBJECT_DROPPED": 2,
+    "GRIPPER_HIT_TABLE": 3,
+    "wrong_objects_grabbed": [
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o0a0-1108-175751/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env7.mp4"
+  },
+  {
+   "slot": 96056,
+   "group": 6003,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 5,
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 5,
+    "OBJECT_BUMPED": 3,
+    "TARGET_OBJECT_DROPPED": 2,
+    "GRIPPER_HIT_TABLE": 2,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env0.mp4"
+  },
+  {
+   "slot": 96057,
+   "group": 6003,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 2,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "WRONG_OBJECT_GRABBED": 5,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env1.mp4"
+  },
+  {
+   "slot": 96058,
+   "group": 6003,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 6,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 5,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "GRIPPER_HIT_TABLE": 1,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "bowl"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env2.mp4"
+  },
+  {
+   "slot": 96059,
+   "group": 6003,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "GRIPPER_HIT_TABLE": 2,
+    "WRONG_OBJECT_GRABBED": 8,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 5,
+    "TARGET_OBJECT_DROPPED": 1,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "banana",
+     "bowl",
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env3.mp4"
+  },
+  {
+   "slot": 96060,
+   "group": 6003,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 2,
+    "WRONG_OBJECT_GRABBED": 1,
+    "OBJECT_BUMPED": 1,
+    "TARGET_OBJECT_DROPPED": 8,
+    "GRIPPER_FULLY_CLOSED": 3,
+    "MULTIPLE_OBJECTS_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env4.mp4"
+  },
+  {
+   "slot": 96061,
+   "group": 6003,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 1.0,
+   "reason": "Condition not satisfied: object_grabbed(object=banana) (step 1/2)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 4,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "TARGET_OBJECT_DROPPED": 1,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env5.mp4"
+  },
+  {
+   "slot": 96062,
+   "group": 6003,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_in_container(object=rubiks_cube, container=bowl, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 3,
+    "GRIPPER_FULLY_CLOSED": 3,
+    "TARGET_OBJECT_DROPPED": 7,
+    "GRIPPER_HIT_TABLE": 2,
+    "wrong_objects_grabbed": [
+     "banana",
+     "banana"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env6.mp4"
+  },
+  {
+   "slot": 96063,
+   "group": 6003,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 4,
+    "TARGET_OBJECT_DROPPED": 8,
+    "GRIPPER_HIT_OBJECT": 2,
+    "WRONG_OBJECT_GRABBED": 2,
+    "OBJECT_BUMPED": 2,
+    "MULTIPLE_OBJECTS_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "banana",
+     "bowl"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T1-base-s96048-g6003o8a0-1108-180342/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env7.mp4"
+  }
+ ],
+ "completed": 16,
+ "success": 0,
+ "started": 1794178671.5909061,
+ "finished": 1794179374.2685947,
+ "job_s": 702.7,
+ "gpu": 0,
+ "port": 8720,
+ "host": "ali-MS-7D25",
+ "gpu_name": "NVIDIA GeForce RTX 3090",
+ "log_root": "/home/ali/cross/pi05/fresh/logs/T1-base-s96048-1108-175751",
+ "videos": {
+  "96048": "/home/ali/cross/pi05/fresh/videos/T1/base/96048.mp4",
+  "96049": "/home/ali/cross/pi05/fresh/videos/T1/base/96049.mp4",
+  "96050": "/home/ali/cross/pi05/fresh/videos/T1/base/96050.mp4",
+  "96051": "/home/ali/cross/pi05/fresh/videos/T1/base/96051.mp4",
+  "96052": "/home/ali/cross/pi05/fresh/videos/T1/base/96052.mp4",
+  "96053": "/home/ali/cross/pi05/fresh/videos/T1/base/96053.mp4",
+  "96054": "/home/ali/cross/pi05/fresh/videos/T1/base/96054.mp4",
+  "96055": "/home/ali/cross/pi05/fresh/videos/T1/base/96055.mp4",
+  "96056": "/home/ali/cross/pi05/fresh/videos/T1/base/96056.mp4",
+  "96057": "/home/ali/cross/pi05/fresh/videos/T1/base/96057.mp4",
+  "96058": "/home/ali/cross/pi05/fresh/videos/T1/base/96058.mp4",
+  "96059": "/home/ali/cross/pi05/fresh/videos/T1/base/96059.mp4",
+  "96060": "/home/ali/cross/pi05/fresh/videos/T1/base/96060.mp4",
+  "96061": "/home/ali/cross/pi05/fresh/videos/T1/base/96061.mp4",
+  "96062": "/home/ali/cross/pi05/fresh/videos/T1/base/96062.mp4",
+  "96063": "/home/ali/cross/pi05/fresh/videos/T1/base/96063.mp4"
+ },
+ "sim_cmd_example": [
+  "/home/ali/vibes/weight-space-policy-lab/robolab_env/.venv/bin/python",
+  "/home/ali/cross/pi05/weightsmith/weightsmith/run_batched.py",
+  "--policy",
+  "pi05",
+  "--task",
+  "RubiksCubeThenBananaTask",
+  "--environment-seed",
+  "0",
+  "--sampling-seed-base",
+  "6003",
+  "--remote-port",
+  "8720",
+  "--num-envs",
+  "8",
+  "--num-runs",
+  "1",
+  "--headless",
+  "--video-mode",
+  "sensor",
+  "--output-folder-name",
+  "x05f-T1-base-s96048-g6003o8a0-1108-180342",
+  "--device",
+  "cuda:0",
+  "--/rtx/verifyDriverVersion/enabled=false",
+  "--/renderer/multiGpu/enabled=false",
+  "--/renderer/multiGpu/autoEnable=false",
+  "--/renderer/activeGpu=0"
+ ]
+}
