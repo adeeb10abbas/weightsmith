@@ -841,8 +841,13 @@ def read_cross(args, meta_out):
                 same = by_loc.get(describe(r.get("edit_location"))) or set()
                 r["_edit_task"] = (built.get(edit_name(r)) or (m.group(1).upper() if m else None)
                                    or (next(iter(same)) if len(same) == 1 else None))
-        out[mid] = dict(rows=norm, meta=meta, unknown=sorted(unknown),
-                        final=str(meta.get("status", "")).lower() in ("final", "done", "complete", "finished"))
+        final = str(meta.get("status", "")).lower() in ("final", "done", "complete", "finished")
+        readme = None if override else git("show", f"origin/{branch}:{str(Path(rel).parent)}/{mid}/README.md")
+        m_st = re.search(r"^Status:\s*\*\*([^*]*\bcomplete\b[^*]*)\*\*", readme or "", re.M | re.I)
+        if m_st:
+            final = True
+            meta["status_note"] = f"{m_st.group(1).strip()} ({branch} README)"
+        out[mid] = dict(rows=norm, meta=meta, unknown=sorted(unknown), final=final)
         meta_out[mid] = where
         unmatched = sorted({describe(r.get("task")) or "?" for r in norm if not r["_task"]})
         print(f"  {mid}: {len(norm)} row(s) from {where.get('branch') or where.get('path')}"
@@ -979,7 +984,7 @@ def row_cells(src):
             det.append(f"{others} more edit(s) on this task in the where-to-edit table")
         short_loc = (loc[:26] + "…") if loc and len(loc) > 27 else loc
         alts = [dict(loc=describe(x.get("edit_location")), a=ints(x)["unedited_k"], b=ints(x)["edited_k"], n=ints(x)["n"],
-                     p=as_float(x.get("p")), prac=is_practice(x))
+                     p=as_float(x.get("p")), prac=is_practice(x), ctl=ints(x)["control_k"])
                 for x in ed[1:] if describe(x.get("edit_location")) != loc]
         cell = C(f"{i['unedited_k']} → {i['edited_k']}" + (f" of {i['n']}" if i["n"] else ""),
                  "; ".join(x for x in det if x), a=i["unedited_k"], b=i["edited_k"], n=i["n"], fx=i["fixed"], br=i["broke"],
@@ -2183,7 +2188,7 @@ CLIPS = [
                       "The reference-first wording throughout; the edit distils the target-first wording.")),
     dict(stem="cosmos_before_after", group="before", title="Cosmos3 Edge Policy, T8",
          cap=cap_edit_heldout(X_COSMOS, 96003, "T8-base-s96000", "T8-Et8und-s96000", "cosmos", "T8")),
-    dict(stem="groot_before_after", group="before", title="GR00T N1.7",
+    dict(stem="groot_before_after", group="before", title="GR00T N1.7", mid="groot",
          cap=fixed_cap("Unedited and edited, on a held-out start where the edit helped.")),
     dict(stem="pi05_t2_fixed", group="transfer", title="π0.5, T2 Pick up the eyeglasses: a start the T1 edit fixes",
          cap=cap_pi05("t2_v2mi-f_side_effect_fixed_90000.mp4", "The T1 edit, unchanged, on a task it was not built for.")),
@@ -2269,8 +2274,11 @@ def clip_html(c, info, tables):
             f'<figcaption><b>{esc(title)}.</b> {esc(caption)}</figcaption></figure>')
 
 
-def clips_section(group, info, tables):
-    return "".join(clip_html(c, info, tables) for c in CLIPS if c["group"] == group)
+def clips_section(group, info, tables, models=None):
+    """A finished track's placeholder is dropped: its clip will not come."""
+    return "".join(clip_html(c, info, tables) for c in CLIPS if c["group"] == group
+                   and not (c.get("mid") and models and models[c["mid"]]["status"] == "final"
+                            and not info[c["stem"]]["exists"]))
 
 
 def gif_html(info):
@@ -2492,12 +2500,18 @@ def tldr(tables, models):
                            else "of the same size")
                 ctl = (f"; a random edit {size_of}, {rc0['r']} of {rc0['n']}" if nums(rc0, ("u", "r", "n"))
                        and rc0.get("prac") else "")
+                alt_ctl = [x["ctl"] for x in (c.get("alts") or []) if x.get("ctl") is not None]
+                if many and ctl and alt_ctl:
+                    ctl = (f"; random edits of the same sizes, {and_list(str(v) for v in [rc0['r']] + alt_ctl)} "
+                           f"of {rc0['n']}")
+                nxt = ("no held-out runs, since no edit passed practice" if m["status"] == "final"
+                       else f"further edits: {RUNNING}")
                 if c["b"] < c["a"]:
                     who = who[0].upper() + who[1:]
                     bits.append(f"{who} {'each ' if many else ''}lowered success on the {c['n']} practice starts "
                                 f"{'they were' if many else 'it was'} built from, {c['a']} → {c['b']}"
                                 + (f" (p = {fp(c['pv'])}{' each' if many else ''})" if c.get("pv") is not None else "")
-                                + ctl + f"; further edits: {RUNNING}.")
+                                + ctl + f"; {nxt}.")
                     continue
                 bits.append(f"The {k} edit, on the {c['n']} practice starts it was built from: {c['a']} → {c['b']}"
                             + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "") + ctl
@@ -2705,14 +2719,16 @@ def conclusion_html(tables, models):
             who, many = edits_phrase(mid, tid, c)
             size_of = (f"the size of the {loc_name(mid, r0.get('loc'))[4:]} edit" if many and r0 and r0.get("loc")
                        else "of the same size")
+            alt_ctl = [x["ctl"] for x in (c.get("alts") or []) if x.get("ctl") is not None]
             if many:
                 verb = "each " + verb.replace("lifts", "lift").replace("lowers", "lower").replace("leaves", "leave")
             bits.append(f"on the {c['n']} practice starts {'they were' if many else 'it was'} built from, "
                         f"{who if many else 'the' + who[3:]} {verb} {c['a']}"
                         + (f" to {c['b']}" if c["b"] != c["a"] else "")
                         + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else "")
-                        + (f", where a random edit {size_of} reaches {r0['r']}" if r0 and r0.get("s") == "ok"
-                           and r0.get("r") is not None else ""))
+                        + ((f", where random edits of the same sizes reach {and_list(str(v) for v in [r0['r']] + alt_ctl)}"
+                            if many and alt_ctl else f", where a random edit {size_of} reaches {r0['r']}")
+                           if r0 and r0.get("s") == "ok" and r0.get("r") is not None else ""))
         for tid, c in e:
             r0 = RC.get(tid)
             verb = "lifts success from" if c["b"] > c["a"] else "lowers success from" if c["b"] < c["a"] else "leaves success at"
@@ -2729,7 +2745,9 @@ def conclusion_html(tables, models):
                        f'<span class="run">running</span>.</p>')
             continue
         worse = any(c["b"] < c["a"] for _, c in pe)
-        tail = ("" if e else ' Further edits are <span class="run">running</span>.' if worse else
+        done = models[mid]["status"] == "final"
+        tail = ("" if e else ' No held-out or side-effect runs were made, since no edit passed practice.' if done and pe
+                else ' Further edits are <span class="run">running</span>.' if worse else
                 ' On unseen starts the edit is <span class="run">running</span>.' if pe else
                 ' The edit itself is <span class="run">running</span>.')
         text = "; ".join(bits)
@@ -2889,7 +2907,7 @@ def main():
         page = replace_region(page, f"fig:{name}", figure_html(name, alts[name], cap))
     clips = prepare_clips()
     for group in ("demo", "before", "transfer"):
-        page = replace_region(page, f"clips:{group}", clips_section(group, clips, tables))
+        page = replace_region(page, f"clips:{group}", clips_section(group, clips, tables, models))
     page, nfig = number_figures(page)
     mins, words = read_minutes(page)
     page = replace_region(page, "readtime", f"{mins} min read")
