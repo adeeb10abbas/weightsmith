@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 22,
- "gpu_hours": 3.5,
+ "jobs": 23,
+ "gpu_hours": 3.71,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
@@ -14,8 +14,8 @@
   "T8/base/practice": "0/16",
   "R1/base/practice": "16/16",
   "T1/ctl-rand/heldout": "0/32",
-  "T1/base/heldout": "2/32",
-  "T1/v2mi-f/heldout": "20/32",
+  "T1/base/heldout": "2/48",
+  "T1/v2mi-f/heldout": "32/48",
   "T3/base/heldout": "1/16",
   "T3/v2mi-f/heldout": "4/16"
  },
@@ -169,16 +169,16 @@
    "code": "T1",
    "slots": [
     96000,
-    96031
+    96047
    ],
-   "n": 32,
+   "n": 48,
    "unedited_k": 2,
-   "edited_k": 20,
+   "edited_k": 32,
    "control_k": 0,
    "teacher_k": null,
-   "fixed": 18,
+   "fixed": 30,
    "broke": 0,
-   "p": 7.629e-06
+   "p": 1.863e-09
   },
   {
    "experiment": "side_effect",

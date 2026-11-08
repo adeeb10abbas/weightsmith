@@ -71,7 +71,7 @@ instructions, same slots, same render preset, same GPU model.
 | Metrics | [`scripts/fresh.py`](scripts/fresh.py) → records with `"status": "fresh"`, `"run": "C-prime-default"` in [`../metrics_pi05.json`](../metrics_pi05.json) and [`results/fresh/summary.json`](results/fresh/summary.json); per-job records in `results/fresh/runs/` |
 
 <!-- fresh2:begin -->
-Jobs finished: **22** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **3.5 GPU-h** (ali-ms RTX 3090s: GPU0, and GPU1 from 22:45 UTC; both arms of every pair on one GPU, `gpus` in each record). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
+Jobs finished: **23** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **3.71 GPU-h** (ali-ms RTX 3090s: GPU0, and GPU1 from 22:45 UTC; both arms of every pair on one GPU, `gpus` in each record). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
 
 **Failure map** (unedited π0.5, task's default instruction, practice slots). For context, Cosmos3 Edge on the same 16 starts (Track A's run records on ali-ms, default preset, 8 envs per process; `results/fresh/cosmos_same_slots_ali-ms.json`):
 
@@ -93,11 +93,11 @@ Jobs finished: **22** (16 slots each, two fresh 8-env Isaac processes per group)
 
 | Arm | Success | Paired |
 |---|---|---|
-| unedited | 2/32 | |
-| **`v2mi-f`** | **20/32** | vs unedited: 18 fixed / 0 broke, p = 7.6 × 10<sup>-6</sup>; difference +40.6 to +71.9 pts |
+| unedited | 2/48 | |
+| **`v2mi-f`** | **32/48** | vs unedited: 30 fixed / 0 broke, p = 1.9 × 10<sup>-9</sup>; difference +47.9 to +75.0 pts |
 | random-direction control `ctl-rand` | 0/32 | vs unedited (2/32): 0 fixed / 2 broke, p = 0.50; edit vs control: 20 edit-only / 0 control-only, p = 1.9 × 10<sup>-6</sup> |
 
-Slots 96000–96031 (held-out, never used for any choice); control on 96000–96031.
+Slots 96000–96047 (held-out, never used for any choice); control on 96000–96031.
 
 ![Fresh T1 held-out](plots/fresh_t1_heldout.png)
 
