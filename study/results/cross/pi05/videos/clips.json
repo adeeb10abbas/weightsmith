@@ -1,0 +1,260 @@
+[
+ {
+  "file": "t1_v2mi-f_second_lane_90064.mp4",
+  "code": "T1",
+  "slot": 90064,
+  "block": [
+   90064,
+   90127
+  ],
+  "speed": 3.0,
+  "bytes": 1571603,
+  "crf": 29,
+  "seconds": 20.0,
+  "panels": [
+   {
+    "label": "unedited",
+    "success": false,
+    "steps": 900,
+    "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+    "instruction": "Put the cube then the banana in the bowl",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-base-1106-004154-l0a0/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env0.mp4",
+    "run": 0
+   },
+   {
+    "label": "edited: v2mi-f",
+    "success": true,
+    "steps": 527,
+    "reason": "Wrong object that was grabbed is now detached: 'banana'",
+    "instruction": "Put the cube then the banana in the bowl",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-cand-1106-000708-l0a0/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env0.mp4",
+    "run": 0,
+    "first_frame_psnr_vs_top_db": 32.5
+   }
+  ],
+  "status": "provisional",
+  "hardware": "ali-ms RTX 3090",
+  "render_preset": "performance",
+  "selection": "lowest slot of the block with run 0 in every arm and this outcome pattern"
+ },
+ {
+  "file": "t1_v2mi-f_vs_control_vs_teacher_90000.mp4",
+  "code": "T1",
+  "slot": 90000,
+  "block": [
+   90000,
+   90063
+  ],
+  "speed": 3.0,
+  "bytes": 2535642,
+  "crf": 29,
+  "seconds": 20.0,
+  "panels": [
+   {
+    "label": "unedited",
+    "success": false,
+    "steps": 900,
+    "reason": "Condition not satisfied: object_grabbed(object=banana) (step 1/2)",
+    "instruction": "Put the cube then the banana in the bowl",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-base-1105-232403-l0a0/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env0.mp4",
+    "run": 0
+   },
+   {
+    "label": "random-direction control (same layers, ranks, singular values)",
+    "success": false,
+    "steps": 900,
+    "reason": "Condition not satisfied: object_grabbed(object=banana) (step 1/2)",
+    "instruction": "Put the cube then the banana in the bowl",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ctl-rand-1106-113908-l0a0/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env0.mp4",
+    "run": 0,
+    "first_frame_psnr_vs_top_db": 36.5
+   },
+   {
+    "label": "edited: v2mi-f",
+    "success": true,
+    "steps": 332,
+    "reason": "Completed subtask 'pick_and_place' 2/2",
+    "instruction": "Put the cube then the banana in the bowl",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-cand-1105-234621-l0a0/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env0.mp4",
+    "run": 0,
+    "first_frame_psnr_vs_top_db": 36.1
+   },
+   {
+    "label": "unedited + explicit wording (teacher)",
+    "success": true,
+    "steps": 289,
+    "reason": "Completed subtask 'pick_and_place' 2/2",
+    "instruction": "Put the cube then the banana in the bowl",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ctl-teacher-1106-121841-l0a0/RubiksCubeThenBananaTask/Put_the_cube_then_the_banana_in_the_bowl_0_env0.mp4",
+    "run": 0,
+    "first_frame_psnr_vs_top_db": 39.8
+   }
+  ],
+  "status": "provisional",
+  "hardware": "ali-ms RTX 3090",
+  "render_preset": "performance",
+  "selection": "lowest slot of the block with run 0 in every arm and this outcome pattern"
+ },
+ {
+  "file": "t2_v2mi-f_side_effect_broke_90001.mp4",
+  "code": "T2",
+  "slot": 90001,
+  "block": [
+   90000,
+   90063
+  ],
+  "speed": 3.0,
+  "bytes": 1750289,
+  "crf": 26,
+  "seconds": 10.0,
+  "panels": [
+   {
+    "label": "unedited",
+    "success": true,
+    "steps": 86,
+    "reason": "Completed subtask 'pick_glasses' 1/1",
+    "instruction": "Pick up the eye glasses",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-base-1106-022439-l0a0/PickGlassesTask/Pick_up_the_eye_glasses_0_env1.mp4",
+    "run": 0
+   },
+   {
+    "label": "edited: v2mi-f (built for T1)",
+    "success": false,
+    "steps": 450,
+    "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+    "instruction": "Pick up the eye glasses",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-cand-1106-023112-l0a0/PickGlassesTask/Pick_up_the_eye_glasses_0_env1.mp4",
+    "run": 0,
+    "first_frame_psnr_vs_top_db": 30.5
+   }
+  ],
+  "status": "provisional",
+  "hardware": "ali-ms RTX 3090",
+  "render_preset": "performance",
+  "selection": "lowest slot of the block with run 0 in every arm and this outcome pattern"
+ },
+ {
+  "file": "t2_v2mi-f_side_effect_fixed_90000.mp4",
+  "code": "T2",
+  "slot": 90000,
+  "block": [
+   90000,
+   90063
+  ],
+  "speed": 3.0,
+  "bytes": 1957548,
+  "crf": 26,
+  "seconds": 10.0,
+  "panels": [
+   {
+    "label": "unedited",
+    "success": false,
+    "steps": 450,
+    "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+    "instruction": "Pick up the eye glasses",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-base-1106-022439-l0a0/PickGlassesTask/Pick_up_the_eye_glasses_0_env0.mp4",
+    "run": 0
+   },
+   {
+    "label": "edited: v2mi-f (built for T1)",
+    "success": true,
+    "steps": 361,
+    "reason": "Completed subtask 'pick_glasses' 1/1",
+    "instruction": "Pick up the eye glasses",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-cand-1106-023112-l0a0/PickGlassesTask/Pick_up_the_eye_glasses_0_env0.mp4",
+    "run": 0,
+    "first_frame_psnr_vs_top_db": 30.4
+   }
+  ],
+  "status": "provisional",
+  "hardware": "ali-ms RTX 3090",
+  "render_preset": "performance",
+  "selection": "lowest slot of the block with run 0 in every arm and this outcome pattern"
+ },
+ {
+  "file": "t3_v2mi-f_side_effect_fixed_90000.mp4",
+  "code": "T3",
+  "slot": 90000,
+  "block": [
+   90000,
+   90063
+  ],
+  "speed": 3.0,
+  "bytes": 1380691,
+  "crf": 26,
+  "seconds": 10.0,
+  "panels": [
+   {
+    "label": "unedited",
+    "success": false,
+    "steps": 450,
+    "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+    "instruction": "Put the rubiks cube to the left of the bowl",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-base-1106-064623-l0a0/RubiksCubeLeftOfBowlTask/Put_the_rubiks_cube_to_the_left_of_the_bowl_0_env0.mp4",
+    "run": 0
+   },
+   {
+    "label": "edited: v2mi-f (built for T1)",
+    "success": true,
+    "steps": 331,
+    "reason": "Wrong object that was grabbed is now detached: 'rubiks_cube'",
+    "instruction": "Put the rubiks cube to the left of the bowl",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-cand-1106-065229-l0a0/RubiksCubeLeftOfBowlTask/Put_the_rubiks_cube_to_the_left_of_the_bowl_0_env0.mp4",
+    "run": 0,
+    "first_frame_psnr_vs_top_db": 36.6
+   }
+  ],
+  "status": "provisional",
+  "hardware": "ali-ms RTX 3090",
+  "render_preset": "performance",
+  "selection": "lowest slot of the block with run 0 in every arm and this outcome pattern"
+ },
+ {
+  "file": "t8_s4r-grp3_vs_control_92001.mp4",
+  "code": "T8",
+  "slot": 92001,
+  "block": [
+   92000,
+   92063
+  ],
+  "speed": 3.0,
+  "bytes": 1362271,
+  "crf": 32,
+  "seconds": 13.3,
+  "panels": [
+   {
+    "label": "unedited, RF wording",
+    "success": false,
+    "steps": 600,
+    "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+    "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ho-base-1107-180319-l0a0/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env1.mp4",
+    "run": 0
+   },
+   {
+    "label": "RF + random-direction control (same layers, ranks, singular values)",
+    "success": false,
+    "steps": 600,
+    "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+    "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ctl-rand3-1107-195057-l0a0/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env1.mp4",
+    "run": 0,
+    "first_frame_psnr_vs_top_db": 27.2
+   },
+   {
+    "label": "RF + edit s4r-grp3",
+    "success": true,
+    "steps": 336,
+    "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+    "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+    "source_video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/pool-ctl-g3-1107-192556-l0a0/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env1.mp4",
+    "run": 0,
+    "first_frame_psnr_vs_top_db": 26.6
+   }
+  ],
+  "status": "provisional",
+  "hardware": "ali-ms RTX 3090",
+  "render_preset": "performance",
+  "selection": "lowest slot of the block with run 0 in every arm and this outcome pattern"
+ }
+]
