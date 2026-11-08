@@ -1561,6 +1561,15 @@ def kind_of(c):
     return " practice" if c.get("prac") else " unseen"
 
 
+def _covers(wide, narrow):
+    """True when the slot range "first; last" wide contains the range narrow."""
+    try:
+        (w0, w1), (n0, n1) = ([int(x) for x in str(v).split(";")] for v in (wide, narrow))
+    except (ValueError, TypeError):
+        return False
+    return w0 <= n0 and n1 <= w1
+
+
 def prevent_parts(r, base, bname):
     """A follow-up build's closed-loop results, each with a verdict, in present and past tense; None while it has none.
     A left task 'broke' if it drops significantly (exact p < 0.05); 'unrestored' if the original edit lowered it on the
@@ -1587,6 +1596,8 @@ def prevent_parts(r, base, bname):
         pv = f"p = {fp(c['p'])}" if c.get("p") is not None else None
         bc = ((base or {}).get("cells", {}).get(t) or {}).get("runs", {}).get(k.strip())
         bb = bc[1] if bc and bc[3] == c.get("slots") and bc[2] == n else None
+        if bb is None and bc and bc[1] in (0, bc[2]) and _covers(bc[3], c.get("slots")):
+            bb = 0 if bc[1] == 0 else n   # none (or all) of a wider range of starts: the same on these
         if c.get("p") is not None and c["p"] < SIG and b < a:
             out.append((t, "broke", f"{t} still falls from {a} to {b} of {n}{k} starts ({pv})",
                         f"{t} still fell from {a} to {b} of {n}{k} starts", None))
