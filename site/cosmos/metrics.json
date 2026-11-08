@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "83ef66893a9b"
+    "commit": "8d3e00c7a69c"
    }
   },
   {
@@ -384,8 +384,7 @@
      "cosmos": {
       "v": "Mustard right of raisin box edit: 0 → 0 of 16",
       "s": "ok",
-      "d": "0 / 0; p = 1",
-      "prac": true
+      "d": "0 / 0; p = 1"
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -833,7 +832,7 @@
       "sites": [
        {
         "variant": "whole part",
-        "row": "Reading part, whole",
+        "row": "Edit in the reading part (whole)",
         "oc": "fixed",
         "k": 55,
         "n": 64,
@@ -843,7 +842,7 @@
        },
        {
         "variant": "image part only",
-        "row": "Reading part, image part only",
+        "row": "Edit in the reading part (image part only)",
         "oc": "partial",
         "k": 41,
         "n": 64,
@@ -859,7 +858,7 @@
       "sites": [
        {
         "variant": "this part alone",
-        "row": "Motion part",
+        "row": "Edit in the motion part",
         "oc": "partial",
         "k": 20,
         "n": 64,
@@ -869,7 +868,7 @@
        },
        {
         "variant": "A and B together",
-        "row": "Reading and motion parts together",
+        "row": "Edit in both parts",
         "oc": "partial",
         "k": 43,
         "n": 64,
@@ -885,7 +884,7 @@
       "sites": [
        {
         "variant": "always on",
-        "row": "Final layer, always on",
+        "row": "Edit in the final layer, always on",
         "oc": "none",
         "k": 0,
         "n": 64,
@@ -895,7 +894,7 @@
        },
        {
         "variant": "with an on/off switch",
-        "row": "Final layer, with an on/off switch*",
+        "row": "Edit in the final layer, with an on/off switch*",
         "oc": "partial",
         "k": 30,
         "n": 64,
@@ -922,7 +921,7 @@
       "sites": [
        {
         "variant": "",
-        "row": "Reading part",
+        "row": "Edit in the reading part",
         "oc": "fixed",
         "k": 13,
         "n": 16,
@@ -938,7 +937,7 @@
       "sites": [
        {
         "variant": "",
-        "row": "Motion part",
+        "row": "Edit in the motion part",
         "oc": "none",
         "k": 0,
         "n": 16,
@@ -970,7 +969,7 @@
       "sites": [
        {
         "variant": "",
-        "row": "Reading part",
+        "row": "Edit in the reading part",
         "oc": "broke",
         "k": 0,
         "n": 32,
@@ -986,7 +985,7 @@
       "sites": [
        {
         "variant": "",
-        "row": "Motion part",
+        "row": "Edit in the motion part",
         "oc": "broke",
         "k": 0,
         "n": 32,
@@ -1859,6 +1858,7 @@
        "e": 0,
        "n": 32,
        "t": 16,
+       "tn": 32,
        "prac": true,
        "loc": "Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (VLM backbone)",
        "fl": "Cube then banana, VLM backbone edit (32 practice)"
@@ -1893,6 +1893,8 @@
        "r": 0,
        "e": 56,
        "n": 64,
+       "t": 29,
+       "tn": 32,
        "loc": "text pathway (und mlp.down_proj, layers 0-26)",
        "fl": "Mustard right of raisin box, text pathway edit (64 unseen)"
       },
@@ -1959,10 +1961,14 @@
      "label": "Mustard right of raisin box",
      "cells": {
       "cosmos": {
-       "v": "87%",
+       "v": "97%",
        "s": "ok",
-       "d": "as reported; on practice starts",
-       "prac": true
+       "d": "(28 − 0) / (29 − 0) on the 32 starts where the clear wording also ran (slots 96000–96031), computed here",
+       "a": 0,
+       "b": 28,
+       "t": 29,
+       "n": 32,
+       "sub": true
       },
       "groot": {
        "v": "—",
@@ -2531,13 +2537,12 @@
       "cosmos": {
        "v": "±0: 0 → 0 of 16",
        "s": "ok",
-       "d": "0 / 0; p = 1; practice starts; slots 30000–30015",
+       "d": "0 / 0; p = 1; slots 96000–96015",
        "delta": 0,
        "a": 0,
        "b": 0,
        "n": 16,
-       "p": 1.0,
-       "prac": true
+       "p": 1.0
       },
       "groot": {
        "v": "not run",
@@ -3341,7 +3346,7 @@
      ]
     },
     "control_k": 0,
-    "teacher_k": null,
+    "teacher_k": 29,
     "recovery_pct": null,
     "transfer": null,
     "retention": null,
@@ -3354,7 +3359,7 @@
     "extra": {
      "machine": "ali-ms",
      "control_n": 64,
-     "teacher_n": null,
+     "teacher_n": 32,
      "edit_vs_control": {
       "n": 64,
       "ref_k": 0,
@@ -3371,7 +3376,10 @@
       96000,
       96063
      ],
-     "teacher_slots": null
+     "teacher_slots": [
+      96000,
+      96031
+     ]
     }
    },
    {
@@ -3568,6 +3576,46 @@
     "values_changed": 179010015,
     "notes": "edit t8und built for T8, run on T5 with T5's default instruction, practice slots",
     "_task": "T5",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "Stack3RubiksCubeTask",
+    "code": "T6",
+    "wording_pair": [
+     "Stack the rubiks cubes in a tower"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 1,
+    "edited_k": 2,
+    "fixed": 2,
+    "broke": 1,
+    "p": 1.0,
+    "ci": {
+     "diff_pts": 6.25,
+     "bootstrap95_pts": [
+      -12.5,
+      25.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": 6.25,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und built for T8, run on T6 with T6's default instruction, practice slots",
+    "_task": "T6",
     "_edit_task": "T8",
     "_prov": false,
     "extra": {
@@ -3888,6 +3936,46 @@
     "values_changed": 179010015,
     "notes": "edit t8und built for T8, run on T6 with T6's default instruction, heldout slots (never used for any choice on this task)",
     "_task": "T6",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "side_effect_heldout",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "PickUpGreenObjectTask",
+    "code": "T7",
+    "wording_pair": [
+     "Pick up the green vegetable block"
+    ],
+    "n": 16,
+    "slots": [
+     96000,
+     96015
+    ],
+    "unedited_k": 0,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "diff_pts": 0.0,
+     "bootstrap95_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": 0.0,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und built for T8, run on T7 with T7's default instruction, heldout slots (never used for any choice on this task)",
+    "_task": "T7",
     "_edit_task": "T8",
     "_prov": false,
     "extra": {
@@ -8365,7 +8453,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "83ef66893a9b"
+   "commit": "8d3e00c7a69c"
   },
   "groot": {
    "kind": "branch",
@@ -8383,8 +8471,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "cc011ac332a8d7c1",
- "updated": "2026-11-08T16:30Z",
- "updated_text": "8 Nov 2026, 16:30 UTC",
+ "content_hash": "ae7fd6ccfa724b6b",
+ "updated": "2026-11-08T16:54Z",
+ "updated_text": "8 Nov 2026, 16:54 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }

@@ -1049,8 +1049,33 @@
 .dg .dg-base { stroke: var(--ink); stroke-width: 1.5; }
 .dg .dg-o-none2 { fill: var(--mark-base); stroke: var(--mark-base); stroke-width: 1.5; }
 
-.dg2b .dg {
-  max-width: 460px;
+/* Figure 5: one drawing for wide screens (labels beside the tracks), one for narrow (labels above, wrapped) */
+.dg-ttl {
+  margin: 0 0 0.45rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.dg2b .dg5-w {
+  max-width: 680px;
+}
+
+.dg2b .dg5-n {
+  display: none;
+  max-width: 400px;
+}
+
+@media (max-width: 699px) {
+  .dg2b .dg5-w {
+    display: none;
+  }
+
+  .dg2b .dg5-n {
+    display: block;
+  }
 }
 
 /* the task legend: four columns */

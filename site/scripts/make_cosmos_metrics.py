@@ -901,7 +901,8 @@ def read_cross(args, meta_out):
         if m_st:
             final = True
             meta["status_note"] = f"{m_st.group(1).strip()} ({branch} README)"
-        out[mid] = dict(rows=norm, meta=meta, unknown=sorted(unknown), final=final)
+        out[mid] = dict(rows=norm, meta=meta, unknown=sorted(unknown), final=final,
+                        runs=None if override else (f"origin/{branch}", f"{Path(rel).parent}/{mid}/results/runs"))
         meta_out[mid] = where
         unmatched = sorted({describe(r.get("task")) or "?" for r in norm if not r["_task"]})
         print(f"  {mid}: {len(norm)} row(s) from {where.get('branch') or where.get('path')}"
@@ -1003,6 +1004,29 @@ def loc_short(loc):
 def is_practice(r):
     """An edit scored on the practice slots (the starts it was built from), or named so by its record."""
     return slot_kind(r) == " practice" or "practice" in nk(describe(r.get("experiment")) or "")
+
+
+def run_success(src, r, tid, slots):
+    """Successes of the row's edit on the slots first-last, summed over the track's per-run records that tile them
+    (results/runs/<machine>/<task>-E<edit>-s<first slot>.json), or None when they do not cover exactly those slots."""
+    mach = r.get("machine") or (r.get("_extra") or {}).get("machine")
+    if not (src.get("runs") and isinstance(slots, (list, tuple)) and len(slots) == 2 and edit_id(r) and mach):
+        return None
+    ref, d = src["runs"]
+    start, total = slots[0], 0
+    while start <= slots[1]:
+        text = git("show", f"{ref}:{d}/{mach}/{tid}-E{edit_id(r)}-s{start}.json")
+        try:
+            j = json.loads(text) if text else None
+        except ValueError:
+            return None
+        sl = list((j or {}).get("slots") or [])
+        if not j or len(sl) != 2 or sl[0] != start or sl[1] > slots[1] or j.get("completed") != j.get("n") \
+                or as_int(j.get("success")) is None:
+            return None
+        total += as_int(j["success"])
+        start = sl[1] + 1
+    return total
 
 
 def row_cells(src):
@@ -1118,7 +1142,7 @@ def row_cells(src):
                                          "; ".join(x for x in ("practice starts the edit was built from" if pc else None,
                                                                where_txt(rr)) if x) or None,
                                          u=ic["unedited_k"], r=ic["control_k"], e=ic["edited_k"], n=ic["n"],
-                                         t=ic["teacher_k"], prac=pc or None, loc=describe(rr.get("edit_location")),
+                                         t=ic["teacher_k"], tn=as_int(xg(rr, "teacher_n")) or ic["n"], prac=pc or None, loc=describe(rr.get("edit_location")),
                                          fl=(f"{tid}, {loc_short(describe(rr.get('edit_location')))} edit" if alts
                                              and rr.get("edit_location") else f"{SHORT[tid]}")
                                          + (f" ({ic['n']}{slot_kind(rr) or (' practice' if pc else '')})"
@@ -1133,6 +1157,18 @@ def row_cells(src):
                     rp *= 100
                 T["recovery"][tid] = C(f"{sgn(rp, False, 0)}%", "as reported" + ("; on practice starts" if pt else ""),
                                        prac=pt or None)
+            elif as_int(xg(rt, "teacher_n")) and as_int(xg(rt, "teacher_n")) != it["n"]:
+                # the clear wording ran on fewer starts than the edit: compare on those starts only
+                tn_, ts = as_int(xg(rt, "teacher_n")), xg(rt, "teacher_slots")
+                u_sub = 0 if it["unedited_k"] == 0 else (tn_ if it["unedited_k"] == it["n"] else None)
+                e_sub = run_success(src, rt, tid, ts)
+                sl = f"slots {ts[0]}–{ts[1]}" if isinstance(ts, (list, tuple)) and len(ts) == 2 else f"{tn_} starts"
+                if None not in (u_sub, e_sub) and it["teacher_k"] != u_sub:
+                    T["recovery"][tid] = C(
+                        f"{100 * (e_sub - u_sub) / (it['teacher_k'] - u_sub):.0f}%",
+                        f"({e_sub} − {u_sub}) / ({it['teacher_k']} − {u_sub}) on the {tn_} starts where the clear wording "
+                        f"also ran ({sl}), computed here" + ("; practice starts" if pt else ""),
+                        prac=pt or None, a=u_sub, b=e_sub, t=it["teacher_k"], n=tn_, sub=True)
             else:
                 T["recovery"][tid] = C(
                     f"{100 * (it['edited_k'] - it['unedited_k']) / (it['teacher_k'] - it['unedited_k']):.0f}%",
@@ -2189,6 +2225,20 @@ def put(fig, ax, L, x_in, y, text, T, color="ink", size=None, weight="normal", h
             color=T[color], clip_on=False, style=style)
 
 
+def wrap_in(text, width_in, pt):
+    """Line breaks so that text in Arial at pt points fits about width_in inches (average glyph 0.52 em)."""
+    import textwrap
+    return "\n".join(textwrap.wrap(str(text), max(8, int(width_in / (0.52 * pt / 72))), break_long_words=False))
+
+
+def col_head(fig, ax, L, T, text):
+    """What the right-hand column of numbers is, above its first row."""
+    import matplotlib.transforms as mtransforms
+    tr = mtransforms.blended_transform_factory(fig.transFigure, ax.transAxes)
+    ax.text((L["W"] - L["right"] + 0.12) / L["W"], 1.0, text, transform=tr, ha="left", va="bottom",
+            fontsize=L["FS_S"] - 0.6, color=T["mute"], clip_on=False, linespacing=1.15)
+
+
 def legend(fig, items, T, H, L, ncol=None):
     from matplotlib.lines import Line2D
     ms = L["leg_ms"]
@@ -2286,7 +2336,7 @@ def fig_failure_map(tb, models, T, L):
     leg_w = 0.0 if brief else 0.95
     cw = (L["W"] - lw - leg_w - 0.05) / 3
     ch = L["row"] * (1.25 if brief else 1.35)
-    top = 0.36 if brief else 0.62
+    top = 0.36 if brief else 0.86
     H = top + nrow * ch + 0.12
     fig = plt.figure(figsize=(L["W"], H))
     ax = fig.add_axes([lw / L["W"], 0.12 / H, 3 * cw / L["W"], nrow * ch / H])
@@ -2297,11 +2347,11 @@ def fig_failure_map(tb, models, T, L):
         if brief:
             ax.text(j + 0.5, -0.2, FIGNAME[m], ha="center", va="bottom", fontsize=L["FS"], weight="bold", color=T["ink"])
         else:
-            ax.text(j + 0.5, -0.5, models[m]["name"], ha="center", va="bottom", fontsize=L["FS"], weight="bold",
-                    color=T["ink"])
-            ax.text(j + 0.5, -0.16, models[m].get("fig_short") or models[m]["short"], ha="center", va="bottom",
-                    fontsize=L["FS_S"] - 0.6,
-                    color=T["mute"])
+            sub = wrap_in(models[m].get("fig_short") or models[m]["short"], cw - 0.1, L["FS_S"] - 0.6)
+            ax.text(j + 0.5, -0.16, sub, ha="center", va="bottom", fontsize=L["FS_S"] - 0.6, color=T["mute"],
+                    linespacing=1.1)
+            ax.text(j + 0.5, -0.24 - 0.42 * (sub.count("\n") + 1), models[m]["name"], ha="center", va="bottom",
+                    fontsize=L["FS"], weight="bold", color=T["ink"])
     for i, r in enumerate(fm):
         lab = SHORT[r["key"]] if r["key"] in SHORT else r["label"]
         put(fig, ax, L, L["lx"], i + 0.5, lab, T)
@@ -2333,8 +2383,8 @@ def fig_failure_map(tb, models, T, L):
         cax.tick_params(axis="y", colors=T["mute"], labelsize=L["FS_S"] - 0.6, length=2, width=0.6)
         for s in cax.spines.values():
             s.set_visible(False)
-        fig.text(lx / L["W"], (0.12 + nrow * ch + 0.1) / H, "unedited\nsuccess", fontsize=L["FS_S"] - 0.6,
-                 color=T["mute"], va="bottom", ha="left", linespacing=1.1)
+        fig.text(lx / L["W"], (0.12 + nrow * ch + 0.1) / H, "share of\nstarts\ncompleted,\nunedited",
+                 fontsize=L["FS_S"] - 0.6, color=T["mute"], va="bottom", ha="left", linespacing=1.1)
     return fig
 
 
@@ -2343,7 +2393,8 @@ def fig_wording(tb, models, T, L):
            for m, v in model_rows(tb, "wording").items()}
     rows = grouped(models, cbm, L)
     fig, ax, ys, H = rows_figure(rows, L)
-    style_axes(ax, T, L, xlabel="success of the unedited model", fmt=lambda v: f"{v:g}%")
+    style_axes(ax, T, L, xlabel="Task success of the unedited robot: share of starts completed", fmt=lambda v: f"{v:g}%")
+    col_head(fig, ax, L, T, "starts completed:\noriginal → clear")
     for (k, *rest), y in zip(rows, ys):
         if k == "head":
             put(fig, ax, L, L["lx"], y, rest[0], T, size=L["FS_H"], weight="bold")
@@ -2374,8 +2425,10 @@ def fig_edit_gain(tb, models, T, L):
     xmin = -20 * k
     ticks = tuple(range(xmin, 101, 20)) if not brief else tuple(range(xmin if xmin < -20 else 0, 101, 25))
     style_axes(ax, T, L, xmin=xmin, xmax=100, xticks=ticks,
-               xlabel="edited − unedited, points (95% CI)" if brief else
-               "edited minus unedited success, points (95% CI)", fmt=lambda v: f"{v:+g}" if v else "0")
+               xlabel="change in share of starts completed, edited − unedited, percentage points (95% CI)" if brief
+               else "Change in the share of starts completed (edited − unedited), in percentage points, with its 95% "
+                    "interval", fmt=lambda v: f"{v:+g}" if v else "0")
+    col_head(fig, ax, L, T, "starts completed:\nunedited → edited")
     ax.axvline(0, color=T["mute"], lw=0.9, zorder=1)
     for (k, *rest), y in zip(rows, ys):
         if k == "head":
@@ -2401,34 +2454,33 @@ def fig_edit_gain(tb, models, T, L):
 
 def fig_random_control(tb, models, T, L):
     from matplotlib.patches import Rectangle
-    cbm = {m: [(c.get("fl") or r["label"], c["u"], c["r"], c["e"], c["n"], c.get("t")) for r, c in v if "r" in c]
-           for m, v in model_rows(tb, "random_control").items()}
+    cbm = {m: [(c.get("fl") or r["label"], c["u"], c["r"], c["e"], c["n"], c.get("t"), c.get("tn") or c["n"])
+               for r, c in v if "r" in c] for m, v in model_rows(tb, "random_control").items()}
     rows = grouped(models, cbm, L)
     k3 = 2.6
     fig, ax, ys, H = rows_figure(rows, L, hf={"row": k3})
-    style_axes(ax, T, L, xlabel="success, % of starts", fmt=lambda v: f"{v:g}%")
+    style_axes(ax, T, L, xlabel="Task success: share of starts completed", fmt=lambda v: f"{v:g}%")
     for (k, *rest), y in zip(rows, ys):
         if k == "head":
             put(fig, ax, L, L["lx"], y, rest[0], T, size=L["FS_H"], weight="bold")
         elif k == "run":
             put(fig, ax, L, L["lx2"], y, rest[0], T, color="mute", style="italic")
         else:
-            lab, u, rnd, ed, n, te = rest[0]
-            put(fig, ax, L, L["lx2"], y, lab, T)
+            lab, u, rnd, ed, n, te, tn_ = rest[0]
+            put(fig, ax, L, L["lx2"], y, wrap_in(lab, L["left"] - L["lx2"] - 0.15, L["FS"]), T)
             for off, val, col in ((-0.27, u, "grey"), (0.0, rnd, "dark"), (0.27, ed, "teal")):
                 x = 100 * val / n
                 if x > 0:
                     ax.add_patch(Rectangle((0, y + k3 * (off - L["bar"] / 2)), x, k3 * L["bar"], fc=T[col], ec="none",
                                            zorder=2))
-                ax.text(x + 1.2, y + k3 * off, f"{val}", va="center", ha="left", fontsize=L["FS_S"], color=T["ink2"],
-                        zorder=3)
+                ax.text(x + 1.2, y + k3 * off, f"{val} of {n}", va="center", ha="left", fontsize=L["FS_S"],
+                        color=T["ink2"], zorder=5, bbox=dict(fc=T["bg"], ec="none", pad=0.6))
             if te is not None:
-                xt = 100 * te / n
+                xt = 100 * te / tn_
                 ax.plot([xt, xt], [y - k3 * 0.42, y + k3 * 0.42], color=T["ink"], lw=1.3, zorder=4)
-                ax.text(xt + 1.0, y - k3 * 0.44, f"clear wording {te}", fontsize=L["FS_S"] - 0.6, color=T["ink2"],
-                        va="bottom")
-            put(fig, ax, L, L["W"] - L["right"] + 0.12, y, f"of {n} starts", T, color="mute", size=L["FS_S"])
-    legend(fig, [("bar-grey", "unedited"), ("bar-dark", "random directions, same size"), ("bar-teal", "edit")], T, H, L)
+                ax.text(xt + (1.0 if xt < 60 else -1.0), y - k3 * 0.44, f"unedited, clear wording: {te} of {tn_}",
+                        fontsize=L["FS_S"] - 0.6, color=T["ink2"], va="bottom", ha="left" if xt < 60 else "right")
+    legend(fig, [("bar-grey", "unedited"), ("bar-dark", "random edit, same size"), ("bar-teal", "edit")], T, H, L)
     return fig
 
 
@@ -2454,11 +2506,15 @@ def fig_where(tb, models, T, L):
             nm = loc_name(mid, lab)
             return (nm[4:5].upper() + nm[5:]) if nm.startswith("the ") else (lab[:34] + "…" if len(lab) > 35 else lab)
         rows += [("bar", short(lab), k, wb["n"], col) for lab, k, col in wb["bars"]]
+    L = dict(L, top=L["top"] + 0.22)
     fig, ax, ys, H = rows_figure(rows, L, row=L["row"] * 1.08)
-    style_axes(ax, T, L, xlabel="success, % of starts", fmt=lambda v: f"{v:g}%")
+    style_axes(ax, T, L, xlabel="Task success: share of starts completed", fmt=lambda v: f"{v:g}%")
     for (k, *rest), y in zip(rows, ys):
         if k == "head":
             put(fig, ax, L, L["lx"], y, rest[0], T, size=L["FS_H"], weight="bold")
+            if "other tasks" in rest[0]:
+                put(fig, ax, L, L["W"] - L["right"] + 0.12, y, "starts completed:\nunedited → VLM edit", T,
+                    color="mute", size=L["FS_S"] - 0.6)
         elif k == "run":
             put(fig, ax, L, L["lx2"], y, rest[0], T, color="mute", style="italic")
         elif k == "bar":
@@ -2468,8 +2524,7 @@ def fig_where(tb, models, T, L):
                 x = 100 * val / n
                 if x > 0:
                     ax.add_patch(Rectangle((0, y - 0.3), x, 0.6, fc=T[col], ec="none", zorder=2))
-                ax.text(x + 1.2, y, f"{val}", va="center", ha="left", fontsize=L["FS_S"], color=T["ink2"])
-                put(fig, ax, L, L["W"] - L["right"] + 0.12, y, f"of {n}", T, color="mute", size=L["FS_S"])
+                ax.text(x + 1.2, y, f"{val} of {n}", va="center", ha="left", fontsize=L["FS_S"], color=T["ink2"])
         elif k == "tx":
             lab, t = rest
             put(fig, ax, L, L["lx2"], y, lab, T)
@@ -2478,7 +2533,7 @@ def fig_where(tb, models, T, L):
                                      ("v1full", "teal", 1.0, "o")):
                 ax.plot([100 * t["arms"][arm] / n], [y], mk, ms=L["ms"] * ms, mfc=T[col], mec=T["ring"], mew=1.2,
                         zorder=3 + (arm == "v1full"))
-            put(fig, ax, L, L["W"] - L["right"] + 0.12, y, f"{t['base']} → {t['arms']['v1full']} (VLM)", T, color="ink2",
+            put(fig, ax, L, L["W"] - L["right"] + 0.12, y, f"{t['base']} → {t['arms']['v1full']} of {n}", T, color="ink2",
                 size=L["FS_S"])
     legend(fig, [("bar-grey", "unedited"), ("bar-teal", "backbone (VLM) edit"), ("bar-dark", "action-side edit"),
                  ("mk-s:dark", "action expert"), ("mk-D:dark", "gated head")], T, H, L, ncol=3)
@@ -2497,7 +2552,7 @@ def fig_side_effects(tb, models, T, L):
     cw = (L["W"] - lw - 0.05) / 3
     ch = L["row"] * (1.25 if brief else 1.35)
     top = 0.36 if brief else 0.86
-    bottom = 0.44 if brief else 0.62
+    bottom = 0.44 if brief else 0.8
     H = top + nrow * ch + bottom
     fig = plt.figure(figsize=(L["W"], H))
     ax = fig.add_axes([lw / L["W"], bottom / H, 3 * cw / L["W"], nrow * ch / H])
@@ -2508,13 +2563,13 @@ def fig_side_effects(tb, models, T, L):
         if brief:
             ax.text(j + 0.5, -0.2, FIGNAME[m], ha="center", va="bottom", fontsize=L["FS"], weight="bold", color=T["ink"])
         else:
-            ax.text(j + 0.5, -0.78, models[m]["name"], ha="center", va="bottom", fontsize=L["FS"], weight="bold",
+            ax.text(j + 0.5, -1.05, models[m]["name"], ha="center", va="bottom", fontsize=L["FS"], weight="bold",
                     color=T["ink"])
-            ed = (t.get("edit") or {}).get(m)
-            hd = re.match(r"the [TR]\d edit(?: on practice starts)?", ed) if ed else None
-            ed = hd.group(0) if hd else ed
-            ax.text(j + 0.5, -0.16, ed or "edit: running", ha="center", va="bottom", fontsize=L["FS_S"] - 0.6,
-                    color=T["mute"])
+            ed = dename((t.get("edit") or {}).get(m) or "")
+            hd = re.match(r"the .+? edit(?: on practice starts)?(?= \(|$)", ed) if ed else None
+            ed = wrap_in(hd.group(0) if hd else ed or "edit: running", cw - 0.1, L["FS_S"] - 0.6)
+            ax.text(j + 0.5, -0.16, ed, ha="center", va="bottom", fontsize=L["FS_S"] - 0.6, color=T["mute"],
+                    linespacing=1.1)
     grey = mix(T["empty"], T["grey"], 0.55)
     for i, r in enumerate(rows):
         lab = SHORT[r["key"]] if r["key"] in SHORT else r["label"]
@@ -2552,9 +2607,11 @@ def fig_side_effects(tb, models, T, L):
                      columnspacing=1.2, borderaxespad=0)
     for tx_ in leg.get_texts():
         tx_.set_color(T["ink2"])
-    fig.text((L["lx"] if brief else lw) / L["W"], (0.1 if brief else 0.2) / H, "* exact McNemar p < 0.05. Outlined: the task the edit was built "
-             "for." if not brief else "* p < 0.05; outlined: the edit's own task", fontsize=L["FS_S"] - 0.6,
-             color=T["mute"], ha="left", va="center")
+    fig.text((L["lx"] if brief else lw) / L["W"], (0.1 if brief else 0.2) / H,
+             "Each cell: the change in starts completed (edited − unedited): unedited → edited, of the starts tried.\n"
+             "* exact McNemar p < 0.05. Outlined: the task the edit was built for." if not brief else
+             "Cell: change in starts completed / starts tried. * p < 0.05; outlined: the edit's own task",
+             fontsize=L["FS_S"] - 0.6, color=T["mute"], ha="left", va="center", linespacing=1.3)
     return fig
 
 
@@ -2604,17 +2661,20 @@ def draw_figures(tables, models):
 
 
 FIGS = [
-    ("failure-map", "Unedited success on each shared task; stronger shading is higher. Each cell gives successes of starts."),
-    ("wording-gap", "The unedited model under the original wording (grey) and the clear wording (ring), on the same "
-                    "starts."),
-    ("edit-gain", "Edited minus unedited success on unseen starts, paired by start, with the paired bootstrap 95% "
-                  "interval. Teal: distilled edits; neutral: edits the blind editors designed themselves."),
-    ("random-control", "The edit against a random edit of the same layers, rank and singular values, on the same "
-                       "unseen starts."),
-    ("where-to-edit", "The same distillation in three places of π0.5, scored on one shared set of unseen starts, then on "
-                      "other tasks; the NVIDIA models' locations appear as their runs finish."),
-    ("side-effects", "Each model's main edit, unchanged, on every suite task: edited minus unedited successes on the same "
-                     "starts. Teal: a gain; near-black (near-white in dark mode): a loss (exact McNemar p < 0.05); grey: no "
+    ("failure-map", "Each cell: the starts the unedited robot completed, of the starts tried, and that share; stronger "
+                    "shading is a higher share."),
+    ("wording-gap", "The share of starts the unedited robot completed under the original wording (grey) and the clear "
+                    "wording (ring), from the same starts."),
+    ("edit-gain", "How much the share of starts completed changed with each edit, in percentage points (edited minus "
+                  "unedited, paired by start), with the paired bootstrap 95% interval. Teal: distilled edits; neutral: "
+                  "edits the blind editors designed themselves."),
+    ("random-control", "Starts completed by the unedited robot, by a random edit of the same layers, rank and singular "
+                       "values, and by the edit, from the same unseen starts; the tick is the unedited robot given the "
+                       "clear wording."),
+    ("where-to-edit", "Starts completed with the same distillation in different places of each model, from one shared "
+                      "set of starts per model; for π0.5 also on other tasks."),
+    ("side-effects", "Each model's main edit, unchanged, on every suite task: the change in starts completed, edited minus "
+                     "unedited, from the same starts. Teal: a gain; near-black (near-white in dark mode): a loss (exact McNemar p < 0.05); grey: no "
                      "detectable change; the outlined "
                      "cell is the task the edit was built for."),
 ]
@@ -2724,14 +2784,14 @@ def where_sites(P, rc, tables):
 
     out = [dict(id="pi05", name="π0.5", task=tn("T1"), n=n, base=base, kind="unseen", cams="A",
                 blocks=[dict(let="A", detail="vision-language model",
-                             sites=[pi("v1full", "whole part", "Reading part, whole"),
-                                    pi("v1img816", "image part only", "Reading part, image part only")]),
+                             sites=[pi("v1full", "whole part", "Edit in the reading part (whole)"),
+                                    pi("v1img816", "image part only", "Edit in the reading part (image part only)")]),
                         dict(let="B", detail="action expert",
-                             sites=[pi("a1", "this part alone", "Motion part"),
-                                    pi("va", "A and B together", "Reading and motion parts together")]),
+                             sites=[pi("a1", "this part alone", "Edit in the motion part"),
+                                    pi("va", "A and B together", "Edit in both parts")]),
                         dict(let="C", detail="action head",
-                             sites=[pi("h1", "always on", "Final layer, always on"),
-                                    pi("p1", "with an on/off switch", "Final layer, with an on/off switch*")])])]
+                             sites=[pi("h1", "always on", "Edit in the final layer, always on"),
+                                    pi("p1", "with an on/off switch", "Edit in the final layer, with an on/off switch*")])])]
     for mid, name, cams, details in (("cosmos", "Cosmos3 Edge", "B", ("text pathway", "video and action pathway", "")),
                                      ("groot", "GR00T N1.7", "A", ("Cosmos-Reason2 model", "diffusion action head", ""))):
         bars = rc[mid]["where"].get("_bars")
@@ -2746,7 +2806,7 @@ def where_sites(P, rc, tables):
             for s in [x for x in bars["sites"] if x["cls"] == cls] if cls else []:
                 oc = ("none" if s["p"] is None or s["p"] >= SIG else "broke" if s["b"] < s["a"] else
                       "fixed" if s["b"] == top else "partial")
-                sites.append(dict(variant="", row="Reading part" if cls == "backbone" else "Motion part", oc=oc,
+                sites.append(dict(variant="", row="Edit in the reading part" if cls == "backbone" else "Edit in the motion part", oc=oc,
                                   k=s["b"], n=s["n"], a=s["a"], p=s["p"], ctl=s.get("ctl")))
             blocks.append(dict(let=let, detail=det, sites=sites))
         out.append(dict(id=mid, name=name, task=tn(bars["task"]), n=bars["n"], base=bars["base"], kind=kind, cams=cams,
@@ -2867,18 +2927,21 @@ def dg_groot(tables, cross):
     W.append(_t(14, y + 4, "The clear wording", "dg-b dg-acc"))
     W.append(_t(14, y + 23, "The motion planner reads the extra words,", "dg-s"))
     W.append(_t(14, y + 40, "so the robot’s first reach stays as it was.", "dg-s"))
-    W.append(_t(14, y + 61, f"{wd['a']} → {wd['b']} of {wd['n']} practice starts"
-                + (f" (p = {fp(wd['pv'])}, not clear)" if wd.get("pv") is not None and wd["pv"] >= SIG else ""), "dg-s dg-b"))
-    y += 88
+    W.append(_t(14, y + 61, f"{wd['b']} of {wd['n']} practice starts completed", "dg-s dg-b"))
+    W.append(_t(14, y + 78, f"with the original wording: {wd['a']}"
+                + (" (could be chance)" if wd.get("pv") is not None and wd["pv"] >= SIG else ""), "dg-s dg-mu"))
+    y += 104
     W.append(_t(14, y + 4, "The edit", "dg-b"))
     W.append(_t(14, y + 23, "It can copy only the change at the matched", "dg-s"))
-    W.append(_t(14, y + 40, "words. That change is already there at the", "dg-s"))
-    W.append(_t(14, y + 57, f"first grasp (similarity {cos:.2f} of 1 to the banana", "dg-s"))
-    W.append(_t(14, y + 74, "phase), so the edit moves the first reach.", "dg-s"))
+    W.append(_t(14, y + 40, "words. That change is almost the same at the", "dg-s"))
+    W.append(_t(14, y + 57, "first grasp as at the banana, so the edit", "dg-s"))
+    W.append(_t(14, y + 74, "moves the first reach.", "dg-s"))
     W.append(_mark(20, y + 91.5, "broke" if eg["b"] < eg["a"] else "none")
-             + _t(34, y + 96, f"{eg['a']} → {eg['b']} of {eg['n']} practice starts"
-                  + (f" (p = {fp(eg['pv'])})" if eg.get("pv") is not None else ""), "dg-s dg-b"))
-    H = y + 108
+             + _t(34, y + 96, f"{eg['b']} of {eg['n']} practice starts completed", "dg-s dg-b"))
+    W.append(_t(34, y + 113, f"without the edit: {eg['a']}"
+                + (" (clearly worse)" if eg.get("pv") is not None and eg["pv"] < SIG and eg["b"] < eg["a"] else ""),
+                "dg-s dg-mu"))
+    H = y + 125
     desc = (f"Original wording: “{wp[0]}”. Clear wording: “{wp[1]}”. The words before and after the inserted words are "
             f"matched one to one; “{seg_c[1]}” has no counterpart in the original. Under the clear wording the motion "
             f"planner reads those extra words, which keep the first reach unchanged: {wd['a']} → {wd['b']} of {wd['n']}. "
@@ -3047,74 +3110,107 @@ def fix_text(tables, cross):
     ctl = (f", and with a random edit of the same size (a placebo) {rc0['r']} times" if _ok(rc0, ("r", "n"))
            and rc0["n"] == c["n"] else "")
     s.append(f"From {c['n']} unseen starts it succeeds {c['b']} times; unedited, {c['a']} times{ctl}.")
+    rec = T["recovery"].get(tid, {}).get("cosmos")
+    if rec and rec.get("s") == "ok" and rec.get("sub") and not rec.get("prac") and \
+            all(isinstance(rec.get(k), int) for k in ("a", "b", "t", "n")):
+        s.append(("From the same starts" if rec["n"] == c["n"] else f"On {rec['n']} of these starts")
+                 + f", the unedited robot given the clear wording succeeds {rec['t']} times and the edited robot "
+                 f"{rec['b']}: the edit gets {rec['v']} of the way to the clear wording.")
     return f"<p>{esc(' '.join(s))}</p>"
 
 
 def dg_fix_chart(tables):
-    """The fix as three bars on the same unseen starts: unedited, a random edit of the same size, the edit."""
+    """Figure 3, the fix as three bars from the same unseen starts: the robot without any edit, with a random edit of
+    the same size, with the edit. The title says what the bars count; each value is a count of starts and its share."""
     fx = main_fix(tables)
     if not fx:
         return ""
     tid, c, rc0 = fx
-    bars = [("unedited", c["a"], "dg-bar-base")]
+    bars = [("without any edit", c["a"], "dg-bar-base")]
     if _ok(rc0, ("r", "n")) and rc0["n"] == c["n"]:
-        bars.append(("random edit (placebo)", rc0["r"], "dg-bar-base"))
-    bars.append(("the edit", c["b"], "dg-bar-acc"))
-    x0, L, W = 158, 130, []
-    W.append(_t(0, 14, f"{tn(tid)}: successes from {c['n']} unseen starts", "dg-s dg-mu"))
-    y = 30
+        bars.append(("with a random edit of the same size", rc0["r"], "dg-bar-base"))
+    bars.append(("with the edit", c["b"], "dg-bar-acc"))
+    VW, x0, L, W = 350, 150, 110, []
+    ttl = f"{tn(tid)}: starts the robot completed, of {c['n']} unseen starts"
+    y = 6
+    top = y - 6
     for lab, k, cls in bars:
         w = L * k / c["n"]
-        W.append(f'<g><title>{esc(lab)}: {k} of {c["n"]}</title>' + _t(x0 - 10, y + 13, lab, "dg-s", "end")
-                 + (f'<rect x="{x0}" y="{y}" width="{w:.1f}" height="18" rx="3" class="{cls}"/>' if k else "")
-                 + _t(x0 + w + 7, y + 13, f"{k} of {c['n']}" if k else "0", "dg-s dg-b") + "</g>")
-        y += 30
-    W.append(f'<line x1="{x0}" y1="24" x2="{x0}" y2="{y - 6}" class="dg-axis"/>')
-    desc = "; ".join(f"{lab}: {k} of {c['n']}" for lab, k, _ in bars)
-    svg = _svg(350, y, f"{tn(tid)}, {c['n']} unseen starts", desc + ".", "".join(W), "dg-fixchart", "dg-fix")
-    who = {"unedited": "the unedited robot", "random edit (placebo)": "a random edit of the same size (a placebo)"}
-    cap = (f"From the same {c['n']} unseen starts: the edit succeeds {c['b']} times, "
-           + and_list(f"{who.get(lab, lab)} {k}" for lab, k, _ in bars[:-1]) + ".")
-    return f'<figure class="dgfig dg-fix">{svg}<figcaption>{esc(cap)}</figcaption></figure>'
+        lab_l = wrap_px(lab, x0 - 14, 12.5)
+        h = max(18, 15 * len(lab_l) + 3)
+        val = f"{k} of {c['n']}" + (f" ({100 * k / c['n']:.0f}%)" if k else "")
+        W.append(f'<g><title>Robot {esc(lab)}: {k} of {c["n"]} starts completed ({100 * k / c["n"]:.0f}%)</title>'
+                 + "".join(_t(x0 - 10, y + 13 + 15 * q - 7.5 * (len(lab_l) - 1), ln, "dg-s", "end")
+                           for q, ln in enumerate(lab_l))
+                 + f'<rect x="{x0}" y="{y + h / 2 - 9:g}" width="{w:.1f}" height="18" rx="3" class="{cls}"/>'
+                 + _t(x0 + w + 7, y + h / 2 + 4, val, "dg-s dg-b") + "</g>")
+        y += h + 12
+    W.append(f'<line x1="{x0}" y1="{top}" x2="{x0}" y2="{y - 6}" class="dg-axis"/>')
+    desc = "; ".join(f"robot {lab}: {k} of {c['n']} starts completed" for lab, k, _ in bars)
+    svg = _svg(VW, y, ttl, desc + ".", "".join(W), "dg-fixchart", "dg-fix")
+    who = {"without any edit": "without any edit", "with a random edit of the same size":
+           "with a random edit of the same size (a placebo)"}
+    cap = (f"Each bar counts the starts the robot completed, from the same {c['n']} unseen starts: {c['b']} with the edit, "
+           + and_list(f"{k} {who.get(lab, lab)}" for lab, k, _ in bars[:-1]) + ".")
+    return f'<figure class="dgfig dg-fix"><p class="dg-ttl">{esc(ttl)}</p>{svg}<figcaption>{esc(cap)}</figcaption></figure>'
 
 
 def dg_side_chart(tables, mid="cosmos"):
-    """The main edit, unchanged, on every other task: one bar per task, the change in success as a share of the starts.
-    Dark and bold: clearly worse; teal and bold: clearly better; grey: no clear change."""
+    """Figure 6, the main edit, unchanged, on every other task: one bar per task, the change in the share of starts
+    completed (edited − unedited) in percentage points, with the counts behind it. Dark and bold: clearly worse; teal
+    and bold: clearly better; grey: no clear change."""
     T = _cells(tables)
-    rows = []
+    rows, target = [], None
     for tid in [t[0] for t in TASKS]:
         c = T["side_effects"].get(tid, {}).get(mid)
-        if _ok(c, ("a", "b", "n", "delta")) and not c.get("target"):
-            rows.append((tid, c))
+        if _ok(c, ("a", "b", "n", "delta")):
+            if c.get("target"):
+                target = tid
+            else:
+                rows.append((tid, c))
     if not rows:
         return ""
-    x0, half, W = 175, 160, []
-    W.append(_t(0, 14, "Change in success, edited minus unedited", "dg-s dg-mu"))
-    y = 30
+    VW, x0, half, W = 360, 180, 160, []
+    W.append(_t(VW, 12, "starts completed:", "dg-xs dg-mu", "end") + _t(VW, 26, "without → with the edit", "dg-xs dg-mu", "end"))
+    y, top = 50, 38
     for tid, c in rows:
         sig = c.get("p") is not None and c["p"] < SIG
         d = 100 * c["delta"] / c["n"]
         cls = "dg-bar-acc" if sig and d > 0 else "dg-bar-loss" if sig else "dg-bar-base"
         w = half * abs(d) / 100
-        val = f"{c['a']} → {c['b']} of {c['n']}" + (", practice" if c.get("prac") else "")
-        W.append(f'<g><title>{esc(f"{tn(tid)}: {val} starts" + (f", p = {fp(c[chr(112)])}" if c.get("p") is not None else ""))}'
-                 f'</title>' + _t(0, y + 4, tn(tid), "dg-s dg-b" if sig else "dg-s")
-                 + _t(350, y + 4, val, "dg-s dg-b" if sig else "dg-s dg-mu", "end")
+        val = f"{c['a']} → {c['b']} of {c['n']}" + (" practice" if c.get("prac") else "")
+        tip = (f"{tn(tid)}: {c['a']} of {c['n']} {'practice ' if c.get('prac') else 'unseen '}starts completed without the "
+               f"edit, {c['b']} with it; change {sgn(d, True, 0)} percentage points"
+               + ("; clearly worse" if sig and d < 0 else "; clearly better" if sig else "; no clear change"))
+        W.append(f'<g><title>{esc(tip)}</title>' + _t(0, y + 4, tn(tid), "dg-s dg-b" if sig else "dg-s")
+                 + _t(VW, y + 4, val, "dg-s dg-b" if sig else "dg-s dg-mu", "end")
                  + (f'<rect x="{x0 - w if d < 0 else x0:.1f}" y="{y + 10}" width="{max(w, 0):.1f}" height="12" rx="2" '
                     f'class="{cls}"/>' if w else "") + "</g>")
         y += 40
-    W.append(f'<line x1="{x0}" y1="34" x2="{x0}" y2="{y - 4}" class="dg-axis"/>'
-             + _t(x0 - half, y + 10, "−100%", "dg-xs dg-mu") + _t(x0, y + 10, "0", "dg-xs dg-mu", "middle")
-             + _t(x0 + half, y + 10, "+100%", "dg-xs dg-mu", "end"))
-    desc = "; ".join(f"{tn(tid)}: {c['a']} → {c['b']} of {c['n']}" + (" (clear)" if c.get("p") is not None and c["p"] < SIG
-                                                                       else "") for tid, c in rows)
-    svg = _svg(350, y + 16, "The edit, unchanged, on every other task", desc + ".", "".join(W), "dg-side", "dg-side")
+    grid = "".join(f'<line x1="{x0 + half * v / 100:g}" y1="{top}" x2="{x0 + half * v / 100:g}" y2="{y - 4}" class="dg-grid"/>'
+                   for v in (-100, -50, 50, 100))
+    W.insert(1, grid)
+    W.append(f'<line x1="{x0}" y1="{top}" x2="{x0}" y2="{y - 4}" class="dg-axis"/>'
+             + "".join(_t(x0 + half * v / 100, y + 10, ("+" if v > 0 else "−" if v < 0 else "") + str(abs(v)),
+                          "dg-xs dg-mu", "middle") for v in (-100, -50, 0, 50, 100)))
+    y += 30
+    for ln in wrap_px("Change in the share of starts completed (edited − unedited), in percentage points", VW - 20,
+                      11.5, True):
+        W.append(_t(VW / 2, y, ln, "dg-xs dg-b", "middle"))
+        y += 15
+    desc = "; ".join(f"{tn(tid)}: {c['a']} → {c['b']} of {c['n']} starts completed" + (" (clear)" if c.get("p") is not None
+                                                                                         and c["p"] < SIG else "")
+                     for tid, c in rows)
+    ttl = (f"The {tn(target)} edit, unchanged, on every other task" if target else
+           "The edit, unchanged, on every other task")
+    svg = _svg(VW, y - 6, ttl, desc + ".", "".join(W), "dg-side", "dg-side")
     drops = [tn(t) for t, c in rows if c.get("p") is not None and c["p"] < SIG and c["delta"] < 0]
-    cap = ("Change in success rate, edited minus unedited, from the same starts (practice starts where marked, else "
+    cap = ("Each bar is how much the share of starts the robot completed changed when the edit ran, unchanged, on a task "
+           "it was not built for: with the edit minus without, from the same starts (practice starts where marked, else "
            "unseen). Dark bar and bold label: clearly worse; grey: no clear change. "
            + (f"Only {and_list(drops)} changed." if drops else "No task changed clearly."))
-    return f'<figure class="dgfig dg-sidefig">{svg}<figcaption>{esc(cap)}</figcaption></figure>'
+    return (f'<figure class="dgfig dg-sidefig"><p class="dg-ttl">{esc(ttl)}</p>{svg}<figcaption>{esc(cap)}</figcaption>'
+            f'</figure>')
 
 
 def left_text(tables):
@@ -3201,57 +3297,54 @@ def wrap(s, width):
 
 
 def dg_where_results(sites):
-    """Figure (b): what each edit scored, as success in % of that model's starts. One block per model naming its task
-    and start set once; a tick for the unedited model, a filled dot per edit, a hollow dot for a random edit of the same
-    size run on the same starts."""
-    X0, X1, W = 14, 300, []
-    xs = lambda pct: X0 + (X1 - X0) * pct / 100
-    W.append(f'<line x1="{xs(0)}" y1="44" x2="{xs(100)}" y2="44" class="dg-grid"/>')
-    for v in (0, 25, 50, 75, 100):
-        W.append(_t(xs(v), 36, f"{v}%", "dg-xs dg-mu", "middle"))
-    # legend
-    W.append(f'<circle cx="20" cy="10" r="5" class="dg-o-fix"/>' + _t(30, 14, "edit", "dg-xs")
-             + f'<circle cx="70" cy="10" r="5" class="dg-o-none"/>' + _t(80, 14, "random edit, same size", "dg-xs")
-             + f'<line x1="214" y1="3" x2="214" y2="17" class="dg-base"/>' + _t(220, 14, "unedited model", "dg-xs"))
-    y = 64
-    desc = []
+    """Figure 5: how often the robot completed its task with the edit in each part, as a share of that model's starts
+    (dot, with the count), against the same robot without any edit (tick) and with a random edit of the same size run
+    from the same starts (ring). Two drawings of the same data, one for wide and one for narrow screens; the first row
+    of each model names the tick's and the ring's values in text, every mark names its own in a tooltip."""
+    rows = [(m, s) for m in sites for b in m["blocks"] for s in b["sites"]]
+    if not rows:
+        return ""
+    desc = "; ".join(f"{m['name']}, {m['task']}, {s['row'].lower()}: {s['k']} of {s['n']} starts completed "
+                     f"({100 * s['k'] / s['n']:.0f}%), without any edit {s['a']}"
+                     + (f", with a random edit {s['ctl']}" if s.get("ctl") is not None else "") for m, s in rows) + "."
+    svgs = ""
+    for wide in (True, False):
+        body, vw, h = _f5_layout(sites, wide)
+        svgs += _svg(vw, h, F5_TITLE, desc, body, "dg-results " + ("dg5-w" if wide else "dg5-n"),
+                     "dg5w" if wide else "dg5n")
+    key = "".join(f'<li><svg class="dg dg-key" viewBox="-8 -8 16 16" aria-hidden="true">{_glyph(k, 0, 0)}</svg>'
+                  f'{esc(t)}</li>' for k, t in F5_KEY)
+    # the takeaway, from the records: each model's first reading-part and motion-part edit
+    first = lambda m, let: next((s for b in m["blocks"] if b["let"] == let for s in b["sites"]), None)
+    pc = lambda k, n: f"{100 * k / n:.0f}%"
+    good, bad = [], []
     for m in sites:
-        rows = [s for b in m["blocks"] for s in b["sites"]]
-        if not rows:
-            continue
-        W.append(_t(14, y, f"{m['name']} · {m['task']}", "dg-s dg-b"))
-        W.append(_t(14, y + 16, f"{m['n']} {m['kind']} starts · unedited {100 * m['base'] / m['n']:.0f}%", "dg-s dg-mu"))
-        y0 = y + 26
-        y += 34
-        for s in rows:
-            pct = 100 * s["k"] / s["n"]
-            cls = "dg-o-fix" if s["oc"] in ("fixed", "partial") else "dg-o-broke" if s["oc"] == "broke" else "dg-o-none2"
-            W.append(f'<g><title>{esc(s["row"])}: {s["k"]} of {s["n"]} ({pct:.0f}%), unedited {s["a"]}'
-                     + (f", random edit {s['ctl']}" if s.get("ctl") is not None else "") + "</title>"
-                     + _t(14, y, s["row"], "dg-s")
-                     + f'<line x1="{xs(0)}" y1="{y + 11}" x2="{xs(100)}" y2="{y + 11}" class="dg-track"/>'
-                     + f'<line x1="{xs(100 * m["base"] / m["n"]):.1f}" y1="{y + 3}" x2="{xs(100 * m["base"] / m["n"]):.1f}" '
-                       f'y2="{y + 19}" class="dg-base"/>'
-                     + (f'<circle cx="{xs(100 * s["ctl"] / s["n"]):.1f}" cy="{y + 11}" r="5.5" class="dg-o-none"/>'
-                        if s.get("ctl") is not None else "")
-                     + (_mark(xs(pct), y + 11, "broke", 6.5) if s["oc"] == "broke" else
-                        f'<circle cx="{xs(pct):.1f}" cy="{y + 11}" r="6" class="{cls}"/>')
-                     + _t(min(xs(pct) + 11, 336), y + 15, f"{pct:.0f}%", "dg-xs dg-b", "start" if xs(pct) + 40 < 340 else "end")
-                     + "</g>")
-            desc.append(f"{m['name']}, {s['row']}: {pct:.0f}%" + (f" (random edit {100 * s['ctl'] / s['n']:.0f}%)"
-                                                                  if s.get("ctl") is not None else ""))
-            y += 36
-        desc.append(f"{m['name']} unedited: {100 * m['base'] / m['n']:.0f}%")
-        y += 14
-    svg = _svg(340, y, "What each edit scored", "; ".join(desc) + ".", "".join(W), "dg-results", "dg2b")
-    pi = next((m for m in sites if m["id"] == "pi05"), None)
-    cap = ("Success of each edit on the task it was built for, as a share of that model’s starts. Teal dot: clearly "
-           "better than the unedited model (the short vertical line); dot with a cross: clearly worse; grey dot: no "
-           "clear change. A hollow ring is a random edit of the same size (a placebo), run from the same starts.")
-    if pi:
+        a, b = first(m, "A"), first(m, "B")
+        if a and a["oc"] in ("fixed", "partial"):
+            good.append((m, a, b))
+        elif a and a["oc"] == "broke" and (not b or b["oc"] == "broke"):
+            bad.append((m, a, b))
+    take = ""
+    if good:
+        mo = [(m, b) for m, _, b in good if b]
+        take = (" With the edit in the part that reads the instruction, "
+                + and_list(f"{m['name']} went from {pc(a['a'], a['n'])} to {pc(a['k'], a['n'])}" for m, a, _ in good)
+                + ("; with it in the motion part, "
+                   + and_list((f"{m['name']} completed " if i == 0 else f"{m['name']} ") + pc(b["k"], b["n"])
+                              for i, (m, b) in enumerate(mo)) if mo else "") + ".")
+    for m, a, b in bad:
+        take += (f" {m['name']} fell from {pc(a['a'], a['n'])} to {pc(a['k'], a['n'])}"
+                 + (" with the edit in either part." if b and b["k"] == a["k"] else
+                    f" with the edit in the reading part and to {pc(b['k'], b['n'])} in the motion part." if b else "."))
+    cap = ("Each dot is the share of starts the robot completed after the edit was placed in that part. The tick is the "
+           "same robot without the edit." + take + " Teal dot: clearly better than without the edit; dot with a cross: "
+           "clearly worse; grey dot: no clear change. The ring, a random edit of the same size, is a placebo, run "
+           "from the same starts.")
+    if any(m["id"] == "pi05" for m in sites):
         cap += (" *Written by an AI editor (Claude) working alone, who never saw our edit; the other π0.5 rows copy the "
                 "clear wording.")
-    return f'<figure class="dgfig dg2b">{svg}<figcaption>{esc(cap)}</figcaption></figure>'
+    return (f'<figure class="dgfig dg2b"><p class="dg-ttl">{esc(F5_TITLE)}</p><ul class="dg-legend dg5-key">{key}</ul>'
+            f'{svgs}<figcaption>{esc(cap)}</figcaption></figure>')
 
 
 def where_text(tables):
@@ -3366,6 +3459,138 @@ def dg_blog_pi05(sites):
     return (f'<figure class="fig dg-blog">\n      {svg}\n'
             f'      <figcaption>The same fix, built into three parts of π0.5 and scored on {n} new starts: only in the '
             f'vision-language model, where the instruction is read, did it fully work.</figcaption>\n    </figure>')
+
+
+def _tw(s, size, bold=False):
+    """Approximate rendered width of s in Inter at size px (within a few per cent of the browser's), for layout."""
+    em = sum(_TW.get(c, 0.68 if c.isupper() else 0.57) for c in str(s))
+    return em * size * (1.03 if bold else 1.0)
+
+
+def wrap_px(s, width, size, bold=False):
+    """Greedy line breaks so that no line is wider than width px at size."""
+    out, cur = [], ""
+    for w_ in str(s).split():
+        t = (cur + " " + w_).strip()
+        if cur and _tw(t, size, bold) > width:
+            out.append(cur)
+            cur = w_
+        else:
+            cur = t
+    return out + ([cur] if cur else [])
+
+
+_TW = {**{c: 0.61 for c in "0123456789"}, **{c: 0.25 for c in "ijl.,:;'’|!"}, "·": 0.32, **{c: 0.36 for c in "frt()/[]"},
+       "m": 0.86, "w": 0.76, " ": 0.27, "%": 0.9, "*": 0.45, "−": 0.6, "→": 0.6, "-": 0.4, "±": 0.6, "+": 0.6}
+F5_TITLE = "How often the robot completed the task, with the edit placed in each part"
+F5_AXIS = "Task success: share of starts the robot completed"
+F5_KEY = (("fix", "robot with the edit"), ("ring", "robot with a random edit of the same size"),
+          ("tick", "robot without any edit"))
+
+
+def _glyph(kind, x, y, r=5.5):
+    """The chart's three marks, for the key and the labels: a dot (the edit), a ring (a random edit), a tick (no edit)."""
+    if kind == "tick":
+        return f'<line x1="{x:g}" y1="{y - 8:g}" x2="{x:g}" y2="{y + 8:g}" class="dg-base"/>'
+    if kind == "ring":
+        return f'<circle cx="{x:g}" cy="{y:g}" r="{r:g}" class="dg-o-none"/>'
+    return f'<circle cx="{x:g}" cy="{y:g}" r="{r:g}" class="dg-o-fix"/>'
+
+
+def _f5_layout(sites, wide):
+    """One drawing of Figure 5. wide: the row labels in a left column beside the tracks (screens 700 px and up);
+    narrow: each label above its track, wrapped to the width. Returns (svg body, viewBox width, height)."""
+    VW = 680 if wide else 320
+    LX, X0, X1 = 0, (292 if wide else 9), VW - 9
+    LW = (X0 - 22) if wide else VW - 4           # room for a row label
+    xs = lambda pct: X0 + (X1 - X0) * pct / 100
+    pc = lambda k, n: 100 * k / n
+    S, XS = 12.5, 11.5
+    W = []
+    # axis: what the positions mean, then the ticks
+    axl = wrap_px(F5_AXIS, X1 - (X0 if wide else LX), XS, True)
+    y = 12
+    for ln in axl:
+        W.append(_t(X0 if wide else LX, y, ln, "dg-xs dg-b"))
+        y += 15
+    y += 2
+    for v in (0, 25, 50, 75, 100):
+        W.append(_t(xs(v), y, f"{v}%", "dg-xs dg-mu", "start" if v == 0 else "end" if v == 100 else "middle"))
+    y += 7
+    W.append(f'<line x1="{xs(0):g}" y1="{y}" x2="{xs(100):g}" y2="{y}" class="dg-grid"/>')
+    y += 24
+    for m in sites:
+        rows = [s for b in m["blocks"] for s in b["sites"]]
+        if not rows:
+            continue
+        W.append(_t(LX, y, f"{m['name']} · {m['task']}", "dg-s dg-b"))
+        W.append(_t(LX, y + 16, f"{m['n']} {m['kind']} starts, the same in every row", "dg-xs dg-mu"))
+        y += 36
+        for i, s in enumerate(rows):
+            n = s["n"]
+            pe, pa = pc(s["k"], n), pc(s["a"], n)
+            pr = pc(s["ctl"], n) if s.get("ctl") is not None else None
+            lab = wrap_px(s["row"], LW, S)
+            if wide:
+                yt = y + 7                                # track centre; label lines start level with it
+                ly = [yt + 4 + 15 * j for j in range(len(lab))]
+            else:
+                ly = [y + 15 * j for j in range(len(lab))]
+                yt = ly[-1] + 15
+            marks = [(xs(pa), 3)] + ([(xs(pr), 7)] if pr is not None else [])   # other marks' x and half-width
+            # the dot's value: beside it if it clears the other marks and the frame, else on a line below
+            val = f"{pe:.0f}% · {s['k']} of {n}"
+            vw = _tw(val, XS, True) + 4
+            x = xs(pe)
+            vpos = None
+            for a, b, anc in ((x + 10, x + 10 + vw, "start"), (x - 10 - vw, x - 10, "end")):
+                if a >= X0 - 8 and b <= VW and not any(a - h - 3 < mx < b + h + 3 for mx, h in marks):
+                    vpos = (x + 10 if anc == "start" else x - 10, anc)
+                    break
+            notes = []                                    # (mark x, glyph, text, bold) on lines under the track
+            if vpos is None:
+                notes.append((x, "dot", val, True))
+            if i == 0:
+                notes.append((xs(pa), "tick", f"without any edit: {pa:.0f}% · {s['a']} of {n}", False))
+                if pr is not None:
+                    notes.append((xs(pr), "ring", f"with a random edit: {pr:.0f}% · {s['ctl']} of {n}", False))
+            verdict = {"fixed": "clearly better than without the edit", "partial": "clearly better than without the edit",
+                       "broke": "clearly worse than without the edit", "none": "no clear change"}[s["oc"]]
+            g = [f'<g><title>{esc(s["row"])}</title>' + "".join(_t(LX, yy, ln, "dg-s") for yy, ln in zip(ly, lab)) + "</g>",
+                 f'<line x1="{xs(0):g}" y1="{yt}" x2="{xs(100):g}" y2="{yt}" class="dg-track"/>',
+                 f'<g><title>Robot without any edit: {s["a"]} of {n} starts completed ({pa:.0f}%)</title>'
+                 f'<line x1="{xs(pa):.1f}" y1="{yt - 8}" x2="{xs(pa):.1f}" y2="{yt + 8}" class="dg-base"/>'
+                 f'<rect x="{xs(pa) - 5:.1f}" y="{yt - 9}" width="10" height="18" fill="none" pointer-events="all"/></g>']
+            if pr is not None:
+                g.append(f'<g><title>Robot with a random edit of the same size: {s["ctl"]} of {n} starts completed '
+                         f'({pr:.0f}%)</title><circle cx="{xs(pr):.1f}" cy="{yt}" r="5.5" class="dg-o-none"/>'
+                         f'<circle cx="{xs(pr):.1f}" cy="{yt}" r="9" fill="none" pointer-events="all"/></g>')
+            cls = "dg-o-fix" if s["oc"] in ("fixed", "partial") else "dg-o-none2"
+            dot = _mark(x, yt, "broke", 6.5) if s["oc"] == "broke" else f'<circle cx="{x:.1f}" cy="{yt}" r="6" class="{cls}"/>'
+            g.append(f'<g><title>Robot with the edit: {s["k"]} of {n} starts completed ({pe:.0f}%), {verdict}</title>'
+                     f'{dot}<circle cx="{x:.1f}" cy="{yt}" r="11" fill="none" pointer-events="all"/>'
+                     + (_t(vpos[0], yt + 4, val, "dg-xs dg-b", vpos[1]) if vpos else "") + "</g>")
+            yy = yt + 22
+            for mx, kind, text, bold in notes:
+                tw = _tw(text, XS, bold) + 4
+                if mx + 9 + tw <= VW:
+                    gx, tx, anc = mx, mx + 9, "start"
+                elif mx - 9 - tw >= 0:
+                    gx, tx, anc = mx, mx - 9, "end"
+                else:                                     # too long either side: keep it in the frame, glyph first
+                    gx = max(4, VW - tw - 9)
+                    tx, anc = gx + 9, "start"
+                gl = (_mark(gx, yy - 4, "broke", 4.5) if kind == "dot" and s["oc"] == "broke" else
+                      f'<circle cx="{gx:.1f}" cy="{yy - 4}" r="4" class="{cls}"/>' if kind == "dot" else
+                      f'<line x1="{gx:.1f}" y1="{yy - 10}" x2="{gx:.1f}" y2="{yy + 2}" class="dg-base"/>' if kind == "tick"
+                      else f'<circle cx="{gx:.1f}" cy="{yy - 4}" r="4" class="dg-o-none"/>')
+                g.append(gl + _t(tx, yy, text, "dg-xs dg-b" if bold else "dg-xs", anc))
+                yy += 16
+            W.append("".join(g))
+            bottom = max(yt + 9, (yy - 12) if notes else 0, ly[-1] + 4)
+            y = bottom + (16 if wide else 24)
+        y += 30 if wide else 22
+    return "".join(W), VW, y - (30 if wide else 22) - (16 if wide else 24) + 8
 
 VID = OUT / "video"
 # Each clip: stem (video/<stem>.mp4, or "src" for a clip the main page already serves), group (where it goes on the
