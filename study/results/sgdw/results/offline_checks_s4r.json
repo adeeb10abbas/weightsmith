@@ -1,0 +1,267 @@
+{
+ "s4r-img8 (one key group, 32 keys/layer)": {
+  "build": {
+   "n": 12,
+   "ee_base_to_tf_cm": 17.28,
+   "ee_cand_to_tf_cm": 12.02,
+   "ee_cand_vs_base_cm": 9.57,
+   "closer_to_tf": 7,
+   "dy_base_minus_tf_cm": 1.87,
+   "dy_cand_minus_tf_cm": 9.02,
+   "grip_closed_base_tf_cand": [
+    6,
+    6,
+    6
+   ],
+   "grip_agree_tf_base_cand": [
+    12,
+    12
+   ]
+  },
+  "approach_heldout": {
+   "n": 30,
+   "ee_base_to_tf_cm": 10.69,
+   "ee_cand_to_tf_cm": 3.9,
+   "ee_cand_vs_base_cm": 7.62,
+   "closer_to_tf": 27,
+   "dy_base_minus_tf_cm": -6.9,
+   "dy_cand_minus_tf_cm": -1.35,
+   "grip_closed_base_tf_cand": [
+    0,
+    0,
+    0
+   ],
+   "grip_agree_tf_base_cand": [
+    30,
+    30
+   ]
+  },
+  "transport_heldout": {
+   "n": 14,
+   "ee_base_to_tf_cm": 6.44,
+   "ee_cand_to_tf_cm": 10.89,
+   "ee_cand_vs_base_cm": 5.7,
+   "closer_to_tf": 2,
+   "dy_base_minus_tf_cm": 5.47,
+   "dy_cand_minus_tf_cm": 9.71,
+   "grip_closed_base_tf_cand": [
+    14,
+    14,
+    14
+   ],
+   "grip_agree_tf_base_cand": [
+    14,
+    14
+   ]
+  },
+  "tf_noharm": {
+   "n": 40,
+   "ee_shift_cm": 2.38,
+   "ee_shift_max_cm": 25.24,
+   "grip_flips": 0
+  }
+ },
+ "s4r-grp2 (two key groups, 64 keys/layer)": {
+  "build": {
+   "n": 12,
+   "ee_base_to_tf_cm": 17.28,
+   "ee_cand_to_tf_cm": 2.64,
+   "ee_cand_vs_base_cm": 15.82,
+   "closer_to_tf": 12,
+   "dy_base_minus_tf_cm": 1.87,
+   "dy_cand_minus_tf_cm": 0.6,
+   "grip_closed_base_tf_cand": [
+    6,
+    6,
+    6
+   ],
+   "grip_agree_tf_base_cand": [
+    12,
+    12
+   ]
+  },
+  "approach_heldout": {
+   "n": 30,
+   "ee_base_to_tf_cm": 10.69,
+   "ee_cand_to_tf_cm": 2.72,
+   "ee_cand_vs_base_cm": 8.96,
+   "closer_to_tf": 27,
+   "dy_base_minus_tf_cm": -6.9,
+   "dy_cand_minus_tf_cm": -0.38,
+   "grip_closed_base_tf_cand": [
+    0,
+    0,
+    0
+   ],
+   "grip_agree_tf_base_cand": [
+    30,
+    30
+   ]
+  },
+  "transport_heldout": {
+   "n": 14,
+   "ee_base_to_tf_cm": 6.44,
+   "ee_cand_to_tf_cm": 4.39,
+   "ee_cand_vs_base_cm": 7.11,
+   "closer_to_tf": 8,
+   "dy_base_minus_tf_cm": 5.47,
+   "dy_cand_minus_tf_cm": -0.37,
+   "grip_closed_base_tf_cand": [
+    14,
+    14,
+    14
+   ],
+   "grip_agree_tf_base_cand": [
+    14,
+    14
+   ]
+  },
+  "tf_noharm": {
+   "n": 40,
+   "ee_shift_cm": 2.21,
+   "ee_shift_max_cm": 12.76,
+   "grip_flips": 3
+  }
+ },
+ "s4r-ind (one key group per decision, 384 keys/layer)": {
+  "build": {
+   "n": 12,
+   "ee_base_to_tf_cm": 17.28,
+   "ee_cand_to_tf_cm": 3.28,
+   "ee_cand_vs_base_cm": 14.36,
+   "closer_to_tf": 12,
+   "dy_base_minus_tf_cm": 1.87,
+   "dy_cand_minus_tf_cm": 0.5,
+   "grip_closed_base_tf_cand": [
+    6,
+    6,
+    6
+   ],
+   "grip_agree_tf_base_cand": [
+    12,
+    12
+   ]
+  },
+  "approach_heldout": {
+   "n": 30,
+   "ee_base_to_tf_cm": 10.69,
+   "ee_cand_to_tf_cm": 2.35,
+   "ee_cand_vs_base_cm": 8.94,
+   "closer_to_tf": 25,
+   "dy_base_minus_tf_cm": -6.9,
+   "dy_cand_minus_tf_cm": -1.12,
+   "grip_closed_base_tf_cand": [
+    0,
+    0,
+    0
+   ],
+   "grip_agree_tf_base_cand": [
+    30,
+    30
+   ]
+  },
+  "transport_heldout": {
+   "n": 14,
+   "ee_base_to_tf_cm": 6.44,
+   "ee_cand_to_tf_cm": 3.51,
+   "ee_cand_vs_base_cm": 7.01,
+   "closer_to_tf": 9,
+   "dy_base_minus_tf_cm": 5.47,
+   "dy_cand_minus_tf_cm": -0.75,
+   "grip_closed_base_tf_cand": [
+    14,
+    14,
+    14
+   ],
+   "grip_agree_tf_base_cand": [
+    14,
+    14
+   ]
+  },
+  "tf_noharm": {
+   "n": 40,
+   "ee_shift_cm": 2.19,
+   "ee_shift_max_cm": 12.84,
+   "grip_flips": 3
+  }
+ },
+ "s4r-grp3 (three key groups, 96 keys/layer)": {
+  "build": {
+   "n": 12,
+   "ee_base_to_tf_cm": 17.28,
+   "ee_cand_to_tf_cm": 2.73,
+   "ee_cand_vs_base_cm": 15.8,
+   "closer_to_tf": 12,
+   "dy_base_minus_tf_cm": 1.87,
+   "dy_cand_minus_tf_cm": 1.02,
+   "grip_closed_base_tf_cand": [
+    6,
+    6,
+    6
+   ],
+   "grip_agree_tf_base_cand": [
+    12,
+    12
+   ]
+  },
+  "approach_heldout": {
+   "n": 30,
+   "ee_base_to_tf_cm": 10.69,
+   "ee_cand_to_tf_cm": 1.32,
+   "ee_cand_vs_base_cm": 10.51,
+   "closer_to_tf": 27,
+   "dy_base_minus_tf_cm": -6.9,
+   "dy_cand_minus_tf_cm": 0.44,
+   "grip_closed_base_tf_cand": [
+    0,
+    0,
+    0
+   ],
+   "grip_agree_tf_base_cand": [
+    30,
+    30
+   ]
+  },
+  "transport_heldout": {
+   "n": 14,
+   "ee_base_to_tf_cm": 6.44,
+   "ee_cand_to_tf_cm": 3.93,
+   "ee_cand_vs_base_cm": 6.03,
+   "closer_to_tf": 10,
+   "dy_base_minus_tf_cm": 5.47,
+   "dy_cand_minus_tf_cm": 0.35,
+   "grip_closed_base_tf_cand": [
+    14,
+    14,
+    14
+   ],
+   "grip_agree_tf_base_cand": [
+    14,
+    14
+   ]
+  },
+  "tf_noharm": {
+   "n": 40,
+   "ee_shift_cm": 2.07,
+   "ee_shift_max_cm": 11.8,
+   "grip_flips": 1
+  }
+ },
+ "grasp_decisions": {
+  "heldout_grasp": {
+   "n": 6,
+   "closed_base_rf": 2,
+   "closed_base_tf": 6,
+   "closed_gchk-g3_rf": 6,
+   "closed_gchk-g2_rf": 5
+  },
+  "build_grasp": {
+   "n": 6,
+   "closed_base_rf": 1,
+   "closed_base_tf": 6,
+   "closed_gchk-g3_rf": 6,
+   "closed_gchk-g2_rf": 3
+  }
+ },
+ "notes": "Offline replay of recorded decisions, images/state/noise fixed. ee_*_to_tf_cm: mean chunk-end end-effector distance to the base policy's TF-wording replay of the same input; groups: build = the 12 decisions used to build the edit (6 approach from RF failures s20000-s20008, 6 transport from TF episodes); approach_heldout = replans 2-6 of six other RF failures; transport_heldout = 14 other holding decisions from TF episodes; tf_noharm = 40 decisions of five other TF episodes replayed under TF by base and edited policy. grasp_decisions: the first replan whose chunk closes the gripper in TF episodes; build = the 6 used for s4r-grp3's grasp group (s20012, s20014, s20016-s20019), heldout = 6 others (s20020-s20025); counts are decisions whose replayed chunk commands the gripper closed."
+}

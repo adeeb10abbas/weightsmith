@@ -1,0 +1,119 @@
+{
+ "orig_capture": "s4r-ox",
+ "expl_capture": "s4r-ox",
+ "layers": [
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16
+ ],
+ "mode": "image",
+ "alpha": 1.0,
+ "lam_rel": 0.001,
+ "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+ "explicit_instruction": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
+ "save_factors": false,
+ "groups": [
+  [
+   [
+    0
+   ],
+   [
+    12
+   ]
+  ],
+  [
+   [
+    1
+   ],
+   [
+    13
+   ]
+  ],
+  [
+   [
+    2
+   ],
+   [
+    14
+   ]
+  ],
+  [
+   [
+    3
+   ],
+   [
+    15
+   ]
+  ],
+  [
+   [
+    4
+   ],
+   [
+    16
+   ]
+  ],
+  [
+   [
+    5
+   ],
+   [
+    17
+   ]
+  ],
+  [
+   [
+    6
+   ],
+   [
+    18
+   ]
+  ],
+  [
+   [
+    7
+   ],
+   [
+    19
+   ]
+  ],
+  [
+   [
+    8
+   ],
+   [
+    20
+   ]
+  ],
+  [
+   [
+    9
+   ],
+   [
+    21
+   ]
+  ],
+  [
+   [
+    10
+   ],
+   [
+    22
+   ]
+  ],
+  [
+   [
+    11
+   ],
+   [
+    23
+   ]
+  ]
+ ]
+}

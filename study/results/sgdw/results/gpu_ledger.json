@@ -1,0 +1,215 @@
+{
+ "items": [
+  {
+   "kind": "practice eval",
+   "pool": "/home/ali/sgdw/logs/pool-prac-base-1107-145422",
+   "lanes": 1,
+   "wall_min": 11.14,
+   "gpu_min": 11.14
+  },
+  {
+   "kind": "practice eval",
+   "pool": "/home/ali/sgdw/logs/pool-prac-base-1107-150454",
+   "lanes": 2,
+   "wall_min": 6.59,
+   "gpu_min": 13.19
+  },
+  {
+   "kind": "practice eval",
+   "pool": "/home/ali/sgdw/logs/pool-prac-base-1107-151921",
+   "lanes": 1,
+   "wall_min": 6.48,
+   "gpu_min": 6.48
+  },
+  {
+   "kind": "practice eval",
+   "pool": "/home/ali/sgdw/logs/pool-prac-base-1107-152549",
+   "lanes": 1,
+   "wall_min": 6.79,
+   "gpu_min": 6.79
+  },
+  {
+   "kind": "practice eval",
+   "pool": "/home/ali/sgdw/logs/pool-prac-s4r-grp2-1107-173508",
+   "lanes": 1,
+   "wall_min": 12.73,
+   "gpu_min": 12.73
+  },
+  {
+   "kind": "practice eval",
+   "pool": "/home/ali/sgdw/logs/pool-prac-s4r-grp2-1107-175247",
+   "lanes": 1,
+   "wall_min": 11.03,
+   "gpu_min": 11.03
+  },
+  {
+   "kind": "practice eval",
+   "pool": "/home/ali/sgdw/logs/pool-prac-s4r-grp3-1107-185112",
+   "lanes": 1,
+   "wall_min": 12.13,
+   "gpu_min": 12.13
+  },
+  {
+   "kind": "practice eval",
+   "pool": "/home/ali/sgdw/logs/pool-prac-s4r-grp3-1107-193810",
+   "lanes": 1,
+   "wall_min": 10.94,
+   "gpu_min": 10.94
+  },
+  {
+   "kind": "held-out/control",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/heldout/ctl-92000-64/logs-g3-92000",
+   "lanes": 1,
+   "wall_min": 12.78,
+   "gpu_min": 12.78
+  },
+  {
+   "kind": "held-out/control",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/heldout/ctl-92000-64/logs-g3-92032",
+   "lanes": 1,
+   "wall_min": 12.94,
+   "gpu_min": 12.94
+  },
+  {
+   "kind": "held-out/control",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/heldout/ctl-92000-64/logs-rand3-92000",
+   "lanes": 1,
+   "wall_min": 11.14,
+   "gpu_min": 11.14
+  },
+  {
+   "kind": "held-out/control",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/heldout/ctl-92000-64/logs-rand3-92032",
+   "lanes": 1,
+   "wall_min": 11.24,
+   "gpu_min": 11.24
+  },
+  {
+   "kind": "held-out/control",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/heldout/s4r-grp2-MustardRightOfRaisinRFTask-92000-64/logs-base-92000",
+   "lanes": 1,
+   "wall_min": 11.14,
+   "gpu_min": 11.14
+  },
+  {
+   "kind": "held-out/control",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/heldout/s4r-grp2-MustardRightOfRaisinRFTask-92000-64/logs-base-92032",
+   "lanes": 1,
+   "wall_min": 11.13,
+   "gpu_min": 11.13
+  },
+  {
+   "kind": "held-out/control",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/heldout/s4r-grp2-MustardRightOfRaisinRFTask-92000-64/logs-cand-92000",
+   "lanes": 1,
+   "wall_min": 12.84,
+   "gpu_min": 12.84
+  },
+  {
+   "kind": "held-out/control",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/heldout/s4r-grp2-MustardRightOfRaisinRFTask-92000-64/logs-cand-92032",
+   "lanes": 1,
+   "wall_min": 12.63,
+   "gpu_min": 12.63
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/chk-c",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/chk-g",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/chk-g3",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/chk-i",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/chk1",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/chk2",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/div-rf",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/div-tf",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/div2",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/gchk-b",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/gchk-g2",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/gchk-g3",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/s4r-grasp-ox",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  },
+  {
+   "kind": "acts",
+   "pool": "/home/ali/vibes/opus-weight-surgery/projects/sgdw-s4r/data/acts/s4r-ox",
+   "lanes": 1,
+   "wall_min": null,
+   "gpu_min": 1.0
+  }
+ ],
+ "total_gpu_min": 194.3
+}

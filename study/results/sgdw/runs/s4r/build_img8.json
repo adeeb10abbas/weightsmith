@@ -1,0 +1,49 @@
+{
+ "orig_capture": "s4r-ox",
+ "expl_capture": "s4r-ox",
+ "orig_items": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11
+ ],
+ "expl_items": [
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23
+ ],
+ "layers": [
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16
+ ],
+ "mode": "image",
+ "alpha": 1.0,
+ "lam_rel": 0.001,
+ "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+ "explicit_instruction": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
+ "save_factors": true
+}

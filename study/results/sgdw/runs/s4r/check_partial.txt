@@ -1,0 +1,7 @@
+build (vs TF replay): {'n': 12, 'ee_base_to_tf_cm': 17.28, 'ee_cand_to_tf_cm': 12.02, 'closer_to_tf': 7, 'grip_agree_tf_base_cand': [12, 12]}
+build {'n': 12, 'ee_shift_cm': 9.57, 'mean_dy_cand_minus_base_cm': 7.15, 'mean_dz_cand_minus_base_cm': -0.46, 'grip_closed_base_cand': [6, 6], 'grip_flips': 0}
+approach_heldout {'n': 30, 'ee_shift_cm': 7.62, 'mean_dy_cand_minus_base_cm': 5.54, 'mean_dz_cand_minus_base_cm': -3.7, 'grip_closed_base_cand': [0, 0], 'grip_flips': 0}
+transport_heldout {'n': 14, 'ee_shift_cm': 5.7, 'mean_dy_cand_minus_base_cm': 4.25, 'mean_dz_cand_minus_base_cm': 1.03, 'grip_closed_base_cand': [14, 14], 'grip_flips': 0}
+tf_noharm {'n': 40, 'ee_shift_cm': 2.38, 'ee_shift_max_cm': 25.24, 'grip_flips': 0}
+CHECK_JSON {"build_vs_tf": {"n": 12, "ee_base_to_tf_cm": 17.28, "ee_cand_to_tf_cm": 12.02, "closer_to_tf": 7, "grip_agree_tf_base_cand": [12, 12]}, "build": {"n": 12, "ee_shift_cm": 9.57, "mean_dy_cand_minus_base_cm": 7.15, "mean_dz_cand_minus_base_cm": -0.46, "grip_closed_base_cand": [6, 6], "grip_flips": 0}, "approach_heldout": {"n": 30, "ee_shift_cm": 7.62, "mean_dy_cand_minus_base_cm": 5.54, "mean_dz_cand_minus_base_cm": -3.7, "grip_closed_base_cand": [0, 0], "grip_flips": 0}, "transport_heldout": {"n": 14, "ee_shift_cm": 5.7, "mean_dy_cand_minus_base_cm": 4.25, "mean_dz_cand_minus_base_cm": 1.03, "grip_closed_base_cand": [14, 14], "grip_flips": 0}, "tf_noharm": {"n": 40, "ee_shift_cm": 2.38, "ee_shift_max_cm": 25.24, "grip_flips": 0}}
+
