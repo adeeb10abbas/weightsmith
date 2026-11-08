@@ -1217,7 +1217,11 @@ def row_cells(src):
                                    kind=slot_kind(same[0]) or (" practice" if is_practice(same[0]) else ""),
                                    bars=[(describe(r.get("edit_location")), as_int(r.get("edited_k")),
                                           "teal" if loc_class(describe(r.get("edit_location"))) == "backbone" else "dark")
-                                         for r in same])
+                                         for r in same],
+                                   sites=[dict(loc=describe(r.get("edit_location")),
+                                               cls=loc_class(describe(r.get("edit_location"))), a=stat(r)[0]["unedited_k"],
+                                               b=stat(r)[0]["edited_k"], n=stat(r)[0]["n"], p=stat(r)[1],
+                                               ctl=ints(r)["control_k"], prac=is_practice(r) or None) for r in same])
     return T
 
 
@@ -2436,6 +2440,315 @@ FIGS = [
 
 
 # ---------------------------------------------------------------- clips (MP4s in site/cosmos/video/, <= 2 MB each)
+# ---------------------------------------------------------------- diagrams: where the instruction enters, where an edit goes
+# Inline SVG drawn here and themed by the page's CSS tokens (classes .dg-*, cosmos.css), so light and dark come from the
+# page itself. Every architecture fact is from the records (MODELS above; cross-cosmos/v1 and cross-groot/v1 READMEs;
+# study/results/opus/where/README.md; paper Appendix "Where to edit"); every number from the same data as metrics.json.
+import math as _math
+
+OUTCOMES = [("fixed", "fixed: a significant gain, as large as any location’s"),
+            ("partial", "partial: a significant gain, but significantly below the best location"),
+            ("none", "no effect: no significant change"),
+            ("broke", "broke: a significant loss")]
+
+
+def _t(x, y, s, cls="", anchor=None):
+    a = f' text-anchor="{anchor}"' if anchor else ""
+    return f'<text x="{x:g}" y="{y:g}" class="{cls}"{a}>{esc(s)}</text>'
+
+
+def _arrow(pts, cls="dg-ln", head=True):
+    """A polyline through pts with a filled head at its last point."""
+    d = " ".join(f"{x:g},{y:g}" for x, y in pts)
+    out = f'<polyline points="{d}" class="{cls}"/>'
+    if head:
+        (x1, y1), (x2, y2) = pts[-2], pts[-1]
+        L = _math.hypot(x2 - x1, y2 - y1) or 1
+        ux, uy = (x2 - x1) / L, (y2 - y1) / L
+        bx, by = x2 - 7 * ux, y2 - 7 * uy
+        out += (f'<polygon points="{x2:g},{y2:g} {bx - 4 * uy:g},{by + 4 * ux:g} {bx + 4 * uy:g},{by - 4 * ux:g}" '
+                f'class="{cls.split()[0]}-h"/>')
+    return out
+
+
+def _mark(cx, cy, kind, r=6.5):
+    """Outcome marker: shape and fill differ, so the outcome never rests on colour alone."""
+    if kind == "fixed":
+        return f'<circle cx="{cx:g}" cy="{cy:g}" r="{r}" class="dg-o-fix"/>'
+    if kind == "partial":
+        return (f'<circle cx="{cx:g}" cy="{cy:g}" r="{r}" class="dg-o-part"/>'
+                f'<path d="M{cx:g},{cy - r:g} A{r},{r} 0 0 0 {cx:g},{cy + r:g} Z" class="dg-o-fill"/>')
+    if kind == "broke":
+        k = r * 0.5
+        return (f'<circle cx="{cx:g}" cy="{cy:g}" r="{r}" class="dg-o-broke"/>'
+                f'<path d="M{cx - k:g},{cy - k:g} L{cx + k:g},{cy + k:g} M{cx + k:g},{cy - k:g} L{cx - k:g},{cy + k:g}" '
+                f'class="dg-o-x"/>')
+    return f'<circle cx="{cx:g}" cy="{cy:g}" r="{r}" class="dg-o-none"/>'
+
+
+def _letter(cx, cy, s):
+    return f'<circle cx="{cx:g}" cy="{cy:g}" r="9.5" class="dg-let"/>' + _t(cx, cy + 4.5, s, "dg-let-t", "middle")
+
+
+def _svg(vb_w, vb_h, title, desc, body, cls="", ident=""):
+    return (f'<svg class="dg {cls}" viewBox="0 0 {vb_w} {vb_h}" role="img" aria-labelledby="{ident}-t {ident}-d">'
+            f'<title id="{ident}-t">{esc(title)}</title><desc id="{ident}-d">{esc(desc)}</desc>{body}</svg>')
+
+
+def dg_schematic():
+    """Diagram 1: the generic route of the instruction, the three edit sites, and the teacher idea."""
+    W, b = [], dict(x=34, w=210)
+    cx = b["x"] + b["w"] / 2
+    # inputs: the cameras, and the instruction in two wordings
+    W.append(f'<rect x="34" y="8" width="84" height="28" rx="14" class="dg-in"/>' + _t(76, 26.5, "cameras", "dg-s", "middle"))
+    W.append(f'<rect x="138" y="4" width="132" height="46" rx="8" class="dg-in"/>'
+             + _t(150, 22, "original wording", "dg-s") + _t(150, 41, "clear wording", "dg-s dg-acc"))
+    W.append(_arrow([(76, 36), (76, 80)]) + _t(84, 64, "π0.5, GR00T", "dg-xs dg-mu"))
+    W.append(_arrow([(190, 50), (190, 80)]))
+    # A: where the instruction is read; the band is where the two wordings' states first differ
+    W.append(f'<rect x="{b["x"]}" y="80" width="{b["w"]}" height="104" rx="7" class="dg-blk"/>' + _letter(b["x"], 99, "A")
+             + _t(52, 104, "reads the instruction", "dg-b") + _t(52, 121, "language or VLM pathway", "dg-s dg-mu"))
+    W.append(f'<rect x="46" y="132" width="186" height="40" rx="5" class="dg-band"/>'
+             + _t(56, 149, "clear wording: states", "dg-s") + _t(56, 165, "differ here first", "dg-s"))
+    # distillation: the clear wording's states copied into A's weights
+    W.append(_arrow([(258, 50), (258, 152), (234, 152)], "dg-acc-ln") + _t(264, 104, "distil", "dg-s dg-acc dg-b"))
+    # the action side reads A through keys and values (Cosmos3 Edge's cameras enter there)
+    W.append(_arrow([(34, 22), (16, 22), (16, 252), (34, 252)], "dg-ln dg-dash") + _t(22, 203, "Cosmos3 Edge", "dg-xs dg-mu"))
+    W.append(_arrow([(cx, 184), (cx, 212)]) + _t(cx + 8, 202, "keys and values", "dg-xs dg-mu"))
+    for y, let, name in ((212, "B", "action pathway"), (290, "C", "output head")):
+        W.append(f'<rect x="{b["x"]}" y="{y}" width="{b["w"]}" height="54" rx="7" class="dg-blk"/>' + _letter(b["x"], y + 19, let)
+                 + _t(52, y + 24, name, "dg-b") + _t(52, y + 41, "changes as a consequence", "dg-s dg-mu"))
+    W.append(_arrow([(cx, 266), (cx, 290)]))
+    W.append(_arrow([(cx, 344), (cx, 368)]) + _t(cx, 386, "robot actions", "dg-s", "middle"))
+    title = "Where the instruction enters, and where an edit can go"
+    desc = ("Camera images and the instruction enter the model. Pathway A reads the instruction; the action pathway B "
+            "reads A through keys and values (in Cosmos3 Edge the camera images enter B); the output head C turns B's "
+            "states into robot actions. Under the clear wording the states first differ in A, and B and C change as a "
+            "consequence. Distillation copies the clear wording's states into A's weights.")
+    return _svg(306, 396, title, desc, "".join(W), "dg-schem", "dg1")
+
+
+def where_sites(P, rc, tables):
+    """Per model: the schematic's blocks with their real names, and every edit tried there with its numbers and outcome."""
+    T = {t["id"]: {r["key"]: r["cells"] for r in t["rows"]} for t in tables}
+    w = P["where"]
+    n, base = w["n"], w["arms"]["base"]
+    best = max(w["arms"], key=lambda k: w["arms"][k] if k != "base" else -1)
+
+    def pi(arm, label):
+        c, k = w["cmp"].get(arm), w["arms"][arm]
+        p = c["mcnemar_p"] if c else None
+        vb = w["vs_full"].get(arm) if arm != best else None
+        oc = ("none" if p is None or p >= SIG else "broke" if k < base else
+              "partial" if vb and vb["mcnemar_p"] < SIG and k < w["arms"][best] else "fixed")
+        return dict(rows=[(f"{k}/{n}", label)], oc=oc, title=f"{label}: {k} of {n} unseen starts (unedited {base}), "
+                    f"p = {fp(p)}")
+
+    out = [dict(id="pi05", name="π0.5", sub=f"T1 · {n} unseen starts · unedited {base}", cams="A", kv="keys and values",
+                out="15-step action chunks", src=w["src"],
+                blocks=[dict(let="A", name="VLM", detail="PaliGemma, 18 layers",
+                             sites=[pi("v1full", "all VLM layers"), pi("v1img816", "image cells only (0.16%)")]),
+                        dict(let="B", name="action expert", detail="Gemma, 18 layers",
+                             sites=[pi("a1", "closes the gripper early"), pi("va", "VLM + action expert")]),
+                        dict(let="C", name="action head", detail="output projection",
+                             sites=[pi("h1", "least norm, no gate"), pi("p1", "gated (blind editor)")])])]
+    for mid, name, cams, kv, outs, names in (
+            ("cosmos", "Cosmos3 Edge", "B", "text keys and values", "32-step action chunks",
+             (("text pathway", "text tokens"), ("video/action pathway", "video and action tokens"), ("action output", ""))),
+            ("groot", "GR00T N1.7", "A", "backbone tokens", "40-step action chunks",
+             (("Cosmos-Reason2 backbone", "16 LLM layers"), ("DiT action head", "32 diffusion blocks"), ("action output", "")))):
+        bars = rc[mid]["where"].get("_bars")
+        if not bars:
+            continue
+        offl = {loc: v for loc, v, _ in ((T["where"].get("offline_where") or {}).get(mid, {}).get("parts") or [])}
+        eg = T["edit_gain"].get(bars["task"], {}).get(mid) or {}
+        kind = (bars.get("kind") or "").strip()
+        kind = "unseen" if kind == "unseen" else "practice"
+        good = [s for s in bars["sites"] if s["p"] is not None and s["p"] < SIG and s["b"] > s["a"]]
+        top = max((s["b"] for s in good), default=None)
+        blocks = []
+        for let, (bn, bd), cls in zip("ABC", names, ("backbone", "action", None)):
+            sites = []
+            for s in [x for x in bars["sites"] if x["cls"] == cls] if cls else []:
+                oc = ("none" if s["p"] is None or s["p"] >= SIG else "broke" if s["b"] < s["a"] else
+                      "fixed" if s["b"] == top else "partial")
+                rows = [(f"{s['b']}/{s['n']}", f"{kind} starts")]
+                if eg.get("s") == "ok" and not eg.get("prac") and loc_class(eg.get("loc")) == cls and eg.get("n") != s["n"]:
+                    rows.append((f"{eg['b']}/{eg['n']}", "unseen starts"))
+                if s.get("ctl") is not None and oc == "broke":   # a break: the same-size random edit shows it is the direction
+                    rows.append((f"{s['ctl']}/{s['n']}", "random edit, same size"))
+                ov = next((v for loc, v in offl.items() if loc_class(loc) == cls), None) if mid == "cosmos" else None
+                if ov is not None:   # Cosmos3 Edge's offline gap closed; GR00T's offline measure is a different one
+                    rows.append((f"{sgn(ov, False, 0)}%", "of the gap, offline"))
+                sites.append(dict(rows=rows, oc=oc, title=f"{bn}: {s['b']} of {s['n']} {kind} starts (unedited {s['a']})"
+                                  + (f", p = {fp(s['p'])}" if s["p"] is not None else "")))
+            blocks.append(dict(let=let, name=bn, detail=bd, sites=sites))
+        out.append(dict(id=mid, name=name, sub=f"{bars['task']} · {bars['n']} {kind} starts · unedited {bars['base']}",
+                        cams=cams, kv=kv, out=outs, blocks=blocks))
+    return out
+
+
+def dg_panel(m):
+    """One model on the schematic: blocks A, B, C with real names, each edit tried there marked by its outcome."""
+    W, x0, x1 = [], 30, 266
+    W.append(_t(14, 20, m["name"], "dg-h") + _t(14, 38, m["sub"], "dg-s dg-mu"))
+    W.append(f'<rect x="30" y="50" width="80" height="24" rx="12" class="dg-in"/>' + _t(70, 66.5, "cameras", "dg-s", "middle"))
+    W.append(f'<rect x="150" y="50" width="96" height="24" rx="12" class="dg-in"/>'
+             + _t(198, 66.5, "instruction", "dg-s", "middle"))
+    y, tops = 100, {}
+    for i, blk in enumerate(m["blocks"]):
+        rows = sum(len(s["rows"]) for s in blk["sites"]) or 1
+        h = 30 + (16 if blk["detail"] else 0) + 21 * rows + 6
+        tops[blk["let"]] = (y, h)
+        W.append(f'<rect x="{x0}" y="{y}" width="{x1 - x0}" height="{h}" rx="7" class="dg-blk"/>' + _letter(x0, y + 18, blk["let"])
+                 + _t(48, y + 23, blk["name"], "dg-b"))
+        yy = y + 23 + (17 if blk["detail"] else 0)
+        if blk["detail"]:
+            W.append(_t(48, yy, blk["detail"], "dg-s dg-mu"))
+        yy += 23
+        if not blk["sites"]:
+            W.append(_t(48, yy, "no edit tried", "dg-s dg-mu"))
+        for s in blk["sites"]:
+            g = [f'<g><title>{esc(s["title"])}</title>', _mark(48, yy - 4.5, s["oc"])]
+            for j, (v, lab) in enumerate(s["rows"]):
+                g.append(_t(62, yy + 21 * j, v, "dg-s dg-b") + _t(108, yy + 21 * j, lab, "dg-s"))
+            W.append("".join(g) + "</g>")
+            yy += 21 * len(s["rows"])
+        y += h + (34 if i < 2 else 0)
+    cx = 148
+    ya, ha = tops["A"]
+    yb, hb = tops["B"]
+    yc, hc = tops["C"]
+    W.append(_arrow([(198, 74), (198, ya)]))
+    if m["cams"] == "A":
+        W.append(_arrow([(70, 74), (70, ya)]))
+    else:
+        W.append(_arrow([(30, 62), (14, 62), (14, yb + 40), (30, yb + 40)]))
+    W.append(_arrow([(cx, ya + ha), (cx, yb)]) + _t(cx + 8, ya + ha + 21, m["kv"], "dg-xs dg-mu"))
+    W.append(_arrow([(cx, yb + hb), (cx, yc)]))
+    W.append(_arrow([(cx, yc + hc), (cx, yc + hc + 24)]) + _t(cx, yc + hc + 42, "robot: " + m["out"], "dg-s", "middle"))
+    H = yc + hc + 50
+    sites = "; ".join(f"{b['let']} {b['name']}: " + (", ".join(f"{s['rows'][0][0]} ({dict(OUTCOMES)[s['oc']].split(':')[0]})"
+                                                             for s in b["sites"]) or "no edit tried") for b in m["blocks"])
+    return _svg(280, H, f"{m['name']}: where each edit went and what it did", f"{m['sub']}. {sites}.", "".join(W),
+                "dg-panel", f"dg2-{m['id']}")
+
+
+def dg_legend():
+    items = "".join(f'<li><svg class="dg dg-key" viewBox="-8 -8 16 16" aria-hidden="true">{_mark(0, 0, k)}</svg>{esc(t)}</li>'
+                    for k, t in OUTCOMES)
+    return f'<ul class="dg-legend">{items}</ul>'
+
+
+def dg_groot(tables, cross):
+    """Diagram 3: GR00T's clear wording inserts a clause that the original prompt has no position for."""
+    T = {t["id"]: {r["key"]: r["cells"] for r in t["rows"]} for t in tables}
+    rows = (cross.get("groot") or {}).get("rows") or []
+    wp = next((r.get("wording_pair") for r in rows if r["_task"] == "T1" and isinstance(r.get("wording_pair"), list)
+               and len(r["wording_pair"]) == 2 and all(r["wording_pair"])), None)
+    wd, eg = T["wording"].get("T1", {}).get("groot") or {}, T["edit_gain"].get("T1", {}).get("groot") or {}
+    vs = git("show", "origin/cross-groot/v1:study/results/cross/groot/results/wsp/t1/early/value_similarity.json")
+    cos = None
+    if vs:
+        v = sorted(json.loads(vs).get("early_cos_per_layer") or [])
+        cos = (v[len(v) // 2] + v[(len(v) - 1) // 2]) / 2 if v else None
+    if not wp or wd.get("s") != "ok" or eg.get("s") != "ok" or cos is None:
+        return ""
+    o, c = wp[0].split(), wp[1].split()
+    i = 0
+    while i < min(len(o), len(c)) and o[i].lower() == c[i].lower():
+        i += 1
+    j = 0
+    while j < min(len(o), len(c)) - i and o[-1 - j].lower() == c[-1 - j].lower():
+        j += 1
+    seg_o = [" ".join(o[:i]), " ".join(o[i:len(o) - j]), " ".join(o[len(o) - j:])]
+    seg_c = [" ".join(c[:i]), " ".join(c[i:len(c) - j]), " ".join(c[len(c) - j:])]
+
+    def lines(s, width=15):
+        """One line, or two of balanced length."""
+        ws = s.split()
+        if len(s) <= width or len(ws) < 2:
+            return [s] if s else []
+        k = min(range(1, len(ws)), key=lambda q: max(len(" ".join(ws[:q])), len(" ".join(ws[q:]))))
+        return [" ".join(ws[:k]), " ".join(ws[k:])]
+
+    W = [_t(14, 20, "GR00T N1.7, T1: the prompt, position by position", "dg-b"),
+         _t(14, 46, "original", "dg-s dg-mu"), _t(206, 46, "clear wording", "dg-s dg-acc")]
+    y = 56
+    for k in range(3):
+        lo, lc = lines(seg_o[k]), lines(seg_c[k])
+        h = 12 + 17 * max(len(lo), len(lc), 1)
+        mid = k == 1
+        W.append(f'<rect x="14" y="{y}" width="120" height="{h}" rx="5" class="{"dg-tok dg-dash-b" if mid else "dg-tok"}"/>'
+                 + "".join(_t(24, y + 19 + 17 * q, s, "dg-s dg-mu" if mid else "dg-s") for q, s in enumerate(lo)))
+        W.append(f'<rect x="206" y="{y}" width="120" height="{h}" rx="5" class="{"dg-band dg-acc-b" if mid else "dg-tok"}"/>'
+                 + "".join(_t(216, y + 19 + 17 * q, s, "dg-s") for q, s in enumerate(lc)))
+        if mid:
+            W.append(_t(170, y + h / 2 - 2, "no", "dg-xs dg-mu", "middle") + _t(170, y + h / 2 + 12, "position", "dg-xs dg-mu", "middle"))
+        else:
+            W.append(f'<line x1="134" y1="{y + h / 2:g}" x2="206" y2="{y + h / 2:g}" class="dg-acc-ln"/>'
+                     + _t(170, y + h / 2 - 6, "aligned", "dg-xs dg-acc", "middle"))
+        y += h + 10
+    y += 8
+    W.append(_t(14, y + 4, "clear wording (the teacher)", "dg-b dg-acc"))
+    W.append(_t(14, y + 23, "the action head reads the clause, so the", "dg-s"))
+    W.append(_t(14, y + 40, "first reach stays as it was", "dg-s"))
+    W.append(_t(14, y + 61, f"{wd['a']} → {wd['b']} of {wd['n']} practice starts"
+                + (f" (p = {fp(wd['pv'])})" if wd.get("pv") is not None else ""), "dg-s dg-b"))
+    y += 88
+    W.append(_t(14, y + 4, "distilled edit", "dg-b"))
+    W.append(_t(14, y + 23, "copies only the aligned change, which is", "dg-s"))
+    W.append(_t(14, y + 40, "the same at the first grasp as at the", "dg-s"))
+    W.append(_t(14, y + 57, f"banana (cosine {cos:.2f}): it moves the first reach", "dg-s"))
+    W.append(_mark(20, y + 74.5, "broke" if eg["b"] < eg["a"] else "none")
+             + _t(34, y + 79, f"{eg['a']} → {eg['b']} of {eg['n']} practice starts"
+                  + (f" (p = {fp(eg['pv'])})" if eg.get("pv") is not None else ""), "dg-s dg-b"))
+    H = y + 92
+    desc = (f"Original: “{wp[0]}”. Clear wording: “{wp[1]}”. The words before and after the inserted clause align "
+            f"position by position; the clause “{seg_c[1]}” has no position in the original prompt. Under the clear "
+            f"wording the action head reads the clause, which keeps the first reach unchanged: T1 {wd['a']} → {wd['b']} "
+            f"of {wd['n']}. Distillation copies only the aligned positions, whose change is the same at the first grasp as "
+            f"at the banana (median cosine {cos:.2f}), so the edit acts from the first reach: T1 {eg['a']} → {eg['b']}.")
+    return _svg(340, H, "Why distillation backfires on GR00T N1.7", desc, "".join(W), "dg-groot", "dg3"), dict(
+        original=wp[0], clear=wp[1], clause=seg_c[1], cos=round(cos, 2), teacher=[wd["a"], wd["b"], wd["n"]],
+        edit=[eg["a"], eg["b"], eg["n"]])
+
+
+def dg_schematic_html():
+    notes = ("<li><b>A</b> reads the instruction: π0.5’s VLM, GR00T N1.7’s Cosmos-Reason2 backbone, Cosmos3 Edge’s text "
+             "pathway. Under the clear wording its states change first; B and C change only because A did.</li>"
+             "<li><b>Distil</b>: copy the clear wording’s states into A’s weights, so the original wording produces "
+             "them. That copies the cause.</li>"
+             "<li><b>B or C</b>: the same copy lands on states that also depend on where the robot is, so it reproduces "
+             "a symptom: it needs a gate, leaks into other moments, or breaks the task.</li>")
+    return (f'<figure class="dgfig dg1"><div class="dg1-grid">{dg_schematic()}<ol class="dg-notes">{notes}</ol></div>'
+            f'<figcaption>Edit where the instruction is read (A) and you copy the cause; edit the action side (B, C) '
+            f'and you copy a symptom that depends on the robot’s state.</figcaption></figure>')
+
+
+def dg_where_html(sites):
+    fixed = [m["name"] for m in sites if any(s["oc"] == "fixed" for b in m["blocks"][:1] for s in b["sites"])
+             and not any(s["oc"] == "fixed" for b in m["blocks"][1:] for s in b["sites"])]
+    broke = [m["name"] for m in sites if all(s["oc"] == "broke" for b in m["blocks"] for s in b["sites"])
+             and any(b["sites"] for b in m["blocks"])]
+    cap = ((f"In {and_list(fixed)} only the edit where the instruction is read (A) fixed the task; " if fixed else "")
+           + (f"in {and_list(broke)} every edit broke it." if broke else ""))
+    cap = cap[0].upper() + cap[1:] if cap else "Each edit tried, by where it went and what it did."
+    return (f'<figure class="dgfig dg2">{dg_legend()}<div class="dg2-grid">'
+            + "".join(f'<div class="dg2-p">{dg_panel(m)}</div>' for m in sites)
+            + f'</div><figcaption>{esc(cap.rstrip("; ") + ("" if cap.endswith(".") else "."))}</figcaption></figure>')
+
+
+def dg_groot_html(tables, cross):
+    got = dg_groot(tables, cross)
+    if not got:
+        return "", None
+    svg, data = got
+    return (f'<figure class="dgfig dg3">{svg}<figcaption>The clear wording adds a clause that has no position in the '
+            f'original prompt; distillation copies only the aligned positions, so the edit acts from the first reach '
+            f'and breaks the task.</figcaption></figure>'), data
+
+
 VID = OUT / "video"
 # Each clip: stem (video/<stem>.mp4, or "src" for a clip the main page already serves), group (where it goes on the
 # page), title, a caption builder (reads its numbers from the run records, never typed in), and an optional poster.
@@ -3300,6 +3613,7 @@ def main():
         "sections": page_sections(page),
         "summary": summary,
         "prevention": prevent,
+        "diagrams": {"where": where_sites(P, rc, tables)},
         "tables": tables,
         "cross_rows": {mid: [{k: v for k, v in r.items() if k != "_extra"} | ({"extra": r["_extra"]} if r["_extra"] else {})
                              for r in cross[mid]["rows"]] for mid in cross},
@@ -3341,6 +3655,9 @@ def main():
     page = replace_region(page, "render-note", render_note(tables))
     page = replace_region(page, "conclusion", conclusion_html(tables, models, data["prevention"]))
     page = replace_region(page, "prevent", prevent_html(data["prevention"]))
+    page = replace_region(page, "dg:schematic", dg_schematic_html())
+    page = replace_region(page, "dg:where", dg_where_html(data["diagrams"]["where"]))
+    page = replace_region(page, "dg:groot", dg_groot_html(tables, cross)[0])
     page = replace_region(page, "where-note", where_note(tables, models))
     page = replace_region(page, "adapter-note", adapter_note(cross, models))
     page = replace_region(page, "table:summary", table_html(summary, models))
