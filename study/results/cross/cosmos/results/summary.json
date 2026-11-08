@@ -1,5 +1,59 @@
 {
  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+ "where_offline": [
+  {
+   "machine": "ali-ms",
+   "edit": "t8und",
+   "group": "build",
+   "n": 30,
+   "unedited_ee_cm": 5.42,
+   "edited_ee_cm": 0.5,
+   "control_ee_cm": 5.21,
+   "gap_closed_pct": 90.8,
+   "control_gap_closed_pct": 3.8,
+   "closer_to_teacher": 30,
+   "control_closer_to_teacher": 18
+  },
+  {
+   "machine": "ali-ms",
+   "edit": "t8gen",
+   "group": "build",
+   "n": 30,
+   "unedited_ee_cm": 5.42,
+   "edited_ee_cm": 4.55,
+   "control_ee_cm": 5.07,
+   "gap_closed_pct": 16.1,
+   "control_gap_closed_pct": 6.5,
+   "closer_to_teacher": 13,
+   "control_closer_to_teacher": 20
+  },
+  {
+   "machine": "ali-ms",
+   "edit": "t8und",
+   "group": "check",
+   "n": 30,
+   "unedited_ee_cm": 8.75,
+   "edited_ee_cm": 0.77,
+   "control_ee_cm": 8.9,
+   "gap_closed_pct": 91.2,
+   "control_gap_closed_pct": -1.8,
+   "closer_to_teacher": 25,
+   "control_closer_to_teacher": 11
+  },
+  {
+   "machine": "ali-ms",
+   "edit": "t8gen",
+   "group": "check",
+   "n": 30,
+   "unedited_ee_cm": 8.75,
+   "edited_ee_cm": 6.7,
+   "control_ee_cm": 8.68,
+   "gap_closed_pct": 23.4,
+   "control_gap_closed_pct": 0.7,
+   "closer_to_teacher": 16,
+   "control_closer_to_teacher": 19
+  }
+ ],
  "machines": {
   "ali-ms": "RTX 3090 24 GB"
  },
@@ -280,5 +334,5 @@
    }
   ]
  },
- "records": 4
+ "records": 8
 }

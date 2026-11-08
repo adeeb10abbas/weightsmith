@@ -324,7 +324,41 @@ def main():
                     transfer=c["diff_pts"] if oc != "R1" else None, retention=c["diff_pts"] if oc == "R1" else None,
                     edit_location=e["location"], values_changed=e.get("values_changed"),
                     notes=f"edit {name} built for {code}, run on {oc} with {oc}'s default instruction"))
-    summary = {"model": MODEL, "machines": {m: GPU_NAMES.get(m) for m in machines},
+    # where to edit, offline: replayed RF-failure decisions, action-chunk distance to the teacher (TF wording)
+    where = []
+    for m in machines:
+        f = RUNS.parent / "offline" / m / "t8_offline_check.json"
+        if not f.exists():
+            continue
+        oc = json.loads(f.read_text())
+        loc = {e["name"]: e["location"] for e in edits}
+        for g, gd in oc["groups"].items():
+            if g == "all":
+                continue
+            for var, ed in (("O+und", "t8und"), ("O+gen", "t8gen")):
+                if var not in gd:
+                    continue
+                v, c = gd[var], gd.get(var + "-ctl", {})
+                row = {"machine": m, "edit": ed, "group": g, "n": v["n"],
+                       "unedited_ee_cm": round(gd["student_vs_teacher"]["ee_end_cm"], 2),
+                       "edited_ee_cm": round(v["vs_teacher"]["ee_end_cm"], 2),
+                       "control_ee_cm": round(c["vs_teacher"]["ee_end_cm"], 2) if c else None,
+                       "gap_closed_pct": round(v["gap_closed_ee_pct"], 1),
+                       "control_gap_closed_pct": round(c["gap_closed_ee_pct"], 1) if c else None,
+                       "closer_to_teacher": v["closer_to_teacher_ee"],
+                       "control_closer_to_teacher": c.get("closer_to_teacher_ee")}
+                where.append(row)
+                records.append(record(
+                    experiment="where_to_edit_offline", machine=m, task=TASKS["T8"][0], code="T8",
+                    wording_pair=[TASKS["T8"][1], WORDINGS[[w[0] for w in WORDINGS].index("T8")][2]], n=v["n"],
+                    edit_location=loc.get(ed), offline=row,
+                    values_changed=next((e.get("values_changed") for e in edits if e["name"] == ed), None),
+                    notes=f"offline replay of {v['n']} RF-failure decisions ({g} set: "
+                          + ("decisions the gen edit was built from, slots 30000-30005" if g == "build" else
+                             "held-aside decisions, slots 30006-30011, never used to build either edit")
+                          + ", replans 1-5): chunk-end end-effector distance to the TF-wording action chunk, same "
+                            "seed; gap closed = 1 - edited/unedited distance; control = same-size random directions"))
+    summary = {"model": MODEL, "where_offline": where, "machines": {m: GPU_NAMES.get(m) for m in machines},
                "arms": {f"{m}/{a}": {"slots": sorted(v), "k": sum(v.values()), "n": len(v)} for (m, a), v in arms.items()},
                "failure_map": fmap, "wording": wrows, "edits": edit_rows, "side_effects": side, "runs": meta,
                "records": len(records)}
@@ -359,6 +393,9 @@ def main():
         print(f"{r['machine']:7s} {r['code']} {r['edit']} {r['split']}: {r['ref_k']}/{r['n']} -> {r['cand_k']}/{r['n']} "
               f"fixed {r['fixed']} broke {r['broke']} p={r['p']:.3g} ctl={r['control'] and r['control']['cand_k']} "
               f"teacher={r['teacher'] and r['teacher']['cand_k']} recovery={r['recovery_pct']}")
+    for r in where:
+        print(f"{r['machine']:7s} where {r['edit']} {r['group']}: ee {r['unedited_ee_cm']} -> {r['edited_ee_cm']} cm "
+              f"(gap closed {r['gap_closed_pct']}%, control {r['control_gap_closed_pct']}%), n={r['n']}")
     for r in side:
         print(f"{r['machine']:7s} side {r['edit']} {r['code']}: {r['ref_k']}/{r['n']} -> {r['cand_k']}/{r['n']} "
               f"+{r['fixed']}/-{r['broke']} p={r['p']:.3g}")
