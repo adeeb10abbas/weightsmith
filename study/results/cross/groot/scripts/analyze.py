@@ -168,6 +168,11 @@ def edit_records(runs, lines):
             continue
         c = pair(base, ed)
         cc = pair(base, ctl) if ctl else None
+        if not m.get("values_changed") and ed.get("edit_report"):
+            m["values_changed"] = ed["edit_report"].get("values_changed")
+            m["values_total"] = ed["edit_report"].get("values_total")
+        if ctl and ctl.get("edit_report"):
+            m["control_values_changed"] = ctl["edit_report"].get("values_changed")
         tk = pair(base, teach)["cand_k"] if teach else None
         rec_pct = (100 * (c["cand_k"] - c["ref_k"]) / (tk - c["ref_k"])) if tk is not None and tk != c["ref_k"] else None
         lines += ["", f"## Edit `{e}` ({m['location']}) on {tid}, practice slots {c['slots'][0]}-{c['slots'][1]}", "",

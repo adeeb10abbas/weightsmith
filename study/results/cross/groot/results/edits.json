@@ -1,0 +1,7 @@
+{
+ "bb": {"task": "T1", "teacher_tag": "wd-T1-expl",
+        "location": "Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (VLM backbone)",
+        "wording": ["Put the cube then the banana in the bowl", "Put the cube in the bowl then put the banana in the bowl"],
+        "build": "results/wsp/t1/bb_build.json",
+        "notes": "closed-form distillation dW = K^T (K K^T + lam I)^-1 V per layer, lam = 1e-3 mean diag(KK^T); keys/values averaged over 6 build decisions (most-divergent replan of the first 6 failed practice episodes); control = same singular values along random orthonormal directions (default_rng(0))"}
+}

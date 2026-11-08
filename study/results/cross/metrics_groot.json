@@ -71,6 +71,40 @@
    "notes": "tag fm-T3; envs 16; env seed 0; one fresh simulator process per 16-slot group"
   },
   {
+   "experiment": "failure_map",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T8 MustardRightOfRaisinRFTask",
+   "wording_pair": [
+    "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+    null
+   ],
+   "n": 32,
+   "unedited_k": 0,
+   "edited_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null,
+   "ci": {
+    "unedited_wilson95": [
+     0.0,
+     0.10717919825507057
+    ]
+   },
+   "control_k": null,
+   "teacher_k": null,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": [
+    30000,
+    30031
+   ],
+   "notes": "tag fm-T8; envs 16; env seed 0; one fresh simulator process per 16-slot group"
+  },
+  {
    "experiment": "wording_sensitivity",
    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
    "machine": "ali-ms-rtx3090",
