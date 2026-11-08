@@ -280,20 +280,20 @@
   "wording_pair": [
    "Put the cube in the bowl"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 9,
+  "unedited_k": 21,
   "edited_k": null,
   "fixed": null,
   "broke": null,
   "p": null,
   "ci": {
    "wilson95_pct": [
-    33.2,
-    76.9
+    48.3,
+    79.6
    ]
   },
   "control_k": null,
