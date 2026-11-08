@@ -1207,6 +1207,14 @@ def row_cells(src):
             if i["edited_k"] is None or i["unedited_k"] is None:
                 continue
             dlt = i["edited_k"] - i["unedited_k"]
+            have = T["side_effects"].get(tid)
+            if have and is_practice(r) and not have.get("prac") and not target:
+                # the unseen-start cell stays; the practice run of the same edit joins its detail
+                have["d"] = "; ".join(x for x in (have.get("d"), f"practice starts: {i['unedited_k']} → {i['edited_k']}"
+                                                  + (f" of {i['n']}" if i["n"] else "")
+                                                  + (f", p = {fp(p)}" if p is not None else "")
+                                                  + (f" ({where_txt(r)})" if where_txt(r) else "")) if x)
+                continue
             T["side_effects"].setdefault(tid, C(
                 f"{dsgn(dlt)}: {i['unedited_k']} → {i['edited_k']}" + (f" of {i['n']}" if i["n"] else ""),
                 "; ".join(x for x in ((f"{i['fixed']} / {i['broke']}" if i["fixed"] is not None else None),
