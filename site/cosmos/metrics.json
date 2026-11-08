@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "a6460422b07d"
+    "commit": "44e479fb609a"
    }
   },
   {
@@ -39,7 +39,7 @@
     "branch": "cross-groot/v1",
     "path": "study/results/cross/metrics_groot.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-    "commit": "fe743133a9ed"
+    "commit": "f7a103db69ab"
    }
   },
   {
@@ -133,14 +133,14 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Edits lifted success on T8 from 0 to 56 of 64 unseen starts (p = 2.8 × 10⁻¹⁷). On 48 of those starts a random edit of the same size scored 0, against 42 for the edit and 0 unedited. Other tasks: {running}."
+    "text": "Edits lifted success on T8 from 0 to 56 of 64 unseen starts (p = 2.8 × 10⁻¹⁷). A random edit of the same size scored 0 of 64 on T8, against 0 unedited. Other tasks: {running}."
    },
    {
     "id": "groot",
     "lead": "GR00T N1.7",
     "kind": "reasoning-backbone VLA",
     "tag": null,
-    "text": "Unedited, all 9 tasks: T1 9 of 32, T3 1 of 32 and R1 28 of 32; no success on T2 and T4–T8. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12); no gain on T3 and T8. T1 edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); further edits: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
+    "text": "Unedited, all 9 tasks: T1 9 of 32, T3 1 of 32 and R1 28 of 32; no success on T2 and T4–T8. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12); no gain on T3 and T8. T1 edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); a random edit the size of the Cosmos-Reason2 backbone edit, 11 of 32; further edits: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
     "id": "side-effects",
@@ -470,13 +470,15 @@
     "label": "Random control, same size",
     "cells": {
      "cosmos": {
-      "v": "control 0, unedited 0, edit 42 of 48",
+      "v": "control 0, unedited 0, edit 56 of 64",
       "s": "ok",
       "d": "T8"
      },
      "groot": {
-      "v": "running",
-      "s": "running"
+      "v": "control 11, unedited 9, edit 0 of 32",
+      "s": "ok",
+      "d": "T1",
+      "prac": true
      },
      "pi05": {
       "v": "9 of 64",
@@ -1325,8 +1327,17 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "control 11, unedited 9, edit 0 of 32",
+       "s": "ok",
+       "d": "practice starts the edit was built from; slots 30000–30031",
+       "u": 9,
+       "r": 11,
+       "e": 0,
+       "n": 32,
+       "t": 16,
+       "prac": true,
+       "loc": "Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (VLM backbone)",
+       "fl": "T1, backbone edit (32 practice)"
       },
       "pi05": {
        "v": "control 9, unedited 13, edit 50 of 64",
@@ -1351,15 +1362,15 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "control 0, unedited 0, edit 42 of 48",
+       "v": "control 0, unedited 0, edit 56 of 64",
        "s": "ok",
-       "d": "the control ran on 48 of the 64 starts; slots 96000–96047; edit against control p = 4.5 × 10⁻¹³",
+       "d": "slots 96000–96063",
        "u": 0,
        "r": 0,
-       "e": 42,
-       "n": 48,
-       "sub": true,
-       "fl": "T8 Mustard, reference-first (48 unseen)"
+       "e": 56,
+       "n": 64,
+       "loc": "text pathway (und mlp.down_proj, layers 0-26)",
+       "fl": "T8 Mustard, reference-first (64 unseen)"
       },
       "groot": {
        "v": "running",
@@ -2488,29 +2499,29 @@
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 0 broke 0 p = 1; edit vs control p = 4.55e-13",
+    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 0 broke 0 p = 1; edit vs control p = 2.78e-17",
     "_task": "T8",
     "_edit_task": null,
     "_prov": false,
     "extra": {
      "machine": "ali-ms",
-     "control_n": 48,
+     "control_n": 64,
      "teacher_n": null,
      "edit_vs_control": {
-      "n": 48,
+      "n": 64,
       "ref_k": 0,
-      "cand_k": 42,
-      "fixed": 42,
+      "cand_k": 56,
+      "fixed": 56,
       "broke": 0,
-      "p": 4.547473508864641e-13,
+      "p": 2.7755575615628914e-17,
       "slots": [
        96000,
-       96047
+       96063
       ]
      },
      "control_slots": [
       96000,
-      96047
+      96063
      ],
      "teacher_slots": null
     }
@@ -3251,7 +3262,7 @@
       -0.125
      ]
     },
-    "control_k": null,
+    "control_k": 11,
     "teacher_k": 16,
     "recovery_pct": -128.57142857142858,
     "transfer": null,
@@ -3268,8 +3279,11 @@
     "_prov": false,
     "extra": {
      "machine": "ali-ms-rtx3090",
-     "control_fixed_broke": null,
-     "control_p": null
+     "control_fixed_broke": [
+      9,
+      7
+     ],
+     "control_p": 0.803619384765625
     }
    },
    {
@@ -6487,14 +6501,14 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "a6460422b07d"
+   "commit": "44e479fb609a"
   },
   "groot": {
    "kind": "branch",
    "branch": "cross-groot/v1",
    "path": "study/results/cross/metrics_groot.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-   "commit": "fe743133a9ed"
+   "commit": "f7a103db69ab"
   },
   "pi05": {
    "kind": "branch",
@@ -6505,8 +6519,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "73469e55df8d9b6f",
- "updated": "2026-11-08T09:15Z",
- "updated_text": "8 Nov 2026, 09:15 UTC",
+ "content_hash": "89a0ac8bf50e6045",
+ "updated": "2026-11-08T09:28Z",
+ "updated_text": "8 Nov 2026, 09:28 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
