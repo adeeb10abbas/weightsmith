@@ -37,6 +37,40 @@
   "experiment": "failure_map",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "MustardInLeftBinTask",
+  "code": "T5",
+  "wording_pair": [
+   "Put the mustard in the left bin"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 8,
+  "edited_k": null,
+  "fixed": null,
+  "broke": null,
+  "p": null,
+  "ci": {
+   "wilson95_pct": [
+    28.0,
+    72.0
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": null,
+  "values_changed": null,
+  "notes": "unedited policy, task's default instruction, practice slots, default render"
+ },
+ {
+  "experiment": "failure_map",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
   "task": "MustardRightOfRaisinRFTask",
   "code": "T8",
   "wording_pair": [
@@ -56,6 +90,40 @@
    "wilson95_pct": [
     0.0,
     19.4
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": null,
+  "values_changed": null,
+  "notes": "unedited policy, task's default instruction, practice slots, default render"
+ },
+ {
+  "experiment": "failure_map",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeTask",
+  "code": "R1",
+  "wording_pair": [
+   "Put the cube in the bowl"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 9,
+  "edited_k": null,
+  "fixed": null,
+  "broke": null,
+  "p": null,
+  "ci": {
+   "wilson95_pct": [
+    33.2,
+    76.9
    ]
   },
   "control_k": null,
@@ -274,6 +342,41 @@
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
   "notes": "edit t8und built for T8, run on T1 with T1's default instruction"
+ },
+ {
+  "experiment": "side_effect",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeTask",
+  "code": "R1",
+  "wording_pair": [
+   "Put the cube in the bowl"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 9,
+  "edited_k": 13,
+  "fixed": 6,
+  "broke": 2,
+  "p": 0.2890625,
+  "ci": {
+   "diff_pts": 25.0,
+   "bootstrap95_pts": [
+    -6.25,
+    56.25
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": 25.0,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+  "values_changed": 179010015,
+  "notes": "edit t8und built for T8, run on R1 with R1's default instruction"
  },
  {
   "experiment": "where_to_edit_offline",
