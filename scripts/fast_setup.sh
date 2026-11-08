@@ -81,6 +81,13 @@ stamp "downloading: lfs, openpi-env, sim-env, checkpoint (tail -f $LOG/*.log)"
 [ -f wsp.env ] || cp .env.example wsp.env
 grep -q '^CHECKPOINT_DIR=' wsp.env || scripts/setup_deps.sh --print-env \
   | sed -e "s#^CHECKPOINT_DIR=.*#CHECKPOINT_DIR=$CKPT#" -e "s#envs/robolab-sim/.venv#$SIM_ENV/.venv#" >> wsp.env
+# Isaac's RTX renderer needs the NVIDIA Vulkan ICD; containers put it in different places
+if ! grep -q '^WSP_VK_ICD=' wsp.env; then
+  for icd in /usr/share/vulkan/icd.d/nvidia_icd.json /etc/vulkan/icd.d/nvidia_icd.json; do
+    if [ -f "$icd" ]; then echo "WSP_VK_ICD=$icd" >> wsp.env; stamp "Vulkan ICD: $icd"; break; fi
+  done
+  grep -q '^WSP_VK_ICD=' wsp.env || stamp "WARNING: no NVIDIA Vulkan ICD found; Isaac will not render (set NVIDIA_DRIVER_CAPABILITIES=all)"
+fi
 wait "$p_openpi" "$p_ckpt"
 if [ -e "$LOG/checkpoint.failed" ] || [ -e "$LOG/openpi-env.failed" ]; then
   wait; die "openpi-env or checkpoint (see $LOG/)"
