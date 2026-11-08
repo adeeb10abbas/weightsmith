@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "a0235c8d16e2"
+    "commit": "d17c6a7a6506"
    }
   },
   {
@@ -372,8 +372,9 @@
     "label": "T6 Stack three cubes",
     "cells": {
      "cosmos": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 1 of 16",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "groot": {
       "v": "unedited 0 of 16",
@@ -674,8 +675,11 @@
      "label": "T6 Stack three cubes",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "1 of 16",
+       "s": "ok",
+       "d": "6%; slots 30000–30015",
+       "k": 1,
+       "n": 16
       },
       "groot": {
        "v": "0 of 16",
@@ -2539,6 +2543,45 @@
     "values_changed": null,
     "notes": "unedited policy, task's default instruction, practice slots, default render",
     "_task": "T5",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "Stack3RubiksCubeTask",
+    "code": "T6",
+    "wording_pair": [
+     "Stack the rubiks cubes in a tower"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 1,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      1.1,
+      28.3
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction, practice slots, default render",
+    "_task": "T6",
     "_edit_task": null,
     "_prov": false,
     "extra": {
@@ -7269,7 +7312,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "a0235c8d16e2"
+   "commit": "d17c6a7a6506"
   },
   "groot": {
    "kind": "branch",
@@ -7287,8 +7330,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "da217c546e1bda1f",
- "updated": "2026-11-08T12:23Z",
- "updated_text": "8 Nov 2026, 12:23 UTC",
+ "content_hash": "68f687725822167f",
+ "updated": "2026-11-08T12:30Z",
+ "updated_text": "8 Nov 2026, 12:30 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
