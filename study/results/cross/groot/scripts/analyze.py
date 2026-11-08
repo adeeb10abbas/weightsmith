@@ -151,6 +151,28 @@ def main():
                      "edit_location": None, "values_changed": None, "slots": c["slots"],
                      "notes": f"unedited model; default preset {c['cand_k']}/{c['n']} vs performance preset "
                               f"{c['ref_k']}/{c['n']} on the same slots; fixed = succeeds only under the default preset"})
+    # ---------------------------------------------------------------- adapter validation against NVIDIA's official path
+    val = sorted((G / "results/validation").glob("official-*.episode_results.jsonl"))
+    if val:
+        lines += ["", "## Adapter validation: NVIDIA's unmodified path (run_gr00t_server.py + RoboLab policies/gr00t/run.py)", "",
+                  "| Task | Official path | This adapter | Note |", "|---|---|---|---|"]
+    for f in val:
+        rs = [json.loads(l) for l in f.read_text().splitlines() if l.strip()]
+        task = rs[0]["task_name"]
+        k, n = sum(bool(r["success"]) for r in rs), len(rs)
+        tid = TID.get(task)
+        sm = G / "results/validation/smoke-bop-s0-default.json"
+        ours = runs.get(f"fm-{tid}") if tid else (json.loads(sm.read_text()) if sm.exists() else None)
+        ok = f"{rate(ours)[0]}/{rate(ours)[1]}" if ours else "-"
+        note = ("same 16 slots 0-15, default preset" if not tid else
+                "official path uses RoboLab's own starts (16 envs, one run), not the paired slots")
+        lines.append(f"| {task} | {k}/{n} | {ok} | {note} |")
+        recs.append({"experiment": "adapter_validation_official_path", "model": MODEL, "machine": "ali-ms-rtx3090",
+                     "task": f"{tid or '-'} {task}", "wording_pair": None, "n": n, "unedited_k": k, "edited_k": None,
+                     "fixed": None, "broke": None, "p": None, "ci": {"wilson95": list(wilson(k, n))}, "control_k": None,
+                     "teacher_k": None, "recovery_pct": None, "transfer": None, "retention": None, "edit_location": None,
+                     "values_changed": None, "slots": None,
+                     "notes": f"unmodified official server + RoboLab client, default preset, 16 envs; this adapter: {ok}; file {f.name}"})
     # ---------------------------------------------------------------- edits (practice, control, held-out, side effects)
     recs += edit_records(runs, lines)
     METRICS.write_text(json.dumps({"track": "B", "model": MODEL, "records": recs}, indent=1))

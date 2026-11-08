@@ -411,6 +411,62 @@
    "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T8 vs wd-T8-tf; the target-first wording does not rescue GR00T (0/32 under both; Cosmos3 Edge went 0 -> 15/16 under TF in Track A); under TF every episode grasps the mustard (RF: 10/32 never grasp it) but none ends with it right of the raisin box"
   },
   {
+   "experiment": "adapter_validation_official_path",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "- BananaOnPlateTask",
+   "wording_pair": null,
+   "n": 16,
+   "unedited_k": 16,
+   "edited_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null,
+   "ci": {
+    "wilson95": [
+     0.8063923194655636,
+     1.0
+    ]
+   },
+   "control_k": null,
+   "teacher_k": null,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": null,
+   "notes": "unmodified official server + RoboLab client, default preset, 16 envs; this adapter: 16/16; file official-bop16.episode_results.jsonl"
+  },
+  {
+   "experiment": "adapter_validation_official_path",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T7 PickUpGreenObjectTask",
+   "wording_pair": null,
+   "n": 16,
+   "unedited_k": 0,
+   "edited_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null,
+   "ci": {
+    "wilson95": [
+     0.0,
+     0.1936076805344364
+    ]
+   },
+   "control_k": null,
+   "teacher_k": null,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": null,
+   "notes": "unmodified official server + RoboLab client, default preset, 16 envs; this adapter: 0/32; file official-t7-16.episode_results.jsonl"
+  },
+  {
    "experiment": "wsp_edit_practice",
    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
    "machine": "ali-ms-rtx3090",
