@@ -42,20 +42,20 @@
   "wording_pair": [
    "Pick up the eye glasses"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 0,
+  "unedited_k": 2,
   "edited_k": null,
   "fixed": null,
   "broke": null,
   "p": null,
   "ci": {
    "wilson95_pct": [
-    0.0,
-    19.4
+    1.7,
+    20.1
    ]
   },
   "control_k": null,
