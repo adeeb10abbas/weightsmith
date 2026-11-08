@@ -351,3 +351,9 @@ wordings have 166 and 168 tokens, so the recipe fell back to `--align ps` (159 p
 failures (slots 30004-30009, replans 1-5; the unedited RF policy solved 0/16), the edit closes **11.1%** of the RF -> TF
 gap (5.76 -> 5.12 cm; 17 of 30 decisions end closer). Its random control closes 12.6%. The edit does no better than
 random directions of the same size. Offline only, as pre-registered.
+
+**`s1lund` in closed loop, practice 30000-30015.** RF unedited 1/16, **edited 4/16** (4 fixed / 1 broke, p = 0.38), random
+control 1/16, TF 7/16. Recovery: 50.0% of TF's paired gain. That meets the held-out criterion (at least 50%, and above
+the control), so the held-out runs on S1L 96032-96063 are queued (RF, edit, control and TF, two 16-start groups, GPU1).
+The fix is partial on practice: offline the edit lands within 0.6 cm of TF's actions, and in closed loop it recovers half
+of TF's successes.

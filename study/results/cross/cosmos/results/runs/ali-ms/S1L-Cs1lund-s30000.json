@@ -1,0 +1,486 @@
+{
+ "tag": "S1L-Cs1lund-s30000",
+ "machine": "ali-ms",
+ "gpu": 1,
+ "task": "RubiksCubeLeftOfBowlTask",
+ "prompt": "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
+ "edit": "edits/s1lund-ctl.pt",
+ "slots": [
+  30000,
+  30015
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 1,
+ "groups": [
+  {
+   "group": 1875,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 276.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.robolab/cosmosx-S1L-Cs1lund-s30000-g1875o0-1108-161024"
+  },
+  {
+   "group": 1875,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 270.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.robolab/cosmosx-S1L-Cs1lund-s30000-g1875o8-1108-161500"
+  }
+ ],
+ "server_load": {
+  "edit": {
+   "file": "edits/s1lund-ctl.pt",
+   "sha256_16": "8f2d944fc65b679e",
+   "params": {
+    "net.language_model.model.layers.0.mlp.down_proj.weight": {
+     "before": "1d39ef5603a6f978",
+     "after": "61ff4c1315e46036",
+     "rank": 70,
+     "stored_values": 788480,
+     "changed_values": 18711235,
+     "rel_fro": 0.25043084051059694
+    },
+    "net.language_model.model.layers.1.mlp.down_proj.weight": {
+     "before": "391726b0f6ce600d",
+     "after": "8ff9af7cdd8dc4bf",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 8245537,
+     "rel_fro": 0.003105574686234032
+    },
+    "net.language_model.model.layers.2.mlp.down_proj.weight": {
+     "before": "5f13aae5da43e3db",
+     "after": "425f60d150afc2bd",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 18745052,
+     "rel_fro": 0.46144797804043597
+    },
+    "net.language_model.model.layers.3.mlp.down_proj.weight": {
+     "before": "8b66d5174d9e3dd7",
+     "after": "c5791ed844a12f78",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 18082531,
+     "rel_fro": 0.08193022833321678
+    },
+    "net.language_model.model.layers.4.mlp.down_proj.weight": {
+     "before": "9db48a6f35258710",
+     "after": "acdef17a83458d45",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 16430229,
+     "rel_fro": 0.01885683900264599
+    },
+    "net.language_model.model.layers.5.mlp.down_proj.weight": {
+     "before": "0d51d74d0f8daac7",
+     "after": "dcff43bdd7711e96",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 18284482,
+     "rel_fro": 0.1251991579186297
+    },
+    "net.language_model.model.layers.6.mlp.down_proj.weight": {
+     "before": "5bd7035fb223095d",
+     "after": "a34045738bc65bff",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 17975142,
+     "rel_fro": 0.09556817354074913
+    },
+    "net.language_model.model.layers.7.mlp.down_proj.weight": {
+     "before": "ab727ad94296aef6",
+     "after": "918d0a2e49dfa87a",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 18667603,
+     "rel_fro": 0.2662894477896933
+    },
+    "net.language_model.model.layers.8.mlp.down_proj.weight": {
+     "before": "74cd2e356e4867ba",
+     "after": "26f6b9a08576f919",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 18639810,
+     "rel_fro": 0.24620143534927927
+    },
+    "net.language_model.model.layers.9.mlp.down_proj.weight": {
+     "before": "a0ed89101004e555",
+     "after": "465d262fe7046f38",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 18295231,
+     "rel_fro": 0.14443781436383665
+    },
+    "net.language_model.model.layers.10.mlp.down_proj.weight": {
+     "before": "bbd735403d342bf4",
+     "after": "1e0fa69d68d56ad7",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 17365234,
+     "rel_fro": 0.041763303196397566
+    },
+    "net.language_model.model.layers.11.mlp.down_proj.weight": {
+     "before": "36241a3cb268d490",
+     "after": "efe8e0fb28b53989",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 17708101,
+     "rel_fro": 0.05130635004191411
+    },
+    "net.language_model.model.layers.12.mlp.down_proj.weight": {
+     "before": "fc00fcc1d09fcbc5",
+     "after": "cd690f83fb25266c",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 14392210,
+     "rel_fro": 0.012121877802618081
+    },
+    "net.language_model.model.layers.13.mlp.down_proj.weight": {
+     "before": "efd7df5f28ff359e",
+     "after": "a560b79ba887a6b3",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 17116910,
+     "rel_fro": 0.030216405288946854
+    },
+    "net.language_model.model.layers.14.mlp.down_proj.weight": {
+     "before": "1eb21952024e720a",
+     "after": "928cbc0f40c93d47",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 10893783,
+     "rel_fro": 0.0037768383129763473
+    },
+    "net.language_model.model.layers.15.mlp.down_proj.weight": {
+     "before": "eabef15a9d45f5d4",
+     "after": "c83ecb830aa9909b",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 16612729,
+     "rel_fro": 0.018611075996705192
+    },
+    "net.language_model.model.layers.16.mlp.down_proj.weight": {
+     "before": "8fe1bfb53c7e12d4",
+     "after": "16cf906b143f4a3b",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 16482363,
+     "rel_fro": 0.017974944090230642
+    },
+    "net.language_model.model.layers.17.mlp.down_proj.weight": {
+     "before": "e7ea1d6f0204955d",
+     "after": "9953a96b4e584889",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 16204021,
+     "rel_fro": 0.015795809950685972
+    },
+    "net.language_model.model.layers.18.mlp.down_proj.weight": {
+     "before": "cbb9165c17c5be7a",
+     "after": "edf230755766a23b",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 15813292,
+     "rel_fro": 0.01355010756076991
+    },
+    "net.language_model.model.layers.19.mlp.down_proj.weight": {
+     "before": "6caa3f6d87e10535",
+     "after": "eb9b6ca2f6cfe21d",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 15609345,
+     "rel_fro": 0.012425344279324117
+    },
+    "net.language_model.model.layers.20.mlp.down_proj.weight": {
+     "before": "6c170ee596770496",
+     "after": "b4d05e0425c4f90e",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 15247621,
+     "rel_fro": 0.011188922707552668
+    },
+    "net.language_model.model.layers.21.mlp.down_proj.weight": {
+     "before": "482755ac9431f291",
+     "after": "e3932b9db03e8ffc",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 15251131,
+     "rel_fro": 0.011040580261795111
+    },
+    "net.language_model.model.layers.22.mlp.down_proj.weight": {
+     "before": "b87e6ef3147df623",
+     "after": "7914b750a4aa8f00",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 14764323,
+     "rel_fro": 0.00967076047377957
+    },
+    "net.language_model.model.layers.23.mlp.down_proj.weight": {
+     "before": "9e45ef6a40769b69",
+     "after": "e9f338e20ae80470",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 14311377,
+     "rel_fro": 0.008173048217723152
+    },
+    "net.language_model.model.layers.24.mlp.down_proj.weight": {
+     "before": "a0489b9b94a41f73",
+     "after": "047cd43bd0aa6d65",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 13533100,
+     "rel_fro": 0.006651617254579036
+    },
+    "net.language_model.model.layers.25.mlp.down_proj.weight": {
+     "before": "7409fd875211c58a",
+     "after": "208e6a5b982a1224",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 12780993,
+     "rel_fro": 0.005522578396709343
+    },
+    "net.language_model.model.layers.26.mlp.down_proj.weight": {
+     "before": "5b66551a9de57c3d",
+     "after": "7f8fee3a113d17d7",
+     "rank": 188,
+     "stored_values": 2117632,
+     "changed_values": 13541032,
+     "rel_fro": 0.006862949915542705
+    }
+   },
+   "stored_values": 55846912,
+   "changed_values": 429704417
+  },
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 20.5
+ },
+ "wait_lock_s": 262.3,
+ "gpu_s": 598.7,
+ "server_ready_s": 22.0,
+ "started": "2026-11-08 16:10:02",
+ "finished": "2026-11-08 16:20:01",
+ "rows": [
+  {
+   "slot": 30000,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30001,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30002,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30003,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30004,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30005,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30006,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30007,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 356,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Completed subtask 'rubiks_cube_left_of_bowl' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 30008,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30009,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30010,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30011,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30012,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30013,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30014,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30015,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/S1L-Cs1lund-s30000.obs/g1875o8/obs_r0_e7.npz"
+  }
+ ]
+}
