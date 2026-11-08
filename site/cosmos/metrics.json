@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "0f186cef6422"
+    "commit": "83ef66893a9b"
    }
   },
   {
@@ -316,9 +316,9 @@
     "label": "Yellow on red",
     "cells": {
      "cosmos": {
-      "v": "Mustard right of raisin box edit: 11 → 10 of 16",
+      "v": "Mustard right of raisin box edit: 24 → 22 of 32",
       "s": "ok",
-      "d": "2 / 3; p = 1"
+      "d": "4 / 6; p = 0.75"
      },
      "groot": {
       "v": "unedited 0 of 16",
@@ -2433,14 +2433,14 @@
      "label": "Yellow on red",
      "cells": {
       "cosmos": {
-       "v": "−1: 11 → 10 of 16",
+       "v": "−2: 24 → 22 of 32",
        "s": "ok",
-       "d": "2 / 3; p = 1; slots 96000–96015",
-       "delta": -1,
-       "a": 11,
-       "b": 10,
-       "n": 16,
-       "p": 1.0
+       "d": "4 / 6; p = 0.75; slots 96000–96031",
+       "delta": -2,
+       "a": 24,
+       "b": 22,
+       "n": 32,
+       "p": 0.75390625
       },
       "groot": {
        "v": "not run",
@@ -3782,21 +3782,21 @@
     "wording_pair": [
      "Stack the yellow block on the red block"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      96000,
-     96015
+     96031
     ],
-    "unedited_k": 11,
-    "edited_k": 10,
-    "fixed": 2,
-    "broke": 3,
-    "p": 1.0,
+    "unedited_k": 24,
+    "edited_k": 22,
+    "fixed": 4,
+    "broke": 6,
+    "p": 0.75390625,
     "ci": {
      "diff_pts": -6.25,
      "bootstrap95_pts": [
-      -31.25,
-      18.75
+      -25.0,
+      12.5
      ]
     },
     "control_k": null,
@@ -8365,7 +8365,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "0f186cef6422"
+   "commit": "83ef66893a9b"
   },
   "groot": {
    "kind": "branch",
@@ -8383,8 +8383,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "24bcbcdb70bb2d93",
- "updated": "2026-11-08T16:18Z",
- "updated_text": "8 Nov 2026, 16:18 UTC",
+ "content_hash": "cc011ac332a8d7c1",
+ "updated": "2026-11-08T16:30Z",
+ "updated_text": "8 Nov 2026, 16:30 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
