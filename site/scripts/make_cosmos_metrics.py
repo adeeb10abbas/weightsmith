@@ -2017,6 +2017,13 @@ def build_tables(P, cross):
     rc = {mid: row_cells(subset(cross.get(mid), False)) for mid in ORDER}   # shared-slot runs
     rcp = {mid: row_cells(subset(cross.get(mid), True)) for mid in ORDER}   # a track's earlier records
     cross_check(prov, rcp)
+    # fresh pi0.5 cells replace the earlier records only where they cover the same comparison: a where-to-edit with
+    # fewer places than the earlier one does not, nor does one sample size's detectable effect replace the whole curve
+    locs = lambda d: sum(k in d for k in ("backbone", "action", "both"))
+    if locs(rc["pi05"]["where"]) < locs(prov["where"]):
+        rc["pi05"]["where"] = {}
+    if "mde" in prov["noise"]:
+        rc["pi05"]["noise"].pop("mde", None)
     tables = []
     order = {t[0]: i for i, t in enumerate(TASKS)}
     rcell = render_cells(cross)
@@ -2100,9 +2107,23 @@ def summary_table(P, tables, cross, rc):
                 if mid == "pi05":
                     cell["d"] = "; ".join(x for x in (cell.get("d"), f"earlier record: {pi[tid]['v']}") if x)
             elif mid == "pi05":
-                cell = dict(pi[tid], prov=True)
-                if u:
-                    cell["d"] = "; ".join(x for x in (cell.get("d"), f"shared slots, unedited: {u['v']}") if x)
+                se = rc[mid]["side_effects"].get(tid) or {}
+                fresh_se = se.get("s") == "ok" and not se.get("target")
+                m_et = re.match(r"the ([TR]\d) edit", (rc[mid]["side_effects"].get("_edit") or {}).get("v") or "")
+                same = fresh_se and m_et and (pi[tid]["v"].startswith(f"{m_et.group(1)} edit")
+                                              or (tid == "R1" and f"{m_et.group(1)} edit" in (pi[tid].get("d") or "")))
+                if same:   # a fresh run of the same comparison replaces the earlier record, which moves to the detail
+                    cell = C(f"{m_et.group(1)} edit: {se['a']} → {se['b']} of {se['n']}" if tid != "R1" else
+                             f"{'kept' if se['b'] >= se['a'] else 'lowered'}: {se['a']} → {se['b']} of {se['n']}",
+                             "; ".join(x for x in (se.get("d", "").split("; slots")[0].replace("; practice starts", ""),
+                                                   f"earlier record: {pi[tid]['v']}") if x), prac=se.get("prac"))
+                else:
+                    cell = dict(pi[tid], prov=True)
+                    if u:
+                        cell["d"] = "; ".join(x for x in (cell.get("d"), f"shared slots, unedited: {u['v']}") if x)
+                    if fresh_se and m_et:
+                        cell["d"] = "; ".join(x for x in (cell.get("d"), f"shared slots, {m_et.group(1)} edit: "
+                                                          f"{se['a']} → {se['b']} of {se['n']}") if x)
             elif (rc[mid]["side_effects"].get(tid) or {}).get("s") == "ok" and not rc[mid]["side_effects"][tid].get("target"):
                 se = rc[mid]["side_effects"][tid]
                 m_et = re.match(r"the ([TR]\d) edit", (rc[mid]["side_effects"].get("_edit") or {}).get("v") or "")
@@ -3358,9 +3379,16 @@ def control_text(P, tables):
     lifted = [t for t in ("T2", "T3", "T4", "T5", "T6", "T7") if _ok(T["side_effects"].get(t, {}).get("pi05"), ("a", "b", "n", "delta"))
               and T["side_effects"][t]["pi05"].get("p") is not None and T["side_effects"][t]["pi05"]["p"] < SIG
               and T["side_effects"][t]["pi05"]["delta"] > 0]
-    s = (f"π0.5 is where the method comes from, and our control. In earlier runs, from other starts, the edit lifted "
-         f"{tn('T1')} from {e['base']} to {e['cand']} of {e['n']} unseen starts and {tn('T8')} from {s4['base']} to "
-         f"{s4['cand']} of {s4['n']}; a random edit of the same size scored {c['rand']} of {c['n']} on {tn('T1')}, "
+    fe, fr = T["edit_gain"].get("T1", {}).get("pi05"), T["random_control"].get("T1", {}).get("pi05")
+    fresh = ""
+    if _ok(fe) and not fe.get("prov"):   # this page's own starts first; the earlier runs follow as context
+        fresh = (f" From this page’s {fe['n']}{' practice' if fe.get('prac') else ' unseen'} starts, the edit lifted "
+                 f"{tn('T1')} from {fe['a']} to {fe['b']}"
+                 + (f"; a random edit of the same size scored {fr['r']}" if fr and fr.get("s") == "ok" and not fr.get("prov")
+                    and fr.get("r") is not None and fr.get("n") == fe["n"] else "") + ".")
+    s = (f"π0.5 is where the method comes from, and our control.{fresh} In earlier runs, from other starts, the edit "
+         f"lifted {tn('T1')} from {e['base']} to {e['cand']} of {e['n']} unseen starts and {tn('T8')} from {s4['base']} "
+         f"to {s4['cand']} of {s4['n']}; a random edit of the same size scored {c['rand']} of {c['n']} on {tn('T1')}, "
          f"against {c['base']} unedited.")
     if lifted:
         s += f" The {tn('T1')} edit also lifted {and_list(tn(t) for t in lifted)}."
@@ -5020,7 +5048,7 @@ def main():
     for r in sb["rows"]:
         c = r["cells"].get("pi05") or {}
         if c.get("d"):
-            c["d"] = re.sub(r"(?:^|; )shared slots, unedited: [^;]*", "", c["d"]) or None
+            c["d"] = re.sub(r"(?:^|; )shared slots, [^;]*", "", c["d"]) or None
     btxt = replace_region(btxt, "table:summary", table_html(sb, models))
     caps = dict(FIGS)
     for name in BRIEF_FIGS:

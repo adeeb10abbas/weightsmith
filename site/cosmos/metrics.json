@@ -9397,7 +9397,7 @@
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
  "content_hash": "6538184388b65307",
- "updated": "2026-11-08T20:46Z",
- "updated_text": "8 Nov 2026, 20:46 UTC",
+ "updated": "2026-11-08T20:50Z",
+ "updated_text": "8 Nov 2026, 20:50 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
