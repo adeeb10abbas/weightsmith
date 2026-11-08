@@ -584,27 +584,27 @@
   "wording_pair": [
    "Put the rubiks cube to the left of the bowl"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 4,
+  "unedited_k": 13,
   "edited_k": 0,
   "fixed": 0,
-  "broke": 4,
-  "p": 0.125,
+  "broke": 13,
+  "p": 0.000244140625,
   "ci": {
-   "diff_pts": -25.0,
+   "diff_pts": -40.62,
    "bootstrap95_pts": [
-    -50.0,
-    -6.25
+    -59.38,
+    -25.0
    ]
   },
   "control_k": null,
   "teacher_k": null,
   "recovery_pct": null,
-  "transfer": -25.0,
+  "transfer": -40.62,
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
