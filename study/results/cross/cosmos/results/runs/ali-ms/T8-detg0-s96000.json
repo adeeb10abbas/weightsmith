@@ -1,0 +1,263 @@
+{
+ "tag": "T8-detg0-s96000",
+ "machine": "ali-ms",
+ "gpu": 0,
+ "task": "MustardRightOfRaisinRFTask",
+ "prompt": null,
+ "edit": null,
+ "slots": [
+  96000,
+  96015
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 0,
+ "groups": [
+  {
+   "group": 6000,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 432.4,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.robolab/cosmosx-T8-detg0-s96000-g6000o0-1108-093542"
+  },
+  {
+   "group": 6000,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 426.4,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.robolab/cosmosx-T8-detg0-s96000-g6000o8-1108-094255"
+  }
+ ],
+ "server_load": {
+  "edit": null,
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 11.7
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 901.0,
+ "server_ready_s": 12.0,
+ "started": "2026-11-08 09:35:30",
+ "finished": "2026-11-08 09:50:31",
+ "rows": [
+  {
+   "slot": 96000,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96001,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96002,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96003,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96004,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96005,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96006,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96007,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 96008,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96009,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96010,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96011,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96012,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96013,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96014,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96015,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-detg0-s96000.obs/g6000o8/obs_r0_e7.npz"
+  }
+ ]
+}
