@@ -2588,7 +2588,7 @@ def where_sites(P, rc, tables):
     return out
 
 
-def dg_panel(m):
+def dg_panel(m, letters=True):
     """One model on the schematic: blocks A, B, C with real names, each edit tried there marked by its outcome."""
     W, x0, x1 = [], 30, 266
     W.append(_t(14, 20, m["name"], "dg-h") + _t(14, 38, m["sub"], "dg-s dg-mu"))
@@ -2600,8 +2600,8 @@ def dg_panel(m):
         rows = sum(len(s["rows"]) for s in blk["sites"]) or 1
         h = 30 + (16 if blk["detail"] else 0) + 21 * rows + 6
         tops[blk["let"]] = (y, h)
-        W.append(f'<rect x="{x0}" y="{y}" width="{x1 - x0}" height="{h}" rx="7" class="dg-blk"/>' + _letter(x0, y + 18, blk["let"])
-                 + _t(48, y + 23, blk["name"], "dg-b"))
+        W.append(f'<rect x="{x0}" y="{y}" width="{x1 - x0}" height="{h}" rx="7" class="dg-blk"/>'
+                 + (_letter(x0, y + 18, blk["let"]) if letters else "") + _t(48, y + 23, blk["name"], "dg-b"))
         yy = y + 23 + (17 if blk["detail"] else 0)
         if blk["detail"]:
             W.append(_t(48, yy, blk["detail"], "dg-s dg-mu"))
@@ -2638,6 +2638,30 @@ def dg_legend():
     items = "".join(f'<li><svg class="dg dg-key" viewBox="-8 -8 16 16" aria-hidden="true">{_mark(0, 0, k)}</svg>{esc(t)}</li>'
                     for k, t in OUTCOMES)
     return f'<ul class="dg-legend">{items}</ul>'
+
+
+def dg_blog_pi05(sites):
+    """The main post's figure (site/index.html, pasted there by hand): π0.5's panel in the post's own words."""
+    m = next(x for x in sites if x["id"] == "pi05")
+    pick = {"A": {"all VLM layers": "the full edit", "image cells only (0.16%)": "compact version (0.16%)"},
+            "B": {"closes the gripper early": "closes the gripper early"}, "C": {"least norm, no gate": "plain change"}}
+    names = {"A": ("vision-language model", "reads images and instruction"), "B": ("action expert", "attends to the VLM"),
+             "C": ("action head", "output projection")}
+    blocks = []
+    for b in m["blocks"]:
+        sites_ = [dict(s, rows=[(s["rows"][0][0], pick[b["let"]][s["rows"][0][1]])]) for s in b["sites"]
+                  if s["rows"][0][1] in pick[b["let"]]]
+        blocks.append(dict(b, name=names[b["let"]][0], detail=names[b["let"]][1], sites=sites_))
+    base = m["sub"].rsplit(" ", 1)[-1]
+    n = m["blocks"][0]["sites"][0]["rows"][0][0].split("/")[1]
+    mm = dict(m, id="wp", name="π0.5", sub=f"{n} new starts · original robot: {base}", blocks=blocks)
+    kinds = [k for k, _ in OUTCOMES if any(s["oc"] == k for b in blocks for s in b["sites"])]
+    words = {"fixed": "fixed", "partial": "partly fixed", "none": "no effect", "broke": "broke"}
+    legend = "".join(f'<li><svg class="dg dg-key" viewBox="-8 -8 16 16" aria-hidden="true">{_mark(0, 0, k)}</svg>'
+                     f'{words[k]}</li>' for k in kinds)
+    return (f'<figure class="fig dg-blog">\n      <ul class="dg-legend">{legend}</ul>\n      {dg_panel(mm, letters=False)}\n'
+            f'      <figcaption>The same fix, built into three parts of π0.5 and scored on {n} new starts: only in the '
+            f'vision-language model, where the instruction is read, did it fully work.</figcaption>\n    </figure>')
 
 
 def dg_groot(tables, cross):
