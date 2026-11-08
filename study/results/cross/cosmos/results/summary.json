@@ -251,6 +251,28 @@
    "k": 45,
    "n": 64
   },
+  "ali-ms/S1F-rf": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 0,
+   "n": 16
+  },
   "ali-ms/S1L-rf": {
    "slots": [
     30000,
@@ -3096,6 +3118,26 @@
     "gpu_s": 826.0,
     "started": "2026-11-08 08:26:48",
     "finished": "2026-11-08 08:40:34"
+   }
+  ],
+  "ali-ms/S1F-rf": [
+   {
+    "tag": "S1F-rf-s30000",
+    "task": "RubiksCubeInFrontOfBowlTask",
+    "prompt": "Move the rubiks cube on the table so that the bowl is behind the rubiks cube.",
+    "edit": null,
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 0,
+    "gpu_s": 590.7,
+    "started": "2026-11-08 15:40:49",
+    "finished": "2026-11-08 15:50:40"
    }
   ],
   "ali-ms/S1L-rf": [
