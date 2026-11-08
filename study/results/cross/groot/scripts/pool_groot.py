@@ -114,6 +114,7 @@ def main():
     ap.add_argument("--video-groups", type=int, default=1, help="record sensor video in the first N groups (5%% budget)")
     ap.add_argument("--rendering", default="performance", choices=["performance", "balanced", "quality", "default"],
                     help="RoboLab --rendering-type preset ('default' = unset, IsaacLab's fallback)")
+    ap.add_argument("--max-batch", type=int, default=0, help="server micro-batch size (0 = whole request)")
     ap.add_argument("--arm", default=None, help="arm name for the video folder (default: tag)")
     ap.add_argument("--record-obs", action="store_true", help="save every request and chunk (OWSP_OBS_DIR)")
     a = ap.parse_args()
@@ -129,10 +130,11 @@ def main():
     t_lock = time.time()
     signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))
     env = os.environ.copy()
-    env.update(CUDA_VISIBLE_DEVICES=str(a.gpu), PYTHONUNBUFFERED="1", TOKENIZERS_PARALLELISM="false")
+    env.update(CUDA_VISIBLE_DEVICES=str(a.gpu), PYTHONUNBUFFERED="1", TOKENIZERS_PARALLELISM="false",
+               PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True")
     slog = out / f"{a.tag}.server.log"
     cmd = [str(GROOT_PY), str(SRC / "adapters/groot_server.py"), "--port", str(a.port),
-           "--calls-log", str(out / f"{a.tag}.calls.jsonl")]
+           "--calls-log", str(out / f"{a.tag}.calls.jsonl"), "--max-batch", str(a.max_batch)]
     if a.edit:
         cmd += ["--edit", a.edit]
     server = subprocess.Popen(cmd, cwd=str(WS), env=env, stdout=open(slog, "w"), stderr=subprocess.STDOUT)
@@ -169,7 +171,7 @@ def main():
     load = [l for l in text if l.startswith("loaded ")]
     edit = [l for l in text if l.startswith("edit ")]
     summary = {"tag": a.tag, "task": a.task, "prompt": a.prompt, "edit": a.edit, "slots": [slots[0], slots[-1]],
-               "envs": a.envs, "env_seed": ENV_SEED, "rendering": a.rendering, "groups": groups, "n": len(rows), "completed": len(ok),
+               "envs": a.envs, "env_seed": ENV_SEED, "rendering": a.rendering, "max_batch": a.max_batch, "groups": groups, "n": len(rows), "completed": len(ok),
                "success": sum(r["success"] for r in ok), "error": err, "procs": procs,
                "server_load": json.loads(load[0][7:]) if load else None,
                "edit_report": json.loads(edit[0][5:]) if edit else None,

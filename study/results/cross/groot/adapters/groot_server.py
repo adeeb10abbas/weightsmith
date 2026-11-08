@@ -27,6 +27,7 @@ import time
 import types
 from pathlib import Path
 
+import numpy as np
 import torch
 
 _SEEDS: contextvars.ContextVar = contextvars.ContextVar("wsp_seeds", default=None)
@@ -128,21 +129,34 @@ def load_policy(ckpt: str = DEFAULT_CKPT, device: str = "cuda", edit: str | None
 class SeededPolicy:
     """Wraps the sim policy: pops ``seeds`` from options into the noise context, logs calls."""
 
-    def __init__(self, sim_policy, log_path: str | None):
+    def __init__(self, sim_policy, log_path: str | None, max_batch: int = 0):
         self.p = sim_policy
         self.log = open(log_path, "a") if log_path else None
+        self.max_batch = int(max_batch)
+
+    def _one(self, observation, seeds):
+        tok = _SEEDS.set(list(seeds) if seeds is not None else None)
+        try:
+            return self.p.get_action(observation, None)
+        finally:
+            _SEEDS.reset(tok)
 
     def get_action(self, observation, options=None):
         seeds = (options or {}).get("seeds")
         t0 = time.time()
-        tok = _SEEDS.set(list(seeds) if seeds is not None else None)
-        try:
-            act, info = self.p.get_action(observation, None)
-        finally:
-            _SEEDS.reset(tok)
+        b = len(observation["annotation.language.language_instruction"])
+        mb = self.max_batch if self.max_batch > 0 else b
+        if b <= mb:
+            act, info = self._one(observation, seeds)
+        else:  # micro-batches: same per-sample seeds, so the same chunks as one batch up to GPU numerics
+            parts = []
+            for i in range(0, b, mb):
+                sub = {k: v[i:i + mb] for k, v in observation.items()}
+                parts.append(self._one(sub, seeds[i:i + mb] if seeds is not None else None)[0])
+            act = {k: np.concatenate([p_[k] for p_ in parts], axis=0) for k in parts[0]}
+            info = {}
         dt = time.time() - t0
         if self.log:
-            b = len(observation["annotation.language.language_instruction"])
             self.log.write(json.dumps({"t": round(t0, 3), "b": b, "s": round(dt, 4),
                                        "seed0": (seeds[0] if seeds else None)}) + "\n")
             self.log.flush()
@@ -159,6 +173,7 @@ def main():
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--edit", default=None)
     ap.add_argument("--calls-log", default=None)
+    ap.add_argument("--max-batch", type=int, default=0, help="split requests into micro-batches (memory)")
     a = ap.parse_args()
     from gr00t.policy.server_client import PolicyServer
     base, sim, report = load_policy(a.ckpt, "cuda", a.edit)
@@ -168,7 +183,7 @@ def main():
     print("loaded " + json.dumps(info), flush=True)
     if report:
         print("edit " + json.dumps(report), flush=True)
-    pol = SeededPolicy(sim, a.calls_log)
+    pol = SeededPolicy(sim, a.calls_log, a.max_batch)
     server = PolicyServer(policy=pol, host=a.host, port=a.port)
     server.register_endpoint("info", lambda: info, requires_input=False)
     print(f"Server is ready and listening on tcp://{a.host}:{a.port}", flush=True)

@@ -13,7 +13,7 @@ once measured. Track A (Cosmos3 Edge) and Track C (π0.5 control) run the same t
 | Code | Isaac-GR00T `9fbe86a` (main, 2026-11-07) in its own venv (`uv sync --python 3.12`, torch 2.9.0+cu128) |
 | Embodiment tag | `OXE_DROID_RELATIVE_EEF_RELATIVE_JOINT` (the validated RoboLab setting) |
 | RoboLab | weightsmith's pinned checkout (v0.2.1 `0aef241` + 6 weightsmith patches), Isaac Sim 5.0; its `policies/gr00t/client.py` is NVIDIA's validated N1.7 client and matches upstream main except for instruction-type plumbing |
-| Host / GPU | ali-ms, GPU0 (RTX 3090 24 GB): GR00T server (8.1 GB) and one Isaac process with **16 envs** (21.8 GB total) |
+| Host / GPU | ali-ms, GPU0 (RTX 3090 24 GB): GR00T server (about 7.4 GB, micro-batches of 4) and one Isaac process with **16 envs** (15.6 GB, default renderer preset) |
 | Control | 15 Hz; open-loop horizon 8 (8 of 40 predicted rows executed per replan, the validated setting) |
 | Seeds | RoboLab environment seed 0; slot s = 16·g + env, g = sampling-seed group; every 16-slot group is the first and only run of a fresh simulator process; noise seed of env e at replan k in group g = ((g·64)+e)·100+k (as weightsmith's π0.5 client) |
 | Practice / failure-map slots | 30000–30031 (shared with Tracks A and C) |
@@ -49,11 +49,27 @@ Seeded-noise checks (server, synthetic inputs): equal seeds give identical chunk
 only that sample; the same sample in a batch of 1 and a batch of 3 differs by at most 0.01 rad (GPU batch numerics).
 Batched latency: 0.78–0.85 s for 16 envs; peak server memory 8.1 GB.
 
-## Validation against NVIDIA's published baseline (in progress)
+## Validation against NVIDIA's published baseline: the renderer preset
 
-NVIDIA reports 40/40 on `BananaOnPlateTask` for this checkpoint in RoboLab (Isaac-GR00T `examples/RoboLab`). The first
-smoke test of this adapter (slots 0–15, performance rendering preset, 16 envs) scored **5/16**. Failures: 11 of 16 never
-grasp the banana (`object_grabbed` not satisfied); in the recorded chunks the commanded gripper flickers between open
-and closed within chunks while the measured gripper stays below 0.11. Being checked: the unmodified official server
-(`run_gr00t_server.py --use-sim-policy-wrapper`) with RoboLab's serial `policies/gr00t/run.py` and the default
-rendering preset on the same task.
+NVIDIA reports 40/40 on `BananaOnPlateTask` for this checkpoint in RoboLab (Isaac-GR00T `examples/RoboLab`). Three runs on
+the same 16 starts (slots 0–15, 16 envs, environment seed 0):
+
+| Run | Server / client | Renderer preset | Success | Successful episodes end at |
+|---|---|---|---|---|
+| this adapter | `groot_server.py` + batched client | `--rendering-type performance` (weightsmith's setting, used by Tracks A and C) | **5/16** | steps 309–502 |
+| NVIDIA's official path | unmodified `run_gr00t_server.py --use-sim-policy-wrapper` + RoboLab `policies/gr00t/run.py` (serial) | default (unset) | **16/16** | steps 127–167 |
+| this adapter | `groot_server.py` + batched client (server micro-batch 4) | default (unset) | **16/16** | steps 126–151 (one at 384) |
+
+The adapter reproduces the official path; the gap is the renderer preset. The `performance` preset renders without the
+RTX denoiser, so every surface carries heavy speckle noise (below: the first frame of slot 0, exterior and wrist
+cameras, performance on top, default below). GR00T N1.7 DROID loses most grasps under that noise (11/16 never grasp the
+banana; the commanded gripper flickers within chunks while the measured gripper stays below 0.11); π0.5 had tolerated
+it in the weightsmith runs. **All Track B evaluations therefore use the default preset**, NVIDIA's validated
+configuration, with the shared slots, environment seed and process scheme; this differs from Tracks A and C, which use
+`performance`. The default preset needs 15.6 GB for 16 Isaac envs, so the server splits each request into micro-batches
+of 4 (same per-slot seeds; the action chunks are the same up to GPU numerics).
+
+![Renderer presets](plots/validation_render_preset_step0.png)
+
+Raw files: `results/validation/smoke-bop-s0.json` (performance), `results/validation/official-bop16.episode_results.jsonl`
+(official path), `results/validation/smoke-bop-s0-default.json` (adapter, default preset).
