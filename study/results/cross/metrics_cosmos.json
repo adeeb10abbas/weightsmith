@@ -837,21 +837,21 @@
   "wording_pair": [
    "Stack the yellow block on the red block"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    96000,
-   96015
+   96031
   ],
-  "unedited_k": 11,
-  "edited_k": 10,
-  "fixed": 2,
-  "broke": 3,
-  "p": 1.0,
+  "unedited_k": 24,
+  "edited_k": 22,
+  "fixed": 4,
+  "broke": 6,
+  "p": 0.75390625,
   "ci": {
    "diff_pts": -6.25,
    "bootstrap95_pts": [
-    -31.25,
-    18.75
+    -25.0,
+    12.5
    ]
   },
   "control_k": null,
