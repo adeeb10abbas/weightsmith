@@ -109,8 +109,9 @@ MODELS = {
               "bidirectional attention, so the image tokens read the instruction. The distilled edit goes into the "
               "VLM's MLP weights.",
         where="VLM / action expert / action head",
-        evaluation="Closed loop on RoboLab in Isaac Sim. Until its shared-slot runs land, its cells are earlier records, "
-                   "each labelled with its own slots and number of starts. Trained on DROID data and none of these tasks.",
+        evaluation="Closed loop on RoboLab in Isaac Sim. Until its shared-slot runs land, its cells are earlier records "
+                   "(RTX 3090, performance render preset), each tagged with its own slots and number of starts. Trained on "
+                   "DROID data and none of these tasks.",
     ),
 }
 

@@ -58,7 +58,7 @@
 </head>
 <body data-fit="1">
 <div class="page">
-  <p class="kicker"><!-- gen:stamp -->Draft for discussion · Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records · 8 Nov 2026, 05:27 UTC<!-- /gen:stamp --></p>
+  <p class="kicker"><!-- gen:stamp -->Draft for discussion · Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records · 8 Nov 2026, 05:30 UTC<!-- /gen:stamp --></p>
   <h1>Where does weight-space programming fix failures?</h1>
   <p class="subtitle">NVIDIA Cosmos3 Edge Policy (world-action model) and NVIDIA GR00T N1.7 DROID (VLA on a Cosmos-Reason2-2B backbone), with OpenPI π0.5 as the control, on the same RoboLab DROID tasks T1–T8 and a retention task R1.</p>
   <div class="top"><ul class="lines"><!-- gen:summary-lines --><li><b>Method.</b> When a clearer wording of the same goal makes a robot model succeed, copy that wording's internal effect into the weights in closed form, one least-squares solve per layer: no training, and the instruction stays the same.</li><li><b>π0.5, the control (earlier records).</b> Distillation fixed its two language failures: T1 27 → 106 of 128 unseen starts (81 fixed, 2 broke, p = 7.2 × 10⁻²²) and T8 0 → 27 of 64; a random edit of the same size did nothing (9 vs 13 of 64); the T1 edit also lifted T2 and T3; no edit helped T4–T7.</li><li><b>NVIDIA models.</b> Cosmos3 Edge Policy: running; GR00T N1.7: running. First finding: GR00T N1.7 succeeded on 5 of 16 starts under RoboLab's performance render preset and 16 of 16 under the default preset, so all three are compared under the default. Same tasks, slots, metrics and statistics; this brief refreshes as runs finish.</li><!-- /gen:summary-lines --></ul><!-- gen:gif --><!-- /gen:gif --></div>

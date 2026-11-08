@@ -50,7 +50,7 @@
    "architecture": "An 18-layer PaliGemma vision-language model (VLM) and an 18-layer Gemma action expert. The action expert attends to the VLM's keys and values and produces 15-step action chunks, including a gripper command, by flow matching.",
    "entry": "As text tokens in the VLM, together with image tokens from two cameras and robot-state tokens, under bidirectional attention, so the image tokens read the instruction. The distilled edit goes into the VLM's MLP weights.",
    "where": "VLM / action expert / action head",
-   "evaluation": "Closed loop on RoboLab in Isaac Sim. Until its shared-slot runs land, its cells are earlier records, each labelled with its own slots and number of starts. Trained on DROID data and none of these tasks.",
+   "evaluation": "Closed loop on RoboLab in Isaac Sim. Until its shared-slot runs land, its cells are earlier records (RTX 3090, performance render preset), each tagged with its own slots and number of starts. Trained on DROID data and none of these tasks.",
    "source": {
     "kind": "branch",
     "branch": "cross-pi05/v1",
@@ -4114,8 +4114,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "12f8dc4b15841d00",
- "updated": "2026-11-08T05:27Z",
- "updated_text": "8 Nov 2026, 05:27 UTC",
+ "content_hash": "2f7f85fa31881a5f",
+ "updated": "2026-11-08T05:30Z",
+ "updated_text": "8 Nov 2026, 05:30 UTC",
  "status_text": "Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records"
 }
