@@ -912,6 +912,12 @@ def slot_kind(r):
     return " unseen" if lo is not None and lo >= 96000 else " practice" if lo is not None and 30000 <= lo < 30032 else ""
 
 
+def loc_short(loc):
+    """'text pathway', 'VLM backbone', 'diffusion transformer': the shorter of a location's name and its gloss."""
+    m = re.match(r"\s*(.*?)\s*\((.*)\)\s*$", loc or "")
+    return min((m.group(1), m.group(2)), key=len) if m else (loc or "")
+
+
 def is_practice(r):
     """An edit scored on the practice slots (the starts it was built from), or named so by its record."""
     return slot_kind(r) == " practice" or "practice" in nk(describe(r.get("experiment")) or "")
@@ -1029,8 +1035,8 @@ def row_cells(src):
                                                                where_txt(rr)) if x) or None,
                                          u=ic["unedited_k"], r=ic["control_k"], e=ic["edited_k"], n=ic["n"],
                                          t=ic["teacher_k"], prac=pc or None, loc=describe(rr.get("edit_location")),
-                                         fl=(f"{tid}, {loc_class(describe(rr.get('edit_location')))} edit" if alts and
-                                             loc_class(describe(rr.get("edit_location"))) else f"{tid} {SHORT[tid]}")
+                                         fl=(f"{tid}, {loc_short(describe(rr.get('edit_location')))} edit" if alts
+                                             and rr.get("edit_location") else f"{tid} {SHORT[tid]}")
                                          + (f" ({ic['n']}{slot_kind(rr) or (' practice' if pc else '')})"
                                             if ic["n"] else ""))
         rt = next((x for x in ed if as_float(x.get("recovery_pct")) is not None
@@ -1156,9 +1162,13 @@ def row_cells(src):
     locs = [r for r in locs if "where" in nk(describe(r.get("experiment")) or "")] or locs
     locs.sort(key=is_practice)
     if locs:
-        t0 = locs[0]["_task"]
-        same = [r for r in locs if r["_task"] == t0 and as_int(r.get("n")) == as_int(locs[0].get("n"))
-                and describe(r.get("slots")) == describe(locs[0].get("slots"))]
+        # compare locations on the same starts: the (task, n, slots) group that tried the most locations, unseen first
+        groups = {}
+        for r in locs:
+            groups.setdefault((r["_task"], as_int(r.get("n")), describe(r.get("slots"))), []).append(r)
+        same = max(groups.values(), key=lambda g: (len({loc_class(describe(x.get("edit_location"))) for x in g}),
+                                                   not is_practice(g[0])))
+        t0 = same[0]["_task"]
         n0 = as_int(same[0].get("n"))
         T["where"]["starts"] = C(f"{t0}, {n0}{slot_kind(same[0]) or (' practice' if is_practice(same[0]) else '')} starts"
                                  if n0 else t0,
@@ -2771,12 +2781,17 @@ def conclusion_html(tables, models):
                             if r0.get("sub") else
                             f", where a random edit of the same size reaches {r0['r']}")
                            if r0 and r0.get("s") == "ok" and r0.get("r") is not None else ""))
+        for tid, c in e:   # the same distillation written into another part of the model
+            for x in c.get("alts") or []:
+                if x.get("b") is not None and x.get("n"):
+                    bits.append(f"written into {loc_name(mid, x['loc'])} instead, the same distillation scores {x['b']} "
+                                f"of {x['n']}{' practice' if x.get('prac') else ''} starts (unedited {x['a']})")
         # side effects that cleared the bar: off-target tasks the edit lifted or lowered (exact McNemar p < SIG)
         se = [(r["key"], r["cells"].get(mid)) for r in T["side_effects"]["rows"]]
         se = [(k, c) for k, c in se if c and c.get("s") == "ok" and not c.get("target") and c.get("p") is not None
               and c["p"] < SIG and c.get("delta")]
         if se and e:
-            bits.append("run unchanged on other tasks, it " + and_list(
+            bits.append(f"run unchanged on other tasks, the {e[0][0]} edit " + and_list(
                 f"{'lifts' if c['delta'] > 0 else 'lowers'} {k} from {c['a']} to {c['b']} of {c['n']}"
                 + (" practice starts" if c.get("prac") else "") + f" (p\u00a0=\u00a0{fp(c['p'])})" for k, c in se))
         if not bits:
