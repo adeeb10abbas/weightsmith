@@ -487,9 +487,12 @@
      -0.125
     ]
    },
-   "control_k": null,
-   "control_fixed_broke": null,
-   "control_p": null,
+   "control_k": 11,
+   "control_fixed_broke": [
+    9,
+    7
+   ],
+   "control_p": 0.803619384765625,
    "teacher_k": 16,
    "recovery_pct": -128.57142857142858,
    "transfer": null,
