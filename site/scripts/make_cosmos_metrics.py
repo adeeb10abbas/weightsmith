@@ -3,7 +3,11 @@
 
     python3 site/scripts/make_cosmos_metrics.py            # fetch the three cross-model branches, rebuild all outputs
     python3 site/scripts/make_cosmos_metrics.py --no-fetch # use the remote-tracking refs as they are
-    python3 site/scripts/make_cosmos_metrics.py --cosmos a.json --groot b.json --pi05 c.json   # local files instead
+    python3 site/scripts/make_cosmos_metrics.py --cosmos a.json --out /tmp/site-test  # test records: a copy of site/
+
+Test records (--cosmos / --groot / --pi05 files) need --out DIR: every output then goes to a fresh copy of site/ there,
+never to site/cosmos. The "updated" stamp moves only when a source branch moved and a number the page shows changed,
+both against the committed metrics.json (HEAD; numbers_hash); --set-updated resets it by hand.
 
 The page asks where weight-space programming fixes failures in a world-action model (NVIDIA Cosmos3 Edge Policy) and
 in a VLA on a reasoning backbone (NVIDIA GR00T N1.7 DROID, Cosmos-Reason2-2B), with OpenPI pi0.5 as the control, on
@@ -4843,6 +4847,33 @@ def conclusion_html(tables, models, prevent=None):
     return "".join(out)
 
 
+def numbers_hash(data):
+    """A hash of every number the page's tables show (cell values and details, by table, row and model), the TL;DR
+    and the generated paragraphs' numbers; wording changes in the code do not change it, new or changed numbers do."""
+    nums = []
+
+    def cells(prefix, rows, key="key"):
+        for r in rows:
+            for m, c in (r.get("cells") or {}).items():
+                if isinstance(c, dict):
+                    for f in ("v", "d"):
+                        nums.append((prefix, str(r.get(key)), m, f, re.findall(r"\d+(?:\.\d+)?", str(c.get(f) or ""))))
+    for t in data["tables"] + [data["summary"]]:
+        cells(t["id"], t["rows"])
+    cells("prevention", (data.get("prevention") or {}).get("rows") or [], "name")
+    cells("second", (data.get("second_edit") or {}).get("rows") or [], "name")
+    nums.append(("tldr", re.findall(r"\d+(?:\.\d+)?", json.dumps(data.get("tldr"), ensure_ascii=False))))
+    return hashlib.sha256(json.dumps(nums, ensure_ascii=False).encode()).hexdigest()[:16]
+
+
+def rel(path):
+    """A path for messages: relative to the repository when inside it (a test copy under --out may not be)."""
+    try:
+        return Path(path).resolve().relative_to(ROOT)
+    except ValueError:
+        return path
+
+
 def print_pdf(src_html, pdf):
     """Print brief.html to one Letter page: step down the zoom (body data-fit 0-3) until it fits."""
     if not Path(CHROME).exists():
@@ -4866,7 +4897,7 @@ def print_pdf(src_html, pdf):
             if pages == 1:
                 break
         shutil.copyfile(tmp, pdf)
-        print(f"wrote {pdf.relative_to(ROOT)} ({pages} page{'s' if pages != 1 else ''}, zoom step {fit}, {len(b) // 1024} KB)")
+        print(f"wrote {rel(pdf)} ({pages} page{'s' if pages != 1 else ''}, zoom step {fit}, {len(b) // 1024} KB)")
         if pages != 1:
             print("  WARNING: the brief does not fit one page even at the smallest zoom; shorten brief.html")
 
@@ -4881,7 +4912,25 @@ def main():
     ap.add_argument("--no-figures", action="store_true")
     ap.add_argument("--no-pdf", action="store_true")
     ap.add_argument("--force", action="store_true", help="print the PDF even if nothing changed")
+    ap.add_argument("--out", help="write everything into a fresh copy of site/ at this directory (videos linked), never "
+                                  "into site/cosmos; required with --cosmos / --groot / --pi05, so test records can never "
+                                  "touch the committed outputs or the updated stamp")
+    ap.add_argument("--set-updated", help="set the updated stamp (YYYY-MM-DDTHH:MMZ), to reset it to the last real data "
+                                          "change")
     args = ap.parse_args()
+    global OUT, FIG, VID
+    if (args.cosmos or args.groot or args.pi05) and not args.out:
+        ap.error("local record files are for tests: pass --out DIR so the committed outputs stay untouched")
+    if args.out:
+        dst = Path(args.out).resolve()
+        site = (ROOT / "site").resolve()
+        if dst == site or site in dst.parents or dst in site.parents:
+            ap.error("--out must be outside site/")
+        shutil.rmtree(dst, ignore_errors=True)
+        shutil.copytree(site, dst, ignore=shutil.ignore_patterns("video"))
+        (dst / "cosmos" / "video").symlink_to(site / "cosmos" / "video")
+        OUT, FIG, VID = dst / "cosmos", dst / "cosmos" / "fig", dst / "cosmos" / "video"
+        print(f"  test run: every output goes to {dst}")
 
     if not args.no_fetch:
         for _, branch, _ in SOURCES:
@@ -4973,18 +5022,31 @@ def main():
     changed = old.get("content_hash") != h
     now = dt.datetime.now(dt.timezone.utc)
     data["content_hash"] = h
-    data["updated"] = old["updated"] if (not changed and old.get("updated")) else now.strftime("%Y-%m-%dT%H:%MZ")
+    # The "updated" stamp says when the data last changed: it moves only when a source branch moved AND a number the
+    # page shows changed, both against the committed outputs (HEAD), so a code change, a rerun or a test cannot move it.
+    head = git("show", "HEAD:site/cosmos/metrics.json")
+    try:
+        ref = json.loads(head) if head else old
+    except ValueError:
+        ref = old
+    nh = numbers_hash(data)
+    commits = {m: (data["sources"].get(m) or {}).get("commit") for m in ORDER}
+    ref_commits = {m: ((ref.get("sources") or {}).get(m) or {}).get("commit") for m in ORDER}
+    moved = ref.get("numbers_hash") is not None and nh != ref.get("numbers_hash") and commits != ref_commits
+    data["numbers_hash"] = nh
+    data["updated"] = (args.set_updated or (now.strftime("%Y-%m-%dT%H:%MZ") if moved or not ref.get("updated")
+                                            else ref["updated"]))
     upd = dt.datetime.strptime(data["updated"], "%Y-%m-%dT%H:%MZ")
     data["updated_text"] = f"{upd.day} {upd:%b %Y}, {upd:%H:%M} UTC"
     data["status_text"] = " · ".join(f"{models[m]['name']}: {STATUS[models[m]['status']]}" for m in ORDER)
     mpath.write_text(json.dumps(data, indent=1, ensure_ascii=False) + "\n")
-    print(f"wrote {mpath.relative_to(ROOT)} ({'changed' if changed else 'unchanged'}, {h})")
+    print(f"wrote {rel(mpath)} ({'changed' if changed else 'unchanged'}, {h})")
 
     if args.no_figures:
         alts = {n: c for n, c in FIGS}
     else:
         alts = draw_figures(dename_deep(tables), models)
-        print(f"checked {len(FIGS) * 4 + len(BRIEF_FIGS)} figure files in {FIG.relative_to(ROOT)}/")
+        print(f"checked {len(FIGS) * 4 + len(BRIEF_FIGS)} figure files in {rel(FIG)}/")
 
     idx = OUT / "index.html"
     page = replace_region(page, "tldr", tldr_html(data["tldr"]))
@@ -5036,7 +5098,7 @@ def main():
     page = (dename(page[:keep.start()]) + keep.group(0) + dename(page[keep.end():])) if keep else dename(page)
     idx.write_text(page)
     print(f"  {nfig} numbered figures and clips; {words:,} words, {mins} min read")
-    print(f"wrote {idx.relative_to(ROOT)}")
+    print(f"wrote {rel(idx)}")
 
     br = OUT / "brief.html"
     btxt = old_brief = br.read_text()
@@ -5055,7 +5117,7 @@ def main():
         btxt = replace_region(btxt, f"fig:{name}", figure_html(name, alts[name], caps[name], pdf=True))
     btxt = dename(btxt)
     br.write_text(btxt)
-    print(f"wrote {br.relative_to(ROOT)}")
+    print(f"wrote {rel(br)}")
 
     pdf = OUT / "weightsmith-cosmos-brief.pdf"
     inputs_changed = btxt != old_brief or any(n.startswith("brief") for n in CHANGED)

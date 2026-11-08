@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "4434c0490c88"
+    "commit": "f65d83a8a5a0"
    }
   },
   {
@@ -58,9 +58,9 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "21ff6211daf0"
+    "commit": "3b5654be1478"
    },
-   "fig_short": "control · 4 of 9 cells from earlier runs"
+   "fig_short": "control · 3 of 9 cells from earlier runs"
   }
  ],
  "tasks": [
@@ -294,7 +294,7 @@
      "pi05": {
       "v": "Cube then banana edit: 22 → 44 of 64",
       "s": "ok",
-      "d": "own edit 18 → 27 of 64, not significant",
+      "d": "own edit 18 → 27 of 64, not significant; shared slots, unedited: 7 of 16",
       "prov": true
      }
     }
@@ -1275,12 +1275,11 @@
        "n": 32
       },
       "pi05": {
-       "v": "18 of 64",
+       "v": "7 of 16",
        "s": "ok",
-       "d": "28%; slots 91008–91071; grasps one temple arm and lifts too little",
-       "k": 18,
-       "n": 64,
-       "prov": true
+       "d": "44%; slots 30000–30015; earlier slots: 18 of 64",
+       "k": 7,
+       "n": 16
       }
      }
     },
@@ -9075,6 +9074,72 @@
    {
     "experiment": "failure_map",
     "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "PickGlassesTask",
+    "code": "T2",
+    "wording_pair": [
+     "Pick up the eye glasses"
+    ],
+    "slots": [
+     30000,
+     30015
+    ],
+    "n": 16,
+    "unedited_k": 7,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      23.1,
+      66.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited pi0.5, task's default instruction, practice slots, default render preset; every 16-slot group the first and only run of a fresh Isaac process",
+    "_ptask": null,
+    "_task": "T2",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": null,
+     "values_changed_note": null,
+     "per_slot": {
+      "30000": 0,
+      "30001": 1,
+      "30002": 0,
+      "30003": 0,
+      "30004": 0,
+      "30005": 1,
+      "30006": 0,
+      "30007": 1,
+      "30008": 1,
+      "30009": 0,
+      "30010": 0,
+      "30011": 1,
+      "30012": 1,
+      "30013": 1,
+      "30014": 0,
+      "30015": 0
+     }
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
     "task": "RubiksCubeLeftOfBowlTask",
     "code": "T3",
     "wording_pair": [
@@ -9378,7 +9443,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "4434c0490c88"
+   "commit": "f65d83a8a5a0"
   },
   "groot": {
    "kind": "branch",
@@ -9392,12 +9457,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "21ff6211daf0"
+   "commit": "3b5654be1478"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "6538184388b65307",
- "updated": "2026-11-08T20:50Z",
- "updated_text": "8 Nov 2026, 20:50 UTC",
+ "content_hash": "290e2832cee6b4ef",
+ "numbers_hash": "e3b2246e0af7451c",
+ "updated": "2026-11-08T20:53Z",
+ "updated_text": "8 Nov 2026, 20:53 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
