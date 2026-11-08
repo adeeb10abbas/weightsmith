@@ -46,16 +46,25 @@ def main():
             x = np.load(rf[(rmap[key(it)], "expl")])
             e = np.load(ef[(emap[key(it)], a.edited_wording)])
             p = {n: v["act_eef_9d"][7, :3] for n, v in (("o", o), ("x", x), ("e", e))}
+            ch = {n: np.concatenate([v["act_joint_position"][:8].ravel(), v["act_gripper_position"][:8, 0]])
+                  for n, v in (("o", o), ("x", x), ("e", e))}
+            dt, de = ch["x"] - ch["o"], ch["e"] - ch["o"]
             gr = {n: (v["act_gripper_position"][:8, 0] > 0.5) for n, v in (("o", o), ("x", x), ("e", e))}
             rows.append({"slot": it.get("slot"), "k": it["k"],
                          "d_ox_cm": 100 * float(np.linalg.norm(p["o"] - p["x"])),
                          "d_ex_cm": 100 * float(np.linalg.norm(p["e"] - p["x"])),
                          "d_eo_cm": 100 * float(np.linalg.norm(p["e"] - p["o"])),
                          "grip_o": int(gr["o"].sum()), "grip_x": int(gr["x"].sum()), "grip_e": int(gr["e"].sum()),
-                         "grip_e_eq_x": int((gr["e"] == gr["x"]).sum())})
+                         "grip_e_eq_x": int((gr["e"] == gr["x"]).sum()),
+                         "dot_et": float(de @ dt), "tt": float(dt @ dt), "ee": float(de @ de)})
         if not rows:
             continue
+        tt = sum(r["tt"] for r in rows)
         rep[g] = {"n": len(rows),
+                  # share of the teacher's chunk change (joints + gripper, executed rows 0-7) the edit reproduces:
+                  # sum <e-o, x-o> / sum |x-o|^2 (1 = the teacher's change, 0 = none), and the cosine of the summed vectors
+                  "teacher_projection": float(sum(r["dot_et"] for r in rows) / tt) if tt else None,
+                  "edit_size_vs_teacher": float(np.sqrt(sum(r["ee"] for r in rows) / tt)) if tt else None,
                   "closer_to_teacher": int(sum(r["d_ex_cm"] < r["d_ox_cm"] for r in rows)),
                   "mean_d_unedited_teacher_cm": float(np.mean([r["d_ox_cm"] for r in rows])),
                   "mean_d_edited_teacher_cm": float(np.mean([r["d_ex_cm"] for r in rows])),

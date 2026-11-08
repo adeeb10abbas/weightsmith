@@ -1,7 +1,23 @@
 # Track B: weight-space programming on NVIDIA GR00T N1.7 DROID (RoboLab)
 
 Status: **in progress** (overnight run, 2026-11-07/08). This file is updated after each milestone; numbers appear only
-once measured. Track A (Cosmos3 Edge) and Track C (π0.5 control) run the same tasks and slots.
+once measured. Track A (Cosmos3 Edge) and Track C (π0.5 control) run the same tasks and slots. All tables are
+regenerated from the raw run summaries by `scripts/analyze.py` into [`results/tables.md`](results/tables.md) and
+[`../metrics_groot.json`](../metrics_groot.json); plots are in `plots/`.
+
+Renderer preset: every Track B evaluation uses RoboLab's default preset (`--rendering-type` unset, which IsaacLab
+resolves to `balanced`), the primary setting for all tracks. Performance-preset numbers are sensitivity data only.
+Machine: every result so far is from ali-ms GPU0 (RTX 3090, label `ali-ms-rtx3090`); arms are paired only within one
+machine.
+
+## Run scheme
+
+One GPU lane (`scripts/worker.sh GPU PORT`) runs jobs from an editable queue (`results/jobs/queue.txt` is the copy
+pulled from the host), one at a time, holding the GPU flocks for each job. An evaluation job is one
+`scripts/pool_groot.py` call (one server, one fresh Isaac process per 16-slot group); a `cmd` job runs an offline step
+(activation capture, edit build, offline check) under `scripts/locked.sh`. Gated jobs (`after:...`) wait for earlier
+jobs or for a gate opened by hand after an offline check. Practice / design slots 30000-30031; held-out slots
+96000-96063, used only for the final scoring of an edit fixed beforehand.
 
 ## Setup
 
@@ -65,8 +81,8 @@ RTX denoiser, so every surface carries heavy speckle noise (below: the first fra
 cameras, performance on top, default below). GR00T N1.7 DROID loses most grasps under that noise (11/16 never grasp the
 banana; the commanded gripper flickers within chunks while the measured gripper stays below 0.11); π0.5 had tolerated
 it in the weightsmith runs. **All Track B evaluations therefore use the default preset**, NVIDIA's validated
-configuration, with the shared slots, environment seed and process scheme; this differs from Tracks A and C, which use
-`performance`. The default preset needs 15.6 GB for 16 Isaac envs, so the server splits each request into micro-batches
+configuration, with the shared slots, environment seed and process scheme (the default preset is the primary setting
+for every track). The default preset needs 15.6 GB for 16 Isaac envs, so the server splits each request into micro-batches
 of 4 (same per-slot seeds; the action chunks are the same up to GPU numerics).
 
 ![Renderer presets](plots/validation_render_preset_step0.png)

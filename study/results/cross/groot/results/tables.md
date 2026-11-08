@@ -3,6 +3,7 @@
 | Task | RoboLab task | Success | Rate | Wilson 95% |
 |---|---|---|---|---|
 | T1 | RubiksCubeThenBananaTask | 9/32 | 28% | 16-45% |
+| T3 | RubiksCubeLeftOfBowlTask | 1/32 | 3% | 1-16% |
 
 ## Metric 2: wording sensitivity (unedited, paired on slots 30000-30031)
 

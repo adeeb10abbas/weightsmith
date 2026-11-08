@@ -81,10 +81,10 @@ def image_cells(ids, n_cams=2, grid=(8, 14), cells=(4, 7)):
     return out
 
 
-def closed_form(K, V, lam_rel=1e-3):
+def closed_form(K, V, lam_rel=1e-3, lam_stat="mean"):
     K, V = K.astype(np.float64), V.astype(np.float64)
     G = K @ K.T
-    lam = lam_rel * np.trace(G) / len(G)
+    lam = lam_rel * (np.trace(G) / len(G) if lam_stat == "mean" else np.median(np.diag(G)))
     A = np.linalg.solve(G + lam * np.eye(len(G)), V)
     return K.T, A  # dW = K.T @ A  [d_in, d_out]
 
@@ -112,7 +112,11 @@ def backbone_kv(groups, files, a, layers):
             assert list(o["input_ids"]) == list(ids_o) and list(x["input_ids"]) == list(ids_x)
             for L in layers:
                 li = Lidx[L]
-                mo, io, ix = o["lm_mlp"][li].astype(np.float64), o["lm_inc"][li].astype(np.float64), x["lm_inc"][li].astype(np.float64)
+                mo = o["lm_mlp"][li].astype(np.float64)
+                if a.values == "total":  # whole remaining gap at this layer's output (single-layer edits)
+                    io, ix = o["lm_out"][li].astype(np.float64), x["lm_out"][li].astype(np.float64)
+                else:                    # the layer's own share of the gap (paper Eq. 1, all layers edited)
+                    io, ix = o["lm_inc"][li].astype(np.float64), x["lm_inc"][li].astype(np.float64)
                 k = [mo[p] for p in tok_pos] + [mo[c].mean(0) for c in cells]
                 v = [ix[pmap[p]] - io[p] for p in tok_pos] + [(ix[c] - io[c]).mean(0) for c in cells]
                 Ks[L].append(np.stack(k))
@@ -156,6 +160,10 @@ def main():
     ap.add_argument("--layers", default=None, help="e.g. 0-15 (backbone default) or 0-31 (dit default)")
     ap.add_argument("--image-cells", default="4x7", help="backbone: per-camera HxW cells over the 8x14 token grid; 0 = none")
     ap.add_argument("--lam-rel", type=float, default=1e-3)
+    ap.add_argument("--lam-stat", default="mean", choices=["mean", "median"], help="lambda = lam_rel * mean|median diag(KK^T)")
+    ap.add_argument("--values", default="increment", choices=["increment", "total"],
+                    help="increment: the layer's residual increment difference; total: the residual difference at its output")
+    ap.add_argument("--stack", action="store_true", help="one key set per decision (no averaging over decisions)")
     ap.add_argument("--alpha", type=float, default=1.0)
     ap.add_argument("--orig", default="orig")
     ap.add_argument("--expl", default="expl")
@@ -170,7 +178,7 @@ def main():
     files = {(f["item"], f["wording"]): f["file"] for f in index["files"]}
     groups = json.loads(a.items)
     if isinstance(groups, list):
-        groups = {"all": groups}
+        groups = {str(i): [i] for i in groups} if a.stack else {"all": groups}
     lo, hi = (int(x) for x in (a.layers or ("0-15" if a.site == "backbone" else "0-31")).split("-"))
     layers = list(range(lo, hi + 1))
     K, V, meta, pname = (backbone_kv if a.site == "backbone" else dit_kv)(groups, files, a, layers)
@@ -178,7 +186,7 @@ def main():
     edit, ctl, rep = {}, {}, []
     for L in layers:
         Kl, Vl = np.concatenate(K[L]), np.concatenate(V[L])
-        U, A = closed_form(Kl, Vl, a.lam_rel)
+        U, A = closed_form(Kl, Vl, a.lam_rel, a.lam_stat)
         name = pname.format(L)
         edit[name] = {"U": torch.from_numpy(U.astype(np.float32)), "V": torch.from_numpy(A.astype(np.float32))}
         dW = U @ A
@@ -196,6 +204,7 @@ def main():
         rep.append(r)
         print(json.dumps(r), flush=True)
     meta.update({"site": a.site, "capture": str(cap), "groups": groups, "layers": layers, "lam_rel": a.lam_rel,
+                 "lam_stat": a.lam_stat, "values": a.values, "stack": a.stack,
                  "alpha": a.alpha, "image_cells_grid": a.image_cells, "wordings": index.get("wordings")})
     torch.save({"format": "wsp-groot-edit-v1", "layers": edit, "meta": meta}, a.out)
     if a.random:
