@@ -2937,5 +2937,65 @@
    "30014": 0,
    "30015": 0
   }
+ },
+ {
+  "experiment": "failure_map",
+  "status": "fresh",
+  "run": "C-prime-default",
+  "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+  "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "render_preset": "default",
+  "envs_per_process": 8,
+  "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+  "env_seed": 0,
+  "task": "MustardRightOfRaisinRFTask",
+  "code": "T8",
+  "wording_pair": [
+   "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  ],
+  "slots": [
+   30000,
+   30015
+  ],
+  "n": 16,
+  "unedited_k": 0,
+  "edited_k": null,
+  "fixed": null,
+  "broke": null,
+  "p": null,
+  "ci": {
+   "wilson95_pct": [
+    0.0,
+    19.4
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit": null,
+  "edit_location": null,
+  "values_changed": null,
+  "values_changed_note": null,
+  "notes": "unedited pi0.5, task's default instruction, practice slots, default render preset; every 16-slot group the first and only run of a fresh Isaac process",
+  "per_slot": {
+   "30000": 0,
+   "30001": 0,
+   "30002": 0,
+   "30003": 0,
+   "30004": 0,
+   "30005": 0,
+   "30006": 0,
+   "30007": 0,
+   "30008": 0,
+   "30009": 0,
+   "30010": 0,
+   "30011": 0,
+   "30012": 0,
+   "30013": 0,
+   "30014": 0,
+   "30015": 0
+  }
  }
 ]
