@@ -1,0 +1,35 @@
+1/ [attach: weightsmith_linkedin_16x9.mp4]
+We fixed a robot's misunderstanding by editing its weights. No training, no new data, same instruction.
+
+π0.5 went from 21% to 83% success on setups it had never seen. 🧵
+
+2/ [attach: carousel slides/slide_2.png]
+We told π0.5 to "put the cube then the banana in the bowl," and it kept dropping the cube on the way. It was reading "in the bowl" as being about the banana.
+
+Spell it out and it mostly works. Same goal, different words: 3/32 vs 22/32.
+
+3/ [attach: carousel slides/slide_3.png]
+So we fixed it inside the model: we recorded what the network does with the clear instruction and wrote that straight into its weights, in closed form.
+
+Original instruction, new setups: 21% → 83%. A random edit of the same size did nothing.
+
+4/ [attach: carousel slides/slide_4.png]
+The part I didn't expect: the same edit fixed two tasks we never built it for.
+
+Picking up eyeglasses: 22 → 44 of 64.
+Putting the cube left of the bowl: 8 → 36.
+
+Nothing else got measurably worse.
+
+5/ [attach: carousel slides/slide_5.png]
+What it can't do: teach the robot a new skill. When no wording worked (a lookalike block, a box it can't grip), no edit worked either.
+
+Edit when some wording already gets the robot there. Train when nothing does.
+
+6/
+Blog + paper: https://ali-adeeb.com/weightsmith/
+Code: https://github.com/adeeb10abbas/weightsmith
+
+Point your agents at the repo and see if their edit beats the robot on starts it's never seen.
+
+With [Esmaeil's handle]. Builds on Weight-Space Programming by Takehi et al.

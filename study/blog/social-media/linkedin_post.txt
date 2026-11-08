@@ -1,0 +1,15 @@
+Been working on a fun one with Esmaeil Seraj.
+
+π0.5 (Physical Intelligence's open robot model) kept dropping the cube when told to "put the cube then the banana in the bowl." It was reading "in the bowl" as being about the banana.
+
+So we fixed it inside the model, no training: we took what the network does with a clearer instruction and wrote it straight into the weights. Same original instruction, and success on setups it had never seen went from 21% to 83%.
+
+The parts I didn't expect:
+- The same edit fixed two tasks we never built it for: picking up eyeglasses (22 → 44 of 64) and putting the cube left of the bowl (8 → 36).
+- A random edit of the same size did nothing.
+- It never taught the robot a new skill. Everything that worked was about how the model read the instruction, not how it moves.
+
+Blog + paper: https://ali-adeeb.com/weightsmith/
+Code: https://github.com/adeeb10abbas/weightsmith
+
+To give it a go, point your agents at the repo and see if their edit beats the robot on starts it's never seen.
