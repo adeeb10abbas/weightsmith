@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "60db7e7f97fc"
+    "commit": "dc42d15ffd76"
    }
   },
   {
@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "f84cefa565ad"
+    "commit": "885ce8c2fe32"
    }
   }
  ],
@@ -1033,7 +1033,7 @@
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ]
  },
- "when_text": "The edit copies the clear wording’s effect onto the same words of the original wording, and that effect lives in the words that differ. So it works where the two wordings line up word for word: on Mustard right of raisin box both have 171 tokens, and the edit took Cosmos3 Edge from 0 to 56 of 64 unseen starts, as many as the clear wording itself. It fails where the clear wording adds or removes words, because the added words have no counterpart to copy their effect onto: Cube left of bowl on Cosmos3 Edge (159 and 167 tokens) and Cube then banana on GR00T N1.7 (the clear wording inserts “in the bowl then put”). Copying only the words both wordings share does nothing: 1.9% of the clear wording’s effect in replays, about the same as a random edit of the same size (2.6%). π0.5 is different: its clear wording for Cube then banana also adds words, yet the edit worked, because in π0.5 the camera images are read together with the whole instruction, so the wording’s effect also reaches positions both wordings share, and the edit copies it there (in the paper, the image positions alone carry the fix). A prediction we tested. Before building anything, we wrote down a prediction (the Cosmos3 Edge track’s README, commit e01cbfe): an edit for a new pair of wordings of equal length would pass the offline check and fix the task; one for wordings of unequal length would fail the check. Cube left of bowl, worded bowl-first vs cube-first, 169 and 169 tokens; unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07), a modest gap: in replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38). On practice starts it recovered 50% of the clearer wording’s gain and beat the random edit, the bar set beforehand for running it on unseen starts; whether it fixes the task is decided there, and those runs are next. Cube in front of bowl, worded bowl-first vs cube-first, 166 and 168 tokens: in replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check. The prediction held. Case Do the wordings line up? Result Mustard right of raisin box, Cosmos3 Edge Yes: 171 and 171 tokens, every word matched 0 → 56 of 64 unseen starts; the clear wording itself: 56 Cube left of bowl, Cosmos3 Edge No: 159 and 167 tokens Didn’t pass the offline check; not run on the robot in replays it moved the planned motion away from the clear wording’s (−86% of the gap) Cube then banana, GR00T N1.7 No: the clear wording inserts “in the bowl then put” Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, Cosmos3 Edge, only the words both wordings share Only the shared words: 159 of 171 tokens 1.9% of the clear wording’s effect in replays; a random edit 2.6% not run on the robot Tested after a written prediction Cube left of bowl, worded bowl-first vs cube-first Yes: 169 and 169 tokens predicted before the build: it works In replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38) Unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07). On practice starts it recovered 50% of the clearer wording’s gain and beat the random edit, the bar set beforehand for running it on unseen starts; whether it fixes the task is decided there, and those runs are next. Cube in front of bowl, worded bowl-first vs cube-first No: 166 and 168 tokens predicted before the build: it fails In replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check The prediction held.",
+ "when_text": "The edit copies the clear wording’s effect onto the same words of the original wording, and that effect lives in the words that differ. So it works where the two wordings line up word for word: on Mustard right of raisin box both have 171 tokens, and the edit took Cosmos3 Edge from 0 to 56 of 64 unseen starts, as many as the clear wording itself. It fails where the clear wording adds or removes words, because the added words have no counterpart to copy their effect onto: Cube left of bowl on Cosmos3 Edge (159 and 167 tokens) and Cube then banana on GR00T N1.7 (the clear wording inserts “in the bowl then put”). Copying only the words both wordings share does nothing: 1.9% of the clear wording’s effect in replays, about the same as a random edit of the same size (2.6%). π0.5 is different: its clear wording for Cube then banana also adds words, yet the edit worked, because in π0.5 the camera images are read together with the whole instruction, so the wording’s effect also reaches positions both wordings share, and the edit copies it there (in the paper, the image positions alone carry the fix). A prediction we tested. Before building anything, we wrote down a prediction (the Cosmos3 Edge track’s README, commit e01cbfe): an edit for a new pair of wordings of equal length would pass the offline check and fix the task; one for wordings of unequal length would fail the check. Cube left of bowl, worded bowl-first vs cube-first, 169 and 169 tokens; unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07), a modest gap: in replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38); on the first 16 of 32 unseen starts it went from 1 to 4, against 1 for the random edit and 2 for the clearer wording (p = 0.25). The verdict waits for all 32 unseen starts; the other 16 are next. Cube in front of bowl, worded bowl-first vs cube-first, 166 and 168 tokens: in replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check. The prediction held. Case Do the wordings line up? Result Mustard right of raisin box, Cosmos3 Edge Yes: 171 and 171 tokens, every word matched 0 → 56 of 64 unseen starts; the clear wording itself: 56 Cube left of bowl, Cosmos3 Edge No: 159 and 167 tokens Didn’t pass the offline check; not run on the robot in replays it moved the planned motion away from the clear wording’s (−86% of the gap) Cube then banana, GR00T N1.7 No: the clear wording inserts “in the bowl then put” Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, Cosmos3 Edge, only the words both wordings share Only the shared words: 159 of 171 tokens 1.9% of the clear wording’s effect in replays; a random edit 2.6% not run on the robot Tested after a written prediction Cube left of bowl, worded bowl-first vs cube-first Yes: 169 and 169 tokens predicted before the build: it works In replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38); on the first 16 of 32 unseen starts it went from 1 to 4, against 1 for the random edit and 2 for the clearer wording (p = 0.25) Unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07). The verdict waits for all 32 unseen starts; the other 16 are next. Cube in front of bowl, worded bowl-first vs cube-first No: 166 and 168 tokens predicted before the build: it fails In replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check The prediction held.",
  "diagrams": {
   "where": [
    {
@@ -4914,6 +4914,90 @@
      "teacher_slots": [
       30000,
       30015
+     ]
+    }
+   },
+   {
+    "experiment": "edit_heldout",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "S1L",
+    "wording_pair": [
+     "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
+     "Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl."
+    ],
+    "n": 16,
+    "slots": [
+     96032,
+     96047
+    ],
+    "unedited_k": 1,
+    "edited_k": 4,
+    "fixed": 3,
+    "broke": 0,
+    "p": 0.25,
+    "ci": {
+     "diff_pts": 18.75,
+     "bootstrap95_pts": [
+      0.0,
+      37.5
+     ],
+     "wilson95_unedited_pct": [
+      1.1,
+      28.3
+     ],
+     "wilson95_edited_pct": [
+      10.2,
+      49.5
+     ]
+    },
+    "control_k": 1,
+    "teacher_k": 2,
+    "recovery_pct": 300.0,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26), --align all (169 = 169 tokens, every position matched)",
+    "values_changed": 207159927,
+    "notes": "edit s1lund (prospective test of the token-count rule: t8und's recipe unchanged on S1L's reference-first -> target-first pair (equal length), one prompt pair, unconditional-pass keys, lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 1 broke 1 p = 1; edit vs control p = 0.375",
+    "_ptask": "S1L",
+    "_task": null,
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms",
+     "control_n": 16,
+     "teacher_n": 16,
+     "edit_vs_control": {
+      "n": 16,
+      "ref_k": 1,
+      "cand_k": 4,
+      "fixed": 4,
+      "broke": 1,
+      "p": 0.375,
+      "slots": [
+       96032,
+       96047
+      ]
+     },
+     "edit_vs_teacher": {
+      "n": 16,
+      "ref_k": 2,
+      "cand_k": 4,
+      "fixed": 3,
+      "broke": 1,
+      "p": 0.625,
+      "slots": [
+       96032,
+       96047
+      ]
+     },
+     "control_slots": [
+      96032,
+      96047
+     ],
+     "teacher_slots": [
+      96032,
+      96047
      ]
     }
    },
@@ -9722,7 +9806,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "60db7e7f97fc"
+   "commit": "dc42d15ffd76"
   },
   "groot": {
    "kind": "branch",
@@ -9736,13 +9820,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "f84cefa565ad"
+   "commit": "885ce8c2fe32"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "4d0f442b9e3feebd",
- "numbers_hash": "0b376a8abcd37ab1",
- "updated": "2026-11-08T21:32Z",
- "updated_text": "8 Nov 2026, 21:32 UTC",
+ "content_hash": "c38ff3c1d89a3a44",
+ "numbers_hash": "b0076e409269ec2e",
+ "updated": "2026-11-08T22:04Z",
+ "updated_text": "8 Nov 2026, 22:04 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }

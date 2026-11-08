@@ -163,7 +163,7 @@ TASK_NAME = {"T1": "Cube then banana", "T2": "Eyeglasses", "T3": "Cube left of b
              "T8": "Mustard right of raisin box", "R1": "Cube in bowl"}
 # Track A's prospective test of the token-count rule (README, pre-registered in e01cbfe) uses its own codes for new
 # wording pairs on stock RoboLab tasks; S1L shares T3's RoboLab class, so these codes never fall back to a class name.
-PROSPECT = dict(model="cosmos", commit="e01cbfe", gate=85, pairs={
+PROSPECT = dict(model="cosmos", commit="e01cbfe", gate=85, heldout_n=32, pairs={   # README: 32 unseen starts
     "S1L": dict(plain="Cube left of bowl, worded bowl-first vs cube-first", equal=True, cls="RubiksCubeLeftOfBowlTask"),
     "S1R": dict(plain="Cube right of bowl, worded bowl-first vs cube-first", equal=True, cls="RubiksCubeRightOfBowlTask"),
     "S1F": dict(plain="Cube in front of bowl, worded bowl-first vs cube-first", equal=False,
@@ -4057,7 +4057,9 @@ def prospect_html(P):
         for kind in ("practice", "unseen"):
             c = x["closed"].get(kind)
             if c:
-                res.append(f"on {c['n']} {kind} starts it went from {c['a']} to {c['b']}"
+                part = kind == "unseen" and c["n"] < PROSPECT["heldout_n"]
+                res.append((f"on the first {c['n']} of {PROSPECT['heldout_n']} unseen starts" if part else
+                            f"on {c['n']} {kind} starts") + f" it went from {c['a']} to {c['b']}"
                            + (f", against {c['ctl']} for the random edit" if c.get("ctl") is not None else "")
                            + (f" and {c['t']} for the clearer wording" if c.get("t") is not None else "")
                            + (f" (p = {fp(c['p'])})" if c.get("p") is not None else ""))
@@ -4074,6 +4076,10 @@ def prospect_html(P):
             held = None if x["passed"] is None else (x["passed"] is False)
         elif x["passed"] is False:
             held = False
+        elif cu and cu["n"] < PROSPECT["heldout_n"]:
+            held = None
+            verdict = (f"The verdict waits for all {PROSPECT['heldout_n']} unseen starts; the other "
+                       f"{PROSPECT['heldout_n'] - cu['n']} are next.")
         elif cu:
             held = fixed(cu)
         elif cp and not bar(cp):
