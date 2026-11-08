@@ -315,33 +315,33 @@
    "Put the cube then the banana in the bowl",
    "Put the cube in the bowl then put the banana in the bowl"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 10,
+  "unedited_k": 21,
   "edited_k": null,
-  "fixed": 1,
-  "broke": 1,
-  "p": 1.0,
+  "fixed": 3,
+  "broke": 9,
+  "p": 0.14599609375,
   "ci": {
-   "diff_pts": 0.0,
+   "diff_pts": -18.75,
    "bootstrap95_pts": [
-    -18.75,
-    18.75
+    -37.5,
+    0.0
    ],
    "wilson95_orig_pct": [
-    38.6,
-    81.5
+    48.3,
+    79.6
    ],
    "wilson95_alt_pct": [
-    38.6,
-    81.5
+    30.9,
+    63.6
    ]
   },
   "control_k": null,
-  "teacher_k": 10,
+  "teacher_k": 15,
   "recovery_pct": null,
   "transfer": null,
   "retention": null,
@@ -359,33 +359,33 @@
    "Put the rubiks cube to the left of the bowl",
    "Pick up the rubiks cube and place it on the table to the left side of the bowl"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 4,
+  "unedited_k": 13,
   "edited_k": null,
-  "fixed": 8,
-  "broke": 1,
-  "p": 0.0390625,
+  "fixed": 15,
+  "broke": 2,
+  "p": 0.002349853515625,
   "ci": {
-   "diff_pts": 43.75,
+   "diff_pts": 40.62,
    "bootstrap95_pts": [
-    12.5,
-    75.0
+    18.75,
+    59.38
    ],
    "wilson95_orig_pct": [
-    10.2,
-    49.5
+    25.5,
+    57.7
    ],
    "wilson95_alt_pct": [
-    44.4,
-    85.8
+    64.7,
+    91.1
    ]
   },
   "control_k": null,
-  "teacher_k": 11,
+  "teacher_k": 26,
   "recovery_pct": null,
   "transfer": null,
   "retention": null,
@@ -707,21 +707,21 @@
   "wording_pair": [
    "Stack the yellow block on the red block"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 12,
-  "edited_k": 14,
-  "fixed": 3,
-  "broke": 1,
-  "p": 0.625,
+  "unedited_k": 22,
+  "edited_k": 26,
+  "fixed": 8,
+  "broke": 4,
+  "p": 0.3876953125,
   "ci": {
    "diff_pts": 12.5,
    "bootstrap95_pts": [
-    -12.5,
-    37.5
+    -9.38,
+    34.38
    ]
   },
   "control_k": null,
