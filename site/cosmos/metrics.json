@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "ae0214a5e1b9"
+    "commit": "b0979de6b80a"
    }
   },
   {
@@ -147,7 +147,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5, T7 and R1, lifted no task, lowered T3 (13 → 0 of 32) and T5 (9 → 0 of 32), and moved the retention task R1 from 24 to 28 of 32. Rebuilding the edit with preservation keys has not prevented the break so far: with 65 generic instructions, T5 still fell from 8 to 0 of 16 practice starts, while T8 kept its fix (0 → 12 of 16); with 24 left/right instructions of other tasks, T3 went 4 → 1 of 16 practice starts, against 0 for the original edit, while T8 kept its fix (0 → 13 of 16). GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5, T7 and R1, lifted no task, lowered T3 (13 → 0 of 32) and T5 (9 → 0 of 32), and moved the retention task R1 from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept T8 (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 generic instructions, T5 fell from 8 to 0 of 16; with keys from 24 left/right instructions of other tasks, T5 fell from 8 to 2 of 16 and T3 from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -724,8 +724,24 @@
       "slots": "30000; 30015"
      },
      "T5": {
-      "v": "running",
-      "s": "running"
+      "v": "8 → 2 of 16",
+      "s": "ok",
+      "d": "p = 0.031",
+      "a": 8,
+      "b": 2,
+      "n": 16,
+      "p": 0.03125,
+      "delta": -6,
+      "prac": true,
+      "runs": {
+       "practice": [
+        8,
+        2,
+        16,
+        "30000; 30015"
+       ]
+      },
+      "slots": "30000; 30015"
      },
      "T3": {
       "v": "4 → 1 of 16",
@@ -768,7 +784,7 @@
    "cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ],
-  "text": "`t8undp` (preservation keys from 65 generic instructions) keeps the T8 fix (0 → 12 of 16 practice starts) but does not prevent the break: T5 still falls from 8 to 0 of 16 practice starts (p = 0.0078); offline it closes 93% of the T8 gap and moves T5’s actions 13.9 cm (`t8und`: 13.7 cm) from the unedited policy’s. `t8undr` (preservation keys from 24 left/right instructions of other tasks) keeps the T8 fix (0 → 13 of 16 practice starts) but does not prevent the break: T3 goes from 4 to 1 of 16 practice starts (p = 0.38; `t8und`: 0); offline it closes 94% of the T8 gap and moves T5’s actions 5.9 cm (`t8und`: 13.7 cm) and T3’s 6.5 cm (`t8und`: 29.6 cm) from the unedited policy’s, so the smaller offline deviation on T3 does not carry over to the closed loop; T5: {running}."
+  "text": "`t8undp` (preservation keys from 65 generic instructions) keeps the T8 fix (0 → 12 of 16 practice starts) but does not prevent the break: T5 still falls from 8 to 0 of 16 practice starts (p = 0.0078); offline it closes 93% of the T8 gap and moves T5’s actions 13.9 cm (`t8und`: 13.7 cm) from the unedited policy’s. `t8undr` (preservation keys from 24 left/right instructions of other tasks) keeps the T8 fix (0 → 13 of 16 practice starts) but does not prevent the break: T5 still falls from 8 to 2 of 16 practice starts (p = 0.031) and T3 goes from 4 to 1 of 16 practice starts (p = 0.38; `t8und`: 0); offline it closes 94% of the T8 gap and moves T5’s actions 5.9 cm (`t8und`: 13.7 cm) and T3’s 6.5 cm (`t8und`: 29.6 cm) from the unedited policy’s, so the smaller offline deviation on T5 and T3 does not carry over to the closed loop."
  },
  "tables": [
   {
@@ -3820,6 +3836,46 @@
     "values_changed": 443281016,
     "notes": "edit t8undr built for T8, run on T3 with T3's default instruction, practice slots",
     "_task": "T3",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardInLeftBinTask",
+    "code": "T5",
+    "wording_pair": [
+     "Put the mustard in the left bin"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 8,
+    "edited_k": 2,
+    "fixed": 0,
+    "broke": 6,
+    "p": 0.03125,
+    "ci": {
+     "diff_pts": -37.5,
+     "bootstrap95_pts": [
+      -62.5,
+      -12.5
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": -37.5,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26), with relation-aware preservation keys",
+    "values_changed": 443281016,
+    "notes": "edit t8undr built for T8, run on T5 with T5's default instruction, practice slots",
+    "_task": "T5",
     "_edit_task": "T8",
     "_prov": false,
     "extra": {
@@ -7920,7 +7976,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "ae0214a5e1b9"
+   "commit": "b0979de6b80a"
   },
   "groot": {
    "kind": "branch",
@@ -7938,8 +7994,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "77e65672f4ea4146",
- "updated": "2026-11-08T14:29Z",
- "updated_text": "8 Nov 2026, 14:29 UTC",
+ "content_hash": "57ff0268c3ca51f3",
+ "updated": "2026-11-08T15:02Z",
+ "updated_text": "8 Nov 2026, 15:02 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
