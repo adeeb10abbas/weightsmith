@@ -829,9 +829,18 @@ def read_cross(args, meta_out):
         # side-effect rows that name the edit (e.g. "v2mi-f") instead of its task: map the name to the task it was built for
         built = {edit_name(r): r["_task"] for r in norm if edit_name(r) and r["_task"]
                  and not re.search(r"side|transfer", nk(describe(r.get("experiment")) or ""))}
+        # ... or say "built for T8" in their notes, or share the edit location with exactly one task's own edit rows
+        by_loc = {}
+        for r in norm:
+            if r["_task"] and as_int(r.get("edited_k")) is not None and not re.search(
+                    r"side|transfer", nk(describe(r.get("experiment")) or "")):
+                by_loc.setdefault(describe(r.get("edit_location")), set()).add(r["_task"])
         for r in norm:
             if not r["_edit_task"] and re.search(r"side|transfer", nk(describe(r.get("experiment")) or "")):
-                r["_edit_task"] = built.get(edit_name(r))
+                m = re.search(r"built for\s+([TR][1-8])\b", describe(r.get("notes")) or "", re.I)
+                same = by_loc.get(describe(r.get("edit_location"))) or set()
+                r["_edit_task"] = (built.get(edit_name(r)) or (m.group(1).upper() if m else None)
+                                   or (next(iter(same)) if len(same) == 1 else None))
         out[mid] = dict(rows=norm, meta=meta, unknown=sorted(unknown),
                         final=str(meta.get("status", "")).lower() in ("final", "done", "complete", "finished"))
         meta_out[mid] = where
