@@ -104,7 +104,16 @@ def backbone_kv(groups, files, a, layers):
     for c in cells:
         assert all(pmap.get(p) == p for p in c)                     # images precede the instruction: same positions
     Lidx = {int(L): i for i, L in enumerate(o0["lm_layers"])}
+    img_pos = sorted(img)
     K, V = {L: [] for L in layers}, {L: [] for L in layers}
+    if a.image_keys == "tokens":  # every image token of every build decision, value 0 (images precede the text)
+        for its in groups.values():
+            for it in its:
+                o, x = load_pair(files, it, a.orig, a.expl)
+                for L in layers:
+                    li = Lidx[L]
+                    K[L].append(o["lm_mlp"][li][img_pos].astype(np.float64))
+                    V[L].append(np.zeros((len(img_pos), o["lm_inc"].shape[-1])))
     for g, its in groups.items():
         Ks, Vs = {L: [] for L in layers}, {L: [] for L in layers}
         for it in its:
@@ -126,7 +135,8 @@ def backbone_kv(groups, files, a, layers):
             V[L].append(a.alpha * np.mean(Vs[L], axis=0))
     meta = {"first_difference": d, "orig_len": len(ids_o), "expl_len": len(ids_x), "token_positions": tok_pos,
             "token_positions_expl": [pmap[p] for p in tok_pos], "changed_positions": [p for p in tok_pos if p >= d],
-            "image_cells": len(cells), "keys_per_group": len(tok_pos) + len(cells),
+            "image_cells": len(cells), "keys_per_group": len(tok_pos) + len(cells), "image_keys": a.image_keys,
+            "image_token_keys": len(img_pos) * sum(len(v) for v in groups.values()) if a.image_keys == "tokens" else 0,
             "aligned_token_ids": [int(ids_o[p]) for p in tok_pos]}
     name = "backbone.model.model.language_model.layers.{}.mlp.down_proj.weight"
     return K, V, meta, name
@@ -159,6 +169,9 @@ def main():
     ap.add_argument("--site", default="backbone", choices=["backbone", "dit"])
     ap.add_argument("--layers", default=None, help="e.g. 0-15 (backbone default) or 0-31 (dit default)")
     ap.add_argument("--image-cells", default="4x7", help="backbone: per-camera HxW cells over the 8x14 token grid; 0 = none")
+    ap.add_argument("--image-keys", default="cells", choices=["cells", "tokens"],
+                    help="tokens: also pin every image token of every build decision to a zero value (keeps the edit "
+                         "out of the visual tokens, which the action head reads directly)")
     ap.add_argument("--lam-rel", type=float, default=1e-3)
     ap.add_argument("--lam-stat", default="mean", choices=["mean", "median"], help="lambda = lam_rel * mean|median diag(KK^T)")
     ap.add_argument("--values", default="increment", choices=["increment", "total"],

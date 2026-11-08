@@ -1,0 +1,215 @@
+{
+ "items": [
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e0.npz",
+   "k": 31,
+   "slot": 30000
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e1.npz",
+   "k": 7,
+   "slot": 30001
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e2.npz",
+   "k": 47,
+   "slot": 30002
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e3.npz",
+   "k": 73,
+   "slot": 30003
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e5.npz",
+   "k": 111,
+   "slot": 30005
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e7.npz",
+   "k": 15,
+   "slot": 30007
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e9.npz",
+   "k": 5,
+   "slot": 30009
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e10.npz",
+   "k": 25,
+   "slot": 30010
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e11.npz",
+   "k": 73,
+   "slot": 30011
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e12.npz",
+   "k": 105,
+   "slot": 30012
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e14.npz",
+   "k": 59,
+   "slot": 30014
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e15.npz",
+   "k": 7,
+   "slot": 30015
+  }
+ ],
+ "wordings": {
+  "orig": "Put the cube then the banana in the bowl",
+  "expl": "Put the cube in the bowl then put the banana in the bowl"
+ },
+ "edit": null,
+ "files": [
+  {
+   "item": 0,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i000_orig.npz",
+   "seed": 12000031
+  },
+  {
+   "item": 0,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i000_expl.npz",
+   "seed": 12000031
+  },
+  {
+   "item": 1,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i001_orig.npz",
+   "seed": 12000107
+  },
+  {
+   "item": 1,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i001_expl.npz",
+   "seed": 12000107
+  },
+  {
+   "item": 2,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i002_orig.npz",
+   "seed": 12000247
+  },
+  {
+   "item": 2,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i002_expl.npz",
+   "seed": 12000247
+  },
+  {
+   "item": 3,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i003_orig.npz",
+   "seed": 12000373
+  },
+  {
+   "item": 3,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i003_expl.npz",
+   "seed": 12000373
+  },
+  {
+   "item": 4,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i004_orig.npz",
+   "seed": 12000611
+  },
+  {
+   "item": 4,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i004_expl.npz",
+   "seed": 12000611
+  },
+  {
+   "item": 5,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i005_orig.npz",
+   "seed": 12000715
+  },
+  {
+   "item": 5,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i005_expl.npz",
+   "seed": 12000715
+  },
+  {
+   "item": 6,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i006_orig.npz",
+   "seed": 12000905
+  },
+  {
+   "item": 6,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i006_expl.npz",
+   "seed": 12000905
+  },
+  {
+   "item": 7,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i007_orig.npz",
+   "seed": 12001025
+  },
+  {
+   "item": 7,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i007_expl.npz",
+   "seed": 12001025
+  },
+  {
+   "item": 8,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i008_orig.npz",
+   "seed": 12001173
+  },
+  {
+   "item": 8,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i008_expl.npz",
+   "seed": 12001173
+  },
+  {
+   "item": 9,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i009_orig.npz",
+   "seed": 12001305
+  },
+  {
+   "item": 9,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i009_expl.npz",
+   "seed": 12001305
+  },
+  {
+   "item": 10,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i010_orig.npz",
+   "seed": 12001459
+  },
+  {
+   "item": 10,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i010_expl.npz",
+   "seed": 12001459
+  },
+  {
+   "item": 11,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i011_orig.npz",
+   "seed": 12001507
+  },
+  {
+   "item": 11,
+   "wording": "expl",
+   "file": "/home/ali/cross/groot/wsp/t1/n12/cap/i011_expl.npz",
+   "seed": 12001507
+  }
+ ]
+}

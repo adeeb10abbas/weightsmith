@@ -8,11 +8,14 @@ wd-T3-alt|eval|wd|RubiksCubeLeftOfBowlTask|30000|32|Pick up the rubiks cube and 
 wd-T8-tf|eval|wd|MustardRightOfRaisinRFTask|30000|32|Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.|-|--arm tf --record-obs --rendering default --max-batch 4
 ed-bb-T1|after:wsp-t1,ok-t1|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
 fm-R1|eval|fm|RubiksCubeTask|30000|32|-|-|--arm unedited --record-obs --rendering default --max-batch 4
+ed-dit-T1|after:wsp-t1,ok-t1|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
 fm-T2|eval|fm|PickGlassesTask|30000|32|-|-|--arm unedited --record-obs --rendering default --max-batch 4
 fm-T5|eval|fm|MustardInLeftBinTask|30000|32|-|-|--arm unedited --record-obs --rendering default --max-batch 4
 fm-T7|eval|fm|PickUpGreenObjectTask|30000|32|-|-|--arm unedited --record-obs --rendering default --max-batch 4
+ctl-bb-T1|after:wsp-t1,ok-t1|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb_rand.pt|--arm ctl-bb --rendering default --max-batch 4
 fm-T4|eval|fm|StackYellowOnRedTask|30000|16|-|-|--arm unedited --record-obs --rendering default --max-batch 4
 fm-T6|eval|fm|Stack3RubiksCubeTask|30000|16|-|-|--arm unedited --record-obs --rendering default --max-batch 4
+ctl-dit-T1|after:ok-dit|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/dit_rand.pt|--arm ctl-dit --rendering default --max-batch 4
 ho-T1-base|after:ok-t1-ho|eval|ho|RubiksCubeThenBananaTask|96000|64|-|-|--arm unedited --rendering default --max-batch 4
 ho-T1-bb|after:ok-t1-ho|eval|ho|RubiksCubeThenBananaTask|96000|64|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
 ho-T1-ctl-bb|after:ok-t1-ho|eval|ho|RubiksCubeThenBananaTask|96000|64|-|/home/ali/cross/groot/wsp/t1/bb_rand.pt|--arm ctl-bb --rendering default --max-batch 4
@@ -24,6 +27,4 @@ se-bb-T5|after:ok-t1-ho|eval|se|MustardInLeftBinTask|30000|32|-|/home/ali/cross/
 se-bb-T7|after:ok-t1-ho|eval|se|PickUpGreenObjectTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
 se-bb-T4|after:ok-t1-ho|eval|se|StackYellowOnRedTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
 se-bb-T6|after:ok-t1-ho|eval|se|Stack3RubiksCubeTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
-ctl-bb-T1|after:wsp-t1,ok-t1|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb_rand.pt|--arm ctl-bb --rendering default --max-batch 4
-ed-dit-T1|after:wsp-t1,ok-t1|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
 rp-R1-perf|eval|rp|RubiksCubeTask|30000|32|-|-|--arm render-performance --rendering performance

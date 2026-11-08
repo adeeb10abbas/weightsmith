@@ -277,7 +277,7 @@ def plot_failure_map(fm):
     ax.set_ylim(0, 1.15)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "25", "50", "75", "100"])
     ax.set_ylabel("Success (%)")
-    ax.set_title("GR00T N1.7 DROID, unedited: success on 32 paired starts (Wilson 95%)", fontsize=10, loc="left")
+    ax.set_title("GR00T N1.7 DROID, unedited: success per task, k/n starts from slot 30000 (Wilson 95%)", fontsize=10, loc="left")
     ax.grid(axis="y", color="#E8EAED", zorder=0)
     fig.tight_layout()
     PLOTS.mkdir(parents=True, exist_ok=True)
@@ -327,11 +327,14 @@ def plot_edit(runs, e, m):
             ax.bar(i + 0.18, c2["cand_k"] / c2["n"], width=0.34, color=TEAL, zorder=2)
             star = "*" if c2["p"] < 0.05 else ""
             ax.text(i, max(c2["ref_k"], c2["cand_k"]) / c2["n"] + 0.04, f"+{c2['fixed']}/-{c2['broke']}{star}", ha="center", fontsize=7.5, color=INK)
+        from matplotlib.patches import Patch
+        ax.legend(handles=[Patch(color=GREY, label="unedited"), Patch(color=TEAL, label="edited")], frameon=False,
+                  fontsize=8, loc="upper right", ncol=2)
         ax.set_xticks(list(x), [t for t, _ in se])
         ax.set_ylim(0, 1.15)
         ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "25", "50", "75", "100"])
         ax.set_ylabel("Success (%)")
-        ax.set_title(f"Side effects of `{e}` (built on {tid}): grey unedited, teal edited; +fixed/-broke, * exact p < 0.05",
+        ax.set_title(f"Side effects of `{e}` (built on {tid}): +fixed/-broke vs unedited, * exact p < 0.05",
                      fontsize=9, loc="left")
         ax.grid(axis="y", color="#E8EAED", zorder=0)
         fig.tight_layout()

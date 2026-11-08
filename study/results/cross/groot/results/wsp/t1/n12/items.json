@@ -1,0 +1,265 @@
+{
+ "rule": "(fixed before any edit is built, analogous to weightsmith's sgdw rule \"the replan where the two wordings'\nreplays of the same input disagree most\"):\n\n  candidates: every `stride`-th replan k >= 1 of the practice episodes (slots 30000-30031) that FAILED under the\n              task's own wording, replayed offline under the original and the explicit wording with the recorded\n              images, state and noise seed (groot_acts.py --actions-only);\n  divergence: distance between the two replays' end-effector targets at the last executed row (row 7, xyz of the\n              decoded absolute eef_9d) plus 0.05 m for every executed row (0-7) whose binarised gripper differs;\n  build:      the most divergent replan of each of the first `n_build` failed episodes in slot order;\n  check:      the most divergent replan of every other failed episode (never used to build).",
+ "n_candidates": 1288,
+ "build": [
+  {
+   "i": 15,
+   "slot": 30000,
+   "k": 31,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e0.npz",
+   "score": 0.1317017436027527,
+   "eef_cm": 3.1701743602752686,
+   "grip_rows": 2,
+   "orig_grip_closed": 8,
+   "expl_grip_closed": 6
+  },
+  {
+   "i": 59,
+   "slot": 30001,
+   "k": 7,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e1.npz",
+   "score": 0.2606151942163706,
+   "eef_cm": 1.0615194216370583,
+   "grip_rows": 5,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 5
+  },
+  {
+   "i": 135,
+   "slot": 30002,
+   "k": 47,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e2.npz",
+   "score": 0.3552488441579044,
+   "eef_cm": 0.5248844157904387,
+   "grip_rows": 7,
+   "orig_grip_closed": 7,
+   "expl_grip_closed": 0
+  },
+  {
+   "i": 204,
+   "slot": 30003,
+   "k": 73,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e3.npz",
+   "score": 0.08443750441074371,
+   "eef_cm": 8.443750441074371,
+   "grip_rows": 0,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 0
+  },
+  {
+   "i": 279,
+   "slot": 30005,
+   "k": 111,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e5.npz",
+   "score": 0.0726253978908062,
+   "eef_cm": 2.26253978908062,
+   "grip_rows": 1,
+   "orig_grip_closed": 2,
+   "expl_grip_closed": 1
+  },
+  {
+   "i": 287,
+   "slot": 30007,
+   "k": 15,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e7.npz",
+   "score": 0.10437850784510375,
+   "eef_cm": 0.43785078451037407,
+   "grip_rows": 2,
+   "orig_grip_closed": 5,
+   "expl_grip_closed": 3
+  },
+  {
+   "i": 338,
+   "slot": 30009,
+   "k": 5,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e9.npz",
+   "score": 0.38176723793149,
+   "eef_cm": 3.1767237931489944,
+   "grip_rows": 7,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 7
+  },
+  {
+   "i": 404,
+   "slot": 30010,
+   "k": 25,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e10.npz",
+   "score": 0.1546030141413212,
+   "eef_cm": 5.460301414132118,
+   "grip_rows": 2,
+   "orig_grip_closed": 6,
+   "expl_grip_closed": 8
+  },
+  {
+   "i": 484,
+   "slot": 30011,
+   "k": 73,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e11.npz",
+   "score": 0.05328769139014185,
+   "eef_cm": 0.3287691390141845,
+   "grip_rows": 1,
+   "orig_grip_closed": 4,
+   "expl_grip_closed": 5
+  },
+  {
+   "i": 556,
+   "slot": 30012,
+   "k": 105,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e12.npz",
+   "score": 0.07114680968225003,
+   "eef_cm": 2.1146809682250023,
+   "grip_rows": 1,
+   "orig_grip_closed": 5,
+   "expl_grip_closed": 4
+  },
+  {
+   "i": 589,
+   "slot": 30014,
+   "k": 59,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e14.npz",
+   "score": 0.2794314369559288,
+   "eef_cm": 7.94314369559288,
+   "grip_rows": 4,
+   "orig_grip_closed": 8,
+   "expl_grip_closed": 4
+  },
+  {
+   "i": 619,
+   "slot": 30015,
+   "k": 7,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e15.npz",
+   "score": 0.4083821721374989,
+   "eef_cm": 5.838217213749886,
+   "grip_rows": 7,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 7
+  }
+ ],
+ "check": [
+  {
+   "i": 708,
+   "slot": 30016,
+   "k": 73,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e0.npz",
+   "score": 0.08545408397912979,
+   "eef_cm": 8.54540839791298,
+   "grip_rows": 0,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 0
+  },
+  {
+   "i": 732,
+   "slot": 30017,
+   "k": 9,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e1.npz",
+   "score": 0.17631743066012862,
+   "eef_cm": 2.6317430660128593,
+   "grip_rows": 3,
+   "orig_grip_closed": 8,
+   "expl_grip_closed": 5
+  },
+  {
+   "i": 794,
+   "slot": 30019,
+   "k": 21,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e3.npz",
+   "score": 0.05201061111874879,
+   "eef_cm": 0.2010611118748784,
+   "grip_rows": 1,
+   "orig_grip_closed": 2,
+   "expl_grip_closed": 1
+  },
+  {
+   "i": 842,
+   "slot": 30020,
+   "k": 5,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e4.npz",
+   "score": 0.308303364738822,
+   "eef_cm": 0.8303364738821983,
+   "grip_rows": 6,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 6
+  },
+  {
+   "i": 902,
+   "slot": 30022,
+   "k": 13,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e6.npz",
+   "score": 0.054315464291721585,
+   "eef_cm": 0.43154642917215824,
+   "grip_rows": 1,
+   "orig_grip_closed": 2,
+   "expl_grip_closed": 1
+  },
+  {
+   "i": 982,
+   "slot": 30024,
+   "k": 61,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e8.npz",
+   "score": 0.21779403723776342,
+   "eef_cm": 1.7794037237763405,
+   "grip_rows": 4,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 4
+  },
+  {
+   "i": 1043,
+   "slot": 30025,
+   "k": 71,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e9.npz",
+   "score": 0.10309720798395575,
+   "eef_cm": 0.3097207983955741,
+   "grip_rows": 2,
+   "orig_grip_closed": 2,
+   "expl_grip_closed": 4
+  },
+  {
+   "i": 1068,
+   "slot": 30026,
+   "k": 9,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e10.npz",
+   "score": 0.37966704405844215,
+   "eef_cm": 2.9667044058442116,
+   "grip_rows": 7,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 7
+  },
+  {
+   "i": 1126,
+   "slot": 30028,
+   "k": 13,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e12.npz",
+   "score": 0.022747531533241272,
+   "eef_cm": 2.274753153324127,
+   "grip_rows": 0,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 0
+  },
+  {
+   "i": 1178,
+   "slot": 30030,
+   "k": 5,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e14.npz",
+   "score": 0.31396417338401084,
+   "eef_cm": 1.3964173384010792,
+   "grip_rows": 6,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 6
+  },
+  {
+   "i": 1235,
+   "slot": 30031,
+   "k": 7,
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e15.npz",
+   "score": 0.36356245484203104,
+   "eef_cm": 1.3562454842031002,
+   "grip_rows": 7,
+   "orig_grip_closed": 0,
+   "expl_grip_closed": 7
+  }
+ ],
+ "summary": {
+  "median_eef_cm_all": 0.48293645959347486,
+  "median_eef_cm_build": 2.716357074677944
+ }
+}
