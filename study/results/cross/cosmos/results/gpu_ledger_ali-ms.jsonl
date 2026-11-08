@@ -131,3 +131,4 @@
 {"tag": "S1R-tf-s30000", "machine": "ali-ms", "gpu": 1, "start": 1794169822.794245, "end": 1794170449.5406015, "gpu_s": 626.7, "kind": "eval", "n": 16}
 {"tag": "S1F-rf-s30000", "machine": "ali-ms", "gpu": 1, "start": 1794170449.5412018, "end": 1794171040.268053, "gpu_s": 590.7, "kind": "eval", "n": 16}
 {"tag": "s1lund", "machine": "ali-ms", "gpu": 1, "start": 1794171040.2703788, "end": 1794171302.300238, "gpu_s": 262.0, "kind": "build", "rc": 0}
+{"tag": "S1L-Es1lund-s30000", "machine": "ali-ms", "gpu": 1, "start": 1794171317.4358747, "end": 1794171940.1721761, "gpu_s": 622.7, "kind": "eval", "n": 16}

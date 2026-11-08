@@ -1539,6 +1539,70 @@
   "notes": "edit t8undr built for T8, run on T5 with T5's default instruction, practice slots"
  },
  {
+  "experiment": "edit_practice",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeLeftOfBowlTask",
+  "code": "S1L",
+  "wording_pair": [
+   "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
+   "Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl."
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 1,
+  "edited_k": 4,
+  "fixed": 4,
+  "broke": 1,
+  "p": 0.375,
+  "ci": {
+   "diff_pts": 18.75,
+   "bootstrap95_pts": [
+    -6.25,
+    43.75
+   ],
+   "wilson95_unedited_pct": [
+    1.1,
+    28.3
+   ],
+   "wilson95_edited_pct": [
+    10.2,
+    49.5
+   ]
+  },
+  "control_k": null,
+  "teacher_k": 7,
+  "recovery_pct": 50.0,
+  "transfer": null,
+  "retention": null,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26), --align all (169 = 169 tokens, every position matched)",
+  "values_changed": 207159927,
+  "notes": "edit s1lund (prospective test of the token-count rule: t8und's recipe unchanged on S1L's reference-first -> target-first pair (equal length), one prompt pair, unconditional-pass keys, lam_rel 1e-3); control: same rank and singular values, random directions",
+  "control_n": null,
+  "teacher_n": 16,
+  "edit_vs_control": null,
+  "edit_vs_teacher": {
+   "n": 16,
+   "ref_k": 7,
+   "cand_k": 4,
+   "fixed": 2,
+   "broke": 5,
+   "p": 0.453125,
+   "slots": [
+    30000,
+    30015
+   ]
+  },
+  "control_slots": null,
+  "teacher_slots": [
+   30000,
+   30015
+  ]
+ },
+ {
   "experiment": "where_to_edit_offline",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
