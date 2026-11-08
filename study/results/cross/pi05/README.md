@@ -71,7 +71,7 @@ instructions, same slots, same render preset, same GPU model.
 | Metrics | [`scripts/fresh.py`](scripts/fresh.py) → records with `"status": "fresh"`, `"run": "C-prime-default"` in [`../metrics_pi05.json`](../metrics_pi05.json) and [`results/fresh/summary.json`](results/fresh/summary.json); per-job records in `results/fresh/runs/` |
 
 <!-- fresh2:begin -->
-Jobs finished: **8** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **1.25 GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
+Jobs finished: **9** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **1.35 GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
 
 **Failure map** (unedited π0.5, task's default instruction, practice slots). For context, Cosmos3 Edge on the same 16 starts (Track A's run records on ali-ms, default preset, 8 envs per process; `results/fresh/cosmos_same_slots_ali-ms.json`):
 
@@ -83,6 +83,7 @@ Jobs finished: **8** (16 slots each, two fresh 8-env Isaac processes per group);
 | T4 StackYellowOnRedTask | **9/16** | 33–77% | 30000–30015 | 12/16 | 8 |
 | T5 MustardInLeftBinTask | **3/16** | 7–43% | 30000–30015 | 8/16 | 2 |
 | T6 Stack3RubiksCubeTask | **6/16** | 18–61% | 30000–30015 | 1/16 | 0 |
+| T7 PickUpGreenObjectTask | **0/16** | 0–19% | 30000–30015 | 0/16 | 0 |
 | T8 MustardRightOfRaisinRFTask | **0/16** | 0–19% | 30000–30015 | 0/16 | 0 |
 | R1 RubiksCubeTask | **16/16** | 81–100% | 30000–30015 | 9/16 | 9 |
 

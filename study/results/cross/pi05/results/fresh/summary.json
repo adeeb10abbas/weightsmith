@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 8,
- "gpu_hours": 1.25,
+ "jobs": 9,
+ "gpu_hours": 1.35,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
@@ -10,6 +10,7 @@
   "T4/base/practice": "9/16",
   "T5/base/practice": "3/16",
   "T6/base/practice": "6/16",
+  "T7/base/practice": "0/16",
   "T8/base/practice": "0/16",
   "R1/base/practice": "16/16"
  },
@@ -103,6 +104,22 @@
    ],
    "n": 16,
    "unedited_k": 6,
+   "edited_k": null,
+   "control_k": null,
+   "teacher_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null
+  },
+  {
+   "experiment": "failure_map",
+   "code": "T7",
+   "slots": [
+    30000,
+    30015
+   ],
+   "n": 16,
+   "unedited_k": 0,
    "edited_k": null,
    "control_k": null,
    "teacher_k": null,
