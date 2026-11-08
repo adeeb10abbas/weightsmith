@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "48b635a1ecf6"
+    "commit": "dbd407e8ef30"
    }
   }
  ],
@@ -151,7 +151,7 @@
     "lead": "π0.5",
     "kind": "OpenPI VLA, control",
     "tag": "earlier records",
-    "text": "Edits lifted success on Cube then banana from 2 to 20 of 32 unseen starts (p = 7.6 × 10⁻⁶) and on Mustard right of raisin box from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). A random edit of the same size scored 0 of 32 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
+    "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). On 32 of those starts a random edit of the same size scored 0, against 20 for the edit and 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
    },
    {
     "id": "cosmos",
@@ -172,7 +172,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted Eyeglasses (22 → 44 of 64) and Cube left of bowl (8 → 36 of 64), made none detectably worse, and kept the retention task Cube in bowl at 32 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
+    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted Eyeglasses (22 → 44 of 64), made none detectably worse, and kept the retention task Cube in bowl at 32 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -269,9 +269,9 @@
       "prac": true
      },
      "pi05": {
-      "v": "2 → 20 of 32",
+      "v": "2 → 40 of 64",
       "s": "ok",
-      "d": "18 / 0, p = 7.6 × 10⁻⁶; earlier record: fixed: 27 → 106 of 128"
+      "d": "38 / 0, p = 7.3 × 10⁻¹²; earlier record: fixed: 27 → 106 of 128"
      }
     }
    },
@@ -312,10 +312,9 @@
       "d": "not edited"
      },
      "pi05": {
-      "v": "Cube then banana edit: 8 → 36 of 64",
+      "v": "Cube then banana edit: 1 → 6 of 32",
       "s": "ok",
-      "d": "no own edit submitted; shared slots, unedited: 0 of 16",
-      "prov": true
+      "d": "6 / 1; p = 0.12; earlier record: Cube then banana edit: 8 → 36 of 64"
      }
     }
    },
@@ -358,7 +357,7 @@
      "pi05": {
       "v": "no gain",
       "s": "ok",
-      "d": "own edit 8 → 11 of 64; the grasp slips; shared slots, unedited: 3 of 16",
+      "d": "own edit 8 → 11 of 64; the grasp slips; shared slots, unedited: 3 of 16; shared slots, Cube then banana edit: 7 → 6 of 32",
       "prov": true
      }
     }
@@ -1703,18 +1702,18 @@
        "fb": "Cube then banana practice"
       },
       "pi05": {
-       "v": "2 → 20 of 32",
+       "v": "2 → 40 of 64",
        "s": "ok",
-       "d": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys; 18 / 0, p = 7.6 × 10⁻⁶; +56.2 points [40.6, 71.9]; slots 96000–96031; earlier slots: 27 → 106 of 128",
+       "d": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys; 38 / 0, p = 7.3 × 10⁻¹²; +59.4 points [46.9, 71.9]; slots 96000–96063; earlier slots: 27 → 106 of 128",
        "a": 2,
-       "b": 20,
-       "n": 32,
-       "fx": 18,
+       "b": 40,
+       "n": 64,
+       "fx": 38,
        "br": 0,
-       "pv": 7.629e-06,
+       "pv": 7.276e-12,
        "ci": [
-        56.2,
-        40.6,
+        59.4,
+        46.9,
         71.9
        ],
        "color": "teal",
@@ -2085,13 +2084,12 @@
       "pi05": {
        "v": "control 0, unedited 2, edit 20 of 32",
        "s": "ok",
-       "d": "slots 96000–96031; earlier slots: control 9, unedited 13, edit 50 of 64",
+       "d": "the control ran on 32 of the 64 starts; slots 96000–96031; edit against control p = 1.9 × 10⁻⁶; earlier slots: control 9, unedited 13, edit 50 of 64",
        "u": 2,
        "r": 0,
        "e": 20,
        "n": 32,
-       "tn": 32,
-       "loc": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+       "sub": true,
        "fl": "Cube then banana (32 unseen)"
       }
      }
@@ -2577,14 +2575,14 @@
        "prac": true
       },
       "pi05": {
-       "v": "+18: 2 → 20 of 32",
+       "v": "+38: 2 → 40 of 64",
        "s": "ok",
-       "d": "18 / 0; p = 7.6 × 10⁻⁶; the target task; slots 96000–96031; earlier slots: +79: 27 → 106 of 128",
-       "delta": 18,
+       "d": "38 / 0; p = 7.3 × 10⁻¹²; the target task; slots 96000–96063; earlier slots: +79: 27 → 106 of 128",
+       "delta": 38,
        "a": 2,
-       "b": 20,
-       "n": 32,
-       "p": 7.629e-06,
+       "b": 40,
+       "n": 64,
+       "p": 7.276e-12,
        "target": true
       }
      }
@@ -2641,15 +2639,14 @@
        "d": "dropped: both Cube then banana edits lowered success on Cube then banana itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
-       "v": "+28: 8 → 36 of 64",
+       "v": "+5: 1 → 6 of 32",
        "s": "ok",
-       "d": "33 / 5; p = 4.3 × 10⁻⁶; slots 90000–90063",
-       "delta": 28,
-       "a": 8,
-       "b": 36,
-       "n": 64,
-       "p": 4.255962267052382e-06,
-       "prov": true
+       "d": "6 / 1; p = 0.12; slots 96000–96031; earlier slots: +28: 8 → 36 of 64",
+       "delta": 5,
+       "a": 1,
+       "b": 6,
+       "n": 32,
+       "p": 0.125
       }
      }
     },
@@ -2705,15 +2702,14 @@
        "d": "dropped: both Cube then banana edits lowered success on Cube then banana itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
-       "v": "+5: 7 → 12 of 32",
+       "v": "−1: 7 → 6 of 32",
        "s": "ok",
-       "d": "11 / 6; p = 0.33; slots 60000–60031",
-       "delta": 5,
+       "d": "6 / 7; p = 1; slots 96000–96031; earlier slots: +5: 7 → 12 of 32",
+       "delta": -1,
        "a": 7,
-       "b": 12,
+       "b": 6,
        "n": 32,
-       "p": 0.332305908203125,
-       "prov": true
+       "p": 1.0
       }
      }
     },
@@ -9794,25 +9790,25 @@
     ],
     "slots": [
      96000,
-     96031
+     96063
     ],
-    "n": 32,
+    "n": 64,
     "unedited_k": 2,
-    "edited_k": 20,
-    "fixed": 18,
+    "edited_k": 40,
+    "fixed": 38,
     "broke": 0,
-    "p": 7.629e-06,
+    "p": 7.276e-12,
     "ci": {
      "unedited_wilson95_pct": [
-      1.7,
-      20.1
+      0.9,
+      10.7
      ],
      "edited_wilson95_pct": [
-      45.3,
-      77.1
+      50.3,
+      73.3
      ],
      "paired_diff_bootstrap95_pts": [
-      40.6,
+      46.9,
       71.9
      ]
     },
@@ -10001,6 +9997,134 @@
        0,
        1,
        0
+      ],
+      "96032": [
+       0,
+       1
+      ],
+      "96033": [
+       0,
+       1
+      ],
+      "96034": [
+       0,
+       1
+      ],
+      "96035": [
+       0,
+       1
+      ],
+      "96036": [
+       0,
+       1
+      ],
+      "96037": [
+       0,
+       0
+      ],
+      "96038": [
+       0,
+       1
+      ],
+      "96039": [
+       0,
+       1
+      ],
+      "96040": [
+       0,
+       1
+      ],
+      "96041": [
+       0,
+       0
+      ],
+      "96042": [
+       0,
+       0
+      ],
+      "96043": [
+       0,
+       1
+      ],
+      "96044": [
+       0,
+       0
+      ],
+      "96045": [
+       0,
+       1
+      ],
+      "96046": [
+       0,
+       1
+      ],
+      "96047": [
+       0,
+       1
+      ],
+      "96048": [
+       0,
+       1
+      ],
+      "96049": [
+       0,
+       0
+      ],
+      "96050": [
+       0,
+       0
+      ],
+      "96051": [
+       0,
+       1
+      ],
+      "96052": [
+       0,
+       0
+      ],
+      "96053": [
+       0,
+       0
+      ],
+      "96054": [
+       0,
+       1
+      ],
+      "96055": [
+       0,
+       1
+      ],
+      "96056": [
+       0,
+       0
+      ],
+      "96057": [
+       0,
+       1
+      ],
+      "96058": [
+       0,
+       1
+      ],
+      "96059": [
+       0,
+       0
+      ],
+      "96060": [
+       0,
+       0
+      ],
+      "96061": [
+       0,
+       1
+      ],
+      "96062": [
+       0,
+       0
+      ],
+      "96063": [
+       0,
+       1
       ]
      },
      "control": {
@@ -10050,6 +10174,398 @@
        96031
       ]
      }
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "T3",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl"
+    ],
+    "slots": [
+     96000,
+     96031
+    ],
+    "n": 32,
+    "unedited_k": 1,
+    "edited_k": 6,
+    "fixed": 6,
+    "broke": 1,
+    "p": 0.125,
+    "ci": {
+     "unedited_wilson95_pct": [
+      0.6,
+      15.7
+     ],
+     "edited_wilson95_pct": [
+      8.9,
+      35.3
+     ],
+     "paired_diff_bootstrap95_pts": [
+      0.0,
+      31.2
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": {
+     "unedited_k": 1,
+     "edited_k": 6,
+     "n": 32
+    },
+    "retention": null,
+    "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+    "values_changed": 450468837,
+    "notes": "side effect of the T1 edit v2mi-f on another task, held-out slots, the task's own default instruction; per_slot = [unedited, edited]",
+    "_ptask": null,
+    "_task": "T3",
+    "_edit_task": "T1",
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the explicit wording 'Put the cube in the bowl then put the banana in the bowl'",
+     "per_slot": {
+      "96000": [
+       0,
+       1
+      ],
+      "96001": [
+       0,
+       0
+      ],
+      "96002": [
+       0,
+       0
+      ],
+      "96003": [
+       0,
+       0
+      ],
+      "96004": [
+       1,
+       0
+      ],
+      "96005": [
+       0,
+       0
+      ],
+      "96006": [
+       0,
+       0
+      ],
+      "96007": [
+       0,
+       0
+      ],
+      "96008": [
+       0,
+       1
+      ],
+      "96009": [
+       0,
+       0
+      ],
+      "96010": [
+       0,
+       1
+      ],
+      "96011": [
+       0,
+       0
+      ],
+      "96012": [
+       0,
+       1
+      ],
+      "96013": [
+       0,
+       0
+      ],
+      "96014": [
+       0,
+       0
+      ],
+      "96015": [
+       0,
+       0
+      ],
+      "96016": [
+       0,
+       1
+      ],
+      "96017": [
+       0,
+       0
+      ],
+      "96018": [
+       0,
+       0
+      ],
+      "96019": [
+       0,
+       0
+      ],
+      "96020": [
+       0,
+       0
+      ],
+      "96021": [
+       0,
+       0
+      ],
+      "96022": [
+       0,
+       0
+      ],
+      "96023": [
+       0,
+       0
+      ],
+      "96024": [
+       0,
+       0
+      ],
+      "96025": [
+       0,
+       1
+      ],
+      "96026": [
+       0,
+       0
+      ],
+      "96027": [
+       0,
+       0
+      ],
+      "96028": [
+       0,
+       0
+      ],
+      "96029": [
+       0,
+       0
+      ],
+      "96030": [
+       0,
+       0
+      ],
+      "96031": [
+       0,
+       0
+      ]
+     },
+     "gpus": [
+      1
+     ]
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardInLeftBinTask",
+    "code": "T5",
+    "wording_pair": [
+     "Put the mustard in the left bin"
+    ],
+    "slots": [
+     96000,
+     96031
+    ],
+    "n": 32,
+    "unedited_k": 7,
+    "edited_k": 6,
+    "fixed": 6,
+    "broke": 7,
+    "p": 1.0,
+    "ci": {
+     "unedited_wilson95_pct": [
+      11.0,
+      38.8
+     ],
+     "edited_wilson95_pct": [
+      8.9,
+      35.3
+     ],
+     "paired_diff_bootstrap95_pts": [
+      -25.0,
+      18.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": {
+     "unedited_k": 7,
+     "edited_k": 6,
+     "n": 32
+    },
+    "retention": null,
+    "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+    "values_changed": 450468837,
+    "notes": "side effect of the T1 edit v2mi-f on another task, held-out slots, the task's own default instruction; per_slot = [unedited, edited]",
+    "_ptask": null,
+    "_task": "T5",
+    "_edit_task": "T1",
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the explicit wording 'Put the cube in the bowl then put the banana in the bowl'",
+     "per_slot": {
+      "96000": [
+       0,
+       0
+      ],
+      "96001": [
+       0,
+       0
+      ],
+      "96002": [
+       0,
+       0
+      ],
+      "96003": [
+       0,
+       0
+      ],
+      "96004": [
+       0,
+       0
+      ],
+      "96005": [
+       0,
+       1
+      ],
+      "96006": [
+       1,
+       0
+      ],
+      "96007": [
+       1,
+       0
+      ],
+      "96008": [
+       1,
+       0
+      ],
+      "96009": [
+       0,
+       1
+      ],
+      "96010": [
+       0,
+       1
+      ],
+      "96011": [
+       1,
+       0
+      ],
+      "96012": [
+       0,
+       0
+      ],
+      "96013": [
+       0,
+       0
+      ],
+      "96014": [
+       0,
+       0
+      ],
+      "96015": [
+       0,
+       1
+      ],
+      "96016": [
+       0,
+       1
+      ],
+      "96017": [
+       1,
+       0
+      ],
+      "96018": [
+       0,
+       0
+      ],
+      "96019": [
+       0,
+       0
+      ],
+      "96020": [
+       0,
+       0
+      ],
+      "96021": [
+       0,
+       0
+      ],
+      "96022": [
+       1,
+       0
+      ],
+      "96023": [
+       0,
+       0
+      ],
+      "96024": [
+       0,
+       0
+      ],
+      "96025": [
+       0,
+       1
+      ],
+      "96026": [
+       0,
+       0
+      ],
+      "96027": [
+       0,
+       0
+      ],
+      "96028": [
+       0,
+       0
+      ],
+      "96029": [
+       1,
+       0
+      ],
+      "96030": [
+       0,
+       0
+      ],
+      "96031": [
+       0,
+       0
+      ]
+     },
+     "gpus": [
+      1
+     ]
     }
    }
   ]
@@ -10108,13 +10624,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "48b635a1ecf6"
+   "commit": "dbd407e8ef30"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "674c124256d32ba4",
- "numbers_hash": "77e104f44ad80d39",
- "updated": "2026-11-08T22:48Z",
- "updated_text": "8 Nov 2026, 22:48 UTC",
+ "content_hash": "8ba24940550e35f3",
+ "numbers_hash": "33c3160bcb58db71",
+ "updated": "2026-11-08T23:39Z",
+ "updated_text": "8 Nov 2026, 23:39 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: first results"
 }
