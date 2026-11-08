@@ -1,0 +1,51 @@
+{
+ "base": {
+  "n": 64,
+  "first_chunk_closed": 0.016,
+  "closed_share_before_first_grasp": 0.188,
+  "wrong_object_grabs_per_episode": 2.89,
+  "drops_per_episode": 4.33
+ },
+ "v1full": {
+  "n": 64,
+  "first_chunk_closed": 0.016,
+  "closed_share_before_first_grasp": 0.151,
+  "wrong_object_grabs_per_episode": 0.19,
+  "drops_per_episode": 2.88
+ },
+ "v1img816": {
+  "n": 64,
+  "first_chunk_closed": 0.016,
+  "closed_share_before_first_grasp": 0.144,
+  "wrong_object_grabs_per_episode": 0.8,
+  "drops_per_episode": 3.67
+ },
+ "a1": {
+  "n": 64,
+  "first_chunk_closed": 0.516,
+  "closed_share_before_first_grasp": 0.579,
+  "wrong_object_grabs_per_episode": 4.52,
+  "drops_per_episode": 4.98
+ },
+ "h1": {
+  "n": 64,
+  "first_chunk_closed": 0.938,
+  "closed_share_before_first_grasp": 0.97,
+  "wrong_object_grabs_per_episode": 0.0,
+  "drops_per_episode": 0.94
+ },
+ "p1": {
+  "n": 64,
+  "first_chunk_closed": 0.094,
+  "closed_share_before_first_grasp": 0.199,
+  "wrong_object_grabs_per_episode": 1.55,
+  "drops_per_episode": 6.19
+ },
+ "va": {
+  "n": 64,
+  "first_chunk_closed": 0.016,
+  "closed_share_before_first_grasp": 0.125,
+  "wrong_object_grabs_per_episode": 0.86,
+  "drops_per_episode": 4.77
+ }
+}

@@ -1,0 +1,216 @@
+{
+ "source": "/home/ali/vibes/opus-weight-surgery/projects/where-glasses/heldout/where-tx-94016-32/results.json",
+ "task": "PickGlassesTask",
+ "slot_filter": null,
+ "lanes_per_chunk": {
+  "base-94016": [
+   0,
+   1
+  ],
+  "v1full-94016": [
+   0,
+   1
+  ],
+  "p1-94016": [
+   0,
+   1
+  ],
+  "a1-94016": [
+   0,
+   1
+  ]
+ },
+ "n_slots": 32,
+ "slot_range": [
+  94016,
+  94047
+ ],
+ "fingerprints": {
+  "base": null,
+  "v1full": "63db0c52a51306c9",
+  "p1": "4ca8023b0592b79f",
+  "a1": "09b7c9f5bfe26912"
+ },
+ "arms": {
+  "base": {
+   "success": 14,
+   "n": 32,
+   "wilson95": [
+    0.282,
+    0.607
+   ],
+   "mean_steps_success": 227.9
+  },
+  "v1full": {
+   "success": 25,
+   "n": 32,
+   "wilson95": [
+    0.612,
+    0.89
+   ],
+   "mean_steps_success": 236.6
+  },
+  "p1": {
+   "success": 12,
+   "n": 32,
+   "wilson95": [
+    0.229,
+    0.547
+   ],
+   "mean_steps_success": 269.0
+  },
+  "a1": {
+   "success": 11,
+   "n": 32,
+   "wilson95": [
+    0.204,
+    0.517
+   ],
+   "mean_steps_success": 178.3
+  }
+ },
+ "comparisons": [
+  {
+   "cand": "v1full",
+   "ref": "base",
+   "n": 32,
+   "cand_succ": 25,
+   "ref_succ": 14,
+   "fixed": 15,
+   "broke": 4,
+   "diff_pp": 34.4,
+   "boot95_pp": [
+    9.4,
+    56.2
+   ],
+   "mcnemar_p": 0.0192108154296875
+  },
+  {
+   "cand": "p1",
+   "ref": "base",
+   "n": 32,
+   "cand_succ": 12,
+   "ref_succ": 14,
+   "fixed": 5,
+   "broke": 7,
+   "diff_pp": -6.2,
+   "boot95_pp": [
+    -28.1,
+    15.6
+   ],
+   "mcnemar_p": 0.7744140625
+  },
+  {
+   "cand": "a1",
+   "ref": "base",
+   "n": 32,
+   "cand_succ": 11,
+   "ref_succ": 14,
+   "fixed": 7,
+   "broke": 10,
+   "diff_pp": -9.4,
+   "boot95_pp": [
+    -34.4,
+    15.6
+   ],
+   "mcnemar_p": 0.629058837890625
+  },
+  {
+   "cand": "p1",
+   "ref": "v1full",
+   "n": 32,
+   "cand_succ": 12,
+   "ref_succ": 25,
+   "fixed": 2,
+   "broke": 15,
+   "diff_pp": -40.6,
+   "boot95_pp": [
+    -62.5,
+    -18.8
+   ],
+   "mcnemar_p": 0.002349853515625
+  },
+  {
+   "cand": "a1",
+   "ref": "v1full",
+   "n": 32,
+   "cand_succ": 11,
+   "ref_succ": 25,
+   "fixed": 1,
+   "broke": 15,
+   "diff_pp": -43.8,
+   "boot95_pp": [
+    -62.5,
+    -25.0
+   ],
+   "mcnemar_p": 0.000518798828125
+  }
+ ],
+ "by_chunk": [
+  {
+   "slots": [
+    94016,
+    94047
+   ],
+   "order": [
+    "base",
+    "v1full",
+    "p1",
+    "a1"
+   ],
+   "success": {
+    "base": 14,
+    "v1full": 25,
+    "p1": 12,
+    "a1": 11
+   },
+   "vs_ref": {
+    "v1full": {
+     "cand": "v1full",
+     "ref": "base",
+     "n": 32,
+     "cand_succ": 25,
+     "ref_succ": 14,
+     "fixed": 15,
+     "broke": 4,
+     "diff_pp": 34.4,
+     "boot95_pp": [
+      9.4,
+      56.2
+     ],
+     "mcnemar_p": 0.0192108154296875
+    },
+    "p1": {
+     "cand": "p1",
+     "ref": "base",
+     "n": 32,
+     "cand_succ": 12,
+     "ref_succ": 14,
+     "fixed": 5,
+     "broke": 7,
+     "diff_pp": -6.2,
+     "boot95_pp": [
+      -28.1,
+      15.6
+     ],
+     "mcnemar_p": 0.7744140625
+    },
+    "a1": {
+     "cand": "a1",
+     "ref": "base",
+     "n": 32,
+     "cand_succ": 11,
+     "ref_succ": 14,
+     "fixed": 7,
+     "broke": 10,
+     "diff_pp": -9.4,
+     "boot95_pp": [
+      -34.4,
+      15.6
+     ],
+     "mcnemar_p": 0.629058837890625
+    }
+   }
+  }
+ ]
+}

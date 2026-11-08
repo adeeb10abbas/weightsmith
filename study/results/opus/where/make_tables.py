@@ -57,7 +57,8 @@ def heldout_table(name="heldout_analysis.json"):
         return "(held-out analysis not available)"
     base = a["arms"]["base"]
     cmp_ = {(c["cand"], c["ref"]): c for c in a["comparisons"]}
-    lines = [f"Slots {a['slot_range'][0]}-{a['slot_range'][1]} ({a['n_slots']} paired slots" + (f", filter {a['slot_filter']}" if a.get('slot_filter') else "") + ").",
+    rng = a['slot_filter'].replace(',', ' and ') if a.get('slot_filter') else f"{a['slot_range'][0]}-{a['slot_range'][1]}"
+    lines = [f"Slots {rng} ({a['n_slots']} paired slots).",
              "", "| Arm | Successes | Wilson 95% | Fixed / broke vs base | Difference vs base, points [95% CI] | McNemar p | Fixed / broke vs V1-full | p vs V1-full |",
              "|---|---:|---|---:|---|---:|---:|---:|",
              f"| Unedited (base) | {base['success']}/{base['n']} | {base['wilson95'][0]:.2f}-{base['wilson95'][1]:.2f} | - | - | - | - | - |"]

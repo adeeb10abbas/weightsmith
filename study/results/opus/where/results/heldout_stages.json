@@ -1,0 +1,142 @@
+{
+ "n_slots": 64,
+ "arms": {
+  "base": {
+   "cube_placed": 17,
+   "success": 5,
+   "banana_conversion": 0.294,
+   "stages": {
+    "cube subtask failed at grab": 42,
+    "cube subtask failed at place": 5,
+    "banana subtask failed": 12,
+    "success": 5
+   }
+  },
+  "v1full": {
+   "cube_placed": 60,
+   "success": 55,
+   "banana_conversion": 0.917,
+   "stages": {
+    "success": 55,
+    "cube subtask failed at grab": 2,
+    "banana subtask failed": 5,
+    "cube subtask failed at place": 2
+   }
+  },
+  "v1img816": {
+   "cube_placed": 50,
+   "success": 41,
+   "banana_conversion": 0.82,
+   "stages": {
+    "success": 41,
+    "banana subtask failed": 9,
+    "cube subtask failed at grab": 11,
+    "cube subtask failed at place": 3
+   }
+  },
+  "a1": {
+   "cube_placed": 27,
+   "success": 20,
+   "banana_conversion": 0.741,
+   "stages": {
+    "cube subtask failed at grab": 22,
+    "banana subtask failed": 7,
+    "success": 20,
+    "cube subtask failed at place": 15
+   }
+  },
+  "h1": {
+   "cube_placed": 0,
+   "success": 0,
+   "banana_conversion": null,
+   "stages": {
+    "cube subtask failed at grab": 62,
+    "cube subtask failed at place": 2
+   }
+  },
+  "p1": {
+   "cube_placed": 40,
+   "success": 30,
+   "banana_conversion": 0.75,
+   "stages": {
+    "cube subtask failed at grab": 12,
+    "success": 30,
+    "cube subtask failed at place": 12,
+    "banana subtask failed": 10
+   }
+  },
+  "va": {
+   "cube_placed": 56,
+   "success": 43,
+   "banana_conversion": 0.768,
+   "stages": {
+    "success": 43,
+    "banana subtask failed": 13,
+    "cube subtask failed at grab": 4,
+    "cube subtask failed at place": 4
+   }
+  }
+ },
+ "vs_base": {
+  "v1full": {
+   "fixed_base_stage": {
+    "cube subtask failed at grab": 34,
+    "cube subtask failed at place": 5,
+    "banana subtask failed": 11
+   },
+   "broke_arm_stage": {}
+  },
+  "v1img816": {
+   "fixed_base_stage": {
+    "cube subtask failed at grab": 28,
+    "cube subtask failed at place": 4,
+    "banana subtask failed": 6
+   },
+   "broke_arm_stage": {
+    "banana subtask failed": 1,
+    "cube subtask failed at grab": 1
+   }
+  },
+  "a1": {
+   "fixed_base_stage": {
+    "banana subtask failed": 2,
+    "cube subtask failed at grab": 16,
+    "cube subtask failed at place": 2
+   },
+   "broke_arm_stage": {
+    "banana subtask failed": 1,
+    "cube subtask failed at grab": 2,
+    "cube subtask failed at place": 2
+   }
+  },
+  "h1": {
+   "fixed_base_stage": {},
+   "broke_arm_stage": {
+    "cube subtask failed at grab": 5
+   }
+  },
+  "p1": {
+   "fixed_base_stage": {
+    "cube subtask failed at place": 3,
+    "cube subtask failed at grab": 20,
+    "banana subtask failed": 5
+   },
+   "broke_arm_stage": {
+    "cube subtask failed at grab": 1,
+    "banana subtask failed": 1,
+    "cube subtask failed at place": 1
+   }
+  },
+  "va": {
+   "fixed_base_stage": {
+    "cube subtask failed at grab": 30,
+    "banana subtask failed": 7,
+    "cube subtask failed at place": 4
+   },
+   "broke_arm_stage": {
+    "banana subtask failed": 1,
+    "cube subtask failed at place": 2
+   }
+  }
+ }
+}
