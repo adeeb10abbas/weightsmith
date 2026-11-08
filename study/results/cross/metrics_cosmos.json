@@ -110,20 +110,20 @@
   "wording_pair": [
    "Stack the yellow block on the red block"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 12,
+  "unedited_k": 22,
   "edited_k": null,
   "fixed": null,
   "broke": null,
   "p": null,
   "ci": {
    "wilson95_pct": [
-    50.5,
-    89.8
+    51.4,
+    82.0
    ]
   },
   "control_k": null,
