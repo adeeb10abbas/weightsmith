@@ -122,6 +122,32 @@
  "tldr": {
   "items": [
    {
+    "id": "fix",
+    "lead": "The fix",
+    "text": "On NVIDIA’s Cosmos3 Edge, a weight edit fixed a task the model failed only because of how the instruction was worded: 0 → 56 of 64 unseen starts. A random edit of the same size: 0.",
+    "kind": null,
+    "tag": null
+   },
+   {
+    "id": "where",
+    "lead": "Where it works",
+    "text": "Only where the model reads the instruction (π0.5’s vision-language model and Cosmos3 Edge’s text pathway); on the action side the same edit did less or nothing. On GR00T N1.7 every edit broke the task.",
+    "kind": null,
+    "tag": null
+   },
+   {
+    "id": "cost",
+    "lead": "The cost",
+    "text": "It breaks the two other tasks whose instructions say “left”: T3 13 → 0 and T5 9 → 0 of 32 unseen starts. Two rebuilds that tell it to leave other instructions alone kept the fix on practice starts but did not stop the break.",
+    "kind": null,
+    "tag": null
+   }
+  ],
+  "note": "Unseen starts: simulated starting scenes never used to build or choose an edit; practice starts: the scenes an edit is built and checked on. Every count compares the edited and the unedited model on the same starts."
+ },
+ "tldr_models": {
+  "items": [
+   {
     "id": "pi05",
     "lead": "π0.5",
     "kind": "OpenPI VLA, control",
@@ -159,94 +185,54 @@
    "level": 2
   },
   {
-   "id": "problem",
-   "title": "Problem",
-   "level": 2
-  },
-  {
-   "id": "methods",
-   "title": "Methods",
+   "id": "question",
+   "title": "What we asked",
    "level": 2
   },
   {
    "id": "models",
-   "title": "Three models",
-   "level": 3
-  },
-  {
-   "id": "edit",
-   "title": "The closed-form edit",
-   "level": 3
-  },
-  {
-   "id": "protocol",
-   "title": "Protocol",
-   "level": 3
-  },
-  {
-   "id": "demos",
-   "title": "Demos",
+   "title": "Three models, one edit",
    "level": 2
   },
   {
-   "id": "before-after",
-   "title": "Before and after the edit",
-   "level": 3
-  },
-  {
-   "id": "results",
-   "title": "Results",
+   "id": "fix",
+   "title": "The fix on Cosmos3 Edge",
    "level": 2
   },
   {
-   "id": "glance",
-   "title": "At a glance",
-   "level": 3
-  },
-  {
-   "id": "failure-map",
-   "title": "Failure map",
-   "level": 3
-  },
-  {
-   "id": "wording",
-   "title": "Wording sensitivity",
-   "level": 3
-  },
-  {
-   "id": "edits",
-   "title": "Edits and their controls",
-   "level": 3
+   "id": "where",
+   "title": "Where to edit",
+   "level": 2
   },
   {
    "id": "side-effects",
-   "title": "Side effects",
-   "level": 3
+   "title": "What else changed",
+   "level": 2
   },
   {
    "id": "prevent",
    "title": "Can the side effect be prevented?",
-   "level": 4
+   "level": 3
   },
   {
-   "id": "conclusion",
-   "title": "Conclusion",
+   "id": "groot",
+   "title": "GR00T N1.7: why there is no fix",
    "level": 2
   },
   {
-   "id": "caveats",
-   "title": "Caveats",
-   "level": 3
+   "id": "control",
+   "title": "π0.5, the control",
+   "level": 2
   },
   {
-   "id": "noise",
-   "title": "Noise floor",
-   "level": 3
+   "id": "limits",
+   "title": "Limits",
+   "level": 2
   },
   {
-   "id": "records",
-   "title": "Records and reproduction",
-   "level": 3
+   "id": "numbers",
+   "title": "All numbers and records",
+   "level": 2
   },
   {
    "id": "citation",
@@ -558,7 +544,7 @@
         16,
         "30000; 30015"
        ],
-       "held-out": [
+       "unseen": [
         0,
         56,
         64,
@@ -584,7 +570,7 @@
         16,
         "30000; 30015"
        ],
-       "held-out": [
+       "unseen": [
         9,
         0,
         32,
@@ -610,7 +596,7 @@
         16,
         "30000; 30015"
        ],
-       "held-out": [
+       "unseen": [
         13,
         0,
         32,
@@ -8256,8 +8242,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "92dc6f062e00be15",
- "updated": "2026-11-08T15:20Z",
- "updated_text": "8 Nov 2026, 15:20 UTC",
+ "content_hash": "7b5bbc4b5c6b04ea",
+ "updated": "2026-11-08T15:40Z",
+ "updated_text": "8 Nov 2026, 15:40 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
