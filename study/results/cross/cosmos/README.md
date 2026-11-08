@@ -111,6 +111,11 @@ goes 8/16 -> 0/16 (8 broke, 0 fixed, p = 0.0078), and the edited policy carries 
 significant). Distilling "the raisin box is to the left of the mustard" into "the mustard is to the right of
 the raisin box" taught the text pathway something like left -> right, beyond the one sentence it was built from.
 
+Held-out starts confirm the break. On slots 96000-96031, which no task except T8 had ever used, T5 goes 9/32 -> 0/32
+(9 broke, 0 fixed, p = 0.0039) and T3 goes 13/32 -> 0/32 (13 broke, p = 2.4e-4) (`experiment: side_effect_heldout`;
+plots `plots/tasks_heldout_t8und_ali-ms.png`, `plots/side_effects_heldout_t8und_ali-ms.png`). R1, T1, T4, T6, T2 and T7
+on held-out starts are running.
+
 Follow-up `t8und-p` (running): the same build plus zero-change preservation keys from 65 generic RoboLab instructions.
 The set is fixed by rule before the build (`tasks/preserve_generic.json`): all RoboLab default instructions minus the shared-set
 tasks, their near-duplicates and every instruction that mentions mustard, raisin, a bin, left or right. So a T5 recovery
