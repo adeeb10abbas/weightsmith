@@ -1,9 +1,10 @@
-/* Renders the comparison tables from metrics.json. The page ships the same tables pre-rendered (no-JS fallback,
-   written by site/scripts/make_cosmos_metrics.py), so this only matters when metrics.json is newer than the HTML. */
+/* The cross-model draft page.
+   1. Renders the comparison tables from metrics.json. The page ships the same tables pre-rendered (no-JS fallback,
+      written by site/scripts/make_cosmos_metrics.py), so this only matters when metrics.json is newer than the HTML.
+   2. Clips: a placeholder becomes a player as soon as its MP4 exists in video/, and players run only while in view,
+      never for readers who ask for reduced motion. */
 (function () {
   'use strict';
-  var blocks = document.querySelectorAll('[data-table]');
-  if (!blocks.length || !window.fetch) return;
 
   var REPO = 'https://github.com/adeeb10abbas/weightsmith';
 
@@ -28,6 +29,7 @@
     return parent;
   }
 
+  /* ---------- tables ---------- */
   function table(t, models, order) {
     var tb = el('table', 'ctable');
     var head = el('thead');
@@ -97,7 +99,7 @@
     m.tables.forEach(function (t) {
       byId[t.id] = t;
     });
-    Array.prototype.forEach.call(blocks, function (b) {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-table]'), function (b) {
       var t = byId[b.getAttribute('data-table')];
       if (!t) return;
       var frag = document.createDocumentFragment();
@@ -111,13 +113,81 @@
     if (st && m.status_text) st.textContent = m.status_text + ' · updated ' + m.updated_text;
   }
 
-  fetch('metrics.json', { cache: 'no-cache' })
-    .then(function (r) {
-      if (!r.ok) throw new Error('metrics.json ' + r.status);
-      return r.json();
-    })
-    .then(render)
-    .catch(function () {
-      /* keep the pre-rendered tables */
+  if (window.fetch && document.querySelector('[data-table]')) {
+    fetch('metrics.json', { cache: 'no-cache' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('metrics.json ' + r.status);
+        return r.json();
+      })
+      .then(render)
+      .catch(function () {
+        /* keep the pre-rendered tables */
+      });
+  }
+
+  /* ---------- clips ---------- */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io = !reduce && 'IntersectionObserver' in window
+    ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            var p = e.target.play();
+            if (p && p.catch) p.catch(function () {});
+          } else {
+            e.target.pause();
+          }
+        });
+      }, { threshold: 0.5 })
+    : null;
+
+  function watch(v) {
+    if (io) io.observe(v);
+  }
+
+  function exists(url, kind) {
+    return fetch(url, { method: 'HEAD', cache: 'no-cache' }).then(function (r) {
+      return r.ok && (r.headers.get('content-type') || '').indexOf(kind) === 0;
     });
+  }
+
+  function upgrade(fig) {
+    var src = fig.getAttribute('data-clip');
+    var v = el('video');
+    v.controls = true;
+    v.muted = true;
+    v.loop = true;
+    v.playsInline = true;
+    v.preload = 'metadata';
+    v.setAttribute('muted', '');
+    v.setAttribute('playsinline', '');
+    v.setAttribute('aria-label', fig.getAttribute('data-title') + '. ' + fig.getAttribute('data-caption'));
+    var s = el('source');
+    s.src = src;
+    s.type = 'video/mp4';
+    v.appendChild(s);
+    var poster = src.replace(/\.mp4$/, '.jpg');
+    exists(poster, 'image').then(function (ok) {
+      if (ok) v.poster = poster;
+    }).catch(function () {});
+    fig.replaceChild(v, fig.querySelector('.ph'));
+    var cap = fig.querySelector('figcaption');
+    if (cap) {
+      cap.textContent = '';
+      var b = el('b');
+      b.textContent = fig.getAttribute('data-title') + '.';
+      cap.appendChild(b);
+      cap.appendChild(document.createTextNode(' ' + fig.getAttribute('data-caption')));
+    }
+    fig.classList.remove('clip-pending');
+    watch(v);
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.clip video'), watch);
+  if (window.fetch) {
+    Array.prototype.forEach.call(document.querySelectorAll('.clip-pending[data-clip]'), function (fig) {
+      exists(fig.getAttribute('data-clip'), 'video').then(function (ok) {
+        if (ok) upgrade(fig);
+      }).catch(function () {});
+    });
+  }
 })();
