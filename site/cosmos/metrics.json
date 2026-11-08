@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "8e899a94c937"
+    "commit": "8d76b2cde276"
    }
   },
   {
@@ -1098,11 +1098,11 @@
      "label": "Yellow on red",
      "cells": {
       "cosmos": {
-       "v": "12 of 16",
+       "v": "22 of 32",
        "s": "ok",
-       "d": "75%; slots 30000–30015",
-       "k": 12,
-       "n": 16
+       "d": "69%; slots 30000–30031",
+       "k": 22,
+       "n": 32
       },
       "groot": {
        "v": "0 of 16",
@@ -1210,11 +1210,11 @@
      "label": "Mustard right of raisin box",
      "cells": {
       "cosmos": {
-       "v": "0 of 16",
+       "v": "0 of 32",
        "s": "ok",
-       "d": "0%; slots 30000–30015",
+       "d": "0%; slots 30000–30031",
        "k": 0,
-       "n": 16
+       "n": 32
       },
       "groot": {
        "v": "0 of 32",
@@ -1316,8 +1316,14 @@
      "label": "Cube then banana",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "10 → 10 of 16",
+       "s": "ok",
+       "d": "1 / 1, p = 1; 0.0 points [−18.8, 18.8]; slots 30000–30015; “Put the cube then the banana in the bowl” → “Put the cube in the bowl then put the banana in the bowl”",
+       "a": 10,
+       "b": 10,
+       "n": 16,
+       "pv": 1.0,
+       "fl": "Cube then banana (16 practice)"
       },
       "groot": {
        "v": "9 → 16 of 32",
@@ -1349,8 +1355,14 @@
      "label": "Cube left of bowl",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "4 → 11 of 16",
+       "s": "ok",
+       "d": "8 / 1, p = 0.039; +43.8 points [12.5, 75.0]; slots 30000–30015; “Put the rubiks cube to the left of the bowl” → “Pick up the rubiks cube and place it on the table to the left side of the bowl”",
+       "a": 4,
+       "b": 11,
+       "n": 16,
+       "pv": 0.0390625,
+       "fl": "Cube left of bowl (16 practice)"
       },
       "groot": {
        "v": "1 → 0 of 32",
@@ -1393,14 +1405,14 @@
      "label": "Mustard right of raisin box",
      "cells": {
       "cosmos": {
-       "v": "0 → 15 of 16",
+       "v": "0 → 31 of 32",
        "s": "ok",
-       "d": "15 / 0, p = 6.1 × 10⁻⁵; +93.8 points [81.2, 100.0]; slots 30000–30015; “Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.” → “Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.”",
+       "d": "31 / 0, p = 9.3 × 10⁻¹⁰; +96.9 points [90.6, 100.0]; slots 30000–30031; “Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.” → “Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.”",
        "a": 0,
-       "b": 15,
-       "n": 16,
-       "pv": 6.103515625e-05,
-       "fl": "Mustard right of raisin box (16 practice)"
+       "b": 31,
+       "n": 32,
+       "pv": 9.313225746154785e-10,
+       "fl": "Mustard right of raisin box (32 practice)"
       },
       "groot": {
        "v": "0 → 0 of 32",
@@ -2968,20 +2980,20 @@
     "wording_pair": [
      "Stack the yellow block on the red block"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
-    "unedited_k": 12,
+    "unedited_k": 22,
     "edited_k": null,
     "fixed": null,
     "broke": null,
     "p": null,
     "ci": {
      "wilson95_pct": [
-      50.5,
-      89.8
+      51.4,
+      82.0
      ]
     },
     "control_k": null,
@@ -3124,10 +3136,10 @@
     "wording_pair": [
      "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
     "unedited_k": 0,
     "edited_k": null,
@@ -3137,7 +3149,7 @@
     "ci": {
      "wilson95_pct": [
       0.0,
-      19.4
+      10.7
      ]
     },
     "control_k": null,
@@ -3197,39 +3209,137 @@
    {
     "experiment": "wording",
     "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
-    "task": "MustardRightOfRaisinRFTask",
-    "code": "T8",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
     "wording_pair": [
-     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
-     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
     ],
     "n": 16,
     "slots": [
      30000,
      30015
     ],
+    "unedited_k": 10,
+    "edited_k": null,
+    "fixed": 1,
+    "broke": 1,
+    "p": 1.0,
+    "ci": {
+     "diff_pts": 0.0,
+     "bootstrap95_pts": [
+      -18.75,
+      18.75
+     ],
+     "wilson95_orig_pct": [
+      38.6,
+      81.5
+     ],
+     "wilson95_alt_pct": [
+      38.6,
+      81.5
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 10,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "same weights, wording via prompt override; fixed = only the alternative wording succeeds. pi0.5's known-good explicit wording (paper, Section 2)",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "wording",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "T3",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl",
+     "Pick up the rubiks cube and place it on the table to the left side of the bowl"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 4,
+    "edited_k": null,
+    "fixed": 8,
+    "broke": 1,
+    "p": 0.0390625,
+    "ci": {
+     "diff_pts": 43.75,
+     "bootstrap95_pts": [
+      12.5,
+      75.0
+     ],
+     "wilson95_orig_pct": [
+      10.2,
+      49.5
+     ],
+     "wilson95_alt_pct": [
+      44.4,
+      85.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 11,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "same weights, wording via prompt override; fixed = only the alternative wording succeeds. the task's own 'specific' instruction in RoboLab",
+    "_task": "T3",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "wording",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 32,
+    "slots": [
+     30000,
+     30031
+    ],
     "unedited_k": 0,
     "edited_k": null,
-    "fixed": 15,
+    "fixed": 31,
     "broke": 0,
-    "p": 6.103515625e-05,
+    "p": 9.313225746154785e-10,
     "ci": {
-     "diff_pts": 93.75,
+     "diff_pts": 96.88,
      "bootstrap95_pts": [
-      81.25,
+      90.62,
       100.0
      ],
      "wilson95_orig_pct": [
       0.0,
-      19.4
+      10.7
      ],
      "wilson95_alt_pct": [
-      71.7,
-      98.9
+      84.3,
+      99.4
      ]
     },
     "control_k": null,
-    "teacher_k": 15,
+    "teacher_k": 31,
     "recovery_pct": null,
     "transfer": null,
     "retention": null,
@@ -8516,7 +8626,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "8e899a94c937"
+   "commit": "8d76b2cde276"
   },
   "groot": {
    "kind": "branch",
@@ -8534,8 +8644,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "d42d352308818634",
- "updated": "2026-11-08T18:31Z",
- "updated_text": "8 Nov 2026, 18:31 UTC",
+ "content_hash": "9c460875aee063a7",
+ "updated": "2026-11-08T19:04Z",
+ "updated_text": "8 Nov 2026, 19:04 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
