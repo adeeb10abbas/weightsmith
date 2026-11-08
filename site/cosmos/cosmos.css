@@ -48,8 +48,7 @@
   background: var(--bg-2);
 }
 
-.post .tldr h2,
-.post .toc h2 {
+.post .tldr h2 {
   margin: 0 0 0.5rem;
   font-family: var(--sans);
   font-size: 0.875rem;
@@ -109,46 +108,9 @@
   color: var(--muted);
 }
 
-.post .toc {
-  margin-top: 1.9rem;
-}
-
-.toc ul {
-  margin: 0;
-  padding: 8px 0 0;
-  list-style: none;
-  border-top: 1px solid var(--rule);
-  columns: 2;
-  column-gap: 32px;
-  font-family: var(--sans);
-  font-size: 0.875rem;
-  line-height: 1.4;
-}
-
-.toc li {
-  break-inside: avoid;
-  padding: 0 0 10px;
-}
-
-.toc a {
-  font-weight: 500;
-  color: var(--ink);
-}
-
-.toc .tline {
-  display: block;
-  margin-top: 1px;
-  font-size: 0.8125rem;
-  color: var(--muted);
-}
-
 @media (max-width: 700px) {
   .post .tldr {
     padding: 14px 16px 4px;
-  }
-
-  .toc ul {
-    columns: 1;
   }
 }
 
@@ -170,7 +132,7 @@
   line-height: 1.5;
 }
 
-.post .model h3 {
+.cz .post .model h4 {
   margin: 0;
   font-size: 1rem;
 }
@@ -499,4 +461,443 @@
   .cfig img {
     background: #201f1d;
   }
+}
+
+/* =====================================================================================================
+   Research-post layout: a hero with byline and links, then a sticky contents column beside the article
+   on wide screens; on narrow screens the contents fold into a list under the TL;DR.
+   ===================================================================================================== */
+.cz-page {
+  --cz-max: 1200px;
+  --cz-side: 200px;
+  --cz-gap: 64px;
+  --cz-wide: 860px;
+}
+
+.cz-page .draft-in,
+.cz-page .bar-in,
+.cz-page .foot-in,
+.cz-hero,
+.cz-layout {
+  width: min(var(--cz-max), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+.cz [id] {
+  scroll-margin-top: 20px;
+}
+
+/* ---------- hero ---------- */
+.cz-hero {
+  padding: 76px 0 52px;
+}
+
+.cz-hero h1 {
+  max-width: 15em;
+  font-size: clamp(2.15rem, 1.35rem + 3vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.032em;
+}
+
+.cz-sub {
+  max-width: 32em;
+  margin: 20px 0 0;
+  font-size: clamp(1.15rem, 1.02rem + 0.55vw, 1.375rem);
+  line-height: 1.42;
+  color: var(--ink-2);
+}
+
+.cz-byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 20px;
+  margin: 24px 0 0;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.cz-pill {
+  padding: 3px 11px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--bg-2);
+  color: var(--ink);
+}
+
+.cz-who {
+  color: var(--ink);
+}
+
+.cz-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.cz-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 15px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.cz-btn:hover {
+  border-color: var(--ink);
+}
+
+.cz-btn-main {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.cz-btn-main:hover {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+}
+
+/* ---------- article column ---------- */
+.cz-layout {
+  padding-bottom: 24px;
+}
+
+.cz-side {
+  display: none;
+}
+
+/* the article keeps the hero's left edge at every width: text at its measure, figures, clips and tables wider */
+.cz .post > * {
+  width: 100%;
+  margin-inline: 0;
+}
+
+.cz .post > .tldr,
+.cz .post > .toc-mob,
+.cz .post section > :not(.wide) {
+  max-width: var(--measure);
+}
+
+.cz .post section .wide {
+  width: 100%;
+  max-width: var(--cz-wide);
+  margin-left: 0;
+  transform: none;
+}
+
+.cz .post .tldr {
+  margin-top: 0;
+}
+
+.cz .post > section:not(.tldr) {
+  margin-top: 4.6rem;
+}
+
+.cz .post h2 {
+  font-size: clamp(1.6rem, 1.35rem + 0.9vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  margin: 0 0 1rem;
+}
+
+.cz .post .tldr h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+.cz .post h3 {
+  font-size: 1.3125rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 2.8rem 0 0.6rem;
+}
+
+.cz .post h4 {
+  margin: 2.1rem 0 0.4rem;
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+/* ---------- contents: sticky column on wide screens ---------- */
+.toc-h {
+  margin: 0 0 12px;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.toc-side ol,
+.toc-mob ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toc-side li + li,
+.toc-mob li + li,
+.toc-side ol ol,
+.toc-mob ol ol {
+  margin-top: 0;
+}
+
+.toc-side .toc-l1 {
+  border-left: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.toc-side a {
+  position: relative;
+  display: block;
+  padding: 5px 0 5px 14px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.toc-side ol ol a {
+  padding-left: 26px;
+}
+
+.toc-side a:hover,
+.toc-side a[aria-current='true'] {
+  color: var(--ink);
+}
+
+.toc-side a[aria-current='true']::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--ink);
+}
+
+/* ---------- contents: a folded list under the TL;DR on narrow screens ---------- */
+.cz .post .toc-mob {
+  margin-top: 1.4rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  font-family: var(--sans);
+}
+
+.toc-mob summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+.toc-mob summary::-webkit-details-marker {
+  display: none;
+}
+
+.toc-mob summary::after {
+  content: '+';
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.toc-mob[open] summary::after {
+  content: '\2212';
+}
+
+.toc-mob nav {
+  padding: 0 16px 10px;
+  border-top: 1px solid var(--rule);
+}
+
+.toc-mob a {
+  display: block;
+  padding: 7px 0;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.toc-mob ol ol a {
+  padding: 5px 0 5px 16px;
+  font-size: 0.875rem;
+  color: var(--ink-2);
+}
+
+@media (min-width: 1100px) {
+  .cz-layout {
+    display: grid;
+    grid-template-columns: var(--cz-side) minmax(0, 1fr);
+    column-gap: var(--cz-gap);
+    align-items: start;
+  }
+
+  .cz-side {
+    display: block;
+    align-self: stretch;
+  }
+
+  .toc-side {
+    position: sticky;
+    top: 24px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    padding-bottom: 8px;
+  }
+
+  .cz .post .toc-mob {
+    display: none;
+  }
+}
+
+/* ---------- clips ---------- */
+.clipgrid.one {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 30px;
+}
+
+.cz .clip video {
+  aspect-ratio: auto;
+  height: auto;
+}
+
+.clip .ph-t {
+  font-style: italic;
+  color: var(--muted);
+}
+
+.clip figcaption a {
+  color: var(--muted);
+}
+
+.clip figcaption code {
+  font-size: 0.92em;
+}
+
+/* ---------- tables folded under their figure ---------- */
+.tdetails {
+  margin: 0.5rem 0 1.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.tdetails > summary {
+  padding: 9px 0;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+  cursor: pointer;
+  list-style: none;
+}
+
+.tdetails > summary::-webkit-details-marker {
+  display: none;
+}
+
+.tdetails > summary::before {
+  content: '+';
+  display: inline-block;
+  width: 1.2em;
+  color: var(--muted);
+}
+
+.tdetails[open] > summary::before {
+  content: '\2212';
+}
+
+.tdetails > summary:hover {
+  color: var(--ink);
+}
+
+.tdetails .tblock {
+  margin: 0.3rem 0 1.1rem;
+}
+
+/* ---------- citation ---------- */
+.cite-text {
+  font-size: 1.0625rem;
+  color: var(--ink-2);
+}
+
+.bib {
+  position: relative;
+}
+
+.bib pre {
+  margin: 0;
+  padding: 16px 18px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg-2);
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.bib pre code {
+  font-size: inherit;
+}
+
+.bib-copy {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 3px 11px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.bib-copy:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .cz-hero {
+    padding: 44px 0 36px;
+  }
+
+  .cz .post > section:not(.tldr) {
+    margin-top: 3.6rem;
+  }
+}
+
+/* long record paths and URLs wrap instead of widening a phone screen */
+.src a,
+.src code,
+.clip figcaption code,
+.cz .post section li a {
+  overflow-wrap: anywhere;
 }
