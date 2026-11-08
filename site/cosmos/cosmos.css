@@ -1,0 +1,299 @@
+/* The cross-model draft: comparison tables, model cards and figures on top of ../style.css. Same tokens, one accent. */
+
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- draft banner ---------- */
+.draft {
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.draft-in {
+  width: min(var(--wide), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+  padding: 9px 0;
+}
+
+.draft p {
+  margin: 0;
+}
+
+.draft b {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.draft .stamp {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- model cards ---------- */
+.models {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 0.6rem;
+}
+
+.model {
+  margin: 0 !important;
+  padding: 16px 16px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.post .model h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.mkind {
+  margin: 2px 0 10px;
+  color: var(--muted);
+}
+
+.mst {
+  white-space: nowrap;
+}
+
+.mst-running,
+.mst-measured {
+  font-style: italic;
+}
+
+.model dl {
+  margin: 0;
+}
+
+.model dt {
+  margin-top: 8px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.model dd {
+  margin: 1px 0 0;
+  color: var(--ink-2);
+}
+
+.model code {
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- definitions ---------- */
+.defs {
+  margin: 0.4rem 0 0;
+}
+
+.defs dt {
+  margin-top: 0.8rem;
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.defs dd {
+  margin: 0.15rem 0 0;
+}
+
+/* ---------- comparison tables (models as columns) ---------- */
+.tblock {
+  margin: 1.1rem auto 1.6rem;
+}
+
+.ctable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.42;
+  font-variant-numeric: tabular-nums;
+}
+
+.ctable thead th {
+  padding: 0 10px 7px;
+  border-bottom: 1px solid var(--ink);
+  text-align: left;
+  vertical-align: bottom;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ctable thead th:first-child {
+  width: 25%;
+  padding-left: 0;
+}
+
+.ctable .mn {
+  display: block;
+  font-size: 0.875rem;
+}
+
+.ctable .mk {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.ctable tbody th {
+  padding: 8px 10px 8px 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.ctable td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.ctable td .v {
+  display: block;
+  color: var(--ink);
+}
+
+.ctable td .d {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.ctable td.st-run .v {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.ctable td.st-na .v {
+  color: var(--muted);
+}
+
+.ctable tr.sub th {
+  font-weight: 400;
+  color: var(--ink-2);
+}
+
+.ctable code {
+  font-size: 0.92em;
+}
+
+.src,
+.tnote {
+  margin: 0.55rem 0 0;
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.src a {
+  color: var(--muted);
+}
+
+.src code {
+  font-size: 0.95em;
+}
+
+/* ---------- figures ---------- */
+.cfig {
+  margin: 1.3rem 0 0.4rem;
+}
+
+.cfig img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.cfig figcaption a {
+  color: var(--muted);
+}
+
+/* ---------- small screens: each table row becomes a block, one line per model ---------- */
+@media (max-width: 720px) {
+  .models {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .ctable,
+  .ctable tbody,
+  .ctable tr,
+  .ctable th,
+  .ctable td {
+    display: block;
+    width: 100%;
+  }
+
+  .ctable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .ctable tr {
+    padding: 9px 0 7px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .ctable tbody th {
+    padding: 0 0 5px;
+    border: 0;
+    font-weight: 600;
+  }
+
+  .ctable td {
+    display: grid;
+    grid-template-columns: 7.4em minmax(0, 1fr);
+    column-gap: 10px;
+    padding: 3px 0;
+    border: 0;
+  }
+
+  .ctable td::before {
+    content: attr(data-model);
+    grid-row: span 2;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .ctable td .v,
+  .ctable td .d {
+    grid-column: 2;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .cfig img {
+    background: #201f1d;
+  }
+}
