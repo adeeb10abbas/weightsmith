@@ -1912,8 +1912,8 @@ def prepare_clips():
         mp4 = VID / f"{best}.mp4"
         stale = (not gif.exists() or not src_note.exists() or src_note.read_text().strip() != best
                  or gif.stat().st_mtime < mp4.stat().st_mtime)
-        if stale and ff("-t", "6", "-i", str(mp4), "-vf", "fps=8,scale=480:-2:flags=lanczos,split[a][b];"
-                        "[a]palettegen=max_colors=96[p];[b][p]paletteuse=dither=bayer", "-loop", "0", str(gif)):
+        if stale and ff("-t", "4", "-i", str(mp4), "-vf", "fps=6,scale=360:-2:flags=lanczos,split[a][b];"
+                        "[a]palettegen=max_colors=64[p];[b][p]paletteuse=dither=bayer:bayer_scale=3", "-loop", "0", str(gif)):
             src_note.write_text(best + "\n")
             CHANGED.add(gif.name)
             print(f"  brief GIF from {best}.mp4")
