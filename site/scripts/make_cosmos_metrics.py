@@ -1064,7 +1064,8 @@ def row_cells(src):
                     next((r for r in edits if r["_task"] == "T1"), edits[0]))
         et = main["_task"]
         items = [(et, main, True)]
-        items += [(r["_task"], r, False) for r in rows if r["_edit_task"] == et and r["_task"] and r["_task"] != et]
+        items += sorted([(r["_task"], r, False) for r in rows if r["_edit_task"] == et and r["_task"] and r["_task"] != et],
+                        key=lambda x: is_practice(x[1]))   # unseen starts first: setdefault keeps the first cell per task
         for field in ("transfer", "retention"):
             tr = main.get(field)
             if isinstance(tr, dict) and tr and all(task_id(k) for k in tr):
