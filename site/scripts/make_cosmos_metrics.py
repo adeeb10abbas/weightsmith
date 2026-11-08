@@ -20,7 +20,10 @@ Inputs
   ("T3"), RoboLab class name or plain name. A row without edited k is a failure-map row; teacher k gives the wording
   gap; "edit task" (or an experiment name such as "T1 edit") marks a side-effect row: the edit built for that task,
   run on this row's task. "headline": true picks a task's main edit (else the first listed). A top-level
-  "status": "final" turns that model's empty cells from "running" to "—".
+  "status": "final" turns that model's empty cells from "running" to "—". Rows name their edit in an edit field or as
+  "edit NAME" in the notes (offline records in offline.edit). Follow-up builds of an edit, named like it with one more
+  letter ("t8undp", "t8undr" after "t8und"; hyphens ignored), stay out of the main tables and fill the subsection
+  "Can the side effect be prevented?" (PREVENT), with their offline gates.
   pi0.5's earlier records fill its column until the shared-slot runs land, each labelled with its own slots and n:
     study/results/opus/heldout/*.json              held-out runs: per-slot outcomes, Wilson CIs, exact McNemar p
     study/results/opus/comparisons.json            every paired comparison (noise controls, transfer map)
@@ -913,12 +916,31 @@ def slot_kind(r):
 
 
 def edit_id(r):
-    """The edit's own name ('t8und', 't8und-p'): its edit field, else the first "edit NAME" in its notes."""
+    """The edit's own name ('t8und', 't8undp'): its edit field, else the first "edit NAME" in its notes."""
     n = edit_name(r) if "_extra" in r else None
     if n:
         return n
     m = re.search(r"\bedit ([A-Za-z][\w.-]*\d[\w.-]*|[a-z]+\d\w*(?:-\w+)?)", describe(r.get("notes")) or "")
     return m.group(1) if m else None
+
+
+def offline_of(r):
+    o = r.get("offline") if r.get("offline") is not None else (r.get("_extra") or {}).get("offline")
+    return o if isinstance(o, dict) else None
+
+
+def edit_key(r):
+    """An edit's name for comparing rows: case, hyphens and dots dropped, so the records' 't8undp' and the README's
+    't8und-p' are one edit. From edit_id, else the "edit" field of the row's offline record."""
+    n = edit_id(r) or (offline_of(r) or {}).get("edit")
+    return nk(n) if n else None
+
+
+def followups(rows):
+    """Follow-up builds of an edit, named like it with one letter more ('t8undp', 't8undr' after 't8und'):
+    {follow-up: base}. They are not other edit locations, so the main tables leave them out."""
+    names = {edit_key(r) for r in rows} - {None}
+    return {n: n[:-1] for n in names if len(n) > 2 and n[-1].isalpha() and n[:-1] in names}
 
 
 def loc_short(loc):
@@ -937,7 +959,8 @@ def row_cells(src):
     T = {k: {} for k in TABLE_IDS}
     if not src or not src["rows"]:
         return T
-    rows = src["rows"]
+    fu = followups(src["rows"])   # follow-up builds of an edit go to their own table (prevention), not these
+    rows = [r for r in src["rows"] if edit_key(r) not in fu]
     own = [r for r in rows if r["_task"] and not (r["_edit_task"] and r["_edit_task"] != r["_task"])]
     by_task = {}
     for r in own:
@@ -1256,6 +1279,290 @@ def render_cells(cross):
     return out
 
 
+# ---------------------------------------------------------------- can the side effect be prevented? (follow-up builds)
+# Cosmos3 Edge's T8 edit breaks the two other tasks whose instructions say "left" (T3, T5). Track A rebuilds it with
+# zero-change preservation keys (rows of K from other instructions with zero rows of V) and scores each build on T8 and
+# on T5 and T3, offline first. Rows are found by edit name (edit_key): the records write "edit t8undp" in their notes,
+# the README "t8und-p". The descriptions, and the counts in them, are the README's (PREVENT["readme"]).
+PREVENT = dict(
+    model="cosmos", base="t8und", target="T8", left=("T5", "T3"),
+    edits=[("t8und", "the T8 edit, as above"),
+           ("t8undp", "+ preservation keys from 65 generic RoboLab instructions"),
+           ("t8undr", "+ preservation keys from 24 left/right instructions of other RoboLab tasks")],
+    short={"t8undp": "preservation keys from 65 generic instructions",
+           "t8undr": "preservation keys from 24 left/right instructions of other tasks"},
+    readme="cross-cosmos/v1:study/results/cross/cosmos/README.md",
+    records="cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
+)
+PCOLS = [("T8", "T8", "target"), ("T5", "T5", "left bin"), ("T3", "T3", "left of bowl"),
+         ("gap", "T8 gap closed", "offline"), ("dev", "T5 deviation", "offline; lower is better")]
+
+
+def ofind(o, *keys):
+    """The first of these keys (spelled freely) that the offline record gives as a number."""
+    by = {nk(k): v for k, v in o.items()}
+    for k in keys:
+        v = as_float(by.get(nk(k)))
+        if v is not None:
+            return v, k
+    return None, None
+
+
+def prevent_closed(rs):
+    """unedited → edited on held-out starts if run, else on practice starts (tagged); the other kind in the detail."""
+    held = [r for r in rs if slot_kind(r) == " unseen" or "heldout" in nk(describe(r.get("experiment")) or "")]
+    prac = [r for r in rs if r not in held]
+    r = (held or prac or [None])[0]
+    if r is None:
+        return None
+    i, p, p_note, _, _, _ = stat(r)
+    pr = r not in held and is_practice(r)
+    det = [f"p = {fp(p)}" if p is not None else None, p_note]
+    if held and prac:
+        ip = ints(prac[0])
+        det.append(f"practice {ip['unedited_k']} → {ip['edited_k']} of {ip['n']}")
+    if i["control_k"] is not None:
+        cn = as_int(r.get("control_n") if r.get("control_n") is not None else r["_extra"].get("control_n")) or i["n"]
+        det.append(f"random control {i['control_k']} of {cn}")
+    return C(f"{i['unedited_k']} → {i['edited_k']} of {i['n']}", "; ".join(x for x in det if x), a=i["unedited_k"],
+             b=i["edited_k"], n=i["n"], p=p, delta=i["edited_k"] - i["unedited_k"], prac=pr or None,
+             held=bool(held) or None)
+
+
+def prevent_offline(rows, name):
+    """Offline cells of one build: the share of the T8 wording gap it closes on held-aside decisions, and how far it
+    moves T5's actions from the unedited policy's. Its own record first; else the value another record gives for it as
+    the reference ('t8und_gap_closed_pct', 't5_t8und_dev_cm')."""
+    gap = dev = None
+    for r, o in ((r, offline_of(r)) for r in rows):
+        if not o or nk(o.get("edit") or "") != name:
+            continue
+        v, _ = ofind(o, "t8_gap_closed_pct", "t8_variant_gap_closed_pct", f"t8_{name}_gap_closed_pct")
+        if v is None and r["_task"] == "T8" and str(o.get("group")).lower() == "check":
+            v, _ = ofind(o, "gap_closed_pct")
+        if v is not None and gap is None:
+            n = as_int(o.get("t8_n")) or as_int(o.get("n"))
+            gap = C(f"{sgn(v, False, 0)}%", f"{n} held-aside decisions" if n else None, x=v)
+        v, _ = ofind(o, "t5_variant_dev_cm", f"t5_{name}_dev_cm", "t5_dev_cm", "t5_edited_dev_cm")
+        if v is not None and dev is None:
+            n = as_int(o.get("t5_n"))
+            dev = C(f"{v:.1f} cm", f"{n} decisions" if n else None, x=v)
+    for r, o in ((r, offline_of(r)) for r in rows):   # the build as another record's reference
+        if not o or nk(o.get("edit") or "") == name:
+            continue
+        v, _ = ofind(o, f"{name}_gap_closed_pct", f"t8_{name}_gap_closed_pct")
+        if v is not None:
+            if gap is None:
+                n = as_int(o.get("t8_n"))
+                gap = C(f"{sgn(v, False, 0)}%", f"{n} held-aside decisions" if n else None, x=v)
+            elif abs(gap["x"] - v) > 0.05:
+                print(f"  CHECK prevention: {name} T8 gap closed {gap['x']} in its own record, {v} in {o.get('edit')}'s")
+        v, _ = ofind(o, f"t5_{name}_dev_cm")
+        if v is not None and dev is None:
+            n = as_int(o.get("t5_n"))
+            dev = C(f"{v:.1f} cm", f"{n} decisions" if n else None, x=v)
+        elif v is not None and abs(dev["x"] - v) > 0.005:
+            print(f"  CHECK prevention: {name} T5 deviation {dev['x']} here, {v} in {o.get('edit')}'s record")
+    return gap, dev
+
+
+def prevention(cross):
+    """The follow-up builds of Cosmos3 Edge's T8 edit, one row each: closed loop on T8, T5 and T3, and the offline
+    gates. A missing cell reads running, or "—" once the model's record is final, or "not run" for a follow-up
+    whose T5 or T3 run already broke (the track runs further checks only if a build restores T5; README)."""
+    src = cross.get(PREVENT["model"])
+    rows = [r for r in (src["rows"] if src else []) if not r["_prov"]]
+    final = bool(src and src["final"])
+    names = [n for n, _ in PREVENT["edits"]]
+    fu = followups(rows)
+    extra = sorted(n for n in fu if n not in names and fu[n] in names)
+    labels = dict(PREVENT["edits"])
+    out = []
+    for name in names + extra:
+        mine = [r for r in rows if edit_key(r) == name]
+        cells = {}
+        for tid in (PREVENT["target"], *PREVENT["left"]):
+            rs = [r for r in mine if r["_task"] == tid and None not in (ints(r)["unedited_k"], ints(r)["edited_k"], ints(r)["n"])]
+            cells[tid] = prevent_closed(rs)
+        cells["gap"], cells["dev"] = prevent_offline(rows, name)
+        broke = [t for t in PREVENT["left"] if cells[t] and cells[t].get("p") is not None and cells[t]["p"] < SIG
+                 and cells[t]["delta"] < 0]
+        for k, _, _ in PCOLS:
+            if cells[k] is None:
+                cells[k] = (NA if final else
+                            C("—", "not run: further runs only if a build restores T5", s="na")
+                            if name != PREVENT["base"] and broke and k in (PREVENT["target"], *PREVENT["left"]) else RUN)
+        if mine and name in fu:
+            m = re.search(r"from (\d+) ", labels.get(name, ""))
+            if m and not any(re.search(rf"\b{m.group(1)}\b", describe(r.get("notes")) or "") for r in mine):
+                print(f"  CHECK prevention: {name}: no record's notes repeat the README's count ({m.group(1)})")
+        out.append(dict(name=name, label=labels.get(name, f"a follow-up of {fu.get(name)}"), cells=cells,
+                        measured=bool(mine)))
+    return dict(model=PREVENT["model"], base=PREVENT["base"], target=PREVENT["target"], left=list(PREVENT["left"]),
+                rows=out, sources=[PREVENT["records"], PREVENT["readme"]], text=prevent_finding(out))
+
+
+def prevent_result(r, base=None):
+    """(T8 clause, [left-task clauses], broke?) of one follow-up row, from its closed-loop cells; None if none yet."""
+    def kind(c):
+        return " practice" if c.get("prac") else " held-out"
+    c8 = r["cells"][PREVENT["target"]]
+    left = [(t, r["cells"][t]) for t in PREVENT["left"] if r["cells"][t]["s"] == "ok"]
+    if not left and c8["s"] != "ok":
+        return None
+    t8 = None
+    if c8["s"] == "ok":
+        sig = c8.get("p") is not None and c8["p"] < SIG
+        t8 = (f"keeps the T8 fix ({c8['a']} → {c8['b']} of {c8['n']}{kind(c8)} starts)" if c8["b"] > c8["a"] and sig else
+              f"lifts T8 only from {c8['a']} to {c8['b']} of {c8['n']}{kind(c8)} starts"
+              + (f" (p = {fp(c8['p'])})" if c8.get("p") is not None else "") if c8["b"] > c8["a"] else
+              f"loses the T8 fix ({c8['a']} → {c8['b']} of {c8['n']}{kind(c8)} starts)")
+    out, broke = [], False
+    for t, c in left:
+        pv = f" (p = {fp(c['p'])})" if c.get("p") is not None else ""
+        if c.get("p") is not None and c["p"] < SIG and c["b"] < c["a"]:
+            broke = True
+            out.append((True, f"{t} still falls from {c['a']} to {c['b']} of {c['n']}{kind(c)} starts{pv}"))
+        elif c["b"] < c["a"]:
+            out.append((False, f"{t} falls from {c['a']} to {c['b']} of {c['n']}{kind(c)} starts, not significant{pv}"))
+        else:
+            out.append((False, f"{t} holds, {c['a']} → {c['b']} of {c['n']}{kind(c)} starts{pv}"))
+    return t8, out, broke
+
+
+def prevent_finding(rows):
+    """One sentence per follow-up build: what its row shows. '{running}' marks what is not measured yet."""
+    base = next((r for r in rows if r["name"] == PREVENT["base"]), None)
+    bdev = base["cells"]["dev"] if base else None
+    parts = []
+    for r in rows:
+        if r["name"] == PREVENT["base"]:
+            continue
+        who = f"`{r['name']}` ({PREVENT['short'].get(r['name'], r['label'])})"
+        res = prevent_result(r)
+        g, d = r["cells"]["gap"], r["cells"]["dev"]
+        off = []
+        if g["s"] == "ok":
+            off.append(f"closes {g['v']} of the T8 gap")
+        if d["s"] == "ok" and bdev and bdev["s"] == "ok":
+            rel = d["x"] / bdev["x"] if bdev["x"] else 1
+            word = "about the same as" if 0.9 <= rel <= 1.1 else "less than" if rel < 0.9 else "more than"
+            off.append(f"moves T5’s actions {d['v']} from the unedited policy’s, {word} `{PREVENT['base']}` "
+                       f"({bdev['v']})")
+        elif d["s"] == "ok":
+            off.append(f"moves T5’s actions {d['v']} from the unedited policy’s")
+        if res is None:
+            parts.append(f"{who}: " + (f"offline it {and_list(off)}; closed loop {RUNNING}." if off else f"{RUNNING}."))
+            continue
+        t8, left, broke = res
+        bad = [s for b, s in left if b]
+        good = [s for b, s in left if not b]
+        if t8:
+            s = f"{who} {t8}"
+            if bad:
+                s += (" but" if "keeps" in t8 else " and") + " does not prevent the break: " + and_list(bad)
+            if good:
+                s += ("; " if bad else ", and ") + and_list(good)
+        else:
+            s = (f"{who} does not prevent the break: {and_list(bad)}" + (f"; {and_list(good)}" if good else "")
+                 if bad else f"{who}: {and_list(good)}")
+        if off:
+            s += f"; offline it {and_list(off)}"
+        missing = [t for t in (PREVENT["target"], *PREVENT["left"]) if r["cells"][t]["s"] == "running"]
+        if missing:
+            s += f"; {and_list(missing)}: {RUNNING}"
+        parts.append(s + ".")
+    return " ".join(parts)
+
+
+def prevent_html(P):
+    """The subsection's intro, table, records and the sentence on what the rows show."""
+    run = '<span class="run">running</span>'
+    head = "".join(f'<th scope="col"><span class="mn">{esc(a)}</span><span class="mk">{esc(b)}</span></th>'
+                   for _, a, b in PCOLS)
+    body = []
+    for r in P["rows"]:
+        body.append(f'<tr><th scope="row"><code>{esc(r["name"])}</code><span class="rd">{esc(r["label"])}</span></th>'
+                    + "".join(td_html(r["cells"][k], f"{a}, {b}") for k, a, b in PCOLS) + "</tr>")
+    table = (f'<table class="ctable ptable"><thead><tr><th scope="col"><span class="vh">Edit</span></th>{head}</tr></thead>'
+             f'<tbody>{"".join(body)}</tbody></table>')
+    left = and_list([f"{t} ({TASK[t][1].lower()})" for t in P["left"]])
+    note = ("Closed loop: unedited → edited on the same starts, held-out where run, else practice (tagged). Offline, "
+            "on recorded decisions, before any closed loop: T8 gap closed is the share of the clearer wording’s action "
+            "change a build reproduces on held-aside T8 decisions; T5 deviation is how far the build moves the action "
+            "chunk from the unedited policy’s on T5 practice decisions the unedited policy solved. These decide which "
+            "builds run closed loop.")
+    names = [r["name"] for r in P["rows"]]
+    rel = next((n for n in names if n.endswith("r") and n != P["base"]), None)
+    intro = (f"<p>The T8 edit <code>{esc(P['base'])}</code> breaks {esc(left)}, the two other tasks whose instructions "
+             f"say “left”. The Cosmos3 Edge track rebuilds it with zero-change preservation keys: other instructions, "
+             f"added as rows of K with zero rows of V, whose layer outputs the solve must keep."
+             + (f" For <code>{esc(rel)}</code> a rule fixed before the build leaves out every T3, T5 and T8 instruction "
+                f"and object pair, so T3 and T5 stay unseen tests; it has its own random control." if rel else "")
+             + "</p>")
+    finding = f'<p>{inline(P["text"]).replace(esc(RUNNING), run)}</p>' if P["text"] else ""
+    return (intro + f'<div class="tblock wide">{table}{sources_html(P["sources"])}<p class="tnote">{esc(note)}</p></div>'
+            + finding)
+
+
+def prevent_tldr(P):
+    """For the TL;DR's side-effect bullet: follow-up builds with a closed-loop T5 or T3 result, one plain sentence
+    each, past tense; nothing while none has one."""
+    out = []
+    for r in P["rows"]:
+        if r["name"] == P["base"]:
+            continue
+        left = [(t, r["cells"][t]) for t in P["left"] if r["cells"][t]["s"] == "ok"]
+        if not left:
+            continue
+        kind = lambda c: " practice" if c.get("prac") else " held-out"
+        short = PREVENT["short"].get(r["name"], r["label"])
+        bad = [(t, c) for t, c in left if c.get("p") is not None and c["p"] < SIG and c["b"] < c["a"]]
+        c8 = r["cells"][P["target"]]
+        t8 = None
+        if c8["s"] == "ok":
+            sig = c8.get("p") is not None and c8["p"] < SIG
+            t8 = (f"kept T8 ({c8['a']} → {c8['b']} of {c8['n']}{kind(c8)} starts)" if c8["b"] > c8["a"] and sig else
+                  f"lifted T8 only from {c8['a']} to {c8['b']} of {c8['n']}{kind(c8)} starts" if c8["b"] > c8["a"] else
+                  f"lost the T8 fix ({c8['a']} → {c8['b']} of {c8['n']}{kind(c8)} starts)")
+        lead = f"Rebuilt with {short}, the edit" + (f" {t8}" if t8 else "")
+        if bad:
+            out.append(lead + (" but" if t8 and t8.startswith("kept") else " and" if t8 else "")
+                       + " did not prevent the break: " + and_list(
+                           f"{t} still fell from {c['a']} to {c['b']} of {c['n']}{kind(c)} starts" for t, c in bad) + ".")
+        else:
+            out.append((lead + ", and " if t8 else f"Rebuilt with {short}: ") + and_list(
+                f"{t} went {c['a']} → {c['b']} of {c['n']}{kind(c)} starts"
+                + (f" (p = {fp(c['p'])})" if c.get("p") is not None else "") for t, c in left) + ".")
+    return "".join(" " + x for x in out)
+
+
+def prevent_conclusion(P):
+    """Conclusion clauses, present tense: each follow-up build with a closed-loop result."""
+    out = []
+    for r in P["rows"]:
+        if r["name"] == P["base"]:
+            continue
+        res = prevent_result(r)
+        if not res:
+            continue
+        t8, left, _ = res
+        bad = [s for b, s in left if b]
+        good = [s for b, s in left if not b]
+        s = f"rebuilt with {PREVENT['short'].get(r['name'], r['label'])}, the edit"
+        if t8:
+            s += f" {t8}"
+            if bad:
+                s += (" but" if "keeps" in t8 else " and") + " does not prevent the break: " + and_list(bad)
+            if good:
+                s += ("; " if bad else ", and ") + and_list(good)
+        else:
+            s += (f" does not prevent the break: {and_list(bad)}" + (f"; {and_list(good)}" if good else "")
+                  if bad else f": {and_list(good)}")
+        out.append(s.replace("p = ", "p\u00a0=\u00a0"))
+    return out
+
+
 # ---------------------------------------------------------------- tables
 TABLES = [
     ("failure_map", "Failure map", "Success of the unedited model on each task, and how it fails where diagnosed."),
@@ -1510,14 +1817,19 @@ def inline(s):
     return re.sub(r"`([^`]+)`", r"<code>\1</code>", esc(s))
 
 
-def cell_html(cell, mid, models):
+def td_html(cell, label):
+    """One cell; label names its column on small screens, where each row becomes a block."""
     cls = {"ok": "c", "running": "c st-run", "na": "c st-na"}[cell["s"]] + (" prov" if cell.get("prov") else "")
     tag = (' <span class="tag">earlier slots</span>' if cell.get("prov") else "") + (
         ' <span class="tag">practice starts</span>' if cell.get("prac") else "")
     inner = f'<span class="v">{inline(cell["v"])}{tag}</span>'
     if cell.get("d"):
         inner += f'<span class="d">{inline(cell["d"])}</span>'
-    return f'<td class="{cls}" data-model="{esc(models[mid]["name"])}">{inner}</td>'
+    return f'<td class="{cls}" data-model="{esc(label)}">{inner}</td>'
+
+
+def cell_html(cell, mid, models):
+    return td_html(cell, models[mid]["name"])
 
 
 def table_html(t, models):
@@ -2456,7 +2768,7 @@ def edits_phrase(mid, k, c):
     return f"{k} edits in " + " and in ".join(names), True
 
 
-def tldr(tables, models):
+def tldr(tables, models, prevent=None):
     """3-5 bullets for the top of the page, read only from the tables; anything not measured yet says running."""
     T = {t["id"]: {r["key"]: r["cells"] for r in t["rows"]} for t in tables}
     edit_of = next(t for t in tables if t["id"] == "side_effects").get("edit", {})
@@ -2605,7 +2917,7 @@ def tldr(tables, models):
             cl.append(f"kept the retention task R1 at {r1['b']} of {r1['n']}" if r1["delta"] == 0 else
                       f"moved the retention task R1 from {r1['a']} to {r1['b']} of {r1['n']}")
         t = f"{models[mid]['name']}’s {tgt} edit, run unchanged on {on}, " + ", ".join(cl[:-1]) + ", and " + cl[-1]
-        parts.append(t + ".")
+        parts.append(t + "." + (prevent_tldr(prevent) if prevent and prevent["model"] == mid and down else ""))
     if waiting:
         parts.append(f"{and_list(waiting)}: {RUNNING}.")
     items.append(dict(id="side-effects", lead="Side effects", kind=None, tag=None, text=" ".join(parts)))
@@ -2638,35 +2950,43 @@ def article(page):
 
 
 def page_sections(page):
-    """Every section (h2) and subsection (h3) of the article in page order: the contents list follows the page.
-    Generated regions are skipped, so headings inside them (the model cards) never enter the list."""
+    """Every section (h2) and subsection (h3) of the article in page order, and any h4 marked data-toc (nested under
+    its h3): the contents list follows the page. Generated regions are skipped, so headings inside them (the model
+    cards) never enter the list."""
     page = re.sub(r"<!-- gen:([a-z0-9:-]+) -->.*?<!-- /gen:\1 -->", "", page, flags=re.S)
     a, b = article(page)
     secs = []
-    pat = re.compile(r'<section id="([a-z0-9-]+)"[^>]*>\s*<h2[^>]*>(.*?)</h2>|<h3 id="([a-z0-9-]+)"[^>]*>(.*?)</h3>', re.S)
+    pat = re.compile(r'<section id="([a-z0-9-]+)"[^>]*>\s*<h2[^>]*>(.*?)</h2>|<h3 id="([a-z0-9-]+)"[^>]*>(.*?)</h3>'
+                     r'|<h4 id="([a-z0-9-]+)"[^>]*\bdata-toc\b[^>]*>(.*?)</h4>', re.S)
     for m in pat.finditer(page[a:b]):
-        sid, title, level = (m.group(1), m.group(2), 2) if m.group(1) else (m.group(3), m.group(4), 3)
+        sid, title, level = ((m.group(1), m.group(2), 2) if m.group(1) else (m.group(3), m.group(4), 3) if m.group(3)
+                             else (m.group(5), m.group(6), 4))
         title = html.unescape(re.sub(r"<[^>]+>", "", title)).strip()
         secs.append(dict(id=sid, title=title, level=level))
     return secs
 
 
 def toc_html(secs, cls):
-    out, open_sub = [f'<ol class="{cls}">'], False
-    for i, x in enumerate(secs):
-        if x["level"] == 2:
-            if open_sub:
-                out.append("</ol>")
-                open_sub = False
-            if i:
-                out.append("</li>")
-            out.append(f'<li><a href="#{esc(x["id"])}">{esc(x["title"])}</a>')
+    """Nested lists, one level per heading level."""
+    out, levels, open_li = [f'<ol class="{cls}">'], [secs[0]["level"] if secs else 2], False
+    for x in secs:
+        lv = x["level"]
+        if open_li and lv > levels[-1]:
+            out.append("<ol>")
+            levels.append(lv)
         else:
-            if not open_sub:
-                out.append("<ol>")
-                open_sub = True
-            out.append(f'<li><a href="#{esc(x["id"])}">{esc(x["title"])}</a></li>')
-    out.append(("</ol>" if open_sub else "") + "</li></ol>")
+            if open_li:
+                out.append("</li>")
+            while len(levels) > 1 and lv < levels[-1]:
+                out.append("</ol></li>")
+                levels.pop()
+        out.append(f'<li><a href="#{esc(x["id"])}">{esc(x["title"])}</a>')
+        open_li = True
+    out.append("</li>" if open_li else "")
+    while len(levels) > 1:
+        out.append("</ol></li>")
+        levels.pop()
+    out.append("</ol>")
     return "".join(out)
 
 
@@ -2741,7 +3061,7 @@ def adapter_note(cross, models):
     return "".join(out)
 
 
-def conclusion_html(tables, models):
+def conclusion_html(tables, models, prevent=None):
     """Where each NVIDIA model stands, one sentence each, read from the wording and edit tables."""
     T = {t["id"]: t for t in tables}
     out = []
@@ -2804,6 +3124,8 @@ def conclusion_html(tables, models):
             bits.append(f"run unchanged on other tasks, the {e[0][0]} edit " + and_list(
                 f"{'lifts' if c['delta'] > 0 else 'lowers'} {k} from {c['a']} to {c['b']} of {c['n']}"
                 + (" practice starts" if c.get("prac") else "") + f" (p\u00a0=\u00a0{fp(c['p'])})" for k, c in se))
+            if prevent and prevent["model"] == mid and any(c["delta"] < 0 for _, c in se):
+                bits += prevent_conclusion(prevent)
         if not bits:
             out.append(f"<p><strong>{esc(name)}.</strong> Wording and edit results are "
                        f'<span class="run">running</span>.</p>')
@@ -2898,6 +3220,7 @@ def main():
         models["pi05"]["fig_short"] = (f"control · shared slots: {', '.join(fresh)}" if len(fresh) <= 2
                                        else f"control · {pv}/{len(fmrows)} earlier")
     summary = summary_table(P, tables, cross, rc)
+    prevent = prevention(cross)
     w = P["where"]
     WHERE_REF.update(n=w["n"], base=w["arms"]["base"], tx=w["tx"], bars=[
         ("Backbone: VLM MLPs", w["arms"]["v1full"], "teal"), ("Action expert MLPs", w["arms"]["a1"], "dark"),
@@ -2913,9 +3236,10 @@ def main():
         "shared_slots": SHARED_SLOTS,
         "models": [dict(id=mid, **models[mid]) for mid in ORDER],
         "tasks": [dict(id=t[0], name=t[1], robolab=t[2], pi05_failure=t[4]) for t in TASKS],
-        "tldr": tldr(tables, models),
+        "tldr": tldr(tables, models, prevent),
         "sections": page_sections(page),
         "summary": summary,
+        "prevention": prevent,
         "tables": tables,
         "cross_rows": {mid: [{k: v for k, v in r.items() if k != "_extra"} | ({"extra": r["_extra"]} if r["_extra"] else {})
                              for r in cross[mid]["rows"]] for mid in cross},
@@ -2955,7 +3279,8 @@ def main():
     page = replace_region(page, "stamp", esc(f"{data['status_text']} · updated {data['updated_text']}"))
     page = replace_region(page, "models", models_html(models))
     page = replace_region(page, "render-note", render_note(tables))
-    page = replace_region(page, "conclusion", conclusion_html(tables, models))
+    page = replace_region(page, "conclusion", conclusion_html(tables, models, data["prevention"]))
+    page = replace_region(page, "prevent", prevent_html(data["prevention"]))
     page = replace_region(page, "where-note", where_note(tables, models))
     page = replace_region(page, "adapter-note", adapter_note(cross, models))
     page = replace_region(page, "table:summary", table_html(summary, models))
