@@ -3322,6 +3322,51 @@ def legend_html(cross):
             f'technical terms. The names on the rest of the page map to them as follows.</p>'
             f'<div class="tblock">{table}</div><dl class="defs">{dl}</dl>')
 
+
+def dg_blog_pi05(sites):
+    """The main post's figure (site/index.html, pasted there by hand): π0.5's parts in plain words, one verdict badge
+    and one count per edit, all on the same 64 new starts."""
+    m = next(x for x in sites if x["id"] == "pi05")
+    keep = {"v1full": "full edit", "v1img816": "compact version (0.16%)", "a1": "this part alone",
+            "h1": "smallest change, always on"}
+    variant_of = {"whole part": "v1full", "image part only": "v1img816", "this part alone": "a1", "always on": "h1"}
+    W, x0, x1 = [], 30, 266
+    n, base = m["n"], m["base"]
+    W.append(_t(14, 20, "π0.5", "dg-h") + _t(14, 38, f"{m['task']} · {n} new starts", "dg-s dg-mu")
+             + _t(14, 55, f"the unedited robot: {base} of {n}", "dg-s dg-mu"))
+    W.append(f'<rect x="30" y="66" width="80" height="24" rx="12" class="dg-in"/>' + _t(70, 82.5, "cameras", "dg-s", "middle"))
+    W.append(f'<rect x="150" y="66" width="96" height="24" rx="12" class="dg-in"/>'
+             + _t(198, 82.5, "instruction", "dg-s", "middle"))
+    y, tops, desc = 116, {}, []
+    for i, blk in enumerate(m["blocks"]):
+        sts = [s for s in blk["sites"] if variant_of.get(s["variant"]) in keep]
+        h = 30 + 16 + 40 * len(sts) + 8
+        tops[blk["let"]] = (y, h)
+        W.append(f'<rect x="{x0}" y="{y}" width="{x1 - x0}" height="{h}" rx="7" class="dg-blk"/>'
+                 + _t(48, y + 23, PARTS[blk["let"]], "dg-b") + _t(48, y + 40, f"({blk['detail']})", "dg-s dg-mu"))
+        yy = y + 63
+        for s in sts:
+            lab = keep[variant_of[s["variant"]]]
+            W.append(f'<g><title>{esc(BADGE[s["oc"]])}: {esc(lab)}, {s["k"]} of {s["n"]}</title>'
+                     + _mark(54, yy - 4.5, s["oc"]) + _t(67, yy, BADGE[s["oc"]], "dg-s dg-b")
+                     + _t(x1 - 8, yy, f"{s['k']} of {s['n']}", "dg-s dg-b", "end")
+                     + _t(67, yy + 18, lab, "dg-s dg-mu") + "</g>")
+            desc.append(f"{PARTS[blk['let']]} ({blk['detail']}), {lab}: {BADGE[s['oc']]}, {s['k']} of {s['n']}")
+            yy += 40
+        y += h + (30 if i < 2 else 0)
+    cx = 148
+    (ya, ha), (yb, hb), (yc, hc) = tops["A"], tops["B"], tops["C"]
+    W.append(_arrow([(198, 90), (198, ya)]) + _arrow([(70, 90), (70, ya)]))
+    W.append(_arrow([(cx, ya + ha), (cx, yb)]) + _t(cx + 8, ya + ha + 19, "passes what it read", "dg-xs dg-mu"))
+    W.append(_arrow([(cx, yb + hb), (cx, yc)]))
+    W.append(_arrow([(cx, yc + hc), (cx, yc + hc + 22)]) + _t(cx, yc + hc + 40, "robot", "dg-s", "middle"))
+    svg = _svg(280, yc + hc + 48, "π0.5: where each edit went and what it did",
+               f"{m['task']}, {n} new starts; the unedited robot succeeded {base} times. " + "; ".join(desc) + ".",
+               "".join(W), "dg-panel", "dg2-wp")
+    return (f'<figure class="fig dg-blog">\n      {svg}\n'
+            f'      <figcaption>The same fix, built into three parts of π0.5 and scored on {n} new starts: only in the '
+            f'vision-language model, where the instruction is read, did it fully work.</figcaption>\n    </figure>')
+
 VID = OUT / "video"
 # Each clip: stem (video/<stem>.mp4, or "src" for a clip the main page already serves), group (where it goes on the
 # page), title, a caption builder (reads its numbers from the run records, never typed in), and an optional poster.
