@@ -1,8 +1,73 @@
 {
  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
- "arms": {},
- "runs": {},
- "failure_map": [],
+ "machines": {
+  "ali-ms": "RTX 3090 24 GB"
+ },
+ "arms": {
+  "ali-ms/T8-base": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 0,
+   "n": 16
+  }
+ },
+ "failure_map": [
+  {
+   "machine": "ali-ms",
+   "code": "T8",
+   "task": "MustardRightOfRaisinRFTask",
+   "k": 0,
+   "n": 16,
+   "wilson95": [
+    0.0,
+    19.4
+   ],
+   "slots": [
+    30000,
+    30015
+   ]
+  }
+ ],
  "wording": [],
- "records": 0
+ "edits": [],
+ "side_effects": [],
+ "runs": {
+  "ali-ms/T8-base": [
+   {
+    "tag": "T8-base-s30000",
+    "task": "MustardRightOfRaisinRFTask",
+    "prompt": null,
+    "edit": null,
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 0,
+    "gpu_s": 728.9,
+    "started": "2026-11-08 00:38:39",
+    "finished": "2026-11-08 00:50:48"
+   }
+  ]
+ },
+ "records": 1
 }

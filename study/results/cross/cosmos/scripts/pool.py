@@ -31,13 +31,20 @@ import urllib.request
 from pathlib import Path
 
 HOME = Path.home()
-WS = HOME / "cross/cosmos"
+WS = Path(__file__).resolve().parents[1]  # the host's work dir: ~/cross/cosmos on ali-ms, /workspace/cross/cosmos on pods
 SCRIPTS = WS / "scripts"
 COSMOS_PY = WS / "cosmos-framework/.venv/bin/python"
-ROBOLAB = HOME / "vibes/weight-space-policy-lab/robolab_checkout"
-SIM_PY = HOME / "vibes/weight-space-policy-lab/robolab_env/.venv/bin/python"
-LOCKS = [HOME / ".cache/weightsmith/locks", HOME / "vibes/opus-weight-surgery/state"]
-VK_ICD = "/usr/share/vulkan/icd.d/nvidia_icd.json"
+# Per-host settings live in WS/host.json; these defaults are ali-ms's.
+HOST = {"machine": "ali-ms", "robolab": str(HOME / "vibes/weight-space-policy-lab/robolab_checkout"),
+        "sim_py": str(HOME / "vibes/weight-space-policy-lab/robolab_env/.venv/bin/python"),
+        "lock_dirs": [str(HOME / ".cache/weightsmith/locks"), str(HOME / "vibes/opus-weight-surgery/state")],
+        "vk_icd": "/usr/share/vulkan/icd.d/nvidia_icd.json"}
+if (WS / "host.json").exists():
+    HOST.update(json.loads((WS / "host.json").read_text()))
+ROBOLAB = Path(HOST["robolab"])
+SIM_PY = Path(HOST["sim_py"])
+LOCKS = [Path(d) for d in HOST["lock_dirs"]]
+VK_ICD = HOST["vk_icd"]
 GPU = 1
 RENDER = "default"  # RoboLab's default render preset (NVIDIA's validated setting); "performance" = secondary runs
 GROUP = 16  # slots per sampling-seed group (the shared slot scheme); a group may run as 16/envs processes
@@ -168,7 +175,8 @@ def run_job(job, envs, port, out, task_dirs, ledger):
     rows += [{"slot": s, "ok": False} for s in slots if s not in seen]
     rows.sort(key=lambda r: r["slot"])
     ok = [r for r in rows if r["ok"]]
-    summary = {"tag": tag, "task": job["task"], "prompt": job.get("prompt"), "edit": job.get("edit"),
+    summary = {"tag": tag, "machine": HOST["machine"], "gpu": GPU, "task": job["task"], "prompt": job.get("prompt"),
+               "edit": job.get("edit"),
                "slots": [slots[0], slots[-1]], "envs": envs, "render": RENDER, "n": len(rows), "completed": len(ok),
                "success": sum(r["success"] for r in ok), "groups": group_info,
                "server_load": json.loads(load[0][7:]) if load else None, "wait_lock_s": round(t_lock - t_req, 1),
@@ -183,8 +191,8 @@ def run_job(job, envs, port, out, task_dirs, ledger):
         raise RuntimeError(f"{tag}: only {len(ok)}/{len(rows)} slots completed (see the sim logs)")
     (out / f"{tag}.json").write_text(json.dumps(summary, indent=1))
     with open(ledger, "a") as f:
-        f.write(json.dumps({"tag": tag, "gpu": GPU, "start": t_lock, "end": t_end, "gpu_s": round(t_end - t_lock, 1),
-                            "kind": "eval", "n": len(rows)}) + "\n")
+        f.write(json.dumps({"tag": tag, "machine": HOST["machine"], "gpu": GPU, "start": t_lock, "end": t_end,
+                            "gpu_s": round(t_end - t_lock, 1), "kind": "eval", "n": len(rows)}) + "\n")
     print(json.dumps({k: v for k, v in summary.items() if k != "rows"}), flush=True)
     return summary
 
@@ -196,11 +204,12 @@ def main():
     ap.add_argument("--envs", type=int, default=16, help="envs per sim process (16 = one process per 16-slot group)")
     ap.add_argument("--render", default="default", choices=("default", "performance"))
     ap.add_argument("--port", type=int, default=8500)
+    ap.add_argument("--gpu", type=int, default=1)
     ap.add_argument("--task-dirs", default=str(WS / "tasks"))
     a = ap.parse_args()
     a.task_dirs = str(Path(a.task_dirs).expanduser().resolve())
-    global RENDER
-    RENDER = a.render
+    global RENDER, GPU
+    RENDER, GPU = a.render, a.gpu
     out = Path(a.out).expanduser().resolve()  # absolute: the sim runs with cwd = the RoboLab checkout
     out.mkdir(parents=True, exist_ok=True)
     ledger = out.parent / "gpu_ledger.jsonl"

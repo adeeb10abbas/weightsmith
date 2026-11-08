@@ -1,15 +1,24 @@
 #!/usr/bin/env bash
-# Copy the per-slot run records, edit build reports and the GPU ledger from the GPU host into results/
-# (no observations, logs or weights). Run from anywhere on the Mac.
-set -euo pipefail
+# Copy the complete per-slot run records (runs/q/<tag>.json), edit build reports, offline checks and the GPU ledger
+# from each GPU host into results/<...>/<machine>/ (no observations, logs or weights). Run from anywhere on the Mac.
+#   scripts/sync_results.sh                 # every host in HOSTS below that answers
+set -uo pipefail
 HERE=$(cd "$(dirname "$0")/.." && pwd)
-mkdir -p "$HERE/results/runs" "$HERE/results/edits" "$HERE/results/offline"
-rsync -a --include='*/' --include='*.json' --exclude='*.obs/***' --exclude='*' \
-  --prune-empty-dirs ali-ms:cross/cosmos/runs/ "$HERE/results/runs_raw/"
-# flatten: one <tag>.json per run (map/, words/, edits/, heldout/ ... on the host)
-find "$HERE/results/runs_raw" -name '*.json' -exec cp {} "$HERE/results/runs/" \;
-rm -rf "$HERE/results/runs_raw"
-rsync -a ali-ms:cross/cosmos/runs/gpu_ledger.jsonl "$HERE/results/gpu_ledger.jsonl" 2>/dev/null || true
-rsync -a --include='*.json' --exclude='*' ali-ms:cross/cosmos/edits/ "$HERE/results/edits/" 2>/dev/null || true
-rsync -a --include='*.json' --exclude='*' ali-ms:cross/cosmos/offline/ "$HERE/results/offline/" 2>/dev/null || true
-ls "$HERE/results/runs" | wc -l
+# machine label | ssh target (with options) | work dir on the host
+HOSTS=(
+  "ali-ms|ali-ms|cross/cosmos"
+  "us-pod|-p 18563 root@ssh1.vast.ai|/workspace/cross/cosmos"
+)
+for h in "${HOSTS[@]}"; do
+  IFS='|' read -r M T D <<<"$h"
+  SSH="ssh -o ConnectTimeout=8 ${T% *}"; TGT=${T##* }
+  [ "$T" = "$TGT" ] && SSH="ssh -o ConnectTimeout=8"
+  $SSH "$TGT" true 2>/dev/null || { echo "$M: unreachable, skipped"; continue; }
+  mkdir -p "$HERE/results/runs/$M" "$HERE/results/edits/$M" "$HERE/results/offline/$M"
+  rsync -a -e "$SSH" --include='*.json' --exclude='*' "$TGT:$D/runs/q/" "$HERE/results/runs/$M/"
+  rm -f "$HERE/results/runs/$M"/*.incomplete-*.json
+  rsync -a -e "$SSH" "$TGT:$D/runs/gpu_ledger.jsonl" "$HERE/results/gpu_ledger_$M.jsonl" 2>/dev/null || true
+  rsync -a -e "$SSH" --include='*.json' --exclude='*' "$TGT:$D/edits/" "$HERE/results/edits/$M/" 2>/dev/null || true
+  rsync -a -e "$SSH" --include='*.json' --exclude='*' "$TGT:$D/offline/" "$HERE/results/offline/$M/" 2>/dev/null || true
+  echo "$M: $(ls "$HERE/results/runs/$M" | wc -l) runs"
+done
