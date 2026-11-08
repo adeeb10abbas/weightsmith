@@ -39,7 +39,7 @@
     "branch": "cross-groot/v1",
     "path": "study/results/cross/metrics_groot.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-    "commit": "639a29b583b5"
+    "commit": "680e11c1eb67"
    }
   },
   {
@@ -59,7 +59,8 @@
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
     "commit": "670e6a225564"
-   }
+   },
+   "fig_short": "control · shared slots: T1"
   }
  ],
  "tasks": [
@@ -139,7 +140,7 @@
     "lead": "GR00T N1.7",
     "kind": "reasoning-backbone VLA",
     "tag": null,
-    "text": "Unedited so far: T1 9 of 32, T3 1 of 32, T8 0 of 32 and R1 28 of 32 starts. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12); no gain on T3 and T8. T1 edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); further edits: {running}. Other tasks: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
+    "text": "Unedited so far, of 32 starts each: T1 9, T2 0, T3 1, T5 0, T8 0 and R1 28. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12); no gain on T3 and T8. T1 edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); further edits: {running}. Other tasks: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
     "id": "side-effects",
@@ -284,8 +285,9 @@
       "s": "running"
      },
      "groot": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 0 of 32",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "pi05": {
       "v": "T1 edit: 22 → 44 of 64",
@@ -345,8 +347,9 @@
       "s": "running"
      },
      "groot": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 0 of 32",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "pi05": {
       "v": "no gain",
@@ -548,8 +551,11 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "0 of 32",
+       "s": "ok",
+       "d": "0%; slots 30000–30031",
+       "k": 0,
+       "n": 32
       },
       "pi05": {
        "v": "18 of 64",
@@ -617,8 +623,11 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "0 of 32",
+       "s": "ok",
+       "d": "0%; slots 30000–30031",
+       "k": 0,
+       "n": 32
       },
       "pi05": {
        "v": "8 of 64",
@@ -2692,6 +2701,45 @@
    {
     "experiment": "failure_map",
     "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T2 PickGlassesTask",
+    "wording_pair": [
+     "Pick up the eye glasses",
+     null
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "unedited_wilson95": [
+      0.0,
+      0.10717919825507057
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "tag fm-T2; envs 16; env seed 0; one fresh simulator process per 16-slot group",
+    "_task": "T2",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
     "task": "T3 RubiksCubeLeftOfBowlTask",
     "wording_pair": [
      "Put the rubiks cube to the left of the bowl",
@@ -2722,6 +2770,45 @@
     ],
     "notes": "tag fm-T3; envs 16; env seed 0; one fresh simulator process per 16-slot group",
     "_task": "T3",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T5 MustardInLeftBinTask",
+    "wording_pair": [
+     "Put the mustard in the left bin",
+     null
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "unedited_wilson95": [
+      0.0,
+      0.10717919825507057
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "tag fm-T5; envs 16; env seed 0; one fresh simulator process per 16-slot group",
+    "_task": "T5",
     "_edit_task": null,
     "_prov": false,
     "extra": {
@@ -3003,6 +3090,168 @@
      "machine": "ali-ms-rtx3090",
      "control_fixed_broke": null,
      "control_p": null
+    }
+   },
+   {
+    "experiment": "wsp_offline_check",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T1 RubiksCubeThenBananaTask",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "edit_location": "backbone",
+    "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop.",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090",
+     "edit": "bb",
+     "grasp_phase": {
+      "n_decisions": 16,
+      "decisions": "k = 4, 8, 12, 16 of slots 30016-30019 (none used to build)",
+      "mean_shift_vs_unedited_cm": 1.862347967835376,
+      "teacher_mean_shift_vs_unedited_cm": 0.8770811306021642,
+      "teacher_projection": -0.0716186033087405,
+      "gripper_rows_matching_teacher": "120/128",
+      "unedited_gripper_rows_matching_teacher": "121/128"
+     },
+     "unseen_failures": {
+      "n_decisions": 11,
+      "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+      "teacher_projection": -0.15310076334760012,
+      "mean_shift_vs_unedited_cm": 2.3911862358958884,
+      "teacher_mean_shift_vs_unedited_cm": 2.034298603592271
+     }
+    }
+   },
+   {
+    "experiment": "wsp_offline_check",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T1 RubiksCubeThenBananaTask",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "edit_location": "backbone",
+    "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop.",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090",
+     "edit": "bb_tok",
+     "grasp_phase": {
+      "n_decisions": 16,
+      "decisions": "k = 4, 8, 12, 16 of slots 30016-30019 (none used to build)",
+      "mean_shift_vs_unedited_cm": 1.8376651962171309,
+      "teacher_mean_shift_vs_unedited_cm": 0.8770811306021642,
+      "teacher_projection": -0.08338396692116268,
+      "gripper_rows_matching_teacher": "120/128",
+      "unedited_gripper_rows_matching_teacher": "121/128"
+     },
+     "unseen_failures": {
+      "n_decisions": 11,
+      "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+      "teacher_projection": -0.1660978186142906,
+      "mean_shift_vs_unedited_cm": 2.396676090376621,
+      "teacher_mean_shift_vs_unedited_cm": 2.032215103761039
+     }
+    }
+   },
+   {
+    "experiment": "wsp_offline_check",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T1 RubiksCubeThenBananaTask",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "edit_location": "backbone",
+    "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop.",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090",
+     "edit": "bb_span",
+     "grasp_phase": {
+      "n_decisions": 16,
+      "decisions": "k = 4, 8, 12, 16 of slots 30016-30019 (none used to build)",
+      "mean_shift_vs_unedited_cm": 3.495357137762767,
+      "teacher_mean_shift_vs_unedited_cm": 0.8770811306021642,
+      "teacher_projection": -0.13042248521510413,
+      "gripper_rows_matching_teacher": "119/128",
+      "unedited_gripper_rows_matching_teacher": "121/128"
+     },
+     "unseen_failures": {
+      "n_decisions": 11,
+      "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+      "teacher_projection": -0.18859429292194552,
+      "mean_shift_vs_unedited_cm": 2.615728955292566,
+      "teacher_mean_shift_vs_unedited_cm": 2.032215103761039
+     }
+    }
+   },
+   {
+    "experiment": "wsp_offline_check",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T1 RubiksCubeThenBananaTask",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "edit_location": "action head",
+    "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop.",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090",
+     "edit": "dit",
+     "grasp_phase": {
+      "n_decisions": 16,
+      "decisions": "k = 4, 8, 12, 16 of slots 30016-30019 (none used to build)",
+      "mean_shift_vs_unedited_cm": 1.2063241505529732,
+      "teacher_mean_shift_vs_unedited_cm": 0.8770811306021642,
+      "teacher_projection": 0.3140669254802602,
+      "gripper_rows_matching_teacher": "106/128",
+      "unedited_gripper_rows_matching_teacher": "121/128"
+     },
+     "unseen_failures": {
+      "n_decisions": 11,
+      "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+      "teacher_projection": 0.21875615897501224,
+      "mean_shift_vs_unedited_cm": 1.4456311039711265,
+      "teacher_mean_shift_vs_unedited_cm": 2.034298603592271
+     }
+    }
+   },
+   {
+    "experiment": "wsp_offline_check",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T1 RubiksCubeThenBananaTask",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "edit_location": "backbone",
+    "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop.",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090",
+     "edit": "bb_rand",
+     "grasp_phase": null,
+     "unseen_failures": {
+      "n_decisions": 11,
+      "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+      "teacher_projection": -0.0026354435264788947,
+      "mean_shift_vs_unedited_cm": 0.3309514915930446,
+      "teacher_mean_shift_vs_unedited_cm": 2.034298603592271
+     }
     }
    }
   ],
@@ -6024,7 +6273,7 @@
    "branch": "cross-groot/v1",
    "path": "study/results/cross/metrics_groot.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-   "commit": "639a29b583b5"
+   "commit": "680e11c1eb67"
   },
   "pi05": {
    "kind": "branch",
@@ -6035,8 +6284,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "e2a272e88fccd473",
- "updated": "2026-11-08T08:19Z",
- "updated_text": "8 Nov 2026, 08:19 UTC",
+ "content_hash": "f9b76fb68b8fba47",
+ "updated": "2026-11-08T08:27Z",
+ "updated_text": "8 Nov 2026, 08:27 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }

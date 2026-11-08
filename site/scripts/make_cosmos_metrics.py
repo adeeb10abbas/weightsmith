@@ -2413,6 +2413,9 @@ def tldr(tables, models):
                 bits.append("Unedited so far: " + and_list(
                     f"{k} {cell('failure_map', k, mid)['k']} of {cell('failure_map', k, mid)['n']}" for k in fm)
                     + " starts.")
+            elif fm and len({cell("failure_map", k, mid)["n"] for k in fm}) == 1:
+                bits.append(f"Unedited so far, of {cell('failure_map', fm[0], mid)['n']} starts each: "
+                            + and_list(f"{k} {cell('failure_map', k, mid)['k']}" for k in fm) + ".")
             elif fm:
                 bits.append(f"Unedited success is in for {len(fm)} of {len(TASKS)} tasks.")
             if wd:
@@ -2702,6 +2705,12 @@ def main():
         models[mid] = m
 
     tables, rc, prov, rcp = build_tables(P, cross)
+    fmrows = next(t for t in tables if t["id"] == "failure_map")["rows"]
+    pv = sum(1 for r in fmrows if r["cells"]["pi05"].get("prov"))
+    fresh = [r["key"] for r in fmrows if r["cells"]["pi05"].get("s") == "ok" and not r["cells"]["pi05"].get("prov")]
+    if 0 < pv < len(fmrows):   # some fresh shared-slot cells, the rest earlier records: name the fresh ones in the head
+        models["pi05"]["fig_short"] = (f"control · shared slots: {', '.join(fresh)}" if len(fresh) <= 2
+                                       else f"control · {pv}/{len(fmrows)} earlier")
     summary = summary_table(P, tables, cross, rc)
     w = P["where"]
     WHERE_REF.update(n=w["n"], base=w["arms"]["base"], tx=w["tx"], bars=[
@@ -2766,6 +2775,9 @@ def main():
         page = replace_region(page, f"table:{t['id']}", block_html(t, models))
     prac_edit = any(r["cells"][m].get("prac") for t in tables if t["id"] == "edit_gain" for r in t["rows"] for m in ORDER)
     for name, cap in FIGS:
+        if name == "failure-map" and 0 < pv < len(fmrows):
+            cap += (f" π0.5’s cells are earlier records on its own slots, except {and_list(fresh)}, which "
+                    f"{'is' if len(fresh) == 1 else 'are'} on the shared slots.")
         if name == "edit-gain" and prac_edit:
             cap += " Hollow, dashed: scored on the practice starts the edit was built from, not on unseen starts."
         page = replace_region(page, f"fig:{name}", figure_html(name, alts[name], cap))
