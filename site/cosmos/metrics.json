@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "44e479fb609a"
+    "commit": "6ae69d859045"
    }
   },
   {
@@ -147,7 +147,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself. Cosmos3 Edge Policy: {running}."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1, lifted no task, and made none detectably worse. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -1805,8 +1805,14 @@
      "label": "T1 Cube then banana",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "+2: 10 → 12 of 16",
+       "s": "ok",
+       "d": "4 / 2; p = 0.69; practice starts; slots 30000–30015",
+       "delta": 2,
+       "a": 10,
+       "b": 12,
+       "n": 16,
+       "p": 0.6875
       },
       "groot": {
        "v": "−9: 9 → 0 of 32",
@@ -2524,6 +2530,46 @@
       96063
      ],
      "teacher_slots": null
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 10,
+    "edited_k": 12,
+    "fixed": 4,
+    "broke": 2,
+    "p": 0.6875,
+    "ci": {
+     "diff_pts": 12.5,
+     "bootstrap95_pts": [
+      -18.75,
+      43.75
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": 12.5,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und built for T8, run on T1 with T1's default instruction",
+    "_task": "T1",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
     }
    },
    {
@@ -6501,7 +6547,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "44e479fb609a"
+   "commit": "6ae69d859045"
   },
   "groot": {
    "kind": "branch",
@@ -6519,8 +6565,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "89a0ac8bf50e6045",
- "updated": "2026-11-08T09:28Z",
- "updated_text": "8 Nov 2026, 09:28 UTC",
+ "content_hash": "458805d9a2f0dc2e",
+ "updated": "2026-11-08T09:44Z",
+ "updated_text": "8 Nov 2026, 09:44 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
