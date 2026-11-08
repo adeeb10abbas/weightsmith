@@ -4,6 +4,7 @@
 # file edits/t8t3und-stack.pt. Build and offline gates on GPU0; closed loop only if both gates pass.
 set -euo pipefail
 cd ~/cross/cosmos
+export PY O3 G3 RF TF O E
 PY=cosmos-framework/.venv/bin/python
 O3="Put the rubiks cube to the left of the bowl"
 G3="Pick up the rubiks cube and place it on the table to the left side of the bowl"
@@ -11,7 +12,10 @@ RF="Move the mustard bottle on the table so that the raisin box is to the left o
 TF="Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
 O=runs/q/T3-base-s30000.obs/g1875o0
 E=$HOME/cross/cosmos/edits
-scripts/gpu.sh 0 t8t3und-build build $PY scripts/seq_build.py --obs $O/obs_r0_e1.npz --k 1 \
+# one GPU0 lock hold for build, specs and both captures (so the pool cannot take the GPU in between)
+scripts/gpu.sh 0 t8t3und build bash -c '
+set -e
+$PY scripts/seq_build.py --obs $O/obs_r0_e1.npz --k 1 \
   --orig "$O3" --good "$G3" --layers 0-26 --align auto --lam-rel 1e-3 --base-edit edits/t8und.pt --no-ctl \
   --out edits/t8t3und --check $O/obs_r0_e2.npz:1 $O/obs_r0_e4.npz:2 $O/obs_r0_e6.npz:3 > edits/t8t3und.build.txt 2>&1
 $PY scripts/make_spec.py caps/t8t3und_t3.json --runs runs/q/T3-base-s30000.json --k 1-5 --episodes 6 \
@@ -20,7 +24,8 @@ $PY scripts/make_spec.py caps/t8t3und_t3.json --runs runs/q/T3-base-s30000.json 
 $PY scripts/make_spec.py caps/t8t3und_t8.json --runs runs/q/T8-base-s30000.json --k 1-5 --episodes 6 \
    --skip-slots 30000,30001,30002,30003,30004,30005 --variant O="$RF" --variant G="$TF" \
    --variant "O+und=$RF@$E/t8und.pt" --variant "O+st=$RF@$E/t8t3und-stack.pt"
-scripts/gpu.sh 0 t8t3und-chk check bash -c "for c in t3 t8; do $PY scripts/capture.py caps/t8t3und_\$c.json caps/t8t3und_\$c.npz || exit 1; done"
+for c in t3 t8; do $PY scripts/capture.py caps/t8t3und_$c.json caps/t8t3und_$c.npz; done
+'
 $PY scripts/offline_check.py caps/t8t3und_t3.npz --teacher G --student O8 --variants O+st \
    --out offline/t8t3und_t3_check.json > offline/t8t3und_t3_check.txt
 $PY scripts/offline_check.py caps/t8t3und_t8.npz --teacher G --student O --variants O+und,O+st \

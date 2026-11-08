@@ -116,3 +116,8 @@
 {"tag": "T4-base-s30016", "machine": "ali-ms", "gpu": 0, "start": 1794162408.6900003, "end": 1794163832.210046, "gpu_s": 1423.5, "kind": "eval", "n": 16}
 {"tag": "T8-base-s30016", "gpu": 1, "start": 1794163330.7299948, "end": 1794164050.57044, "gpu_s": 719.8, "kind": "eval", "n": 16}
 {"tag": "T8-wtf-s30016", "gpu": 1, "start": 1794164050.571035, "end": 1794164482.0966644, "gpu_s": 431.5, "kind": "eval", "n": 16}
+{"tag": "t3und-build", "machine": "ali-ms", "gpu": 1, "start": 1794164482.0994296, "end": 1794164579.9608915, "gpu_s": 97.9, "kind": "build", "rc": 0}
+{"tag": "T4-Et8und-s30016", "machine": "ali-ms", "gpu": 0, "start": 1794163832.2212636, "end": 1794165200.7377846, "gpu_s": 1368.5, "kind": "eval", "n": 16}
+{"tag": "t8t3und-build", "machine": "ali-ms", "gpu": 0, "start": 1794165200.7402973, "end": 1794165295.6354036, "gpu_s": 94.9, "kind": "build", "rc": 1}
+{"tag": "T1-wexp-s30016", "gpu": 1, "start": 1794164579.9763389, "end": 1794165597.114653, "gpu_s": 1017.1, "kind": "eval", "n": 16}
+{"tag": "t3und-chk", "machine": "ali-ms", "gpu": 1, "start": 1794165597.1172793, "end": 1794165761.606499, "gpu_s": 164.5, "kind": "check", "rc": 0}

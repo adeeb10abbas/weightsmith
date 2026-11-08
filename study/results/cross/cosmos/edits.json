@@ -58,5 +58,17 @@
   "stored_values": 529486848,
   "sha256_16": "5f72089d4a068bf1",
   "control_sha256_16": "55ec8a5be9d1d38d"
+ },
+ {
+  "name": "t3und",
+  "code": "T3",
+  "location": "text pathway (und mlp.down_proj, layers 0-26), --align auto -> ps (unequal token counts: 159 vs 167; 151 positions matched)",
+  "good_wording": "Pick up the rubiks cube and place it on the table to the left side of the bowl",
+  "teacher_arm": "wspec",
+  "summary": "t8und's recipe on T3: sequential closed-form distillation of the RoboLab specific wording's text states into the default wording's at the shared prefix/suffix positions, plus the unconditional-pass keys; lam_rel 1e-3; failed its offline gate (no closed loop)",
+  "values_changed": 279615583,
+  "stored_values": 52005888,
+  "sha256_16": "755f16e44b63e3fb",
+  "control_sha256_16": "86a0414d4b764f7e"
  }
 ]

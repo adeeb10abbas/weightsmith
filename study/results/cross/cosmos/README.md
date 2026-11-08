@@ -264,3 +264,12 @@ reproduces the stacked weights exactly from that file (bf16, bit for bit). No ra
   `t3und` held-out unedited runs on the same GPU).
 
 Timebox: about 3 h of GPU time across both GPUs. The new jobs go ahead of the remaining practice-extension jobs.
+
+**`t3und` fails its offline gate (14:22 ET; `results/offline/ali-ms/t3und_gate.json`).** The wordings have 159 and 167 text
+tokens, so the build matched 151 shared template-prefix and suffix positions (`--align ps`). Those positions fit well:
+relative residual gap 0.025 at layer 26 (`results/edits/ali-ms/t3und.json`). Yet on the 30 held-aside T3 decisions the
+edited chunks end **9.45 cm** from the specific wording's, against 5.09 cm unedited: the gap closed is **-85.6%**. The edit
+moves the actions (8.4 cm from the unedited chunks), but not toward the good wording; 13 of 30 decisions end closer to it.
+Its random control: -2.5% (0.9 cm from unedited). As with `t8und-s` on T8, matching only the shared positions does not
+carry the wording's effect. With unequal token counts the recipe has no word-aligned positions to match. Per the rules:
+no closed loop, and no side-effect runs for `t3und`.

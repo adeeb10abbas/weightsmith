@@ -27,9 +27,9 @@ The control (OUT-ctl.pt) has, per layer, the edit's rank and singular values alo
 
 Stacked build (--base-edit PREV.pt): G's text states (the target) are captured on the unedited weights, then PREV is
 applied (edge_common.apply_edit) and the new edit is built on top of it, layer by layer as above. Besides NAME.pt (the
-new factors, relative to the PREV-edited weights) it writes NAME-stack.pt: the dense float32 difference between the
-stacked weights and the original weights, which apply_edit turns back into the stacked bf16 weights bit for bit
-(checked here, reported as stack.exact). In the --check replays, O and G then run on the PREV-edited weights.
+new factors, relative to the PREV-edited weights) it writes NAME-stack.pt: the dense float64 difference between the
+stacked weights and the original weights (exact: both are bf16), which apply_edit turns back into the stacked bf16
+weights bit for bit (checked here, reported as stack.exact; float32 is not enough where an entry nearly cancels). In the --check replays, O and G then run on the PREV-edited weights.
 
 usage: seq_build.py --obs OBS.npz --k 1 --orig "..." --good "..." --layers 0-26 --out edits/NAME [--align auto]
 writes NAME.pt, NAME-ctl.pt, NAME.json (per-layer fit, final match, actions of O / G / O+edit / O+ctl on the
@@ -340,7 +340,7 @@ def main():
         stack, exact, changed = {}, True, 0
         for n, w0 in W_orig.items():
             w = params[n].detach().cpu()
-            d = (w.double() - w0.double()).float()
+            d = w.double() - w0.double()  # exact in float64; float32 loses bits where an entry nearly cancels
             exact &= bool(torch.equal((w0.double() + d.double()).to(w.dtype), w))
             changed += int((w != w0).sum())
             stack[n] = d

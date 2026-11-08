@@ -1,0 +1,9 @@
+{
+ "n": 30,
+ "t3_unedited_to_specific_cm": 5.091074901093873,
+ "t3_edited_to_specific_cm": 9.450343253459131,
+ "t3_gap_closed_pct": -85.62569667613064,
+ "control_gap_closed_pct": -2.5011124555874398,
+ "rule": "T3 gap closed >= 85% and |control gap closed| <= 15%",
+ "pass": false
+}
