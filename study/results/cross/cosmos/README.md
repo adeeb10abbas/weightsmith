@@ -96,3 +96,22 @@ the chunk-end end-effector distance to the TF-wording action chunk:
 
 As on π0.5, the edit to the language pathway carries the wording's effect; the edit to the action-generation pathway,
 built from 30 other decisions of the same task, carries a fifth of it. `results/offline/ali-ms/t8_offline_check.json`.
+
+### Side effects of `t8und` on the other tasks (practice starts 30000-30015, each task's default instruction)
+
+Each task is run unedited and with `t8und`, on the same 16 starts and the same GPU. Table, plots
+(`plots/tasks_t8und_ali-ms.png`, `plots/side_effects_t8und_ali-ms.png`) and `../metrics_cosmos.json`
+(`experiment: side_effect`) are regenerated as cells land. The map is the honest map of the edit that was scored on held-out starts.
+
+The first cells show a clear pattern. The edit breaks the two other instructions that say "left": T5, "put the mustard in the left bin",
+goes 8/16 -> 0/16 (8 broke, 0 fixed, p = 0.0078), and the edited policy carries the mustard to the other bin
+(`videos/t5_30001_unedited_vs_t8und.mp4`). T3, "put the rubiks cube to the left of the bowl", goes 4/16 -> 0/16
+(p = 0.125). Tasks without left/right are unchanged or slightly better (T1 10 -> 12/16, R1 9 -> 13/16, neither
+significant). Distilling "the raisin box is to the left of the mustard" into "the mustard is to the right of
+the raisin box" taught the text pathway something like left -> right, beyond the one sentence it was built from.
+
+Follow-up `t8und-p` (running): the same build plus zero-change preservation keys from 65 generic RoboLab instructions.
+The set is fixed by rule before the build (`tasks/preserve_generic.json`): all RoboLab default instructions minus the shared-set
+tasks, their near-duplicates and every instruction that mentions mustard, raisin, a bin, left or right. So a T5 recovery
+cannot come from a hand-picked mirror instruction. It runs first on T5 and on T8 practice; held-out and the full map
+follow only if it keeps T8 and restores T5.
