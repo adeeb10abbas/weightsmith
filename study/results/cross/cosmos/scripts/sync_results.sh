@@ -7,7 +7,7 @@ HERE=$(cd "$(dirname "$0")/.." && pwd)
 # machine label | ssh target (with options) | work dir on the host
 HOSTS=(
   "ali-ms|ali-ms|cross/cosmos"
-  "korea-rtxpro4000|-p 40797 root@211.234.50.230|/workspace/cross/cosmos"
+  # dead since 06:20 UTC 2026-11-08: "korea-rtxpro4000|-p 40797 root@211.234.50.230|/workspace/cross/cosmos"
 )
 for h in "${HOSTS[@]}"; do
   IFS='|' read -r M T D <<<"$h"

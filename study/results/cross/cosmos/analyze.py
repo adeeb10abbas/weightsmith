@@ -38,8 +38,12 @@ WORDINGS = [(c, w[0], w[1], w[2]) for c, w in _W.items()]
 EDITS_FILE = HERE / "edits.json"  # edit definitions (name, task, location, build report), written as edits are frozen
 
 INK, INK2, MUTE = "#1C1C1C", "#4D4D4D", "#858585"
-LIGHT, PALE, RULE = "#C6C6C6", "#ECECEC", "#A3A3A3"
-TEAL, TEAL_PALE = "#147D92", "#D5E8EC"
+# arm colours (validated with the dataviz skill's validate_palette.js, light surface, adjacent pairs: CVD dE >= 11.1,
+# normal-vision dE >= 17.6; grey is the mandated neutral for "unedited" and always carries a direct label)
+LIGHT, PALE, RULE = "#9A9A9A", "#ECECEC", "#A3A3A3"   # LIGHT = unedited
+TEAL = "#0A8EA6"                                       # edited
+CTRL = "#EB6834"                                       # random-direction control
+TEAL_PALE = "#6250D6"                                  # unedited under the known-good wording (teacher)
 RED = "#B1504A"
 
 
@@ -194,6 +198,13 @@ def plot_bars(groups, name, title):
     ax.set_yticks([t[0] for t in ticks])
     ax.set_yticklabels([t[1] for t in ticks], fontsize=8.5)
     _axes_common(ax, "success, % of paired starts, Wilson 95% interval", 140)
+    from matplotlib.patches import Patch
+    seen = {}
+    for _, bars in groups:
+        for lab, _k, _n, color in bars:
+            seen.setdefault(lab, color)
+    ax.legend(handles=[Patch(color=c, label=l) for l, c in seen.items()], loc="lower right", fontsize=7.5,
+              frameon=False, ncol=1)
     ax.set_title(title, fontsize=9.5, color=INK, loc="left")
     _save(fig, name)
     plt.close(fig)
@@ -329,7 +340,7 @@ def main():
             for r in [r for r in edit_rows if r["machine"] == m and r["edit"] == e["name"]]:
                 bars = [("unedited", r["ref_k"], r["n"], LIGHT)]
                 if r["control"]:
-                    bars.append(("random control", r["control"]["cand_k"], r["n"], MUTE))
+                    bars.append(("random control", r["control"]["cand_k"], r["n"], CTRL))
                 bars.append(("edited", r["cand_k"], r["n"], TEAL))
                 if r["teacher"]:
                     bars.append(("unedited, good wording", r["teacher"]["cand_k"], r["n"], TEAL_PALE))

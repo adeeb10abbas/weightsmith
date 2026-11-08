@@ -3,6 +3,40 @@
   "experiment": "failure_map",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeThenBananaTask",
+  "code": "T1",
+  "wording_pair": [
+   "Put the cube then the banana in the bowl"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 10,
+  "edited_k": null,
+  "fixed": null,
+  "broke": null,
+  "p": null,
+  "ci": {
+   "wilson95_pct": [
+    38.6,
+    81.5
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": null,
+  "values_changed": null,
+  "notes": "unedited policy, task's default instruction, practice slots, default render"
+ },
+ {
+  "experiment": "failure_map",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
   "task": "MustardRightOfRaisinRFTask",
   "code": "T8",
   "wording_pair": [
