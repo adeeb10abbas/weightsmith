@@ -28,7 +28,7 @@
    "name": "GR00T N1.7",
    "short": "reasoning-backbone VLA",
    "kind": "NVIDIA vision-language-action policy",
-   "status": "partial",
+   "status": "final",
    "checkpoint": "`nvidia/GR00T-N1.7-DROID` at `05e7cc9`, 3.14B parameters",
    "architecture": "A Cosmos-Reason2-2B vision-language backbone (Qwen3-VL), cut to its first 16 language layers, reads an exterior and a wrist camera (180 × 320 each) and the instruction. The action head, 4 self-attention layers and 32 diffusion-transformer blocks, turns the backbone's tokens and the robot state into 40-step chunks by flow matching; the first 8 steps run at 15 Hz.",
    "entry": "As text tokens in the Cosmos-Reason2 backbone, next to the image tokens (lowercased, punctuation removed). The action head reads the instruction only through the backbone's tokens.",
@@ -39,7 +39,7 @@
     "branch": "cross-groot/v1",
     "path": "study/results/cross/metrics_groot.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-    "commit": "f7a103db69ab"
+    "commit": "f1dfb229b095"
    }
   },
   {
@@ -140,7 +140,7 @@
     "lead": "GR00T N1.7",
     "kind": "reasoning-backbone VLA",
     "tag": null,
-    "text": "Unedited, all 9 tasks: T1 9 of 32, T3 1 of 32 and R1 28 of 32; no success on T2 and T4–T8. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12); no gain on T3 and T8. T1 edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); a random edit the size of the Cosmos-Reason2 backbone edit, 11 of 32; further edits: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
+    "text": "Unedited, all 9 tasks: T1 9 of 32, T3 1 of 32 and R1 28 of 32; no success on T2 and T4–T8. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12); no gain on T3 and T8. T1 edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); random edits of the same sizes, 11 and 10 of 32; no held-out runs, since no edit passed practice. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
     "id": "side-effects",
@@ -287,7 +287,7 @@
      "groot": {
       "v": "unedited 0 of 32",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "not edited"
      },
      "pi05": {
       "v": "T1 edit: 22 → 44 of 64",
@@ -308,7 +308,7 @@
      "groot": {
       "v": "unedited 1 of 32",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "not edited"
      },
      "pi05": {
       "v": "T1 edit: 8 → 36 of 64",
@@ -329,7 +329,7 @@
      "groot": {
       "v": "unedited 0 of 16",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "not edited"
      },
      "pi05": {
       "v": "no gain",
@@ -350,7 +350,7 @@
      "groot": {
       "v": "unedited 0 of 32",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "not edited"
      },
      "pi05": {
       "v": "no gain",
@@ -371,7 +371,7 @@
      "groot": {
       "v": "unedited 0 of 16",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "not edited"
      },
      "pi05": {
       "v": "no gain",
@@ -392,7 +392,7 @@
      "groot": {
       "v": "unedited 0 of 32",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "not edited"
      },
      "pi05": {
       "v": "no gain",
@@ -414,7 +414,7 @@
      "groot": {
       "v": "unedited 0 of 32",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "not edited"
      },
      "pi05": {
       "v": "fixed: 0 → 27 of 64",
@@ -435,7 +435,7 @@
      "groot": {
       "v": "unedited 28 of 32",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "not edited"
      },
      "pi05": {
       "v": "kept: 32 → 32 of 32",
@@ -866,8 +866,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "no clear wording found",
@@ -961,7 +961,8 @@
          "b": 0,
          "n": 32,
          "p": 0.00390625,
-         "prac": true
+         "prac": true,
+         "ctl": 10
         }
        ],
        "fl": "T1 Cube then banana, practice starts",
@@ -1075,8 +1076,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "18 → 27 of 64",
@@ -1112,8 +1113,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "no edit submitted",
@@ -1135,8 +1136,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "no gain",
@@ -1158,8 +1159,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "8 → 11 of 64",
@@ -1195,8 +1196,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "35 → 39 of 64",
@@ -1232,8 +1233,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "no gain",
@@ -1271,8 +1272,8 @@
        "fb": "T8 text pathway (und"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "0 → 27 of 64",
@@ -1373,8 +1374,8 @@
        "fl": "T8 Mustard, reference-first (64 unseen)"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "control 0, unedited 0, edit 27 of 64",
@@ -1441,8 +1442,8 @@
        "prac": true
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "59%",
@@ -1571,8 +1572,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "VLM + action expert: 43 of 64",
@@ -1638,8 +1639,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "only the backbone edit",
@@ -1662,8 +1663,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "VLM 13.4%, expert 1.8% of values; head 8,056",
@@ -1772,8 +1773,8 @@
        "d": "text pathway (und mlp.down_proj, layers 0-26)"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "15.9M as factors (0.47%)",
@@ -2072,8 +2073,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "32 → 32 of 32",
@@ -2154,8 +2155,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       },
       "pi05": {
        "v": "13 vs 9 of 64",
@@ -3329,7 +3330,19 @@
       9,
       7
      ],
-     "control_p": 0.803619384765625
+     "control_p": 0.803619384765625,
+     "edit_vs_control": {
+      "n": 32,
+      "ref_k": 11,
+      "cand_k": 0,
+      "fixed": 0,
+      "broke": 11,
+      "p": 0.0009765625
+     },
+     "values_total": 201326592,
+     "control_values_changed": 179039148,
+     "edit_fingerprint": "b5523fe55b6d94a2",
+     "control_fingerprint": "1d2b485f3c0d1321"
     }
    },
    {
@@ -3352,7 +3365,7 @@
       -0.125
      ]
     },
-    "control_k": null,
+    "control_k": 10,
     "teacher_k": 16,
     "recovery_pct": -128.57142857142858,
     "transfer": null,
@@ -3369,8 +3382,23 @@
     "_prov": false,
     "extra": {
      "machine": "ali-ms-rtx3090",
-     "control_fixed_broke": null,
-     "control_p": null
+     "control_fixed_broke": [
+      9,
+      8
+     ],
+     "control_p": 1.0,
+     "edit_vs_control": {
+      "n": 32,
+      "ref_k": 10,
+      "cand_k": 0,
+      "fixed": 0,
+      "broke": 10,
+      "p": 0.001953125
+     },
+     "values_total": 301989888,
+     "control_values_changed": 300072426,
+     "edit_fingerprint": "a998bdc75628fbe6",
+     "control_fingerprint": "afc8a78428b9ec07"
     }
    },
    {
@@ -6554,7 +6582,7 @@
    "branch": "cross-groot/v1",
    "path": "study/results/cross/metrics_groot.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-   "commit": "f7a103db69ab"
+   "commit": "f1dfb229b095"
   },
   "pi05": {
    "kind": "branch",
@@ -6565,8 +6593,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "458805d9a2f0dc2e",
- "updated": "2026-11-08T09:44Z",
- "updated_text": "8 Nov 2026, 09:44 UTC",
- "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
+ "content_hash": "84a2e87258dbfcba",
+ "updated": "2026-11-08T09:51Z",
+ "updated_text": "8 Nov 2026, 09:51 UTC",
+ "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
