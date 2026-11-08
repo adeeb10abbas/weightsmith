@@ -90,3 +90,79 @@ def apply_edit(model, path: str | Path) -> dict:
     report["stored_values"] = sum(v["stored_values"] for v in report["params"].values())
     report["changed_values"] = sum(v["changed_values"] for v in report["params"].values())
     return report
+
+
+def _find_vae_decoders(obj, path="model", depth=0, seen=None):
+    """(path, module) of every `decoder` that sits beside an `encoder` (the video VAE), searching registered
+    submodules and plain attributes (the VAE wrappers hang off the model as plain attributes)."""
+    import torch
+    seen = set() if seen is None else seen
+    if id(obj) in seen or depth > 6:
+        return []
+    seen.add(id(obj))
+    if isinstance(obj, torch.nn.Module) and isinstance(getattr(obj, "decoder", None), torch.nn.Module) \
+            and hasattr(obj, "encoder"):
+        return [(path + ".decoder", obj.decoder)]
+    kids = []
+    if isinstance(obj, torch.nn.Module):
+        if path.endswith(".net"):  # the transformer holds no VAE; skip its thousands of submodules
+            return []
+        kids += [(k, v) for k, v in obj._modules.items() if v is not None]
+    if hasattr(obj, "__dict__"):
+        kids += [(k, v) for k, v in vars(obj).items() if not k.startswith("_")
+                 and (isinstance(v, torch.nn.Module) or type(v).__module__.startswith("cosmos"))]
+    out = []
+    for k, v in kids:
+        out += _find_vae_decoders(v, f"{path}.{k}", depth + 1, seen)
+    return out
+
+
+class CPUEmbedding:
+    """Wraps the token embedding so its table stays on the CPU (a gather: values are bit-identical)."""
+
+    def __new__(cls, emb):
+        import torch
+
+        class _E(torch.nn.Module):
+            def __init__(self, e):
+                super().__init__()
+                self.cpu_emb = e.to("cpu")
+
+            @property
+            def weight(self):
+                return self.cpu_emb.weight
+
+            def forward(self, ids):
+                return self.cpu_emb(ids.to("cpu")).to(ids.device)
+
+        return _E(emb)
+
+
+def slim(service) -> dict:
+    """Free GPU memory that action generation never touches (actions stay bit-identical; mem_probe.py checks it).
+
+    - the language-model head (131072 x 2048, 0.5 GB): only text prediction reads it;
+    - the token-embedding table (0.5 GB): kept on the CPU, looked up there (a gather, so values are identical);
+    - the video VAE decoder: only decoding the predicted future video uses it (decode_video=False here);
+    - the cached allocator blocks left over from loading.
+    """
+    import torch
+    rep = {}
+    lm = service.model.net.language_model
+    head = getattr(lm, "lm_head", None)
+    if head is not None and head.weight.is_cuda:
+        rep["lm_head_gb"] = round(head.weight.numel() * head.weight.element_size() / 2**30, 3)
+        head.to("cpu")
+    emb = lm.model.embed_tokens
+    if emb.weight.is_cuda:
+        rep["embed_gb"] = round(emb.weight.numel() * emb.weight.element_size() / 2**30, 3)
+        lm.model.embed_tokens = CPUEmbedding(emb)
+    rep["vae_decoders"] = {}
+    for path, d in _find_vae_decoders(service.model):
+        b = sum(t.numel() * t.element_size() for t in list(d.parameters()) + list(d.buffers()) if t.is_cuda)
+        rep["vae_decoders"][path] = round(b / 2**30, 3)
+        d.to("cpu")
+    torch.cuda.empty_cache()
+    rep["alloc_gb"] = round(torch.cuda.memory_allocated() / 2**30, 3)
+    rep["reserved_gb"] = round(torch.cuda.memory_reserved() / 2**30, 3)
+    return rep

@@ -8,14 +8,20 @@ command binarised at 0.5). Differences from the stock client:
   BatchedPi0Client: a slot always receives the same noise stream whatever runs beside it (paired evaluations);
 - OWSP_PROMPT overrides the task instruction (wording arms);
 - OWSP_OBS_DIR records every request (composite image, joints, gripper, seed, sim step, returned raw chunk) per env as
-  obs_r{episode}_e{env}.npz, for offline replay and activation capture.
+  obs_r{episode}_e{env}.npz, for offline replay and activation capture;
+- OWSP_VIDEO_DIR writes one MP4 per slot (<slot>.mp4, 15 fps, every control step): left shoulder | right shoulder |
+  wrist camera, 320x180 each, from the observations the env already rendered (no extra rendering).
 """
 from __future__ import annotations
 
 import os
 
+import cv2
 import numpy as np
 from policies.cosmos3.client import Cosmos3Client
+
+VIDEO_CAMS = ("over_shoulder_left_camera", "over_shoulder_right_camera", "wrist_cam")
+VIDEO_TILE = (320, 180)  # (w, h) per camera
 
 
 class BatchedCosmos3Client(Cosmos3Client):
@@ -24,6 +30,7 @@ class BatchedCosmos3Client(Cosmos3Client):
         self._env_replans: dict[int, int] = {}
         self._step = 0
         self._rec: dict[int, dict[str, list]] = {}
+        self._vw: dict[int, cv2.VideoWriter] = {}
 
     def start_episode(self, episode_index: int) -> None:
         super().start_episode(episode_index)
@@ -39,14 +46,43 @@ class BatchedCosmos3Client(Cosmos3Client):
                                 **{k: np.stack(v) for k, v in r.items()})
         self._rec = {}
 
+    def _close_videos(self):
+        for w in getattr(self, "_vw", {}).values():
+            w.release()
+        self._vw = {}
+
+    def _video(self, obs, env_ids):
+        out = os.environ.get("OWSP_VIDEO_DIR")
+        if not out:
+            return
+        import torch
+        import torch.nn.functional as F
+        imgs = {}
+        with torch.no_grad():  # downsample on the GPU, then copy 320x180 tiles (not 1280x720 frames) to the CPU
+            for c in VIDEO_CAMS:
+                x = obs["image_obs"][c][list(env_ids)].permute(0, 3, 1, 2).float()
+                x = F.interpolate(x, size=(VIDEO_TILE[1], VIDEO_TILE[0]), mode="area")
+                imgs[c] = dict(zip(env_ids, x.round().clamp(0, 255).to(torch.uint8).permute(0, 2, 3, 1).cpu().numpy()))
+        off = int(os.environ.get("OWSP_ENV_OFFSET", "0"))
+        for e in env_ids:
+            if e not in self._vw:
+                os.makedirs(out, exist_ok=True)
+                slot = (int(self._sampling_seed_base or 0) + self._episode_index) * 16 + off + e
+                self._vw[e] = cv2.VideoWriter(os.path.join(out, f"{slot}.mp4"), cv2.VideoWriter_fourcc(*"mp4v"), 15,
+                                              (VIDEO_TILE[0] * len(VIDEO_CAMS), VIDEO_TILE[1]))
+            tiles = [imgs[c][e] for c in VIDEO_CAMS]
+            self._vw[e].write(cv2.cvtColor(np.concatenate(tiles, 1), cv2.COLOR_RGB2BGR))
+
     def reset(self, *, env_id=None) -> None:
         if env_id is None:
             self._flush()
+            self._close_videos()
             self._env_replans = {}
         super().reset(env_id=env_id)
 
     def close(self) -> None:
         self._flush()
+        self._close_videos()
         super().close()
 
     def _seed(self, env_id: int) -> int:
@@ -78,4 +114,9 @@ class BatchedCosmos3Client(Cosmos3Client):
                     d["step"].append(np.int64(self._step))
                     d["actions"].append(chunk)
         self._step += 1
+        try:
+            self._video(obs, env_ids)
+        except Exception as exc:  # a video problem must never stop an evaluation
+            print(f"[BatchedCosmos3Client] video disabled: {exc}", flush=True)
+            os.environ.pop("OWSP_VIDEO_DIR", None)
         return {e: {"action": self._next_action(e), "viz": None} for e in env_ids}

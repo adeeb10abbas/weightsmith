@@ -4,7 +4,8 @@ A request is one observation dict in RoboLab's Cosmos3Client wire format, or {"_
 carry "sampling_seed"; the requests of a batch run one after another, so every answer is bit-identical to a single
 request with the same inputs and seed (a slot's actions never depend on what runs beside it).
 --edit adds a stored weight update (edge_common.apply_edit) before serving; the load report (digests of the edited
-tensors) is printed on the line starting with "loaded ".
+tensors) is printed on the line starting with "loaded ". Unless --no-slim, edge_common.slim() then moves the parts
+action generation never reads off the GPU (lm_head, the embedding table, the VAE decoder): 7.2 instead of 9.2 GB.
 """
 import argparse
 import json
@@ -14,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import numpy as np  # noqa: E402
-from edge_common import SEED, apply_edit, build_service, infer_seeded  # noqa: E402
+from edge_common import SEED, apply_edit, build_service, infer_seeded, slim  # noqa: E402
 
 
 class EdgePolicy:
@@ -46,12 +47,15 @@ def main():
     ap.add_argument("--port", type=int, required=True)
     ap.add_argument("--edit", default=None)
     ap.add_argument("--calls-log", default=None)
+    ap.add_argument("--no-slim", action="store_true", help="keep lm_head, embedding table and VAE decoder on the GPU")
     a = ap.parse_args()
     t0 = time.time()
     native, svc = build_service()
     report = {"edit": None}
     if a.edit:
         report["edit"] = apply_edit(svc.model, a.edit)
+    if not a.no_slim:  # 2 GB less beside a 16-env default-render simulator; actions bit-identical (mem_probe.py)
+        report["slim"] = slim(svc)
     report["load_s"] = round(time.time() - t0, 1)
     print("loaded " + json.dumps(report), flush=True)
     server_cls = native._load_openpi_websocket_policy_server()

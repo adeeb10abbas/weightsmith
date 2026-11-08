@@ -75,6 +75,8 @@ def main():
     ap.add_argument("--lam-rel", type=float, default=1e-3)
     ap.add_argument("--alpha", type=float, default=1.0)
     ap.add_argument("--no-prefix", action="store_true", help="drop the zero-value prefix keys")
+    ap.add_argument("--align", choices=("ps", "all"), default="ps",
+                    help="ps: common prefix + suffix only; all: every position i <-> i (equal token counts only)")
     ap.add_argument("--seed", type=int, default=0)
     a = ap.parse_args()
     import torch
@@ -87,11 +89,16 @@ def main():
     if a.path == "und":
         to, tg = X[f"{a.orig}/token_ids"], X[f"{a.good}/token_ids"]
         pairs, p, s = align_slots(to, tg)
+        if a.align == "all":
+            if len(to) != len(tg):
+                raise SystemExit(f"--align all needs equal token counts, got {len(to)} and {len(tg)}")
+            pairs = [(i, i) for i in range(len(to))]
         if a.no_prefix:
-            pairs = pairs[p:]
+            pairs = [(i, j) for i, j in pairs if i >= p]
         io = np.array([i for i, _ in pairs])
         ig = np.array([j for _, j in pairs])
-        rep.update(n_tokens_orig=int(len(to)), n_tokens_good=int(len(tg)), prefix=p, suffix=s, keys=len(pairs))
+        rep.update(n_tokens_orig=int(len(to)), n_tokens_good=int(len(tg)), prefix=p, suffix=s, keys=len(pairs),
+                   align=a.align, no_prefix=a.no_prefix)
 
         def d(L):
             if L < 0:

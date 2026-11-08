@@ -1,0 +1,15 @@
+LOAD_S 11.7 alloc 7.595 reserved 7.646
+MOD net Cosmos3VFMNetwork 6.276
+MOD net.language_model Nemotron3DenseVLTextForCausalLM 6.25
+MOD net.language_model.model Nemotron3DenseVLTextModel 5.75
+MOD net.language_model.lm_head Linear 0.5
+MOD net.time_embedder TimestepEmbedder 0.009
+MOD net.vae2llm Linear 0.001
+MOD net.llm2vae Linear 0.001
+MOD net.action2llm DomainAwareLinear 0.008
+MOD net.llm2action DomainAwareLinear 0.008
+MOD sampler UniPCSampler 0.0
+BEFORE_SLIM alloc 7.604 reserved 8.186 peak 8.09
+SLIM {"lm_head_gb": 0.5, "embed_gb": 0.5, "vae_decoders": {"model.tokenizer_vision_gen.model.model.decoder": 1.034}, "alloc_gb": 5.567, "reserved_gb": 5.857}
+AFTER_SLIM alloc 5.567 reserved 6.27 peak 6.063
+IDENTICAL_ACTIONS True

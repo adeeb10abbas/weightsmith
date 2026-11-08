@@ -42,11 +42,16 @@ def load_decision(path, k):
 class Recorder:
     """Forward hooks on the chosen layers; collects per-call tensors for one request at a time."""
 
-    def __init__(self, layers, und_layers, gen_layers, pool):
+    def __init__(self, net, layers, und_layers, gen_layers, pool):
         self.layers, self.und_layers, self.gen_layers, self.pool = layers, set(und_layers), set(gen_layers), pool
         self.handles, self.calls = [], []
         self.active = False
         self.cur = None
+        self.layout = []          # per network call: gen token layout
+        self.token_ids = []       # per text-embedding call: the token ids
+        self.handles.append(net.register_forward_pre_hook(self._net_pre, with_kwargs=True))
+        emb = net.language_model.model.embed_tokens
+        self.handles.append(emb.register_forward_hook(self._emb))
         for L, layer in enumerate(layers):
             if L in self.und_layers:
                 self.handles.append(layer.mlp.down_proj.register_forward_hook(self._mk(L, "und_key")))
@@ -56,6 +61,26 @@ class Recorder:
                 self.handles.append(layer.register_forward_hook(self._mk_out(L)))
             if L == 0:
                 self.handles.append(layer.register_forward_pre_hook(self._new_call))
+
+    def _net_pre(self, mod, args, kwargs):
+        if not self.active:
+            return
+        ps = args[0] if args else kwargs.get("packed_seq")
+        info = {"temporal_causal": bool(getattr(mod, "video_temporal_causal", False))}
+        try:
+            if ps.vision is not None:
+                info["vision_token_shapes"] = [list(map(int, s)) for s in ps.vision.token_shapes]
+                info["n_vision"] = int(ps.vision.sequence_indexes.numel())
+            if ps.action is not None and isinstance(ps.action.sequence_indexes, torch.Tensor):
+                info["n_action"] = int(ps.action.sequence_indexes.numel())
+            info["n_text"] = int(ps.text_indexes.numel()) if isinstance(ps.text_indexes, torch.Tensor) else None
+        except Exception as e:  # layout is informative only
+            info["error"] = repr(e)
+        self.layout.append(info)
+
+    def _emb(self, mod, inp, out):
+        if self.active:
+            self.token_ids.append(inp[0].detach().reshape(-1).cpu().numpy().astype(np.int64))
 
     def _new_call(self, mod, args):
         if self.active:
@@ -81,6 +106,7 @@ class Recorder:
 
     def start(self):
         self.calls, self.cur, self.active = [], None, True
+        self.layout, self.token_ids = [], []
 
     def stop(self):
         self.active = False
@@ -109,7 +135,7 @@ def main():
     nl = len(layers)
     und_layers = list(range(nl)) if spec.get("und_layers") == "all" else spec.get("und_layers", [])
     gen_layers = list(range(nl)) if spec.get("gen_layers") == "all" else spec.get("gen_layers", [])
-    rec = Recorder(layers, und_layers, gen_layers, spec.get("gen_grid", [4, 4]))
+    rec = Recorder(svc.model.net, layers, und_layers, gen_layers, spec.get("gen_grid", [2, 2]))
     params = {canonical(n): p for n, p in svc.model.named_parameters()}
     decisions = [load_decision(d["obs"], d["k"]) for d in spec["decisions"]]
     out: dict[str, np.ndarray] = {}
@@ -132,6 +158,11 @@ def main():
             if not cap:
                 continue
             calls = rec.stop()
+            if i == 0:
+                ids = max(rec.token_ids, key=len) if rec.token_ids else np.zeros(0, np.int64)
+                out[f"{var['name']}/token_ids"] = ids
+                report.setdefault("layout", {})[var["name"]] = rec.layout
+                report.setdefault("n_text_ids", {})[var["name"]] = [int(len(t)) for t in rec.token_ids]
             # text states: the conditional pass is the first call whose text holds the prompt (most tokens)
             und_calls = [c for c in calls if c and any(k[1] == "und_key" for k in c)]
             if und_layers and und_calls:
@@ -150,8 +181,11 @@ def main():
                     {f"{k[0]}:{k[1]}": int(v.shape[0]) for k, v in c.items() if k[0] in (und_layers + gen_layers)[:1]}
                     for c in calls]
             if gen_layers:
-                vs = spec["video_token_shape"]  # [T, H, W] of the video latent tokens, from the probe
-                na = spec.get("n_action_tokens", 33)
+                lay = rec.layout[0]
+                if lay.get("temporal_causal"):
+                    raise SystemExit("temporal-causal gen layout: pooling not implemented")
+                vs = lay["vision_token_shapes"][0]  # [T, H, W] video latent tokens, then the action tokens
+                na = lay.get("n_action", 0)
                 for ci, c in enumerate(calls):
                     for L in gen_layers:
                         if (L, "gen_key") not in c:
@@ -170,8 +204,6 @@ def main():
                 for n, w in saved.items():
                     params[n].copy_(w)
         print(json.dumps(report["variants"][-1]), flush=True)
-    for name in {v["prompt"] for v in spec["variants"]}:
-        pass
     np.savez(out_path, **out)
     Path(out_path).with_suffix(".json").write_text(json.dumps(report, indent=1, default=str))
     print("done", out_path, round(time.time() - t0, 1), "s", flush=True)

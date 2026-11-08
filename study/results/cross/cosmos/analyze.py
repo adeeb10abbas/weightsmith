@@ -40,8 +40,10 @@ LABELS = {"T1": "T1 cube then banana", "T2": "T2 pick glasses", "T3": "T3 cube l
 PRACTICE = range(30000, 30032)
 HELDOUT = range(96000, 96064)
 
-# Wording screens (metric 2): (code, alt-arm suffix, alternative wording, why chosen)
-WORDINGS: list[tuple[str, str, str, str]] = []
+# Wording screens (metric 2): (code, alt-arm suffix, alternative wording, why chosen) -- as scripts/tasks.py
+sys.path.insert(0, str(HERE / "scripts"))
+from tasks import WORDINGS as _W  # noqa: E402
+WORDINGS: list[tuple[str, str, str, str]] = [(c, w[0], w[1], w[2]) for c, w in _W.items()]
 # Edits (metric 3): filled as experiments finish; see README
 EDITS: list[dict] = []
 

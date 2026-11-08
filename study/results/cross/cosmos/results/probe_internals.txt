@@ -1,0 +1,13 @@
+LOAD_S 58.9
+N_LAYERS 28
+SAMPLE A {'ai_caption': 'str', 'video': (3, 33, 544, 736), 'action': (33, 64), 'conditioning_fps': (), 'mode': 'str', 'domain_id': (), 'viewpoint': 'str', 'image_size': (4,), 'sequence_plan': 'SequencePlan', 'action_raw': (33, 8), 'raw_action_dim': (), 'action_processing_record': 'ActionProcessingRecord'}
+CAPTION A "{\"cinematography\": {\"framing\": \"This video contains concatenated views from multiple camera perspectives. The top row is from the wrist-mounted camera. The bottom row contains two horizontally concatenated third-person perspective views of the scene from opposite sides, with the robot visible.\"}, \"actions\": [{\"time\": \"0:00-0:02\", \"description\": \"Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.\"}], \"duration\": \"2s\", \"fps\": 15.0, \"resolution\": {\"H\": 544, \"W\": 736}, \"aspect_ratio\": \"4,3\"}"
+SAMPLE B {'ai_caption': 'str', 'video': (3, 33, 544, 736), 'action': (33, 64), 'conditioning_fps': (), 'mode': 'str', 'domain_id': (), 'viewpoint': 'str', 'image_size': (4,), 'sequence_plan': 'SequencePlan', 'action_raw': (33, 8), 'raw_action_dim': (), 'action_processing_record': 'ActionProcessingRecord'}
+CAPTION B "{\"cinematography\": {\"framing\": \"This video contains concatenated views from multiple camera perspectives. The top row is from the wrist-mounted camera. The bottom row contains two horizontally concatenated third-person perspective views of the scene from opposite sides, with the robot visible.\"}, \"actions\": [{\"time\": \"0:00-0:02\", \"description\": \"Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.\"}], \"duration\": \"2s\", \"fps\": 15.0, \"resolution\": {\"H\": 544, \"W\": 736}, \"aspect_ratio\": \"4,3\"}"
+REQ A 1.88 s; action[0] [-0.041099999099969864, -0.6021000146865845, -0.008700000122189522, -2.1958000659942627, 0.023600000888109207, 1.597599983215332, 0.7696999907493591, 0.13439999520778656]
+CALLS A {"0:gen": [3094, 3094, 3094, 3094, 3094], "0:und": [172, 20], "1:gen": [3094, 3094, 3094, 3094, 3094], "1:und": [172, 20], "27:gen": [3094, 3094, 3094, 3094, 3094], "27:und": [172, 20]}
+DETERMINISTIC A True
+REQ B 1.1 s; action[0] [-0.04859999939799309, -0.6026999950408936, -0.009399999864399433, -2.1868999004364014, 0.029200000688433647, 1.6066999435424805, 0.7865999937057495, 0.14419999718666077]
+CALLS B {"0:gen": [3094, 3094, 3094, 3094, 3094], "0:und": [172, 20], "1:gen": [3094, 3094, 3094, 3094, 3094], "1:und": [172, 20], "27:gen": [3094, 3094, 3094, 3094, 3094], "27:und": [172, 20]}
+DETERMINISTIC B True
+PEAK_GB 8.1

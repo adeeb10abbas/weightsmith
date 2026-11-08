@@ -22,6 +22,7 @@ import argparse
 import fcntl
 import json
 import os
+import shutil
 import signal
 import subprocess
 import sys
@@ -38,6 +39,7 @@ SIM_PY = HOME / "vibes/weight-space-policy-lab/robolab_env/.venv/bin/python"
 LOCKS = [HOME / ".cache/weightsmith/locks", HOME / "vibes/opus-weight-surgery/state"]
 VK_ICD = "/usr/share/vulkan/icd.d/nvidia_icd.json"
 GPU = 1
+RENDER = "default"  # RoboLab's default render preset (NVIDIA's validated setting); "performance" = secondary runs
 GROUP = 16  # slots per sampling-seed group (the shared slot scheme); a group may run as 16/envs processes
 
 
@@ -90,7 +92,8 @@ def run_group(job, g, envs, off, port, out, task_dirs):
     for k in ("OPENAI_API_KEY", "OWSP_PROMPT", "ANTHROPIC_API_KEY"):
         senv.pop(k, None)
     senv.update(OMNI_KIT_ACCEPT_EULA="Y", VK_ICD_FILENAMES=VK_ICD, OWSP_OBS_DIR=str(out / f"{tag}.obs" / f"g{g}o{off}"),
-                WSP_TASK_DIRS=task_dirs, PYTHONUNBUFFERED="1", OWSP_ENV_OFFSET=str(off))
+                WSP_TASK_DIRS=task_dirs, PYTHONUNBUFFERED="1", OWSP_ENV_OFFSET=str(off),
+                OWSP_VIDEO_DIR=str(WS / "videos" / job["task"] / tag.rsplit("-s", 1)[0].split("-", 1)[1]))
     if job.get("prompt"):
         senv["OWSP_PROMPT"] = job["prompt"]
     cmd = [str(SIM_PY), str(SCRIPTS / "run_cosmos_batched.py"), "--task", job["task"], "--environment-seed", "0",
@@ -98,7 +101,7 @@ def run_group(job, g, envs, off, port, out, task_dirs):
            "--headless", "--video-mode", job.get("video_mode", "none"), "--output-folder-name", name,
            "--device", f"cuda:{GPU}", "--/rtx/verifyDriverVersion/enabled=false",
            "--/renderer/multiGpu/enabled=false", "--/renderer/multiGpu/autoEnable=false",
-           f"--/renderer/activeGpu={GPU}", "--rendering-type", "performance"]
+           f"--/renderer/activeGpu={GPU}"] + (["--rendering-type", RENDER] if RENDER != "default" else [])
     t0 = time.time()
     with open(out / f"{tag}.g{g}o{off}.sim.log", "w") as f:
         p = subprocess.Popen(cmd, cwd=str(ROBOLAB), env=senv, stdout=f, stderr=subprocess.STDOUT)
@@ -148,8 +151,12 @@ def run_job(job, envs, port, out, task_dirs, ledger):
                                  "instruction": r.get("instruction"), "reason": r.get("reason"), "score": r.get("score"),
                                  "obs": str(out / f"{tag}.obs" / f"g{g}o{off}" / f"obs_r0_e{e}.npz")})
                     n_rows += 1
-            group_info.append({"group": g, "env_offset": off, "rc": p.returncode, "rows": n_rows, "sim_s": round(time.time() - t0, 1),
-                               "robolab_output": str(ROBOLAB / "output" / name)})
+            kept = out / f"{tag}.robolab" / name   # move RoboLab's output folder out of the shared checkout
+            if (ROBOLAB / "output" / name).exists():
+                kept.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(ROBOLAB / "output" / name), str(kept))
+            group_info.append({"group": g, "env_offset": off, "rc": p.returncode, "rows": n_rows,
+                               "sim_s": round(time.time() - t0, 1), "robolab_output": str(kept)})
     finally:
         if p is not None and p.poll() is None:
             p.kill()
@@ -162,12 +169,18 @@ def run_job(job, envs, port, out, task_dirs, ledger):
     rows.sort(key=lambda r: r["slot"])
     ok = [r for r in rows if r["ok"]]
     summary = {"tag": tag, "task": job["task"], "prompt": job.get("prompt"), "edit": job.get("edit"),
-               "slots": [slots[0], slots[-1]], "envs": envs, "n": len(rows), "completed": len(ok),
+               "slots": [slots[0], slots[-1]], "envs": envs, "render": RENDER, "n": len(rows), "completed": len(ok),
                "success": sum(r["success"] for r in ok), "groups": group_info,
                "server_load": json.loads(load[0][7:]) if load else None, "wait_lock_s": round(t_lock - t_req, 1),
                "gpu_s": round(t_end - t_lock, 1), "server_ready_s": round(t_ready - t_lock, 1),
                "started": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t_lock)),
                "finished": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t_end)), "rows": rows}
+    if len(ok) < len(rows):  # an incomplete job is not a result: keep its record aside and let the queue retry it
+        (out / f"{tag}.incomplete-{time.strftime('%m%d-%H%M%S')}.json").write_text(json.dumps(summary, indent=1))
+        with open(ledger, "a") as f:
+            f.write(json.dumps({"tag": tag, "gpu": GPU, "start": t_lock, "end": t_end,
+                                "gpu_s": round(t_end - t_lock, 1), "kind": "eval-incomplete", "n": len(rows)}) + "\n")
+        raise RuntimeError(f"{tag}: only {len(ok)}/{len(rows)} slots completed (see the sim logs)")
     (out / f"{tag}.json").write_text(json.dumps(summary, indent=1))
     with open(ledger, "a") as f:
         f.write(json.dumps({"tag": tag, "gpu": GPU, "start": t_lock, "end": t_end, "gpu_s": round(t_end - t_lock, 1),
@@ -180,11 +193,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--jobs", required=True, help="JSON list of jobs")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--envs", type=int, default=8, help="envs per sim process (16 ran out of GPU memory beside the server)")
+    ap.add_argument("--envs", type=int, default=16, help="envs per sim process (16 = one process per 16-slot group)")
+    ap.add_argument("--render", default="default", choices=("default", "performance"))
     ap.add_argument("--port", type=int, default=8500)
     ap.add_argument("--task-dirs", default=str(WS / "tasks"))
     a = ap.parse_args()
-    out = Path(a.out)
+    a.task_dirs = str(Path(a.task_dirs).expanduser().resolve())
+    global RENDER
+    RENDER = a.render
+    out = Path(a.out).expanduser().resolve()  # absolute: the sim runs with cwd = the RoboLab checkout
     out.mkdir(parents=True, exist_ok=True)
     ledger = out.parent / "gpu_ledger.jsonl"
     signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))
