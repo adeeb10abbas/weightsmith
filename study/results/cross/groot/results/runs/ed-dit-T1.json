@@ -1,0 +1,855 @@
+{
+ "tag": "ed-dit-T1",
+ "machine": "ali-ms-rtx3090",
+ "task": "RubiksCubeThenBananaTask",
+ "prompt": null,
+ "edit": "/home/ali/cross/groot/wsp/t1/dit.pt",
+ "slots": [
+  30000,
+  30031
+ ],
+ "envs": 16,
+ "env_seed": 0,
+ "rendering": "default",
+ "max_batch": 4,
+ "groups": [
+  1875,
+  1876
+ ],
+ "n": 32,
+ "completed": 32,
+ "success": 0,
+ "error": null,
+ "procs": [
+  {
+   "group": 1875,
+   "attempt": 0,
+   "rc": 0,
+   "episodes": 16,
+   "secs": 609.7
+  },
+  {
+   "group": 1876,
+   "attempt": 0,
+   "rc": 0,
+   "episodes": 16,
+   "secs": 546.6
+  }
+ ],
+ "server_load": {
+  "ckpt": "/home/ali/.cache/huggingface/hub/models--nvidia--GR00T-N1.7-DROID/snapshots/05e7cc97e40dbd33b0890c35cc0214fcb0547ab5",
+  "embodiment": "OXE_DROID_RELATIVE_EEF_RELATIVE_JOINT",
+  "params": 3144016000,
+  "edit": {
+   "edit": "/home/ali/cross/groot/wsp/t1/dit.pt",
+   "sha256": "a998bdc75628fbe644fd893c0919971e58701908ad2930d16d5baaa3df8ae171",
+   "fingerprint": "a998bdc75628fbe6",
+   "tensors": 32,
+   "values_changed": 298523070,
+   "values_total": 301989888,
+   "meta": {
+    "steps": 4,
+    "tokens": 41,
+    "keys_per_group": 164,
+    "site": "dit",
+    "capture": "/home/ali/cross/groot/wsp/t1/cap",
+    "groups": {
+     "all": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    "layers": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28,
+     29,
+     30,
+     31
+    ],
+    "lam_rel": 0.001,
+    "alpha": 1.0,
+    "image_cells_grid": "4x7",
+    "wordings": {
+     "orig": "Put the cube then the banana in the bowl",
+     "expl": "Put the cube in the bowl then put the banana in the bowl"
+    }
+   }
+  }
+ },
+ "edit_report": {
+  "edit": "/home/ali/cross/groot/wsp/t1/dit.pt",
+  "sha256": "a998bdc75628fbe644fd893c0919971e58701908ad2930d16d5baaa3df8ae171",
+  "fingerprint": "a998bdc75628fbe6",
+  "tensors": 32,
+  "values_changed": 298523070,
+  "values_total": 301989888,
+  "per_tensor": {
+   "action_head.model.transformer_blocks.0.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9262333,
+    "numel": 9437184,
+    "rel_fro": 0.1921723186969757
+   },
+   "action_head.model.transformer_blocks.1.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9321188,
+    "numel": 9437184,
+    "rel_fro": 0.24614740908145905
+   },
+   "action_head.model.transformer_blocks.2.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9281931,
+    "numel": 9437184,
+    "rel_fro": 0.21449263393878937
+   },
+   "action_head.model.transformer_blocks.3.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9341003,
+    "numel": 9437184,
+    "rel_fro": 0.3082864284515381
+   },
+   "action_head.model.transformer_blocks.4.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9328713,
+    "numel": 9437184,
+    "rel_fro": 0.29363369941711426
+   },
+   "action_head.model.transformer_blocks.5.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9363027,
+    "numel": 9437184,
+    "rel_fro": 0.39564618468284607
+   },
+   "action_head.model.transformer_blocks.6.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9320975,
+    "numel": 9437184,
+    "rel_fro": 0.28116774559020996
+   },
+   "action_head.model.transformer_blocks.7.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9353612,
+    "numel": 9437184,
+    "rel_fro": 0.36190247535705566
+   },
+   "action_head.model.transformer_blocks.8.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9342777,
+    "numel": 9437184,
+    "rel_fro": 0.35443463921546936
+   },
+   "action_head.model.transformer_blocks.9.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9349352,
+    "numel": 9437184,
+    "rel_fro": 0.3443785607814789
+   },
+   "action_head.model.transformer_blocks.10.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9313372,
+    "numel": 9437184,
+    "rel_fro": 0.24559438228607178
+   },
+   "action_head.model.transformer_blocks.11.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9354082,
+    "numel": 9437184,
+    "rel_fro": 0.3529246747493744
+   },
+   "action_head.model.transformer_blocks.12.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9322109,
+    "numel": 9437184,
+    "rel_fro": 0.259699285030365
+   },
+   "action_head.model.transformer_blocks.13.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9366342,
+    "numel": 9437184,
+    "rel_fro": 0.3895968198776245
+   },
+   "action_head.model.transformer_blocks.14.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9310046,
+    "numel": 9437184,
+    "rel_fro": 0.22665558755397797
+   },
+   "action_head.model.transformer_blocks.15.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9353243,
+    "numel": 9437184,
+    "rel_fro": 0.33393794298171997
+   },
+   "action_head.model.transformer_blocks.16.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9338888,
+    "numel": 9437184,
+    "rel_fro": 0.29463595151901245
+   },
+   "action_head.model.transformer_blocks.17.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9345024,
+    "numel": 9437184,
+    "rel_fro": 0.27159106731414795
+   },
+   "action_head.model.transformer_blocks.18.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9292503,
+    "numel": 9437184,
+    "rel_fro": 0.16349229216575623
+   },
+   "action_head.model.transformer_blocks.19.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9329301,
+    "numel": 9437184,
+    "rel_fro": 0.2289288192987442
+   },
+   "action_head.model.transformer_blocks.20.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9303258,
+    "numel": 9437184,
+    "rel_fro": 0.17473053932189941
+   },
+   "action_head.model.transformer_blocks.21.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9319599,
+    "numel": 9437184,
+    "rel_fro": 0.21007031202316284
+   },
+   "action_head.model.transformer_blocks.22.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9289776,
+    "numel": 9437184,
+    "rel_fro": 0.17081400752067566
+   },
+   "action_head.model.transformer_blocks.23.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9308468,
+    "numel": 9437184,
+    "rel_fro": 0.18866220116615295
+   },
+   "action_head.model.transformer_blocks.24.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9303514,
+    "numel": 9437184,
+    "rel_fro": 0.18956825137138367
+   },
+   "action_head.model.transformer_blocks.25.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9344252,
+    "numel": 9437184,
+    "rel_fro": 0.2614770829677582
+   },
+   "action_head.model.transformer_blocks.26.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9312963,
+    "numel": 9437184,
+    "rel_fro": 0.2086208611726761
+   },
+   "action_head.model.transformer_blocks.27.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9349157,
+    "numel": 9437184,
+    "rel_fro": 0.27171099185943604
+   },
+   "action_head.model.transformer_blocks.28.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9305031,
+    "numel": 9437184,
+    "rel_fro": 0.24006399512290955
+   },
+   "action_head.model.transformer_blocks.29.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9363776,
+    "numel": 9437184,
+    "rel_fro": 0.3502616286277771
+   },
+   "action_head.model.transformer_blocks.30.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9336311,
+    "numel": 9437184,
+    "rel_fro": 0.35414019227027893
+   },
+   "action_head.model.transformer_blocks.31.ff.net.2.weight": {
+    "rank": 164,
+    "changed": 9397144,
+    "numel": 9437184,
+    "rel_fro": 0.7250921130180359
+   }
+  },
+  "meta": {
+   "steps": 4,
+   "tokens": 41,
+   "keys_per_group": 164,
+   "site": "dit",
+   "capture": "/home/ali/cross/groot/wsp/t1/cap",
+   "groups": {
+    "all": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5
+    ]
+   },
+   "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+   ],
+   "lam_rel": 0.001,
+   "alpha": 1.0,
+   "image_cells_grid": "4x7",
+   "wordings": {
+    "orig": "Put the cube then the banana in the bowl",
+    "expl": "Put the cube in the bowl then put the banana in the bowl"
+   }
+  }
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 1200.3,
+ "server_ready_s": 14.0,
+ "rows": [
+  {
+   "slot": 30000,
+   "group": 1875,
+   "env": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30000.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30001,
+   "group": 1875,
+   "env": 1,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30001.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30002,
+   "group": 1875,
+   "env": 2,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30002.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30003,
+   "group": 1875,
+   "env": 3,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30003.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30004,
+   "group": 1875,
+   "env": 4,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30004.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30005,
+   "group": 1875,
+   "env": 5,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30005.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30006,
+   "group": 1875,
+   "env": 6,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30006.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30007,
+   "group": 1875,
+   "env": 7,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30007.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30008,
+   "group": 1875,
+   "env": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30008.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30009,
+   "group": 1875,
+   "env": 9,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30009.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30010,
+   "group": 1875,
+   "env": 10,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30010.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30011,
+   "group": 1875,
+   "env": 11,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30011.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30012,
+   "group": 1875,
+   "env": 12,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=banana) (step 1/2)",
+   "score": 1.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30012.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30013,
+   "group": 1875,
+   "env": 13,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30013.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30014,
+   "group": 1875,
+   "env": 14,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30014.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30015,
+   "group": 1875,
+   "env": 15,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1875a0",
+   "video": "/home/ali/cross/groot/videos/RubiksCubeThenBananaTask/ed-dit/30015.mp4",
+   "obs": null
+  },
+  {
+   "slot": 30016,
+   "group": 1876,
+   "env": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30017,
+   "group": 1876,
+   "env": 1,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30018,
+   "group": 1876,
+   "env": 2,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30019,
+   "group": 1876,
+   "env": 3,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30020,
+   "group": 1876,
+   "env": 4,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30021,
+   "group": 1876,
+   "env": 5,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30022,
+   "group": 1876,
+   "env": 6,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30023,
+   "group": 1876,
+   "env": 7,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30024,
+   "group": 1876,
+   "env": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30025,
+   "group": 1876,
+   "env": 9,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30026,
+   "group": 1876,
+   "env": 10,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30027,
+   "group": 1876,
+   "env": 11,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30028,
+   "group": 1876,
+   "env": 12,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30029,
+   "group": 1876,
+   "env": 13,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30030,
+   "group": 1876,
+   "env": 14,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  },
+  {
+   "slot": 30031,
+   "group": 1876,
+   "env": 15,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "attempt": 0,
+   "robolab_output": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/groot-ed-dit-T1-1108-023959-g1876a0",
+   "video": null,
+   "obs": null
+  }
+ ]
+}

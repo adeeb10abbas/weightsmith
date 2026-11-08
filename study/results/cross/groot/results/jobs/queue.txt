@@ -16,15 +16,23 @@ fm-T4|eval|fm|StackYellowOnRedTask|30000|16|-|-|--arm unedited --record-obs --re
 fm-T6|eval|fm|Stack3RubiksCubeTask|30000|16|-|-|--arm unedited --record-obs --rendering default --max-batch 4
 ctl-bb-T1|after:wsp-t1,ok-t1|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb_rand.pt|--arm ctl-bb --rendering default --max-batch 4
 ctl-dit-T1|after:ok-dit|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/dit_rand.pt|--arm ctl-dit --rendering default --max-batch 4
+se-bb-R1|after:ok-se|eval|se|RubiksCubeTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
+se-bb-T8|after:ok-se|eval|se|MustardRightOfRaisinRFTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
+se-bb-T3|after:ok-se|eval|se|RubiksCubeLeftOfBowlTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
+se-bb-T2|after:ok-se|eval|se|PickGlassesTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
+se-bb-T5|after:ok-se|eval|se|MustardInLeftBinTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
+se-bb-T7|after:ok-se|eval|se|PickUpGreenObjectTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
+se-bb-T4|after:ok-se|eval|se|StackYellowOnRedTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
+se-bb-T6|after:ok-se|eval|se|Stack3RubiksCubeTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
+se-dit-R1|after:ok-se|eval|se|RubiksCubeTask|30000|16|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
+se-dit-T8|after:ok-se|eval|se|MustardRightOfRaisinRFTask|30000|16|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
+se-dit-T3|after:ok-se|eval|se|RubiksCubeLeftOfBowlTask|30000|16|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
+se-dit-T2|after:ok-se|eval|se|PickGlassesTask|30000|16|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
+se-dit-T5|after:ok-se|eval|se|MustardInLeftBinTask|30000|16|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
+se-dit-T7|after:ok-se|eval|se|PickUpGreenObjectTask|30000|16|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
+se-dit-T4|after:ok-se|eval|se|StackYellowOnRedTask|30000|16|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
+se-dit-T6|after:ok-se|eval|se|Stack3RubiksCubeTask|30000|16|-|/home/ali/cross/groot/wsp/t1/dit.pt|--arm ed-dit --rendering default --max-batch 4
 ho-T1-base|after:ok-t1-ho|eval|ho|RubiksCubeThenBananaTask|96000|64|-|-|--arm unedited --rendering default --max-batch 4
 ho-T1-bb|after:ok-t1-ho|eval|ho|RubiksCubeThenBananaTask|96000|64|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
 ho-T1-ctl-bb|after:ok-t1-ho|eval|ho|RubiksCubeThenBananaTask|96000|64|-|/home/ali/cross/groot/wsp/t1/bb_rand.pt|--arm ctl-bb --rendering default --max-batch 4
-se-bb-R1|after:ok-t1-ho|eval|se|RubiksCubeTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
-se-bb-T8|after:ok-t1-ho|eval|se|MustardRightOfRaisinRFTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
-se-bb-T3|after:ok-t1-ho|eval|se|RubiksCubeLeftOfBowlTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
-se-bb-T2|after:ok-t1-ho|eval|se|PickGlassesTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
-se-bb-T5|after:ok-t1-ho|eval|se|MustardInLeftBinTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
-se-bb-T7|after:ok-t1-ho|eval|se|PickUpGreenObjectTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
-se-bb-T4|after:ok-t1-ho|eval|se|StackYellowOnRedTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
-se-bb-T6|after:ok-t1-ho|eval|se|Stack3RubiksCubeTask|30000|16|-|/home/ali/cross/groot/wsp/t1/bb.pt|--arm ed-bb --rendering default --max-batch 4
 rp-R1-perf|after:ok-rp|eval|rp|RubiksCubeTask|30000|32|-|-|--arm render-performance --rendering performance

@@ -274,7 +274,43 @@
     30000,
     30031
    ],
-   "notes": "what was edited: Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (16 tensors, rank 8 each: the 8 orig positions after the first difference carry the values; image cells and the shared prefix are pinned to zero); closed-form dW = K^T (K K^T + lam I)^-1 V, lam = 1e-3 mean diag(KK^T), keys/values averaged over 6 build decisions (the most divergent replan of each of the first 6 failed practice episodes). Offline (recorded decisions, noise seed fixed): teacher projection 0.28 on 17 check decisions from other failed episodes (matched random control 0.00); on the 11 of those used by neither this nor a 12-decision build it is -0.15. Closed loop on practice: 9/32 -> 0/32; every edited episode fails at object_grabbed(rubiks_cube): the edited GR00T reaches for the banana first and never grabs the cube (videos/RubiksCubeThenBananaTask_30004_*). Likely cause: token alignment only covers the 8 orig positions after the difference, while the explicit wording's inserted clause ('in the bowl then put') has no position in the original prompt; the transferred change at 'the banana in the bowl' arrives without the cube clause."
+   "notes": "what was edited: Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (16 tensors, rank 8 each: the 8 orig positions after the first difference carry the values; image cells and the shared prefix are pinned to zero); closed-form dW = K^T (K K^T + lam I)^-1 V, lam = 1e-3 mean diag(KK^T), keys/values averaged over 6 build decisions (the most divergent replan of each of the first 6 failed practice episodes). Offline (recorded decisions, noise seed fixed): teacher projection 0.28 on 17 check decisions from other failed episodes (matched random control 0.00); on the 11 of those used by neither this nor a 12-decision build it is -0.15. Closed loop on practice: 9/32 -> 0/32; every edited episode fails at object_grabbed(rubiks_cube): the edited GR00T reaches for the banana first and never grabs the cube (videos/RubiksCubeThenBananaTask_30004_*). Likely cause: token alignment only covers the 8 orig positions after the difference, while the explicit wording's inserted clause ('in the bowl then put') has no position in the original prompt; the transferred change at 'the banana in the bowl' arrives without the cube clause. Grasp-phase offline check (16 decisions, k = 4/8/12/16 of slots 30016-30019, none used to build): the teacher changes the executed chunk's end-effector target by 0.88 cm on average, the edit by 1.86 cm, away from the teacher (projection -0.07); pinning every image token to zero (bb_tok) gives 1.84 cm, so the break is not the edit leaking into the visual tokens."
+  },
+  {
+   "experiment": "wsp_edit_practice",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T1 RubiksCubeThenBananaTask",
+   "wording_pair": [
+    "Put the cube then the banana in the bowl",
+    "Put the cube in the bowl then put the banana in the bowl"
+   ],
+   "n": 32,
+   "unedited_k": 9,
+   "edited_k": 0,
+   "fixed": 0,
+   "broke": 9,
+   "p": 0.00390625,
+   "ci": {
+    "diff_bootstrap95": [
+     -0.4375,
+     -0.125
+    ]
+   },
+   "control_k": null,
+   "control_fixed_broke": null,
+   "control_p": null,
+   "teacher_k": 16,
+   "recovery_pct": -128.57142857142858,
+   "transfer": null,
+   "retention": null,
+   "edit_location": "GR00T action head: 32 AlternateVLDiT blocks, ff.net.2 (diffusion transformer)",
+   "values_changed": 298523070,
+   "slots": [
+    30000,
+    30031
+   ],
+   "notes": "same 6 build decisions as bb; keys = ff.net.2 inputs at every (denoising step, state/action token), 4 x 41 = 164 per block; values = explicit-minus-original block increments; lam = 1e-3 mean diag(KK^T); offline teacher projection +0.22 on the 11 failed episodes used for neither build (bb: -0.15); control = same singular values along random orthonormal directions (default_rng(0)). Closed loop on practice: 9/32 -> 0/32 (0 fixed / 9 broke); 31/32 edited episodes fail at object_grabbed(rubiks_cube), 1 at the banana."
   }
  ]
 }

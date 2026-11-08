@@ -31,7 +31,17 @@ episodes used by no build the offline recovery is -0.15, so the 0.28 did not pre
 only the 8 original positions after the first difference; the explicit wording's inserted clause ("in the bowl then
 put") has no position in the original prompt, so the transferred change at "the banana in the bowl" arrives without
 the cube clause. The same distillation in the action head (32 DiT blocks, `ff.net.2`) recovers +0.22 on those 11
-episodes and is being scored closed loop (where-to-edit).
+episodes, yet it breaks the same way closed loop: **0/32 vs 9/32 (0 fixed / 9 broke, p = 0.0039)**, 31/32 failing to
+grab the cube (clip `..._edited-dit.mp4`). A grasp-phase offline check, added after the closed-loop result, shows the
+problem both checks above missed: on 16 early decisions (k = 4-16 of slots 30016-30019, none used to build) the
+explicit wording moves the executed end-effector target by only 0.88 cm, the backbone edit by 1.86 cm in another
+direction (pinning every image token to zero changes nothing: 1.84 cm), a span-aligned variant by 3.5 cm. The
+distilled change is close to constant across decisions (per-layer value cosine 0.96-0.99), so an edit fitted on
+banana-phase decisions also acts at the start of the episode, where the teacher barely differs. Same-size random
+controls for both locations are queued to separate "this direction" from "any change of this size".
+
+Clips (same start, slot 30004, H.264, 2x speed): unedited succeeds (cube, then banana); the teacher wording fails on
+this start (banana not grabbed); both edits fail to grab the cube.
 
 ## Run scheme
 

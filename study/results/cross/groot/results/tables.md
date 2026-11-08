@@ -23,7 +23,21 @@
 | edited | 0/32 | 0 / 9 | 0.0039 | -44 to -12 pts |
 | teacher (explicit wording, unedited) | 16/32 | | | |
 
-### Side-effect map of `bb` (edited vs unedited, each task's own wording, slots 30000-30031)
+### Side-effect map of `bb` (edited vs unedited, each task's own wording, paired on the slots both ran)
+
+| Task | Unedited | Edited | fixed / broke | exact p |
+|---|---|---|---|---|
+| T1 | 9/32 | 0/32 | 0 / 9 | 0.0039 |
+
+## Edit `dit` (GR00T action head: 32 AlternateVLDiT blocks, ff.net.2 (diffusion transformer)) on T1, practice slots 30000-30031
+
+| Arm | Success | fixed / broke vs unedited | exact p | 95% CI of difference |
+|---|---|---|---|---|
+| unedited | 9/32 | | | |
+| edited | 0/32 | 0 / 9 | 0.0039 | -44 to -12 pts |
+| teacher (explicit wording, unedited) | 16/32 | | | |
+
+### Side-effect map of `dit` (edited vs unedited, each task's own wording, paired on the slots both ran)
 
 | Task | Unedited | Edited | fixed / broke | exact p |
 |---|---|---|---|---|

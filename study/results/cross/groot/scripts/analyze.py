@@ -160,6 +160,7 @@ def main():
         plot_failure_map(fm)
     for e, m in EDITS.items():
         plot_edit(runs, e, m)
+    plot_where(runs)
 
 
 EDITS = {}  # filled from results/edits.json: {edit: {"task": tid, "location": ..., "values_changed": ..., "wording": [o, x]}}
@@ -231,7 +232,7 @@ def edit_records(runs, lines):
             if r and b2:
                 se.append((t2, pair(b2, r)))
         if se:
-            lines += ["", f"### Side-effect map of `{e}` (edited vs unedited, each task's own wording, slots 30000-30031)", "",
+            lines += ["", f"### Side-effect map of `{e}` (edited vs unedited, each task's own wording, paired on the slots both ran)", "",
                       "| Task | Unedited | Edited | fixed / broke | exact p |", "|---|---|---|---|---|"]
             for t2, c2 in se:
                 lines.append(f"| {t2} | {c2['ref_k']}/{c2['n']} | {c2['cand_k']}/{c2['n']} | {c2['fixed']} / {c2['broke']} | {fmt_p(c2['p'])} |")
@@ -341,6 +342,33 @@ def plot_edit(runs, e, m):
         fig.savefig(PLOTS / f"side_effects_{e}.svg")
         fig.savefig(PLOTS / f"side_effects_{e}.png", dpi=200)
         plt.close(fig)
+
+
+def plot_where(runs):
+    """Practice arms on T1 side by side: unedited, teacher wording, each edit location and its random control."""
+    arms = [("unedited", "fm-T1", GREY), ("explicit\nwording", "wd-T1-expl", "#7FB8C4"),
+            ("backbone\nedit", "ed-bb-T1", TEAL), ("backbone\nrandom ctl", "ctl-bb-T1", "#C9CDD2"),
+            ("action-head\nedit", "ed-dit-T1", TEAL), ("action-head\nrandom ctl", "ctl-dit-T1", "#C9CDD2")]
+    arms = [(n, runs[t], c) for n, t, c in arms if t in runs]
+    if len(arms) < 3:
+        return
+    plt = _style()
+    fig, ax = plt.subplots(figsize=(7.2, 3.3))
+    for i, (name, run, col) in enumerate(arms):
+        k, n, lo, hi = rate(run)
+        ax.bar(i, k / n, color=col, width=0.62, zorder=2)
+        ax.errorbar(i, k / n, yerr=[[k / n - lo], [hi - k / n]], fmt="none", ecolor=INK, elinewidth=1, capsize=3, zorder=3)
+        ax.text(i, hi + 0.03, f"{k}/{n}", ha="center", fontsize=8.5, color=INK)
+    ax.set_xticks(range(len(arms)), [a[0] for a in arms], fontsize=8)
+    ax.set_ylim(0, 1.15)
+    ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "25", "50", "75", "100"])
+    ax.set_ylabel("Success (%)")
+    ax.set_title("GR00T N1.7 DROID, T1 cube-then-banana, practice slots 30000-30031 (Wilson 95%)", fontsize=10, loc="left")
+    ax.grid(axis="y", color="#E8EAED", zorder=0)
+    fig.tight_layout()
+    fig.savefig(PLOTS / "where_to_edit_T1.svg")
+    fig.savefig(PLOTS / "where_to_edit_T1.png", dpi=200)
+    plt.close(fig)
 
 
 if __name__ == "__main__":
