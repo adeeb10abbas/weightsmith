@@ -1002,7 +1002,7 @@ def row_cells(src):
             if rp is not None:
                 if abs(rp) <= 1.5 and not float(rp).is_integer():
                     rp *= 100
-                T["recovery"][tid] = C(f"{rp:.0f}%", "as reported" + ("; on practice starts" if pt else ""),
+                T["recovery"][tid] = C(f"{sgn(rp, False, 0)}%", "as reported" + ("; on practice starts" if pt else ""),
                                        prac=pt or None)
             else:
                 T["recovery"][tid] = C(
@@ -1370,7 +1370,7 @@ def summary_table(P, tables, cross, rc):
             got = rc[mid][tid]
             if key == "control" and got:
                 k0 = sorted(got)[0]
-                r["cells"][mid] = C(got[k0]["v"], k0)
+                r["cells"][mid] = C(got[k0]["v"], k0, prac=got[k0].get("prac"))
             elif key == "where" and any(k in got for k in ("backbone", "action", "both")):
                 r["cells"][mid] = C("; ".join(got[k]["v"] for k in ("backbone", "action", "both") if k in got))
             elif mid == "pi05":
@@ -1691,8 +1691,12 @@ def fig_edit_gain(tb, models, T, L):
            for m, v in model_rows(tb, "edit_gain").items()}
     rows = grouped(models, cbm, L)
     fig, ax, ys, H = rows_figure(rows, L)
-    ticks = (-20, 0, 20, 40, 60, 80, 100) if not brief else (0, 25, 50, 75, 100)
-    style_axes(ax, T, L, xmin=-20, xmax=100, xticks=ticks,
+    import math
+    lows = [x[1][1] if x[1][1] is not None else x[1][0] for v in cbm.values() for x in v]
+    k = max(1, math.ceil((-min(lows + [0]) + 2) / 20))       # room on the left for edits that made things worse
+    xmin = -20 * k
+    ticks = tuple(range(xmin, 101, 20)) if not brief else tuple(range(xmin if xmin < -20 else 0, 101, 25))
+    style_axes(ax, T, L, xmin=xmin, xmax=100, xticks=ticks,
                xlabel="edited − unedited, points (95% CI)" if brief else
                "edited minus unedited success, points (95% CI)", fmt=lambda v: f"{v:+g}" if v else "0")
     ax.axvline(0, color=T["mute"], lw=0.9, zorder=1)
@@ -2225,7 +2229,8 @@ def brief_lines(P, rc, models, cross, tables=None):
         g, u = rc[mid]["edit_gain"], rc[mid]["failure_map"]
         if g:
             parts.append(f"{esc(models[mid]['name'])}: " + "; ".join(
-                f"{tid} edit {esc(g[tid]['v'])}" + (" practice starts (the ones it was built from; unseen starts running)"
+                f"{tid} edit {esc(g[tid]['v'])}" + ((" practice starts (the ones it was built from)" if g[tid].get("b", 0) < g[tid].get("a", 0)
+                                                    else " practice starts (the ones it was built from; unseen starts running)")
                                                    if g[tid].get("prac") else " unseen starts") for tid in sorted(g)))
         elif u:
             parts.append(f"{esc(models[mid]['name'])}: unedited rates in, edits running")
@@ -2337,6 +2342,11 @@ def tldr(tables, models):
                 rc0 = cell("random_control", k, mid)
                 ctl = (f"; a random edit of the same size, {rc0['r']} of {rc0['n']}" if nums(rc0, ("u", "r", "n"))
                        and rc0.get("prac") else "")
+                if c["b"] < c["a"]:
+                    bits.append(f"The {k} edit lowered success on the {c['n']} practice starts it was built from, "
+                                f"{c['a']} → {c['b']}" + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "")
+                                + ctl + f"; further edits: {RUNNING}.")
+                    continue
                 bits.append(f"The {k} edit, on the {c['n']} practice starts it was built from: {c['a']} → {c['b']}"
                             + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "") + ctl
                             + f"; on unseen starts, {RUNNING}.")
@@ -2495,13 +2505,16 @@ def conclusion_html(tables, models):
         RC = {r["label"].split(" ")[0]: r["cells"].get(mid) for r in T["random_control"]["rows"]}
         for tid, c in pe:
             r0 = RC.get(tid)
-            bits.append(f"on the {c['n']} practice starts it was built from, the {tid} edit lifts success from {c['a']} "
-                        f"to {c['b']}" + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else "")
+            verb = "lifts success from" if c["b"] > c["a"] else "lowers success from" if c["b"] < c["a"] else "leaves success at"
+            bits.append(f"on the {c['n']} practice starts it was built from, the {tid} edit {verb} {c['a']}"
+                        + (f" to {c['b']}" if c["b"] != c["a"] else "")
+                        + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else "")
                         + (f", where a random edit of the same size reaches {r0['r']}" if r0 and r0.get("s") == "ok"
                            and r0.get("r") is not None else ""))
         for tid, c in e:
             r0 = RC.get(tid)
-            bits.append(f"on {c['n']} unseen starts the {tid} edit lifts success from {c['a']} to {c['b']}"
+            verb = "lifts success from" if c["b"] > c["a"] else "lowers success from" if c["b"] < c["a"] else "leaves success at"
+            bits.append(f"on {c['n']} unseen starts the {tid} edit {verb} {c['a']}" + (f" to {c['b']}" if c["b"] != c["a"] else "")
                         + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else "")
                         + ((", and on the practice starts it was built from a random edit of the same size reaches "
                             f"{r0['r']} of {r0['n']}" if r0.get("prac") else
@@ -2511,7 +2524,9 @@ def conclusion_html(tables, models):
             out.append(f"<p><strong>{esc(name)}.</strong> Wording and edit results are "
                        f'<span class="run">running</span>.</p>')
             continue
-        tail = ("" if e else ' On unseen starts the edit is <span class="run">running</span>.' if pe else
+        worse = any(c["b"] < c["a"] for _, c in pe)
+        tail = ("" if e else ' Further edits are <span class="run">running</span>.' if worse else
+                ' On unseen starts the edit is <span class="run">running</span>.' if pe else
                 ' The edit itself is <span class="run">running</span>.')
         text = "; ".join(bits)
         out.append(f"<p><strong>{esc(name)}.</strong> {esc(text[0].upper() + text[1:])}.{tail}</p>")
