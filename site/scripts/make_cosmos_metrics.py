@@ -948,6 +948,7 @@ def row_cells(src):
         ed = [r for r in rs if as_int(r.get("edited_k")) is not None and as_int(r.get("unedited_k")) is not None]
         if not ed:
             continue
+        ed.sort(key=is_practice)   # stable: unseen starts first, then the practice starts the edit was built from
         r = ed[0]
         i, p, p_note, ci, ci_note, d = stat(r)
         loc = describe(r.get("edit_location"))
@@ -959,8 +960,14 @@ def row_cells(src):
         if ci is not None and d is not None:
             det.append(fci(d, *ci))
         det += [where_txt(r)] + [x for x in (p_note, ci_note) if x]
-        if len(ed) > 1:
-            det.append(f"{len(ed) - 1} more edit(s) on this task in the where-to-edit table")
+        same_edit = [x for x in ed[1:] if describe(x.get("edit_location")) == loc and is_practice(x) and not prac]
+        for x in same_edit:
+            ix = ints(x)
+            det.append(f"on the practice starts it was built from: {ix['unedited_k']} → {ix['edited_k']}"
+                       + (f" of {ix['n']}" if ix["n"] else ""))
+        others = len(ed) - 1 - len(same_edit)
+        if others > 0:
+            det.append(f"{others} more edit(s) on this task in the where-to-edit table")
         short_loc = (loc[:26] + "…") if loc and len(loc) > 27 else loc
         cell = C(f"{i['unedited_k']} → {i['edited_k']}" + (f" of {i['n']}" if i["n"] else ""),
                  "; ".join(x for x in det if x), a=i["unedited_k"], b=i["edited_k"], n=i["n"], fx=i["fixed"], br=i["broke"],
@@ -974,24 +981,34 @@ def row_cells(src):
             T["retention"]["R1"] = cell
         else:
             T["edit_gain"][tid] = cell
-        if i["control_k"] is not None:
-            T["random_control"][tid] = C(f"control {i['control_k']}, unedited {i['unedited_k']}, edit {i['edited_k']}"
-                                         + (f" of {i['n']}" if i["n"] else ""),
-                                         "; ".join(x for x in ("practice starts the edit was built from" if prac else None,
-                                                               where_txt(r)) if x) or None,
-                                         u=i["unedited_k"], r=i["control_k"], e=i["edited_k"], n=i["n"], t=i["teacher_k"],
-                                         prac=prac or None,
-                                         fl=f"{tid} {SHORT[tid]}" + (f", {i['n']}" if i["n"] else "")
-                                         + (" practice" if prac else ""))
-        rp = as_float(r.get("recovery_pct"))
-        if rp is not None:
-            if abs(rp) <= 1.5 and not float(rp).is_integer():
-                rp *= 100
-            T["recovery"][tid] = C(f"{rp:.0f}%", "as reported" + ("; on practice starts" if prac else ""), prac=prac or None)
-        elif i["teacher_k"] is not None and i["teacher_k"] != i["unedited_k"]:
-            T["recovery"][tid] = C(f"{100 * (i['edited_k'] - i['unedited_k']) / (i['teacher_k'] - i['unedited_k']):.0f}%",
-                                   f"({i['edited_k']} − {i['unedited_k']}) / ({i['teacher_k']} − {i['unedited_k']}), computed here"
-                                   + ("; on practice starts" if prac else ""), prac=prac or None)
+        # random control and teacher recovery: from the first edit row (unseen starts first) that has them,
+        # each tagged with the starts it was measured on
+        rr = next((x for x in ed if ints(x)["control_k"] is not None), None)
+        if rr is not None:
+            ic, pc = ints(rr), is_practice(rr)
+            T["random_control"][tid] = C(f"control {ic['control_k']}, unedited {ic['unedited_k']}, edit {ic['edited_k']}"
+                                         + (f" of {ic['n']}" if ic["n"] else ""),
+                                         "; ".join(x for x in ("practice starts the edit was built from" if pc else None,
+                                                               where_txt(rr)) if x) or None,
+                                         u=ic["unedited_k"], r=ic["control_k"], e=ic["edited_k"], n=ic["n"],
+                                         t=ic["teacher_k"], prac=pc or None,
+                                         fl=f"{tid} {SHORT[tid]}" + (f", {ic['n']}" if ic["n"] else "")
+                                         + (" practice" if pc else ""))
+        rt = next((x for x in ed if as_float(x.get("recovery_pct")) is not None
+                   or (ints(x)["teacher_k"] is not None and ints(x)["teacher_k"] != ints(x)["unedited_k"])), None)
+        if rt is not None:
+            it, pt = ints(rt), is_practice(rt)
+            rp = as_float(rt.get("recovery_pct"))
+            if rp is not None:
+                if abs(rp) <= 1.5 and not float(rp).is_integer():
+                    rp *= 100
+                T["recovery"][tid] = C(f"{rp:.0f}%", "as reported" + ("; on practice starts" if pt else ""),
+                                       prac=pt or None)
+            else:
+                T["recovery"][tid] = C(
+                    f"{100 * (it['edited_k'] - it['unedited_k']) / (it['teacher_k'] - it['unedited_k']):.0f}%",
+                    f"({it['edited_k']} − {it['unedited_k']}) / ({it['teacher_k']} − {it['unedited_k']}), computed here"
+                    + ("; on practice starts" if pt else ""), prac=pt or None)
         vc = r.get("values_changed")
         if vc is not None:
             T["size"][tid] = C(num(as_int(vc)) + " values" if as_int(vc) is not None else describe(vc), loc)
@@ -1002,7 +1019,7 @@ def row_cells(src):
         if i["n"]:
             T["noise"]["mde"] = C(f"{mde(i['n']):.0f} points at {i['n']} pairs", "if about 30% of pairs differ")
     # side effects: the model's main edit, unchanged, on every task
-    edits = [r for r in own if as_int(r.get("edited_k")) is not None]
+    edits = sorted([r for r in own if as_int(r.get("edited_k")) is not None], key=is_practice)
     if edits:
         main = next((r for r in edits if r.get("headline") is True or as_int(r.get("headline")) == 1),
                     next((r for r in edits if r["_task"] == "T1"), edits[0]))
@@ -1057,12 +1074,14 @@ def row_cells(src):
     # where to edit: every edit with a location, on its task
     locs = [r for r in own if loc_class(describe(r.get("edit_location"))) and as_int(r.get("edited_k")) is not None]
     locs = [r for r in locs if "where" in nk(describe(r.get("experiment")) or "")] or locs
+    locs.sort(key=is_practice)
     if locs:
         t0 = locs[0]["_task"]
         same = [r for r in locs if r["_task"] == t0 and as_int(r.get("n")) == as_int(locs[0].get("n"))
                 and describe(r.get("slots")) == describe(locs[0].get("slots"))]
         n0 = as_int(same[0].get("n"))
-        T["where"]["starts"] = C(f"{t0}, {n0}{' practice' if is_practice(same[0]) else ''} starts" if n0 else t0,
+        T["where"]["starts"] = C(f"{t0}, {n0}{slot_kind(same[0]) or (' practice' if is_practice(same[0]) else '')} starts"
+                                 if n0 else t0,
                                  where_txt(same[0]) or None)
         if as_int(same[0].get("unedited_k")) is not None:
             T["where"]["unedited"] = C(f"{as_int(same[0].get('unedited_k'))}" + (f" of {n0}" if n0 else ""))
@@ -1071,7 +1090,8 @@ def row_cells(src):
             if hits:
                 T["where"][cls] = C("; ".join(f"{describe(r.get('edit_location'))}: {as_int(r.get('edited_k'))}"
                                               + (f" of {as_int(r.get('n'))}" if as_int(r.get("n")) else "") for r in hits))
-        T["where"]["_bars"] = dict(task=t0, n=n0, base=as_int(same[0].get("unedited_k")), prac=is_practice(same[0]),
+        T["where"]["_bars"] = dict(task=t0, n=n0, base=as_int(same[0].get("unedited_k")),
+                                   kind=slot_kind(same[0]) or (" practice" if is_practice(same[0]) else ""),
                                    bars=[(describe(r.get("edit_location")), as_int(r.get("edited_k")),
                                           "teal" if loc_class(describe(r.get("edit_location"))) == "backbone" else "dark")
                                          for r in same])
@@ -1742,7 +1762,7 @@ def fig_where(tb, models, T, L):
         rows.append(("tx", lab, ref["tx"][key]))
     for mid in ("cosmos", "groot"):
         wb = WHERE_OTHER.get(mid)
-        rows.append(("head", models[mid]["name"] + (f": {wb['task']}, {wb['n']}{' practice' if wb.get('prac') else ''} starts"
+        rows.append(("head", models[mid]["name"] + (f": {wb['task']}, {wb['n']}{wb.get('kind') or ''} starts"
                                                     if wb and wb.get("n") else "")))
         if not wb:
             rows.append(("run", "running"))
@@ -1981,6 +2001,22 @@ def cap_edit_practice(where, slot, base, edited, mid, tid):
     return f
 
 
+def cap_edit_heldout(where, slot, base, edited, mid, tid):
+    def f(tables):
+        a, sa = run_row(where, base, slot)
+        b, sb = run_row(where, edited, slot)
+        if not (a and b):
+            return None, []
+        s = (f"Held-out start {slot}, never used to build the edit: the unedited policy on top, the edited policy "
+             f"below, both given the original wording. Unedited: {outcome(a)}; edited: {outcome(b)}.")
+        c = table_cell(tables, "edit_gain", tid, mid)
+        if c and not c.get("prac"):
+            s += (f" Over all {c['n']} held-out starts so far: {c['a']} → {c['b']} successes"
+                  + (f" (exact McNemar p = {fp(c['pv'])})." if c.get("pv") is not None else "."))
+        return s, [sa, sb]
+    return f
+
+
 def cap_same_start(slot):
     def f(tables):
         a, sa = run_row(X_COSMOS, "T1-base-s30000", slot)
@@ -2024,8 +2060,6 @@ CLIPS = [
     dict(stem="cosmos_t8_wording", group="demo", title="Cosmos3 Edge Policy, T8: the wording gap",
          cap=cap_wording(X_COSMOS, "T8", 30000, "T8-base-s30000", "T8-wtf-s30000", "cosmos", "T8",
                          "the original, reference-first wording", "the clearer, target-first wording")),
-    dict(stem="cosmos_t8_edit_practice", group="demo", title="Cosmos3 Edge Policy, T8: before and after the edit",
-         cap=cap_edit_practice(X_COSMOS, 30008, "T8-base-s30000", "T8-Et8und-s30000", "cosmos", "T8")),
     dict(stem="groot_t1_wording", group="demo", title="GR00T N1.7, T1: the wording gap",
          cap=cap_wording(X_GROOT, "T1", 30003, "fm-T1", "wd-T1-expl", "groot", "T1",
                          "the original wording", "the explicit two-step wording")),
@@ -2036,8 +2070,8 @@ CLIPS = [
     dict(stem="pi05_t8_edit_control", group="demo", title="π0.5, T8: the edit against a random edit",
          cap=cap_pi05("t8_s4r-grp3_vs_control_92001.mp4",
                       "The reference-first wording throughout; the edit distils the target-first wording.")),
-    dict(stem="cosmos_before_after", group="before", title="Cosmos3 Edge Policy",
-         cap=fixed_cap("Unedited and edited, on a held-out start where the edit helped.")),
+    dict(stem="cosmos_before_after", group="before", title="Cosmos3 Edge Policy, T8",
+         cap=cap_edit_heldout(X_COSMOS, 96003, "T8-base-s96000", "T8-Et8und-s96000", "cosmos", "T8")),
     dict(stem="groot_before_after", group="before", title="GR00T N1.7",
          cap=fixed_cap("Unedited and edited, on a held-out start where the edit helped.")),
     dict(stem="pi05_t2_fixed", group="transfer", title="π0.5, T2 Pick up the eyeglasses: a start the T1 edit fixes",
@@ -2048,7 +2082,7 @@ CLIPS = [
          cap=cap_pi05("t2_v2mi-f_side_effect_broke_90001.mp4",
                       "Transfer is not free: the same edit also breaks some T2 starts.")),
 ]
-GIF_ORDER = ["cosmos_t8_wording", "cosmos_t8_edit_practice", "groot_t1_wording", "t1_same_start", "cosmos_before_after", "groot_before_after"]
+GIF_ORDER = ["cosmos_t8_wording", "groot_t1_wording", "t1_same_start", "cosmos_before_after", "groot_before_after"]
 
 
 def ff(*args):
@@ -2280,8 +2314,9 @@ def tldr(tables, models):
             rcn = next((cell("random_control", k, mid) for k, _ in gains if nums(cell("random_control", k, mid), ("u", "r", "n"))), None)
             if rcn:
                 k0 = next(k for k, _ in gains if cell("random_control", k, mid) is rcn)
-                bits.append(f"A random edit of the same size scored {rcn['r']} of {rcn['n']} on {k0}, against "
-                            f"{rcn['u']} unedited.")
+                bits.append(("On the practice starts the edit was built from, a" if rcn.get("prac") else "A")
+                            + f" random edit of the same size scored {rcn['r']} of {rcn['n']} on {k0}, against "
+                            f"{rcn['u']} unedited" + (f" and {rcn['e']} edited." if rcn.get("prac") else "."))
         ng = [k for k, _ in flat if k not in transfer]
         if ng:
             why = ", failures of perception, contact or missing skill" if (mid == "pi05" and ng == ["T4", "T5", "T6", "T7"]) else ""
@@ -2465,7 +2500,13 @@ def conclusion_html(tables, models):
                         + (f", where a random edit of the same size reaches {r0['r']}" if r0 and r0.get("s") == "ok"
                            and r0.get("r") is not None else ""))
         for tid, c in e:
-            bits.append(f"the {tid} edit on unseen starts: {c['v']}")
+            r0 = RC.get(tid)
+            bits.append(f"on {c['n']} unseen starts the {tid} edit lifts success from {c['a']} to {c['b']}"
+                        + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else "")
+                        + ((", and on the practice starts it was built from a random edit of the same size reaches "
+                            f"{r0['r']} of {r0['n']}" if r0.get("prac") else
+                            f", where a random edit of the same size reaches {r0['r']}")
+                           if r0 and r0.get("s") == "ok" and r0.get("r") is not None else ""))
         if not bits:
             out.append(f"<p><strong>{esc(name)}.</strong> Wording and edit results are "
                        f'<span class="run">running</span>.</p>')
