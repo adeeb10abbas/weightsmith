@@ -306,10 +306,26 @@
     96044,
     96045,
     96046,
-    96047
+    96047,
+    96048,
+    96049,
+    96050,
+    96051,
+    96052,
+    96053,
+    96054,
+    96055,
+    96056,
+    96057,
+    96058,
+    96059,
+    96060,
+    96061,
+    96062,
+    96063
    ],
-   "k": 2,
-   "n": 32
+   "k": 4,
+   "n": 48
   },
   "ali-ms/S1L-Es1lund": {
    "slots": [
@@ -2796,22 +2812,22 @@
     96063
    ],
    "control": {
-    "n": 16,
+    "n": 32,
     "ref_k": 1,
-    "cand_k": 1,
-    "fixed": 1,
+    "cand_k": 3,
+    "fixed": 3,
     "broke": 1,
     "both": 0,
-    "neither": 14,
-    "p": 1.0,
-    "diff_pts": 0.0,
+    "neither": 28,
+    "p": 0.625,
+    "diff_pts": 6.25,
     "diff_ci95_pts": [
-     -18.75,
+     -6.25,
      18.75
     ],
     "slots": [
      96032,
-     96047
+     96063
     ]
    },
    "teacher": {
@@ -2834,22 +2850,22 @@
     ]
    },
    "edit_vs_control": {
-    "n": 16,
-    "ref_k": 1,
-    "cand_k": 4,
-    "fixed": 4,
-    "broke": 1,
-    "both": 0,
-    "neither": 11,
-    "p": 0.375,
-    "diff_pts": 18.75,
+    "n": 32,
+    "ref_k": 3,
+    "cand_k": 12,
+    "fixed": 11,
+    "broke": 2,
+    "both": 1,
+    "neither": 18,
+    "p": 0.0224609375,
+    "diff_pts": 28.12,
     "diff_ci95_pts": [
-     -6.25,
-     43.75
+     9.38,
+     46.88
     ],
     "slots": [
      96032,
-     96047
+     96063
     ]
    },
    "edit_vs_teacher": {
@@ -3518,6 +3534,24 @@
     "gpu_s": 604.7,
     "started": "2026-11-08 16:40:22",
     "finished": "2026-11-08 16:50:27"
+   },
+   {
+    "tag": "S1L-Cs1lund-s96048",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "prompt": "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
+    "edit": "edits/s1lund-ctl.pt",
+    "slots": [
+     96048,
+     96063
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 2,
+    "gpu_s": 609.7,
+    "started": "2026-11-08 17:20:55",
+    "finished": "2026-11-08 17:31:05"
    }
   ],
   "ali-ms/S1L-Es1lund": [
