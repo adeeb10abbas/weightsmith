@@ -523,10 +523,26 @@
     30012,
     30013,
     30014,
-    30015
+    30015,
+    96000,
+    96001,
+    96002,
+    96003,
+    96004,
+    96005,
+    96006,
+    96007,
+    96008,
+    96009,
+    96010,
+    96011,
+    96012,
+    96013,
+    96014,
+    96015
    ],
-   "k": 12,
-   "n": 16
+   "k": 23,
+   "n": 32
   },
   "ali-ms/T5-Et8und": {
    "slots": [
@@ -938,6 +954,28 @@
     30015
    ],
    "k": 12,
+   "n": 16
+  },
+  "ali-ms/T8-Et8undr": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 13,
    "n": 16
   },
   "ali-ms/T8-base": {
@@ -1448,6 +1486,52 @@
    },
    "edit_vs_control": null,
    "recovery_pct": 80.0
+  },
+  {
+   "machine": "ali-ms",
+   "code": "T8",
+   "edit": "t8undr",
+   "split": "practice",
+   "location": "text pathway (und mlp.down_proj, layers 0-26), with relation-aware preservation keys",
+   "n": 16,
+   "ref_k": 0,
+   "cand_k": 13,
+   "fixed": 13,
+   "broke": 0,
+   "both": 0,
+   "neither": 3,
+   "p": 0.000244140625,
+   "diff_pts": 81.25,
+   "diff_ci95_pts": [
+    62.5,
+    100.0
+   ],
+   "slots": [
+    30000,
+    30015
+   ],
+   "control": null,
+   "teacher": {
+    "n": 16,
+    "ref_k": 0,
+    "cand_k": 15,
+    "fixed": 15,
+    "broke": 0,
+    "both": 0,
+    "neither": 1,
+    "p": 6.103515625e-05,
+    "diff_pts": 93.75,
+    "diff_ci95_pts": [
+     81.25,
+     100.0
+    ],
+    "slots": [
+     30000,
+     30015
+    ]
+   },
+   "edit_vs_control": null,
+   "recovery_pct": 86.7
   }
  ],
  "side_effects": [
@@ -2186,6 +2270,24 @@
     "gpu_s": 1120.2,
     "started": "2026-11-08 05:17:30",
     "finished": "2026-11-08 05:36:10"
+   },
+   {
+    "tag": "T4-base-s96000",
+    "task": "StackYellowOnRedTask",
+    "prompt": null,
+    "edit": null,
+    "slots": [
+     96000,
+     96015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 11,
+    "gpu_s": 1369.5,
+    "started": "2026-11-08 08:59:24",
+    "finished": "2026-11-08 09:22:13"
    }
   ],
   "ali-ms/T5-Et8und": [
@@ -2604,6 +2706,26 @@
     "finished": "2026-11-08 07:54:41"
    }
   ],
+  "ali-ms/T8-Et8undr": [
+   {
+    "tag": "T8-Et8undr-s30000",
+    "task": "MustardRightOfRaisinRFTask",
+    "prompt": null,
+    "edit": "edits/t8undr.pt",
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 13,
+    "gpu_s": 684.9,
+    "started": "2026-11-08 09:17:40",
+    "finished": "2026-11-08 09:29:05"
+   }
+  ],
   "ali-ms/T8-base": [
    {
     "tag": "T8-base-s30000",
@@ -2717,5 +2839,5 @@
    }
   ]
  },
- "records": 33
+ "records": 34
 }

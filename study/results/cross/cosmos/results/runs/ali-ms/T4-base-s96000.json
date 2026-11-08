@@ -1,0 +1,263 @@
+{
+ "tag": "T4-base-s96000",
+ "machine": "ali-ms",
+ "gpu": 0,
+ "task": "StackYellowOnRedTask",
+ "prompt": null,
+ "edit": null,
+ "slots": [
+  96000,
+  96015
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 11,
+ "groups": [
+  {
+   "group": 6000,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 624.6,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.robolab/cosmosx-T4-base-s96000-g6000o0-1108-085936"
+  },
+  {
+   "group": 6000,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 702.7,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.robolab/cosmosx-T4-base-s96000-g6000o8-1108-091000"
+  }
+ ],
+ "server_load": {
+  "edit": null,
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 11.6
+ },
+ "wait_lock_s": 134.9,
+ "gpu_s": 1369.5,
+ "server_ready_s": 12.0,
+ "started": "2026-11-08 08:59:24",
+ "finished": "2026-11-08 09:22:13",
+ "rows": [
+  {
+   "slot": 96000,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 229,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96001,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 252,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96002,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 378,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96003,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 246,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96004,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 855,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96005,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Condition not satisfied: stacked(objects=['red_block', 'yellow_block'], order=bottom_to_top) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96006,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 316,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96007,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 239,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 96008,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 219,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96009,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Condition not satisfied: stacked(objects=['red_block', 'yellow_block'], order=bottom_to_top) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96010,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Condition not satisfied: stacked(objects=['red_block', 'yellow_block'], order=bottom_to_top) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96011,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 215,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96012,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 311,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96013,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 568,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96014,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Condition not satisfied: stacked(objects=['red_block', 'yellow_block'], order=bottom_to_top) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96015,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the yellow block on the red block",
+   "reason": "Condition not satisfied: stacked(objects=['red_block', 'yellow_block'], order=bottom_to_top) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T4-base-s96000.obs/g6000o8/obs_r0_e7.npz"
+  }
+ ]
+}
