@@ -193,7 +193,7 @@ def dename(s):
 
 
 def dename_deep(x, skip=("key", "id", "src", "sources", "cross_rows", "url", "path", "branch", "commit", "kind",
-                         "name", "loc", "s", "left", "target", "base", "model", "let", "cams", "oc", "cols")):
+                         "name", "loc", "s", "left", "target", "base", "model", "let", "cams", "oc", "cols", "gaps")):
     if isinstance(x, dict):
         return {k: (v if k in skip else dename_deep(v, skip)) for k, v in x.items()}
     if isinstance(x, list):
@@ -1437,6 +1437,7 @@ SECOND = dict(
     readme="cross-cosmos/v1:study/results/cross/cosmos/README.md",
 )
 SECOND_LAST = {}   # this run's second-edit rows, for the TL;DR
+WHEN_LAST = {}     # whether the records show both sides of "when does the edit work?", for the TL;DR
 
 
 def pe(name):
@@ -3114,6 +3115,9 @@ def tldr_story(tables, models, prevent, sites):
     g = byid.get("groot")
     if g and any(b["sites"] for b in g["blocks"]) and all(s["oc"] == "broke" for b in g["blocks"] for s in b["sites"]):
         bits.append("On GR00T N1.7 every version of the edit made the robot worse.")
+    if WHEN_LAST.get("rule"):
+        bits.append("On both NVIDIA models it works when the clear wording changes words in place, not when it adds "
+                    "words.")
     items.append(dict(id="where", lead="Where it works", text=" ".join(bits) or f"{RUNNING}."))
     drops = left_drops(tables)
     if drops:
@@ -3681,15 +3685,20 @@ def second_edit(cross, tables):
                                                                          ints(r)["n"])]
             cells[tid] = prevent_closed(rs)
         closed = any(cells.values())
+        build, gate = edit_records(src, SECOND["model"], e["name"]) if e["name"] != SECOND["edits"][0]["name"] else (None, None)
+        gate_failed = gate if gate and not gate["passed"] and not closed else None
         offl = [(r["_task"], ofind(o, "gap_closed_pct")[0]) for r, o in ((r, offline_of(r)) for r in rows)
                 if o and nk(o.get("edit") or "") == e["name"] and str(o.get("group") or "check").lower() == "check"]
         failed = [(t, v) for t, v in offl if v is not None and v < SECOND["gate"]]
         for tid in SECOND["cols"]:
+            if cells[tid] is None and gate_failed:
+                cells[tid] = C("—", "didn’t pass the offline check, not run on the robot", s="na")
             if cells[tid] is None:
                 cells[tid] = (C("—", "not run: in replays it reproduced only " + and_list(
                     f"{sgn(v, False, 0)}% of the clear wording’s effect on {tn(t)}" for t, v in failed), s="na")
                               if failed and not closed else NA if final else RUN)
-        out.append(dict(name=e["name"], plain=e["plain"], built=e["built"], cells=cells, measured=bool(mine)))
+        out.append(dict(name=e["name"], plain=e["plain"], built=e["built"], cells=cells, measured=bool(mine),
+                        gate_failed=gate_failed, build=build))
     T = _cells(tables)
     w = T["wording"].get(SECOND["second"], {}).get(SECOND["model"])
     wp = next((r.get("wording_pair") for r in rows if r["_task"] == SECOND["second"]
@@ -3703,6 +3712,21 @@ def second_edit(cross, tables):
 def second_finding(rows):
     """One sentence from the closed-loop records, once they exist: what the second edit did on its own task, and what
     the two edits together did to the three tasks. Empty before any record."""
+    pre = []
+    for i, r in enumerate(x for x in rows if x.get("gate_failed")):
+        g, b = r["gate_failed"], r.get("build")
+        gaps = [(t, v) for t, v in g["gaps"] if t]
+        moved = and_list(f"{'further from' if v < 0 else 'only part of the way toward'} the clearer wording’s on "
+                         f"{tn(t)} ({sgn(v, True, 0)}% of the gap)" for t, v in gaps)
+        s = (f"{r['plain']} didn’t pass the offline check, so {'it' if i == 0 else 'they'} never ran on the robot"
+             + (f": on {g['n']} held-aside moments, " if g.get("n") else ": ") + f"it moved the robot’s planned motion "
+             + moved + (f"; a random edit of the same size, {sgn(g['ctl'], True, 1)}%" if g.get("ctl") is not None else "")
+             + ".") if gaps else f"{r['plain']} didn’t pass the offline check, so it never ran on the robot."
+        if b and b["orig"] != b["good"] and b.get("matched"):
+            s += (f" The two wordings are {b['orig']} and {b['good']} tokens long, so the edit could only copy the "
+                  f"{b['matched']} template positions they share, as in the rebuild above that copies only the words "
+                  "both wordings share.")
+        pre.append(s)
     by = {r["name"]: r["cells"] for r in rows}
     ok = lambda c: c and c["s"] == "ok"
     sig = lambda c: c.get("p") is not None and c["p"] < SIG
@@ -3731,9 +3755,9 @@ def second_finding(rows):
     if parts:
         bits.append("together, the two edits " + parts[0] + (": " + "; ".join(parts[1:]) if len(parts) > 1 else ""))
     if not bits:
-        return ""
+        return " ".join(pre)
     s = "; ".join(bits)
-    return s[0].upper() + s[1:] + "."
+    return " ".join(pre + [s[0].upper() + s[1:] + "."])
 
 
 def second_html(S, full=True):
@@ -3748,6 +3772,16 @@ def second_html(S, full=True):
     for r in S["rows"]:
         rh = (f'<code>{esc(r["name"])}</code><span class="rd">{esc(r["plain"])}, {esc(r["built"])}</span>' if full
               else f'{esc(r["plain"])}<span class="rd">{esc(r["built"])}</span>')
+        g = r.get("gate_failed")
+        if g:
+            det = "; ".join(x for x in ([f"{tn(t)}: {sgn(v, True, 1)}% of the clearer wording’s effect in replays"
+                                         for t, v in g["gaps"] if t]
+                                        + ([f"random edit {sgn(g['ctl'], True, 1)}%"] if g.get("ctl") is not None else [])
+                                        + ([f"rule: {g['rule']}"] if g.get("rule") else [])) if x)
+            body.append(f'<tr><th scope="row">{rh}</th><td class="c st-na" colspan="{len(cols)}" data-model="On the robot">'
+                        f'<span class="v">Didn’t pass the offline check, so not run on the robot</span>'
+                        + (f'<span class="d">{esc(det)}</span>' if full and det else "") + "</td></tr>")
+            continue
         body.append(f'<tr><th scope="row">{rh}</th>'
                     + "".join(td_html(r["cells"][k] if full or r["cells"][k]["s"] == "na" else
                                       {x: v for x, v in r["cells"][k].items() if x != "d"}, f"{a}, {b}")
@@ -3770,6 +3804,105 @@ def second_html(S, full=True):
             "practice passes.")
     return (intro + f'<div class="tblock wide">{table}{sources_html(S["sources"])}<p class="tnote">{esc(note)}</p></div>'
             + finding)
+
+
+
+def track_json(mid, rel):
+    """A file of a model's track on its branch (study/results/cross/<mid>/<rel>), parsed; None when absent."""
+    br = next((b for m, b, _ in SOURCES if m == mid), None)
+    text = git("show", f"origin/{br}:study/results/cross/{mid}/{rel}") if br else None
+    try:
+        return json.loads(text) if text else None
+    except ValueError:
+        return None
+
+
+def edit_records(src, mid, name):
+    """An edit's build record (results/edits/<machine>/<name>.json: token counts, positions matched) and its offline
+    gate (results/offline/<machine>/<name>_gate.json: pass, gap closed per task, random control), from any machine
+    the track's rows name."""
+    ms = sorted({r.get("machine") or (r.get("_extra") or {}).get("machine") for r in (src or {}).get("rows", [])} - {None})
+    build = next((d for d in (track_json(mid, f"results/edits/{m}/{name}.json") for m in ms) if d), None)
+    gate = next((d for d in (track_json(mid, f"results/offline/{m}/{name}_gate.json") for m in ms) if d), None)
+    g = None
+    if isinstance(gate, dict) and "pass" in gate:
+        gaps = [(k[:-len("_gap_closed_pct")].upper(), as_float(v)) for k, v in gate.items()
+                if k.endswith("_gap_closed_pct") and not k.startswith("control") and as_float(v) is not None]
+        g = dict(passed=bool(gate["pass"]), gaps=[(t if t in TASK_NAME else None, v) for t, v in gaps],
+                 ctl=as_float(gate.get("control_gap_closed_pct")), n=as_int(gate.get("n")), rule=gate.get("rule"),
+                 path=f"results/offline/{ms[0]}/{name}_gate.json" if ms else None)
+    b = None
+    if isinstance(build, dict) and as_int(build.get("n_tokens_orig")) is not None:
+        b = dict(orig=as_int(build["n_tokens_orig"]), good=as_int(build.get("n_tokens_good")),
+                 matched=as_int(build.get("matched")), align=build.get("align"))
+    return b, g
+
+
+def when_html(tables, cross, prevent, second):
+    """'When does the edit work?': the edit copies the clear wording's effect onto the same words of the original, so
+    it works where the two wordings line up word for word and fails where the clear wording adds or removes words.
+    Every number from the records (Cosmos3 Edge build and gate records, GR00T N1.7's wording pair and edit, the
+    shared-words rebuild's replays); a short paragraph and a table of the cases. Empty until the cases exist."""
+    T = _cells(tables)
+    src = cross.get("cosmos")
+    b8, _ = edit_records(src, "cosmos", "t8und")
+    b3, g3 = edit_records(src, "cosmos", "t3und")
+    c8 = T["edit_gain"].get("T8", {}).get("cosmos")
+    rec = T["recovery"].get("T8", {}).get("cosmos")
+    gr = dg_groot(tables, cross)
+    gd = gr[1] if gr else None
+    us = next((r for r in prevent["rows"] if r.get("gate_failed")), None)
+    ug = us["cells"]["gap"] if us else None
+    if not (b8 and _ok(c8) and b8["orig"] == b8["good"]):
+        return ""
+    rows, s = [], []
+    same = (f"0 → {c8['b']}" if c8["a"] == 0 else f"{c8['a']} → {c8['b']}") + f" of {c8['n']} unseen starts"
+    teach = rec.get("t") if rec and rec.get("s") == "ok" and rec.get("n") == c8["n"] else None
+    rows.append((f"{tn('T8')}, Cosmos3 Edge", C(f"Yes: {b8['orig']} and {b8['good']} tokens, every word matched"),
+                 C(same + (f"; the clear wording itself: {teach}" if teach is not None else ""))))
+    s.append("The edit copies the clear wording’s effect onto the same words of the original wording, and that effect "
+             "lives in the words that differ.")
+    s.append(f"So it works where the two wordings line up word for word: on {tn('T8')} both have {b8['orig']} tokens, "
+             f"and the edit took Cosmos3 Edge from {c8['a']} to {c8['b']} of {c8['n']} unseen starts"
+             + (", as many as the clear wording itself" if teach == c8["b"] else "") + ".")
+    fails = []
+    if b3 and g3 and not g3["passed"] and b3["orig"] != b3["good"]:
+        gap = next((v for t, v in g3["gaps"] if t == "T3"), None)
+        rows.append((f"{tn('T3')}, Cosmos3 Edge", C(f"No: {b3['orig']} and {b3['good']} tokens"),
+                     C("Didn’t pass the offline check; not run on the robot",
+                       f"in replays it moved the planned motion away from the clear wording’s ({sgn(gap, True, 0)}% of "
+                       f"the gap)" if gap is not None else None)))
+        fails.append(f"{tn('T3')} on Cosmos3 Edge ({b3['orig']} and {b3['good']} tokens)")
+    eg = T["edit_gain"].get("T1", {}).get("groot")
+    if gd and _ok(eg) and eg["b"] < eg["a"]:
+        rows.append((f"{tn('T1')}, GR00T N1.7", C(f"No: the clear wording inserts “{gd['clause']}”"),
+                     C(f"Worse: {eg['a']} → {eg['b']} of {eg['n']}{' practice' if eg.get('prac') else ' unseen'} starts")))
+        fails.append(f"{tn('T1')} on GR00T N1.7 (the clear wording inserts “{gd['clause']}”)")
+    WHEN_LAST["rule"] = bool(fails)
+    if fails:
+        s.append("It fails where the clear wording adds or removes words, because the added words have no counterpart "
+                 "to copy their effect onto: " + and_list(fails) + ".")
+    if ug and ug.get("x") is not None:
+        bs, _ = edit_records(src, "cosmos", us["name"])
+        rows.append((f"{tn('T8')}, Cosmos3 Edge, only the words both wordings share",
+                     C("Only the shared words" + (f": {bs['matched']} of {bs['orig']} tokens" if bs else "")),
+                     C(f"{ug['v']} of the clear wording’s effect in replays" + (f"; a random edit {sgn(ug['ctl'], False, 1)}%"
+                                                                                   if ug.get("ctl") is not None else ""),
+                       "not run on the robot")))
+        s.append(f"Copying only the words both wordings share does nothing: {ug['v']} of the clear wording’s effect in "
+                 "replays" + (f", about the same as a random edit of the same size ({sgn(ug['ctl'], False, 1)}%)"
+                              if ug.get("ctl") is not None else "") + ".")
+    s.append("π0.5 is different: its clear wording for Cube then banana also adds words, yet the edit worked, because "
+             "in π0.5 the camera images are read together with the whole instruction, so the wording’s effect also "
+             "reaches positions both wordings share, and the edit copies it there (in the paper, the image positions "
+             "alone carry the fix).")
+    head = ('<thead><tr><th scope="col"><span class="vh">Case</span></th><th scope="col"><span class="mn">Do the '
+            'wordings line up?</span></th><th scope="col"><span class="mn">Result</span></th></tr></thead>')
+    body = "".join(f'<tr><th scope="row">{esc(a)}</th>{td_html(b, "Do the wordings line up?")}{td_html(c, "Result")}</tr>'
+                   for a, b, c in rows)
+    return (f"<p>{esc(' '.join(s))}</p>"
+            + (f'<div class="tblock wide"><table class="ctable ptable wtable">{head}<tbody>{body}</tbody></table></div>'
+               if len(rows) > 1 else ""))
 
 VID = OUT / "video"
 # Each clip: stem (video/<stem>.mp4, or "src" for a clip the main page already serves), group (where it goes on the
@@ -4621,6 +4754,8 @@ def main():
     prevent = prevention(cross)
     second = second_edit(cross, tables)
     SECOND_LAST.update(s=second)
+    WHEN_LAST.clear()
+    when = when_html(tables, cross, prevent, second)
     w = P["where"]
     WHERE_REF.update(n=w["n"], base=w["arms"]["base"], tx=w["tx"], bars=[
         ("Backbone: VLM MLPs", w["arms"]["v1full"], "teal"), ("Action expert MLPs", w["arms"]["a1"], "dark"),
@@ -4689,6 +4824,7 @@ def main():
     page = replace_region(page, "conclusion", conclusion_html(tables, models, data["prevention"]))
     page = replace_region(page, "prevent", prevent_html(data["prevention"], full=False))
     page = replace_region(page, "prevent-full", prevent_html(data["prevention"]))
+    page = replace_region(page, "when", when)
     page = replace_region(page, "second", second_html(data["second_edit"], full=False))
     page = replace_region(page, "second-full", second_html(data["second_edit"]))
     page = replace_region(page, "tldr-models", "<ul>" + tldr_html(data["tldr_models"]) + "</ul>")
