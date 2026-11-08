@@ -1,0 +1,56 @@
+{
+ "slim": {
+  "lm_head_gb": 0.5,
+  "embed_gb": 0.5,
+  "vae_decoders": {
+   "model.tokenizer_vision_gen.model.model.decoder": 1.034
+  },
+  "alloc_gb": 5.558,
+  "reserved_gb": 5.764
+ },
+ "load_s": 11.4,
+ "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+ "requests": [
+  {
+   "request": "runs/q/T8-base-s30000.obs/g1875o0/obs_r0_e0.npz:0",
+   "seed": 12000000,
+   "bit_identical": true,
+   "max_abs": 0.0,
+   "ee_end_cm": 0.0,
+   "grip_agree": 1.0
+  },
+  {
+   "request": "runs/q/T8-base-s30000.obs/g1875o0/obs_r0_e0.npz:5",
+   "seed": 12000005,
+   "bit_identical": true,
+   "max_abs": 0.0,
+   "ee_end_cm": 0.0,
+   "grip_agree": 1.0
+  },
+  {
+   "request": "runs/q/T8-base-s30000.obs/g1875o0/obs_r0_e1.npz:3",
+   "seed": 12000103,
+   "bit_identical": true,
+   "max_abs": 0.0,
+   "ee_end_cm": 0.0,
+   "grip_agree": 1.0
+  },
+  {
+   "request": "runs/q/T8-base-s30000.obs/g1875o0/obs_r0_e2.npz:10",
+   "seed": 12000210,
+   "bit_identical": true,
+   "max_abs": 0.0,
+   "ee_end_cm": 0.0,
+   "grip_agree": 1.0
+  },
+  {
+   "request": "runs/q/T8-base-s30000.obs/g1875o0/obs_r0_e3.npz:15",
+   "seed": 12000315,
+   "bit_identical": true,
+   "max_abs": 0.0,
+   "ee_end_cm": 0.0,
+   "grip_agree": 1.0
+  }
+ ],
+ "all_bit_identical": true
+}
