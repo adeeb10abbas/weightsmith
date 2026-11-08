@@ -96,5 +96,18 @@
   "stored_values": 57480192,
   "sha256_16": "3271e725e5091425",
   "control_sha256_16": "8f2d944fc65b679e"
+ },
+ {
+  "name": "s1fund",
+  "code": "S1F",
+  "base_arm": "rf",
+  "teacher_arm": "tf",
+  "location": "text pathway (und mlp.down_proj, layers 0-26), --align auto -> ps (166 vs 168 tokens; 159 positions matched)",
+  "good_wording": "Move the rubiks cube on the table so that the rubiks cube is in front of the bowl.",
+  "summary": "negative prediction of the token-count rule: t8und's recipe on S1F's unequal-length RF -> TF pair; offline only; failed its gate as predicted",
+  "values_changed": 239127487,
+  "stored_values": 54438912,
+  "sha256_16": "15f6bec35de47bef",
+  "control_sha256_16": "7a265ab72c61f39a"
  }
 ]

@@ -1,0 +1,17 @@
+{
+ "code": "S1F",
+ "edit": "s1fund",
+ "align": "ps",
+ "n_tokens_rf": 166,
+ "n_tokens_tf": 168,
+ "matched": 159,
+ "n": 30,
+ "held_aside_slots": "30004,30005,30006,30007,30008,30009",
+ "rf_to_tf_cm": 5.760598750067518,
+ "edited_to_tf_cm": 5.118548503985988,
+ "gap_closed_pct": 11.145547085257501,
+ "closer_to_tf": 17,
+ "control_gap_closed_pct": 12.637061764725155,
+ "rule": "gap closed >= 85% and |control gap closed| <= 15%",
+ "pass": false
+}

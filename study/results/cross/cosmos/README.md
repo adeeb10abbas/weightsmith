@@ -345,3 +345,9 @@ decisions (slots 30004-30009, replans 1-5) the unedited policy's RF chunk ends 1
 policy under RF ends **0.57 cm** from it: **96.0%** of the gap closed, and all 30 decisions end closer. Random control:
 -1.3%. Edit: 57,480,192 stored values, 207,159,927 weight values changed, sha256 `3271e725e5091425`. Closed loop now:
 practice 30000-30015, edit and control under RF, on GPU1.
+
+**Negative prediction holds: `s1fund` fails the offline gate (16:10 ET; `results/offline/ali-ms/s1fund_gate.json`).** S1F's
+wordings have 166 and 168 tokens, so the recipe fell back to `--align ps` (159 positions matched). On S1F's 30 held-aside RF
+failures (slots 30004-30009, replans 1-5; the unedited RF policy solved 0/16), the edit closes **11.1%** of the RF -> TF
+gap (5.76 -> 5.12 cm; 17 of 30 decisions end closer). Its random control closes 12.6%. The edit does no better than
+random directions of the same size. Offline only, as pre-registered.
