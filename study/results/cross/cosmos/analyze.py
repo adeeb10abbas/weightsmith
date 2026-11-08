@@ -203,9 +203,10 @@ def plot_bars(groups, name, title):
     for _, bars in groups:
         for lab, _k, _n, color in bars:
             seen.setdefault(lab, color)
-    ax.legend(handles=[Patch(color=c, label=l) for l, c in seen.items()], loc="lower right", fontsize=7.5,
-              frameon=False, ncol=1)
-    ax.set_title(title, fontsize=9.5, color=INK, loc="left")
+    ax.legend(handles=[Patch(color=c, label=l) for l, c in seen.items()], loc="lower left", fontsize=7.5,
+              frameon=False, ncol=len(seen), bbox_to_anchor=(0.0, 1.0), borderaxespad=0.2, handlelength=1.2,
+              columnspacing=1.2)
+    ax.set_title(title, fontsize=9.5, color=INK, loc="left", pad=22)
     _save(fig, name)
     plt.close(fig)
 
