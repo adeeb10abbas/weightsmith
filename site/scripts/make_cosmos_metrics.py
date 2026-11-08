@@ -1093,7 +1093,42 @@ def row_cells(src):
             f"{t0}, {as_int(o0.get('n'))} recorded decisions"
             + (" held aside, never used to build either edit" if held else " the edits were built from")
             + "; share of the clearer wording’s action change reproduced, by end-effector distance at the end of "
-              "the action chunk; offline, no rollouts")
+              "the action chunk; offline, no rollouts",
+            parts=[[describe(r.get("edit_location")), as_float(o["gap_closed_pct"]), as_float(o.get("control_gap_closed_pct"))]
+                   for r, o in chk])
+    # where to edit, offline, the teacher-projection form (GR00T's record): the share of the clearer wording's action
+    # change that the edit reproduces, on failed practice decisions no build used; one edit per location (the base
+    # variant, the shortest name) and its same-size random control where one was run
+    if "offline_where" not in T["where"]:
+        tp = []
+        for r in own:
+            o = r.get("unseen_failures") or (r.get("_extra") or {}).get("unseen_failures")
+            name = str(r.get("edit") or (r.get("_extra") or {}).get("edit") or "")
+            if isinstance(o, dict) and as_float(o.get("teacher_projection")) is not None:
+                tp.append((r, o, name))
+        if tp:
+            t0 = tp[0][0]["_task"]
+            tp = [x for x in tp if x[0]["_task"] == t0]
+            out, nd, parts = [], None, []
+            for lc in ("backbone", "action", "both"):
+                grp = [x for x in tp if loc_class(describe(x[0].get("edit_location"))) == lc]
+                eds = sorted([x for x in grp if "rand" not in x[2]], key=lambda x: len(x[2]))
+                ctl = [x for x in grp if "rand" in x[2]]
+                if not eds:
+                    continue
+                r, o, _ = eds[0]
+                nd = nd or as_int(o.get("n_decisions"))
+                parts.append([describe(r.get("edit_location")), 100 * as_float(o["teacher_projection"]),
+                              100 * as_float(ctl[0][1]["teacher_projection"]) if ctl else None])
+                out.append(f"{describe(r.get('edit_location'))}: {sgn(100 * as_float(o['teacher_projection']), False, 0)}%"
+                           + (f" (random, same size: {sgn(100 * as_float(ctl[0][1]['teacher_projection']), False, 0)}%)"
+                              if ctl else ""))
+            if out:
+                T["where"]["offline_where"] = C(
+                    "; ".join(out),
+                    f"{t0}, {nd} failed practice decisions that no build used; share of the clearer wording’s action "
+                    "change reproduced, as the projection of the edit’s change onto the wording’s over the executed "
+                    "actions (joints and gripper); offline, no rollouts", parts=parts)
     # where to edit: every edit with a location, on its task
     locs = [r for r in own if loc_class(describe(r.get("edit_location"))) and as_int(r.get("edited_k")) is not None]
     locs = [r for r in locs if "where" in nk(describe(r.get("experiment")) or "")] or locs
@@ -1811,7 +1846,10 @@ def fig_where(tb, models, T, L):
             continue
         if wb.get("base") is not None:
             rows.append(("bar", "Unedited", wb["base"], wb["n"], "grey"))
-        rows += [("bar", lab, k, wb["n"], col) for lab, k, col in wb["bars"]]
+        def short(lab):   # "Cosmos-Reason2 backbone", "Text pathway": the model's own words, short enough for the label column
+            nm = loc_name(mid, lab)
+            return (nm[4:5].upper() + nm[5:]) if nm.startswith("the ") else (lab[:34] + "…" if len(lab) > 35 else lab)
+        rows += [("bar", short(lab), k, wb["n"], col) for lab, k, col in wb["bars"]]
     fig, ax, ys, H = rows_figure(rows, L, row=L["row"] * 1.08)
     style_axes(ax, T, L, xlabel="success, % of starts", fmt=lambda v: f"{v:g}%")
     for (k, *rest), y in zip(rows, ys):
@@ -2574,6 +2612,26 @@ def number_figures(page):
     return page[:a] + art + page[b:], n
 
 
+def where_note(tables, models):
+    """One sentence on the offline where-to-edit checks of the NVIDIA models, read from the where table."""
+    row = next((r for t in tables if t["id"] == "where" for r in t["rows"] if r["key"] == "offline_where"), None)
+    bits, ctl = [], []
+    for mid in ("cosmos", "groot"):
+        c = row["cells"].get(mid) if row else None
+        if not c or c.get("s") != "ok" or not c.get("parts"):
+            continue
+        bits.append(f"{models[mid]['name']}’s " + " and ".join(
+            f"{loc_name(mid, loc)[4:]} edit {sgn(v, False, 0)}%" for loc, v, _ in c["parts"]))
+        ctl += [cv for _, _, cv in c["parts"] if cv is not None]
+    if not bits:
+        return ""
+    rng = (f" Random edits of the same size: {sgn(min(ctl), False, 0)}% to {sgn(max(ctl), False, 0)}%." if len(ctl) > 1
+           else f" A random edit of the same size: {sgn(ctl[0], False, 0)}%." if ctl else "")
+    return (f'<p>Offline, on recorded decisions no edit was built from, the share of the clearer wording’s action change '
+            f'each edit reproduces: {esc("; ".join(bits))}.{rng} Closed loop is what counts: see the figure below and '
+            f'the table.</p>')
+
+
 def conclusion_html(tables, models):
     """Where each NVIDIA model stands, one sentence each, read from the wording and edit tables."""
     T = {t["id"]: t for t in tables}
@@ -2770,6 +2828,7 @@ def main():
     page = replace_region(page, "models", models_html(models))
     page = replace_region(page, "render-note", render_note(tables))
     page = replace_region(page, "conclusion", conclusion_html(tables, models))
+    page = replace_region(page, "where-note", where_note(tables, models))
     page = replace_region(page, "table:summary", table_html(summary, models))
     for t in tables:
         page = replace_region(page, f"table:{t['id']}", block_html(t, models))
