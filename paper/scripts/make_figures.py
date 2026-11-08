@@ -15,6 +15,8 @@ Inputs (all inside this repository):
   paper/figures/src/heldout_v2mif_events.json
                                              per-slot event summary of the held-out cube-then-banana run, built by
                                              scripts/summarize_heldout_events.py (cube drops, Fig. 1 slot rule)
+  study/results/opus/where/results/*.json   where-to-edit study: held-out and transfer comparisons, stages and
+                                             behaviour per arm (Fig. 4, Table where-stages)
 
 Outputs: paper/figures/*.pdf (embedded in the paper), paper/figures/preview/*.png (for inspection),
          paper/generated/*.tex (tables input by main.tex).
@@ -626,7 +628,7 @@ def fig_outcomes_full():
     draw_outcomes(outcome_rows(full=True), "figA_outcomes_full", pitch=0.108, label_w=2.25)
 
 
-# ---- Fig. 4: detectability map ----------------------------------------------------------------------------------------
+# ---- Fig. 5: detectability map ----------------------------------------------------------------------------------------
 def fig_detectability():
     W, H = TEXTW, 1.8
     fig = plt.figure(figsize=(W, H))
@@ -690,7 +692,123 @@ def fig_detectability():
     ax.text(70, 24.5, "runtime gripper threshold", ha="left", color=MUTE, **lab)
     ax.text(18.0, 39.5, "unedited rerun, butter", ha="left", color=MUTE, **lab)
     ax.text(72, 6.0, "other edits and unchanged reruns", ha="left", color=INK2, **lab)
-    save(fig, "fig4_detectability")
+    save(fig, "fig5_detectability")
+
+
+# ---- Fig. 4: where to edit ------------------------------------------------------------------------------------------
+# study/results/opus/where/results: one shared unedited run on 64 held-out slots (94016-94079) and 32 paired practice
+# slots per transfer task (94016-94047). Values: owsp diff (diff_*.json); releases: offline_49.json.
+WHERE = OPUS / "where/results"
+WHERE_HO = json.loads((WHERE / "heldout_analysis.json").read_text())
+WHERE_TX = {t: json.loads((WHERE / f"transfer_{t}_analysis.json").read_text()) for t in ("glasses", "left", "cube")}
+WHERE_STAGES = json.loads((WHERE / "heldout_stages.json").read_text())["arms"]
+WHERE_BEHAV = json.loads((WHERE / "heldout_behaviour.json").read_text())
+WHERE_ARMS = [  # (arm key, label, values changed, location kind)
+    ("v1full", "VLM, full edit", "450M", "vlm"),
+    ("v1img816", "VLM, 0.16% variant", "248M", "vlm"),
+    ("va", "VLM + action expert", "506M", "both"),
+    ("a1", "Action expert", "60M", "action"),
+    ("h1", "Action head, least norm", "8,056", "action"),
+    ("p1", "Action head, gated (blind editor)", "1,024", "action"),
+]
+
+
+def _where_cmp(an, cand, ref="base"):
+    hits = [c for c in an["comparisons"] if c["cand"] == cand and c["ref"] == ref]
+    assert len(hits) == 1, (cand, ref)
+    return hits[0]
+
+
+WHERE_BASE = {c["ref_succ"] for c in WHERE_HO["comparisons"] if c["ref"] == "base"}
+assert WHERE_BASE == {5} and WHERE_HO["n_slots"] == 64 and WHERE_HO["slot_range"] == [94016, 94079]
+for _arm, _k, _f, _b in (("v1full", 55, 50, 0), ("v1img816", 41, 38, 2), ("va", 43, 41, 3), ("a1", 20, 20, 5),
+                         ("h1", 0, 0, 5), ("p1", 30, 28, 3)):  # the numbers typed in main.tex, Table where
+    _c = _where_cmp(WHERE_HO, _arm)
+    assert (_c["n"], _c["cand_succ"], _c["fixed"], _c["broke"]) == (64, _k, _f, _b), _c
+    assert WHERE_STAGES[_arm]["success"] == _k
+for _t, _ref, _arms in (("glasses", 14, {"v1full": 25, "a1": 11, "p1": 12}), ("left", 4, {"v1full": 20, "a1": 2, "p1": 1}),
+                        ("cube", 32, {"v1full": 32, "a1": 31, "p1": 32})):
+    for _arm, _k in _arms.items():
+        _c = _where_cmp(WHERE_TX[_t], _arm)
+        assert (_c["n"], _c["ref_succ"], _c["cand_succ"]) == (32, _ref, _k), _c
+
+
+def fig_where():
+    W = TEXTW
+    pitch, top, bot = 0.175, 0.36, 0.25
+    n = len(WHERE_ARMS)
+    H = top + n * pitch + bot
+    size_r, a_l, a_w, b_l, b_w = 1.98, 2.08, 1.45, 3.76, 1.70
+    fig_a = plt.figure(figsize=(W, H))
+    axa = fig_a.add_axes([a_l / W, bot / H, a_w / W, n * pitch / H])
+    axb = fig_a.add_axes([b_l / W, bot / H, b_w / W, n * pitch / H])
+    tr_fig = mtransforms.blended_transform_factory(fig_a.transFigure, axa.transData)
+    base_k = 5
+    yt = -1.5
+    axa.text(0.0, yt, "a", transform=tr_fig, ha="left", va="center", fontsize=FS_TITLE, weight="bold", color=INK)
+    axa.text(0.13 / W, yt, "Cube then banana, 64 held-out seeds", transform=tr_fig, ha="left", va="center",
+             fontsize=FS_SMALL, weight="bold", color=INK)
+    axa.text(size_r / W, yt + 0.02, "values", transform=tr_fig, ha="right", va="center", fontsize=FS_SMALL - 0.3,
+             color=MUTE)
+    axb.text(-0.12, yt, "b", transform=axb.get_yaxis_transform(), ha="left", va="center", fontsize=FS_TITLE,
+             weight="bold", color=INK)
+    axb.text(0.0, yt, "Transfer, 32 practice seeds", transform=axb.get_yaxis_transform(), ha="left",
+             va="center", fontsize=FS_SMALL, weight="bold", color=INK)
+    for i, (arm, label, vals, kind) in enumerate(WHERE_ARMS):
+        c = _where_cmp(WHERE_HO, arm)
+        k = c["cand_succ"]
+        share = 100 * k / 64
+        vlm = kind == "vlm"
+        axa.text(0.13 / W, i, label, transform=tr_fig, ha="left", va="center", fontsize=FS_SMALL, color=INK)
+        axa.text(size_r / W, i, vals, transform=tr_fig, ha="right", va="center", fontsize=FS_SMALL - 0.3, color=MUTE)
+        axa.add_patch(Rectangle((0, i - 0.3), 100, 0.6, fc=PALE, ec="none", zorder=0))
+        if k:
+            axa.add_patch(Rectangle((0, i - 0.3), share, 0.6, fc=TEAL_PALE if vlm else LIGHT,
+                                    ec=TEAL if vlm else "none", lw=0.6, zorder=1))
+        lo, hi = wilson(k, 64)
+        xb = 100 * base_k / 64
+        axa.plot([100 * lo, 100 * hi], [i, i], color=TEAL if vlm else INK2, lw=0.7, zorder=2, solid_capstyle="butt")
+        txt = f"{k}/64"
+        axa.text(max(100 * hi, xb) + 2.5, i, txt, ha="left", va="center", fontsize=FS_SMALL,
+                 color=TEAL if vlm else INK2, weight="bold" if arm == "v1full" else "normal", zorder=3)
+        # transfer: unedited (open) to edited (filled), eyeglasses above, cube left of bowl below
+        runs = [(t, dy, mk) for t, dy, mk in (("glasses", -0.17, "o"), ("left", 0.17, "^"))
+                if any(cc["cand"] == arm and cc["ref"] == "base" for cc in WHERE_TX[t]["comparisons"])]
+        if not runs:
+            axb.text(2, i, "not run", ha="left", va="center", fontsize=FS_SMALL - 0.3, color=MUTE)
+        for t, dy, mk in runs:
+            cc = _where_cmp(WHERE_TX[t], arm)
+            x0, x1 = 100 * cc["ref_succ"] / 32, 100 * cc["cand_succ"] / 32
+            col = TEAL if vlm else INK2
+            axb.plot([x0, x1], [i + dy, i + dy], color=LIGHT, lw=0.8, zorder=1)
+            axb.plot([x0], [i + dy], marker=mk, ms=3.6, mfc="white", mec=MUTE, mew=0.7, ls="", zorder=2)
+            axb.plot([x1], [i + dy], marker=mk, ms=3.6, mfc=col, mec=col, mew=0.7, ls="", zorder=3)
+            right = x1 >= x0
+            axb.text(x1 + (3 if right else -3), i + dy, f"{cc['cand_succ']}", ha="left" if right else "right",
+                     va="center", fontsize=FS_SMALL - 0.6, color=col)
+    # unedited reference: one shared run, 5/64
+    xb = 100 * base_k / 64
+    axa.plot([xb, xb], [-0.5, n - 0.5], color=INK2, lw=0.6, ls=(0, (2, 1.5)), zorder=1.5)
+    axa.text(xb + 1.5, -0.62, f"unedited {base_k}/64", ha="left", va="bottom", fontsize=FS_SMALL - 0.4, color=INK2)
+    # key for panel b
+    ky = -0.55
+    for x, mk, txt, fc in ((0, "o", "eyeglasses", INK2), (31, "^", "cube left of bowl", INK2),
+                           (81, "o", "unedited", "white")):
+        axb.plot([x + 1.5], [ky - 0.12], marker=mk, ms=3.4, mfc=fc, mec=INK2 if fc != "white" else MUTE, mew=0.7,
+                 ls="", clip_on=False)
+        axb.text(x + 5, ky - 0.12, txt, ha="left", va="center", fontsize=FS_SMALL - 0.4,
+                 color=INK2 if fc != "white" else MUTE)
+    for a in (axa, axb):
+        a.set_xlim(0, 100)
+        a.set_ylim(n - 0.5, -0.5)
+        a.set_yticks([])
+        a.set_xticks([0, 50, 100])
+        a.set_xticklabels(["0", "50", "100%"])
+        for s_ in ("top", "right", "left"):
+            a.spines[s_].set_visible(False)
+    axb.set_xticks([0, 25, 50, 75, 100])
+    axb.set_xticklabels(["0", "", "50", "", "100%"])
+    save(fig_a, "fig4_where")
 
 
 # ---- appendix: mustard wrist-camera strip -------------------------------------------------------------------------
@@ -870,7 +988,19 @@ def write_tables():
             lines.append(f"{names[key] if order.startswith('unedited') else ''} & {rng} & {order} & "
                          f"{b}/{n} & {c}/{n} & {fx} / {br}\\\\")
     (GEN / "heldout_halves_table.tex").write_text("\n".join(lines) + "\n")
-    print("wrote generated/{survey,comparisons,transfer,gripper,heldout_halves}_table.tex")
+    lines = []
+    for arm, label, _, _ in WHERE_ARMS:
+        st, bh = WHERE_STAGES[arm], WHERE_BEHAV[arm]
+        assert bh["n"] == WHERE_STAGES[arm].get("n", 64) == 64
+        conv = "---" if st["banana_conversion"] is None else f'{100 * st["banana_conversion"]:.0f}\\%'
+        lines.append(f'{tex_escape(label)} & {st["cube_placed"]}/64 & {st["success"]}/64 & {conv} & '
+                     f'{100 * bh["first_chunk_closed"]:.0f}\\% & {bh["wrong_object_grabs_per_episode"]:.2f}\\\\')
+    lines.insert(0, f'Unedited & {WHERE_STAGES["base"]["cube_placed"]}/64 & {WHERE_STAGES["base"]["success"]}/64 & '
+                    f'{100 * WHERE_STAGES["base"]["banana_conversion"]:.0f}\\% & '
+                    f'{100 * WHERE_BEHAV["base"]["first_chunk_closed"]:.0f}\\% & '
+                    f'{WHERE_BEHAV["base"]["wrong_object_grabs_per_episode"]:.2f}\\\\')
+    (GEN / "where_stages_table.tex").write_text("\n".join(lines) + "\n")
+    print("wrote generated/{survey,comparisons,transfer,gripper,heldout_halves,where_stages}_table.tex")
 
 
 def print_table():
@@ -890,6 +1020,7 @@ if __name__ == "__main__":
     fig_outcomes()
     fig_outcomes_full()
     fig_detectability()
+    fig_where()
     fig_mustard()
     write_tables()
     print_table()

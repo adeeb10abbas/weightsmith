@@ -1,8 +1,9 @@
 # Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy's Misreading
 
 LaTeX sources for the arXiv preprint by Ali-Adeeb Abbas and Esmaeil Seraj (authors and affiliations are still to be
-confirmed; see the `TODO` comment next to `\author` in `main.tex`). The compiled paper is `main.pdf`: six pages of
-main text, references, and Appendices A–F.
+confirmed; see the `TODO` comment next to `\author` in `main.tex`). The compiled paper is `main.pdf`: nine pages of
+main text, references, and Appendices A–H (23 pages in all). It is laid out for arXiv only (CoRL style with the
+`preprint` option, no page limit).
 
 The paper reports the Claude Opus weight-editing cohort on the zero-shot π0.5 DROID policy in RoboLab: closed-form
 instruction distillation, which fixes a language-binding failure (held-out 27/128 → 106/128), its 0.16% low-rank
@@ -31,9 +32,10 @@ and the PDF figures that `main.tex` includes. It is a build product and is not c
 | 1 | `figures/fig1_teaser.pdf` | Held-out start 90002, unedited vs edited: wrist-camera storyboard, commanded gripper and logged events, held-out success with Wilson intervals |
 | 2 | `figures/fig2_construction.pdf` | Offline releases (of 21 replayed decisions) under rewordings, along the edit's construction, and for its variants, with closed-loop results |
 | 3 | `figures/fig3_outcomes.pdf` | Paired-outcome bars (both fail · fixed · broke · both succeed) for the main comparisons |
-| 4 | `figures/fig4_detectability.pdf` | Every comparison against the smallest detectable paired difference |
-| 5 (App. B) | `figures/figA_outcomes_full.pdf` | Paired-outcome bars for every comparison |
-| 6 (App. D) | `figures/figA_mustard.pdf` | Mustard wrist-camera strip |
+| 4 | `figures/fig4_where.pdf` | Where to edit: held-out success of each placement of the distillation (VLM, VLM + action expert, action expert, action head, gated head) on 64 shared seeds with Wilson intervals, and transfer to eyeglasses and cube left of bowl |
+| 5 | `figures/fig5_detectability.pdf` | Every comparison against the smallest detectable paired difference |
+| 6 (App. B) | `figures/figA_outcomes_full.pdf` | Paired-outcome bars for every comparison |
+| 7 (App. D) | `figures/figA_mustard.pdf` | Mustard wrist-camera strip |
 
 `figures/preview/*.png` are PNG renders of the same figures for review.
 
@@ -58,9 +60,12 @@ Every number in the paper comes from these files. The figures and the large tabl
 
 | Source | Used for |
 |---|---|
-| `study/results/opus/comparisons.json` | Every paired comparison (n, unedited, edited, fixed, broke): Figs. 3–5, Tables 3, 6 and 7 |
-| `study/results/opus/heldout/*.json` | Held-out runs: per-slot outcomes, Wilson intervals, exact McNemar p, steps to success, Table 8 |
-| `study/blog/failure-levels.md` | 16-task survey (Table 1), flat-box transfer row, replays and ablations (Fig. 2, Table 5), diagnosis numbers |
+| `study/results/opus/comparisons.json` | Every paired comparison (n, unedited, edited, fixed, broke): Figs. 3, 5 and 6, Tables 5, 8 and 9 |
+| `study/results/opus/heldout/*.json` | Held-out runs: per-slot outcomes, Wilson intervals, exact McNemar p, steps to success, Table 11 |
+| `study/results/opus/where/` (`README.md`, `results/*.json`) | Where to edit (Section 4.4, Appendix G): Fig. 4, Tables 1 and 10 |
+| `study/results/ctrl/` (`README.md`, `summary.json`, `heldout/`, `stack3/FINAL2.md`) | Seven blind editors and the stacking round 2 (Section 4.6, Appendix F, Table 2) |
+| `study/results/tutorial/` | Held-out score of the edit `weightsmith distill` built end to end (Section 4.5) |
+| `study/blog/failure-levels.md` | 16-task survey (Table 3), flat-box transfer row, replays and ablations (Fig. 2, Table 7), diagnosis numbers |
 | `study/results/opus/EVIDENCE.md`, `study/results/opus/ctb/README.md` | Edit construction, offline attempts (Fig. 2b), budgets, costs, lane check |
 | `study/results/opus/claude-astra-protocol-{BRIEF,FINAL}.md` | The Claude-under-Astra-protocol run (Appendix D) |
 | `study/RESULTS.md`, `study/blog/draft.md` | Companion Astra study results that the paper cites |

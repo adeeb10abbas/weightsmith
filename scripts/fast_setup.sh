@@ -45,6 +45,19 @@ if [ "${mbps:-0}" -lt 40 ] && [ "${FORCE:-0}" != 1 ]; then
   exit 3
 fi
 
+# Blackwell and newer GPUs (compute capability >= 10) need CUDA 12.8 PyTorch wheels; the pinned sim env
+# uses CUDA 11.8 wheels for 535-series drivers. On such hosts, build a cu128 copy of the env instead.
+SIM_ENV=envs/robolab-sim
+cc=$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader 2>/dev/null | head -1)
+if [ -n "$cc" ] && [ "${cc%%.*}" -ge 10 ]; then
+  SIM_ENV=envs/robolab-sim-cu128
+  mkdir -p "$SIM_ENV"
+  sed -e 's/pytorch-cu118/pytorch-cu128/g' -e 's#whl/cu118#whl/cu128#' \
+      -e 's/^    # The workstation.s 535 driver cannot load CUDA 12.8 PyTorch wheels.$/    # cu128 copy for compute capability >= 10 (made by scripts\/fast_setup.sh)/' \
+      envs/robolab-sim/pyproject.toml > "$SIM_ENV/pyproject.toml"
+  stamp "compute capability $cc: sim env $SIM_ENV (CUDA 12.8 PyTorch wheels, re-resolved)"
+fi
+
 # 2. clone + patch (seconds; the LFS assets come in step 3)
 SKIP_LFS=1 scripts/setup_deps.sh --no-sync >"$LOG/clone.log" 2>&1 || die "clone/patch (see $LOG/clone.log)"
 stamp "clone + patch done"
@@ -60,13 +73,14 @@ step() {  # step NAME CMD...: run in the background, log to $LOG/NAME.log, recor
 rm -f "$LOG"/*.failed
 step lfs        git -C third_party/RoboLab -c lfs.concurrenttransfers=32 lfs pull
 step openpi-env bash -c 'cd third_party/openpi && GIT_LFS_SKIP_SMUDGE=1 uv sync'; p_openpi=$!
-step sim-env    bash -c 'cd envs/robolab-sim && uv sync --python 3.11'
+step sim-env    bash -c "cd $SIM_ENV && uv sync --python 3.11"
 step checkpoint python3 scripts/gcs_fetch.py gs://openpi-assets-simeval/pi05_droid_jointpos "$OPENPI_DATA_HOME"; p_ckpt=$!
 stamp "downloading: lfs, openpi-env, sim-env, checkpoint (tail -f $LOG/*.log)"
 
 # 4. wsp.env, then the weight export as soon as its two inputs (OpenPI env, checkpoint) are in
 [ -f wsp.env ] || cp .env.example wsp.env
-grep -q '^CHECKPOINT_DIR=' wsp.env || scripts/setup_deps.sh --print-env | sed "s#^CHECKPOINT_DIR=.*#CHECKPOINT_DIR=$CKPT#" >> wsp.env
+grep -q '^CHECKPOINT_DIR=' wsp.env || scripts/setup_deps.sh --print-env \
+  | sed -e "s#^CHECKPOINT_DIR=.*#CHECKPOINT_DIR=$CKPT#" -e "s#envs/robolab-sim/.venv#$SIM_ENV/.venv#" >> wsp.env
 wait "$p_openpi" "$p_ckpt"
 if [ -e "$LOG/checkpoint.failed" ] || [ -e "$LOG/openpi-env.failed" ]; then
   wait; die "openpi-env or checkpoint (see $LOG/)"
