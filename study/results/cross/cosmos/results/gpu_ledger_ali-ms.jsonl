@@ -88,3 +88,5 @@
 {"tag": "T4-Et8und-s96000", "machine": "ali-ms", "gpu": 0, "start": 1794150562.5175025, "end": 1794151937.0300775, "gpu_s": 1374.5, "kind": "eval", "n": 16}
 {"tag": "unds-chk", "machine": "ali-ms", "gpu": 0, "start": 1794151937.0325806, "end": 1794152551.7748225, "gpu_s": 614.7, "kind": "check", "rc": 0}
 {"tag": "T6-Et8und-s96016", "gpu": 1, "start": 1794151658.1129537, "end": 1794152773.3433652, "gpu_s": 1115.2, "kind": "eval", "n": 16}
+{"tag": "T2-base-s96000", "gpu": 1, "start": 1794152773.3442292, "end": 1794153499.1845403, "gpu_s": 725.8, "kind": "eval", "n": 16}
+{"tag": "T4-base-s96016", "machine": "ali-ms", "gpu": 0, "start": 1794152551.796553, "end": 1794153819.1664565, "gpu_s": 1267.4, "kind": "eval", "n": 16}
