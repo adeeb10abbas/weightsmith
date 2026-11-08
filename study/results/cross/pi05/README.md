@@ -87,6 +87,8 @@ Jobs finished: **13** (16 slots each, two fresh 8-env Isaac processes per group)
 | T8 MustardRightOfRaisinRFTask | **0/16** | 0–19% | 30000–30015 | 0/16 | 0 |
 | R1 RubiksCubeTask | **16/16** | 81–100% | 30000–30015 | 9/16 | 9 |
 
+![Fresh failure map](plots/fresh_failure_map.png)
+
 **T1 held-out: the distilled edit `v2mi-f` (instruction unchanged)**
 
 | Arm | Success | Paired |
@@ -95,6 +97,8 @@ Jobs finished: **13** (16 slots each, two fresh 8-env Isaac processes per group)
 | **`v2mi-f`** | **20/32** | vs unedited: 18 fixed / 0 broke, p = 7.6 × 10<sup>-6</sup>; difference +40.6 to +71.9 pts |
 
 Slots 96000–96031 (held-out, never used for any choice).
+
+![Fresh T1 held-out](plots/fresh_t1_heldout.png)
 
 <!-- fresh2:end -->
 

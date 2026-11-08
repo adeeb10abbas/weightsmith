@@ -157,6 +157,8 @@ def readme_block(out, summary):
             L.append(f"| {r['code']} {r['task']} | **{r['unedited_k']}/{r['n']}** | {lo:.0f}–{hi:.0f}% | "
                      f"{r['slots'][0]}–{r['slots'][1]} | {ctxt} | {both if both is not None else '–'} |")
         L.append("")
+        if (PI05 / "plots/fresh_failure_map.png").exists():
+            L += ["![Fresh failure map](plots/fresh_failure_map.png)", ""]
     et = [r for r in out if r["experiment"] == "edit_target"]
     for r in et:
         d = r["ci"]["paired_diff_bootstrap95_pts"]
@@ -178,6 +180,8 @@ def readme_block(out, summary):
                      f"{r['recovery_pct']}% |")
         L += ["", f"Slots {r['slots'][0]}–{r['slots'][1]} (held-out, never used for any choice)"
               + (f"; control on {c['slots'][0]}–{c['slots'][1]}" if c else "") + ".", ""]
+        if (PI05 / "plots/fresh_t1_heldout.png").exists():
+            L += ["![Fresh T1 held-out](plots/fresh_t1_heldout.png)", ""]
     se = [r for r in out if r["experiment"] == "side_effect"]
     if se:
         L += ["**Side effects of `v2mi-f`** (held-out, each task's own default instruction):", "",
@@ -186,6 +190,8 @@ def readme_block(out, summary):
             L.append(f"| {r['code']} {r['task']} | {r['unedited_k']}/{r['n']} → **{r['edited_k']}/{r['n']}** | "
                      f"{r['fixed']} / {r['broke']} | {fmt_p(r['p'])} | {r['slots'][0]}–{r['slots'][1]} |")
         L.append("")
+        if (PI05 / "plots/fresh_side_effects.png").exists():
+            L += ["![Fresh side effects](plots/fresh_side_effects.png)", ""]
     for r in [x for x in out if x["experiment"] == "wording"]:
         L += [f"**T8 wording gap** (unedited, practice {r['slots'][0]}–{r['slots'][1]}): reference-first "
               f"{r['unedited_k']}/{r['n']} vs target-first **{r['teacher_k']}/{r['n']}** ({r['fixed']} TF-only / "
