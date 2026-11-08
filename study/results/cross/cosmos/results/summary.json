@@ -119,10 +119,26 @@
     30012,
     30013,
     30014,
-    30015
+    30015,
+    96000,
+    96001,
+    96002,
+    96003,
+    96004,
+    96005,
+    96006,
+    96007,
+    96008,
+    96009,
+    96010,
+    96011,
+    96012,
+    96013,
+    96014,
+    96015
    ],
-   "k": 13,
-   "n": 16
+   "k": 28,
+   "n": 32
   },
   "ali-ms/T8-base": {
    "slots": [
@@ -141,10 +157,26 @@
     30012,
     30013,
     30014,
-    30015
+    30015,
+    96000,
+    96001,
+    96002,
+    96003,
+    96004,
+    96005,
+    96006,
+    96007,
+    96008,
+    96009,
+    96010,
+    96011,
+    96012,
+    96013,
+    96014,
+    96015
    ],
    "k": 0,
-   "n": 16
+   "n": 32
   },
   "ali-ms/T8-wtf": {
    "slots": [
@@ -307,6 +339,34 @@
     ]
    },
    "recovery_pct": 86.7
+  },
+  {
+   "machine": "ali-ms",
+   "code": "T8",
+   "edit": "t8und",
+   "split": "heldout",
+   "location": "text pathway (und mlp.down_proj, layers 0-26)",
+   "n": 16,
+   "ref_k": 0,
+   "cand_k": 15,
+   "fixed": 15,
+   "broke": 0,
+   "both": 0,
+   "neither": 1,
+   "p": 6.103515625e-05,
+   "diff_pts": 93.75,
+   "diff_ci95_pts": [
+    81.25,
+    100.0
+   ],
+   "slots": [
+    96000,
+    96015
+   ],
+   "control": null,
+   "teacher": null,
+   "edit_vs_control": null,
+   "recovery_pct": null
   }
  ],
  "side_effects": [],
@@ -369,6 +429,24 @@
     "gpu_s": 748.0,
     "started": "2026-11-08 01:25:47",
     "finished": "2026-11-08 01:38:15"
+   },
+   {
+    "tag": "T8-Et8und-s96000",
+    "task": "MustardRightOfRaisinRFTask",
+    "prompt": null,
+    "edit": "edits/t8und.pt",
+    "slots": [
+     96000,
+     96015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 15,
+    "gpu_s": 639.8,
+    "started": "2026-11-08 02:12:41",
+    "finished": "2026-11-08 02:23:21"
    }
   ],
   "ali-ms/T8-base": [
@@ -389,6 +467,24 @@
     "gpu_s": 728.9,
     "started": "2026-11-08 00:38:39",
     "finished": "2026-11-08 00:50:48"
+   },
+   {
+    "tag": "T8-base-s96000",
+    "task": "MustardRightOfRaisinRFTask",
+    "prompt": null,
+    "edit": null,
+    "slots": [
+     96000,
+     96015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 0,
+    "gpu_s": 769.9,
+    "started": "2026-11-08 01:59:51",
+    "finished": "2026-11-08 02:12:41"
    }
   ],
   "ali-ms/T8-wtf": [
@@ -412,5 +508,5 @@
    }
   ]
  },
- "records": 8
+ "records": 9
 }
