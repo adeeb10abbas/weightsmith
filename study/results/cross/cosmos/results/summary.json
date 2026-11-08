@@ -344,10 +344,26 @@
     96044,
     96045,
     96046,
-    96047
+    96047,
+    96048,
+    96049,
+    96050,
+    96051,
+    96052,
+    96053,
+    96054,
+    96055,
+    96056,
+    96057,
+    96058,
+    96059,
+    96060,
+    96061,
+    96062,
+    96063
    ],
-   "k": 8,
-   "n": 32
+   "k": 16,
+   "n": 48
   },
   "ali-ms/S1L-rf": {
    "slots": [
@@ -2762,22 +2778,22 @@
    "edit": "s1lund",
    "split": "heldout",
    "location": "text pathway (und mlp.down_proj, layers 0-26), --align all (169 = 169 tokens, every position matched)",
-   "n": 16,
+   "n": 32,
    "ref_k": 1,
-   "cand_k": 4,
-   "fixed": 3,
+   "cand_k": 12,
+   "fixed": 11,
    "broke": 0,
    "both": 1,
-   "neither": 12,
-   "p": 0.25,
-   "diff_pts": 18.75,
+   "neither": 20,
+   "p": 0.0009765625,
+   "diff_pts": 34.38,
    "diff_ci95_pts": [
-    0.0,
-    37.5
+    18.75,
+    50.0
    ],
    "slots": [
     96032,
-    96047
+    96063
    ],
    "control": {
     "n": 16,
@@ -2855,7 +2871,7 @@
      96047
     ]
    },
-   "recovery_pct": 300.0
+   "recovery_pct": null
   }
  ],
  "side_effects": [
@@ -3540,6 +3556,24 @@
     "gpu_s": 625.8,
     "started": "2026-11-08 16:29:56",
     "finished": "2026-11-08 16:40:22"
+   },
+   {
+    "tag": "S1L-Es1lund-s96048",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "prompt": "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
+    "edit": "edits/s1lund.pt",
+    "slots": [
+     96048,
+     96063
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 8,
+    "gpu_s": 604.7,
+    "started": "2026-11-08 17:10:50",
+    "finished": "2026-11-08 17:20:55"
    }
   ],
   "ali-ms/S1L-rf": [

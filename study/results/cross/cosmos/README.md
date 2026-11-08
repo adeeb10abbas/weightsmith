@@ -92,6 +92,9 @@ All numbers: ali-ms GPU1, default render, 8 envs per sim process, paired on the 
 | **edited `t8und`, RF wording** | **13/16** | 13 fixed / 0 broke, p = 2.4e-4; recovers 86.7% of the TF wording's gain |
 | random-direction control of `t8und` (same rank and singular values per layer) | 1/16 | 1 fixed / 0 broke, p = 1 |
 
+On the second practice group (30016-30031) the unedited policy solves 0/16 under RF and 16/16 under TF. Over both
+groups the wording screen is 0/32 -> 31/32 (31 TF-only starts, p = 9.3e-10).
+
 | Arm (slots 96000-96063, held-out: never used for any choice) | Success | Paired |
 |---|---|---|
 | unedited, RF wording | 0/64 (Wilson 95% 0.0-5.7%) | |
@@ -137,25 +140,31 @@ video/action-pathway edit `t8gen` solves 0/16 (unedited 0/16, text-pathway `t8un
 | `t5_30001_unedited_vs_t8und.mp4` | side effect, T5, practice start 30001: `t8und` carries the mustard to the other bin |
 | `t3_96004_unedited_vs_t8und.mp4` | side effect, T3, held-out start 96004: unedited puts the cube left of the bowl; `t8und` puts it elsewhere |
 
-### Side effects of `t8und` on the other tasks (practice starts 30000-30015, each task's default instruction)
+### Side effects of `t8und` on the other tasks (each task's default instruction)
 
-Each task is run unedited and with `t8und`, on the same 16 starts and the same GPU. Table, plots
-(`plots/tasks_t8und_ali-ms.png`, `plots/side_effects_t8und_ali-ms.png`) and `../metrics_cosmos.json`
-(`experiment: side_effect`) are regenerated as cells land. The map is the honest map of the edit that was scored on held-out starts.
+Each task runs unedited and with `t8und` on the same starts and the same GPU: practice 30000-30031 (n = 32 per task) and
+held-out 96000-96031 (n = 32; T2 and T7 96000-96015, n = 16). Plots: `plots/tasks_t8und_ali-ms.png`,
+`plots/side_effects_t8und_ali-ms.png` (practice), `plots/tasks_heldout_t8und_ali-ms.png`,
+`plots/side_effects_heldout_t8und_ali-ms.png` (held-out). Records: `../metrics_cosmos.json` (`experiment: side_effect`,
+`side_effect_heldout`).
 
-The first cells show a clear pattern. The edit breaks the two other instructions that say "left": T5, "put the mustard in the left bin",
-goes 8/16 -> 0/16 (8 broke, 0 fixed, p = 0.0078), and the edited policy carries the mustard to the other bin
-(`videos/t5_30001_unedited_vs_t8und.mp4`). T3, "put the rubiks cube to the left of the bowl", goes 4/16 -> 0/16
-(p = 0.125). Tasks without left/right are unchanged or slightly better (T1 10 -> 12/16, R1 9 -> 13/16, neither
-significant). Distilling "the raisin box is to the left of the mustard" into "the mustard is to the right of
-the raisin box" taught the text pathway something like left -> right, beyond the one sentence it was built from.
+| Task | Practice 30000-30031: unedited -> `t8und` | fixed / broke | p | Held-out: unedited -> `t8und` | fixed / broke | p |
+|---|---|---|---|---|---|---|
+| T5 mustard in **left** bin | 11/32 -> **0/32** | 0 / 11 | **9.8e-4** | 9/32 -> **0/32** | 0 / 9 | **0.0039** |
+| T3 cube **left** of bowl | 13/32 -> **0/32** | 0 / 13 | **2.4e-4** | 13/32 -> **0/32** | 0 / 13 | **2.4e-4** |
+| R1 cube in bowl (retention) | 21/32 -> 27/32 | 9 / 3 | 0.15 | 24/32 -> 28/32 | 7 / 3 | 0.34 |
+| T1 cube then banana | 21/32 -> 18/32 | 7 / 10 | 0.63 | 18/32 -> 18/32 | 9 / 9 | 1 |
+| T4 stack yellow on red | 22/32 -> 26/32 | 8 / 4 | 0.39 | 24/32 -> 22/32 | 4 / 6 | 0.75 |
+| T6 stack 3 cubes | 2/32 -> 3/32 | 3 / 2 | 1 | 1/32 -> 1/32 | 1 / 1 | 1 |
+| T2 pick glasses | 2/32 -> 0/32 | 0 / 2 | 0.5 | 4/16 -> 1/16 | 0 / 3 | 0.25 |
+| T7 pick green block | 0/32 -> 0/32 | 0 / 0 | 1 | 0/16 -> 0/16 | 0 / 0 | 1 |
 
-Held-out starts confirm the break. On slots 96000-96031, which no task except T8 had ever used, T5 goes 9/32 -> 0/32
-(9 broke, 0 fixed, p = 0.0039) and T3 goes 13/32 -> 0/32 (13 broke, p = 2.4e-4) (`experiment: side_effect_heldout`;
-plots `plots/tasks_heldout_t8und_ali-ms.png`, `plots/side_effects_heldout_t8und_ali-ms.png`). R1, T1, T4, T6, T2 and T7
-on held-out starts are running.
+The edit breaks exactly the two other instructions that say "left", on practice and on held-out starts. On T5 the edited
+policy carries the mustard to the other bin (`videos/t5_30001_unedited_vs_t8und.mp4`). Nothing else changes significantly.
+Distilling "the raisin box is to the left of the mustard" into "the mustard is to the right of the raisin box" taught the
+text pathway something like left -> right, beyond the one sentence it was built from.
 
-Follow-up `t8und-p` (running): the same build plus zero-change preservation keys from 65 generic RoboLab instructions.
+Follow-up `t8und-p`: the same build plus zero-change preservation keys from 65 generic RoboLab instructions.
 The set is fixed by rule before the build (`tasks/preserve_generic.json`): all RoboLab default instructions minus the shared-set
 tasks, their near-duplicates and every instruction that mentions mustard, raisin, a bin, left or right. So a T5 recovery
 cannot come from a hand-picked mirror instruction. It runs first on T5 and on T8 practice; held-out and the full map

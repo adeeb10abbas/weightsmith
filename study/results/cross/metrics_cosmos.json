@@ -1626,34 +1626,34 @@
    "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
    "Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl."
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    96032,
-   96047
+   96063
   ],
   "unedited_k": 1,
-  "edited_k": 4,
-  "fixed": 3,
+  "edited_k": 12,
+  "fixed": 11,
   "broke": 0,
-  "p": 0.25,
+  "p": 0.0009765625,
   "ci": {
-   "diff_pts": 18.75,
+   "diff_pts": 34.38,
    "bootstrap95_pts": [
-    0.0,
-    37.5
+    18.75,
+    50.0
    ],
    "wilson95_unedited_pct": [
-    1.1,
-    28.3
+    0.6,
+    15.7
    ],
    "wilson95_edited_pct": [
-    10.2,
-    49.5
+    22.9,
+    54.7
    ]
   },
   "control_k": 1,
   "teacher_k": 2,
-  "recovery_pct": 300.0,
+  "recovery_pct": null,
   "transfer": null,
   "retention": null,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26), --align all (169 = 169 tokens, every position matched)",
