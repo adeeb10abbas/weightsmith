@@ -71,7 +71,7 @@ instructions, same slots, same render preset, same GPU model.
 | Metrics | [`scripts/fresh.py`](scripts/fresh.py) → records with `"status": "fresh"`, `"run": "C-prime-default"` in [`../metrics_pi05.json`](../metrics_pi05.json) and [`results/fresh/summary.json`](results/fresh/summary.json); per-job records in `results/fresh/runs/` |
 
 <!-- fresh2:begin -->
-Jobs finished: **21** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **3.39 GPU-h** (ali-ms RTX 3090s: GPU0, and GPU1 from 22:45 UTC; both arms of every pair on one GPU, `gpus` in each record). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
+Jobs finished: **22** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **3.5 GPU-h** (ali-ms RTX 3090s: GPU0, and GPU1 from 22:45 UTC; both arms of every pair on one GPU, `gpus` in each record). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
 
 **Failure map** (unedited π0.5, task's default instruction, practice slots). For context, Cosmos3 Edge on the same 16 starts (Track A's run records on ali-ms, default preset, 8 envs per process; `results/fresh/cosmos_same_slots_ali-ms.json`):
 
@@ -100,6 +100,14 @@ Jobs finished: **21** (16 slots each, two fresh 8-env Isaac processes per group)
 Slots 96000–96031 (held-out, never used for any choice); control on 96000–96031.
 
 ![Fresh T1 held-out](plots/fresh_t1_heldout.png)
+
+**Side effects of `v2mi-f`** (held-out, each task's own default instruction):
+
+| Task | Unedited → edited | Fixed / broke | Exact p | Slots |
+|---|---|---|---|---|
+| T3 RubiksCubeLeftOfBowlTask | 1/16 → **4/16** | 4 / 1 | 0.38 | 96000–96015 |
+
+![Fresh side effects](plots/fresh_side_effects.png)
 
 <!-- fresh2:end -->
 
