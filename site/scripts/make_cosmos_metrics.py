@@ -3163,8 +3163,14 @@ def tldr_story(tables, models, prevent, sites):
     if g and any(b["sites"] for b in g["blocks"]) and all(s["oc"] == "broke" for b in g["blocks"] for s in b["sites"]):
         bits.append("On GR00T N1.7 every version of the edit made the robot worse.")
     if WHEN_LAST.get("rule"):
+        pred = WHEN_LAST.get("pred") or []
+        eq = next((x for x in pred if x["equal"] and x["held"] is True and x.get("unseen")), None)
+        ok = eq and all(x["held"] is not False for x in pred)
+        c = eq["unseen"] if eq else None
         bits.append("On both NVIDIA models it works when the clear wording changes words in place, not when it adds "
-                    "words.")
+                    "words" + (f", a rule we wrote down before testing a new pair, and it held ({c['a']} → {c['b']} of "
+                               f"{c['n']} unseen starts, random edit {c['ctl']})" if ok and c.get("ctl") is not None
+                               else ", a rule we wrote down before testing a new pair, and it held" if ok else "") + ".")
     items.append(dict(id="where", lead="Where it works", text=" ".join(bits) or f"{RUNNING}."))
     drops = left_drops(tables)
     if drops:
@@ -4115,6 +4121,7 @@ def prospect_html(P):
             held = None
             verdict = "So far the prediction holds; the runs on the robot are next." if x["passed"] else ""
         verdict += {True: "The prediction held.", False: "The prediction did not hold.", None: ""}[held]
+        WHEN_LAST.setdefault("pred", []).append(dict(equal=x["equal"], held=held, unseen=cu))
         s.append(f"{x['plain']}" + (f", {toks}" if toks else "") + (f"; {modest}, a modest gap" if modest else "")
                  + ": " + "; ".join(res) + ". " + verdict)
         rows.append((x["plain"], C(("Yes: " if x["equal"] else "No: ") + (toks or ("equal length" if x["equal"]
