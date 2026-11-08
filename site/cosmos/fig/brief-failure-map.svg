@@ -2150,13 +2150,13 @@ z
     </g>
    </g>
    <g id="text_39">
-    <!-- 32/32 · 100% -->
+    <!-- 16/16 · 100% -->
     <g style="fill: #ffffff" transform="translate(217.960328 142.272797) scale(0.062 -0.062)">
-     <use xlink:href="#ArialMT-33"/>
-     <use xlink:href="#ArialMT-32" transform="translate(55.615234 0)"/>
+     <use xlink:href="#ArialMT-31"/>
+     <use xlink:href="#ArialMT-36" transform="translate(55.615234 0)"/>
      <use xlink:href="#ArialMT-2f" transform="translate(111.230469 0)"/>
-     <use xlink:href="#ArialMT-33" transform="translate(139.013672 0)"/>
-     <use xlink:href="#ArialMT-32" transform="translate(194.628906 0)"/>
+     <use xlink:href="#ArialMT-31" transform="translate(139.013672 0)"/>
+     <use xlink:href="#ArialMT-36" transform="translate(194.628906 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(250.244141 0)"/>
      <use xlink:href="#ArialMT-b7" transform="translate(278.027344 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(311.328125 0)"/>
