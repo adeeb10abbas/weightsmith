@@ -1,0 +1,79 @@
+{
+ "items": [
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e0.npz",
+   "k": 4,
+   "slot": 30016
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e1.npz",
+   "k": 4,
+   "slot": 30017
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e2.npz",
+   "k": 4,
+   "slot": 30018
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e3.npz",
+   "k": 4,
+   "slot": 30019
+  }
+ ],
+ "wordings": {
+  "orig": "Put the cube then the banana in the bowl",
+  "expl": "Put the cube in the bowl then put the banana in the bowl"
+ },
+ "edit": null,
+ "files": [
+  {
+   "item": 0,
+   "wording": "orig",
+   "file": "wsp/t1/early/cap/i000_orig.npz",
+   "seed": 12006404
+  },
+  {
+   "item": 0,
+   "wording": "expl",
+   "file": "wsp/t1/early/cap/i000_expl.npz",
+   "seed": 12006404
+  },
+  {
+   "item": 1,
+   "wording": "orig",
+   "file": "wsp/t1/early/cap/i001_orig.npz",
+   "seed": 12006504
+  },
+  {
+   "item": 1,
+   "wording": "expl",
+   "file": "wsp/t1/early/cap/i001_expl.npz",
+   "seed": 12006504
+  },
+  {
+   "item": 2,
+   "wording": "orig",
+   "file": "wsp/t1/early/cap/i002_orig.npz",
+   "seed": 12006604
+  },
+  {
+   "item": 2,
+   "wording": "expl",
+   "file": "wsp/t1/early/cap/i002_expl.npz",
+   "seed": 12006604
+  },
+  {
+   "item": 3,
+   "wording": "orig",
+   "file": "wsp/t1/early/cap/i003_orig.npz",
+   "seed": 12006704
+  },
+  {
+   "item": 3,
+   "wording": "expl",
+   "file": "wsp/t1/early/cap/i003_expl.npz",
+   "seed": 12006704
+  }
+ ]
+}

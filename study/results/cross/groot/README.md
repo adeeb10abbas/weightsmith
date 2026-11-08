@@ -35,10 +35,13 @@ episodes, yet it breaks the same way closed loop: **0/32 vs 9/32 (0 fixed / 9 br
 grab the cube (clip `..._edited-dit.mp4`). A grasp-phase offline check, added after the closed-loop result, shows the
 problem both checks above missed: on 16 early decisions (k = 4-16 of slots 30016-30019, none used to build) the
 explicit wording moves the executed end-effector target by only 0.88 cm, the backbone edit by 1.86 cm in another
-direction (pinning every image token to zero changes nothing: 1.84 cm), a span-aligned variant by 3.5 cm. The
-distilled change is close to constant across decisions (per-layer value cosine 0.96-0.99), so an edit fitted on
-banana-phase decisions also acts at the start of the episode, where the teacher barely differs. Same-size random
-controls for both locations are queued to separate "this direction" from "any change of this size".
+direction (pinning every image token to zero changes nothing: 1.84 cm), a span-aligned variant by 3.5 cm. Captured
+at 4 of those early decisions (k = 4), the explicit wording's change at the 8 aligned positions is the same as at the
+banana-phase build decisions (median per-layer cosine to the build mean 0.93, norm ratio 1.03;
+`results/wsp/t1/early/value_similarity.json`). So the distilled change is near-constant and acts from the first
+replan. In the teacher, the inserted clause tokens, which the action head also reads, keep the start-of-episode actions
+almost unchanged; the edit transfers only the aligned part, so the robot's first reach moves toward the banana.
+Same-size random controls for both locations are queued to separate "this direction" from "any change of this size".
 
 Clips (same start, slot 30004, H.264, 2x speed): unedited succeeds (cube, then banana); the teacher wording fails on
 this start (banana not grabbed); both edits fail to grab the cube.
