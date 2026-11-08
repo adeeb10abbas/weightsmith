@@ -303,6 +303,10 @@ def main():
                         "wilson95_unedited_pct": wilson_pct(c["ref_k"], c["n"]),
                         "wilson95_edited_pct": wilson_pct(c["cand_k"], c["n"])},
                     control_k=cc.get("cand_k") if cc else None, teacher_k=ct.get("cand_k") if ct else None,
+                    control_n=cc.get("n") if cc else None, teacher_n=ct.get("n") if ct else None,
+                    edit_vs_control={k: ec[k] for k in ("n", "ref_k", "cand_k", "fixed", "broke", "p", "slots")}
+                    if ec else None,
+                    control_slots=cc.get("slots") if cc else None, teacher_slots=ct.get("slots") if ct else None,
                     recovery_pct=rec_pct, edit_location=e["location"], values_changed=e.get("values_changed"),
                     notes=f"edit {name} ({e.get('summary', '')}); control: same rank and singular values, random "
                           f"directions" + (f"; control vs unedited fixed {cc['fixed']} broke {cc['broke']} p = "
@@ -375,10 +379,10 @@ def main():
             for r in [r for r in edit_rows if r["machine"] == m and r["edit"] == e["name"]]:
                 bars = [("unedited", r["ref_k"], r["n"], LIGHT)]
                 if r["control"]:
-                    bars.append(("random control", r["control"]["cand_k"], r["n"], CTRL))
+                    bars.append(("random control", r["control"]["cand_k"], r["control"]["n"], CTRL))
                 bars.append(("edited", r["cand_k"], r["n"], TEAL))
                 if r["teacher"]:
-                    bars.append(("unedited, good wording", r["teacher"]["cand_k"], r["n"], TEAL_PALE))
+                    bars.append(("unedited, good wording", r["teacher"]["cand_k"], r["teacher"]["n"], TEAL_PALE))
                 groups.append((f"{r['split']}\n{r['slots'][0]}-{r['slots'][1]}", bars))
             plot_bars(groups, f"edit_{e['name']}_{m}", f"{LABELS[e['code']]}: edit {e['name']} ({e['location']}), {m}")
             plot_side_effects([r for r in side if r["machine"] == m and r["edit"] == e["name"]],
@@ -391,8 +395,10 @@ def main():
               f"{r['fixed']} broke {r['broke']} p={r['p']:.3g}")
     for r in edit_rows:
         print(f"{r['machine']:7s} {r['code']} {r['edit']} {r['split']}: {r['ref_k']}/{r['n']} -> {r['cand_k']}/{r['n']} "
-              f"fixed {r['fixed']} broke {r['broke']} p={r['p']:.3g} ctl={r['control'] and r['control']['cand_k']} "
-              f"teacher={r['teacher'] and r['teacher']['cand_k']} recovery={r['recovery_pct']}")
+              f"fixed {r['fixed']} broke {r['broke']} p={r['p']:.3g} "
+              f"ctl={r['control'] and str(r['control']['cand_k']) + '/' + str(r['control']['n'])} "
+              f"teacher={r['teacher'] and str(r['teacher']['cand_k']) + '/' + str(r['teacher']['n'])} "
+              f"recovery={r['recovery_pct']}")
     for r in where:
         print(f"{r['machine']:7s} where {r['edit']} {r['group']}: ee {r['unedited_ee_cm']} -> {r['edited_ee_cm']} cm "
               f"(gap closed {r['gap_closed_pct']}%, control {r['control_gap_closed_pct']}%), n={r['n']}")
