@@ -969,11 +969,15 @@ def row_cells(src):
         if others > 0:
             det.append(f"{others} more edit(s) on this task in the where-to-edit table")
         short_loc = (loc[:26] + "…") if loc and len(loc) > 27 else loc
+        alts = [dict(loc=describe(x.get("edit_location")), a=ints(x)["unedited_k"], b=ints(x)["edited_k"], n=ints(x)["n"],
+                     p=as_float(x.get("p")), prac=is_practice(x))
+                for x in ed[1:] if describe(x.get("edit_location")) != loc]
         cell = C(f"{i['unedited_k']} → {i['edited_k']}" + (f" of {i['n']}" if i["n"] else ""),
                  "; ".join(x for x in det if x), a=i["unedited_k"], b=i["edited_k"], n=i["n"], fx=i["fixed"], br=i["broke"],
                  pv=p,
                  ci=[d, *ci] if (ci is not None and d is not None) else None,
                  color="teal" if loc_class(loc) in (None, "backbone", "both") else "dark", prac=prac or None,
+                 loc=loc, alts=alts or None,
                  fl=(f"{tid} {SHORT[tid]}, practice starts" if prac else
                      f"{tid} {SHORT[tid]}" + (f", {short_loc}" if loc else "")),
                  fb=f"{tid}" + (" practice" if prac else (f" {loc}"[:18] if loc else "")))
@@ -984,6 +988,25 @@ def row_cells(src):
         # random control and teacher recovery: from the first edit row (unseen starts first) that has them,
         # each tagged with the starts it was measured on
         rr = next((x for x in ed if ints(x)["control_k"] is not None), None)
+        xg = lambda row, k: row.get(k) if row.get(k) is not None else (row.get("_extra") or {}).get(k)
+        cn = as_int(xg(rr, "control_n")) if rr is not None else None
+        if rr is not None and cn and ints(rr)["n"] and cn != ints(rr)["n"]:
+            ic, pc = ints(rr), is_practice(rr)
+            evc, cs = xg(rr, "edit_vs_control"), xg(rr, "control_slots")
+            e_sub = as_int(evc.get("cand_k")) if isinstance(evc, dict) else None
+            u_sub = 0 if ic["unedited_k"] == 0 else (cn if ic["unedited_k"] == ic["n"] else None)
+            sl = (f"slots {cs[0]}–{cs[1]}" if isinstance(cs, (list, tuple)) and len(cs) == 2 else None)
+            pcv = as_float(evc.get("p")) if isinstance(evc, dict) else None
+            T["random_control"][tid] = C(
+                f"control {ic['control_k']}" + (f", unedited {u_sub}" if u_sub is not None else "")
+                + (f", edit {e_sub}" if e_sub is not None else "") + f" of {cn}",
+                "; ".join(x for x in (f"the control ran on {cn} of the {ic['n']} starts", sl,
+                                      f"edit against control p = {fp(pcv)}" if pcv is not None else None,
+                                      "practice starts the edit was built from" if pc else None) if x),
+                u=u_sub if e_sub is not None else None, r=ic["control_k"] if None not in (u_sub, e_sub) else None,
+                e=e_sub if u_sub is not None else None, n=cn, prac=pc or None, sub=True,
+                fl=f"{tid} {SHORT[tid]} ({cn}{slot_kind(rr) or (' practice' if pc else '')})")
+            rr = None
         if rr is not None:
             ic, pc = ints(rr), is_practice(rr)
             T["random_control"][tid] = C(f"control {ic['control_k']}, unedited {ic['unedited_k']}, edit {ic['edited_k']}"
@@ -1371,6 +1394,11 @@ def summary_table(P, tables, cross, rc):
             if key == "control" and got:
                 k0 = sorted(got)[0]
                 r["cells"][mid] = C(got[k0]["v"], k0, prac=got[k0].get("prac"))
+            elif key == "where" and got.get("_bars"):
+                wb = got["_bars"]
+                r["cells"][mid] = C(", ".join(f"{loc_name(mid, loc)[4:]} {k}" for loc, k, _ in wb["bars"])
+                                    + (f" of {wb['n']}" if wb.get("n") else ""),
+                                    f"{wb['task']}, {wb['n']}{wb.get('kind') or ''} starts; unedited {wb['base']}")
             elif key == "where" and any(k in got for k in ("backbone", "action", "both")):
                 r["cells"][mid] = C("; ".join(got[k]["v"] for k in ("backbone", "action", "both") if k in got))
             elif mid == "pi05":
@@ -2021,6 +2049,22 @@ def cap_edit_heldout(where, slot, base, edited, mid, tid):
     return f
 
 
+def cap_panels(where, slot, panels, lead, mid, tid):
+    """Several arms on one start, top to bottom, each outcome read from its run record."""
+    def f(tables):
+        got = [(lab,) + run_row(where, name, slot) for name, lab in panels]
+        if any(r is None for _, r, _ in got):
+            return None, []
+        s = (f"{lead} Practice start {slot}, the same scene in every panel and the original wording throughout. "
+             "Top to bottom: " + "; ".join(f"{lab}: {outcome(r)}" for lab, r, _ in got) + ".")
+        c = table_cell(tables, "edit_gain", tid, mid)
+        if c and c.get("prac") and c["b"] < c["a"]:
+            s += (f" Over all {c['n']} practice starts each edit took success from {c['a']} to {c['b']}"
+                  + (f" (exact McNemar p = {fp(c['pv'])})." if c.get("pv") is not None else "."))
+        return s, [x for _, _, x in got]
+    return f
+
+
 def cap_same_start(slot):
     def f(tables):
         a, sa = run_row(X_COSMOS, "T1-base-s30000", slot)
@@ -2067,6 +2111,10 @@ CLIPS = [
     dict(stem="groot_t1_wording", group="demo", title="GR00T N1.7, T1: the wording gap",
          cap=cap_wording(X_GROOT, "T1", 30003, "fm-T1", "wd-T1-expl", "groot", "T1",
                          "the original wording", "the explicit two-step wording")),
+    dict(stem="groot_t1_edits", group="demo", title="GR00T N1.7, T1: two edits that make things worse",
+         cap=cap_panels(X_GROOT, 30004, [("fm-T1", "unedited"), ("ed-bb-T1", "edited in the Cosmos-Reason2 backbone"),
+                                         ("ed-dit-T1", "edited in the diffusion action head")],
+                        "Both edits distil the explicit two-step wording; neither picks up the cube.", "groot", "T1")),
     dict(stem="t1_same_start", group="demo", title="T1, one start, two NVIDIA models", cap=cap_same_start(30000)),
     dict(stem="pi05_t1_edit_control_teacher", group="demo", title="π0.5, T1: the edit against its controls",
          cap=cap_pi05("t1_v2mi-f_vs_control_vs_teacher_90000.mp4",
@@ -2273,6 +2321,23 @@ def and_list(xs):
     return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
 
 
+def loc_name(mid, loc):
+    """'the Cosmos-Reason2 backbone', 'the diffusion action head': a location in the model's own words."""
+    parts = [x.strip() for x in MODELS[mid]["where"].split(" / ")]
+    k = loc_class(loc)
+    name = parts[0] if k == "backbone" else parts[1] if k == "action" and len(parts) > 1 else None
+    return f"the {name}" if name else (loc or "an unnamed location")
+
+
+def edits_phrase(mid, k, c):
+    """'T1 edits in the X and in the Y' when several locations were tried on the same starts with the same result."""
+    same = [x for x in (c.get("alts") or []) if (x["a"], x["b"], x["n"], x["prac"]) == (c["a"], c["b"], c["n"], bool(c.get("prac")))]
+    if not same:
+        return f"The {k} edit", False
+    names = [loc_name(mid, c.get("loc"))] + [loc_name(mid, x["loc"]) for x in same]
+    return f"{k} edits in " + " and in ".join(names), True
+
+
 def tldr(tables, models):
     """3-5 bullets for the top of the page, read only from the tables; anything not measured yet says running."""
     T = {t["id"]: {r["key"]: r["cells"] for r in t["rows"]} for t in tables}
@@ -2319,9 +2384,13 @@ def tldr(tables, models):
             rcn = next((cell("random_control", k, mid) for k, _ in gains if nums(cell("random_control", k, mid), ("u", "r", "n"))), None)
             if rcn:
                 k0 = next(k for k, _ in gains if cell("random_control", k, mid) is rcn)
-                bits.append(("On the practice starts the edit was built from, a" if rcn.get("prac") else "A")
-                            + f" random edit of the same size scored {rcn['r']} of {rcn['n']} on {k0}, against "
-                            f"{rcn['u']} unedited" + (f" and {rcn['e']} edited." if rcn.get("prac") else "."))
+                if rcn.get("sub") and not rcn.get("prac"):
+                    bits.append(f"On {rcn['n']} of those starts a random edit of the same size scored {rcn['r']}, "
+                                f"against {rcn['e']} for the edit and {rcn['u']} unedited.")
+                else:
+                    bits.append(("On the practice starts the edit was built from, a" if rcn.get("prac") else "A")
+                                + f" random edit of the same size scored {rcn['r']} of {rcn['n']} on {k0}, against "
+                                f"{rcn['u']} unedited" + (f" and {rcn['e']} edited." if rcn.get("prac") else "."))
         ng = [k for k, _ in flat if k not in transfer]
         if ng:
             why = ", failures of perception, contact or missing skill" if (mid == "pi05" and ng == ["T4", "T5", "T6", "T7"]) else ""
@@ -2330,30 +2399,39 @@ def tldr(tables, models):
         if not done:
             fm = [k for k in [t[0] for t in TASKS] if nums(cell("failure_map", k, mid), ("k", "n"))]
             wd = [k for k in [t[0] for t in TASKS] if nums(cell("wording", k, mid))]
-            if 0 < len(fm) <= 3:
+            if 0 < len(fm) <= 4:
                 bits.append("Unedited so far: " + and_list(
                     f"{k} {cell('failure_map', k, mid)['k']} of {cell('failure_map', k, mid)['n']}" for k in fm)
                     + " starts.")
-            if wd and len(fm) <= 3:
-                bits.append("Clearer wording, same weights: " + and_list(
-                    f"{k} {c['a']}\u00a0→ {c['b']} of {c['n']}" + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "")
-                    for k, c in ((k, cell("wording", k, mid)) for k in wd)) + ".")
+            elif fm:
+                bits.append(f"Unedited success is in for {len(fm)} of {len(TASKS)} tasks.")
+            if wd:
+                wc = [(k, cell("wording", k, mid)) for k in wd]
+                up = [(k, c) for k, c in wc if c["b"] > c["a"]]
+                no = [k for k, c in wc if c["b"] <= c["a"]]
+                if up:
+                    bits.append("Clearer wording, same weights: " + and_list(
+                        f"{k} {c['a']}\u00a0→ {c['b']} of {c['n']}" + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "")
+                        for k, c in up) + (f"; no gain on {task_list(no)}." if no else "."))
+                elif no:
+                    bits.append(f"A clearer wording, same weights, gained nothing on {task_list(no)}.")
             for k, c in practice:
                 rc0 = cell("random_control", k, mid)
                 ctl = (f"; a random edit of the same size, {rc0['r']} of {rc0['n']}" if nums(rc0, ("u", "r", "n"))
                        and rc0.get("prac") else "")
                 if c["b"] < c["a"]:
-                    bits.append(f"The {k} edit lowered success on the {c['n']} practice starts it was built from, "
-                                f"{c['a']} → {c['b']}" + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "")
+                    who, many = edits_phrase(mid, k, c)
+                    who = who[0].upper() + who[1:]
+                    bits.append(f"{who} {'each ' if many else ''}lowered success on the {c['n']} practice starts "
+                                f"{'they were' if many else 'it was'} built from, {c['a']} → {c['b']}"
+                                + (f" (p = {fp(c['pv'])}{' each' if many else ''})" if c.get("pv") is not None else "")
                                 + ctl + f"; further edits: {RUNNING}.")
                     continue
                 bits.append(f"The {k} edit, on the {c['n']} practice starts it was built from: {c['a']} → {c['b']}"
                             + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "") + ctl
                             + f"; on unseen starts, {RUNNING}.")
-            if 0 < len(fm) <= 3:
+            if fm:
                 bits.append(f"Other tasks{'' if practice else ' and edits'}: {RUNNING}.")
-            elif fm:
-                bits.append(f"Unedited success is in for {len(fm)} of {len(TASKS)} tasks; edits {RUNNING}.")
             elif m["status"] == "final":
                 bits.append("No edit results.")
             else:
@@ -2506,7 +2584,11 @@ def conclusion_html(tables, models):
         for tid, c in pe:
             r0 = RC.get(tid)
             verb = "lifts success from" if c["b"] > c["a"] else "lowers success from" if c["b"] < c["a"] else "leaves success at"
-            bits.append(f"on the {c['n']} practice starts it was built from, the {tid} edit {verb} {c['a']}"
+            who, many = edits_phrase(mid, tid, c)
+            if many:
+                verb = "each " + verb.replace("lifts", "lift").replace("lowers", "lower").replace("leaves", "leave")
+            bits.append(f"on the {c['n']} practice starts {'they were' if many else 'it was'} built from, "
+                        f"{who if many else 'the' + who[3:]} {verb} {c['a']}"
                         + (f" to {c['b']}" if c["b"] != c["a"] else "")
                         + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else "")
                         + (f", where a random edit of the same size reaches {r0['r']}" if r0 and r0.get("s") == "ok"
@@ -2518,6 +2600,8 @@ def conclusion_html(tables, models):
                         + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else "")
                         + ((", and on the practice starts it was built from a random edit of the same size reaches "
                             f"{r0['r']} of {r0['n']}" if r0.get("prac") else
+                            f", and on {r0['n']} of those starts a random edit of the same size reaches {r0['r']}"
+                            if r0.get("sub") else
                             f", where a random edit of the same size reaches {r0['r']}")
                            if r0 and r0.get("s") == "ok" and r0.get("r") is not None else ""))
         if not bits:
