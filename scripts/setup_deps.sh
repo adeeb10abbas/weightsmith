@@ -84,7 +84,8 @@ echo "[2/5] RoboLab (git-lfs assets, ~10 GB)"
 if [ "$(git -C "$TP/RoboLab" rev-parse HEAD~6 2>/dev/null)" != "$ROBOLAB_BASE" ]; then
   apply "$TP/RoboLab" "$ROBOLAB_BASE" "$repo/third_party/patches/robolab"
 fi
-git -C "$TP/RoboLab" lfs pull
+# SKIP_LFS=1: leave the ~10 GB of assets for the caller (scripts/fast_setup.sh pulls them in parallel)
+[ "${SKIP_LFS:-0}" = 1 ] || git -C "$TP/RoboLab" lfs pull
 
 if [ "$SYNC" = 1 ]; then
   echo "[3/5] OpenPI env (uv sync)"
