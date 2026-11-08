@@ -1554,7 +1554,8 @@ def fig_failure_map(tb, models, T, L):
         else:
             ax.text(j + 0.5, -0.5, models[m]["name"], ha="center", va="bottom", fontsize=L["FS"], weight="bold",
                     color=T["ink"])
-            ax.text(j + 0.5, -0.16, models[m]["short"], ha="center", va="bottom", fontsize=L["FS_S"] - 0.6,
+            ax.text(j + 0.5, -0.16, models[m].get("fig_short") or models[m]["short"], ha="center", va="bottom",
+                    fontsize=L["FS_S"] - 0.6,
                     color=T["mute"])
     for i, r in enumerate(fm):
         lab = f"{r['key']} {SHORT[r['key']]}" if r["key"] in SHORT else r["label"]
@@ -2099,7 +2100,11 @@ def tldr(tables, models):
         done = {k for k, _ in gains} | {k for k, _ in flat}
         if not done:
             fm = [k for k in [t[0] for t in TASKS] if nums(cell("failure_map", k, mid), ("k", "n"))]
-            if fm:
+            if 0 < len(fm) <= 3:
+                bits.append("Unedited so far: " + and_list(
+                    f"{k} {cell('failure_map', k, mid)['k']} of {cell('failure_map', k, mid)['n']}" for k in fm)
+                    + f" starts. Other tasks and edits: {RUNNING}.")
+            elif fm:
                 bits.append(f"Unedited success is in for {len(fm)} of {len(TASKS)} tasks; edits {RUNNING}.")
             elif m["status"] == "final":
                 bits.append("No edit results.")
@@ -2258,6 +2263,7 @@ def main():
         m["source"] = meta.get(mid)
         if mid == "pi05" and m["status"] == "measured":
             m["short"] = "OpenPI VLA, control · earlier slots"
+            m["fig_short"] = "control · earlier slots"   # fits the figure's column head
         models[mid] = m
 
     tables, rc, prov, rcp = build_tables(P, cross)

@@ -9,7 +9,7 @@
    "name": "Cosmos3 Edge Policy",
    "short": "world-action model",
    "kind": "NVIDIA world-action model",
-   "status": "running",
+   "status": "partial",
    "checkpoint": "`nvidia/Cosmos3-Edge-Policy-DROID` at `a7c7288`, 3.37B parameters",
    "architecture": "One transformer denoises an action chunk together with future video latents, conditioned on the instruction: a mixture of transformers with 28 layers of width 2048, each holding a text pathway and a generation pathway for video and action tokens. It sees the wrist and both shoulder cameras as one composite image and returns 32 joint-position steps per request, run open loop at 15 Hz.",
    "entry": "Text tokens attend only to text; video and action tokens attend to the text keys and values in every layer, so the instruction reaches the actions only through those keys and values (read from the code that served Cosmos3 Nano).",
@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "3800a2b1f4bb"
+    "commit": "fc3901f47f51"
    }
   },
   {
@@ -57,7 +57,8 @@
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
     "commit": "8f4a5ac7300c"
-   }
+   },
+   "fig_short": "control · earlier slots"
   }
  ],
  "tasks": [
@@ -130,7 +131,7 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Failure map and edits: {running}."
+    "text": "Unedited so far: T8 0 of 16 starts. Other tasks and edits: {running}."
    },
    {
     "id": "groot",
@@ -355,8 +356,9 @@
     "label": "T8 Mustard right of the raisin box, reference-first",
     "cells": {
      "cosmos": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 0 of 16",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "groot": {
       "v": "running",
@@ -619,8 +621,11 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "0 of 16",
+       "s": "ok",
+       "d": "0%; slots 30000–30015",
+       "k": 0,
+       "n": 16
       },
       "groot": {
        "v": "running",
@@ -1990,7 +1995,47 @@
   }
  ],
  "cross_rows": {
-  "cosmos": [],
+  "cosmos": [
+   {
+    "experiment": "failure_map",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      0.0,
+      19.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction, practice slots, default render",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   }
+  ],
   "pi05": [
    {
     "experiment": "failure_map",
@@ -4209,7 +4254,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "3800a2b1f4bb"
+   "commit": "fc3901f47f51"
   },
   "groot": {
    "kind": "none",
@@ -4225,8 +4270,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "56175082189738a1",
- "updated": "2026-11-08T05:51Z",
- "updated_text": "8 Nov 2026, 05:51 UTC",
- "status_text": "Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records"
+ "content_hash": "9e36983cc3f2df88",
+ "updated": "2026-11-08T05:57Z",
+ "updated_text": "8 Nov 2026, 05:57 UTC",
+ "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: running · π0.5: earlier records"
 }
