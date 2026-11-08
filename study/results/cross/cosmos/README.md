@@ -1,7 +1,9 @@
 # Track A: weight-space programming on Cosmos3 Edge Policy DROID
 
-Status (2026-11-08 01:20 ET): closed loop runs on ali-ms GPU1 at RoboLab's default render preset (the primary setting for
-every model and track). Every number here comes from `results/` and `../metrics_cosmos.json` (run `analyze.py`); the
+Status (2026-11-08 02:00 ET): closed loop runs on ali-ms GPU1 at RoboLab's default render preset (the primary setting for
+every model and track). Running now, in this order: the random control on practice starts, the held-out set (64 new
+starts x unedited / edited / control), the rest of the failure map, the side-effect map, the video/action-pathway edit
+in closed loop. Every number here comes from `results/` and `../metrics_cosmos.json` (run `analyze.py`); the
 latest table is in [Results](#results).
 
 Question: how well does weight-space programming (WSP, closed-form instruction distillation) fix the failures of
@@ -51,3 +53,37 @@ tasks and slots?
 | `scripts/build_edit.py` | closed-form distillation (text or video/action pathway) and the matched random-direction control |
 | `scripts/action_check.py` | action-mapping check and frame sheets from recorded requests |
 | `analyze.py` | tables, `../metrics_cosmos.json` and plots from `results/runs/*.json` |
+
+## Results
+
+All numbers: ali-ms GPU1, default render, 8 envs per sim process, paired on the same starts. Regenerate with
+`python3 analyze.py` after `scripts/sync_results.sh`; every number is in `../metrics_cosmos.json`.
+
+### T8 (mustard right of raisin box, reference-first wording): the edit target
+
+| Arm (slots 30000-30015, practice) | Success | Paired vs unedited |
+|---|---|---|
+| unedited, RF wording (task default) | 0/16 | |
+| unedited, TF wording (known-good) | 15/16 | 15 fixed / 0 broke, p = 6.1e-5 |
+| **edited `t8und`, RF wording** | **13/16** | 13 fixed / 0 broke, p = 2.4e-4; recovers 86.7% of the TF wording's gain |
+| random-direction control of `t8und` (same rank and singular values per layer) | 1/16 | 1 fixed / 0 broke, p = 1 |
+
+`t8und`: closed-form distillation of the TF wording's text-token states into the RF wording's, in the text pathway
+(`mlp.down_proj` of layers 0-26, the weights the instruction tokens pass through), 171 matched positions plus 19
+unconditional-pass keys that pin the empty prompt; lam_rel 1e-3; built from one prompt pair (the text states do
+not depend on the image: max abs difference 0.0 across observations). Plot: `plots/edit_t8und_ali-ms.png`.
+Clip: `videos/t8_30008_unedited_vs_t8und.mp4` (unedited picks up the raisin box; edited moves the mustard).
+
+### Where to edit (offline, T8)
+
+Replaying 30 RF-failure decisions held aside from every build (slots 30006-30011, replans 1-5) with the same seed,
+the chunk-end end-effector distance to the TF-wording action chunk:
+
+| Weights | Distance to TF actions | Gap closed | Its random control |
+|---|---|---|---|
+| unedited | 8.75 cm | | |
+| text pathway `t8und` | 0.77 cm | 91.2% | -1.8% |
+| video/action pathway `t8gen` (`mlp_moe_gen.down_proj`, layers 8-20) | 6.70 cm | 23.4% | 0.7% |
+
+As on π0.5, the edit to the language pathway carries the wording's effect; the edit to the action-generation pathway,
+built from 30 other decisions of the same task, carries a fifth of it. `results/offline/ali-ms/t8_offline_check.json`.
