@@ -193,7 +193,12 @@ def main():
                 if r.get("video"):
                     dst = ROOT / "videos" / job["code"] / job["arm"] / f"{r['slot']}.mp4"
                     dst.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(r["video"], dst)
+                    try:  # hard link (same filesystem): no second copy of every episode video
+                        if dst.exists():
+                            dst.unlink()
+                        os.link(r["video"], dst)
+                    except OSError:
+                        shutil.copy2(r["video"], dst)
                     videos[str(r["slot"])] = str(dst)
             sim_log = next(iter(sorted(log_root.glob("sim-l0a*.log"))), None)
             rec = {**job, "rendering_type_used": rendering or "default (no --rendering-type flag)",
