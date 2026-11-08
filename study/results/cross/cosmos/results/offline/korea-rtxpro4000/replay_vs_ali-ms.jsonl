@@ -1,0 +1,5 @@
+{"request": "ref_obs/T8-base-s30000/g1875o0/obs_r0_e0.npz:0", "seed": 12000000, "bit_identical": false, "max_abs": 0.023441791534423828, "ee_end_cm": 0.3892220890877839, "grip_agree": 1.0}
+{"request": "ref_obs/T8-base-s30000/g1875o0/obs_r0_e0.npz:5", "seed": 12000005, "bit_identical": false, "max_abs": 0.1520596742630005, "ee_end_cm": 0.6614666226433302, "grip_agree": 0.96875}
+{"request": "ref_obs/T8-base-s30000/g1875o0/obs_r0_e1.npz:3", "seed": 12000103, "bit_identical": false, "max_abs": 0.04846608638763428, "ee_end_cm": 0.6128283743175698, "grip_agree": 1.0}
+{"request": "ref_obs/T8-base-s30000/g1875o0/obs_r0_e2.npz:10", "seed": 12000210, "bit_identical": false, "max_abs": 0.026576697826385498, "ee_end_cm": 0.25256563971497864, "grip_agree": 1.0}
+{"request": "ref_obs/T8-base-s30000/g1875o0/obs_r0_e3.npz:15", "seed": 12000315, "bit_identical": false, "max_abs": 0.09344369173049927, "ee_end_cm": 2.3655687775434826, "grip_agree": 1.0}

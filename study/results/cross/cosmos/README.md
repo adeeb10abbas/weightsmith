@@ -1,7 +1,8 @@
 # Track A: weight-space programming on Cosmos3 Edge Policy DROID
 
-Status (2026-11-08 00:10 ET): serving works in RoboLab; the failure map (metric 1) is running. No result numbers yet;
-every number below will come from `results/` and `../metrics_cosmos.json`.
+Status (2026-11-08 01:20 ET): closed loop runs on ali-ms GPU1 at RoboLab's default render preset (the primary setting for
+every model and track). Every number here comes from `results/` and `../metrics_cosmos.json` (run `analyze.py`); the
+latest table is in [Results](#results).
 
 Question: how well does weight-space programming (WSP, closed-form instruction distillation) fix the failures of
 NVIDIA's Cosmos3 Edge Policy DROID, against GR00T (Track B) and π0.5 (Track C, the reference) on the same RoboLab
@@ -17,10 +18,12 @@ tasks and slots?
 | Observation | RoboLab's `Cosmos3Client` composite: wrist view 360x640 on top of the two over-the-shoulder views at 180x320 each (540x640), plus 7 joint positions and the gripper position |
 | Action mapping | 32 rows of [7 absolute joint-position targets (rad), gripper] per request, executed open loop (32 steps at 15 Hz = 2.1 s) by RoboLab's `DroidJointPositionActionCfg` (absolute `panda_joint1-7` targets, no offset; `finger_joint` binary: command > 0.5 closes to π/4 rad). The server flips the gripper convention in and out (`1 - g`), as the stock server does |
 | Control rate | 15 Hz (sim dt 1/120 s, decimation 8) |
-| Simulator | RoboLab on Isaac Sim (`~/vibes/weight-space-policy-lab/robolab_checkout`), performance rendering, three cameras (wrist, left and right shoulder), environment seed 0 |
-| Envs | **8 per sim process**, two processes per 16-slot group. 16 envs beside the 9.2 GB policy server ran PhysX out of GPU memory on the RTX 3090 (24 GB) in the first T3 run (`PxgCudaMemoryAllocator`, then `Synchronizing GPU Narrowphase failed! 700`, simulation stopped) |
+| Simulator | RoboLab v0.2.1 on Isaac Sim (`~/vibes/weight-space-policy-lab/robolab_checkout`), **default render preset** (primary; one performance-preset T3 run is kept as secondary sensitivity data in `results/secondary_performance_8env/`), three cameras (wrist, left and right shoulder), environment seed 0 |
+| Envs | **8 per sim process**, two processes per 16-slot group, server and sim on the same RTX 3090 (24 GB; about 21 GB in use). 16 envs did not fit: beside the 9.2 GB unslimmed server PhysX ran out of memory (performance preset, first T3 run); beside the 6 GB slim server at the default preset every 16-env process died at reset with `CUDA out of memory` (00:30-00:37 ET, six jobs with 0 slots completed, kept in `~/cross/cosmos/runs/failed_oom16_default` and not counted) |
+| Server memory | `edge_common.slim()` moves the parts action generation never reads off the GPU (lm_head 0.5 GB, token-embedding table 0.5 GB looked up on the CPU, video VAE decoder 1.0 GB): 5.6 GB allocated instead of 7.6 GB; actions are bit-identical with and without it (`scripts/mem_probe.py`, eager and compiled) |
+| Determinism | replaying 5 recorded requests through the server code path on ali-ms gives bit-identical action chunks (`results/offline/ali-ms/replay_self_ali-ms.json`). On the Korea pod (RTX PRO 4000 Blackwell, same lockfile) the same 5 requests differ (max abs 0.02-0.15, chunk-end end-effector 0.3-2.4 cm, gripper agreement 97-100%; `results/offline/korea-rtxpro4000/replay_vs_ali-ms.jsonl`), so results are paired only within one machine |
 | Slots (shared with Tracks B and C) | practice and failure map 30000-30031; held-out 96000-96063. Slot s = 16 g + j: group g is the sampling-seed base, slot s gets the noise stream ((g * 64 + j) * 100 + k), k = replan index (weightsmith's scheme; with 8 envs per process an env offset keeps the seeds identical). Every process runs one episode per env, so every slot is the first episode of a fresh process |
-| GPU | GPU1 of ali-ms, shared through the flocks `~/.cache/weightsmith/locks/gpu1.lock` and `~/vibes/opus-weight-surgery/state/gpu1.lock` with Track C and another Cosmos study; locks are released after every 16-slot job and the server is stopped with them |
+| GPU | GPU1 of ali-ms (RTX 3090), shared through the flocks `~/.cache/weightsmith/locks/gpu1.lock` and `~/vibes/opus-weight-surgery/state/gpu1.lock`; locks are released after every 16-slot job and the server is stopped with them. A Korea pod (4x RTX PRO 4000 Blackwell, GPUs 0-1 for this track) was set up at 01:00 ET (serving verified, see Determinism) but its SSH port went down at 06:20 UTC before any closed-loop job finished; nothing from it is counted |
 | Statistics | `weightsmith.stats`: Wilson 95% intervals, exact two-sided McNemar on fixed/broke pairs, paired bootstrap (20,000 draws) |
 
 ## Tasks
