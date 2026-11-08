@@ -1,0 +1,396 @@
+{
+ "tag": "R1-base-s96016",
+ "code": "R1",
+ "task": "RubiksCubeTask",
+ "slot_start": 96016,
+ "n": 16,
+ "arm": "base",
+ "workspace": null,
+ "fp": null,
+ "prompt": null,
+ "rendering_type": null,
+ "video_mode": "sensor",
+ "status": "fresh",
+ "render_preset": "default",
+ "rendering_flag": "none (RoboLab default preset)",
+ "envs_per_process": 8,
+ "processes": [
+  {
+   "group": 6001,
+   "env_offset": 0,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-R1-base-s96016-g6001o0a0-1108-184445",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/R1-base-s96016-1108-184445/sim-g6001o0a0.log"
+  },
+  {
+   "group": 6001,
+   "env_offset": 8,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-R1-base-s96016-g6001o8a0-1108-184654",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/R1-base-s96016-1108-184445/sim-g6001o8a0.log"
+  }
+ ],
+ "fp_checked": null,
+ "server": {
+  "workspace": null
+ },
+ "server_fingerprint": null,
+ "server_log": "/home/ali/cross/pi05/fresh/logs/server-R1-base-s96000-1108-183907.log",
+ "server_started": 1794181147.793525,
+ "server_ready_s": 22.0,
+ "rows": [
+  {
+   "slot": 96016,
+   "group": 6001,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 182,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env0.mp4"
+  },
+  {
+   "slot": 96017,
+   "group": 6001,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 137,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env1.mp4"
+  },
+  {
+   "slot": 96018,
+   "group": 6001,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 147,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env2.mp4"
+  },
+  {
+   "slot": 96019,
+   "group": 6001,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 122,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env3.mp4"
+  },
+  {
+   "slot": 96020,
+   "group": 6001,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 153,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env4.mp4"
+  },
+  {
+   "slot": 96021,
+   "group": 6001,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 172,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "TARGET_OBJECT_DROPPED": 2
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env5.mp4"
+  },
+  {
+   "slot": 96022,
+   "group": 6001,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 301,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "TARGET_OBJECT_DROPPED": 6
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env6.mp4"
+  },
+  {
+   "slot": 96023,
+   "group": 6001,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 152,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o0a0-1108-184445/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env7.mp4"
+  },
+  {
+   "slot": 96024,
+   "group": 6001,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 243,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 2,
+    "GRIPPER_HIT_OBJECT": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env0.mp4"
+  },
+  {
+   "slot": 96025,
+   "group": 6001,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 92,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env1.mp4"
+  },
+  {
+   "slot": 96026,
+   "group": 6001,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 106,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env2.mp4"
+  },
+  {
+   "slot": 96027,
+   "group": 6001,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 108,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env3.mp4"
+  },
+  {
+   "slot": 96028,
+   "group": 6001,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 258,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "TARGET_OBJECT_DROPPED": 2,
+    "GRIPPER_FULLY_CLOSED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env4.mp4"
+  },
+  {
+   "slot": 96029,
+   "group": 6001,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 181,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 5,
+    "GRIPPER_FULLY_CLOSED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env5.mp4"
+  },
+  {
+   "slot": 96030,
+   "group": 6001,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 316,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 3,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "MULTIPLE_OBJECTS_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "bowl"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env6.mp4"
+  },
+  {
+   "slot": 96031,
+   "group": 6001,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 138,
+   "instruction": "Put the cube in the bowl",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "TARGET_OBJECT_DROPPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-R1-base-s96016-g6001o8a0-1108-184654/RubiksCubeTask/Put_the_cube_in_the_bowl_0_env7.mp4"
+  }
+ ],
+ "completed": 16,
+ "success": 16,
+ "started": 1794181485.1122553,
+ "finished": 1794181755.3782387,
+ "job_s": 270.3,
+ "gpu": 1,
+ "port": 8740,
+ "host": "ali-MS-7D25",
+ "gpu_name": "NVIDIA GeForce RTX 3090",
+ "log_root": "/home/ali/cross/pi05/fresh/logs/R1-base-s96016-1108-184445",
+ "videos": {
+  "96016": "/home/ali/cross/pi05/fresh/videos/R1/base/96016.mp4",
+  "96017": "/home/ali/cross/pi05/fresh/videos/R1/base/96017.mp4",
+  "96018": "/home/ali/cross/pi05/fresh/videos/R1/base/96018.mp4",
+  "96019": "/home/ali/cross/pi05/fresh/videos/R1/base/96019.mp4",
+  "96020": "/home/ali/cross/pi05/fresh/videos/R1/base/96020.mp4",
+  "96021": "/home/ali/cross/pi05/fresh/videos/R1/base/96021.mp4",
+  "96022": "/home/ali/cross/pi05/fresh/videos/R1/base/96022.mp4",
+  "96023": "/home/ali/cross/pi05/fresh/videos/R1/base/96023.mp4",
+  "96024": "/home/ali/cross/pi05/fresh/videos/R1/base/96024.mp4",
+  "96025": "/home/ali/cross/pi05/fresh/videos/R1/base/96025.mp4",
+  "96026": "/home/ali/cross/pi05/fresh/videos/R1/base/96026.mp4",
+  "96027": "/home/ali/cross/pi05/fresh/videos/R1/base/96027.mp4",
+  "96028": "/home/ali/cross/pi05/fresh/videos/R1/base/96028.mp4",
+  "96029": "/home/ali/cross/pi05/fresh/videos/R1/base/96029.mp4",
+  "96030": "/home/ali/cross/pi05/fresh/videos/R1/base/96030.mp4",
+  "96031": "/home/ali/cross/pi05/fresh/videos/R1/base/96031.mp4"
+ },
+ "sim_cmd_example": [
+  "/home/ali/vibes/weight-space-policy-lab/robolab_env/.venv/bin/python",
+  "/home/ali/cross/pi05/weightsmith/weightsmith/run_batched.py",
+  "--policy",
+  "pi05",
+  "--task",
+  "RubiksCubeTask",
+  "--environment-seed",
+  "0",
+  "--sampling-seed-base",
+  "6001",
+  "--remote-port",
+  "8740",
+  "--num-envs",
+  "8",
+  "--num-runs",
+  "1",
+  "--headless",
+  "--video-mode",
+  "sensor",
+  "--output-folder-name",
+  "x05f-R1-base-s96016-g6001o8a0-1108-184654",
+  "--device",
+  "cuda:1",
+  "--/rtx/verifyDriverVersion/enabled=false",
+  "--/renderer/multiGpu/enabled=false",
+  "--/renderer/multiGpu/autoEnable=false",
+  "--/renderer/activeGpu=1"
+ ]
+}
