@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "dbbf1088de16"
+    "commit": "95f90497d113"
    }
   },
   {
@@ -147,7 +147,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5, T7 and R1, lifted no task, lowered T5 (8 → 0 of 16), and moved the retention task R1 from 9 to 13 of 16. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5, T7 and R1, lifted no task, lowered T5 (9 → 0 of 32), and moved the retention task R1 from 9 to 13 of 16. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -351,9 +351,9 @@
     "label": "T5 Mustard into the left bin",
     "cells": {
      "cosmos": {
-      "v": "T8 edit: 8 → 0 of 16",
+      "v": "T8 edit: 9 → 0 of 32",
       "s": "ok",
-      "d": "0 / 8; p = 0.0078"
+      "d": "0 / 9; p = 0.0039"
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -1986,14 +1986,14 @@
      "label": "T5 Mustard into the left bin",
      "cells": {
       "cosmos": {
-       "v": "−8: 8 → 0 of 16",
+       "v": "−9: 9 → 0 of 32",
        "s": "ok",
-       "d": "0 / 8; p = 0.0078; slots 96000–96015",
-       "delta": -8,
-       "a": 8,
+       "d": "0 / 9; p = 0.0039; slots 96000–96031",
+       "delta": -9,
+       "a": 9,
        "b": 0,
-       "n": 16,
-       "p": 0.0078125
+       "n": 32,
+       "p": 0.00390625
       },
       "groot": {
        "v": "not run",
@@ -3140,27 +3140,27 @@
     "wording_pair": [
      "Put the mustard in the left bin"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      96000,
-     96015
+     96031
     ],
-    "unedited_k": 8,
+    "unedited_k": 9,
     "edited_k": 0,
     "fixed": 0,
-    "broke": 8,
-    "p": 0.0078125,
+    "broke": 9,
+    "p": 0.00390625,
     "ci": {
-     "diff_pts": -50.0,
+     "diff_pts": -28.12,
      "bootstrap95_pts": [
-      -75.0,
-      -25.0
+      -43.75,
+      -12.5
      ]
     },
     "control_k": null,
     "teacher_k": null,
     "recovery_pct": null,
-    "transfer": -50.0,
+    "transfer": -28.12,
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
@@ -7231,7 +7231,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "dbbf1088de16"
+   "commit": "95f90497d113"
   },
   "groot": {
    "kind": "branch",
@@ -7249,8 +7249,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "627038e1f9903b4c",
- "updated": "2026-11-08T11:55Z",
- "updated_text": "8 Nov 2026, 11:55 UTC",
+ "content_hash": "f5e29ae9e4d0248f",
+ "updated": "2026-11-08T12:17Z",
+ "updated_text": "8 Nov 2026, 12:17 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
