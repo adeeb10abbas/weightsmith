@@ -1,0 +1,30 @@
+{
+ "capture": "caps/unds_t5.npz",
+ "teacher": "O5",
+ "student": "O5+und",
+ "decisions": 38,
+ "groups": {
+  "all": {
+   "student_vs_teacher": {
+    "ee_end_cm": 13.728680090742081,
+    "joint_mean_rad": 0.05590839311480522,
+    "grip_agree": 0.9942434210526315
+   },
+   "O5+unds": {
+    "vs_teacher": {
+     "ee_end_cm": 2.037887660709144,
+     "joint_mean_rad": 0.014440036378800869,
+     "grip_agree": 0.9991776315789473
+    },
+    "vs_student": {
+     "ee_end_cm": 13.741853273609616,
+     "joint_mean_rad": 0.05862404778599739,
+     "grip_agree": 0.9950657894736842
+    },
+    "closer_to_teacher_ee": 34,
+    "n": 38,
+    "gap_closed_ee_pct": 85.1559826054699
+   }
+  }
+ }
+}

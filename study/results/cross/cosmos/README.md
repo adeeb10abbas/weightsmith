@@ -166,3 +166,22 @@ generic preservation prompts of `t8und-p` (the suffix tokens are identical in ev
 and T5/T3 deviation below `t8und-r`'s (5.88 / 6.46 cm). A T8 gap below 85% would itself say that the fix lives in the
 word-aligned positions. Closed loop on T5, T3 and T8 practice runs only if both gates pass; held-out with control only if T5 and T3 then
 recover with T8 held.
+
+**`t8und-s` fails the T8 gate (10:42 ET; `results/offline/ali-ms/t8unds_gate.json`).** Mapping only the shared template
+states closes 1.9% of the T8 RF -> TF gap (its random control: 2.6%; `t8und`: 91.2%), even though the build matches
+those positions' residuals to within 5-6% at the last layers. It leaves T5 and T3 nearly untouched (deviation from the
+unedited policy 2.0 cm and 0.8 cm; `t8und`: 13.7 and 29.6 cm). So the wording's effect on the actions is carried by
+the instruction-word positions themselves. The video/action tokens read every text position's keys and values. To
+change T8's behaviour, the edit has to move the word states, and moving "left" toward "right" is what spills into T5 and
+T3. No closed loop for `t8und-s` (gate failed).
+
+| Variant | Preservation keys | T8 gap closed (offline) | T5 dev. (cm) | T3 dev. (cm) | T8 practice | T5 practice | T3 practice |
+|---|---|---|---|---|---|---|---|
+| `t8und` (word-aligned) | none (uncond. pass only) | 91.2% | 13.7 | 29.6 | 13/16 | 0/16 | 0/16 |
+| `t8und-p` | 65 generic RoboLab instructions | 93.1% | 13.9 | - | 12/16 | 0/16 | - |
+| `t8und-r` | 24 left/right instructions of other tasks | 93.6% | 5.9 | 6.5 | 13/16 | 2/16 | 1/16 |
+| `t8und-s` (template positions only) | 65 generic | 1.9% | 2.0 | 0.8 | - | - | - |
+| unedited | | 0% | 0 | 0 | 0/16 | 8/16 | 4/16 |
+
+(T5 and T3 deviation = chunk-end end-effector distance of the edited policy's action chunk from the unedited one, on 38 / 20
+decisions of practice episodes the unedited policy solved. Practice = slots 30000-30015, paired with the unedited runs.)

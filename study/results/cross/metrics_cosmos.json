@@ -797,6 +797,41 @@
   "experiment": "side_effect_heldout",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "StackYellowOnRedTask",
+  "code": "T4",
+  "wording_pair": [
+   "Stack the yellow block on the red block"
+  ],
+  "n": 16,
+  "slots": [
+   96000,
+   96015
+  ],
+  "unedited_k": 11,
+  "edited_k": 10,
+  "fixed": 2,
+  "broke": 3,
+  "p": 1.0,
+  "ci": {
+   "diff_pts": -6.25,
+   "bootstrap95_pts": [
+    -31.25,
+    18.75
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": -6.25,
+  "retention": null,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+  "values_changed": 179010015,
+  "notes": "edit t8und built for T8, run on T4 with T4's default instruction, heldout slots (never used for any choice on this task)"
+ },
+ {
+  "experiment": "side_effect_heldout",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
   "task": "MustardInLeftBinTask",
   "code": "T5",
   "wording_pair": [
@@ -1399,6 +1434,47 @@
    "t5_t8und_dev_cm": 13.73,
    "t5_variant_dev_cm": 5.88,
    "t5_dev_removed_pct": 57.2
+  }
+ },
+ {
+  "experiment": "preservation_offline",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "MustardInLeftBinTask",
+  "code": "T5",
+  "wording_pair": null,
+  "n": null,
+  "slots": null,
+  "unedited_k": null,
+  "edited_k": null,
+  "fixed": null,
+  "broke": null,
+  "p": null,
+  "ci": null,
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26), template positions only (--align ps), with generic preservation keys",
+  "values_changed": 435316027,
+  "notes": "t8unds vs t8und, offline replays at fixed seeds: T8 = chunk-end end-effector distance to the TF wording's chunk on 30 held-aside RF-failure decisions (slots 30006-30011, replans 1-5); T5 = distance of the edited chunk from the unedited chunk on 38 decisions of T5 practice episodes the unedited policy solved (replans 1-5); dev removed = 1 - t8unds/t8und",
+  "offline": {
+   "machine": "ali-ms",
+   "edit": "t8unds",
+   "t8_n": 30,
+   "t8_control_gap_closed_pct": 2.6,
+   "t3_n": 20,
+   "t3_t8und_dev_cm": 29.64,
+   "t3_variant_dev_cm": 0.78,
+   "t8_unedited_ee_cm": 8.75,
+   "t8_edited_ee_cm": 8.58,
+   "t8_gap_closed_pct": 1.9,
+   "t8und_gap_closed_pct": null,
+   "t5_n": 38,
+   "t5_t8und_dev_cm": 13.73,
+   "t5_variant_dev_cm": 2.04,
+   "t5_dev_removed_pct": 85.2
   }
  }
 ]

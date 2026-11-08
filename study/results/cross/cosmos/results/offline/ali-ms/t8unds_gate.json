@@ -1,0 +1,9 @@
+{
+ "t8_gap_closed_pct": 1.938042688224828,
+ "t5_dev_cm": 2.037887660709144,
+ "t5_t8und_dev_cm": 13.728680090742081,
+ "t3_dev_cm": 0.7766317992100578,
+ "t3_t8und_dev_cm": 29.643281564315096,
+ "rule": "T8 gap closed >= 85% and T5, T3 deviation from unedited below t8und-r (5.88 / 6.46 cm)",
+ "pass": false
+}

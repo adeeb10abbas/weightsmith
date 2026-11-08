@@ -1,0 +1,261 @@
+{
+ "tag": "T6-base-s96016",
+ "task": "Stack3RubiksCubeTask",
+ "prompt": null,
+ "edit": null,
+ "slots": [
+  96016,
+  96031
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 0,
+ "groups": [
+  {
+   "group": 6001,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 543.5,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.robolab/cosmosx-T6-base-s96016-g6001o0-1108-100909"
+  },
+  {
+   "group": 6001,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 534.5,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.robolab/cosmosx-T6-base-s96016-g6001o8-1108-101813"
+  }
+ ],
+ "server_load": {
+  "edit": null,
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 13.8
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 1122.2,
+ "server_ready_s": 14.0,
+ "started": "2026-11-08 10:08:55",
+ "finished": "2026-11-08 10:27:38",
+ "rows": [
+  {
+   "slot": 96016,
+   "group": 6001,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96017,
+   "group": 6001,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96018,
+   "group": 6001,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96019,
+   "group": 6001,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96020,
+   "group": 6001,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96021,
+   "group": 6001,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96022,
+   "group": 6001,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96023,
+   "group": 6001,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 96024,
+   "group": 6001,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96025,
+   "group": 6001,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96026,
+   "group": 6001,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96027,
+   "group": 6001,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96028,
+   "group": 6001,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96029,
+   "group": 6001,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96030,
+   "group": 6001,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96031,
+   "group": 6001,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T6-base-s96016.obs/g6001o8/obs_r0_e7.npz"
+  }
+ ]
+}
