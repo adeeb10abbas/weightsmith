@@ -889,6 +889,15 @@ def read_cross(args, meta_out):
                 continue
             nr, extra = normalize(r)
             unknown |= set(extra) - {"status", "edit", "hardware", "source", "values_changed_note"}
+            ctl = extra.get("control")
+            if isinstance(ctl, dict) and as_int(ctl.get("n")) is not None:
+                extra.setdefault("control_n", as_int(ctl.get("n")))
+                extra.setdefault("control_slots", ctl.get("slots"))
+                if as_int(ctl.get("unedited_k_same_slots")) is not None:
+                    extra.setdefault("control_unedited_k", as_int(ctl.get("unedited_k_same_slots")))
+                evc = ctl.get("edit_vs_control") or {}
+                extra.setdefault("edit_vs_control", {"cand_k": ctl.get("edited_k_same_slots"), "ref_k": ctl.get("k"),
+                                                     "p": evc.get("p"), "slots": ctl.get("slots")})
             nr["_extra"] = extra
             pc = (describe(nr.get("code")) or "").upper()
             nr["_ptask"] = pc if pc in PROSPECT["pairs"] else None
@@ -1145,7 +1154,8 @@ def row_cells(src):
             ic, pc = ints(rr), is_practice(rr)
             evc, cs = xg(rr, "edit_vs_control"), xg(rr, "control_slots")
             e_sub = as_int(evc.get("cand_k")) if isinstance(evc, dict) else None
-            u_sub = 0 if ic["unedited_k"] == 0 else (cn if ic["unedited_k"] == ic["n"] else None)
+            u_sub = (as_int(xg(rr, "control_unedited_k")) if as_int(xg(rr, "control_unedited_k")) is not None else
+                     0 if ic["unedited_k"] == 0 else (cn if ic["unedited_k"] == ic["n"] else None))
             sl = (f"slots {cs[0]}–{cs[1]}" if isinstance(cs, (list, tuple)) and len(cs) == 2 else None)
             pcv = as_float(evc.get("p")) if isinstance(evc, dict) else None
             T["random_control"][tid] = C(
@@ -3389,7 +3399,10 @@ def control_text(P, tables):
         fresh = (f" From this page’s {fe['n']}{' practice' if fe.get('prac') else ' unseen'} starts, the edit lifted "
                  f"{tn('T1')} from {fe['a']} to {fe['b']}"
                  + (f"; a random edit of the same size scored {fr['r']}" if fr and fr.get("s") == "ok" and not fr.get("prov")
-                    and fr.get("r") is not None and fr.get("n") == fe["n"] else "") + ".")
+                    and fr.get("r") is not None and fr.get("n") == fe["n"] else
+                    f"; on the {fr['n']} of these starts where a random edit of the same size also ran, it scored {fr['r']} "
+                    f"against the edit’s {fr['e']}" if fr and fr.get("s") == "ok" and not fr.get("prov") and fr.get("sub")
+                    and None not in (fr.get("r"), fr.get("e")) else "") + ".")
     s = (f"π0.5 is where the method comes from, and our control.{fresh} In earlier runs, from other starts, the edit "
          f"lifted {tn('T1')} from {e['base']} to {e['cand']} of {e['n']} unseen starts and {tn('T8')} from {s4['base']} "
          f"to {s4['cand']} of {s4['n']}; a random edit of the same size scored {c['rand']} of {c['n']} on {tn('T1')}, "
@@ -4018,8 +4031,12 @@ def prospect(cross, tables):
             kind = "practice" if is_practice(r) else "unseen"
             if kind not in closed:
                 _, p, _, _, _, _ = stat(r)
-                closed[kind] = dict(a=i["unedited_k"], b=i["edited_k"], n=i["n"], p=p, ctl=i["control_k"],
-                                    t=i["teacher_k"])
+                tn_ = as_int(r.get("teacher_n") if r.get("teacher_n") is not None else r["_extra"].get("teacher_n"))
+                cn_ = as_int(r.get("control_n") if r.get("control_n") is not None else r["_extra"].get("control_n"))
+                closed[kind] = dict(a=i["unedited_k"], b=i["edited_k"], n=i["n"], p=p,
+                                    ctl=i["control_k"] if cn_ in (None, i["n"]) else None,
+                                    t=i["teacher_k"] if tn_ in (None, i["n"]) else None,
+                                    t_part=(i["teacher_k"], tn_) if tn_ and tn_ < i["n"] else None)
         if gap is None and not closed:
             continue
         sc = ints(screen) if screen else None
@@ -4062,7 +4079,9 @@ def prospect_html(P):
                             f"on {c['n']} {kind} starts") + f" it went from {c['a']} to {c['b']}"
                            + (f", against {c['ctl']} for the random edit" if c.get("ctl") is not None else "")
                            + (f" and {c['t']} for the clearer wording" if c.get("t") is not None else "")
-                           + (f" (p = {fp(c['p'])})" if c.get("p") is not None else ""))
+                           + (f" (p = {fp(c['p'])})" if c.get("p") is not None else "")
+                           + (f"; the clearer wording, run on the first {c['t_part'][1]} of them, {c['t_part'][0]}"
+                              if c.get("t_part") else ""))
         # the verdict follows the README's rules: the offline check first; then, on practice starts, the bar for the
         # unseen-start runs (at least half of the clearer wording's paired gain, and more than the random edit); then
         # the fix itself on unseen starts (exact McNemar p < 0.05, and more than the random edit)

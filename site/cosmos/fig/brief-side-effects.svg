@@ -1192,8 +1192,8 @@ z
     </g>
    </g>
    <g id="text_7">
-    <!-- +79 / 128* -->
-    <g style="fill: #ffffff" transform="translate(222.179719 34.277156) scale(0.062 -0.062)">
+    <!-- +18 / 32* -->
+    <g style="fill: #ffffff" transform="translate(223.903609 34.277156) scale(0.062 -0.062)">
      <defs>
       <path id="Arial-BoldMT-2b" d="M 1466 659 
 L 1466 1850 
@@ -1251,15 +1251,14 @@ z
 " transform="scale(0.015625)"/>
      </defs>
      <use xlink:href="#Arial-BoldMT-2b"/>
-     <use xlink:href="#Arial-BoldMT-37" transform="translate(58.398438 0)"/>
-     <use xlink:href="#Arial-BoldMT-39" transform="translate(114.013672 0)"/>
+     <use xlink:href="#Arial-BoldMT-31" transform="translate(58.398438 0)"/>
+     <use xlink:href="#Arial-BoldMT-38" transform="translate(114.013672 0)"/>
      <use xlink:href="#Arial-BoldMT-20" transform="translate(169.628906 0)"/>
      <use xlink:href="#Arial-BoldMT-2f" transform="translate(197.412109 0)"/>
      <use xlink:href="#Arial-BoldMT-20" transform="translate(225.195312 0)"/>
-     <use xlink:href="#Arial-BoldMT-31" transform="translate(252.978516 0)"/>
+     <use xlink:href="#Arial-BoldMT-33" transform="translate(252.978516 0)"/>
      <use xlink:href="#Arial-BoldMT-32" transform="translate(308.59375 0)"/>
-     <use xlink:href="#Arial-BoldMT-38" transform="translate(364.208984 0)"/>
-     <use xlink:href="#Arial-BoldMT-2a" transform="translate(419.824219 0)"/>
+     <use xlink:href="#Arial-BoldMT-2a" transform="translate(364.208984 0)"/>
     </g>
    </g>
    <g id="text_8">
