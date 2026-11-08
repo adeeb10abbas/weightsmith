@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "72c23755348f"
+    "commit": "ca9db1173489"
    }
   },
   {
@@ -132,7 +132,7 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Edits lifted success on T8 from 0 to 15 of 16 unseen starts (p = 6.1 × 10⁻⁵). On the practice starts the edit was built from, a random edit of the same size scored 1 of 16 on T8, against 0 unedited and 13 edited. Other tasks: {running}."
+    "text": "Edits lifted success on T8 from 0 to 15 of 16 unseen starts (p = 6.1 × 10⁻⁵). A random edit of the same size scored 0 of 16 on T8, against 0 unedited. Other tasks: {running}."
    },
    {
     "id": "groot",
@@ -463,10 +463,9 @@
     "label": "Random control, same size",
     "cells": {
      "cosmos": {
-      "v": "control 1, unedited 0, edit 13 of 16",
+      "v": "control 0, unedited 0, edit 15 of 16",
       "s": "ok",
-      "d": "T8",
-      "prac": true
+      "d": "T8"
      },
      "groot": {
       "v": "running",
@@ -1313,16 +1312,14 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "control 1, unedited 0, edit 13 of 16",
+       "v": "control 0, unedited 0, edit 15 of 16",
        "s": "ok",
-       "d": "practice starts the edit was built from; slots 30000–30015",
+       "d": "slots 96000–96015",
        "u": 0,
-       "r": 1,
-       "e": 13,
+       "r": 0,
+       "e": 15,
        "n": 16,
-       "t": 15,
-       "prac": true,
-       "fl": "T8 Mustard, reference-first, 16 practice"
+       "fl": "T8 Mustard, reference-first (16 unseen)"
       },
       "groot": {
        "v": "running",
@@ -2389,14 +2386,14 @@
       98.9
      ]
     },
-    "control_k": null,
+    "control_k": 0,
     "teacher_k": null,
     "recovery_pct": null,
     "transfer": null,
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions",
+    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 0 broke 0 p = 1; edit vs control p = 6.1e-05",
     "_task": "T8",
     "_edit_task": null,
     "_prov": false,
@@ -5873,7 +5870,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "72c23755348f"
+   "commit": "ca9db1173489"
   },
   "groot": {
    "kind": "branch",
@@ -5891,8 +5888,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "131d41ccc9e84736",
- "updated": "2026-11-08T07:37Z",
- "updated_text": "8 Nov 2026, 07:37 UTC",
+ "content_hash": "43d0af7cbe971547",
+ "updated": "2026-11-08T07:43Z",
+ "updated_text": "8 Nov 2026, 07:43 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
