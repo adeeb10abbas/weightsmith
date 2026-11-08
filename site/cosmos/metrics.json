@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "ca9db1173489"
+    "commit": "ad1a713be7db"
    }
   },
   {
@@ -39,7 +39,7 @@
     "branch": "cross-groot/v1",
     "path": "study/results/cross/metrics_groot.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-    "commit": "87186504388f"
+    "commit": "5795bf525d92"
    }
   },
   {
@@ -132,14 +132,14 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Edits lifted success on T8 from 0 to 15 of 16 unseen starts (p = 6.1 × 10⁻⁵). A random edit of the same size scored 0 of 16 on T8, against 0 unedited. Other tasks: {running}."
+    "text": "Edits lifted success on T8 from 0 to 28 of 32 unseen starts (p = 7.5 × 10⁻⁹). On 16 of those starts a random edit of the same size scored 0, against 15 for the edit and 0 unedited. Other tasks: {running}."
    },
    {
     "id": "groot",
     "lead": "GR00T N1.7",
     "kind": "reasoning-backbone VLA",
     "tag": null,
-    "text": "Unedited so far: T1 9 of 32, T3 1 of 32 and T8 0 of 32 starts. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12), T3 1 → 0 of 32 (p = 1) and T8 0 → 0 of 32 (p = 1). The T1 edit lowered success on the 32 practice starts it was built from, 9 → 0 (p = 0.0039); further edits: {running}. Other tasks: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
+    "text": "Unedited so far: T1 9 of 32, T3 1 of 32, T8 0 of 32 and R1 28 of 32 starts. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12); no gain on T3 and T8. T1 edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); further edits: {running}. Other tasks: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
     "id": "side-effects",
@@ -401,9 +401,9 @@
     "label": "T8 Mustard right of the raisin box, reference-first",
     "cells": {
      "cosmos": {
-      "v": "0 → 15 of 16",
+      "v": "0 → 28 of 32",
       "s": "ok",
-      "d": "15 / 0, p = 6.1 × 10⁻⁵"
+      "d": "28 / 0, p = 7.5 × 10⁻⁹"
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -427,8 +427,9 @@
       "s": "running"
      },
      "groot": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 28 of 32",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "pi05": {
       "v": "kept: 32 → 32 of 32",
@@ -485,12 +486,14 @@
     "label": "Where to edit",
     "cells": {
      "cosmos": {
-      "v": "text pathway (und mlp.down_proj, layers 0-26): 15 of 16",
-      "s": "ok"
+      "v": "text pathway 28 of 32",
+      "s": "ok",
+      "d": "T8, 32 unseen starts; unedited 0"
      },
      "groot": {
-      "v": "Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (VLM backbone): 0 of 32",
-      "s": "ok"
+      "v": "Cosmos-Reason2 backbone 0, diffusion action head 0 of 32",
+      "s": "ok",
+      "d": "T1, 32 practice starts; unedited 9"
      },
      "pi05": {
       "v": "VLM 55, action expert 20, head 0 of 64",
@@ -708,8 +711,11 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "28 of 32",
+       "s": "ok",
+       "d": "88%; slots 30000–30031",
+       "k": 28,
+       "n": 32
       },
       "pi05": {
        "v": "32 of 32",
@@ -910,7 +916,7 @@
       "groot": {
        "v": "9 → 0 of 32",
        "s": "ok",
-       "d": "scored on the practice starts the edit was built from, not on unseen starts; Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (VLM backbone); 0 / 9, p = 0.0039; −28.1 points [−43.8, −12.5]; slots 30000–30031",
+       "d": "scored on the practice starts the edit was built from, not on unseen starts; Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (VLM backbone); 0 / 9, p = 0.0039; −28.1 points [−43.8, −12.5]; slots 30000–30031; 1 more edit(s) on this task in the where-to-edit table",
        "a": 9,
        "b": 0,
        "n": 32,
@@ -924,6 +930,17 @@
        ],
        "color": "teal",
        "prac": true,
+       "loc": "Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (VLM backbone)",
+       "alts": [
+        {
+         "loc": "GR00T action head: 32 AlternateVLDiT blocks, ff.net.2 (diffusion transformer)",
+         "a": 9,
+         "b": 0,
+         "n": 32,
+         "p": 0.00390625,
+         "prac": true
+        }
+       ],
        "fl": "T1 Cube then banana, practice starts",
        "fb": "T1 practice"
       },
@@ -1211,21 +1228,22 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "0 → 15 of 16",
+       "v": "0 → 28 of 32",
        "s": "ok",
-       "d": "text pathway (und mlp.down_proj, layers 0-26); 15 / 0, p = 6.1 × 10⁻⁵; +93.8 points [81.2, 100.0]; slots 96000–96015; on the practice starts it was built from: 0 → 13 of 16",
+       "d": "text pathway (und mlp.down_proj, layers 0-26); 28 / 0, p = 7.5 × 10⁻⁹; +87.5 points [75.0, 96.9]; slots 96000–96031; on the practice starts it was built from: 0 → 13 of 16",
        "a": 0,
-       "b": 15,
-       "n": 16,
-       "fx": 15,
+       "b": 28,
+       "n": 32,
+       "fx": 28,
        "br": 0,
-       "pv": 6.103515625e-05,
+       "pv": 7.450580596923828e-09,
        "ci": [
-        93.8,
-        81.2,
-        100.0
+        87.5,
+        75.0,
+        96.9
        ],
        "color": "teal",
+       "loc": "text pathway (und mlp.down_proj, layers 0-26)",
        "fl": "T8 Mustard, reference-first, text pathway (und mlp.down…",
        "fb": "T8 text pathway (und"
       },
@@ -1314,11 +1332,12 @@
       "cosmos": {
        "v": "control 0, unedited 0, edit 15 of 16",
        "s": "ok",
-       "d": "slots 96000–96015",
+       "d": "the control ran on 16 of the 32 starts; slots 96000–96015; edit against control p = 6.1 × 10⁻⁵",
        "u": 0,
        "r": 0,
        "e": 15,
        "n": 16,
+       "sub": true,
        "fl": "T8 Mustard, reference-first (16 unseen)"
       },
       "groot": {
@@ -1423,9 +1442,9 @@
      "label": "Task, starts",
      "cells": {
       "cosmos": {
-       "v": "T8, 16 unseen starts",
+       "v": "T8, 32 unseen starts",
        "s": "ok",
-       "d": "slots 96000–96015"
+       "d": "slots 96000–96031"
       },
       "groot": {
        "v": "T1, 32 practice starts",
@@ -1448,7 +1467,7 @@
      "label": "Unedited",
      "cells": {
       "cosmos": {
-       "v": "0 of 16",
+       "v": "0 of 32",
        "s": "ok"
       },
       "groot": {
@@ -1470,7 +1489,7 @@
      "label": "Backbone / text pathway",
      "cells": {
       "cosmos": {
-       "v": "text pathway (und mlp.down_proj, layers 0-26): 15 of 16",
+       "v": "text pathway (und mlp.down_proj, layers 0-26): 28 of 32",
        "s": "ok"
       },
       "groot": {
@@ -1497,8 +1516,8 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "GR00T action head: 32 AlternateVLDiT blocks, ff.net.2 (diffusion transformer): 0 of 32",
+       "s": "ok"
       },
       "pi05": {
        "v": "action expert 20, action head 0 of 64",
@@ -1912,14 +1931,14 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "+15: 0 → 15 of 16",
+       "v": "+28: 0 → 28 of 32",
        "s": "ok",
-       "d": "15 / 0; p = 6.1 × 10⁻⁵; the target task; slots 96000–96015",
-       "delta": 15,
+       "d": "28 / 0; p = 7.5 × 10⁻⁹; the target task; slots 96000–96031",
+       "delta": 28,
        "a": 0,
-       "b": 15,
-       "n": 16,
-       "p": 6.103515625e-05,
+       "b": 28,
+       "n": 32,
+       "p": 7.450580596923828e-09,
        "target": true
       },
       "groot": {
@@ -2149,7 +2168,7 @@
      "label": "Smallest detectable change",
      "cells": {
       "cosmos": {
-       "v": "38 points at 16 pairs",
+       "v": "27 points at 32 pairs",
        "s": "ok",
        "d": "if about 30% of pairs differ"
       },
@@ -2349,7 +2368,29 @@
     "_edit_task": null,
     "_prov": false,
     "extra": {
-     "machine": "ali-ms"
+     "machine": "ali-ms",
+     "control_n": 16,
+     "teacher_n": 16,
+     "edit_vs_control": {
+      "n": 16,
+      "ref_k": 1,
+      "cand_k": 13,
+      "fixed": 12,
+      "broke": 0,
+      "p": 0.00048828125,
+      "slots": [
+       30000,
+       30015
+      ]
+     },
+     "control_slots": [
+      30000,
+      30015
+     ],
+     "teacher_slots": [
+      30000,
+      30015
+     ]
     }
    },
    {
@@ -2361,29 +2402,29 @@
      "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
      "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      96000,
-     96015
+     96031
     ],
     "unedited_k": 0,
-    "edited_k": 15,
-    "fixed": 15,
+    "edited_k": 28,
+    "fixed": 28,
     "broke": 0,
-    "p": 6.103515625e-05,
+    "p": 7.450580596923828e-09,
     "ci": {
-     "diff_pts": 93.75,
+     "diff_pts": 87.5,
      "bootstrap95_pts": [
-      81.25,
-      100.0
+      75.0,
+      96.88
      ],
      "wilson95_unedited_pct": [
       0.0,
-      19.4
+      10.7
      ],
      "wilson95_edited_pct": [
-      71.7,
-      98.9
+      71.9,
+      95.0
      ]
     },
     "control_k": 0,
@@ -2398,7 +2439,26 @@
     "_edit_task": null,
     "_prov": false,
     "extra": {
-     "machine": "ali-ms"
+     "machine": "ali-ms",
+     "control_n": 16,
+     "teacher_n": null,
+     "edit_vs_control": {
+      "n": 16,
+      "ref_k": 0,
+      "cand_k": 15,
+      "fixed": 15,
+      "broke": 0,
+      "p": 6.103515625e-05,
+      "slots": [
+       96000,
+       96015
+      ]
+     },
+     "control_slots": [
+      96000,
+      96015
+     ],
+     "teacher_slots": null
     }
    },
    {
@@ -2701,6 +2761,45 @@
     }
    },
    {
+    "experiment": "failure_map",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "R1 RubiksCubeTask",
+    "wording_pair": [
+     "Put the cube in the bowl",
+     null
+    ],
+    "n": 32,
+    "unedited_k": 28,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "unedited_wilson95": [
+      0.7193169451834979,
+      0.9502986561251993
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "tag fm-R1; envs 16; env seed 0; one fresh simulator process per 16-slot group",
+    "_task": "R1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
     "experiment": "wording_sensitivity",
     "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
     "task": "T1 RubiksCubeThenBananaTask",
@@ -2848,7 +2947,48 @@
      30000,
      30031
     ],
-    "notes": "closed-form distillation dW = K^T (K K^T + lam I)^-1 V per layer, lam = 1e-3 mean diag(KK^T); keys/values averaged over 6 build decisions (most-divergent replan of the first 6 failed practice episodes); control = same singular values along random orthonormal directions (default_rng(0)); closed loop: the edited policy reaches for the banana first and never grabs the cube (32/32 fail at object_grabbed(rubiks_cube); frames of slot 30004 unedited vs edited); offline, on the 11 failed episodes used for neither the 6- nor a 12-decision build, the edit's teacher projection is -0.15 (bb) / -0.17 (12-decision build): the token-aligned values only cover the 8 orig positions after the first difference, while the explicit wording's inserted clause ('in the bowl then put') has no position in the original prompt",
+    "notes": "what was edited: Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (16 tensors, rank 8 each: the 8 orig positions after the first difference carry the values; image cells and the shared prefix are pinned to zero); closed-form dW = K^T (K K^T + lam I)^-1 V, lam = 1e-3 mean diag(KK^T), keys/values averaged over 6 build decisions (the most divergent replan of each of the first 6 failed practice episodes). Offline (recorded decisions, noise seed fixed): teacher projection 0.28 on 17 check decisions from other failed episodes (matched random control 0.00); on the 11 of those used by neither this nor a 12-decision build it is -0.15. Closed loop on practice: 9/32 -> 0/32; every edited episode fails at object_grabbed(rubiks_cube): the edited GR00T reaches for the banana first and never grabs the cube (videos/RubiksCubeThenBananaTask_30004_*). Likely cause: token alignment only covers the 8 orig positions after the difference, while the explicit wording's inserted clause ('in the bowl then put') has no position in the original prompt; the transferred change at 'the banana in the bowl' arrives without the cube clause. Grasp-phase offline check (16 decisions, k = 4/8/12/16 of slots 30016-30019, none used to build): the teacher changes the executed chunk's end-effector target by 0.88 cm on average, the edit by 1.86 cm, away from the teacher (projection -0.07); pinning every image token to zero (bb_tok) gives 1.84 cm, so the break is not the edit leaking into the visual tokens.",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090",
+     "control_fixed_broke": null,
+     "control_p": null
+    }
+   },
+   {
+    "experiment": "wsp_edit_practice",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T1 RubiksCubeThenBananaTask",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "n": 32,
+    "unedited_k": 9,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 9,
+    "p": 0.00390625,
+    "ci": {
+     "diff_bootstrap95": [
+      -0.4375,
+      -0.125
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 16,
+    "recovery_pct": -128.57142857142858,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "GR00T action head: 32 AlternateVLDiT blocks, ff.net.2 (diffusion transformer)",
+    "values_changed": 298523070,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "same 6 build decisions as bb; keys = ff.net.2 inputs at every (denoising step, state/action token), 4 x 41 = 164 per block; values = explicit-minus-original block increments; lam = 1e-3 mean diag(KK^T); offline teacher projection +0.22 on the 11 failed episodes used for neither build (bb: -0.15); control = same singular values along random orthonormal directions (default_rng(0)). Closed loop on practice: 9/32 -> 0/32 (0 fixed / 9 broke); 31/32 edited episodes fail at object_grabbed(rubiks_cube), 1 at the banana.",
     "_task": "T1",
     "_edit_task": null,
     "_prov": false,
@@ -5870,14 +6010,14 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "ca9db1173489"
+   "commit": "ad1a713be7db"
   },
   "groot": {
    "kind": "branch",
    "branch": "cross-groot/v1",
    "path": "study/results/cross/metrics_groot.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-   "commit": "87186504388f"
+   "commit": "5795bf525d92"
   },
   "pi05": {
    "kind": "branch",
@@ -5888,8 +6028,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "43d0af7cbe971547",
- "updated": "2026-11-08T07:43Z",
- "updated_text": "8 Nov 2026, 07:43 UTC",
+ "content_hash": "a94d546f3b41f155",
+ "updated": "2026-11-08T08:07Z",
+ "updated_text": "8 Nov 2026, 08:07 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
