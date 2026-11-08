@@ -51,7 +51,7 @@ class TextRec:
     """Hooks: per und call, the input of each layer's mlp.down_proj and the text residual after each layer."""
 
     def __init__(self, net, layers):
-        self.active, self.calls, self.ids = False, [], []
+        self.active, self.calls, self.ids, self.want = False, [], [], None  # want: layers to record (None = all)
         self.hs = [net.language_model.model.embed_tokens.register_forward_hook(self._emb)]
         for L, layer in enumerate(layers):
             self.hs.append(layer.mlp.down_proj.register_forward_hook(self._key(L)))
@@ -64,7 +64,8 @@ class TextRec:
 
     def _key(self, L):
         def h(mod, inp, out):
-            if self.active and self.calls and inp[0].numel() and ("key", L) not in self.calls[-1]:
+            if self.active and self.calls and inp[0].numel() and ("key", L) not in self.calls[-1] and \
+                    (self.want is None or L in self.want):
                 self.calls[-1][("key", L)] = inp[0].detach().double().cpu().numpy().reshape(-1, inp[0].shape[-1])
         return h
 
@@ -75,10 +76,10 @@ class TextRec:
                 self.calls[-1][("res", L)] = r.double().cpu().numpy().reshape(-1, r.shape[-1])
         return h
 
-    def run(self, svc, obs, seed, prompt):
-        self.active, self.calls, self.ids = True, [], []
+    def run(self, svc, obs, seed, prompt, want=None):
+        self.active, self.calls, self.ids, self.want = True, [], [], want
         res = infer_seeded(svc, dict(obs, prompt=prompt), seed)
-        self.active = False
+        self.active, self.want = False, None
         calls = [(i, c) for i, c in zip(self.ids, self.calls) if c]
         if len(calls) != 2:
             raise SystemExit(f"expected 2 text calls (conditional, unconditional), got {[len(i) for i, _ in calls]}")
@@ -127,6 +128,10 @@ def main():
     ap.add_argument("--align", choices=("auto", "all", "ps"), default="auto")
     ap.add_argument("--lam-rel", type=float, default=1e-3)
     ap.add_argument("--no-uncond", action="store_true", help="no preservation keys from the unconditional pass")
+    ap.add_argument("--preserve-file", default=None,
+                    help="JSON {'kept': [[task, instruction], ...]}: instructions whose text states must not change "
+                         "(zero-change keys at every position after the prompt template's common prefix)")
+    ap.add_argument("--probe", nargs="*", default=[], help="NAME=PROMPT: report text-state drift for these after the edit")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", required=True)
     ap.add_argument("--check", nargs="*", default=[], help="OBS.npz:K decisions to replay O, G, O+edit, O+ctl on")
@@ -155,16 +160,44 @@ def main():
         (_, O2), _, _ = rec.run(svc, obs2, seed2, a.orig)
         rep["text_states_image_independent_maxabs"] = max(float(np.abs(O2[("res", L)] - O0[("res", L)]).max())
                                                          for L in layers)
+    def prefix_len(a_ids, b_ids):
+        n = 0
+        while n < min(len(a_ids), len(b_ids)) and int(a_ids[n]) == int(b_ids[n]):
+            n += 1
+        return n
+
+    keep = [tuple(x) for x in json.loads(Path(a.preserve_file).read_text())["kept"]] if a.preserve_file else []
+    P0 = []  # (instruction, positions, {L: unedited residual at those positions})
+    for _task, instr in keep:
+        (ids, st), _, _ = rec.run(svc, obs, seed, instr)
+        pos = np.arange(prefix_len(ids, io_ids), len(ids))
+        P0.append((instr, pos, {L: st[("res", L)][pos].astype(np.float32) for L in layers}))
+    rep["preserve"] = {"file": a.preserve_file, "prompts": len(P0), "keys": int(sum(len(x[1]) for x in P0))}
+    probes = [tuple(x.split("=", 1)) for x in a.probe]
+    Q0 = {}
+    for name, instr in probes:
+        (ids, st), _, _ = rec.run(svc, obs, seed, instr)
+        pos = np.arange(prefix_len(ids, io_ids), len(ids))
+        Q0[name] = (instr, pos, {L: st[("res", L)][pos] for L in layers})
     edit, ctl, orig_w = {}, {}, {}
     rng = np.random.default_rng(a.seed)
     for L in layers:
-        (_, Oc), (_, Uc), _ = rec.run(svc, obs, seed, a.orig)  # current edited model, layer L not yet edited
+        (_, Oc), (_, Uc), _ = rec.run(svc, obs, seed, a.orig, want={L})  # current edited model, layer L not yet edited
         Kc, Vc = Oc[("key", L)][io], G[("res", L)][ig] - Oc[("res", L)][io]
         if a.no_uncond:
             K, V = Kc, Vc
         else:
             K = np.concatenate([Kc, Uc[("key", L)]])
             V = np.concatenate([Vc, U0[("res", L)] - Uc[("res", L)]])
+        pdrift = 0.0
+        if P0:
+            Ks, Vs = [K], [V]
+            for instr, pos, st0 in P0:
+                (_, Pc), _, _ = rec.run(svc, obs, seed, instr, want={L})
+                Ks.append(Pc[("key", L)][pos])
+                Vs.append(st0[L].astype(np.float64) - Pc[("res", L)][pos])
+                pdrift += float(np.linalg.norm(Vs[-1]) ** 2)
+            K, V = np.concatenate(Ks), np.concatenate(Vs)
         Gm = K @ K.T
         lam = a.lam_rel * np.trace(Gm) / len(Gm)
         Z = np.linalg.solve(Gm + lam * np.eye(len(Gm)), V)
@@ -187,6 +220,7 @@ def main():
                                  "rel_fro_w": float(np.sqrt((s ** 2).sum()) / np.linalg.norm(w0.numpy())),
                                  "lam": float(lam), "gap_before": float(np.linalg.norm(Vc)),
                                  "uncond_drift_before": float(np.linalg.norm(U0[("res", L)] - Uc[("res", L)])),
+                                 "preserve_drift_before": float(np.sqrt(pdrift)),
                                  "changed_values": changed})
         print(json.dumps(rep["per_layer"][-1]), flush=True)
     # final match: edited model under O vs G at every layer (matched positions) and unconditional drift
@@ -195,6 +229,20 @@ def main():
                                                   / max(np.linalg.norm(G[("res", L)][ig] - O0[("res", L)][io]), 1e-30)),
                      "uncond_rel_drift": float(np.linalg.norm(U0[("res", L)] - Ue[("res", L)])
                                                / max(np.linalg.norm(U0[("res", L)]), 1e-30))} for L in layers]
+    def drift(items):
+        res = {}
+        for name, (instr, pos, st0) in items:
+            (_, Pe), _, _ = rec.run(svc, obs, seed, instr)
+            num = sum(float(np.linalg.norm(Pe[("res", L)][pos] - st0[L]) ** 2) for L in layers)
+            den = sum(float(np.linalg.norm(st0[L]) ** 2) for L in layers)
+            res[name] = {"prompt": instr, "positions": int(len(pos)), "rel_drift": float(np.sqrt(num / max(den, 1e-30)))}
+        return res
+    if P0:
+        d = drift([(instr, (instr, pos, st)) for instr, pos, st in P0])
+        v = [x["rel_drift"] for x in d.values()]
+        rep["preserve"].update({"rel_drift_mean": float(np.mean(v)), "rel_drift_max": float(np.max(v))})
+    if Q0:
+        rep["probe_drift"] = drift(list(Q0.items()))
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.save(edit, str(out) + ".pt")
