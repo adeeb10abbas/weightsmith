@@ -1286,14 +1286,30 @@ def render_cells(cross):
 # the README "t8und-p". The descriptions, and the counts in them, are the README's (PREVENT["readme"]).
 PREVENT = dict(
     model="cosmos", base="t8und", target="T8", left=("T5", "T3"),
-    edits=[("t8und", "the T8 edit, as above"),
-           ("t8undp", "+ preservation keys from 65 generic RoboLab instructions"),
-           ("t8undr", "+ preservation keys from 24 left/right instructions of other RoboLab tasks")],
-    short={"t8undp": "preservation keys from 65 generic instructions",
-           "t8undr": "preservation keys from 24 left/right instructions of other tasks"},
+    # name; label (table row); short (sentences: "rebuilt with ..."); keys (the preservation set, when that is the only
+    # change); always (a row even before any record; others appear once a record names them); intro (an extra sentence)
+    edits=[dict(name="t8und", label="the T8 edit, as above", always=True),
+           dict(name="t8undp", label="+ preservation keys from 65 generic RoboLab instructions",
+                short="preservation keys from 65 generic instructions", keys="65 generic instructions", always=True),
+           dict(name="t8undr", label="+ preservation keys from 24 left/right instructions of other RoboLab tasks",
+                short="preservation keys from 24 left/right instructions of other tasks",
+                keys="24 left/right instructions of other tasks", always=True,
+                intro="For `t8undr` a rule fixed before the build leaves out every T3, T5 and T8 instruction and object "
+                      "pair, so T3 and T5 stay unseen tests; it has its own random control."),
+           dict(name="t8unds", label="only the instruction template aligned, + the 65 generic preservation keys",
+                short="only the instruction template aligned and the 65 generic preservation keys",
+                intro="`t8unds` tests whether the word-for-word alignment causes the break: it aligns only the "
+                      "template around the instruction, leaves the differing words unconstrained, and keeps the "
+                      "generic keys of `t8undp`.")],
     readme="cross-cosmos/v1:study/results/cross/cosmos/README.md",
     records="cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
 )
+
+
+def pe(name):
+    """A build's entry in PREVENT; an unknown follow-up gets a plain label."""
+    return next((e for e in PREVENT["edits"] if e["name"] == name),
+                dict(name=name, label=f"a follow-up of {PREVENT['base']}", short=f"the follow-up {name}"))
 PCOLS = [("T8", "T8", "target"), ("T5", "T5", "left bin"), ("T3", "T3", "left of bowl"),
          ("gap", "T8 gap closed", "offline"), ("dev", "T5 deviation", "offline; lower is better")]
 
@@ -1384,13 +1400,14 @@ def prevention(cross):
     src = cross.get(PREVENT["model"])
     rows = [r for r in (src["rows"] if src else []) if not r["_prov"]]
     final = bool(src and src["final"])
-    names = [n for n, _ in PREVENT["edits"]]
+    names = [e["name"] for e in PREVENT["edits"]]
     fu = followups(rows)
     extra = sorted(n for n in fu if n not in names and fu[n] in names)
-    labels = dict(PREVENT["edits"])
     out = []
     for name in names + extra:
         mine = [r for r in rows if edit_key(r) == name]
+        if not mine and not pe(name).get("always"):
+            continue
         cells = {}
         for tid in (PREVENT["target"], *PREVENT["left"]):
             rs = [r for r in mine if r["_task"] == tid and None not in (ints(r)["unedited_k"], ints(r)["edited_k"], ints(r)["n"])]
@@ -1403,12 +1420,12 @@ def prevention(cross):
                 cells[k] = (NA if final else
                             C("—", "not run: further runs only if a build restores T5", s="na")
                             if name != PREVENT["base"] and broke and k in (PREVENT["target"], *PREVENT["left"]) else RUN)
-        m = re.search(r"from (\d+) ", labels.get(name, ""))
+        m = re.search(r"from (\d+) ", pe(name)["label"])
         for r in mine if m else []:
             m2 = re.search(r"from (\d+) [\w/ -]*instructions", describe(r.get("notes")) or "")
             if m2 and m2.group(1) != m.group(1):
                 print(f"  CHECK prevention: {name}: a record says {m2.group(1)} instructions, the label {m.group(1)}")
-        out.append(dict(name=name, label=labels.get(name, f"a follow-up of {fu.get(name)}"), cells=cells,
+        out.append(dict(name=name, label=pe(name)["label"], cells=cells,
                         measured=bool(mine)))
     return dict(model=PREVENT["model"], base=PREVENT["base"], target=PREVENT["target"], left=list(PREVENT["left"]),
                 rows=out, sources=[PREVENT["records"], PREVENT["readme"]], text=prevent_finding(out))
@@ -1449,16 +1466,16 @@ def prevent_parts(r, base, bname):
         bb = bc[1] if bc and bc[3] == c.get("slots") and bc[2] == n else None
         if c.get("p") is not None and c["p"] < SIG and b < a:
             out.append((t, "broke", f"{t} still falls from {a} to {b} of {n}{k} starts ({pv})",
-                        f"{t} still fell from {a} to {b} of {n}{k} starts"))
+                        f"{t} still fell from {a} to {b} of {n}{k} starts", None))
         elif bb is not None and bb < a:
             v = "unrestored" if abs(b - bb) <= abs(b - a) else "near"
             out.append((t, v, (f"{t} goes from {a} to {b} of {n}{k} starts" if v == "unrestored" else
                                f"{t} stays near its unedited rate, {a} → {b} of {n}{k} starts")
                         + f" ({pv + '; ' if pv else ''}{bname}: {bb})",
-                        f"{t} went {a} → {b} of {n}{k} starts, against {bb} for the original edit"))
+                        f"{t} went {a} → {b} of {n}{k} starts, against {bb} for the original edit", bb))
         else:
             out.append((t, "plain", f"{t} goes from {a} to {b} of {n}{k} starts" + (f" ({pv})" if pv else ""),
-                        f"{t} went {a} → {b} of {n}{k} starts" + (f" ({pv})" if pv else "")))
+                        f"{t} went {a} → {b} of {n}{k} starts" + (f" ({pv})" if pv else ""), None))
     running = [t for t in (PREVENT["target"], *PREVENT["left"]) if r["cells"][t]["s"] == "running"]
     return dict(t8=t8, left=out, running=running)
 
@@ -1485,7 +1502,7 @@ def prevent_finding(rows):
     for r in rows:
         if r["name"] == PREVENT["base"]:
             continue
-        who = f"`{r['name']}` ({PREVENT['short'].get(r['name'], r['label'])})"
+        who = f"`{r['name']}` ({pe(r['name'])['short']})"
         res = prevent_parts(r, base, bn)
         g, d = r["cells"]["gap"], r["cells"]["dev"]
         off, smaller = [], set()
@@ -1532,13 +1549,10 @@ def prevent_html(P):
             "change a build reproduces on held-aside T8 decisions; T5 deviation is how far the build moves the action "
             "chunk from the unedited policy’s on T5 practice decisions the unedited policy solved (T3 the same way, in the "
             "detail). These decide which builds run closed loop.")
-    names = [r["name"] for r in P["rows"]]
-    rel = next((n for n in names if n.endswith("r") and n != P["base"]), None)
     intro = (f"<p>The T8 edit <code>{esc(P['base'])}</code> breaks {esc(left)}, the two other tasks whose instructions "
              f"say “left”. The Cosmos3 Edge track rebuilds it with zero-change preservation keys: other instructions, "
              f"added as rows of K with zero rows of V, whose layer outputs the solve must keep."
-             + (f" For <code>{esc(rel)}</code> a rule fixed before the build leaves out every T3, T5 and T8 instruction "
-                f"and object pair, so T3 and T5 stay unseen tests; it has its own random control." if rel else "")
+             + "".join(" " + inline(pe(r["name"])["intro"]) for r in P["rows"] if pe(r["name"]).get("intro"))
              + "</p>")
     finding = f'<p>{inline(P["text"]).replace(esc(RUNNING), run)}</p>' if P["text"] else ""
     return (intro + f'<div class="tblock wide">{table}{sources_html(P["sources"])}<p class="tnote">{esc(note)}</p></div>'
@@ -1546,31 +1560,53 @@ def prevent_html(P):
 
 
 def prevent_tldr(P):
-    """For the TL;DR's side-effect bullet, past tense: the follow-up builds with a closed-loop T5 or T3 result; says
-    plainly when a build did not prevent the break; nothing while none has such a result."""
+    """For the TL;DR's side-effect bullet, past tense: the follow-up builds with a closed-loop T5 or T3 result, in one
+    compact sentence; says plainly when they did not prevent the break; nothing while none has such a result."""
     base = next((r for r in P["rows"] if r["name"] == P["base"]), None)
-    fails, others, pending = [], [], False
+    got, pending = [], False
     for r in P["rows"]:
         if r["name"] == P["base"]:
             continue
         res = prevent_parts(r, base, "the original edit")
         pending |= any(r["cells"][t]["s"] == "running" for t in (P["target"], *P["left"]))
-        if not res or not res["left"]:
-            continue
-        keys = PREVENT["short"].get(r["name"], r["label"]).replace("preservation keys from ", "")
-        bad = [x for x in res["left"] if x[1] in FAILED]
-        rest = [x for x in res["left"] if x[1] not in FAILED]
-        t8 = f", while {res['t8'][2]}" if res["t8"] else ""
-        txt = f"with {keys}, " + and_list(x[3] for x in bad + rest) + t8
-        (fails if bad else others).append(txt)
-    out = ""
-    if fails:
-        out += (" Rebuilding the edit with preservation keys " + ("has not prevented the break so far: " if pending
-                                                                 else "did not prevent the break: ")
-                + "; ".join(fails) + ".")
-    if others:
-        out += " Rebuilt " + "; rebuilt ".join(others) + "."
-    return out
+        if res and res["left"]:
+            got.append((r, res))
+    if not got:
+        return ""
+    fails = [(r, res) for r, res in got if any(x[1] in FAILED for x in res["left"])]
+    cells = [r["cells"][t] for r, res in got for t, *_ in res["left"]]
+    prac = all(c.get("prac") for c in cells)
+    keyed = all(pe(r["name"]).get("keys") for r, _ in got)
+
+    def left_txt(r, res):
+        out, last = [], None
+        for t, v, _, _, bb in res["left"]:
+            c = r["cells"][t]
+            a, b, n = c["a"], c["b"], c["n"]
+            verb = "fell" if b < a else "rose" if b > a else "stayed"
+            k = "" if prac else kind_of(c) + " starts"
+            x = (f"from {a} to {b} of {n}{k}" if b != a else f"at {a} of {n}{k}")
+            out.append((f"{t} {verb} " if verb != last else f"{t} ") + x + (f" (the original edit: {bb})"
+                                                                          if bb is not None else ""))
+            last = verb
+        return and_list(out)
+
+    def who(r):
+        e = pe(r["name"])
+        return f"with keys from {e['keys']}" if keyed else f"with {e['short']}"
+
+    t8s = [r["cells"][P["target"]] for r, _ in got]
+    kept = all(res["t8"] and res["t8"][0] == "kept" for _, res in got)
+    t8 = (" kept T8 (" + and_list(f"{c['a']} → {c['b']}" for c in t8s) + f" of {t8s[0]['n']}"
+          + (" practice starts)" if all(c.get("prac") for c in t8s) else ")")
+          if kept and len({c["n"] for c in t8s}) == 1 else "")
+    lead = "Rebuilt with preservation keys, the edit" if keyed else "Rebuilt, the edit"
+    if fails and len(fails) == len(got):
+        verb = "has not prevented the break so far" if pending else "did not prevent the break"
+        return (f" {lead}{t8}{' but' if t8 else ''} {verb}{' on practice starts' if prac else ''}: "
+                + "; ".join(f"{who(r)}, {left_txt(r, res)}" for r, res in got) + ".")
+    return " " + " ".join(f"Rebuilt {who(r)}: " + (res["t8"][2] + "; " if res["t8"] else "") + left_txt(r, res) + "."
+                          for r, res in got)
 
 
 def prevent_conclusion(P):
@@ -1582,7 +1618,7 @@ def prevent_conclusion(P):
             continue
         res = prevent_parts(r, base, "the original edit")
         if res:
-            out.append(present_clause(f"rebuilt with {PREVENT['short'].get(r['name'], r['label'])}, the edit", res)
+            out.append(present_clause(f"rebuilt with {pe(r['name'])['short']}, the edit", res)
                        .replace("p = ", "p\u00a0=\u00a0"))
     return out
 
