@@ -130,7 +130,7 @@
    {
     "id": "where",
     "lead": "Where it works",
-    "text": "Only when written into the part of the model that reads the instruction; written into the part that turns it into motion, the same edit did less (π0.5) or nothing (Cosmos3 Edge). On GR00T N1.7 every version of the edit made the robot worse. On both NVIDIA models it works when the clear wording changes words in place, not when it adds words.",
+    "text": "Only when written into the part of the model that reads the instruction; written into the part that turns it into motion, the same edit did less (π0.5) or nothing (Cosmos3 Edge). On GR00T N1.7 every version of the edit made the robot worse. On both NVIDIA models it works when the clear wording changes words in place, not when it adds words, a rule we wrote down before testing a new pair, and it held (1 → 12 of 32 unseen starts, random edit 3).",
     "kind": null,
     "tag": null
    },
@@ -10054,8 +10054,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "6b9808a9b7f4de8f",
- "numbers_hash": "2ed09aa18f8f00c8",
+ "content_hash": "6412eecc6f4c5702",
+ "numbers_hash": "e78d6bbdb220cfb2",
  "updated": "2026-11-08T22:36Z",
  "updated_text": "8 Nov 2026, 22:36 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
