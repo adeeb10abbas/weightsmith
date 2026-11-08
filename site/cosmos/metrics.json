@@ -29,11 +29,11 @@
    "short": "reasoning-backbone VLA",
    "kind": "NVIDIA vision-language-action policy",
    "status": "running",
-   "checkpoint": "GR00T N1.7 DROID",
-   "architecture": "A Cosmos-Reason2-2B vision-language backbone reads the camera images and the instruction; a diffusion-transformer action head generates the action chunk from the backbone's token embeddings and the robot state. Layer counts, and which backbone layer feeds the head, are recorded with its run.",
-   "entry": "As text tokens in the Cosmos-Reason2 backbone, next to the image tokens. The action head sees the instruction only through the backbone's embeddings.",
+   "checkpoint": "`nvidia/GR00T-N1.7-DROID` at `05e7cc9`, 3.14B parameters",
+   "architecture": "A Cosmos-Reason2-2B vision-language backbone (Qwen3-VL), cut to its first 16 language layers, reads an exterior and a wrist camera (180 × 320 each) and the instruction. The action head, 4 self-attention layers and 32 diffusion-transformer blocks, turns the backbone's tokens and the robot state into 40-step chunks by flow matching; the first 8 steps run at 15 Hz.",
+   "entry": "As text tokens in the Cosmos-Reason2 backbone, next to the image tokens (lowercased, punctuation removed). The action head reads the instruction only through the backbone's tokens.",
    "where": "Cosmos-Reason2 backbone / diffusion action head",
-   "evaluation": "Closed loop on the shared RoboLab DROID tasks and slots.",
+   "evaluation": "Closed loop on the shared RoboLab DROID tasks and slots, NVIDIA's validated client and embodiment setting.",
    "source": {
     "kind": "none",
     "branch": "cross-groot/v1",
@@ -43,7 +43,7 @@
   {
    "id": "pi05",
    "name": "π0.5",
-   "short": "OpenPI VLA, control",
+   "short": "OpenPI VLA, control · earlier slots",
    "kind": "OpenPI vision-language-action policy, the control",
    "status": "measured",
    "checkpoint": "`pi05_droid_jointpos` (OpenPI), about 3.35 billion parameters",
@@ -52,9 +52,11 @@
    "where": "VLM / action expert / action head",
    "evaluation": "Closed loop on RoboLab in Isaac Sim. Until its shared-slot runs land, its cells are earlier records, each labelled with its own slots and number of starts. Trained on DROID data and none of these tasks.",
    "source": {
-    "kind": "none",
+    "kind": "branch",
     "branch": "cross-pi05/v1",
-    "path": "study/results/cross/metrics_pi05.json"
+    "path": "study/results/cross/metrics_pi05.json",
+    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
+    "commit": "d352a51ab67f"
    }
   }
  ],
@@ -299,6 +301,26 @@
     }
    },
    {
+    "key": "render",
+    "label": "Rendering: performance → default preset",
+    "sub": true,
+    "cells": {
+     "cosmos": {
+      "v": "running",
+      "s": "running"
+     },
+     "groot": {
+      "v": "5 → 16 of 16",
+      "s": "ok",
+      "d": "Banana onto plate"
+     },
+     "pi05": {
+      "v": "running",
+      "s": "running"
+     }
+    }
+   },
+   {
     "key": "control",
     "label": "Random control, same size",
     "cells": {
@@ -361,14 +383,11 @@
        "s": "running"
       },
       "pi05": {
-       "v": "4 of 32",
+       "v": "27 of 128",
        "s": "ok",
-       "d": "13%; lets go of the cube early: binds “in the bowl” to the banana; development slots 70000–70031",
-       "src": [
-        "study/results/ctrl/summary.json"
-       ],
-       "k": 4,
-       "n": 32,
+       "d": "21%; slots 90000–90127; lets go of the cube early: binds “in the bowl” to the banana",
+       "k": 27,
+       "n": 128,
        "prov": true
       }
      }
@@ -386,14 +405,11 @@
        "s": "running"
       },
       "pi05": {
-       "v": "12 of 32",
+       "v": "18 of 64",
        "s": "ok",
-       "d": "38%; grasps one temple arm and lifts too little; development slots 70000–70031",
-       "src": [
-        "study/results/ctrl/summary.json"
-       ],
-       "k": 12,
-       "n": 32,
+       "d": "28%; slots 91008–91071; grasps one temple arm and lifts too little",
+       "k": 18,
+       "n": 64,
        "prov": true
       }
      }
@@ -411,14 +427,11 @@
        "s": "running"
       },
       "pi05": {
-       "v": "5 of 32",
+       "v": "8 of 64",
        "s": "ok",
-       "d": "16%; carries along a diagonal and leaves the cube behind the bowl; development slots 70000–70031",
-       "src": [
-        "study/results/ctrl/summary.json"
-       ],
-       "k": 5,
-       "n": 32,
+       "d": "13%; slots 90000–90063; carries along a diagonal and leaves the cube behind the bowl",
+       "k": 8,
+       "n": 64,
        "prov": true
       }
      }
@@ -438,10 +451,7 @@
       "pi05": {
        "v": "13 of 32",
        "s": "ok",
-       "d": "41%; goes first for a lookalike yellow object; development slots 70000–70031",
-       "src": [
-        "study/results/ctrl/summary.json"
-       ],
+       "d": "41%; slots 70000–70031; goes first for a lookalike yellow object",
        "k": 13,
        "n": 32,
        "prov": true
@@ -461,14 +471,11 @@
        "s": "running"
       },
       "pi05": {
-       "v": "6 of 32",
+       "v": "8 of 64",
        "s": "ok",
-       "d": "19%; the bottle slips from a cap grasp mid-carry; development slots 70000–70031",
-       "src": [
-        "study/results/ctrl/summary.json"
-       ],
-       "k": 6,
-       "n": 32,
+       "d": "13%; slots 91008–91071; the bottle slips from a cap grasp mid-carry",
+       "k": 8,
+       "n": 64,
        "prov": true
       }
      }
@@ -486,14 +493,11 @@
        "s": "running"
       },
       "pi05": {
-       "v": "16 of 32",
+       "v": "35 of 64",
        "s": "ok",
-       "d": "50%; builds two cubes, then closes on air above the stack; development slots 70000–70031",
-       "src": [
-        "study/results/ctrl/summary.json"
-       ],
-       "k": 16,
-       "n": 32,
+       "d": "55%; slots 91008–91071; builds two cubes, then closes on air above the stack",
+       "k": 35,
+       "n": 64,
        "prov": true
       }
      }
@@ -513,10 +517,7 @@
       "pi05": {
        "v": "0 of 32",
        "s": "ok",
-       "d": "0%; never lifts it: the box is wider than the open gripper; development slots 70000–70031",
-       "src": [
-        "study/results/ctrl/summary.json"
-       ],
+       "d": "0%; slots 70000–70031; never lifts it: the box is wider than the open gripper",
        "k": 0,
        "n": 32,
        "prov": true
@@ -536,14 +537,11 @@
        "s": "running"
       },
       "pi05": {
-       "v": "0 of 32",
+       "v": "0 of 64",
        "s": "ok",
-       "d": "0%; takes the wrong object or carries it the wrong way; practice slots 20000–20031",
-       "src": [
-        "study/results/sgdw/results/screen_s4r_tf_vs_rf.json"
-       ],
+       "d": "0%; slots 92000–92063; takes the wrong object or carries it the wrong way",
        "k": 0,
-       "n": 32,
+       "n": 64,
        "prov": true
       }
      }
@@ -563,10 +561,7 @@
       "pi05": {
        "v": "32 of 32",
        "s": "ok",
-       "d": "100%; cube into the bowl, already solved; slots 94016–94047",
-       "src": [
-        "study/results/opus/where/results/transfer_cube_analysis.json"
-       ],
+       "d": "100%; slots 94016–94047",
        "k": 32,
        "n": 32,
        "prov": true
@@ -574,11 +569,48 @@
      }
     }
    ],
-   "note": "Until its shared-slot runs land, π0.5's cells are earlier records: 32 development starts per task for T1–T7 (the blind-editor study), 32 practice starts for T8, 32 starts for R1 (cube into the bowl). Its unedited rate on T1 ranged from 8% to 21% across six start sets, so compare models on the shared slots.",
+   "note": "Until its shared-slot runs land, π0.5's cells are earlier records: for each task the largest earlier run, on its own slots, as the π0.5 track lists them with every other measurement. Its unedited rate on T1 ranged from 8% to 21% across six start sets, so compare models on the shared slots.",
+   "sources": []
+  },
+  {
+   "id": "render",
+   "title": "Rendering sensitivity",
+   "definition": "The unedited model on the same starts under RoboLab's performance render preset and its default preset.",
+   "rows": [
+    {
+     "key": "render",
+     "label": "Same starts: performance → default preset",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "5 → 16 of 16",
+       "s": "ok",
+       "d": "performance → default; Banana onto plate, the same 16 starts (slots 0–15); 11 / 0, p = 9.8 × 10⁻⁴; NVIDIA's own serving path, default preset: 16 of 16",
+       "src": [
+        "cross-groot/v1:study/results/cross/groot/results/validation/official-bop16.episode_results.jsonl",
+        "cross-groot/v1:study/results/cross/groot/results/validation/smoke-bop-s0-default.json",
+        "cross-groot/v1:study/results/cross/groot/results/validation/smoke-bop-s0.json"
+       ],
+       "a": 5,
+       "b": 16,
+       "n": 16,
+       "task": "Banana onto plate"
+      },
+      "pi05": {
+       "v": "running",
+       "s": "running"
+      }
+     }
+    }
+   ],
+   "note": "The performance preset renders without the RTX denoiser, which leaves speckle noise on every surface; the default preset is NVIDIA's validated configuration. All three models are compared under the default preset. π0.5's earlier records, including the paper's, used the performance preset.",
    "sources": [
-    "study/results/ctrl/summary.json",
-    "study/results/opus/where/results/transfer_cube_analysis.json",
-    "study/results/sgdw/results/screen_s4r_tf_vs_rf.json"
+    "cross-groot/v1:study/results/cross/groot/results/validation/official-bop16.episode_results.jsonl",
+    "cross-groot/v1:study/results/cross/groot/results/validation/smoke-bop-s0-default.json",
+    "cross-groot/v1:study/results/cross/groot/results/validation/smoke-bop-s0.json"
    ]
   },
   {
@@ -1427,10 +1459,7 @@
       "pi05": {
        "v": "+79: 27 → 106 of 128",
        "s": "ok",
-       "d": "81 / 2, p = 7.2 × 10⁻²²; the target task; held-out slots 90000–90127",
-       "src": [
-        "study/results/opus/heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json"
-       ],
+       "d": "81 / 2; p = 7.2 × 10⁻²²; the target task; slots 90000–90127",
        "delta": 79,
        "a": 27,
        "b": 106,
@@ -1456,10 +1485,7 @@
       "pi05": {
        "v": "+22: 22 → 44 of 64",
        "s": "ok",
-       "d": "31 / 9, p = 6.8 × 10⁻⁴; held-out slots 90000–90063",
-       "src": [
-        "study/results/opus/heldout/thr-pickglasses__ctb-v2mi-PickGlassesTask-90000-64.json"
-       ],
+       "d": "31 / 9; p = 6.8 × 10⁻⁴; slots 90000–90063",
        "delta": 22,
        "a": 22,
        "b": 44,
@@ -1484,10 +1510,7 @@
       "pi05": {
        "v": "+28: 8 → 36 of 64",
        "s": "ok",
-       "d": "33 / 5, p = 4.3 × 10⁻⁶; held-out slots 90000–90063",
-       "src": [
-        "study/results/opus/heldout/tx-rubikscubeleftofbowl__ctb-v2mi-RubiksCubeLeftOfBowlTask-90000-64.json"
-       ],
+       "d": "33 / 5; p = 4.3 × 10⁻⁶; slots 90000–90063",
        "delta": 28,
        "a": 8,
        "b": 36,
@@ -1512,10 +1535,7 @@
       "pi05": {
        "v": "+3: 14 → 17 of 32",
        "s": "ok",
-       "d": "9 / 6, p = 0.61; 32 practice starts, compared with an earlier unedited run",
-       "src": [
-        "study/results/opus/comparisons.json"
-       ],
+       "d": "9 / 6; p = 0.61; slots 20000–20031",
        "delta": 3,
        "a": 14,
        "b": 17,
@@ -1540,10 +1560,7 @@
       "pi05": {
        "v": "+5: 7 → 12 of 32",
        "s": "ok",
-       "d": "11 / 6, p = 0.33; 32 practice starts, compared with an earlier unedited run",
-       "src": [
-        "study/results/opus/comparisons.json"
-       ],
+       "d": "11 / 6; p = 0.33; slots 60000–60031",
        "delta": 5,
        "a": 7,
        "b": 12,
@@ -1568,10 +1585,7 @@
       "pi05": {
        "v": "+5: 14 → 19 of 32",
        "s": "ok",
-       "d": "9 / 4, p = 0.27; 32 practice starts, unedited and edited back to back",
-       "src": [
-        "study/results/opus/comparisons.json"
-       ],
+       "d": "9 / 4; p = 0.27; slots 60000–60031",
        "delta": 5,
        "a": 14,
        "b": 19,
@@ -1596,10 +1610,7 @@
       "pi05": {
        "v": "±0: 0 → 0 of 32",
        "s": "ok",
-       "d": "0 / 0, p = 1; 32 practice starts, unedited and edited back to back",
-       "src": [
-        "study/blog/failure-levels.md"
-       ],
+       "d": "0 / 0; p = 1; slots 60000–60031",
        "delta": 0,
        "a": 0,
        "b": 0,
@@ -1644,10 +1655,7 @@
       "pi05": {
        "v": "±0: 32 → 32 of 32",
        "s": "ok",
-       "d": "0 / 0, p = 1; cube into the bowl; slots 94016–94047",
-       "src": [
-        "study/results/opus/where/results/transfer_cube_analysis.json"
-       ],
+       "d": "0 / 0; p = 1; slots 94016–94047",
        "delta": 0,
        "a": 32,
        "b": 32,
@@ -1659,14 +1667,7 @@
     }
    ],
    "note": "Each model's main edit, unchanged, on every suite task. π0.5's earlier records use the T1 edit: T1–T3 on unseen starts (128 or 64), T4–T7 on 32 practice starts, R1 on 32 fresh starts; it was not run on T8. Across fifteen other surveyed tasks it harmed none detectably.",
-   "sources": [
-    "study/blog/failure-levels.md",
-    "study/results/opus/comparisons.json",
-    "study/results/opus/heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json",
-    "study/results/opus/heldout/thr-pickglasses__ctb-v2mi-PickGlassesTask-90000-64.json",
-    "study/results/opus/heldout/tx-rubikscubeleftofbowl__ctb-v2mi-RubiksCubeLeftOfBowlTask-90000-64.json",
-    "study/results/opus/where/results/transfer_cube_analysis.json"
-   ],
+   "sources": [],
    "edit": {
     "cosmos": null,
     "groot": null,
@@ -1878,7 +1879,2184 @@
   }
  ],
  "cross_rows": {
-  "cosmos": []
+  "cosmos": [],
+  "pi05": [
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl"
+    ],
+    "slots": [
+     90000,
+     90127
+    ],
+    "n": 128,
+    "unedited_k": 27,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      14.9,
+      29.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction. Other unedited measurements: 4/32 on 70000-70031; 11/64 on 91008-91071; 19/128 on 90000-90127; 5/64 on 94016-94079. Different slot blocks and runs differ by more than their Wilson intervals suggest (identical reruns flip ~30% of pairs).",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/opus/heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json (base arm)"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "PickGlassesTask",
+    "code": "T2",
+    "wording_pair": [
+     "Pick up the eye glasses"
+    ],
+    "slots": [
+     91008,
+     91071
+    ],
+    "n": 64,
+    "unedited_k": 18,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      18.6,
+      40.1
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction. Other unedited measurements: 12/32 on 70000-70031; 22/64 on 90000-90063; 14/32 on 94016-94047; 26/64 on 60000-60063. Different slot blocks and runs differ by more than their Wilson intervals suggest (identical reruns flip ~30% of pairs).",
+    "_task": "T2",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/ctrl/heldout (base arm of p1 held-out)"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "T3",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl"
+    ],
+    "slots": [
+     90000,
+     90063
+    ],
+    "n": 64,
+    "unedited_k": 8,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      6.5,
+      22.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction. Other unedited measurements: 5/32 on 70000-70031; 4/32 on 94016-94047; 3/32 on 60000-60031. Different slot blocks and runs differ by more than their Wilson intervals suggest (identical reruns flip ~30% of pairs).",
+    "_task": "T3",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/opus/heldout/tx-rubikscubeleftofbowl__ctb-v2mi-RubiksCubeLeftOfBowlTask-90000-64.json (base arm)"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "StackYellowOnRedTask",
+    "code": "T4",
+    "wording_pair": [
+     "Stack the yellow block on the red block"
+    ],
+    "slots": [
+     70000,
+     70031
+    ],
+    "n": 32,
+    "unedited_k": 13,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      25.5,
+      57.7
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction. Other unedited measurements: 14/32 on 20000-20031. Different slot blocks and runs differ by more than their Wilson intervals suggest (identical reruns flip ~30% of pairs).",
+    "_task": "T4",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/ctrl/summary.json (controlled study, dev slots)"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardInLeftBinTask",
+    "code": "T5",
+    "wording_pair": [
+     "Put the mustard in the left bin"
+    ],
+    "slots": [
+     91008,
+     91071
+    ],
+    "n": 64,
+    "unedited_k": 8,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      6.5,
+      22.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction. Other unedited measurements: 6/32 on 70000-70031; 7/32 on 60000-60031. Different slot blocks and runs differ by more than their Wilson intervals suggest (identical reruns flip ~30% of pairs).",
+    "_task": "T5",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/ctrl/heldout (base arm of p1 held-out)"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "Stack3RubiksCubeTask",
+    "code": "T6",
+    "wording_pair": [
+     "Stack the rubiks cubes in a tower"
+    ],
+    "slots": [
+     91008,
+     91071
+    ],
+    "n": 64,
+    "unedited_k": 35,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      42.6,
+      66.3
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction. Other unedited measurements: 16/32 on 70000-70031; 14/32 on 60000-60031. Different slot blocks and runs differ by more than their Wilson intervals suggest (identical reruns flip ~30% of pairs).",
+    "_task": "T6",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/ctrl/heldout (base arm of p1 held-out)"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "PickUpGreenObjectTask",
+    "code": "T7",
+    "wording_pair": [
+     "Pick up the green vegetable block"
+    ],
+    "slots": [
+     70000,
+     70031
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      0.0,
+      10.7
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction. Other unedited measurements: 0/32 on 60000-60031. Different slot blocks and runs differ by more than their Wilson intervals suggest (identical reruns flip ~30% of pairs).",
+    "_task": "T7",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/ctrl/summary.json (controlled study, dev slots)"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+    ],
+    "slots": [
+     92000,
+     92063
+    ],
+    "n": 64,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      0.0,
+      5.7
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction. Other unedited measurements: 0/32 on 20000-20031. Different slot blocks and runs differ by more than their Wilson intervals suggest (identical reruns flip ~30% of pairs).",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/sgdw/results/heldout_pairs_92000-64.json"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeTask",
+    "code": "R1",
+    "wording_pair": [
+     "Put the cube in the bowl"
+    ],
+    "slots": [
+     94016,
+     94047
+    ],
+    "n": 32,
+    "unedited_k": 32,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      89.3,
+      100.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction. Other unedited measurements: 16/16 on 60000-60015. Different slot blocks and runs differ by more than their Wilson intervals suggest (identical reruns flip ~30% of pairs).",
+    "_task": "R1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/opus/where/results/transfer_cube_analysis.json"
+    }
+   },
+   {
+    "experiment": "edit_target",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "slots": [
+     90000,
+     90127
+    ],
+    "n": 128,
+    "unedited_k": 27,
+    "edited_k": 106,
+    "fixed": 81,
+    "broke": 2,
+    "p": 7.210946989931019e-22,
+    "ci": {
+     "wilson95_unedited_pct": [
+      14.9,
+      29.0
+     ],
+     "wilson95_edited_pct": [
+      75.3,
+      88.4
+     ],
+     "diff_pts": 61.7,
+     "bootstrap95_diff_pts": [
+      52.3,
+      70.3
+     ]
+    },
+    "control_k": {
+     "k": 9,
+     "n": 64,
+     "slots": [
+      90000,
+      90063
+     ],
+     "what": "random-direction update with v2mi-f's layers, rank and singular values (seed 0)"
+    },
+    "teacher_k": {
+     "k": 57,
+     "n": 64,
+     "slots": [
+      90000,
+      90063
+     ],
+     "wording": "Put the cube in the bowl then put the banana in the bowl"
+    },
+    "recovery_pct": 84.1,
+    "transfer": {
+     "T2": {
+      "n": 64,
+      "unedited_k": 22,
+      "edited_k": 44,
+      "fixed": 31,
+      "broke": 9,
+      "p": 0.0006795482549932785,
+      "ci": {
+       "wilson95_unedited_pct": [
+        23.9,
+        46.6
+       ],
+       "wilson95_edited_pct": [
+        56.6,
+        78.8
+       ],
+       "diff_pts": 34.4,
+       "bootstrap95_diff_pts": [
+        17.2,
+        51.6
+       ]
+      },
+      "paired_slots": [
+       90000,
+       90063
+      ],
+      "what": "same file on PickGlassesTask, held-out"
+     },
+     "T3": {
+      "n": 64,
+      "unedited_k": 8,
+      "edited_k": 36,
+      "fixed": 33,
+      "broke": 5,
+      "p": 4.255962267052382e-06,
+      "ci": {
+       "wilson95_unedited_pct": [
+        6.5,
+        22.8
+       ],
+       "wilson95_edited_pct": [
+        44.1,
+        67.7
+       ],
+       "diff_pts": 43.8,
+       "bootstrap95_diff_pts": [
+        28.1,
+        59.4
+       ]
+      },
+      "paired_slots": [
+       90000,
+       90063
+      ],
+      "what": "same file on RubiksCubeLeftOfBowlTask, held-out"
+     }
+    },
+    "retention": {
+     "R1": {
+      "n": 32,
+      "unedited_k": 32,
+      "edited_k": 32,
+      "fixed": 0,
+      "broke": 0,
+      "p": 1.0,
+      "slots": [
+       94016,
+       94047
+      ]
+     }
+    },
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "held-out, weightsmith/heldout.py (order alternating by half). Recovery % on slots 90000-90063, where the control and teacher ran: (edit 50 - unedited 13) / (teacher 57 - unedited 13). Teacher vs edit there: 11 teacher-only, 4 edit-only, p = 0.12. Practice slots 20000-20031: 3/32 -> 25/32 (22 fixed, 0 broke).",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "study/results/opus/heldout/cube-then-banana__v2mi-f-RubiksCubeThenBananaTask-90000-128.json; study/results/opus/controls/ctl1-90000-64.analysis.json"
+    }
+   },
+   {
+    "experiment": "edit_target",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "slots": [
+     90000,
+     90127
+    ],
+    "n": 128,
+    "unedited_k": 19,
+    "edited_k": 102,
+    "fixed": 86,
+    "broke": 3,
+    "p": 3.7988915866351353e-22,
+    "ci": {
+     "wilson95_unedited_pct": [
+      9.7,
+      22.0
+     ],
+     "wilson95_edited_pct": [
+      71.9,
+      85.7
+     ],
+     "diff_pts": 64.8,
+     "bootstrap95_diff_pts": [
+      55.5,
+      73.4
+     ]
+    },
+    "control_k": {
+     "k": 9,
+     "n": 64,
+     "slots": [
+      90000,
+      90063
+     ],
+     "what": "random-direction control of v2mi-f"
+    },
+    "teacher_k": {
+     "k": 57,
+     "n": 64,
+     "slots": [
+      90000,
+      90063
+     ],
+     "wording": "Put the cube in the bowl then put the banana in the bowl"
+    },
+    "recovery_pct": 93.8,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), image-cell keys only, rank <= 32 per layer",
+    "values_changed": 248057499,
+    "notes": "held-out, heldout.py, against its own unedited run on the same slots. Recovery % on 90000-90063: (edit 54 - unedited 9) / (teacher 57 - unedited 9). On slots 94016-94079 (where-to-edit) it scored 41/64 against v2mi-f's 55/64 (5 / 19, p = 0.0066).",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "abl-imgl8",
+      "fingerprint": "5bf8c4329c1e416a"
+     },
+     "values_changed_note": "248,057,499 stored values (7.4%); 5.3M numbers as low-rank factors (0.16%)",
+     "source": "study/results/opus/heldout/cube-then-banana__abl-imgl8-RubiksCubeThenBananaTask-90000-128.json; study/results/opus/controls/ctl1-90000-64.analysis.json"
+    }
+   },
+   {
+    "experiment": "where_to_edit",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "slots": [
+     94016,
+     94079
+    ],
+    "n": 64,
+    "unedited_k": 5,
+    "edited_k": 55,
+    "fixed": 50,
+    "broke": 0,
+    "p": 1.7763568394002505e-15,
+    "ci": {
+     "wilson95_unedited_pct": [
+      3.4,
+      17.0
+     ],
+     "wilson95_edited_pct": [
+      75.4,
+      92.4
+     ],
+     "bootstrap95_diff_pts": [
+      67.2,
+      87.5
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "VLM (v2mi-f); fingerprint 63db0c52a51306c9; all arms paired with one unedited run; 12 of 14 chunks ran on one lane, so their second 16 slots started from other scenes (sensitivity analysis on the 32 unaffected slots in where/README.md)",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "VLM (v2mi-f)",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "stored values changed (where/README.md table)",
+     "source": "study/results/opus/where/results/heldout_analysis.json"
+    }
+   },
+   {
+    "experiment": "where_to_edit",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "slots": [
+     94016,
+     94079
+    ],
+    "n": 64,
+    "unedited_k": 5,
+    "edited_k": 41,
+    "fixed": 38,
+    "broke": 2,
+    "p": 1.4933903003111482e-09,
+    "ci": {
+     "wilson95_unedited_pct": [
+      3.4,
+      17.0
+     ],
+     "wilson95_edited_pct": [
+      51.8,
+      74.7
+     ],
+     "bootstrap95_diff_pts": [
+      42.2,
+      68.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), image-cell keys only, rank <= 32 per layer",
+    "values_changed": 248057499,
+    "notes": "VLM image cells (abl-imgl8); fingerprint 5bf8c4329c1e416a; all arms paired with one unedited run; 12 of 14 chunks ran on one lane, so their second 16 slots started from other scenes (sensitivity analysis on the 32 unaffected slots in where/README.md)",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "VLM image cells (abl-imgl8)",
+      "fingerprint": "5bf8c4329c1e416a"
+     },
+     "values_changed_note": "stored values changed (where/README.md table)",
+     "source": "study/results/opus/where/results/heldout_analysis.json"
+    }
+   },
+   {
+    "experiment": "where_to_edit",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "slots": [
+     94016,
+     94079
+    ],
+    "n": 64,
+    "unedited_k": 5,
+    "edited_k": 20,
+    "fixed": 20,
+    "broke": 5,
+    "p": 0.004077315330505371,
+    "ci": {
+     "wilson95_unedited_pct": [
+      3.4,
+      17.0
+     ],
+     "wilson95_edited_pct": [
+      21.2,
+      43.4
+     ],
+     "bootstrap95_diff_pts": [
+      9.4,
+      37.5
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "action-expert MLP down-projections action.blocks.00-17.mlp_1.linear, solved through the adaRMS gate",
+    "values_changed": 60378838,
+    "notes": "action expert (A1); fingerprint 09b7c9f5bfe26912; all arms paired with one unedited run; 12 of 14 chunks ran on one lane, so their second 16 slots started from other scenes (sensitivity analysis on the 32 unaffected slots in where/README.md)",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "action expert (A1)",
+      "fingerprint": "09b7c9f5bfe26912"
+     },
+     "values_changed_note": "stored values changed (where/README.md table)",
+     "source": "study/results/opus/where/results/heldout_analysis.json"
+    }
+   },
+   {
+    "experiment": "where_to_edit",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "slots": [
+     94016,
+     94079
+    ],
+    "n": 64,
+    "unedited_k": 5,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 5,
+    "p": 0.0625,
+    "ci": {
+     "wilson95_unedited_pct": [
+      3.4,
+      17.0
+     ],
+     "wilson95_edited_pct": [
+      0.0,
+      5.7
+     ],
+     "bootstrap95_diff_pts": [
+      -15.6,
+      -1.6
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "action head action.action_out_proj.kernel, 8 used columns, least-norm",
+    "values_changed": 8056,
+    "notes": "action head, least-norm (H1); fingerprint d965cd706aed9dec; all arms paired with one unedited run; 12 of 14 chunks ran on one lane, so their second 16 slots started from other scenes (sensitivity analysis on the 32 unaffected slots in where/README.md)",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "action head, least-norm (H1)",
+      "fingerprint": "d965cd706aed9dec"
+     },
+     "values_changed_note": "stored values changed (where/README.md table)",
+     "source": "study/results/opus/where/results/heldout_analysis.json"
+    }
+   },
+   {
+    "experiment": "where_to_edit",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "slots": [
+     94016,
+     94079
+    ],
+    "n": 64,
+    "unedited_k": 5,
+    "edited_k": 30,
+    "fixed": 28,
+    "broke": 3,
+    "p": 4.649162292480469e-06,
+    "ci": {
+     "wilson95_unedited_pct": [
+      3.4,
+      17.0
+     ],
+     "wilson95_edited_pct": [
+      35.2,
+      58.9
+     ],
+     "bootstrap95_diff_pts": [
+      25.0,
+      53.1
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "action head gripper column, gated rank-1 (blind editor's accepted edit)",
+    "values_changed": 1024,
+    "notes": "action head, gated rank-1 (P1, blind editor); fingerprint 4ca8023b0592b79f; all arms paired with one unedited run; 12 of 14 chunks ran on one lane, so their second 16 slots started from other scenes (sensitivity analysis on the 32 unaffected slots in where/README.md)",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "action head, gated rank-1 (P1, blind editor)",
+      "fingerprint": "4ca8023b0592b79f"
+     },
+     "values_changed_note": "stored values changed (where/README.md table)",
+     "source": "study/results/opus/where/results/heldout_analysis.json"
+    }
+   },
+   {
+    "experiment": "where_to_edit",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl",
+     "Put the cube in the bowl then put the banana in the bowl"
+    ],
+    "slots": [
+     94016,
+     94079
+    ],
+    "n": 64,
+    "unedited_k": 5,
+    "edited_k": 43,
+    "fixed": 41,
+    "broke": 3,
+    "p": 1.6183321349672042e-09,
+    "ci": {
+     "wilson95_unedited_pct": [
+      3.4,
+      17.0
+     ],
+     "wilson95_edited_pct": [
+      55.0,
+      77.4
+     ],
+     "bootstrap95_diff_pts": [
+      45.3,
+      73.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "v2mi-f plus the action-expert update",
+    "values_changed": 505694140,
+    "notes": "VLM + action expert (VA); fingerprint 5ee25e8d2e78a555; all arms paired with one unedited run; 12 of 14 chunks ran on one lane, so their second 16 slots started from other scenes (sensitivity analysis on the 32 unaffected slots in where/README.md)",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "VLM + action expert (VA)",
+      "fingerprint": "5ee25e8d2e78a555"
+     },
+     "values_changed_note": "stored values changed (where/README.md table)",
+     "source": "study/results/opus/where/results/heldout_analysis.json"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "PickGlassesTask",
+    "code": "T2",
+    "wording_pair": [
+     "Pick up the eye glasses"
+    ],
+    "slots": [
+     90000,
+     90063
+    ],
+    "n": 64,
+    "unedited_k": 22,
+    "edited_k": 44,
+    "fixed": 31,
+    "broke": 9,
+    "p": 0.0006795482549932785,
+    "ci": {
+     "wilson95_unedited_pct": [
+      23.9,
+      46.6
+     ],
+     "wilson95_edited_pct": [
+      56.6,
+      78.8
+     ],
+     "diff_pts": 34.4,
+     "bootstrap95_diff_pts": [
+      17.2,
+      51.6
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "the T1 edit, unchanged, on this task's own instruction; weightsmith/heldout.py",
+    "_task": "T2",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "study/results/opus/heldout/ (held-out 90000-90063)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "T3",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl"
+    ],
+    "slots": [
+     90000,
+     90063
+    ],
+    "n": 64,
+    "unedited_k": 8,
+    "edited_k": 36,
+    "fixed": 33,
+    "broke": 5,
+    "p": 4.255962267052382e-06,
+    "ci": {
+     "wilson95_unedited_pct": [
+      6.5,
+      22.8
+     ],
+     "wilson95_edited_pct": [
+      44.1,
+      67.7
+     ],
+     "diff_pts": 43.8,
+     "bootstrap95_diff_pts": [
+      28.1,
+      59.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "the T1 edit, unchanged, on this task's own instruction; weightsmith/heldout.py",
+    "_task": "T3",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "study/results/opus/heldout/ (held-out 90000-90063)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "PickGlassesTask",
+    "code": "T2",
+    "wording_pair": [
+     "Pick up the eye glasses"
+    ],
+    "slots": [
+     94016,
+     94047
+    ],
+    "n": 32,
+    "unedited_k": 14,
+    "edited_k": 25,
+    "fixed": 15,
+    "broke": 4,
+    "p": 0.0192108154296875,
+    "ci": {
+     "wilson95_unedited_pct": [
+      28.2,
+      60.7
+     ],
+     "wilson95_edited_pct": [
+      61.2,
+      89.0
+     ],
+     "bootstrap95_diff_pts": [
+      9.4,
+      56.2
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "where-to-edit transfer run; every slot the first episode of its Isaac process",
+    "_task": "T2",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "study/results/opus/where/results/transfer_glasses_analysis.json"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "T3",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl"
+    ],
+    "slots": [
+     94016,
+     94047
+    ],
+    "n": 32,
+    "unedited_k": 4,
+    "edited_k": 20,
+    "fixed": 16,
+    "broke": 0,
+    "p": 3.0517578125e-05,
+    "ci": {
+     "wilson95_unedited_pct": [
+      5.0,
+      28.1
+     ],
+     "wilson95_edited_pct": [
+      45.3,
+      77.1
+     ],
+     "bootstrap95_diff_pts": [
+      34.4,
+      68.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "where-to-edit transfer run; every slot the first episode of its Isaac process",
+    "_task": "T3",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "study/results/opus/where/results/transfer_left_analysis.json"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeTask",
+    "code": "R1",
+    "wording_pair": [
+     "Put the cube in the bowl"
+    ],
+    "slots": [
+     94016,
+     94047
+    ],
+    "n": 32,
+    "unedited_k": 32,
+    "edited_k": 32,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      89.3,
+      100.0
+     ],
+     "wilson95_edited_pct": [
+      89.3,
+      100.0
+     ],
+     "bootstrap95_diff_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "where-to-edit transfer run; every slot the first episode of its Isaac process",
+    "_task": "R1",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "study/results/opus/where/results/transfer_cube_analysis.json"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardInLeftBinTask",
+    "code": "T5",
+    "wording_pair": [
+     "Put the mustard in the left bin"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 7,
+    "edited_k": 12,
+    "fixed": 11,
+    "broke": 6,
+    "p": 0.332305908203125,
+    "ci": {
+     "wilson95_unedited_pct": [
+      11.0,
+      38.8
+     ],
+     "wilson95_edited_pct": [
+      22.9,
+      54.7
+     ],
+     "diff_pts": 15.6,
+     "bootstrap95_diff_pts": [
+      -9.4,
+      40.6
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": "T5",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/mustard-grasp (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "PickGlassesTask",
+    "code": "T2",
+    "wording_pair": [
+     "Pick up the eye glasses"
+    ],
+    "slots": [
+     60000,
+     60063
+    ],
+    "n": 64,
+    "unedited_k": 26,
+    "edited_k": 46,
+    "fixed": 28,
+    "broke": 8,
+    "p": 0.0011932429624721408,
+    "ci": {
+     "wilson95_unedited_pct": [
+      29.5,
+      52.9
+     ],
+     "wilson95_edited_pct": [
+      59.9,
+      81.4
+     ],
+     "diff_pts": 31.2,
+     "bootstrap95_diff_pts": [
+      14.1,
+      46.9
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": "T2",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/thr-pickglasses (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeTask",
+    "code": "R1",
+    "wording_pair": [
+     "Put the cube in the bowl"
+    ],
+    "slots": [
+     60000,
+     60015
+    ],
+    "n": 16,
+    "unedited_k": 16,
+    "edited_k": 16,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      80.6,
+      100.0
+     ],
+     "wilson95_edited_pct": [
+      80.6,
+      100.0
+     ],
+     "diff_pts": 0.0,
+     "bootstrap95_diff_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": "R1",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/thr-rubikscube (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "StackYellowOnRedTask",
+    "code": "T4",
+    "wording_pair": [
+     "Stack the yellow block on the red block"
+    ],
+    "slots": [
+     20000,
+     20031
+    ],
+    "n": 32,
+    "unedited_k": 14,
+    "edited_k": 17,
+    "fixed": 9,
+    "broke": 6,
+    "p": 0.60723876953125,
+    "ci": {
+     "wilson95_unedited_pct": [
+      28.2,
+      60.7
+     ],
+     "wilson95_edited_pct": [
+      36.4,
+      69.1
+     ],
+     "diff_pts": 9.4,
+     "bootstrap95_diff_pts": [
+      -15.6,
+      34.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": "T4",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/thr-stack (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "PickUpGreenObjectTask",
+    "code": "T7",
+    "wording_pair": [
+     "Pick up the green vegetable block"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      0.0,
+      10.7
+     ],
+     "wilson95_edited_pct": [
+      0.0,
+      10.7
+     ],
+     "diff_pts": 0.0,
+     "bootstrap95_diff_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": "T7",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/tx-pickupgreenobject (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "T3",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 3,
+    "edited_k": 22,
+    "fixed": 20,
+    "broke": 1,
+    "p": 2.09808349609375e-05,
+    "ci": {
+     "wilson95_unedited_pct": [
+      3.2,
+      24.2
+     ],
+     "wilson95_edited_pct": [
+      51.4,
+      82.0
+     ],
+     "diff_pts": 59.4,
+     "bootstrap95_diff_pts": [
+      40.6,
+      78.1
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": "T3",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/tx-rubikscubeleftofbowl (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "Stack3RubiksCubeTask",
+    "code": "T6",
+    "wording_pair": [
+     "Stack the rubiks cubes in a tower"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 14,
+    "edited_k": 19,
+    "fixed": 9,
+    "broke": 4,
+    "p": 0.266845703125,
+    "ci": {
+     "wilson95_unedited_pct": [
+      28.2,
+      60.7
+     ],
+     "wilson95_edited_pct": [
+      42.3,
+      74.5
+     ],
+     "diff_pts": 15.6,
+     "bootstrap95_diff_pts": [
+      -6.2,
+      37.5
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": "T6",
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/tx-stack3rubikscube (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "BananaOnPlateTask",
+    "code": null,
+    "wording_pair": [
+     "Pick up the banana and put it on the plate"
+    ],
+    "slots": [
+     60000,
+     60015
+    ],
+    "n": 16,
+    "unedited_k": 16,
+    "edited_k": 16,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      80.6,
+      100.0
+     ],
+     "wilson95_edited_pct": [
+      80.6,
+      100.0
+     ],
+     "diff_pts": 0.0,
+     "bootstrap95_diff_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": null,
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/thr-bananaonplate (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "BowlStackingLeftOnRightTask",
+    "code": null,
+    "wording_pair": [
+     "Stack the left bowl on the right bowl"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 19,
+    "edited_k": 21,
+    "fixed": 8,
+    "broke": 6,
+    "p": 0.79052734375,
+    "ci": {
+     "wilson95_unedited_pct": [
+      42.3,
+      74.5
+     ],
+     "wilson95_edited_pct": [
+      48.3,
+      79.6
+     ],
+     "diff_pts": 6.2,
+     "bootstrap95_diff_pts": [
+      -15.6,
+      28.1
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": null,
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/thr-bowlstackingleftonright (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "ButterAboveRaisinTask",
+    "code": null,
+    "wording_pair": [
+     "Pick up the butter box and place it on top of the raisin box"
+    ],
+    "slots": [
+     60000,
+     60015
+    ],
+    "n": 16,
+    "unedited_k": 14,
+    "edited_k": 10,
+    "fixed": 0,
+    "broke": 4,
+    "p": 0.125,
+    "ci": {
+     "wilson95_unedited_pct": [
+      64.0,
+      96.5
+     ],
+     "wilson95_edited_pct": [
+      38.6,
+      81.5
+     ],
+     "diff_pts": -25.0,
+     "bootstrap95_diff_pts": [
+      -50.0,
+      -6.2
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": null,
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/thr-butteraboveraisin (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "BlockStackingOrderAgnosticTask",
+    "code": null,
+    "wording_pair": [
+     "Stack the blocks into a tower"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 15,
+    "edited_k": 14,
+    "fixed": 7,
+    "broke": 8,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      30.9,
+      63.6
+     ],
+     "wilson95_edited_pct": [
+      28.2,
+      60.7
+     ],
+     "diff_pts": -3.1,
+     "bootstrap95_diff_pts": [
+      -28.1,
+      21.9
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": null,
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/tx-blockstackingorderagnostic (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "GrabABagelTask",
+    "code": null,
+    "wording_pair": [
+     "Grab a bagel"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": 1,
+    "fixed": 1,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      0.0,
+      10.7
+     ],
+     "wilson95_edited_pct": [
+      0.6,
+      15.7
+     ],
+     "diff_pts": 3.1,
+     "bootstrap95_diff_pts": [
+      0.0,
+      9.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": null,
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/tx-grababagel (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MarkerInMugTask",
+    "code": null,
+    "wording_pair": [
+     "Put the whiteboard marker in the mug"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": 1,
+    "fixed": 1,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      0.0,
+      10.7
+     ],
+     "wilson95_edited_pct": [
+      0.6,
+      15.7
+     ],
+     "diff_pts": 3.1,
+     "bootstrap95_diff_pts": [
+      0.0,
+      9.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": null,
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/tx-markerinmug (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeRightOfBowlTask",
+    "code": null,
+    "wording_pair": [
+     "Put the rubiks cube to the right of the bowl"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      0.0,
+      10.7
+     ],
+     "wilson95_edited_pct": [
+      0.0,
+      10.7
+     ],
+     "diff_pts": 0.0,
+     "bootstrap95_diff_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": null,
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/tx-rubikscuberightofbowl (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "YogurtInBowlTask",
+    "code": null,
+    "wording_pair": [
+     "Put the small red yogurt in the red bowl"
+    ],
+    "slots": [
+     60000,
+     60031
+    ],
+    "n": 32,
+    "unedited_k": 3,
+    "edited_k": 2,
+    "fixed": 2,
+    "broke": 3,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      3.2,
+      24.2
+     ],
+     "wilson95_edited_pct": [
+      1.7,
+      20.1
+     ],
+     "diff_pts": -3.1,
+     "bootstrap95_diff_pts": [
+      -15.6,
+      9.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.00-16.mlp.linear (17 tensors), rank <= 72 per layer",
+    "values_changed": 450468837,
+    "notes": "practice slots, owsp eval, edit run after the unedited arm in the same project; multi-group chunks may start later groups from other scenes",
+    "_task": null,
+    "_edit_task": "T1",
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "450,468,837 stored values (13.4% of 3,353,433,872)",
+     "source": "ali-ms projects/tx-yogurtinbowl (study/results/cross/pi05/results/prior_pairs_ali-ms.json)"
+    }
+   },
+   {
+    "experiment": "wording",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "slots": [
+     20000,
+     20031
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": 27,
+    "broke": 0,
+    "p": 1.4901161193847656e-08,
+    "ci": {
+     "wilson95_unedited_pct": [
+      0.0,
+      10.7
+     ],
+     "wilson95_edited_pct": [
+      68.2,
+      93.1
+     ],
+     "diff_pts": 84.4,
+     "bootstrap95_diff_pts": [
+      71.9,
+      96.9
+     ]
+    },
+    "control_k": null,
+    "teacher_k": {
+     "k": 27,
+     "n": 32,
+     "slots": [
+      20000,
+      20031
+     ],
+     "wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    },
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited weights; RF (reference-first, the task's own wording) = unedited_k, TF (target-first, prompt override) = teacher_k; fixed = TF-only pairs, broke = RF-only pairs",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": null,
+     "values_changed_note": null,
+     "source": "study/results/sgdw/results/screen_s4r_tf_vs_rf.json"
+    }
+   },
+   {
+    "experiment": "edit_target",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "slots": [
+     92000,
+     92063
+    ],
+    "n": 64,
+    "unedited_k": 0,
+    "edited_k": 27,
+    "fixed": 27,
+    "broke": 0,
+    "p": 1.4901161193847656e-08,
+    "ci": {
+     "wilson95_unedited_pct": [
+      0.0,
+      5.7
+     ],
+     "wilson95_edited_pct": [
+      30.9,
+      54.4
+     ],
+     "diff_pts": 42.2,
+     "bootstrap95_diff_pts": [
+      29.7,
+      54.7
+     ]
+    },
+    "control_k": {
+     "k": 0,
+     "n": 64,
+     "slots": [
+      92000,
+      92063
+     ],
+     "what": "random-direction control with s4r-grp3's layers, rank and singular values"
+    },
+    "teacher_k": {
+     "k": 27,
+     "n": 32,
+     "slots": [
+      20000,
+      20031
+     ],
+     "wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
+     "note": "TF was not run on the held-out slots"
+    },
+    "recovery_pct": 59.3,
+    "transfer": null,
+    "retention": {
+     "T8 under TF (no harm)": {
+      "n": 32,
+      "unedited_k": 27,
+      "edited_k": 23,
+      "fixed": 5,
+      "broke": 9,
+      "p": 0.4239501953125,
+      "slots": [
+       20000,
+       20031
+      ]
+     }
+    },
+    "edit_location": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
+    "values_changed": null,
+    "notes": "T8's own distilled edit (TF into the weights), not v2mi-f. Recovery % on practice slots 20000-20031, the only slots with a teacher arm: RF + s4r-grp3 16/32 vs RF 0/32 vs TF 27/32. s4r-grp2 (2 key groups): 19/64 on the same held-out slots.",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "edit": {
+      "name": "s4r-grp3",
+      "fingerprint": "9e6f2378e28be6a3"
+     },
+     "values_changed_note": "15.9M numbers as low-rank factors (0.48% of parameters); dense count not recorded",
+     "source": "study/results/sgdw/results/heldout_ctl_92000-64.json, heldout_grp2_92000-64.json (unedited arm), heldout_pairs_92000-64.json"
+    }
+   }
+  ]
  },
  "sources": {
   "pi05_earlier_records": {
@@ -1928,14 +4106,16 @@
    "path": "study/results/cross/metrics_groot.json"
   },
   "pi05": {
-   "kind": "none",
+   "kind": "branch",
    "branch": "cross-pi05/v1",
-   "path": "study/results/cross/metrics_pi05.json"
+   "path": "study/results/cross/metrics_pi05.json",
+   "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
+   "commit": "d352a51ab67f"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "bc12afaa8d507713",
- "updated": "2026-11-08T05:20Z",
- "updated_text": "8 Nov 2026, 05:20 UTC",
+ "content_hash": "12f8dc4b15841d00",
+ "updated": "2026-11-08T05:27Z",
+ "updated_text": "8 Nov 2026, 05:27 UTC",
  "status_text": "Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records"
 }

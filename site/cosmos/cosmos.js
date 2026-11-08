@@ -63,7 +63,14 @@
         var c = r.cells[id] || { v: '—', s: 'na' };
         var td = el('td', 'c' + (c.s === 'running' ? ' st-run' : c.s === 'na' ? ' st-na' : '') + (c.prov ? ' prov' : ''));
         td.setAttribute('data-model', models[id].name);
-        td.appendChild(inline(el('span', 'v'), c.v));
+        var v = inline(el('span', 'v'), c.v);
+        if (c.prov) {
+          var tag = el('span', 'tag');
+          tag.textContent = 'earlier slots';
+          v.appendChild(document.createTextNode(' '));
+          v.appendChild(tag);
+        }
+        td.appendChild(v);
         if (c.d) td.appendChild(inline(el('span', 'd'), c.d));
         tr.appendChild(td);
       });
@@ -79,9 +86,12 @@
     list.forEach(function (s, i) {
       if (i) p.appendChild(document.createTextNode(', '));
       var a = el('a');
-      a.href = REPO + (/\.[a-z]+$/i.test(s) ? '/blob/main/' : '/tree/main/') + s;
+      var at = s.lastIndexOf(':');
+      var branch = at > 0 ? s.slice(0, at) : 'main';
+      var path = at > 0 ? s.slice(at + 1) : s;
+      a.href = REPO + (/\.[a-z]+$/i.test(path) ? '/blob/' : '/tree/') + branch + '/' + path;
       var c = el('code');
-      c.textContent = s.replace('study/results/', '');
+      c.textContent = path.replace('study/results/', '');
       a.appendChild(c);
       p.appendChild(a);
     });
