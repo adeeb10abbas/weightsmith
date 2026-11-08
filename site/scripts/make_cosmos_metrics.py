@@ -4059,17 +4059,37 @@ def prospect_html(P):
             if c:
                 res.append(f"on {c['n']} {kind} starts it went from {c['a']} to {c['b']}"
                            + (f", against {c['ctl']} for the random edit" if c.get("ctl") is not None else "")
+                           + (f" and {c['t']} for the clearer wording" if c.get("t") is not None else "")
                            + (f" (p = {fp(c['p'])})" if c.get("p") is not None else ""))
-        last = x["closed"].get("unseen") or x["closed"].get("practice")
-        fixed = bool(last and last.get("p") is not None and last["p"] < SIG and last["b"] > last["a"]
-                     and (last.get("ctl") is None or last["b"] > last["ctl"]))
-        if x["equal"]:
-            held = (False if x["passed"] is False or (last and not fixed) else True if x["passed"] and fixed else None)
-        else:
+        # the verdict follows the README's rules: the offline check first; then, on practice starts, the bar for the
+        # unseen-start runs (at least half of the clearer wording's paired gain, and more than the random edit); then
+        # the fix itself on unseen starts (exact McNemar p < 0.05, and more than the random edit)
+        cp, cu = x["closed"].get("practice"), x["closed"].get("unseen")
+        beats = lambda c: c.get("ctl") is None or c["b"] > c["ctl"]
+        fixed = lambda c: c.get("p") is not None and c["p"] < SIG and c["b"] > c["a"] and beats(c)
+        rec = (lambda c: (c["b"] - c["a"]) / (c["t"] - c["a"]) if c.get("t") is not None and c["t"] > c["a"] else None)
+        bar = lambda c: rec(c) is not None and rec(c) >= 0.5 and beats(c)
+        verdict = ""
+        if not x["equal"]:
             held = None if x["passed"] is None else (x["passed"] is False)
-        verdict = {True: "The prediction held.", False: "The prediction did not hold.",
-                   None: "So far the prediction holds; the runs on the robot are next." if x["equal"] and x["passed"]
-                   else ""}[held]
+        elif x["passed"] is False:
+            held = False
+        elif cu:
+            held = fixed(cu)
+        elif cp and not bar(cp):
+            held = False
+            verdict = (f"On practice starts it recovered only {100 * rec(cp):.0f}% of the clearer wording’s gain"
+                       if rec(cp) is not None else "On practice starts it did no better than the random edit") + \
+                      ", short of the bar for the unseen-start runs. "
+        elif cp:
+            held = None
+            verdict = (f"On practice starts it recovered {100 * rec(cp):.0f}% of the clearer wording’s gain and beat the "
+                       "random edit, the bar set beforehand for running it on unseen starts; whether it fixes the task "
+                       "is decided there, and those runs are next.")
+        else:
+            held = None
+            verdict = "So far the prediction holds; the runs on the robot are next." if x["passed"] else ""
+        verdict += {True: "The prediction held.", False: "The prediction did not hold.", None: ""}[held]
         s.append(f"{x['plain']}" + (f", {toks}" if toks else "") + (f"; {modest}, a modest gap" if modest else "")
                  + ": " + "; ".join(res) + ". " + verdict)
         rows.append((x["plain"], C(("Yes: " if x["equal"] else "No: ") + (toks or ("equal length" if x["equal"]
