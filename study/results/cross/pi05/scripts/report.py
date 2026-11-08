@@ -53,6 +53,18 @@ def render(recs, summary):
                f"**{summary.get('gpu_hours_pod_jobs', 0)} GPU-h**. Every row below pairs arms on the same slots "
                "(same scene, same noise seeds), default render preset unless stated.\n")
 
+    part = by.get("failure_map_partial", [])
+    if part:
+        out.append("### Fresh but partial: the only π0.5 episodes on the shared slots\n")
+        out.append("| Task | Unedited | Wilson 95% | Slots | Machine | Preset |")
+        out.append("|---|---|---|---|---|---|")
+        for r in part:
+            out.append(f"| {LABELS[r['code']]} | **{frac(r['unedited_k'], r['n'])}** | "
+                       f"{ci(r['ci'], 'wilson95_pct')} | {sl(r['slots'])} | ali-ms RTX 3090 | `{r['render_preset']}` |")
+        out.append("\nOne 16-slot group (first and only run of a fresh Isaac process, environment seed 0), run before "
+                   "the π0.5 queue left ali-ms. It used the `performance` preset, not the default preset of Tracks A "
+                   "and B, so it is not a like-for-like failure-map entry. Per-slot outcomes are in the record.\n")
+
     fm = {r["code"]: r for r in by.get("failure_map", [])}
     if fm:
         out.append("### 1. Unedited failure map (slots 30000–30031, default preset)\n")

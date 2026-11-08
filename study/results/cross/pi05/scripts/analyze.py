@@ -259,6 +259,95 @@ def calibration(arms_pod, arms_old):
     return out
 
 
+PRIOR = HERE / "results" / "prior_slots_ali-ms.json"
+HW_PRIOR = "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)"
+CTB = "cube-then-banana/heldout/"
+PRIOR_SETS = {
+    "T1": {"slots": range(90000, 90064), "source": "held-out runs of cube-then-banana (v2mi-f base/cand 90000, ctl1)",
+           "base": [CTB + "v2mi-f-RubiksCubeThenBananaTask-90000-128/logs-base-90000"],
+           "edit": [CTB + "v2mi-f-RubiksCubeThenBananaTask-90000-128/logs-cand-90000"],
+           "control": [CTB + "ctl1-90000-64/logs-rand-90000"],
+           "teacher": [CTB + "ctl1-90000-64/logs-teacher-90000"], "edit_name": "v2mi-f", "control_name": "ctl-rand"},
+    "T8": {"slots": range(92000, 92064), "source": "held-out runs of sgdw-s4r (s4r-grp2 base arm; ctl-92000-64)",
+           "base": [f"sgdw-s4r/heldout/s4r-grp2-MustardRightOfRaisinRFTask-92000-64/logs-base-{b}" for b in (92000, 92032)],
+           "edit": [f"sgdw-s4r/heldout/ctl-92000-64/logs-g3-{b}" for b in (92000, 92032)],
+           "control": [f"sgdw-s4r/heldout/ctl-92000-64/logs-rand3-{b}" for b in (92000, 92032)],
+           "edit_name": "s4r-grp3", "control_name": "ctl-rand3"},
+}
+
+
+def prior_arm(R, keys):
+    out = {}
+    for k in keys:
+        out.update({int(sl): bool(v[0]) for sl, v in R[k].items()})
+    return out
+
+
+def prov_controls():
+    """PROVISIONAL control records: each random-direction control paired slot by slot with the unedited run and
+    with the edit (and the teacher wording, T1), recomputed from the earlier runs' per-slot records."""
+    if not PRIOR.exists():
+        return []
+    R = json.loads(PRIOR.read_text())["runs"]
+    recs = []
+    for code, S in PRIOR_SETS.items():
+        A = {k: prior_arm(R, S[k]) for k in ("base", "edit", "control", "teacher") if k in S}
+        c = paired(A["base"], A["control"], S["slots"])
+        ce = paired(A["control"], A["edit"], S["slots"])
+        cb = paired(A["base"], A["edit"], S["slots"])
+        teacher = None
+        if "teacher" in A:
+            tb = paired(A["base"], A["teacher"], S["slots"])
+            te = paired(A["teacher"], A["edit"], S["slots"])
+            teacher = {"k": tb["cand_k"], "n": tb["n"], "slots": tb["slots"], "wording": TEACHERS[code],
+                       "teacher_vs_unedited": {"fixed": tb["fixed"], "broke": tb["broke"], "p": tb["p"]},
+                       "edit_vs_teacher": {"edit_only": te["fixed"], "teacher_only": te["broke"], "p": te["p"]}}
+        name = S["control_name"]
+        rec = base_record(
+            "control", code, slots=c["slots"], n=c["n"], hw=HW_PRIOR, preset="performance",
+            unedited_k=c["ref_k"], edited_k=c["cand_k"], fixed=c["fixed"], broke=c["broke"], p=c["p"],
+            ci=ci_pair(c, "unedited", "control"),
+            control_k={"k": c["cand_k"], "n": c["n"], "slots": c["slots"], "arm": name,
+                       "control_vs_unedited": {"fixed": c["fixed"], "broke": c["broke"], "p": c["p"]},
+                       "edit_vs_control": {"edit_only": ce["fixed"], "control_only": ce["broke"], "p": ce["p"],
+                                           "edit_k": ce["cand_k"]},
+                       "edit_vs_unedited": {"fixed": cb["fixed"], "broke": cb["broke"], "p": cb["p"],
+                                            "edit_k": cb["cand_k"]}},
+            teacher_k=teacher,
+            edit={"name": name, "fingerprint": CANDS.get(name), "built_for": code, "control_of": S["edit_name"]},
+            edit_location=EDITS[name]["location"], values_changed=EDITS[name]["values_changed"],
+            values_changed_note=EDITS[name]["note"],
+            notes=(f"PROVISIONAL (own slots, earlier run): random-direction control of {S['edit_name']}; unedited_k / "
+                   f"edited_k = unedited / control on the same slots; recomputed from the per-slot records in "
+                   f"results/prior_slots_ali-ms.json ({S['source']})"),
+            per_slot=c["per_slot"])
+        rec["status"] = "provisional"
+        rec["source"] = "results/prior_slots_ali-ms.json: " + "; ".join(S["base"] + S["edit"] + S["control"] +
+                                                                         S.get("teacher", []))
+        recs.append(rec)
+    return recs
+
+
+def fresh_partial(arms_old, meta_old):
+    """The one pi0.5 group on the shared slots: T1 unedited, 30000-30015, ali-ms before the move to the pod."""
+    out = []
+    for m in meta_old:
+        key = (m["code"], m["arm"] + ("-perf" if not m.get("rendering_type_used") else ""))
+        rows = arms_old.get(key, {})
+        if not rows:
+            continue
+        k, n = sum(rows.values()), len(rows)
+        out.append(base_record(
+            "failure_map_partial", m["code"], slots=[min(rows), max(rows)], n=n, hw=HW_OLD, preset="performance",
+            unedited_k=k, ci={"wilson95_pct": wil(k, n)},
+            notes=("FRESH but partial: the only pi0.5 episodes on the shared slots, one 16-slot group (first and "
+                   "only run of a fresh Isaac process, environment seed 0) on ali-ms GPU1 at 05:03 UTC before the "
+                   "pi0.5 queue moved to the pod; RoboLab performance preset (Tracks A and B use the default "
+                   "preset), so not a like-for-like failure-map entry"),
+            per_slot={str(sl): [int(v)] for sl, v in sorted(rows.items())}))
+    return out
+
+
 def video_picks(slots=range(30000, 30032)):
     """Per task: slots the edit fixes (unedited fails, v2mi-f succeeds; shortest edited episode first), slots it
     breaks, and failures of both."""
@@ -427,12 +516,138 @@ def plot_arms(T, arms, name, title, note):
     plt.close(fig)
 
 
+def plot_bars(groups, name, title, note, width=7.2):
+    """Horizontal bars, one per arm, grouped by the slots they share; Wilson 95% whiskers; every bar labelled."""
+    rows = []
+    for g, bars in groups:
+        rows.append(("H", g, None, None, None))
+        rows += [("B", lab, k, n, col) for lab, k, n, col in bars]
+    plt = _plt()
+    fig, ax = plt.subplots(figsize=(width, 0.34 * len(rows) + 1.0))
+    yt, yl = [], []
+    for i, (kind, lab, k, n, col) in enumerate(rows):
+        y = len(rows) - 1 - i
+        if kind == "H":
+            ax.text(-1, y - 0.05, lab, fontsize=8.6, color=INK, fontweight="bold", va="center", ha="left",
+                    transform=ax.get_yaxis_transform() if False else ax.transData)
+            continue
+        lo, hi = wil(k, n)
+        ax.barh(y, 100 * k / n, height=0.62, color=col, edgecolor="none", zorder=2)
+        ax.plot([lo, hi], [y, y], color=INK2, lw=1, zorder=3)
+        ax.text(max(hi, 100 * k / n) + 1.5, y, f"{k}/{n}", va="center", fontsize=8.4, color=INK)
+        yt.append(y)
+        yl.append(lab)
+    ax.set_yticks(yt)
+    ax.set_yticklabels(yl, fontsize=8.4)
+    ax.set_xlim(0, 112)
+    ax.set_ylim(-0.7, len(rows) - 0.3)
+    ax.set_xticks([0, 25, 50, 75, 100])
+    ax.set_xticklabels(["0%", "25%", "50%", "75%", "100%"])
+    _axes_clean(ax)
+    ax.set_title(title, fontsize=10, color=INK, loc="left")
+    fig.text(0.01, -0.02, note, fontsize=7.4, color=INK2, va="top", ha="left", wrap=True)
+    _save(fig, name)
+    plt.close(fig)
+
+
+def plot_prov_failure_map(prov, meas):
+    """PROVISIONAL unedited success per task: headline run (filled, Wilson 95%) and every other earlier run."""
+    head = {r["code"]: r for r in prov if r["experiment"] == "failure_map"}
+    rows = [c for c in ORDER if c in head]
+    plt = _plt()
+    fig, ax = plt.subplots(figsize=(7.4, 0.4 * len(rows) + 1.3))
+    for i, code in enumerate(rows):
+        y = len(rows) - 1 - i
+        r = head[code]
+        k, n = r["unedited_k"], r["n"]
+        lo, hi = wil(k, n)
+        ax.plot([lo, hi], [y, y], color=BLUE, lw=1.6, alpha=0.45, solid_capstyle="round", zorder=2)
+        for m in meas:
+            if m["code"] == code and not (m["k"] == k and m["n"] == n and m["slots"] == r["slots"]):
+                ax.plot([100 * m["k"] / m["n"]], [y], "o", ms=6, mfc="none", mec=MUTE, mew=1.1, zorder=3)
+        ax.plot([100 * k / n], [y], "o", ms=8, color=BLUE, mec=SURF, mew=1.5, zorder=4)
+        ax.text(104, y, f"{k}/{n}", va="center", fontsize=8.4, color=INK)
+        ax.text(118, y, f"slots {r['slots'][0]}-{r['slots'][1]}", va="center", fontsize=7.8, color=INK2)
+    ax.set_yticks(range(len(rows)))
+    ax.set_yticklabels([LABELS[c] for c in reversed(rows)])
+    ax.set_xlim(-2, 150)
+    ax.set_xticks([0, 25, 50, 75, 100])
+    ax.set_xticklabels(["0%", "25%", "50%", "75%", "100%"])
+    _axes_clean(ax)
+    ax.plot([], [], "o", ms=8, color=BLUE, label="largest earlier run (line: Wilson 95%)")
+    ax.plot([], [], "o", ms=6, mfc="none", mec=MUTE, mew=1.1, label="other earlier unedited runs (other slots)")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.4, -0.06), ncol=2, frameon=False, fontsize=7.8,
+              labelcolor=INK2)
+    ax.set_title("PROVISIONAL: π0.5 DROID unedited, default wording (earlier runs, RTX 3090, performance preset)",
+                 fontsize=9.5, color=INK, loc="left")
+    _save(fig, "provisional_failure_map")
+    plt.close(fig)
+
+
+def plot_provisional(prov, ctl):
+    t1 = next((r for r in ctl if r["code"] == "T1"), None)
+    if t1:
+        ck = t1["control_k"]
+        groups = [("T1 cube then banana, held-out slots 90000-90063 (every bar on the same 64 starts)", [
+            ("unedited", t1["unedited_k"], t1["n"], NEUTRAL),
+            ("random-direction control", ck["k"], ck["n"], NEUTRAL),
+            ("edit v2mi-f (instruction unchanged)", ck["edit_vs_unedited"]["edit_k"], t1["n"], BLUE),
+            ("explicit wording, unedited weights (teacher)", t1["teacher_k"]["k"], t1["n"], ORANGE)])]
+        e = next(r for r in prov if r["experiment"] == "edit_target" and r["code"] == "T1"
+                 and r["edit"]["name"] == "v2mi-f")
+        groups.append((f"T1, all held-out slots {e['slots'][0]}-{e['slots'][1]}", [
+            ("unedited", e["unedited_k"], e["n"], NEUTRAL), ("edit v2mi-f", e["edited_k"], e["n"], BLUE)]))
+        plot_bars(groups, "provisional_t1_heldout",
+                  "PROVISIONAL: the T1 edit against its random-direction control and the teacher wording",
+                  f"Edit vs control on 90000-90063: {ck['edit_vs_control']['edit_only']} edit-only / "
+                  f"{ck['edit_vs_control']['control_only']} control-only starts, p = "
+                  f"{stats.format_p(ck['edit_vs_control']['p'])}; control vs unedited p = "
+                  f"{stats.format_p(t1['p'])}; teacher vs edit {t1['teacher_k']['edit_vs_teacher']['teacher_only']} / "
+                  f"{t1['teacher_k']['edit_vs_teacher']['edit_only']}, p = "
+                  f"{stats.format_p(t1['teacher_k']['edit_vs_teacher']['p'])}. Earlier runs on ali-ms (RTX 3090, "
+                  "performance preset). Whiskers: Wilson 95%.")
+    where = [r for r in prov if r["experiment"] == "where_to_edit"]
+    if where:
+        w0 = where[0]
+        bars = [("unedited", w0["unedited_k"], w0["n"], NEUTRAL)]
+        for r in sorted(where, key=lambda r: r["edited_k"]):
+            vc = r.get("values_changed")
+            vtxt = (f"{vc / 1e6:.0f}M values" if vc and vc >= 1e6 else f"{vc:,} values" if vc else "")
+            bars.append((f"{r['edit']['name']}" + (f"  ({vtxt})" if vtxt else ""), r["edited_k"], r["n"], BLUE))
+        plot_bars([(f"T1, held-out slots {w0['slots'][0]}-{w0['slots'][1]}, all arms on the same starts", bars)],
+                  "provisional_where_to_edit", "PROVISIONAL: where the T1 edit goes (one location per bar)",
+                  "Values changed = stored weight values that differ from the unedited checkpoint. Earlier runs on "
+                  "ali-ms (RTX 3090, performance preset). 12 of the 14 chunks ran on one GPU lane, so their second 16 "
+                  "slots started from other scenes; study/results/opus/where/ repeats every comparison on the 32 "
+                  "unaffected slots with the same ordering. Whiskers: Wilson 95%.", width=7.6)
+    t8 = next((r for r in ctl if r["code"] == "T8"), None)
+    w8 = next((r for r in prov if r["experiment"] == "wording" and r["code"] == "T8"), None)
+    if t8 and w8:
+        ck = t8["control_k"]
+        groups = [(f"T8 mustard right of raisin, held-out slots {t8['slots'][0]}-{t8['slots'][1]}", [
+            ("unedited, reference-first (RF) wording", t8["unedited_k"], t8["n"], NEUTRAL),
+            ("RF + random-direction control", ck["k"], ck["n"], NEUTRAL),
+            ("RF + edit s4r-grp3 (TF distilled)", ck["edit_vs_unedited"]["edit_k"], t8["n"], BLUE)]),
+            (f"T8, practice slots {w8['slots'][0]}-{w8['slots'][1]} (wording screen)", [
+                ("unedited, RF wording", w8["unedited_k"], w8["n"], NEUTRAL),
+                ("unedited, target-first (TF) wording", w8["teacher_k"]["k"], w8["n"], ORANGE)])]
+        plot_bars(groups, "provisional_t8", "PROVISIONAL: T8 wording gap and its own edit",
+                  f"Held-out: edit vs control {ck['edit_vs_control']['edit_only']} / "
+                  f"{ck['edit_vs_control']['control_only']}, p = {stats.format_p(ck['edit_vs_control']['p'])}. "
+                  f"Practice: TF-only {w8['fixed']} / RF-only {w8['broke']}, p = {stats.format_p(w8['p'])}. "
+                  "Earlier runs on ali-ms (RTX 3090, performance preset), study/results/sgdw/. "
+                  "Whiskers: Wilson 95%.")
+
+
 def main():
     prov = json.loads((HERE / "results/provisional.json").read_text())["records"]
     arms, meta = load_runs(RUNS)
     arms_old, meta_old = load_runs(RUNS_OLD, old=True)
     fresh, table = fresh_records(arms)
     fresh += calibration(arms, arms_old)
+    fresh += fresh_partial(arms_old, meta_old)
+    ctl = prov_controls()
+    prov = prov + ctl
     gpu_s = sum((m.get("gpu_s") or 0) for m in meta)
     summary = {"model": MODEL, "hardware": HW_POD, "jobs_done": len(meta),
                "gpu_hours_pod_jobs": round(gpu_s / 3600, 2), "video_picks": video_picks(),
@@ -442,6 +657,8 @@ def main():
     (HERE / "results/summary.json").write_text(json.dumps(summary, indent=1) + "\n")
     METRICS.write_text(json.dumps(prov + fresh, indent=1) + "\n")
     plot_failure_map(table, prov)
+    plot_prov_failure_map(prov, json.loads((HERE / "results/provisional.json").read_text())["unedited_measurements"])
+    plot_provisional(prov, ctl)
     plot_dumbbell(table, "v2mi-f", "side_effects_v2mi-f",
                   "π0.5 DROID: the T1 edit v2mi-f on every task (same paired starts, slots 30000-30031)")
     plot_dumbbell(table, "abl-imgl8", "side_effects_abl-imgl8",

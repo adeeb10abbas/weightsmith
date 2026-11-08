@@ -1978,5 +1978,783 @@
   "values_changed_note": "15.9M numbers as low-rank factors (0.48% of parameters); dense count not recorded",
   "source": "study/results/sgdw/results/heldout_ctl_92000-64.json, heldout_grp2_92000-64.json (unedited arm), heldout_pairs_92000-64.json",
   "notes": "T8's own distilled edit (TF into the weights), not v2mi-f. Recovery % on practice slots 20000-20031, the only slots with a teacher arm: RF + s4r-grp3 16/32 vs RF 0/32 vs TF 27/32. s4r-grp2 (2 key groups): 19/64 on the same held-out slots."
+ },
+ {
+  "experiment": "control",
+  "status": "provisional",
+  "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+  "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+  "render_preset": "performance",
+  "task": "RubiksCubeThenBananaTask",
+  "code": "T1",
+  "wording_pair": [
+   "Put the cube then the banana in the bowl"
+  ],
+  "slots": [
+   90000,
+   90063
+  ],
+  "n": 64,
+  "unedited_k": 13,
+  "edited_k": 9,
+  "fixed": 6,
+  "broke": 10,
+  "p": 0.454498291015625,
+  "ci": {
+   "wilson95_unedited_pct": [
+    12.3,
+    31.7
+   ],
+   "wilson95_control_pct": [
+    7.6,
+    24.6
+   ],
+   "diff_pts": -6.2,
+   "bootstrap95_diff_pts": [
+    -18.8,
+    6.2
+   ]
+  },
+  "control_k": {
+   "k": 9,
+   "n": 64,
+   "slots": [
+    90000,
+    90063
+   ],
+   "arm": "ctl-rand",
+   "control_vs_unedited": {
+    "fixed": 6,
+    "broke": 10,
+    "p": 0.454498291015625
+   },
+   "edit_vs_control": {
+    "edit_only": 41,
+    "control_only": 0,
+    "p": 9.094947017729282e-13,
+    "edit_k": 50
+   },
+   "edit_vs_unedited": {
+    "fixed": 38,
+    "broke": 1,
+    "p": 1.4551915228366852e-10,
+    "edit_k": 50
+   }
+  },
+  "teacher_k": {
+   "k": 57,
+   "n": 64,
+   "slots": [
+    90000,
+    90063
+   ],
+   "wording": "Put the cube in the bowl then put the banana in the bowl",
+   "teacher_vs_unedited": {
+    "fixed": 45,
+    "broke": 1,
+    "p": 1.3358203432289883e-12
+   },
+   "edit_vs_teacher": {
+    "edit_only": 4,
+    "teacher_only": 11,
+    "p": 0.11846923828125
+   }
+  },
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit": {
+   "name": "ctl-rand",
+   "fingerprint": "1efd3512a92642f7",
+   "built_for": "T1",
+   "control_of": "v2mi-f"
+  },
+  "edit_location": "same tensors, ranks and singular values as v2mi-f; random orthonormal directions (numpy default_rng(0))",
+  "values_changed": 502291925,
+  "values_changed_note": "about 502.3M stored values (from the control's build report)",
+  "notes": "PROVISIONAL (own slots, earlier run): random-direction control of v2mi-f; unedited_k / edited_k = unedited / control on the same slots; recomputed from the per-slot records in results/prior_slots_ali-ms.json (held-out runs of cube-then-banana (v2mi-f base/cand 90000, ctl1))",
+  "per_slot": {
+   "90000": [
+    0,
+    0
+   ],
+   "90001": [
+    0,
+    0
+   ],
+   "90002": [
+    0,
+    0
+   ],
+   "90003": [
+    0,
+    0
+   ],
+   "90004": [
+    0,
+    0
+   ],
+   "90005": [
+    0,
+    0
+   ],
+   "90006": [
+    0,
+    1
+   ],
+   "90007": [
+    0,
+    0
+   ],
+   "90008": [
+    0,
+    0
+   ],
+   "90009": [
+    0,
+    0
+   ],
+   "90010": [
+    0,
+    0
+   ],
+   "90011": [
+    0,
+    1
+   ],
+   "90012": [
+    0,
+    0
+   ],
+   "90013": [
+    1,
+    0
+   ],
+   "90014": [
+    0,
+    0
+   ],
+   "90015": [
+    0,
+    0
+   ],
+   "90016": [
+    0,
+    0
+   ],
+   "90017": [
+    0,
+    0
+   ],
+   "90018": [
+    0,
+    0
+   ],
+   "90019": [
+    1,
+    0
+   ],
+   "90020": [
+    0,
+    0
+   ],
+   "90021": [
+    0,
+    0
+   ],
+   "90022": [
+    0,
+    0
+   ],
+   "90023": [
+    0,
+    0
+   ],
+   "90024": [
+    0,
+    0
+   ],
+   "90025": [
+    0,
+    1
+   ],
+   "90026": [
+    0,
+    0
+   ],
+   "90027": [
+    0,
+    0
+   ],
+   "90028": [
+    0,
+    0
+   ],
+   "90029": [
+    0,
+    0
+   ],
+   "90030": [
+    1,
+    1
+   ],
+   "90031": [
+    0,
+    0
+   ],
+   "90032": [
+    0,
+    0
+   ],
+   "90033": [
+    0,
+    0
+   ],
+   "90034": [
+    0,
+    0
+   ],
+   "90035": [
+    0,
+    0
+   ],
+   "90036": [
+    1,
+    1
+   ],
+   "90037": [
+    1,
+    1
+   ],
+   "90038": [
+    0,
+    1
+   ],
+   "90039": [
+    1,
+    0
+   ],
+   "90040": [
+    1,
+    0
+   ],
+   "90041": [
+    1,
+    0
+   ],
+   "90042": [
+    0,
+    0
+   ],
+   "90043": [
+    0,
+    0
+   ],
+   "90044": [
+    0,
+    0
+   ],
+   "90045": [
+    1,
+    0
+   ],
+   "90046": [
+    1,
+    0
+   ],
+   "90047": [
+    0,
+    0
+   ],
+   "90048": [
+    0,
+    0
+   ],
+   "90049": [
+    1,
+    0
+   ],
+   "90050": [
+    0,
+    0
+   ],
+   "90051": [
+    0,
+    1
+   ],
+   "90052": [
+    0,
+    0
+   ],
+   "90053": [
+    0,
+    0
+   ],
+   "90054": [
+    1,
+    0
+   ],
+   "90055": [
+    0,
+    0
+   ],
+   "90056": [
+    0,
+    0
+   ],
+   "90057": [
+    0,
+    0
+   ],
+   "90058": [
+    0,
+    0
+   ],
+   "90059": [
+    0,
+    0
+   ],
+   "90060": [
+    1,
+    0
+   ],
+   "90061": [
+    0,
+    0
+   ],
+   "90062": [
+    0,
+    0
+   ],
+   "90063": [
+    0,
+    1
+   ]
+  },
+  "source": "results/prior_slots_ali-ms.json: cube-then-banana/heldout/v2mi-f-RubiksCubeThenBananaTask-90000-128/logs-base-90000; cube-then-banana/heldout/v2mi-f-RubiksCubeThenBananaTask-90000-128/logs-cand-90000; cube-then-banana/heldout/ctl1-90000-64/logs-rand-90000; cube-then-banana/heldout/ctl1-90000-64/logs-teacher-90000"
+ },
+ {
+  "experiment": "control",
+  "status": "provisional",
+  "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+  "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+  "render_preset": "performance",
+  "task": "MustardRightOfRaisinRFTask",
+  "code": "T8",
+  "wording_pair": [
+   "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  ],
+  "slots": [
+   92000,
+   92063
+  ],
+  "n": 64,
+  "unedited_k": 0,
+  "edited_k": 0,
+  "fixed": 0,
+  "broke": 0,
+  "p": 1.0,
+  "ci": {
+   "wilson95_unedited_pct": [
+    0.0,
+    5.7
+   ],
+   "wilson95_control_pct": [
+    0.0,
+    5.7
+   ],
+   "diff_pts": 0.0,
+   "bootstrap95_diff_pts": [
+    0.0,
+    0.0
+   ]
+  },
+  "control_k": {
+   "k": 0,
+   "n": 64,
+   "slots": [
+    92000,
+    92063
+   ],
+   "arm": "ctl-rand3",
+   "control_vs_unedited": {
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0
+   },
+   "edit_vs_control": {
+    "edit_only": 27,
+    "control_only": 0,
+    "p": 1.4901161193847656e-08,
+    "edit_k": 27
+   },
+   "edit_vs_unedited": {
+    "fixed": 27,
+    "broke": 0,
+    "p": 1.4901161193847656e-08,
+    "edit_k": 27
+   }
+  },
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit": {
+   "name": "ctl-rand3",
+   "fingerprint": "fbc8349de4182099",
+   "built_for": "T8",
+   "control_of": "s4r-grp3"
+  },
+  "edit_location": "same tensors, ranks and singular values as s4r-grp3; random orthonormal directions",
+  "values_changed": 290322032,
+  "values_changed_note": "about 290.3M stored values (from the control's build report)",
+  "notes": "PROVISIONAL (own slots, earlier run): random-direction control of s4r-grp3; unedited_k / edited_k = unedited / control on the same slots; recomputed from the per-slot records in results/prior_slots_ali-ms.json (held-out runs of sgdw-s4r (s4r-grp2 base arm; ctl-92000-64))",
+  "per_slot": {
+   "92000": [
+    0,
+    0
+   ],
+   "92001": [
+    0,
+    0
+   ],
+   "92002": [
+    0,
+    0
+   ],
+   "92003": [
+    0,
+    0
+   ],
+   "92004": [
+    0,
+    0
+   ],
+   "92005": [
+    0,
+    0
+   ],
+   "92006": [
+    0,
+    0
+   ],
+   "92007": [
+    0,
+    0
+   ],
+   "92008": [
+    0,
+    0
+   ],
+   "92009": [
+    0,
+    0
+   ],
+   "92010": [
+    0,
+    0
+   ],
+   "92011": [
+    0,
+    0
+   ],
+   "92012": [
+    0,
+    0
+   ],
+   "92013": [
+    0,
+    0
+   ],
+   "92014": [
+    0,
+    0
+   ],
+   "92015": [
+    0,
+    0
+   ],
+   "92016": [
+    0,
+    0
+   ],
+   "92017": [
+    0,
+    0
+   ],
+   "92018": [
+    0,
+    0
+   ],
+   "92019": [
+    0,
+    0
+   ],
+   "92020": [
+    0,
+    0
+   ],
+   "92021": [
+    0,
+    0
+   ],
+   "92022": [
+    0,
+    0
+   ],
+   "92023": [
+    0,
+    0
+   ],
+   "92024": [
+    0,
+    0
+   ],
+   "92025": [
+    0,
+    0
+   ],
+   "92026": [
+    0,
+    0
+   ],
+   "92027": [
+    0,
+    0
+   ],
+   "92028": [
+    0,
+    0
+   ],
+   "92029": [
+    0,
+    0
+   ],
+   "92030": [
+    0,
+    0
+   ],
+   "92031": [
+    0,
+    0
+   ],
+   "92032": [
+    0,
+    0
+   ],
+   "92033": [
+    0,
+    0
+   ],
+   "92034": [
+    0,
+    0
+   ],
+   "92035": [
+    0,
+    0
+   ],
+   "92036": [
+    0,
+    0
+   ],
+   "92037": [
+    0,
+    0
+   ],
+   "92038": [
+    0,
+    0
+   ],
+   "92039": [
+    0,
+    0
+   ],
+   "92040": [
+    0,
+    0
+   ],
+   "92041": [
+    0,
+    0
+   ],
+   "92042": [
+    0,
+    0
+   ],
+   "92043": [
+    0,
+    0
+   ],
+   "92044": [
+    0,
+    0
+   ],
+   "92045": [
+    0,
+    0
+   ],
+   "92046": [
+    0,
+    0
+   ],
+   "92047": [
+    0,
+    0
+   ],
+   "92048": [
+    0,
+    0
+   ],
+   "92049": [
+    0,
+    0
+   ],
+   "92050": [
+    0,
+    0
+   ],
+   "92051": [
+    0,
+    0
+   ],
+   "92052": [
+    0,
+    0
+   ],
+   "92053": [
+    0,
+    0
+   ],
+   "92054": [
+    0,
+    0
+   ],
+   "92055": [
+    0,
+    0
+   ],
+   "92056": [
+    0,
+    0
+   ],
+   "92057": [
+    0,
+    0
+   ],
+   "92058": [
+    0,
+    0
+   ],
+   "92059": [
+    0,
+    0
+   ],
+   "92060": [
+    0,
+    0
+   ],
+   "92061": [
+    0,
+    0
+   ],
+   "92062": [
+    0,
+    0
+   ],
+   "92063": [
+    0,
+    0
+   ]
+  },
+  "source": "results/prior_slots_ali-ms.json: sgdw-s4r/heldout/s4r-grp2-MustardRightOfRaisinRFTask-92000-64/logs-base-92000; sgdw-s4r/heldout/s4r-grp2-MustardRightOfRaisinRFTask-92000-64/logs-base-92032; sgdw-s4r/heldout/ctl-92000-64/logs-g3-92000; sgdw-s4r/heldout/ctl-92000-64/logs-g3-92032; sgdw-s4r/heldout/ctl-92000-64/logs-rand3-92000; sgdw-s4r/heldout/ctl-92000-64/logs-rand3-92032"
+ },
+ {
+  "experiment": "failure_map_partial",
+  "status": "fresh",
+  "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+  "hardware": "ali-ms, RTX 3090; weightsmith @ ad31044",
+  "render_preset": "performance",
+  "task": "RubiksCubeThenBananaTask",
+  "code": "T1",
+  "wording_pair": [
+   "Put the cube then the banana in the bowl"
+  ],
+  "slots": [
+   30000,
+   30015
+  ],
+  "n": 16,
+  "unedited_k": 5,
+  "edited_k": null,
+  "fixed": null,
+  "broke": null,
+  "p": null,
+  "ci": {
+   "wilson95_pct": [
+    14.2,
+    55.6
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit": null,
+  "edit_location": null,
+  "values_changed": null,
+  "values_changed_note": null,
+  "notes": "FRESH but partial: the only pi0.5 episodes on the shared slots, one 16-slot group (first and only run of a fresh Isaac process, environment seed 0) on ali-ms GPU1 at 05:03 UTC before the pi0.5 queue moved to the pod; RoboLab performance preset (Tracks A and B use the default preset), so not a like-for-like failure-map entry",
+  "per_slot": {
+   "30000": [
+    0
+   ],
+   "30001": [
+    1
+   ],
+   "30002": [
+    1
+   ],
+   "30003": [
+    0
+   ],
+   "30004": [
+    0
+   ],
+   "30005": [
+    0
+   ],
+   "30006": [
+    1
+   ],
+   "30007": [
+    1
+   ],
+   "30008": [
+    1
+   ],
+   "30009": [
+    0
+   ],
+   "30010": [
+    0
+   ],
+   "30011": [
+    0
+   ],
+   "30012": [
+    0
+   ],
+   "30013": [
+    0
+   ],
+   "30014": [
+    0
+   ],
+   "30015": [
+    0
+   ]
+  }
  }
 ]

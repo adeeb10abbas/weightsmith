@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="653.263063pt" height="284.502631pt" viewBox="0 0 653.263063 284.502631" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-08T01:36:03.257140</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.3, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 284.502631 
+L 653.263063 284.502631 
+L 653.263063 0 
+L 0 0 
+z
+" style="fill: #fcfcfb"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 196.626125 227.035237 
+L 598.386125 227.035237 
+L 598.386125 20.798437 
+L 196.626125 20.798437 
+z
+" style="fill: #fcfcfb"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 196.626125 227.035237 
+L 196.626125 20.798437 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #e4e3df; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="196.626125" y="237.373831" transform="rotate(-0 196.626125 237.373831)">0%</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 286.304696 227.035237 
+L 286.304696 20.798437 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #e4e3df; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="286.304696" y="237.373831" transform="rotate(-0 286.304696 237.373831)">25%</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 375.983268 227.035237 
+L 375.983268 20.798437 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #e4e3df; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="375.983268" y="237.373831" transform="rotate(-0 375.983268 237.373831)">50%</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 465.661839 227.035237 
+L 465.661839 20.798437 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #e4e3df; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_4">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="465.661839" y="237.373831" transform="rotate(-0 465.661839 237.373831)">75%</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 555.340411 227.035237 
+L 555.340411 20.798437 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #e4e3df; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_5">
+      <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="555.340411" y="237.373831" transform="rotate(-0 555.340411 237.373831)">100%</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_11"/>
+     <g id="text_6">
+      <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #0b0b0b" x="193.126125" y="65.728181" transform="rotate(-0 193.126125 65.728181)">unedited</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_12"/>
+     <g id="text_7">
+      <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #0b0b0b" x="193.126125" y="90.280181" transform="rotate(-0 193.126125 90.280181)">random-direction control</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_13"/>
+     <g id="text_8">
+      <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #0b0b0b" x="193.126125" y="114.832181" transform="rotate(-0 193.126125 114.832181)">edit v2mi-f (instruction unchanged)</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_14"/>
+     <g id="text_9">
+      <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #0b0b0b" x="193.126125" y="139.384181" transform="rotate(-0 193.126125 139.384181)">explicit wording, unedited weights (teacher)</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_15"/>
+     <g id="text_10">
+      <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #0b0b0b" x="193.126125" y="188.488181" transform="rotate(-0 193.126125 188.488181)">unedited</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_16"/>
+     <g id="text_11">
+      <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #0b0b0b" x="193.126125" y="213.040181" transform="rotate(-0 193.126125 213.040181)">edit v2mi-f</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 196.626125 70.147957 
+L 269.489964 70.147957 
+L 269.489964 54.925717 
+L 196.626125 54.925717 
+z
+" clip-path="url(#pff0ca41eef)" style="fill: #a19f99"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 196.626125 94.699957 
+L 247.070321 94.699957 
+L 247.070321 79.477717 
+L 196.626125 79.477717 
+z
+" clip-path="url(#pff0ca41eef)" style="fill: #a19f99"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 196.626125 119.251957 
+L 476.871661 119.251957 
+L 476.871661 104.029717 
+L 196.626125 104.029717 
+z
+" clip-path="url(#pff0ca41eef)" style="fill: #2a78d6"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 196.626125 143.803957 
+L 516.106036 143.803957 
+L 516.106036 128.581717 
+L 196.626125 128.581717 
+z
+" clip-path="url(#pff0ca41eef)" style="fill: #eb6834"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 196.626125 192.907957 
+L 272.29242 192.907957 
+L 272.29242 177.685717 
+L 196.626125 177.685717 
+z
+" clip-path="url(#pff0ca41eef)" style="fill: #a19f99"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 196.626125 217.459957 
+L 493.686393 217.459957 
+L 493.686393 202.237717 
+L 196.626125 202.237717 
+z
+" clip-path="url(#pff0ca41eef)" style="fill: #2a78d6"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 196.626125 227.035237 
+L 598.386125 227.035237 
+" style="fill: none; stroke: #e4e3df; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 8.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="193.038982" y="41.551906" transform="rotate(-0 193.038982 41.551906)">T1 cube then banana, held-out slots 90000-90063 (every bar on the same 64 starts)</text>
+   </g>
+   <g id="line2d_17">
+    <path d="M 240.747982 62.536837 
+L 310.338554 62.536837 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #52514e; stroke-linecap: square"/>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="315.719268" y="64.854712" transform="rotate(-0 315.719268 64.854712)">13/64</text>
+   </g>
+   <g id="line2d_18">
+    <path d="M 223.888411 87.088837 
+L 284.869839 87.088837 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #52514e; stroke-linecap: square"/>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="290.250554" y="89.406712" transform="rotate(-0 290.250554 89.406712)">9/64</text>
+   </g>
+   <g id="line2d_19">
+    <path d="M 435.529839 111.640837 
+L 506.913982 111.640837 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #52514e; stroke-linecap: square"/>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="512.294696" y="113.958712" transform="rotate(-0 512.294696 113.958712)">50/64</text>
+   </g>
+   <g id="line2d_20">
+    <path d="M 480.369125 136.192837 
+L 535.969839 136.192837 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #52514e; stroke-linecap: square"/>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="541.350554" y="138.510712" transform="rotate(-0 541.350554 138.510712)">57/64</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 700; font-size: 8.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="193.038982" y="164.3455" transform="rotate(-0 193.038982 164.3455)">T1, all held-out slots 90000-90127</text>
+   </g>
+   <g id="line2d_21">
+    <path d="M 250.074554 185.296837 
+L 300.653268 185.296837 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #52514e; stroke-linecap: square"/>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="306.033982" y="187.614712" transform="rotate(-0 306.033982 187.614712)">27/128</text>
+   </g>
+   <g id="line2d_22">
+    <path d="M 466.737982 209.848837 
+L 513.729554 209.848837 
+" clip-path="url(#pff0ca41eef)" style="fill: none; stroke: #52514e; stroke-linecap: square"/>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="519.110268" y="212.166712" transform="rotate(-0 519.110268 212.166712)">106/128</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="196.626125" y="14.798437" transform="rotate(-0 196.626125 14.798437)">PROVISIONAL: the T1 edit against its random-direction control and the teacher wording</text>
+   </g>
+  </g>
+  <g id="text_21">
+   <text style="font-size: 7.4px; font-family: 'DejaVu Sans'; fill: #52514e" transform="translate(137.010125 267.477281)">Edit vs control on 90000-90063: 41 edit-only / 0 control-only starts, p = 9.1e-13; control vs unedited p = 0.45; teacher vs edit 11 / 4, p =</text>
+   <text style="font-size: 7.4px; font-family: 'DejaVu Sans'; fill: #52514e" transform="translate(137.010125 275.763662)">0.12. Earlier runs on ali-ms (RTX 3090, performance preset). Whiskers: Wilson 95%.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pff0ca41eef">
+   <rect x="196.626125" y="20.798437" width="401.76" height="206.2368"/>
+  </clipPath>
+ </defs>
+</svg>

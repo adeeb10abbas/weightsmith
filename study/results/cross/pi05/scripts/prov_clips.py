@@ -201,6 +201,22 @@ def main():
         print(c["file"], c["bytes"], c["crf"], [(p["label"], p["success"], p.get("first_frame_psnr_vs_top_db"))
                                                for p in c["panels"]])
     idx.write_text(json.dumps(sorted(done.values(), key=lambda c: c["file"]), indent=1) + "\n")
+    dump_slots(cache)
+
+
+def dump_slots(cache: Path):
+    """Compact per-slot outcomes of every earlier run read above (results/prior_slots_ali-ms.json), so that
+    analyze.py can recompute the provisional control pairings from files in this repository."""
+    runs = {}
+    for f in sorted((cache / "rows").rglob("rows.json")):
+        key = str(f.parent.relative_to(cache / "rows"))
+        rows = rows_of(key, cache)
+        runs[key] = {str(sl): [int(bool(x["success"])), int(x["steps"]), x.get("run", 0)] for sl, x in sorted(rows.items())}
+    out = HERE / "results" / "prior_slots_ali-ms.json"
+    out.write_text(json.dumps({"what": "per-slot [success, steps, run-in-process] of earlier pi0.5 runs on ali-ms "
+                                       "(RTX 3090, performance preset), from each run's rows.json under "
+                                       f"{HOST}:{PROJ}/<key>/rows.json; written by scripts/prov_clips.py",
+                               "runs": runs}, indent=0) + "\n")
 
 
 if __name__ == "__main__":

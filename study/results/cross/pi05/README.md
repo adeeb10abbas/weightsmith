@@ -15,7 +15,8 @@ Machine-readable: [`../metrics_pi05.json`](../metrics_pi05.json) (one record per
 job, one row per slot), [`results/summary.json`](results/summary.json), [`results/provisional.json`](results/provisional.json).
 
 <!-- summary:begin -->
-**Status (2026-11-08 06:45 UTC). No fresh π0.5 episodes: the rented pod cannot run Isaac Sim.** The Japan pod (2× RTX 4080 SUPER, driver 595.58 = CUDA 13.2) finished setup at 06:08 UTC, but every Isaac Sim 5.0 process segfaults when the RTX renderer starts (`librtx.scenedb.plugin.so` inside `UsdManager::createHydraEngine`, before any scene loads), and Warp 1.7.2 cannot initialise CUDA on this driver (`cuDeviceGetUuid` entry point). Fixes tried within the 20-minute timebox: the Vulkan ICD path (`/etc/vulkan/icd.d`), the missing `libGLU`/`libXt` libraries, with and without `CUDA_VISIBLE_DEVICES`, single-GPU RTX settings, and a `libcuda` shim; none changed the crash. The policy server itself (JAX) runs on the pod. π0.5 GPU work stays off ali-ms (its GPUs belong to Tracks A and B tonight), so this page's π0.5 column is the **PROVISIONAL** one below. The only π0.5 episodes on the shared slots are one 16-slot T1 group on ali-ms before the move (5/16, `performance` preset; see *Fresh: what exists*).
+**Status (2026-11-08 06:45 UTC). No fresh π0.5 episodes: the rented pod cannot run Isaac Sim.** The Japan pod (2× RTX 4080 SUPER, driver 595.58 = CUDA 13.2) finished setup at 06:08 UTC, but every Isaac Sim 5.0 process segfaults when the RTX renderer starts (`librtx.scenedb.plugin.so` inside `UsdManager::createHydraEngine`, before any scene loads), and Warp 1.7.2 cannot initialise CUDA on this driver (`cuDeviceGetUuid` entry point). Fixes tried within the 20-minute timebox: the Vulkan ICD path (`/etc/vulkan/icd.d`), the missing `libGLU`/`libXt` libraries, with and without `CUDA_VISIBLE_DEVICES`, single-GPU RTX settings, and a `libcuda` shim; none changed the crash. The policy server itself (JAX) runs on the pod. π0.5 GPU work stays off ali-ms (its GPUs belong to Tracks A and B tonight), so this page's π0.5 column is the **PROVISIONAL** one below. The only π0.5 episodes on the shared slots are one 16-slot T1 group on ali-ms before the move (5/16, `performance` preset; see the fresh section). Provisional plots and before/after clips made from the
+earlier runs' videos are below.
 <!-- summary:end -->
 
 ## Shared design
@@ -57,10 +58,46 @@ ali-ms (copied over ssh, fingerprints checked on arrival). Job list, projects an
 **Hardware.** π0.5 runs on RTX 4080 SUPER (32 GB) on the pod; Tracks A and B run on RTX 3090s on ali-ms.
 Within-model paired comparisons are unaffected; one T1 group was run on both GPUs under the same preset as a check.
 
+**What happened on the pod.** Setup finished at 06:08 UTC (checkpoint sha256 verified, base weights exported, all
+five candidates copied and fingerprint-checked). Both workers then started their first job (T1 and T3, unedited) and
+each Isaac Sim process crashed during RTX start-up; the details and the fixes tried are in the status note above and
+under *Pod blocker* below. The workers are paused (`PAUSE-gpu0/1` on the pod), the queue is intact
+(100 jobs), and nothing from the pod is counted. Cross-model context for the one fresh group below: on the same 16
+starts (T1, 30000–30015) Cosmos3 Edge scored 10/16 and GR00T N1.7 4/16 (both default preset, from Tracks A and B's
+pushed run records); π0.5 solved 5 of them (under `performance`). Only slot 30008 was solved by all three and 2
+by none, so the models fail on largely different starts.
+
 <!-- fresh:begin -->
 Jobs finished: **0** (16 slots each); pod GPU time in finished jobs: **0.0 GPU-h**. Every row below pairs arms on the same slots (same scene, same noise seeds), default render preset unless stated.
 
+### Fresh but partial: the only π0.5 episodes on the shared slots
+
+| Task | Unedited | Wilson 95% | Slots | Machine | Preset |
+|---|---|---|---|---|---|
+| T1 cube then banana | **5/16** | 14–56% | 30000–30015 | ali-ms RTX 3090 | `performance` |
+
+One 16-slot group (first and only run of a fresh Isaac process, environment seed 0), run before the π0.5 queue left ali-ms. It used the `performance` preset, not the default preset of Tracks A and B, so it is not a like-for-like failure-map entry. Per-slot outcomes are in the record.
+
 <!-- fresh:end -->
+
+### Pod blocker
+
+| Check | Result |
+|---|---|
+| Symptom | every Isaac Sim 5.0 process (RoboLab's eval and a 10-line `AppLauncher(headless=True, enable_cameras=True)` + `new_stage()` test) segfaults in `librtx.scenedb.plugin.so`, called from `omni::usd::UsdManager::createHydraEngine`, before any scene loads |
+| GPU / driver | 2× RTX 4080 SUPER 32 GB, driver 595.58.03 (`cuDriverGetVersion` 13020); ali-ms, where the same software stack runs, has driver 535 |
+| CUDA itself | fine: `cuInit`, device count, `cuGetProcAddress_v2` for `cuDeviceGetUuid` all succeed from Python; the JAX policy server warms up and serves on both GPUs |
+| Warp 1.7.2 (inside Isaac) | `Failed to get driver entry point 'cuDeviceGetUuid' (CUDA error 1)`, then `CUDA error 36: API call is not supported in the installed CUDA driver` in `cuda_init` |
+| Vulkan ICD | `WSP_VK_ICD=/etc/vulkan/icd.d/nvidia_icd.json` (the default `/usr/share/...` path does not exist here); the GPUs then enumerate in Kit's GPU table; crash unchanged |
+| Missing libraries | `libGLU.so.1`, `libXt.so.6` (iray) installed with apt; crash unchanged |
+| `CUDA_VISIBLE_DEVICES` | set: `gpu.foundation` skips both GPUs ("CUDA being in bad state"); unset: GPU 0 active, peer-to-peer check runs; crash unchanged either way |
+| RTX settings | `--/renderer/multiGpu/enabled=false --/renderer/activeGpu=0 --/rtx/verifyDriverVersion/enabled=false`, texture streaming off; crash unchanged |
+| `libcuda` shim | forwarding `cuGetProcAddress` for the legacy `cuDeviceGetUuid`; crash unchanged |
+
+The NVIDIA graphics user-space libraries are present (GLX/EGL, `glcore`, `glvkspirv`, `gpucomp`, `rtcore`, `nvoptix`).
+The evident difference from ali-ms is the driver branch (595 / CUDA 13.2 vs 535); we did not confirm it as the cause.
+A pod with a 535–570 driver, or an Isaac Sim build that supports R595, is the next thing to try; the setup, queue and
+candidates on this pod can be reused as they are.
 
 
 ## PROVISIONAL: existing π0.5 results (own slots, ali-ms RTX 3090, `performance` preset)
@@ -87,6 +124,8 @@ and runs of the same task differ by more than their intervals suggest: identical
 | T8 mustard right of raisin (RF) | 0/64 | 0–5.7% | 92000–92063 | 0/32 on 20000–20031 |
 | R1 cube in bowl | 32/32 | 89.3–100% | 94016–94047 | 16/16 on 60000–60015 |
 
+![Provisional failure map](plots/provisional_failure_map.png)
+
 ### T1: the paper's distilled edits, control and teacher (held-out)
 
 | Edit | Slots | Unedited → edited | Fixed / broke | Exact p | Paired difference, 95% CI | Control | Teacher | Recovery |
@@ -98,6 +137,13 @@ Control: a random-direction update with `v2mi-f`'s layers, rank and singular val
 unedited runs scored 13/64 and 9/64 there). Teacher: the explicit wording given to the unedited weights, on the
 same 64 slots. Recovery = (edited − unedited) / (teacher − unedited) on 90000–90063: `v2mi-f` (50 − 13) / (57 − 13),
 `abl-imgl8` (54 − 9) / (57 − 9). Teacher vs `v2mi-f` there: 11 teacher-only and 4 edit-only pairs, p = 0.12.
+
+Slot by slot on 90000–90063 (recomputed tonight from the runs' per-slot records,
+[`results/prior_slots_ali-ms.json`](results/prior_slots_ali-ms.json); a `control` record in `../metrics_pi05.json`):
+the random-direction control against the unedited run is 6 fixed / 10 broke (13/64 → 9/64, p = 0.45), and the edit
+against the control is 41 edit-only / 0 control-only starts (p = 9.1 × 10⁻¹³).
+
+![Provisional T1: edit, control and teacher](plots/provisional_t1_heldout.png)
 
 **Where the edit goes** (T1, held-out 94016–94079, all arms paired with one unedited run, 5/64):
 
@@ -113,6 +159,8 @@ same 64 slots. Recovery = (edited − unedited) / (teacher − unedited) on 9000
 Only the VLM edit transferred to other tasks (next table); 12 of these 14 chunks ran on one GPU lane, so their second
 16 slots started from other scenes, and `study/results/opus/where/README.md` repeats every comparison on the 32
 unaffected slots with the same ordering.
+
+![Provisional where-to-edit](plots/provisional_where_to_edit.png)
 
 ### The existing side-effect map of `v2mi-f` (the T1 edit on other tasks, task's own instruction)
 
@@ -157,14 +205,35 @@ Per shared task, the largest earlier paired run (held-out first). T8 was never r
 | `s4r-grp3` vs unedited, under TF (no harm) | 20000–20031 | 27/32 → 23/32 | 5 / 9 | 0.42 |
 
 Recovery (practice slots, the only ones with a teacher arm): RF + `s4r-grp3` 16/32 against RF 0/32 and TF 27/32,
-59.3%. The paper's T1 edit `v2mi-f` was never run on T8. Source: `study/results/sgdw/`.
+59.3%. The paper's T1 edit `v2mi-f` was never run on T8. Source: `study/results/sgdw/`. Slot by slot on the
+held-out block the control solves none of the 27 starts the edit solves (edit vs control 27 / 0, p = 1.5 × 10⁻⁸;
+`control` record for T8).
+
+![Provisional T8](plots/provisional_t8.png)
+
+### Before/after clips (provisional)
+
+Episode videos that the earlier held-out runs recorded on ali-ms, stacked so every panel shows the same start (scene
+and noise seeds) under a different arm, 3× speed, labelled with RoboLab's verdict. Slots are not hand-picked: each clip
+takes the lowest slot of its block that has the clip's outcome pattern and was the first group of its Isaac process in
+every arm; the first frames of the panels are compared (PSNR in `videos/clips.json`) to confirm the shared start.
+Built by [`scripts/prov_clips.py`](scripts/prov_clips.py) (CPU only).
+
+| Clip | Panels (top to bottom) | What it shows |
+|---|---|---|
+| [`t1_v2mi-f_vs_control_vs_teacher_90000.mp4`](videos/t1_v2mi-f_vs_control_vs_teacher_90000.mp4) | unedited, random control, `v2mi-f`, explicit wording | T1: unedited and control fail, the edit and the reworded instruction succeed |
+| [`t1_v2mi-f_second_lane_90064.mp4`](videos/t1_v2mi-f_second_lane_90064.mp4) | unedited, `v2mi-f` | T1 on the second held-out lane |
+| [`t3_v2mi-f_side_effect_fixed_90000.mp4`](videos/t3_v2mi-f_side_effect_fixed_90000.mp4) | unedited, `v2mi-f` | the T1 edit also fixes a T3 start (cube left of bowl) |
+| [`t2_v2mi-f_side_effect_fixed_90000.mp4`](videos/t2_v2mi-f_side_effect_fixed_90000.mp4) | unedited, `v2mi-f` | the T1 edit also fixes a T2 start (pick glasses) |
+| [`t2_v2mi-f_side_effect_broke_90001.mp4`](videos/t2_v2mi-f_side_effect_broke_90001.mp4) | unedited, `v2mi-f` | one of the 9 T2 starts the edit breaks |
+| [`t8_s4r-grp3_vs_control_92001.mp4`](videos/t8_s4r-grp3_vs_control_92001.mp4) | unedited RF, random control, `s4r-grp3` | T8: the distilled wording edit moves the mustard right of the raisin box; the control does not |
 
 ## GPU time
 
 | Machine | GPU time | What |
 |---|---|---|
 | ali-ms | 10.4 GPU-min (GPU1 506.7 s, GPU0 117.2 s) | one T1 unedited group (30000–30015, `performance`, 5/16; kept as the 3090 side of the hardware check) and a stopped job |
-| pod | see the fresh section | |
+| pod | about 20 GPU-min, no completed episode | two workers' first jobs (policy server warm-up, then Isaac crashes) 06:08–06:16 UTC and three single-process Isaac start-up tests |
 
 ## Files
 
@@ -177,6 +246,7 @@ Recovery (practice slots, the only ones with a teacher arm): RF + `s4r-grp3` 16/
 | `scripts/make_clips.py` | before/after clips from the same start (pod) |
 | `scripts/sync_pod.sh` | copies the pod's run records here and rebuilds everything |
 | `scripts/provisional.py`, `scripts/prior_pairs.py` | the provisional column from existing results and ali-ms episode records |
-| `results/` | `runs/` (pod, one file per job), `runs_ali-ms/`, `provisional.json`, `prior_pairs_ali-ms.json`, `summary.json` |
+| `scripts/prov_clips.py` | the provisional before/after clips and `results/prior_slots_ali-ms.json` (per-slot outcomes of the earlier runs they use) |
+| `results/` | `runs/` (pod, one file per job; empty), `runs_ali-ms/`, `provisional.json`, `prior_pairs_ali-ms.json`, `prior_slots_ali-ms.json`, `summary.json` |
 | `plots/` | SVG and PNG (2×) |
-| `videos/` | before/after clips (H.264, ≤ 2 MB each) and `clips.json` |
+| `videos/` | provisional before/after clips (H.264, ≤ 2 MB each, the 4-panel one 2.5 MB) and `clips.json` |
