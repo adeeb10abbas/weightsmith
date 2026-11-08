@@ -1,6 +1,6 @@
 """Track C (pi0.5 DROID, the WSP control) closed-loop evaluation worker for the cross-model comparison.
 
-Run one worker per GPU on the GPU host (system python3, stdlib only):
+Run one worker per GPU on the GPU host (system python3, stdlib only). ali-ms:
     nohup setsid python3 pool_pi05.py --gpu 1 --port 8700 > worker-g1.log 2>&1 < /dev/null &
     nohup setsid python3 pool_pi05.py --gpu 0 --port 8720 > worker-g0.log 2>&1 < /dev/null &
 On the rented pod (2x RTX 4080 SUPER) the same script runs with --root /workspace/cross/pi05
@@ -128,6 +128,8 @@ def main():
                 continue
             if len(list(runs.glob(f"{j['tag']}.fail*.json"))) >= a.max_fail:
                 continue
+            if j.get("workspace") and not (Path(j["workspace"]) / "workspace.json").exists():
+                continue  # candidate not on this host yet (still being copied): leave the job queued
             out.append(j)
         return out
 
