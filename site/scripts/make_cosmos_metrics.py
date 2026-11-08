@@ -2287,7 +2287,11 @@ def main():
         "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference "
                   "(20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
     }
-    blob = json.dumps(data, sort_keys=True, ensure_ascii=False)
+    def no_commit(x):  # a branch commit that changes no number does not move the "updated" stamp
+        if isinstance(x, dict):
+            return {k: no_commit(v) for k, v in x.items() if k != "commit"}
+        return [no_commit(v) for v in x] if isinstance(x, list) else x
+    blob = json.dumps(no_commit(data), sort_keys=True, ensure_ascii=False)
     h = hashlib.sha256(blob.encode()).hexdigest()[:16]
     mpath = OUT / "metrics.json"
     old = json.loads(mpath.read_text()) if mpath.exists() else {}

@@ -56,7 +56,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "a95ec9ca10b2"
+    "commit": "8f4a5ac7300c"
    }
   }
  ],
@@ -4221,12 +4221,12 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "a95ec9ca10b2"
+   "commit": "8f4a5ac7300c"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "1b65ec8d9fb6bc05",
- "updated": "2026-11-08T05:46Z",
- "updated_text": "8 Nov 2026, 05:46 UTC",
+ "content_hash": "56175082189738a1",
+ "updated": "2026-11-08T05:51Z",
+ "updated_text": "8 Nov 2026, 05:51 UTC",
  "status_text": "Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records"
 }
