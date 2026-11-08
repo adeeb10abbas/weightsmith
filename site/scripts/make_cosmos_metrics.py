@@ -897,6 +897,11 @@ def slot_kind(r):
     return " unseen" if lo is not None and lo >= 96000 else " practice" if lo is not None and 30000 <= lo < 30032 else ""
 
 
+def is_practice(r):
+    """An edit scored on the practice slots (the starts it was built from), or named so by its record."""
+    return slot_kind(r) == " practice" or "practice" in nk(describe(r.get("experiment")) or "")
+
+
 def row_cells(src):
     """Cells of one model from its cross-model rows, keyed like the tables."""
     T = {k: {} for k in TABLE_IDS}
@@ -945,7 +950,9 @@ def row_cells(src):
         r = ed[0]
         i, p, p_note, ci, ci_note, d = stat(r)
         loc = describe(r.get("edit_location"))
-        det = [loc or describe(r.get("experiment"))]
+        prac = is_practice(r)
+        det = (["scored on the practice starts the edit was built from, not on unseen starts"] if prac else []) + [
+            loc or describe(r.get("experiment"))]
         if None not in (i["fixed"], i["broke"]):
             det.append(f"{i['fixed']} / {i['broke']}" + (f", p = {fp(p)}" if p is not None else ""))
         if ci is not None and d is not None:
@@ -958,8 +965,10 @@ def row_cells(src):
                  "; ".join(x for x in det if x), a=i["unedited_k"], b=i["edited_k"], n=i["n"], fx=i["fixed"], br=i["broke"],
                  pv=p,
                  ci=[d, *ci] if (ci is not None and d is not None) else None,
-                 color="teal" if loc_class(loc) in (None, "backbone", "both") else "dark",
-                 fl=f"{tid} {SHORT[tid]}" + (f", {short_loc}" if loc else ""), fb=f"{tid}" + (f" {loc}"[:18] if loc else ""))
+                 color="teal" if loc_class(loc) in (None, "backbone", "both") else "dark", prac=prac or None,
+                 fl=(f"{tid} {SHORT[tid]}, practice starts" if prac else
+                     f"{tid} {SHORT[tid]}" + (f", {short_loc}" if loc else "")),
+                 fb=f"{tid}" + (" practice" if prac else (f" {loc}"[:18] if loc else "")))
         if tid == "R1":
             T["retention"]["R1"] = cell
         else:
@@ -973,10 +982,11 @@ def row_cells(src):
         if rp is not None:
             if abs(rp) <= 1.5 and not float(rp).is_integer():
                 rp *= 100
-            T["recovery"][tid] = C(f"{rp:.0f}%", "as reported")
+            T["recovery"][tid] = C(f"{rp:.0f}%", "as reported" + ("; on practice starts" if prac else ""), prac=prac or None)
         elif i["teacher_k"] is not None and i["teacher_k"] != i["unedited_k"]:
             T["recovery"][tid] = C(f"{100 * (i['edited_k'] - i['unedited_k']) / (i['teacher_k'] - i['unedited_k']):.0f}%",
-                                   f"({i['edited_k']} − {i['unedited_k']}) / ({i['teacher_k']} − {i['unedited_k']}), computed here")
+                                   f"({i['edited_k']} − {i['unedited_k']}) / ({i['teacher_k']} − {i['unedited_k']}), computed here"
+                                   + ("; on practice starts" if prac else ""), prac=prac or None)
         vc = r.get("values_changed")
         if vc is not None:
             T["size"][tid] = C(num(as_int(vc)) + " values" if as_int(vc) is not None else describe(vc), loc)
@@ -1013,7 +1023,7 @@ def row_cells(src):
                 f"{dsgn(dlt)}: {i['unedited_k']} → {i['edited_k']}" + (f" of {i['n']}" if i["n"] else ""),
                 "; ".join(x for x in ((f"{i['fixed']} / {i['broke']}" if i["fixed"] is not None else None),
                                       (f"p = {fp(p)}" if p is not None else None), "the target task" if target else None,
-                                      where_txt(r), p_note) if x),
+                                      "practice starts" if is_practice(r) else None, where_txt(r), p_note) if x),
                 delta=dlt, a=i["unedited_k"], b=i["edited_k"], n=i["n"], p=p, target=target or None))
         T["side_effects"]["_edit"] = C(f"the {et} edit" + (f" ({describe(main.get('edit_location'))})"
                                                           if main.get("edit_location") else ""))
@@ -1025,7 +1035,8 @@ def row_cells(src):
         same = [r for r in locs if r["_task"] == t0 and as_int(r.get("n")) == as_int(locs[0].get("n"))
                 and describe(r.get("slots")) == describe(locs[0].get("slots"))]
         n0 = as_int(same[0].get("n"))
-        T["where"]["starts"] = C(f"{t0}, {n0} starts" if n0 else t0, where_txt(same[0]) or None)
+        T["where"]["starts"] = C(f"{t0}, {n0}{' practice' if is_practice(same[0]) else ''} starts" if n0 else t0,
+                                 where_txt(same[0]) or None)
         if as_int(same[0].get("unedited_k")) is not None:
             T["where"]["unedited"] = C(f"{as_int(same[0].get('unedited_k'))}" + (f" of {n0}" if n0 else ""))
         for cls in ("backbone", "action", "both"):
@@ -1033,7 +1044,7 @@ def row_cells(src):
             if hits:
                 T["where"][cls] = C("; ".join(f"{describe(r.get('edit_location'))}: {as_int(r.get('edited_k'))}"
                                               + (f" of {as_int(r.get('n'))}" if as_int(r.get("n")) else "") for r in hits))
-        T["where"]["_bars"] = dict(task=t0, n=n0, base=as_int(same[0].get("unedited_k")),
+        T["where"]["_bars"] = dict(task=t0, n=n0, base=as_int(same[0].get("unedited_k")), prac=is_practice(same[0]),
                                    bars=[(describe(r.get("edit_location")), as_int(r.get("edited_k")),
                                           "teal" if loc_class(describe(r.get("edit_location"))) == "backbone" else "dark")
                                          for r in same])
@@ -1289,7 +1300,7 @@ def summary_table(P, tables, cross, rc):
             if g:
                 bits = [f"{g['fx']} / {g['br']}" if g.get("fx") is not None and g.get("br") is not None else None,
                         f"p = {fp(g['pv'])}" if g.get("pv") is not None else None]
-                cell = C(g["v"], ", ".join(x for x in bits if x) or None)
+                cell = C(g["v"], ", ".join(x for x in bits if x) or None, prac=g.get("prac"))
                 if mid == "pi05":
                     cell["d"] = "; ".join(x for x in (cell.get("d"), f"earlier record: {pi[tid]['v']}") if x)
             elif mid == "pi05":
@@ -1334,7 +1345,8 @@ def inline(s):
 
 def cell_html(cell, mid, models):
     cls = {"ok": "c", "running": "c st-run", "na": "c st-na"}[cell["s"]] + (" prov" if cell.get("prov") else "")
-    tag = ' <span class="tag">earlier slots</span>' if cell.get("prov") else ""
+    tag = (' <span class="tag">earlier slots</span>' if cell.get("prov") else "") + (
+        ' <span class="tag">practice starts</span>' if cell.get("prac") else "")
     inner = f'<span class="v">{inline(cell["v"])}{tag}</span>'
     if cell.get("d"):
         inner += f'<span class="d">{inline(cell["d"])}</span>'
@@ -1628,7 +1640,8 @@ def fig_wording(tb, models, T, L):
 def fig_edit_gain(tb, models, T, L):
     brief = L is LAYOUTS["brief"]
     cbm = {m: [((c.get("fb") if brief else None) or c.get("fl") or r["label"], c["ci"], c["a"], c["b"], c["n"],
-                c.get("color", "teal")) for r, c in v if c.get("ci")] for m, v in model_rows(tb, "edit_gain").items()}
+                c.get("color", "teal"), bool(c.get("prac"))) for r, c in v if c.get("ci")]
+           for m, v in model_rows(tb, "edit_gain").items()}
     rows = grouped(models, cbm, L)
     fig, ax, ys, H = rows_figure(rows, L)
     ticks = (-20, 0, 20, 40, 60, 80, 100) if not brief else (0, 25, 50, 75, 100)
@@ -1642,15 +1655,19 @@ def fig_edit_gain(tb, models, T, L):
         elif k == "run":
             put(fig, ax, L, L["lx2"], y, rest[0], T, color="mute", style="italic")
         else:
-            lab, ci, a, b, n, colr = rest[0]
+            lab, ci, a, b, n, colr, hollow = rest[0]
             d, lo, hi = ci
             put(fig, ax, L, L["lx2"], y, lab, T)
             if lo is not None:
-                ax.plot([lo, hi], [y, y], color=T[colr], lw=L["lw"], solid_capstyle="round", zorder=2)
-            ax.plot([d], [y], "o", ms=L["ms"], mfc=T[colr], mec=T["ring"], mew=1.3, zorder=3)
+                ax.plot([lo, hi], [y, y], color=T[colr], lw=L["lw"], solid_capstyle="round", zorder=2,
+                        dashes=(2.2, 1.6) if hollow else (None, None))
+            ax.plot([d], [y], "o", ms=L["ms"], mfc=T["ring"] if hollow else T[colr], mec=T[colr] if hollow else T["ring"],
+                    mew=1.6 if hollow else 1.3, zorder=3)
             put(fig, ax, L, L["W"] - L["right"] + (0.06 if brief else 0.12), y, f"{a} → {b} / {n}" if brief else
                 f"{a} → {b} of {n}", T, color="ink2", size=L["FS_S"])
-    legend(fig, [("ci-teal", "distilled edit"), ("ci-dark", "other edit")], T, H, L)
+    hollow_any = any(len(x) > 6 and x[6] for v in cbm.values() for x in v)
+    legend(fig, [("ci-teal", "distilled edit"), ("ci-dark", "other edit")]
+           + ([("ring", "on practice starts")] if hollow_any else []), T, H, L)
     return fig
 
 
@@ -1698,7 +1715,8 @@ def fig_where(tb, models, T, L):
         rows.append(("tx", lab, ref["tx"][key]))
     for mid in ("cosmos", "groot"):
         wb = WHERE_OTHER.get(mid)
-        rows.append(("head", models[mid]["name"] + (f": {wb['task']}, {wb['n']} starts" if wb and wb.get("n") else "")))
+        rows.append(("head", models[mid]["name"] + (f": {wb['task']}, {wb['n']}{' practice' if wb.get('prac') else ''} starts"
+                                                    if wb and wb.get("n") else "")))
         if not wb:
             rows.append(("run", "running"))
             continue
@@ -1858,35 +1876,128 @@ FIGS = [
     ("wording-gap", "The unedited model under the original wording (grey) and the clear wording (ring), on the same "
                     "starts."),
     ("edit-gain", "Edited minus unedited success on held-out starts, paired by start, with the paired bootstrap 95% "
-                  "interval. Teal: distilled edits; dark: edits the blind editors designed themselves."),
+                  "interval. Teal: distilled edits; neutral: edits the blind editors designed themselves."),
     ("random-control", "The edit against a random edit of the same layers, rank and singular values, on the same "
                        "unseen starts."),
     ("where-to-edit", "The same distillation in three places of π0.5, scored on one shared set of unseen starts, then on "
                       "other tasks; the NVIDIA models' locations appear as their runs finish."),
     ("side-effects", "Each model's main edit, unchanged, on every suite task: edited minus unedited successes on the same "
-                     "starts. Teal: a gain, dark: a loss (exact McNemar p < 0.05); grey: no detectable change; the outlined "
+                     "starts. Teal: a gain; near-black (near-white in dark mode): a loss (exact McNemar p < 0.05); grey: no "
+                     "detectable change; the outlined "
                      "cell is the task the edit was built for."),
 ]
 
 
-# ---------------------------------------------------------------- clips (MP4s dropped into site/cosmos/video/)
+# ---------------------------------------------------------------- clips (MP4s in site/cosmos/video/, <= 2 MB each)
 VID = OUT / "video"
-CLIPS = [  # (file stem, group, title, caption, fallback poster for the placeholder)
-    ("t1_three_models", "three", "T1 Cube then banana",
-     "One start, the three models unedited, the same initial scene; each panel is labelled.", None),
-    ("t8_three_models", "three", "T8 Mustard right of the raisin box, reference-first",
-     "One start, the three models unedited, the same initial scene; each panel is labelled.", None),
-    ("cosmos_before_after", "before", "Cosmos3 Edge Policy",
-     "Unedited and after the edit, on a start where the edit helped.", None),
-    ("groot_before_after", "before", "GR00T N1.7",
-     "Unedited and after the edit, on a start where the edit helped.", None),
-    ("pi05_before_after", "before", "π0.5",
-     "Unedited and after the edit, on a start where the edit helped.",
-     ("../assets/video/cube_then_banana.jpg",
-      "Until the shared-slot clip lands: a frame of the earlier T1 clip, held-out start 90002, unedited above and edited "
-      "below. The clip itself is on the project page.")),
+# Each clip: stem (video/<stem>.mp4, or "src" for a clip the main page already serves), group (where it goes on the
+# page), title, a caption builder (reads its numbers from the run records, never typed in), and an optional poster.
+# A clip whose MP4 is missing renders as a "running" placeholder that cosmos.js turns into a player once it exists.
+X_COSMOS = ("cross-cosmos/v1", "study/results/cross/cosmos/results/runs/ali-ms")
+X_GROOT = ("cross-groot/v1", "study/results/cross/groot/results/runs")
+
+
+def run_row(where, name, slot):
+    """One start's row from a cross-model run record: success, steps."""
+    branch, d = where
+    txt = git("show", f"origin/{branch}:{d}/{name}.json")
+    try:
+        rows = json.loads(txt)["rows"] if txt else []
+    except (ValueError, KeyError):
+        rows = []
+    r = next((r for r in rows if r.get("slot") == slot), None)
+    return (r, f"{branch}:{d}/{name}.json") if r else (None, None)
+
+
+def outcome(r):
+    return (f"succeeded in {r['steps']} steps" if r.get("success") else f"did not succeed in {r['steps']} steps")
+
+
+def table_cell(tables, tid, label_prefix, mid):
+    t = next((t for t in tables if t["id"] == tid), None)
+    r = next((r for r in (t["rows"] if t else []) if r["label"].startswith(label_prefix)), None)
+    c = r["cells"].get(mid) if r else None
+    return c if c and c["s"] == "ok" else None
+
+
+def cap_wording(where, task, slot, base, clear, mid, tid_label, top, bottom):
+    def f(tables):
+        a, sa = run_row(where, base, slot)
+        b, sb = run_row(where, clear, slot)
+        if not (a and b):
+            return None, []
+        s = (f"Practice start {slot}: the same weights and the same initial scene, {top} on top, {bottom} below. "
+             f"Original wording: {outcome(a)}; clearer wording: {outcome(b)}.")
+        c = table_cell(tables, "wording", tid_label, mid)
+        if c:
+            s += (f" Over all {c['n']} practice starts: {c['a']} → {c['b']} successes"
+                  + (f" (exact McNemar p = {fp(c['pv'])})." if c.get("pv") is not None else "."))
+        return s, [sa, sb]
+    return f
+
+
+def cap_edit_practice(where, slot, base, edited, mid, tid):
+    def f(tables):
+        a, sa = run_row(where, base, slot)
+        b, sb = run_row(where, edited, slot)
+        if not (a and b):
+            return None, []
+        s = (f"Practice start {slot}, one of the starts the edit was built from: the unedited policy on top, the edited "
+             f"policy below, both given the original wording. Unedited: {outcome(a)}; edited: {outcome(b)}.")
+        c = table_cell(tables, "edit_gain", tid, mid)
+        if c and c.get("prac"):
+            s += (f" Over all {c['n']} practice starts: {c['a']} → {c['b']} successes"
+                  + (f" (exact McNemar p = {fp(c['pv'])})" if c.get("pv") is not None else "")
+                  + "; held-out starts are running.")
+        return s, [sa, sb]
+    return f
+
+
+def cap_same_start(slot):
+    def f(tables):
+        a, sa = run_row(X_COSMOS, "T1-base-s30000", slot)
+        b, sb = run_row(X_GROOT, "fm-T1", slot)
+        if not (a and b):
+            return None, []
+        return (f"Practice start {slot} of T1, the same initial scene for both models, each unedited and seen through "
+                f"its own cameras: Cosmos3 Edge Policy (top: left shoulder, right shoulder, wrist) {outcome(a)}; "
+                f"GR00T N1.7 (bottom: exterior, wrist) {outcome(b)}."), [sa, sb]
+    return f
+
+
+def fixed_cap(text):
+    return lambda tables: (text, [])
+
+
+CLIPS = [
+    dict(stem="cosmos_t8_wording", group="demo", title="Cosmos3 Edge Policy, T8: the wording gap",
+         cap=cap_wording(X_COSMOS, "T8", 30000, "T8-base-s30000", "T8-wtf-s30000", "cosmos", "T8",
+                         "the original, reference-first wording", "the clearer, target-first wording")),
+    dict(stem="cosmos_t8_edit_practice", group="demo", title="Cosmos3 Edge Policy, T8: before and after the edit",
+         cap=cap_edit_practice(X_COSMOS, 30008, "T8-base-s30000", "T8-Et8und-s30000", "cosmos", "T8")),
+    dict(stem="groot_t1_wording", group="demo", title="GR00T N1.7, T1: the wording gap",
+         cap=cap_wording(X_GROOT, "T1", 30003, "fm-T1", "wd-T1-expl", "groot", "T1",
+                         "the original wording", "the explicit two-step wording")),
+    dict(stem="t1_same_start", group="demo", title="T1, one start, two NVIDIA models", cap=cap_same_start(30000)),
+    dict(stem="pi05_t1_edit", group="demo", title="π0.5, T1: before and after the edit",
+         src="../assets/video/cube_then_banana.mp4", poster="../assets/video/cube_then_banana.jpg", size=(960, 540),
+         cap=fixed_cap("Held-out start 90002, an earlier record on π0.5’s own slots: the unedited policy (top) lets go "
+                       "of the cube soon after picking it up; after the edit (bottom) it carries the cube to the bowl, "
+                       "then the banana. The instruction is the same in both.")),
+    dict(stem="cosmos_before_after", group="before", title="Cosmos3 Edge Policy",
+         cap=fixed_cap("Unedited and edited, on a held-out start where the edit helped.")),
+    dict(stem="groot_before_after", group="before", title="GR00T N1.7",
+         cap=fixed_cap("Unedited and edited, on a held-out start where the edit helped.")),
+    dict(stem="pi05_t2_transfer", group="transfer", title="π0.5, T2 Pick up the eyeglasses",
+         src="../assets/video/eyeglasses.mp4", poster="../assets/video/eyeglasses.jpg", size=(960, 540),
+         cap=fixed_cap("The T1 edit, unchanged, on a task it was not built for; unedited on top, edited below. "
+                       "Earlier record.")),
+    dict(stem="pi05_t3_transfer", group="transfer", title="π0.5, T3 Cube left of the bowl",
+         src="../assets/video/cube_left_of_bowl.mp4", poster="../assets/video/cube_left_of_bowl.jpg", size=(960, 540),
+         cap=fixed_cap("The T1 edit, unchanged, on a task it was not built for; unedited on top, edited below. "
+                       "Earlier record.")),
 ]
-GIF_ORDER = ["t1_three_models", "t8_three_models", "cosmos_before_after", "groot_before_after", "pi05_before_after"]
+GIF_ORDER = ["cosmos_t8_wording", "cosmos_t8_edit_practice", "groot_t1_wording", "t1_same_start", "cosmos_before_after", "groot_before_after"]
 
 
 def ff(*args):
@@ -1912,12 +2023,21 @@ def probe_size(path):
 def prepare_clips():
     """Which clips exist; first-frame posters for those without one; the brief's GIF (first frame prints as a still)."""
     info = {}
-    for stem, *_ in CLIPS:
+    for c in CLIPS:
+        stem = c["stem"]
+        if c.get("src"):
+            p = (OUT / c["src"]).resolve()
+            info[stem] = dict(exists=p.exists(), src=c["src"], poster=c.get("poster"),
+                              size=c.get("size") or (probe_size(p) if p.exists() else None))
+            continue
         mp4, jpg = VID / f"{stem}.mp4", VID / f"{stem}.jpg"
         ok = mp4.exists() and mp4.stat().st_size > 0
+        if ok and mp4.stat().st_size > 2_000_000:
+            print(f"  WARNING: video/{stem}.mp4 is {mp4.stat().st_size / 1e6:.1f} MB; keep clips at 2 MB or less")
         if ok and not jpg.exists():
             ff("-i", str(mp4), "-frames:v", "1", "-q:v", "3", str(jpg))
-        info[stem] = dict(exists=ok, poster=jpg.exists(), size=probe_size(mp4) if ok else None)
+        info[stem] = dict(exists=ok, src=f"video/{stem}.mp4", poster=f"video/{stem}.jpg" if jpg.exists() else None,
+                          size=probe_size(mp4) if ok else None)
     gif, src_note = VID / "brief.gif", VID / "brief.gif.src"
     best = next((s for s in GIF_ORDER if info[s]["exists"]), None)
     if best:
@@ -1933,31 +2053,33 @@ def prepare_clips():
     return info
 
 
-def clip_html(stem, title, caption, fallback, info):
-    i = info[stem]
-    src = f"video/{stem}.mp4"
-    if i["exists"]:
+def clip_html(c, info, tables):
+    i = info[c["stem"]]
+    caption, srcs = c["cap"](tables)
+    title = c["title"]
+    rec = ("" if not srcs else " Records: " + ", ".join(
+        f'<a href="{esc(gh(s))}"><code>{esc(s.split("/")[-1])}</code></a>' for s in srcs) + ".")
+    if i["exists"] and caption:
         w, h = i["size"] or (960, 540)
-        poster = f' poster="video/{stem}.jpg"' if i["poster"] else ""
+        poster = f' poster="{esc(i["poster"])}"' if i["poster"] else ""
         return (f'<figure class="clip"><video controls muted loop playsinline preload="metadata"{poster} width="{w}" '
-                f'height="{h}" aria-label="{esc(title + ". " + caption)}"><source src="{src}" type="video/mp4"></video>'
-                f'<figcaption><b>{esc(title)}.</b> {esc(caption)}</figcaption></figure>')
-    img, note = (fallback or (None, None))
-    inner = (f'<img src="{esc(img)}" alt="" width="960" height="540" loading="lazy" decoding="async">' if img else "")
-    return (f'<figure class="clip clip-pending" data-clip="{src}" data-title="{esc(title)}" data-caption="{esc(caption)}">'
-            f'<div class="ph" role="img" aria-label="{esc(title)}: clip coming">{inner}'
-            f'<span class="ph-t">Clip coming</span></div>'
-            f'<figcaption><b>{esc(title)}.</b> {esc(caption)}' + (f' {esc(note)}' if note else "") + '</figcaption></figure>')
+                f'height="{h}" aria-label="{esc(title + ". " + caption)}"><source src="{esc(i["src"])}" type="video/mp4">'
+                f'</video><figcaption><b>{esc(title)}.</b> {esc(caption)}{rec}</figcaption></figure>')
+    caption = caption or ""
+    return (f'<figure class="clip clip-pending" data-clip="{esc(i["src"])}" data-title="{esc(title)}" '
+            f'data-caption="{esc(caption)}"><div class="ph" role="img" aria-label="{esc(title)}: running">'
+            f'<span class="ph-t">running</span></div>'
+            f'<figcaption><b>{esc(title)}.</b> {esc(caption)}</figcaption></figure>')
 
 
-def clips_section(group, info):
-    return "".join(clip_html(stem, t, c, fb, info) for stem, g, t, c, fb in CLIPS if g == group)
+def clips_section(group, info, tables):
+    return "".join(clip_html(c, info, tables) for c in CLIPS if c["group"] == group)
 
 
 def gif_html(info):
     if not info.get("_gif"):
         return ""
-    title = next(t for s, g, t, c, fb in CLIPS if s == info["_gif"])
+    title = next(c["title"] for c in CLIPS if c["stem"] == info["_gif"])
     return (f'<figure class="gif"><img src="video/brief.gif" alt="{esc(title)}: first frame of the clip">'
             f'<figcaption>{esc(title)}; the clip plays on the live page.</figcaption></figure>')
 
@@ -1980,7 +2102,7 @@ def models_html(models):
     for mid in ORDER:
         m = models[mid]
         out.append(
-            f'<section class="model" aria-labelledby="m-{mid}"><h3 id="m-{mid}">{esc(m["name"])}</h3>'
+            f'<section class="model" aria-labelledby="m-{mid}"><h4 id="m-{mid}">{esc(m["name"])}</h4>'
             f'<p class="mkind">{esc(m["kind"])} · <span class="mst mst-{esc(m["status"])}">{esc(STATUS[m["status"]])}</span></p>'
             f'<dl><dt>Architecture</dt><dd>{inline(m["architecture"])}</dd>'
             f'<dt>Where the instruction enters</dt><dd>{inline(m["entry"])}</dd>'
@@ -2016,7 +2138,9 @@ def brief_lines(P, rc, models, cross, tables=None):
     for mid in ("cosmos", "groot"):
         g, u = rc[mid]["edit_gain"], rc[mid]["failure_map"]
         if g:
-            parts.append(f"{esc(models[mid]['name'])}: " + "; ".join(f"{tid} {esc(g[tid]['v'])}" for tid in sorted(g)))
+            parts.append(f"{esc(models[mid]['name'])}: " + "; ".join(
+                f"{tid} edit {esc(g[tid]['v'])}" + (" practice starts (the ones it was built from; unseen starts running)"
+                                                   if g[tid].get("prac") else " unseen starts") for tid in sorted(g)))
         elif u:
             parts.append(f"{esc(models[mid]['name'])}: unedited rates in, edits running")
         else:
@@ -2082,8 +2206,12 @@ def tldr(tables, models):
         m = models[mid]
         prov = False
         gains, flat = [], []
+        practice = []
         for k in tasks:
             c = cell("edit_gain", k, mid)
+            if nums(c) and c.get("prac"):
+                practice.append((k, c))
+                continue
             if nums(c):
                 prov |= bool(c.get("prov"))
                 (gains if (c.get("pv") is not None and c["pv"] < SIG and c["b"] > c["a"]) else flat).append((k, c))
@@ -2118,8 +2246,11 @@ def tldr(tables, models):
                 bits.append("Clearer wording, same weights: " + and_list(
                     f"{k} {c['a']}\u00a0→ {c['b']} of {c['n']}" + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "")
                     for k, c in ((k, cell("wording", k, mid)) for k in wd)) + ".")
+            for k, c in practice:
+                bits.append(f"The {k} edit, on the {c['n']} practice starts it was built from: {c['a']} → {c['b']}"
+                            + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "") + f"; on unseen starts, {RUNNING}.")
             if 0 < len(fm) <= 3:
-                bits.append(f"Other tasks and edits: {RUNNING}.")
+                bits.append(f"Other tasks{'' if practice else ' and edits'}: {RUNNING}.")
             elif fm:
                 bits.append(f"Unedited success is in for {len(fm)} of {len(TASKS)} tasks; edits {RUNNING}.")
             elif m["status"] == "final":
@@ -2180,37 +2311,106 @@ def tldr_html(t):
     return "".join(out)
 
 
-# One line per section: what it shows. Titles are read from the page's h2s so the list follows the page.
-SECTION_LINES = {
-    "question": "What editing did on π0.5, and what we ask of the NVIDIA models.",
-    "models": "Architecture, where the instruction enters, where an edit can go.",
-    "experiments": "The six experiments every model runs, one line each.",
-    "glance": "One table: what an edit did on each task, per model.",
-    "clips": "Video: the three models on one start; each before and after its edit.",
-    "failure-map": "Unedited success on each task; the render-preset check.",
-    "wording": "Original against clearer wording, unedited: the gap to distil.",
-    "edits": "Gain on unseen starts, random control, recovery, where to edit, size.",
-    "after": "The main edit on every other task: transfer, harm, retention.",
-    "caveats": "Simulation, checkpoints, sample sizes, earlier records, noise floor.",
-    "method": "The closed-form edit, statistics, and links to paper, code, records.",
-}
+# ---------------------------------------------------------------- page structure: contents, read time, figure numbers
+def article(page):
+    a, b = page.find("<article"), page.find("</article>")
+    return a, b
 
 
 def page_sections(page):
+    """Every section (h2) and subsection (h3) of the article in page order: the contents list follows the page.
+    Generated regions are skipped, so headings inside them (the model cards) never enter the list."""
+    page = re.sub(r"<!-- gen:([a-z0-9:-]+) -->.*?<!-- /gen:\1 -->", "", page, flags=re.S)
+    a, b = article(page)
     secs = []
-    for sid, title in re.findall(r'<section id="([a-z0-9-]+)"[^>]*>\s*<h2[^>]*>(.*?)</h2>', page, re.S):
-        if sid == "tldr":
-            continue
+    pat = re.compile(r'<section id="([a-z0-9-]+)"[^>]*>\s*<h2[^>]*>(.*?)</h2>|<h3 id="([a-z0-9-]+)"[^>]*>(.*?)</h3>', re.S)
+    for m in pat.finditer(page[a:b]):
+        sid, title, level = (m.group(1), m.group(2), 2) if m.group(1) else (m.group(3), m.group(4), 3)
         title = html.unescape(re.sub(r"<[^>]+>", "", title)).strip()
-        if sid not in SECTION_LINES:
-            print(f"  WARNING: no overview line for section #{sid}; add it to SECTION_LINES")
-        secs.append(dict(id=sid, title=title, line=SECTION_LINES.get(sid, "")))
+        secs.append(dict(id=sid, title=title, level=level))
     return secs
 
 
-def toc_html(secs):
-    return "".join(f'<li><a href="#{esc(x["id"])}">{esc(x["title"])}</a><span class="tline">{esc(x["line"])}</span></li>'
-                   for x in secs)
+def toc_html(secs, cls):
+    out, open_sub = [f'<ol class="{cls}">'], False
+    for i, x in enumerate(secs):
+        if x["level"] == 2:
+            if open_sub:
+                out.append("</ol>")
+                open_sub = False
+            if i:
+                out.append("</li>")
+            out.append(f'<li><a href="#{esc(x["id"])}">{esc(x["title"])}</a>')
+        else:
+            if not open_sub:
+                out.append("<ol>")
+                open_sub = True
+            out.append(f'<li><a href="#{esc(x["id"])}">{esc(x["title"])}</a></li>')
+    out.append(("</ol>" if open_sub else "") + "</li></ol>")
+    return "".join(out)
+
+
+WPM = 230
+
+
+def read_minutes(page):
+    """Words a reader meets in the article (collapsed tables and code excluded), at 230 words a minute."""
+    a, b = article(page)
+    art = re.sub(r'<details class="tdetails.*?</details>', " ", page[a:b], flags=re.S)
+    art = re.sub(r"<(script|style|table|pre)\b.*?</\1>", " ", art, flags=re.S)
+    words = len(re.findall(r"\w+", html.unescape(re.sub(r"<[^>]+>", " ", art))))
+    return max(1, round(words / WPM)), words
+
+
+def number_figures(page):
+    """'Figure N.' in front of every figure caption in the article, in page order; placeholders stay unnumbered."""
+    page = re.sub(r'<span class="fig-n">Figure \d+\.</span> ', "", page)
+    a, b = article(page)
+    n = 0
+
+    def one(m):
+        nonlocal n
+        if "clip-pending" in m.group(1):
+            return m.group(0)
+        n += 1
+        return m.group(0).replace("<figcaption>", f'<figcaption><span class="fig-n">Figure {n}.</span> ', 1)
+
+    art = re.sub(r'<figure class="([^"]*)".*?</figure>', one, page[a:b], flags=re.S)
+    return page[:a] + art + page[b:], n
+
+
+def conclusion_html(tables, models):
+    """Where each NVIDIA model stands, one sentence each, read from the wording and edit tables."""
+    T = {t["id"]: t for t in tables}
+    out = []
+    for mid in ("cosmos", "groot"):
+        name = models[mid]["name"]
+        w = [(r["label"].split(" ")[0], r["cells"][mid]) for r in T["wording"]["rows"]
+             if r["cells"].get(mid, {}).get("s") == "ok" and r["cells"][mid].get("n")]
+        e = [(r["label"].split(" ")[0], r["cells"][mid]) for r in T["edit_gain"]["rows"]
+             if not r.get("sub") and r["cells"].get(mid, {}).get("s") == "ok"]
+        pe = [(k, c) for k, c in e if c.get("prac")]
+        e = [(k, c) for k, c in e if not c.get("prac")]
+        bits = []
+        for tid, c in w:
+            sig = c.get("pv") is not None and c["pv"] < SIG
+            bits.append(f"a clearer wording, with the same weights, takes {tid} from {c['a']} to {c['b']} of {c['n']} "
+                        f"practice starts (p\u00a0=\u00a0{fp(c['pv'])})"
+                        + (", a gap to distil" if sig else ", a gap these starts cannot yet tell from noise"))
+        for tid, c in pe:
+            bits.append(f"on the {c['n']} practice starts it was built from, the {tid} edit lifts success from {c['a']} "
+                        f"to {c['b']}" + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else ""))
+        for tid, c in e:
+            bits.append(f"the {tid} edit on unseen starts: {c['v']}")
+        if not bits:
+            out.append(f"<p><strong>{esc(name)}.</strong> Wording and edit results are "
+                       f'<span class="run">running</span>.</p>')
+            continue
+        tail = ("" if e else ' On unseen starts the edit is <span class="run">running</span>.' if pe else
+                ' The edit itself is <span class="run">running</span>.')
+        text = "; ".join(bits)
+        out.append(f"<p><strong>{esc(name)}.</strong> {esc(text[0].upper() + text[1:])}.{tail}</p>")
+    return "".join(out)
 
 
 def print_pdf(src_html, pdf):
@@ -2338,19 +2538,28 @@ def main():
     idx = OUT / "index.html"
     page = replace_region(page, "tldr", tldr_html(data["tldr"]))
     page = replace_region(page, "tldr-note", esc(data["tldr"]["note"]))
-    page = replace_region(page, "toc", toc_html(data["sections"]))
+    page = replace_region(page, "toc", toc_html(data["sections"], "toc-l1"))
+    page = replace_region(page, "toc-m", toc_html(data["sections"], "toc-l1"))
     page = replace_region(page, "stamp", esc(f"{data['status_text']} · updated {data['updated_text']}"))
     page = replace_region(page, "models", models_html(models))
     page = replace_region(page, "render-note", render_note(tables))
+    page = replace_region(page, "conclusion", conclusion_html(tables, models))
     page = replace_region(page, "table:summary", table_html(summary, models))
     for t in tables:
         page = replace_region(page, f"table:{t['id']}", block_html(t, models))
+    prac_edit = any(r["cells"][m].get("prac") for t in tables if t["id"] == "edit_gain" for r in t["rows"] for m in ORDER)
     for name, cap in FIGS:
+        if name == "edit-gain" and prac_edit:
+            cap += " Hollow, dashed: scored on the practice starts the edit was built from, not on unseen starts."
         page = replace_region(page, f"fig:{name}", figure_html(name, alts[name], cap))
     clips = prepare_clips()
-    page = replace_region(page, "clips:three", clips_section("three", clips))
-    page = replace_region(page, "clips:before", clips_section("before", clips))
+    for group in ("demo", "before", "transfer"):
+        page = replace_region(page, f"clips:{group}", clips_section(group, clips, tables))
+    page, nfig = number_figures(page)
+    mins, words = read_minutes(page)
+    page = replace_region(page, "readtime", f"{mins} min read")
     idx.write_text(page)
+    print(f"  {nfig} numbered figures and clips; {words:,} words, {mins} min read")
     print(f"wrote {idx.relative_to(ROOT)}")
 
     br = OUT / "brief.html"

@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "4751abe0facb"
+    "commit": "4415991ab4da"
    }
   },
   {
@@ -39,15 +39,15 @@
     "branch": "cross-groot/v1",
     "path": "study/results/cross/metrics_groot.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-    "commit": "27d58fbf4709"
+    "commit": "92193d19150b"
    }
   },
   {
    "id": "pi05",
    "name": "π0.5",
-   "short": "OpenPI VLA, control · earlier slots",
+   "short": "OpenPI VLA, control",
    "kind": "OpenPI vision-language-action policy, the control",
-   "status": "measured",
+   "status": "partial",
    "checkpoint": "`pi05_droid_jointpos` (OpenPI), about 3.35 billion parameters",
    "architecture": "An 18-layer PaliGemma vision-language model (VLM) and an 18-layer Gemma action expert. The action expert attends to the VLM's keys and values and produces 15-step action chunks, including a gripper command, by flow matching.",
    "entry": "As text tokens in the VLM, together with image tokens from two cameras and robot-state tokens, under bidirectional attention, so the image tokens read the instruction. The distilled edit goes into the VLM's MLP weights.",
@@ -58,9 +58,8 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "49f8f9ac6de9"
-   },
-   "fig_short": "control · earlier slots"
+    "commit": "670e6a225564"
+   }
   }
  ],
  "tasks": [
@@ -133,14 +132,14 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Unedited so far: T1 10 of 16 and T8 0 of 16 starts. Clearer wording, same weights: T8 0 → 15 of 16 (p = 6.1 × 10⁻⁵). Other tasks and edits: {running}."
+    "text": "Unedited so far: T1 10 of 16 and T8 0 of 16 starts. Clearer wording, same weights: T8 0 → 15 of 16 (p = 6.1 × 10⁻⁵). The T8 edit, on the 16 practice starts it was built from: 0 → 13 (p = 2.4 × 10⁻⁴); on unseen starts, {running}. Other tasks: {running}."
    },
    {
     "id": "groot",
     "lead": "GR00T N1.7",
     "kind": "reasoning-backbone VLA",
     "tag": null,
-    "text": "Unedited so far: T1 9 of 32 and T3 1 of 32 starts. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12). Other tasks and edits: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
+    "text": "Unedited so far: T1 9 of 32, T3 1 of 32 and T8 0 of 32 starts. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12). Other tasks and edits: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
     "id": "side-effects",
@@ -154,59 +153,99 @@
  },
  "sections": [
   {
-   "id": "question",
-   "title": "The question",
-   "line": "What editing did on π0.5, and what we ask of the NVIDIA models."
+   "id": "tldr",
+   "title": "TL;DR",
+   "level": 2
+  },
+  {
+   "id": "problem",
+   "title": "Problem",
+   "level": 2
+  },
+  {
+   "id": "methods",
+   "title": "Methods",
+   "level": 2
   },
   {
    "id": "models",
    "title": "Three models",
-   "line": "Architecture, where the instruction enters, where an edit can go."
+   "level": 3
   },
   {
-   "id": "experiments",
-   "title": "Experiments in this comparison",
-   "line": "The six experiments every model runs, one line each."
+   "id": "edit",
+   "title": "The closed-form edit",
+   "level": 3
+  },
+  {
+   "id": "protocol",
+   "title": "Protocol",
+   "level": 3
+  },
+  {
+   "id": "demos",
+   "title": "Demos",
+   "level": 2
+  },
+  {
+   "id": "before-after",
+   "title": "Before and after the edit",
+   "level": 3
+  },
+  {
+   "id": "results",
+   "title": "Results",
+   "level": 2
   },
   {
    "id": "glance",
    "title": "At a glance",
-   "line": "One table: what an edit did on each task, per model."
-  },
-  {
-   "id": "clips",
-   "title": "Same start, three models",
-   "line": "Video: the three models on one start; each before and after its edit."
+   "level": 3
   },
   {
    "id": "failure-map",
-   "title": "1. Failure map",
-   "line": "Unedited success on each task; the render-preset check."
+   "title": "Failure map",
+   "level": 3
   },
   {
    "id": "wording",
-   "title": "2. Wording sensitivity",
-   "line": "Original against clearer wording, unedited: the gap to distil."
+   "title": "Wording sensitivity",
+   "level": 3
   },
   {
    "id": "edits",
-   "title": "3. The edit and its controls",
-   "line": "Gain on unseen starts, random control, recovery, where to edit, size."
+   "title": "Edits and their controls",
+   "level": 3
   },
   {
-   "id": "after",
-   "title": "4. After the edit: does everything else still work?",
-   "line": "The main edit on every other task: transfer, harm, retention."
+   "id": "side-effects",
+   "title": "Side effects",
+   "level": 3
+  },
+  {
+   "id": "conclusion",
+   "title": "Conclusion",
+   "level": 2
   },
   {
    "id": "caveats",
-   "title": "5. Caveats",
-   "line": "Simulation, checkpoints, sample sizes, earlier records, noise floor."
+   "title": "Caveats",
+   "level": 3
   },
   {
-   "id": "method",
-   "title": "Method and reproducibility",
-   "line": "The closed-form edit, statistics, and links to paper, code, records."
+   "id": "noise",
+   "title": "Noise floor",
+   "level": 3
+  },
+  {
+   "id": "records",
+   "title": "Records and reproduction",
+   "level": 3
+  },
+  {
+   "id": "citation",
+   "title": "Citation",
+   "level": 2
   }
  ],
  "summary": {
@@ -230,7 +269,7 @@
      "pi05": {
       "v": "fixed: 27 → 106 of 128",
       "s": "ok",
-      "d": "distilled edit; 81 / 2, p = 7.2 × 10⁻²²",
+      "d": "distilled edit; 81 / 2, p = 7.2 × 10⁻²²; shared slots, unedited: 5 of 16",
       "prov": true
      }
     }
@@ -361,13 +400,15 @@
     "label": "T8 Mustard right of the raisin box, reference-first",
     "cells": {
      "cosmos": {
-      "v": "unedited 0 of 16",
+      "v": "0 → 13 of 16",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "13 / 0, p = 2.4 × 10⁻⁴",
+      "prac": true
      },
      "groot": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 0 of 32",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "pi05": {
       "v": "fixed: 0 → 27 of 64",
@@ -443,8 +484,8 @@
     "label": "Where to edit",
     "cells": {
      "cosmos": {
-      "v": "running",
-      "s": "running"
+      "v": "text pathway (und mlp.down_proj, layers 0-26): 13 of 16",
+      "s": "ok"
      },
      "groot": {
       "v": "running",
@@ -486,12 +527,11 @@
        "n": 32
       },
       "pi05": {
-       "v": "27 of 128",
+       "v": "5 of 16",
        "s": "ok",
-       "d": "21%; slots 90000–90127; lets go of the cube early: binds “in the bowl” to the banana",
-       "k": 27,
-       "n": 128,
-       "prov": true
+       "d": "31%; slots 30000–30015; earlier slots: 27 of 128",
+       "k": 5,
+       "n": 16
       }
      }
     },
@@ -642,8 +682,11 @@
        "n": 16
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "0 of 32",
+       "s": "ok",
+       "d": "0%; slots 30000–30031",
+       "k": 0,
+       "n": 32
       },
       "pi05": {
        "v": "0 of 64",
@@ -1121,8 +1164,24 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "0 → 13 of 16",
+       "s": "ok",
+       "d": "scored on the practice starts the edit was built from, not on unseen starts; text pathway (und mlp.down_proj, layers 0-26); 13 / 0, p = 2.4 × 10⁻⁴; +81.2 points [62.5, 100.0]; slots 30000–30015",
+       "a": 0,
+       "b": 13,
+       "n": 16,
+       "fx": 13,
+       "br": 0,
+       "pv": 0.000244140625,
+       "ci": [
+        81.2,
+        62.5,
+        100.0
+       ],
+       "color": "teal",
+       "prac": true,
+       "fl": "T8 Mustard, reference-first, practice starts",
+       "fb": "T8 practice"
       },
       "groot": {
        "v": "running",
@@ -1271,8 +1330,10 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "87%",
+       "s": "ok",
+       "d": "as reported; on practice starts",
+       "prac": true
       },
       "groot": {
        "v": "running",
@@ -1308,8 +1369,9 @@
      "label": "Task, starts",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "T8, 16 practice starts",
+       "s": "ok",
+       "d": "slots 30000–30015"
       },
       "groot": {
        "v": "running",
@@ -1331,8 +1393,8 @@
      "label": "Unedited",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "0 of 16",
+       "s": "ok"
       },
       "groot": {
        "v": "running",
@@ -1353,8 +1415,8 @@
      "label": "Backbone / text pathway",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "text pathway (und mlp.down_proj, layers 0-26): 13 of 16",
+       "s": "ok"
       },
       "groot": {
        "v": "running",
@@ -1554,8 +1616,9 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "179,010,015 values",
+       "s": "ok",
+       "d": "text pathway (und mlp.down_proj, layers 0-26)"
       },
       "groot": {
        "v": "running",
@@ -1767,8 +1830,15 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "+13: 0 → 13 of 16",
+       "s": "ok",
+       "d": "13 / 0; p = 2.4 × 10⁻⁴; the target task; practice starts; slots 30000–30015",
+       "delta": 13,
+       "a": 0,
+       "b": 13,
+       "n": 16,
+       "p": 0.000244140625,
+       "target": true
       },
       "groot": {
        "v": "running",
@@ -1811,7 +1881,7 @@
    "note": "Each model's main edit, unchanged, on every suite task. π0.5's earlier records use the T1 edit: T1–T3 on unseen starts (128 or 64), T4–T7 on 32 practice starts, R1 on 32 fresh starts; it was not run on T8. Across fifteen other surveyed tasks it harmed none detectably.",
    "sources": [],
    "edit": {
-    "cosmos": null,
+    "cosmos": "the T8 edit (text pathway (und mlp.down_proj, layers 0-26))",
     "groot": null,
     "pi05": "the T1 edit (distilled, VLM)"
    }
@@ -1997,8 +2067,9 @@
      "label": "Smallest detectable change",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "38 points at 16 pairs",
+       "s": "ok",
+       "d": "if about 30% of pairs differ"
       },
       "groot": {
        "v": "running",
@@ -2148,6 +2219,55 @@
     "extra": {
      "machine": "ali-ms"
     }
+   },
+   {
+    "experiment": "edit_practice",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 0,
+    "edited_k": 13,
+    "fixed": 13,
+    "broke": 0,
+    "p": 0.000244140625,
+    "ci": {
+     "diff_pts": 81.25,
+     "bootstrap95_pts": [
+      62.5,
+      100.0
+     ],
+     "wilson95_unedited_pct": [
+      0.0,
+      19.4
+     ],
+     "wilson95_edited_pct": [
+      57.0,
+      93.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 15,
+    "recovery_pct": 86.7,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
    }
   ],
   "groot": [
@@ -2223,6 +2343,45 @@
     ],
     "notes": "tag fm-T3; envs 16; env seed 0; one fresh simulator process per 16-slot group",
     "_task": "T3",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T8 MustardRightOfRaisinRFTask",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     null
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "unedited_wilson95": [
+      0.0,
+      0.10717919825507057
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "tag fm-T8; envs 16; env seed 0; one fresh simulator process per 16-slot group",
+    "_task": "T8",
     "_edit_task": null,
     "_prov": false,
     "extra": {
@@ -4444,6 +4603,799 @@
      "values_changed_note": "15.9M numbers as low-rank factors (0.48% of parameters); dense count not recorded",
      "source": "study/results/sgdw/results/heldout_ctl_92000-64.json, heldout_grp2_92000-64.json (unedited arm), heldout_pairs_92000-64.json"
     }
+   },
+   {
+    "experiment": "control",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl"
+    ],
+    "slots": [
+     90000,
+     90063
+    ],
+    "n": 64,
+    "unedited_k": 13,
+    "edited_k": 9,
+    "fixed": 6,
+    "broke": 10,
+    "p": 0.454498291015625,
+    "ci": {
+     "wilson95_unedited_pct": [
+      12.3,
+      31.7
+     ],
+     "wilson95_control_pct": [
+      7.6,
+      24.6
+     ],
+     "diff_pts": -6.2,
+     "bootstrap95_diff_pts": [
+      -18.8,
+      6.2
+     ]
+    },
+    "control_k": {
+     "k": 9,
+     "n": 64,
+     "slots": [
+      90000,
+      90063
+     ],
+     "arm": "ctl-rand",
+     "control_vs_unedited": {
+      "fixed": 6,
+      "broke": 10,
+      "p": 0.454498291015625
+     },
+     "edit_vs_control": {
+      "edit_only": 41,
+      "control_only": 0,
+      "p": 9.094947017729282e-13,
+      "edit_k": 50
+     },
+     "edit_vs_unedited": {
+      "fixed": 38,
+      "broke": 1,
+      "p": 1.4551915228366852e-10,
+      "edit_k": 50
+     }
+    },
+    "teacher_k": {
+     "k": 57,
+     "n": 64,
+     "slots": [
+      90000,
+      90063
+     ],
+     "wording": "Put the cube in the bowl then put the banana in the bowl",
+     "teacher_vs_unedited": {
+      "fixed": 45,
+      "broke": 1,
+      "p": 1.3358203432289883e-12
+     },
+     "edit_vs_teacher": {
+      "edit_only": 4,
+      "teacher_only": 11,
+      "p": 0.11846923828125
+     }
+    },
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "same tensors, ranks and singular values as v2mi-f; random orthonormal directions (numpy default_rng(0))",
+    "values_changed": 502291925,
+    "notes": "PROVISIONAL (own slots, earlier run): random-direction control of v2mi-f; unedited_k / edited_k = unedited / control on the same slots; recomputed from the per-slot records in results/prior_slots_ali-ms.json (held-out runs of cube-then-banana (v2mi-f base/cand 90000, ctl1))",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "render_preset": "performance",
+     "edit": {
+      "name": "ctl-rand",
+      "fingerprint": "1efd3512a92642f7",
+      "built_for": "T1",
+      "control_of": "v2mi-f"
+     },
+     "values_changed_note": "about 502.3M stored values (from the control's build report)",
+     "per_slot": {
+      "90000": [
+       0,
+       0
+      ],
+      "90001": [
+       0,
+       0
+      ],
+      "90002": [
+       0,
+       0
+      ],
+      "90003": [
+       0,
+       0
+      ],
+      "90004": [
+       0,
+       0
+      ],
+      "90005": [
+       0,
+       0
+      ],
+      "90006": [
+       0,
+       1
+      ],
+      "90007": [
+       0,
+       0
+      ],
+      "90008": [
+       0,
+       0
+      ],
+      "90009": [
+       0,
+       0
+      ],
+      "90010": [
+       0,
+       0
+      ],
+      "90011": [
+       0,
+       1
+      ],
+      "90012": [
+       0,
+       0
+      ],
+      "90013": [
+       1,
+       0
+      ],
+      "90014": [
+       0,
+       0
+      ],
+      "90015": [
+       0,
+       0
+      ],
+      "90016": [
+       0,
+       0
+      ],
+      "90017": [
+       0,
+       0
+      ],
+      "90018": [
+       0,
+       0
+      ],
+      "90019": [
+       1,
+       0
+      ],
+      "90020": [
+       0,
+       0
+      ],
+      "90021": [
+       0,
+       0
+      ],
+      "90022": [
+       0,
+       0
+      ],
+      "90023": [
+       0,
+       0
+      ],
+      "90024": [
+       0,
+       0
+      ],
+      "90025": [
+       0,
+       1
+      ],
+      "90026": [
+       0,
+       0
+      ],
+      "90027": [
+       0,
+       0
+      ],
+      "90028": [
+       0,
+       0
+      ],
+      "90029": [
+       0,
+       0
+      ],
+      "90030": [
+       1,
+       1
+      ],
+      "90031": [
+       0,
+       0
+      ],
+      "90032": [
+       0,
+       0
+      ],
+      "90033": [
+       0,
+       0
+      ],
+      "90034": [
+       0,
+       0
+      ],
+      "90035": [
+       0,
+       0
+      ],
+      "90036": [
+       1,
+       1
+      ],
+      "90037": [
+       1,
+       1
+      ],
+      "90038": [
+       0,
+       1
+      ],
+      "90039": [
+       1,
+       0
+      ],
+      "90040": [
+       1,
+       0
+      ],
+      "90041": [
+       1,
+       0
+      ],
+      "90042": [
+       0,
+       0
+      ],
+      "90043": [
+       0,
+       0
+      ],
+      "90044": [
+       0,
+       0
+      ],
+      "90045": [
+       1,
+       0
+      ],
+      "90046": [
+       1,
+       0
+      ],
+      "90047": [
+       0,
+       0
+      ],
+      "90048": [
+       0,
+       0
+      ],
+      "90049": [
+       1,
+       0
+      ],
+      "90050": [
+       0,
+       0
+      ],
+      "90051": [
+       0,
+       1
+      ],
+      "90052": [
+       0,
+       0
+      ],
+      "90053": [
+       0,
+       0
+      ],
+      "90054": [
+       1,
+       0
+      ],
+      "90055": [
+       0,
+       0
+      ],
+      "90056": [
+       0,
+       0
+      ],
+      "90057": [
+       0,
+       0
+      ],
+      "90058": [
+       0,
+       0
+      ],
+      "90059": [
+       0,
+       0
+      ],
+      "90060": [
+       1,
+       0
+      ],
+      "90061": [
+       0,
+       0
+      ],
+      "90062": [
+       0,
+       0
+      ],
+      "90063": [
+       0,
+       1
+      ]
+     },
+     "source": "results/prior_slots_ali-ms.json: cube-then-banana/heldout/v2mi-f-RubiksCubeThenBananaTask-90000-128/logs-base-90000; cube-then-banana/heldout/v2mi-f-RubiksCubeThenBananaTask-90000-128/logs-cand-90000; cube-then-banana/heldout/ctl1-90000-64/logs-rand-90000; cube-then-banana/heldout/ctl1-90000-64/logs-teacher-90000"
+    }
+   },
+   {
+    "experiment": "control",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+    ],
+    "slots": [
+     92000,
+     92063
+    ],
+    "n": 64,
+    "unedited_k": 0,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "wilson95_unedited_pct": [
+      0.0,
+      5.7
+     ],
+     "wilson95_control_pct": [
+      0.0,
+      5.7
+     ],
+     "diff_pts": 0.0,
+     "bootstrap95_diff_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": {
+     "k": 0,
+     "n": 64,
+     "slots": [
+      92000,
+      92063
+     ],
+     "arm": "ctl-rand3",
+     "control_vs_unedited": {
+      "fixed": 0,
+      "broke": 0,
+      "p": 1.0
+     },
+     "edit_vs_control": {
+      "edit_only": 27,
+      "control_only": 0,
+      "p": 1.4901161193847656e-08,
+      "edit_k": 27
+     },
+     "edit_vs_unedited": {
+      "fixed": 27,
+      "broke": 0,
+      "p": 1.4901161193847656e-08,
+      "edit_k": 27
+     }
+    },
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "same tensors, ranks and singular values as s4r-grp3; random orthonormal directions",
+    "values_changed": 290322032,
+    "notes": "PROVISIONAL (own slots, earlier run): random-direction control of s4r-grp3; unedited_k / edited_k = unedited / control on the same slots; recomputed from the per-slot records in results/prior_slots_ali-ms.json (held-out runs of sgdw-s4r (s4r-grp2 base arm; ctl-92000-64))",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": true,
+    "extra": {
+     "status": "provisional",
+     "hardware": "ali-ms, RTX 3090 (weightsmith runtime; earlier studies)",
+     "render_preset": "performance",
+     "edit": {
+      "name": "ctl-rand3",
+      "fingerprint": "fbc8349de4182099",
+      "built_for": "T8",
+      "control_of": "s4r-grp3"
+     },
+     "values_changed_note": "about 290.3M stored values (from the control's build report)",
+     "per_slot": {
+      "92000": [
+       0,
+       0
+      ],
+      "92001": [
+       0,
+       0
+      ],
+      "92002": [
+       0,
+       0
+      ],
+      "92003": [
+       0,
+       0
+      ],
+      "92004": [
+       0,
+       0
+      ],
+      "92005": [
+       0,
+       0
+      ],
+      "92006": [
+       0,
+       0
+      ],
+      "92007": [
+       0,
+       0
+      ],
+      "92008": [
+       0,
+       0
+      ],
+      "92009": [
+       0,
+       0
+      ],
+      "92010": [
+       0,
+       0
+      ],
+      "92011": [
+       0,
+       0
+      ],
+      "92012": [
+       0,
+       0
+      ],
+      "92013": [
+       0,
+       0
+      ],
+      "92014": [
+       0,
+       0
+      ],
+      "92015": [
+       0,
+       0
+      ],
+      "92016": [
+       0,
+       0
+      ],
+      "92017": [
+       0,
+       0
+      ],
+      "92018": [
+       0,
+       0
+      ],
+      "92019": [
+       0,
+       0
+      ],
+      "92020": [
+       0,
+       0
+      ],
+      "92021": [
+       0,
+       0
+      ],
+      "92022": [
+       0,
+       0
+      ],
+      "92023": [
+       0,
+       0
+      ],
+      "92024": [
+       0,
+       0
+      ],
+      "92025": [
+       0,
+       0
+      ],
+      "92026": [
+       0,
+       0
+      ],
+      "92027": [
+       0,
+       0
+      ],
+      "92028": [
+       0,
+       0
+      ],
+      "92029": [
+       0,
+       0
+      ],
+      "92030": [
+       0,
+       0
+      ],
+      "92031": [
+       0,
+       0
+      ],
+      "92032": [
+       0,
+       0
+      ],
+      "92033": [
+       0,
+       0
+      ],
+      "92034": [
+       0,
+       0
+      ],
+      "92035": [
+       0,
+       0
+      ],
+      "92036": [
+       0,
+       0
+      ],
+      "92037": [
+       0,
+       0
+      ],
+      "92038": [
+       0,
+       0
+      ],
+      "92039": [
+       0,
+       0
+      ],
+      "92040": [
+       0,
+       0
+      ],
+      "92041": [
+       0,
+       0
+      ],
+      "92042": [
+       0,
+       0
+      ],
+      "92043": [
+       0,
+       0
+      ],
+      "92044": [
+       0,
+       0
+      ],
+      "92045": [
+       0,
+       0
+      ],
+      "92046": [
+       0,
+       0
+      ],
+      "92047": [
+       0,
+       0
+      ],
+      "92048": [
+       0,
+       0
+      ],
+      "92049": [
+       0,
+       0
+      ],
+      "92050": [
+       0,
+       0
+      ],
+      "92051": [
+       0,
+       0
+      ],
+      "92052": [
+       0,
+       0
+      ],
+      "92053": [
+       0,
+       0
+      ],
+      "92054": [
+       0,
+       0
+      ],
+      "92055": [
+       0,
+       0
+      ],
+      "92056": [
+       0,
+       0
+      ],
+      "92057": [
+       0,
+       0
+      ],
+      "92058": [
+       0,
+       0
+      ],
+      "92059": [
+       0,
+       0
+      ],
+      "92060": [
+       0,
+       0
+      ],
+      "92061": [
+       0,
+       0
+      ],
+      "92062": [
+       0,
+       0
+      ],
+      "92063": [
+       0,
+       0
+      ]
+     },
+     "source": "results/prior_slots_ali-ms.json: sgdw-s4r/heldout/s4r-grp2-MustardRightOfRaisinRFTask-92000-64/logs-base-92000; sgdw-s4r/heldout/s4r-grp2-MustardRightOfRaisinRFTask-92000-64/logs-base-92032; sgdw-s4r/heldout/ctl-92000-64/logs-g3-92000; sgdw-s4r/heldout/ctl-92000-64/logs-g3-92032; sgdw-s4r/heldout/ctl-92000-64/logs-rand3-92000; sgdw-s4r/heldout/ctl-92000-64/logs-rand3-92032"
+    }
+   },
+   {
+    "experiment": "failure_map_partial",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl"
+    ],
+    "slots": [
+     30000,
+     30015
+    ],
+    "n": 16,
+    "unedited_k": 5,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      14.2,
+      55.6
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "FRESH but partial: the only pi0.5 episodes on the shared slots, one 16-slot group (first and only run of a fresh Isaac process, environment seed 0) on ali-ms GPU1 at 05:03 UTC before the pi0.5 queue moved to the pod; RoboLab performance preset (Tracks A and B use the default preset), so not a like-for-like failure-map entry",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "hardware": "ali-ms, RTX 3090; weightsmith @ ad31044",
+     "render_preset": "performance",
+     "edit": null,
+     "values_changed_note": null,
+     "per_slot": {
+      "30000": [
+       0
+      ],
+      "30001": [
+       1
+      ],
+      "30002": [
+       1
+      ],
+      "30003": [
+       0
+      ],
+      "30004": [
+       0
+      ],
+      "30005": [
+       0
+      ],
+      "30006": [
+       1
+      ],
+      "30007": [
+       1
+      ],
+      "30008": [
+       1
+      ],
+      "30009": [
+       0
+      ],
+      "30010": [
+       0
+      ],
+      "30011": [
+       0
+      ],
+      "30012": [
+       0
+      ],
+      "30013": [
+       0
+      ],
+      "30014": [
+       0
+      ],
+      "30015": [
+       0
+      ]
+     }
+    }
    }
   ]
  },
@@ -4487,26 +5439,26 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "4751abe0facb"
+   "commit": "4415991ab4da"
   },
   "groot": {
    "kind": "branch",
    "branch": "cross-groot/v1",
    "path": "study/results/cross/metrics_groot.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-   "commit": "27d58fbf4709"
+   "commit": "92193d19150b"
   },
   "pi05": {
    "kind": "branch",
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "49f8f9ac6de9"
+   "commit": "670e6a225564"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "474fb7bffcb4bb28",
- "updated": "2026-11-08T06:30Z",
- "updated_text": "8 Nov 2026, 06:30 UTC",
- "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: earlier records"
+ "content_hash": "e3eaa5bb9161e86c",
+ "updated": "2026-11-08T06:47Z",
+ "updated_text": "8 Nov 2026, 06:47 UTC",
+ "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
