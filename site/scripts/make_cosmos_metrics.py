@@ -4848,8 +4848,9 @@ def conclusion_html(tables, models, prevent=None):
 
 
 def numbers_hash(data):
-    """A hash of every number the page's tables show (cell values and details, by table, row and model), the TL;DR
-    and the generated paragraphs' numbers; wording changes in the code do not change it, new or changed numbers do."""
+    """A hash of every number the page's tables show (cell values and details, by table, row and model), and the
+    numbers in the TL;DR and the generated paragraphs (when the edit works, prevention, second edit); wording changes in
+    the code do not change it, new or changed numbers do."""
     nums = []
 
     def cells(prefix, rows, key="key"):
@@ -4862,7 +4863,10 @@ def numbers_hash(data):
         cells(t["id"], t["rows"])
     cells("prevention", (data.get("prevention") or {}).get("rows") or [], "name")
     cells("second", (data.get("second_edit") or {}).get("rows") or [], "name")
-    nums.append(("tldr", re.findall(r"\d+(?:\.\d+)?", json.dumps(data.get("tldr"), ensure_ascii=False))))
+    for k, x in (("tldr", data.get("tldr")), ("when", data.get("when_text")),
+                 ("prevention", (data.get("prevention") or {}).get("text")),
+                 ("second", (data.get("second_edit") or {}).get("text"))):
+        nums.append((k, re.findall(r"\d+(?:\.\d+)?", json.dumps(x, ensure_ascii=False))))
     return hashlib.sha256(json.dumps(nums, ensure_ascii=False).encode()).hexdigest()[:16]
 
 
@@ -4999,6 +5003,8 @@ def main():
         "summary": summary,
         "prevention": prevent,
         "second_edit": second,
+        "when_text": html.unescape(re.sub(r"<[^>]+>", " ", when)).split() and " ".join(
+            html.unescape(re.sub(r"<[^>]+>", " ", when)).split()),
         "diagrams": {"where": where_sites(P, rc, tables)},
         "tables": tables,
         "cross_rows": {mid: [{k: v for k, v in r.items() if k != "_extra"} | ({"extra": r["_extra"]} if r["_extra"] else {})
