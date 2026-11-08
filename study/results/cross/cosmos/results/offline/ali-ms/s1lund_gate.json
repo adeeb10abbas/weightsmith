@@ -1,0 +1,17 @@
+{
+ "code": "S1L",
+ "edit": "s1lund",
+ "align": "all",
+ "n_tokens_rf": 169,
+ "n_tokens_tf": 169,
+ "matched": 169,
+ "n": 30,
+ "held_aside_slots": "30004,30005,30006,30007,30008,30009",
+ "rf_to_tf_cm": 14.28709849305145,
+ "edited_to_tf_cm": 0.5658284377180947,
+ "gap_closed_pct": 96.03958467848958,
+ "closer_to_tf": 30,
+ "control_gap_closed_pct": -1.283367294870752,
+ "rule": "gap closed >= 85% and |control gap closed| <= 15%",
+ "pass": true
+}

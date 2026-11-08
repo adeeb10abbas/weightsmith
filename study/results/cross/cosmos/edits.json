@@ -83,5 +83,18 @@
   "sha256_16": "6cbe1a1c75257588",
   "stack_sha256_16": "52922f472fc9c480",
   "stack_exact": true
+ },
+ {
+  "name": "s1lund",
+  "code": "S1L",
+  "base_arm": "rf",
+  "teacher_arm": "tf",
+  "location": "text pathway (und mlp.down_proj, layers 0-26), --align all (169 = 169 tokens, every position matched)",
+  "good_wording": "Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl.",
+  "summary": "prospective test of the token-count rule: t8und's recipe unchanged on S1L's reference-first -> target-first pair (equal length), one prompt pair, unconditional-pass keys, lam_rel 1e-3",
+  "values_changed": 207159927,
+  "stored_values": 57480192,
+  "sha256_16": "3271e725e5091425",
+  "control_sha256_16": "8f2d944fc65b679e"
  }
 ]

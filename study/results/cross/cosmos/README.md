@@ -338,3 +338,10 @@ p = 0.125). By the pre-registered rule (larger TF-only minus RF-only count: 6 vs
 fixed above: equal length, so `s1lund` should close at least 85% of the gap offline and fix S1L in closed loop. Build:
 `scripts/sessions/session_prosp.sh S1L s1lund all ...`. Decisions under the rule: build at slot 30000 (replan 1), checks
 at 30001/30002/30003, held-aside RF failures 30004-30009 (replans 1-5).
+
+**`s1lund` passes its offline gate, as predicted (15:55 ET; `results/offline/ali-ms/s1lund_gate.json`).** Cosmos's own
+tokenizer gives 169 tokens for both wordings, so `--align all` matched all 169 positions. On the 30 held-aside RF-failure
+decisions (slots 30004-30009, replans 1-5) the unedited policy's RF chunk ends 14.29 cm from the TF chunk. The edited
+policy under RF ends **0.57 cm** from it: **96.0%** of the gap closed, and all 30 decisions end closer. Random control:
+-1.3%. Edit: 57,480,192 stored values, 207,159,927 weight values changed, sha256 `3271e725e5091425`. Closed loop now:
+practice 30000-30015, edit and control under RF, on GPU1.
