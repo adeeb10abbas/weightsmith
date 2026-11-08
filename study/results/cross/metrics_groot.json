@@ -493,12 +493,24 @@
     7
    ],
    "control_p": 0.803619384765625,
+   "edit_vs_control": {
+    "n": 32,
+    "ref_k": 11,
+    "cand_k": 0,
+    "fixed": 0,
+    "broke": 11,
+    "p": 0.0009765625
+   },
    "teacher_k": 16,
    "recovery_pct": -128.57142857142858,
    "transfer": null,
    "retention": null,
    "edit_location": "Cosmos-Reason2 LLM layers 0-15, mlp.down_proj (VLM backbone)",
    "values_changed": 167481274,
+   "values_total": 201326592,
+   "control_values_changed": 179039148,
+   "edit_fingerprint": "b5523fe55b6d94a2",
+   "control_fingerprint": "1d2b485f3c0d1321",
    "slots": [
     30000,
     30031
@@ -526,15 +538,30 @@
      -0.125
     ]
    },
-   "control_k": null,
-   "control_fixed_broke": null,
-   "control_p": null,
+   "control_k": 10,
+   "control_fixed_broke": [
+    9,
+    8
+   ],
+   "control_p": 1.0,
+   "edit_vs_control": {
+    "n": 32,
+    "ref_k": 10,
+    "cand_k": 0,
+    "fixed": 0,
+    "broke": 10,
+    "p": 0.001953125
+   },
    "teacher_k": 16,
    "recovery_pct": -128.57142857142858,
    "transfer": null,
    "retention": null,
    "edit_location": "GR00T action head: 32 AlternateVLDiT blocks, ff.net.2 (diffusion transformer)",
    "values_changed": 298523070,
+   "values_total": 301989888,
+   "control_values_changed": 300072426,
+   "edit_fingerprint": "a998bdc75628fbe6",
+   "control_fingerprint": "afc8a78428b9ec07",
    "slots": [
     30000,
     30031

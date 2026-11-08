@@ -221,15 +221,23 @@ def edit_records(runs, lines):
         if cc:
             lines.append(f"| random-direction control | {cc['cand_k']}/{cc['n']} | {cc['fixed']} / {cc['broke']} | "
                          f"{fmt_p(cc['p'])} | {100*cc['diff_ci95'][0]:+.0f} to {100*cc['diff_ci95'][1]:+.0f} pts |")
+            ec = pair(ctl, ed)
+            lines.append(f"| edited vs control (paired: edited-only / control-only) | | {ec['fixed']} / {ec['broke']} | {fmt_p(ec['p'])} | |")
         if tk is not None:
             lines.append(f"| teacher (explicit wording, unedited) | {tk}/{c['n']} | | | |")
         recs.append({"experiment": "wsp_edit_practice", "model": MODEL, "machine": machine(base, ed, ctl), "task": f"{tid} {base['task']}",
                      "wording_pair": m.get("wording"), "n": c["n"], "unedited_k": c["ref_k"], "edited_k": c["cand_k"],
                      "fixed": c["fixed"], "broke": c["broke"], "p": c["p"], "ci": {"diff_bootstrap95": c["diff_ci95"]},
                      "control_k": cc["cand_k"] if cc else None, "control_fixed_broke": [cc["fixed"], cc["broke"]] if cc else None,
-                     "control_p": cc["p"] if cc else None, "teacher_k": tk,
+                     "control_p": cc["p"] if cc else None,
+                     "edit_vs_control": ({k: v for k, v in pair(ctl, ed).items() if k in ("n", "ref_k", "cand_k", "fixed", "broke", "p")}
+                                         if ctl else None), "teacher_k": tk,
                      "recovery_pct": rec_pct, "transfer": None, "retention": None, "edit_location": m["location"],
-                     "values_changed": m.get("values_changed"), "slots": c["slots"], "notes": m.get("notes", "")})
+                     "values_changed": m.get("values_changed"), "values_total": m.get("values_total"),
+                     "control_values_changed": m.get("control_values_changed"),
+                     "edit_fingerprint": (ed.get("edit_report") or {}).get("fingerprint"),
+                     "control_fingerprint": (ctl.get("edit_report") or {}).get("fingerprint") if ctl else None,
+                     "slots": c["slots"], "notes": m.get("notes", "")})
         # held-out
         hb, he = runs.get(f"ho-{tid}-base"), runs.get(f"ho-{tid}-{e}")
         if hb and he:

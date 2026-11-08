@@ -34,6 +34,7 @@
 | unedited | 9/32 | | | |
 | edited | 0/32 | 0 / 9 | 0.0039 | -44 to -12 pts |
 | random-direction control | 11/32 | 9 / 7 | 0.8 | -19 to +31 pts |
+| edited vs control (paired: edited-only / control-only) | | 0 / 11 | 9.8e-04 | |
 | teacher (explicit wording, unedited) | 16/32 | | | |
 
 ## Edit `dit` (GR00T action head: 32 AlternateVLDiT blocks, ff.net.2 (diffusion transformer)) on T1, practice slots 30000-30031
@@ -42,4 +43,6 @@
 |---|---|---|---|---|
 | unedited | 9/32 | | | |
 | edited | 0/32 | 0 / 9 | 0.0039 | -44 to -12 pts |
+| random-direction control | 10/32 | 9 / 8 | 1 | -22 to +28 pts |
+| edited vs control (paired: edited-only / control-only) | | 0 / 10 | 0.002 | |
 | teacher (explicit wording, unedited) | 16/32 | | | |
