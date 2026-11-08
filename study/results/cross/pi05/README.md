@@ -15,8 +15,24 @@ Machine-readable: [`../metrics_pi05.json`](../metrics_pi05.json) (one record per
 job, one row per slot), [`results/summary.json`](results/summary.json), [`results/provisional.json`](results/provisional.json).
 
 <!-- summary:begin -->
-**Status (2026-11-08 06:45 UTC). No fresh π0.5 episodes: the rented pod cannot run Isaac Sim.** The Japan pod (2× RTX 4080 SUPER, driver 595.58 = CUDA 13.2) finished setup at 06:08 UTC, but every Isaac Sim 5.0 process segfaults when the RTX renderer starts (`librtx.scenedb.plugin.so` inside `UsdManager::createHydraEngine`, before any scene loads), and Warp 1.7.2 cannot initialise CUDA on this driver (`cuDeviceGetUuid` entry point). Fixes tried within the 20-minute timebox: the Vulkan ICD path (`/etc/vulkan/icd.d`), the missing `libGLU`/`libXt` libraries, with and without `CUDA_VISIBLE_DEVICES`, single-GPU RTX settings, and a `libcuda` shim; none changed the crash. The policy server itself (JAX) runs on the pod. π0.5 GPU work stays off ali-ms (its GPUs belong to Tracks A and B tonight), so this page's π0.5 column is the **PROVISIONAL** one below. The only π0.5 episodes on the shared slots are one 16-slot T1 group on ali-ms before the move (5/16, `performance` preset; see the fresh section). Provisional plots and before/after clips made from the
+**Status (2026-11-08 06:40 UTC). No fresh π0.5 episodes: the rented pod cannot run Isaac Sim.** The Japan pod (2× RTX 4080 SUPER, driver 595.58 = CUDA 13.2) finished setup at 06:08 UTC, but every Isaac Sim 5.0 process segfaults when the RTX renderer starts (`librtx.scenedb.plugin.so` inside `UsdManager::createHydraEngine`, before any scene loads), and Warp 1.7.2 cannot initialise CUDA on this driver (`cuDeviceGetUuid` entry point). Fixes tried within the 20-minute timebox: the Vulkan ICD path (`/etc/vulkan/icd.d`), the missing `libGLU`/`libXt` libraries, with and without `CUDA_VISIBLE_DEVICES`, single-GPU RTX settings, and a `libcuda` shim; none changed the crash. The policy server itself (JAX) runs on the pod. π0.5 GPU work stays off ali-ms (its GPUs belong to Tracks A and B tonight), so this page's π0.5 column is the **PROVISIONAL** one below. The only π0.5 episodes on the shared slots are one 16-slot T1 group on ali-ms before the move (5/16, `performance` preset; see the fresh section). Provisional plots and before/after clips made from the
 earlier runs' videos are below.
+
+**At a glance (PROVISIONAL π0.5 column: earlier runs, own slots, ali-ms RTX 3090, `performance` preset).** Every
+comparison is paired on identical starts; p is the exact two-sided McNemar test.
+
+| Question | π0.5 DROID result | Slots |
+|---|---|---|
+| T1 edit `v2mi-f`, instruction unchanged | 27/128 → **106/128** (81 fixed / 2 broke, p = 7.2 × 10⁻²²) | 90000–90127 |
+| T1 random-direction control | 13/64 → 9/64 (6 / 10, p = 0.45); edit vs control 41 / 0 (p = 9.1 × 10⁻¹³) | 90000–90063 |
+| T1 explicit wording (teacher), unedited weights | 57/64; the edit recovers 84% of the gap (edit 50/64) | 90000–90063 |
+| Side effects of `v2mi-f` (task's own wording) | T2 22/64 → 44/64 (p = 6.8 × 10⁻⁴), T3 8/64 → 36/64 (p = 4.3 × 10⁻⁶); T4–T7 no detectable change at n = 32; R1 32/32 → 32/32; T8 never run | various, see below |
+| T8 wording gap (unedited) | RF 0/32 vs TF **27/32** (27 / 0, p = 1.5 × 10⁻⁸) | 20000–20031 |
+| T8 own edit `s4r-grp3` (TF distilled), RF wording | 0/64 → **27/64** (27 / 0, p = 1.5 × 10⁻⁸); control 0/64 | 92000–92063 |
+| Where the T1 edit goes | VLM 55/64, VLM image cells 41/64, action expert 20/64, action head 0–30/64 (unedited 5/64) | 94016–94079 |
+| FRESH, shared slots | T1 unedited **5/16** (one group, `performance` preset); nothing else ran | 30000–30015 |
+
+Before/after clips: [`videos/`](videos/) (table at the end of the provisional section).
 <!-- summary:end -->
 
 ## Shared design
