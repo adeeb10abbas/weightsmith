@@ -1014,9 +1014,11 @@ def row_cells(src):
                                          "; ".join(x for x in ("practice starts the edit was built from" if pc else None,
                                                                where_txt(rr)) if x) or None,
                                          u=ic["unedited_k"], r=ic["control_k"], e=ic["edited_k"], n=ic["n"],
-                                         t=ic["teacher_k"], prac=pc or None,
-                                         fl=f"{tid} {SHORT[tid]}" + (f" ({ic['n']}{slot_kind(rr) or (' practice' if pc else '')})"
-                                                                     if ic["n"] else ""))
+                                         t=ic["teacher_k"], prac=pc or None, loc=describe(rr.get("edit_location")),
+                                         fl=(f"{tid}, {loc_class(describe(rr.get('edit_location')))} edit" if alts and
+                                             loc_class(describe(rr.get("edit_location"))) else f"{tid} {SHORT[tid]}")
+                                         + (f" ({ic['n']}{slot_kind(rr) or (' practice' if pc else '')})"
+                                            if ic["n"] else ""))
         rt = next((x for x in ed if as_float(x.get("recovery_pct")) is not None
                    or (ints(x)["teacher_k"] is not None and ints(x)["teacher_k"] != ints(x)["unedited_k"])), None)
         if rt is not None:
@@ -2476,10 +2478,12 @@ def tldr(tables, models):
                     bits.append(f"A clearer wording, same weights, gained nothing on {task_list(no)}.")
             for k, c in practice:
                 rc0 = cell("random_control", k, mid)
-                ctl = (f"; a random edit of the same size, {rc0['r']} of {rc0['n']}" if nums(rc0, ("u", "r", "n"))
+                who, many = edits_phrase(mid, k, c)
+                size_of = (f"the size of the {loc_name(mid, rc0.get('loc'))[4:]} edit" if many and rc0 and rc0.get("loc")
+                           else "of the same size")
+                ctl = (f"; a random edit {size_of}, {rc0['r']} of {rc0['n']}" if nums(rc0, ("u", "r", "n"))
                        and rc0.get("prac") else "")
                 if c["b"] < c["a"]:
-                    who, many = edits_phrase(mid, k, c)
                     who = who[0].upper() + who[1:]
                     bits.append(f"{who} {'each ' if many else ''}lowered success on the {c['n']} practice starts "
                                 f"{'they were' if many else 'it was'} built from, {c['a']} → {c['b']}"
@@ -2690,13 +2694,15 @@ def conclusion_html(tables, models):
             r0 = RC.get(tid)
             verb = "lifts success from" if c["b"] > c["a"] else "lowers success from" if c["b"] < c["a"] else "leaves success at"
             who, many = edits_phrase(mid, tid, c)
+            size_of = (f"the size of the {loc_name(mid, r0.get('loc'))[4:]} edit" if many and r0 and r0.get("loc")
+                       else "of the same size")
             if many:
                 verb = "each " + verb.replace("lifts", "lift").replace("lowers", "lower").replace("leaves", "leave")
             bits.append(f"on the {c['n']} practice starts {'they were' if many else 'it was'} built from, "
                         f"{who if many else 'the' + who[3:]} {verb} {c['a']}"
                         + (f" to {c['b']}" if c["b"] != c["a"] else "")
                         + (f" (p\u00a0=\u00a0{fp(c['pv'])})" if c.get("pv") is not None else "")
-                        + (f", where a random edit of the same size reaches {r0['r']}" if r0 and r0.get("s") == "ok"
+                        + (f", where a random edit {size_of} reaches {r0['r']}" if r0 and r0.get("s") == "ok"
                            and r0.get("r") is not None else ""))
         for tid, c in e:
             r0 = RC.get(tid)
