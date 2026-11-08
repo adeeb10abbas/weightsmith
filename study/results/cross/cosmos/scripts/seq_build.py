@@ -47,11 +47,16 @@ from edge_common import build_service, canonical, infer_seeded  # noqa: E402
 UND = "net.language_model.model.layers.{}.mlp.down_proj.weight"
 
 
+class _Stop(Exception):
+    """Raised from a layer hook once the conditional text pass has reached the last layer needed."""
+
+
 class TextRec:
     """Hooks: per und call, the input of each layer's mlp.down_proj and the text residual after each layer."""
 
     def __init__(self, net, layers):
         self.active, self.calls, self.ids, self.want = False, [], [], None  # want: layers to record (None = all)
+        self.stop_at, self.min_len = None, 40  # stop after this layer of a text call longer than min_len tokens
         self.hs = [net.language_model.model.embed_tokens.register_forward_hook(self._emb)]
         for L, layer in enumerate(layers):
             self.hs.append(layer.mlp.down_proj.register_forward_hook(self._key(L)))
@@ -74,13 +79,26 @@ class TextRec:
             if self.active and self.calls and ("key", L) in self.calls[-1] and ("res", L) not in self.calls[-1]:
                 r = out[0]["causal_seq"].detach()
                 self.calls[-1][("res", L)] = r.double().cpu().numpy().reshape(-1, r.shape[-1])
+            if self.active and self.stop_at == L and self.ids and len(self.ids[-1]) > self.min_len:
+                raise _Stop()
         return h
 
-    def run(self, svc, obs, seed, prompt, want=None):
-        self.active, self.calls, self.ids, self.want = True, [], [], want
-        res = infer_seeded(svc, dict(obs, prompt=prompt), seed)
-        self.active, self.want = False, None
+    def run(self, svc, obs, seed, prompt, want=None, stop_at=None):
+        """stop_at: abort the request right after the conditional text pass reaches this layer (only the conditional
+        call is returned, as (call, None, None)); the denoising passes that follow are skipped."""
+        self.active, self.calls, self.ids, self.want, self.stop_at = True, [], [], want, stop_at
+        try:
+            res = infer_seeded(svc, dict(obs, prompt=prompt), seed)
+        except _Stop:
+            res = None
+        finally:
+            self.active, self.want, self.stop_at = False, None, None
         calls = [(i, c) for i, c in zip(self.ids, self.calls) if c]
+        if stop_at is not None:
+            calls = [t for t in calls if len(t[0]) > self.min_len]
+            if res is not None or len(calls) != 1:
+                raise SystemExit(f"early stop failed: {[len(i) for i, _ in calls]} text calls, res {res is not None}")
+            return calls[0], None, None
         if len(calls) != 2:
             raise SystemExit(f"expected 2 text calls (conditional, unconditional), got {[len(i) for i, _ in calls]}")
         calls.sort(key=lambda t: -len(t[0]))
@@ -133,6 +151,8 @@ def main():
                          "(zero-change keys at every position after the prompt template's common prefix)")
     ap.add_argument("--preserve-stride", type=int, default=1, help="keep every n-th preserved position (and the last)")
     ap.add_argument("--gpu-solve", action="store_true", help="Gram matrix, solve and update in float64 on the GPU")
+    ap.add_argument("--early-stop", action="store_true",
+                    help="preserved prompts: stop each request after the text pass (states identical, much faster)")
     ap.add_argument("--no-ctl", action="store_true", help="skip the random-direction control (saves the SVDs)")
     ap.add_argument("--probe", nargs="*", default=[], help="NAME=PROMPT: report text-state drift for these after the edit")
     ap.add_argument("--seed", type=int, default=0)
@@ -171,8 +191,16 @@ def main():
 
     keep = [tuple(x) for x in json.loads(Path(a.preserve_file).read_text())["kept"]] if a.preserve_file else []
     P0 = []  # (instruction, positions, {L: unedited residual at those positions})
+    last = max(layers)
+    if keep and a.early_stop:  # the early-stopped text pass must give exactly the states of a full request
+        (_, sf), _, _ = rec.run(svc, obs, seed, keep[0][1])
+        (_, se), _, _ = rec.run(svc, obs, seed, keep[0][1], stop_at=last)
+        rep["early_stop_check_maxabs"] = max(float(np.abs(sf[("res", L)] - se[("res", L)]).max()) for L in layers)
+        print("early-stop check max abs", rep["early_stop_check_maxabs"], flush=True)
+        if rep["early_stop_check_maxabs"] != 0.0:
+            raise SystemExit("early-stopped text states differ from a full request")
     for _task, instr in keep:
-        (ids, st), _, _ = rec.run(svc, obs, seed, instr)
+        (ids, st), _, _ = rec.run(svc, obs, seed, instr, stop_at=last if a.early_stop else None)
         pos = np.arange(prefix_len(ids, io_ids), len(ids))
         pos = np.unique(np.concatenate([pos[::a.preserve_stride], pos[-1:]]))
         P0.append((instr, pos, {L: st[("res", L)][pos].astype(np.float32) for L in layers}))
@@ -197,7 +225,7 @@ def main():
         if P0:
             Ks, Vs = [K], [V]
             for instr, pos, st0 in P0:
-                (_, Pc), _, _ = rec.run(svc, obs, seed, instr, want={L})
+                (_, Pc), _, _ = rec.run(svc, obs, seed, instr, want={L}, stop_at=L if a.early_stop else None)
                 Ks.append(Pc[("key", L)][pos])
                 Vs.append(st0[L].astype(np.float64) - Pc[("res", L)][pos])
                 pdrift += float(np.linalg.norm(Vs[-1]) ** 2)
@@ -261,7 +289,7 @@ def main():
     def drift(items):
         res = {}
         for name, (instr, pos, st0) in items:
-            (_, Pe), _, _ = rec.run(svc, obs, seed, instr)
+            (_, Pe), _, _ = rec.run(svc, obs, seed, instr, stop_at=last if a.early_stop else None)
             num = sum(float(np.linalg.norm(Pe[("res", L)][pos] - st0[L]) ** 2) for L in layers)
             den = sum(float(np.linalg.norm(st0[L]) ** 2) for L in layers)
             res[name] = {"prompt": instr, "positions": int(len(pos)), "rel_drift": float(np.sqrt(num / max(den, 1e-30)))}

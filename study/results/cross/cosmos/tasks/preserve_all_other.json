@@ -1,0 +1,611 @@
+{
+ "kept": [
+  [
+   "AppleAndYogurtInBowlTask",
+   "Put the apple and yogurt in the bowl"
+  ],
+  [
+   "BagelsOnPlateTask",
+   "Put the bagels on the plate"
+  ],
+  [
+   "BananaInBowlTask",
+   "Pick up the banana and place it in the bowl"
+  ],
+  [
+   "BananaOnPlateTask",
+   "Pick up the banana and put it on the plate"
+  ],
+  [
+   "BananaThenRubiksCubeTask",
+   "put the banana then the cube in the bowl"
+  ],
+  [
+   "BananasInCrateTask",
+   "Put 2 bananas in the crate"
+  ],
+  [
+   "BananasOutOfBinTask",
+   "Take the bananas out"
+  ],
+  [
+   "BlockStackingOrderAgnosticTask",
+   "Stack the blocks into a tower"
+  ],
+  [
+   "BlockStackingSpecifiedOrderTask",
+   "Stack the blocks in the order from bottom to top: red, blue, green, yellow"
+  ],
+  [
+   "PlasticBottlesInSquarePailTask",
+   "Put all the small plastic bottles in the square pail"
+  ],
+  [
+   "CleanUpToysTask",
+   "Clean up all the smaller toys and leave the birdhouse on the table"
+  ],
+  [
+   "ClearOrganicObjectsTask",
+   "Clear away the organic objects"
+  ],
+  [
+   "CookingClearPlateTask",
+   "Put the two measuring cups outside of the plate"
+  ],
+  [
+   "PickOrangeObjectTask",
+   "Pick up the orange measuring cup"
+  ],
+  [
+   "CookingPickPastaToolTask",
+   "Move the pink tool from this utensil container to the other utensil holder"
+  ],
+  [
+   "FruitsGreenLimesOnPlateTask",
+   "Put all the green fruit on the plate"
+  ],
+  [
+   "FruitsMovingTask",
+   "Move an orange to the white bowl"
+  ],
+  [
+   "FruitsMovingOrangeOrLimeTask",
+   "Move an orange or a lime to the wood bowl"
+  ],
+  [
+   "FruitsOnionTask",
+   "Put the onion in the wood bowl"
+  ],
+  [
+   "FruitsOnionToPlateTask",
+   "Put the onion on the plate"
+  ],
+  [
+   "FruitsOrangesOnPlateTask",
+   "Put all the oranges on the plate"
+  ],
+  [
+   "FruitsOnPlateTask",
+   "Put all the fruits on the plate"
+  ],
+  [
+   "FruitsOnPlate3Task",
+   "Put three (3) fruits on the plate"
+  ],
+  [
+   "GrabABagelTask",
+   "Grab a bagel"
+  ],
+  [
+   "GrabAFruitTask",
+   "Pick up a fruit"
+  ],
+  [
+   "GreenSpoonsInPotTask",
+   "Put the green spoons in the pot"
+  ],
+  [
+   "JugsOnShelfTask",
+   "Put all the jugs on the shelf"
+  ],
+  [
+   "MarkerInMugTask",
+   "Put the whiteboard marker in the mug"
+  ],
+  [
+   "MouseOnKeyboardTask",
+   "Put the computer mouse on the keyboard"
+  ],
+  [
+   "MoveBananaToBagelPlateTask",
+   "Move the bananas to the bagel plate"
+  ],
+  [
+   "OneBottleInSquarePailTask",
+   "Put any white plastic bottle in the square pail"
+  ],
+  [
+   "OneBottleOnShelfTask",
+   "Put any white plastic bottle on the shelf"
+  ],
+  [
+   "PickDrillTask",
+   "Pick up the cordless drill."
+  ],
+  [
+   "PickUpBluePitcherTask",
+   "Pick up the large blue pitcher"
+  ],
+  [
+   "PinkSpoonInPotTask",
+   "Put the pink spaghetti spoon in the pot"
+  ],
+  [
+   "PutBowlOnShelfTopTask",
+   "Put the serving bowl anywhere on the shelf in front of you"
+  ],
+  [
+   "PutMugsOnShelfTask",
+   "Put the two mugs on the shelf"
+  ],
+  [
+   "PutTwoMugsOnShelfTask",
+   "Put two (2) mugs on the wire shelf"
+  ],
+  [
+   "RecycleCartonsOnBoxTask",
+   "Put the cartons that can be recycled on the box"
+  ],
+  [
+   "RecycleCartonsVerticalCrateTask",
+   "Put the cartons that can be recycled in the vertical crate"
+  ],
+  [
+   "ReorientAllMugsTask",
+   "Reorient all the mugs upright so that the opening is facing upwards."
+  ],
+  [
+   "ReorientJugTask",
+   "Stand the jug upright"
+  ],
+  [
+   "ReorientRedMugTask",
+   "Put the red mug upright so that the opening is facing upwards."
+  ],
+  [
+   "ReorientWhiteMugsTask",
+   "Make sure all the white mugs are upright so that the opening is facing upwards."
+  ],
+  [
+   "RubiksCubeAndBananaTask",
+   "Put the cube and the banana in the bowl"
+  ],
+  [
+   "RubiksCubeBehindBowlTask",
+   "Put the rubiks cube behind the bowl"
+  ],
+  [
+   "RubiksCubeInFrontOfBowlTask",
+   "Put the rubiks cube in front of the bowl"
+  ],
+  [
+   "RubiksCubeOrBananaTask",
+   "Put the cube or the banana in the bowl"
+  ],
+  [
+   "SauceBottlesCrateTask",
+   "Put the red bbq sauce bottle in the crate"
+  ],
+  [
+   "SpoonInMugTask",
+   "Put the metal spoon that's in the wooden bowl in the mug"
+  ],
+  [
+   "SpoonsInPotTask",
+   "Put all of the serving spoons with no holes in the pot"
+  ],
+  [
+   "StackWhiteMugsTask",
+   "Stack the white mugs on top of each other."
+  ],
+  [
+   "TakeMeasuringSpoonOutTask",
+   "Take the white colored measuring spoon out of the red bowl and put it on the table."
+  ],
+  [
+   "TakeMugsOffOfShelfTask",
+   "Take the mugs off the shelf"
+  ],
+  [
+   "TakeSpatulaOffShelfTask",
+   "Take the spatula off the shelf and put it on the table"
+  ],
+  [
+   "ThrowAwayAppleTask",
+   "Throw away the apple"
+  ],
+  [
+   "ToolsPickingAllHammersTask",
+   "Take out all the hammers and put them on the table"
+  ],
+  [
+   "ToolsPickingDrillTask",
+   "Select the cordless drill and put it on the table"
+  ],
+  [
+   "ToolsPickingHammerTask",
+   "Select the blue hammer and put it on the table"
+  ],
+  [
+   "UnstackRubiksCubeTask",
+   "Unstack the rubiks cube tower"
+  ],
+  [
+   "UtensilsInMugTask",
+   "Put the fork and spoon in the ceramicmug"
+  ],
+  [
+   "WhiteMugInCenterOfTableTask",
+   "Put the white mug in the center of the table."
+  ],
+  [
+   "WhiteMugsInBinTask",
+   "Clean up the white mugs"
+  ],
+  [
+   "WoodSpatulaToBowlTask",
+   "Put the wooden spatula in the bowl"
+  ],
+  [
+   "YogurtInBowlTask",
+   "Put the small red yogurt in the red bowl"
+  ],
+  [
+   "AnimalsInBinTask",
+   "Put the lizards in the bin"
+  ],
+  [
+   "BananasInBinOneMoreTask",
+   "Put one (1) more bananas in the grey bin."
+  ],
+  [
+   "BananasInBinThreeTotalTask",
+   "Make sure there are 3 (three) bananas in the grey bin."
+  ],
+  [
+   "BBQSauceInBinTask",
+   "Put the red BBQ sauce bottles in the grey bin"
+  ],
+  [
+   "LargerObjectRaisinBoxInBinTask",
+   "Place the larger object in the grey bin."
+  ],
+  [
+   "BlackItemsInBinTask",
+   "Put the black items in the grey bin"
+  ],
+  [
+   "BlocksInBinTask",
+   "Sort all colored blocks into the bin"
+  ],
+  [
+   "BowlInBinTask",
+   "put the bowl in the grey bin"
+  ],
+  [
+   "BowlStackingLeftOnRightTask",
+   "Stack the left bowl on the right bowl"
+  ],
+  [
+   "BowlStackingRightOnLeftTask",
+   "Stack the right bowl on the left bowl"
+  ],
+  [
+   "ButterAboveRaisinTask",
+   "Pick up the butter box and place it on top of the raisin box"
+  ],
+  [
+   "CannedFoodInBinTask",
+   "Put the canned food in the grey bin"
+  ],
+  [
+   "ClampInRightBinTask",
+   "Put the spring clamp in the right bin"
+  ],
+  [
+   "BigPumpkinInBinTask",
+   "Put the bigger pumpkin in the bin"
+  ],
+  [
+   "ClutterPlasticTask",
+   "Put all plastic bottles away in the bin"
+  ],
+  [
+   "ClutterPumpkinTask",
+   "Put all the pumpkins away in the bin"
+  ],
+  [
+   "SmallPumpkinInBinTask",
+   "Put the small pumpkin in the bin"
+  ],
+  [
+   "CoffeePotInBinTask",
+   "Put the coffee pot in the grey bin"
+  ],
+  [
+   "CondimentsInBinTask",
+   "Sort the sauce condiments into the grey bin"
+  ],
+  [
+   "CubesAndBlocksInBinTask",
+   "Put all the cubes and blocks in the bin"
+  ],
+  [
+   "DishesInBinTask",
+   "Put the dishware in the grey bin"
+  ],
+  [
+   "ElectronicsInBinTask",
+   "Put the electronic devices in the grey bin"
+  ],
+  [
+   "FoodPackingByColorTask",
+   "Pack yellow objects in right container and blue object in the left container"
+  ],
+  [
+   "FoodPacking1BoxesTask",
+   "Pack boxed foods into the bin"
+  ],
+  [
+   "FoodPacking1CansTask",
+   "Pack canned foods into the bin"
+  ],
+  [
+   "KeyboardOutOfBinTask",
+   "Take the keyboard out of the bin and put it on the table"
+  ],
+  [
+   "ToyInBinTask",
+   "Put the lizard away in the bin"
+  ],
+  [
+   "MustardAboveRaisinTask",
+   "Place the mustard on the raisin box."
+  ],
+  [
+   "MustardInRightBinTask",
+   "Put the mustard in the right bin"
+  ],
+  [
+   "NonHammerToolsInRightBinTask",
+   "Put the non-hammer tools in the right bin"
+  ],
+  [
+   "PhoneOrRemoteInBinTask",
+   "Put the phone or the remote in the grey bin"
+  ],
+  [
+   "RecycleCartonTask",
+   "Put the recyclable cartons in the grey bin"
+  ],
+  [
+   "RedDishesInBinTask",
+   "Put the red dishware in the grey bin"
+  ],
+  [
+   "RedItemsInBinTask",
+   "Put all the red things in the grey bin"
+  ],
+  [
+   "RubiksCubeRightOfBowlTask",
+   "Put the rubiks cube to the right of the bowl"
+  ],
+  [
+   "RubiksCubeRightOfBowlMatchedTask",
+   "Put the Rubik's cube to the right of the bowl."
+  ],
+  [
+   "RubiksCubesInBinTask",
+   "Sort all rubiks cubes into the bin"
+  ],
+  [
+   "SmallerObjectButterInBinTask",
+   "Place the smaller object in the grey bin."
+  ],
+  [
+   "SmartphoneInBinTask",
+   "Put the smartphone in the grey bin"
+  ],
+  [
+   "ThrowAwaySnacksTask",
+   "Put away the snacks in the bin"
+  ],
+  [
+   "ToolOrganizationBothTask",
+   "Put hammers in the right bin and do not touch anything else"
+  ],
+  [
+   "HammersInLeftBinTask",
+   "Put the red hammer and black hammer in the left bin"
+  ],
+  [
+   "YellowAndWhiteObjectsInBinTask",
+   "Put all white objects and yellow objects in the grey bin"
+  ]
+ ],
+ "added_targeted": [
+  [
+   "AnimalsInBinTask",
+   "Put the lizards in the bin"
+  ],
+  [
+   "BananasInBinOneMoreTask",
+   "Put one (1) more bananas in the grey bin."
+  ],
+  [
+   "BananasInBinThreeTotalTask",
+   "Make sure there are 3 (three) bananas in the grey bin."
+  ],
+  [
+   "BBQSauceInBinTask",
+   "Put the red BBQ sauce bottles in the grey bin"
+  ],
+  [
+   "LargerObjectRaisinBoxInBinTask",
+   "Place the larger object in the grey bin."
+  ],
+  [
+   "BlackItemsInBinTask",
+   "Put the black items in the grey bin"
+  ],
+  [
+   "BlocksInBinTask",
+   "Sort all colored blocks into the bin"
+  ],
+  [
+   "BowlInBinTask",
+   "put the bowl in the grey bin"
+  ],
+  [
+   "BowlStackingLeftOnRightTask",
+   "Stack the left bowl on the right bowl"
+  ],
+  [
+   "BowlStackingRightOnLeftTask",
+   "Stack the right bowl on the left bowl"
+  ],
+  [
+   "ButterAboveRaisinTask",
+   "Pick up the butter box and place it on top of the raisin box"
+  ],
+  [
+   "CannedFoodInBinTask",
+   "Put the canned food in the grey bin"
+  ],
+  [
+   "ClampInRightBinTask",
+   "Put the spring clamp in the right bin"
+  ],
+  [
+   "BigPumpkinInBinTask",
+   "Put the bigger pumpkin in the bin"
+  ],
+  [
+   "ClutterPlasticTask",
+   "Put all plastic bottles away in the bin"
+  ],
+  [
+   "ClutterPumpkinTask",
+   "Put all the pumpkins away in the bin"
+  ],
+  [
+   "SmallPumpkinInBinTask",
+   "Put the small pumpkin in the bin"
+  ],
+  [
+   "CoffeePotInBinTask",
+   "Put the coffee pot in the grey bin"
+  ],
+  [
+   "CondimentsInBinTask",
+   "Sort the sauce condiments into the grey bin"
+  ],
+  [
+   "CubesAndBlocksInBinTask",
+   "Put all the cubes and blocks in the bin"
+  ],
+  [
+   "DishesInBinTask",
+   "Put the dishware in the grey bin"
+  ],
+  [
+   "ElectronicsInBinTask",
+   "Put the electronic devices in the grey bin"
+  ],
+  [
+   "FoodPackingByColorTask",
+   "Pack yellow objects in right container and blue object in the left container"
+  ],
+  [
+   "FoodPacking1BoxesTask",
+   "Pack boxed foods into the bin"
+  ],
+  [
+   "FoodPacking1CansTask",
+   "Pack canned foods into the bin"
+  ],
+  [
+   "KeyboardOutOfBinTask",
+   "Take the keyboard out of the bin and put it on the table"
+  ],
+  [
+   "ToyInBinTask",
+   "Put the lizard away in the bin"
+  ],
+  [
+   "MustardAboveRaisinTask",
+   "Place the mustard on the raisin box."
+  ],
+  [
+   "MustardInRightBinTask",
+   "Put the mustard in the right bin"
+  ],
+  [
+   "NonHammerToolsInRightBinTask",
+   "Put the non-hammer tools in the right bin"
+  ],
+  [
+   "PhoneOrRemoteInBinTask",
+   "Put the phone or the remote in the grey bin"
+  ],
+  [
+   "RecycleCartonTask",
+   "Put the recyclable cartons in the grey bin"
+  ],
+  [
+   "RedDishesInBinTask",
+   "Put the red dishware in the grey bin"
+  ],
+  [
+   "RedItemsInBinTask",
+   "Put all the red things in the grey bin"
+  ],
+  [
+   "RubiksCubeRightOfBowlTask",
+   "Put the rubiks cube to the right of the bowl"
+  ],
+  [
+   "RubiksCubeRightOfBowlMatchedTask",
+   "Put the Rubik's cube to the right of the bowl."
+  ],
+  [
+   "RubiksCubesInBinTask",
+   "Sort all rubiks cubes into the bin"
+  ],
+  [
+   "SmallerObjectButterInBinTask",
+   "Place the smaller object in the grey bin."
+  ],
+  [
+   "SmartphoneInBinTask",
+   "Put the smartphone in the grey bin"
+  ],
+  [
+   "ThrowAwaySnacksTask",
+   "Put away the snacks in the bin"
+  ],
+  [
+   "ToolOrganizationBothTask",
+   "Put hammers in the right bin and do not touch anything else"
+  ],
+  [
+   "HammersInLeftBinTask",
+   "Put the red hammer and black hammer in the left bin"
+  ],
+  [
+   "YellowAndWhiteObjectsInBinTask",
+   "Put all white objects and yellow objects in the grey bin"
+  ]
+ ],
+ "rule": "TARGETED (chosen after the T5/T3 side effect was seen): every RoboLab v0.2.1 default instruction except the shared-set tasks (T1-T8, R1) and exact near-duplicates of their instructions; i.e. tasks/preserve_generic.json plus the mustard/raisin/bin/left/right instructions it excluded, including the mirror instruction 'Put the mustard in the right bin'"
+}
