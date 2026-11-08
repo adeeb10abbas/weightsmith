@@ -2337,7 +2337,7 @@
       "cosmos": {
        "v": "±0: 18 → 18 of 32",
        "s": "ok",
-       "d": "9 / 9; p = 1; slots 96000–96031",
+       "d": "9 / 9; p = 1; slots 96000–96031; practice starts: 10 → 12 of 16, p = 0.69 (slots 30000–30015)",
        "delta": 0,
        "a": 18,
        "b": 18,
@@ -2377,7 +2377,7 @@
       "cosmos": {
        "v": "−3: 4 → 1 of 16",
        "s": "ok",
-       "d": "0 / 3; p = 0.25; slots 96000–96015",
+       "d": "0 / 3; p = 0.25; slots 96000–96015; practice starts: 0 → 0 of 16, p = 1 (slots 30000–30015)",
        "delta": -3,
        "a": 4,
        "b": 1,
@@ -2409,7 +2409,7 @@
       "cosmos": {
        "v": "−13: 13 → 0 of 32",
        "s": "ok",
-       "d": "0 / 13; p = 2.4 × 10⁻⁴; slots 96000–96031",
+       "d": "0 / 13; p = 2.4 × 10⁻⁴; slots 96000–96031; practice starts: 4 → 0 of 16, p = 0.12 (slots 30000–30015)",
        "delta": -13,
        "a": 13,
        "b": 0,
@@ -2441,7 +2441,7 @@
       "cosmos": {
        "v": "−2: 24 → 22 of 32",
        "s": "ok",
-       "d": "4 / 6; p = 0.75; slots 96000–96031",
+       "d": "4 / 6; p = 0.75; slots 96000–96031; practice starts: 12 → 14 of 16, p = 0.62 (slots 30000–30015)",
        "delta": -2,
        "a": 24,
        "b": 22,
@@ -2473,7 +2473,7 @@
       "cosmos": {
        "v": "−9: 9 → 0 of 32",
        "s": "ok",
-       "d": "0 / 9; p = 0.0039; slots 96000–96031",
+       "d": "0 / 9; p = 0.0039; slots 96000–96031; practice starts: 8 → 0 of 16, p = 0.0078 (slots 30000–30015)",
        "delta": -9,
        "a": 9,
        "b": 0,
@@ -2505,7 +2505,7 @@
       "cosmos": {
        "v": "±0: 1 → 1 of 32",
        "s": "ok",
-       "d": "1 / 1; p = 1; slots 96000–96031",
+       "d": "1 / 1; p = 1; slots 96000–96031; practice starts: 1 → 2 of 16, p = 1 (slots 30000–30015)",
        "delta": 0,
        "a": 1,
        "b": 1,
@@ -2537,7 +2537,7 @@
       "cosmos": {
        "v": "±0: 0 → 0 of 16",
        "s": "ok",
-       "d": "0 / 0; p = 1; slots 96000–96015",
+       "d": "0 / 0; p = 1; slots 96000–96015; practice starts: 0 → 0 of 16, p = 1 (slots 30000–30015)",
        "delta": 0,
        "a": 0,
        "b": 0,
@@ -2597,7 +2597,7 @@
       "cosmos": {
        "v": "+4: 24 → 28 of 32",
        "s": "ok",
-       "d": "7 / 3; p = 0.34; slots 96000–96031",
+       "d": "7 / 3; p = 0.34; slots 96000–96031; practice starts: 9 → 13 of 16, p = 0.29 (slots 30000–30015)",
        "delta": 4,
        "a": 24,
        "b": 28,
@@ -2643,7 +2643,7 @@
       "cosmos": {
        "v": "24 → 28 of 32",
        "s": "ok",
-       "d": "the Mustard right of raisin box edit, unchanged; 7 / 3; p = 0.34; slots 96000–96031"
+       "d": "the Mustard right of raisin box edit, unchanged; 7 / 3; p = 0.34; slots 96000–96031; practice starts: 9 → 13 of 16, p = 0.29 (slots 30000–30015)"
       },
       "groot": {
        "v": "—",
@@ -8471,8 +8471,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "ae7fd6ccfa724b6b",
- "updated": "2026-11-08T16:54Z",
- "updated_text": "8 Nov 2026, 16:54 UTC",
+ "content_hash": "3828a28b1ec30c44",
+ "updated": "2026-11-08T16:57Z",
+ "updated_text": "8 Nov 2026, 16:57 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
