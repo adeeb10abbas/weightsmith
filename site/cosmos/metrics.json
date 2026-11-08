@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "21de93843d3d"
+    "commit": "0297c0db6d30"
    }
   },
   {
@@ -147,7 +147,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T3, T5 and R1, lifted no task, lowered T5 (8 → 0 of 16), and moved the retention task R1 from 9 to 13 of 16. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5 and R1, lifted no task, lowered T5 (8 → 0 of 16), and moved the retention task R1 from 9 to 13 of 16. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -328,9 +328,10 @@
     "label": "T4 Stack yellow on red",
     "cells": {
      "cosmos": {
-      "v": "unedited 12 of 16",
+      "v": "T8 edit: 12 → 14 of 16",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "3 / 1; p = 0.62",
+      "prac": true
      },
      "groot": {
       "v": "unedited 0 of 16",
@@ -1941,8 +1942,15 @@
      "label": "T4 Stack yellow on red",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "+2: 12 → 14 of 16",
+       "s": "ok",
+       "d": "3 / 1; p = 0.62; practice starts; slots 30000–30015",
+       "delta": 2,
+       "a": 12,
+       "b": 14,
+       "n": 16,
+       "p": 0.625,
+       "prac": true
       },
       "groot": {
        "v": "not run",
@@ -2941,6 +2949,46 @@
     "values_changed": 179010015,
     "notes": "edit t8und built for T8, run on T3 with T3's default instruction",
     "_task": "T3",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "StackYellowOnRedTask",
+    "code": "T4",
+    "wording_pair": [
+     "Stack the yellow block on the red block"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 12,
+    "edited_k": 14,
+    "fixed": 3,
+    "broke": 1,
+    "p": 0.625,
+    "ci": {
+     "diff_pts": 12.5,
+     "bootstrap95_pts": [
+      -12.5,
+      37.5
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": 12.5,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und built for T8, run on T4 with T4's default instruction",
+    "_task": "T4",
     "_edit_task": "T8",
     "_prov": false,
     "extra": {
@@ -7029,7 +7077,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "21de93843d3d"
+   "commit": "0297c0db6d30"
   },
   "groot": {
    "kind": "branch",
@@ -7047,8 +7095,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "56a540175f2bdf7c",
- "updated": "2026-11-08T11:04Z",
- "updated_text": "8 Nov 2026, 11:04 UTC",
+ "content_hash": "dafd24cfbccd235b",
+ "updated": "2026-11-08T11:11Z",
+ "updated_text": "8 Nov 2026, 11:11 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
