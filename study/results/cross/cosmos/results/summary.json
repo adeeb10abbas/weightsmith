@@ -404,10 +404,26 @@
     30012,
     30013,
     30014,
-    30015
+    30015,
+    96032,
+    96033,
+    96034,
+    96035,
+    96036,
+    96037,
+    96038,
+    96039,
+    96040,
+    96041,
+    96042,
+    96043,
+    96044,
+    96045,
+    96046,
+    96047
    ],
-   "k": 7,
-   "n": 16
+   "k": 9,
+   "n": 32
   },
   "ali-ms/S1R-rf": {
    "slots": [
@@ -2766,7 +2782,25 @@
      96047
     ]
    },
-   "teacher": null,
+   "teacher": {
+    "n": 16,
+    "ref_k": 1,
+    "cand_k": 2,
+    "fixed": 2,
+    "broke": 1,
+    "both": 0,
+    "neither": 13,
+    "p": 1.0,
+    "diff_pts": 6.25,
+    "diff_ci95_pts": [
+     -12.5,
+     25.0
+    ],
+    "slots": [
+     96032,
+     96047
+    ]
+   },
    "edit_vs_control": {
     "n": 16,
     "ref_k": 1,
@@ -2786,8 +2820,26 @@
      96047
     ]
    },
-   "edit_vs_teacher": null,
-   "recovery_pct": null
+   "edit_vs_teacher": {
+    "n": 16,
+    "ref_k": 2,
+    "cand_k": 4,
+    "fixed": 3,
+    "broke": 1,
+    "both": 1,
+    "neither": 11,
+    "p": 0.625,
+    "diff_pts": 12.5,
+    "diff_ci95_pts": [
+     -12.5,
+     37.5
+    ],
+    "slots": [
+     96032,
+     96047
+    ]
+   },
+   "recovery_pct": 300.0
   }
  ],
  "side_effects": [
@@ -3530,6 +3582,24 @@
     "gpu_s": 621.8,
     "started": "2026-11-08 15:09:19",
     "finished": "2026-11-08 15:19:41"
+   },
+   {
+    "tag": "S1L-tf-s96032",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "prompt": "Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl.",
+    "edit": null,
+    "slots": [
+     96032,
+     96047
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 2,
+    "gpu_s": 626.8,
+    "started": "2026-11-08 16:50:27",
+    "finished": "2026-11-08 17:00:53"
    }
   ],
   "ali-ms/S1R-rf": [
