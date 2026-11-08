@@ -1085,7 +1085,12 @@ def row_cells(src):
                 "; ".join(x for x in ((f"{i['fixed']} / {i['broke']}" if i["fixed"] is not None else None),
                                       (f"p = {fp(p)}" if p is not None else None), "the target task" if target else None,
                                       "practice starts" if is_practice(r) else None, where_txt(r), p_note) if x),
-                delta=dlt, a=i["unedited_k"], b=i["edited_k"], n=i["n"], p=p, target=target or None))
+                delta=dlt, a=i["unedited_k"], b=i["edited_k"], n=i["n"], p=p, target=target or None,
+                prac=is_practice(r) or None))
+        r1 = T["side_effects"].get("R1")
+        if r1 and not r1.get("target") and "R1" not in T["retention"]:   # retention is the side effect on R1
+            T["retention"]["R1"] = C(f"{r1['a']} → {r1['b']} of {r1['n']}", f"the {et} edit, unchanged; {r1.get('d', '')}",
+                                     prac=r1.get("prac"))
         T["side_effects"]["_edit"] = C(f"the {et} edit" + (" on practice starts" if is_practice(main) else "")
                                        + (f" ({describe(main.get('edit_location'))})"
                                                           if main.get("edit_location") else ""))
@@ -1438,6 +1443,11 @@ def summary_table(P, tables, cross, rc):
                 cell = dict(pi[tid], prov=True)
                 if u:
                     cell["d"] = "; ".join(x for x in (cell.get("d"), f"shared slots, unedited: {u['v']}") if x)
+            elif (rc[mid]["side_effects"].get(tid) or {}).get("s") == "ok" and not rc[mid]["side_effects"][tid].get("target"):
+                se = rc[mid]["side_effects"][tid]
+                m_et = re.match(r"the ([TR]\d) edit", (rc[mid]["side_effects"].get("_edit") or {}).get("v") or "")
+                cell = C(f"{m_et.group(1) + ' edit' if m_et else 'edit'}: {se['a']} → {se['b']} of {se['n']}",
+                         se.get("d", "").split("; slots")[0].replace("; practice starts", "") or None, prac=se.get("prac"))
             elif u:
                 cell = C(f"unedited {u['v']}", "not edited" if (src and src["final"]) else "not edited yet")
             else:
@@ -2129,6 +2139,23 @@ def cap_panels(where, slot, panels, lead, mid, tid):
     return f
 
 
+def cap_side(where, slot, base, edited, mid, tid, et):
+    """One start of a task the edit was not built for: unedited against edited, outcomes from the run records."""
+    def f(tables):
+        a, sa = run_row(where, base, slot)
+        b, sb = run_row(where, edited, slot)
+        if not (a and b):
+            return None, []
+        s = (f"The {et} edit, unchanged, on a task it was not built for. Practice start {slot}, the same scene in both "
+             f"panels and the task’s own instruction: unedited (top) {outcome(a)}; edited (bottom) {outcome(b)}.")
+        c = table_cell(tables, "side_effects", tid, mid)
+        if c and c.get("n"):
+            s += (f" Over all {c['n']} practice starts: {c['a']} → {c['b']}"
+                  + (f" (exact McNemar p = {fp(c['p'])})." if c.get("p") is not None else "."))
+        return s, [sa, sb]
+    return f
+
+
 def cap_same_start(slot):
     def f(tables):
         a, sa = run_row(X_COSMOS, "T1-base-s30000", slot)
@@ -2190,6 +2217,9 @@ CLIPS = [
          cap=cap_edit_heldout(X_COSMOS, 96003, "T8-base-s96000", "T8-Et8und-s96000", "cosmos", "T8")),
     dict(stem="groot_before_after", group="before", title="GR00T N1.7", mid="groot",
          cap=fixed_cap("Unedited and edited, on a held-out start where the edit helped.")),
+    dict(stem="cosmos_t5_side_effect", group="transfer",
+         title="Cosmos3 Edge Policy, T5 Mustard into the left bin: a start the T8 edit breaks",
+         cap=cap_side(X_COSMOS, 30001, "T5-base-s30000", "T5-Et8und-s30000", "cosmos", "T5", "T8")),
     dict(stem="pi05_t2_fixed", group="transfer", title="π0.5, T2 Pick up the eyeglasses: a start the T1 edit fixes",
          cap=cap_pi05("t2_v2mi-f_side_effect_fixed_90000.mp4", "The T1 edit, unchanged, on a task it was not built for.")),
     dict(stem="pi05_t3_fixed", group="transfer", title="π0.5, T3 Cube left of the bowl: a start the T1 edit fixes",
@@ -2740,6 +2770,14 @@ def conclusion_html(tables, models):
                             if r0.get("sub") else
                             f", where a random edit of the same size reaches {r0['r']}")
                            if r0 and r0.get("s") == "ok" and r0.get("r") is not None else ""))
+        # side effects that cleared the bar: off-target tasks the edit lifted or lowered (exact McNemar p < SIG)
+        se = [(r["key"], r["cells"].get(mid)) for r in T["side_effects"]["rows"]]
+        se = [(k, c) for k, c in se if c and c.get("s") == "ok" and not c.get("target") and c.get("p") is not None
+              and c["p"] < SIG and c.get("delta")]
+        if se and e:
+            bits.append("run unchanged on other tasks, it " + and_list(
+                f"{'lifts' if c['delta'] > 0 else 'lowers'} {k} from {c['a']} to {c['b']} of {c['n']}"
+                + (" practice starts" if c.get("prac") else "") + f" (p\u00a0=\u00a0{fp(c['p'])})" for k, c in se))
         if not bits:
             out.append(f"<p><strong>{esc(name)}.</strong> Wording and edit results are "
                        f'<span class="run">running</span>.</p>')

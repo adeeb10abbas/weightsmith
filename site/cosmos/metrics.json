@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "6ae69d859045"
+    "commit": "ea2b699151d6"
    }
   },
   {
@@ -147,7 +147,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1, lifted no task, and made none detectably worse. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1, T5 and R1, lifted no task, lowered T5 (8 → 0 of 16), and moved the retention task R1 from 9 to 13 of 16. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -258,9 +258,10 @@
     "label": "T1 Cube then banana",
     "cells": {
      "cosmos": {
-      "v": "unedited 10 of 16",
+      "v": "T8 edit: 10 → 12 of 16",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "4 / 2; p = 0.69",
+      "prac": true
      },
      "groot": {
       "v": "9 → 0 of 32",
@@ -302,8 +303,9 @@
     "label": "T3 Cube left of the bowl",
     "cells": {
      "cosmos": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 4 of 16",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "groot": {
       "v": "unedited 1 of 32",
@@ -344,8 +346,10 @@
     "label": "T5 Mustard into the left bin",
     "cells": {
      "cosmos": {
-      "v": "running",
-      "s": "running"
+      "v": "T8 edit: 8 → 0 of 16",
+      "s": "ok",
+      "d": "0 / 8; p = 0.0078",
+      "prac": true
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -429,8 +433,9 @@
     "label": "R1 Retention task",
     "cells": {
      "cosmos": {
-      "v": "running",
-      "s": "running"
+      "v": "9 → 13 of 16",
+      "s": "ok",
+      "prac": true
      },
      "groot": {
       "v": "unedited 28 of 32",
@@ -577,8 +582,11 @@
      "label": "T3 Cube left of the bowl",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "4 of 16",
+       "s": "ok",
+       "d": "25%; slots 30000–30015",
+       "k": 4,
+       "n": 16
       },
       "groot": {
        "v": "1 of 32",
@@ -627,8 +635,11 @@
      "label": "T5 Mustard into the left bin",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "8 of 16",
+       "s": "ok",
+       "d": "50%; slots 30000–30015",
+       "k": 8,
+       "n": 16
       },
       "groot": {
        "v": "0 of 32",
@@ -730,8 +741,11 @@
      "label": "R1 Retention task",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "9 of 16",
+       "s": "ok",
+       "d": "56%; slots 30000–30015",
+       "k": 9,
+       "n": 16
       },
       "groot": {
        "v": "28 of 32",
@@ -1813,7 +1827,8 @@
        "a": 10,
        "b": 12,
        "n": 16,
-       "p": 0.6875
+       "p": 0.6875,
+       "prac": true
       },
       "groot": {
        "v": "−9: 9 → 0 of 32",
@@ -1824,7 +1839,8 @@
        "b": 0,
        "n": 32,
        "p": 0.00390625,
-       "target": true
+       "target": true,
+       "prac": true
       },
       "pi05": {
        "v": "+79: 27 → 106 of 128",
@@ -1923,8 +1939,15 @@
      "label": "T5 Mustard into the left bin",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "−8: 8 → 0 of 16",
+       "s": "ok",
+       "d": "0 / 8; p = 0.0078; practice starts; slots 30000–30015",
+       "delta": -8,
+       "a": 8,
+       "b": 0,
+       "n": 16,
+       "p": 0.0078125,
+       "prac": true
       },
       "groot": {
        "v": "not run",
@@ -2029,8 +2052,15 @@
      "label": "R1 Retention task",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "+4: 9 → 13 of 16",
+       "s": "ok",
+       "d": "6 / 2; p = 0.29; practice starts; slots 30000–30015",
+       "delta": 4,
+       "a": 9,
+       "b": 13,
+       "n": 16,
+       "p": 0.2890625,
+       "prac": true
       },
       "groot": {
        "v": "not run",
@@ -2069,8 +2099,10 @@
      "label": "R1 Retention task",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "9 → 13 of 16",
+       "s": "ok",
+       "d": "the T8 edit, unchanged; 6 / 2; p = 0.29; practice starts; slots 30000–30015",
+       "prac": true
       },
       "groot": {
        "v": "—",
@@ -2309,6 +2341,84 @@
    {
     "experiment": "failure_map",
     "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "T3",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 4,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      10.2,
+      49.5
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction, practice slots, default render",
+    "_task": "T3",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardInLeftBinTask",
+    "code": "T5",
+    "wording_pair": [
+     "Put the mustard in the left bin"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 8,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      28.0,
+      72.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction, practice slots, default render",
+    "_task": "T5",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
     "task": "MustardRightOfRaisinRFTask",
     "code": "T8",
     "wording_pair": [
@@ -2339,6 +2449,45 @@
     "values_changed": null,
     "notes": "unedited policy, task's default instruction, practice slots, default render",
     "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "RubiksCubeTask",
+    "code": "R1",
+    "wording_pair": [
+     "Put the cube in the bowl"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 9,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      33.2,
+      76.9
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited policy, task's default instruction, practice slots, default render",
+    "_task": "R1",
     "_edit_task": null,
     "_prov": false,
     "extra": {
@@ -2567,6 +2716,86 @@
     "values_changed": 179010015,
     "notes": "edit t8und built for T8, run on T1 with T1's default instruction",
     "_task": "T1",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardInLeftBinTask",
+    "code": "T5",
+    "wording_pair": [
+     "Put the mustard in the left bin"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 8,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 8,
+    "p": 0.0078125,
+    "ci": {
+     "diff_pts": -50.0,
+     "bootstrap95_pts": [
+      -75.0,
+      -25.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": -50.0,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und built for T8, run on T5 with T5's default instruction",
+    "_task": "T5",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "RubiksCubeTask",
+    "code": "R1",
+    "wording_pair": [
+     "Put the cube in the bowl"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 9,
+    "edited_k": 13,
+    "fixed": 6,
+    "broke": 2,
+    "p": 0.2890625,
+    "ci": {
+     "diff_pts": 25.0,
+     "bootstrap95_pts": [
+      -6.25,
+      56.25
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": 25.0,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und built for T8, run on R1 with R1's default instruction",
+    "_task": "R1",
     "_edit_task": "T8",
     "_prov": false,
     "extra": {
@@ -6575,7 +6804,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "6ae69d859045"
+   "commit": "ea2b699151d6"
   },
   "groot": {
    "kind": "branch",
@@ -6593,8 +6822,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "84a2e87258dbfcba",
- "updated": "2026-11-08T09:51Z",
- "updated_text": "8 Nov 2026, 09:51 UTC",
+ "content_hash": "80d91917ff01937b",
+ "updated": "2026-11-08T10:19Z",
+ "updated_text": "8 Nov 2026, 10:19 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
