@@ -3475,8 +3475,20 @@ def control_text(P, tables):
          f"lifted {tn('T1')} from {e['base']} to {e['cand']} of {e['n']} unseen starts and {tn('T8')} from {s4['base']} "
          f"to {s4['cand']} of {s4['n']}; a random edit of the same size scored {c['rand']} of {c['n']} on {tn('T1')}, "
          f"against {c['base']} unedited.")
+    # the earlier runs' side effects from the earlier records themselves, so a fresh cell in the table cannot drop them
+    early = [t for t, k in (("T2", "eye"), ("T3", "left")) if P.get(k) and P[k]["p"] < SIG and P[k]["cand"] > P[k]["base"]]
+    lifted = early + [t for t in lifted if t not in early and T["side_effects"][t]["pi05"].get("prov")]
     if lifted:
         s += f" The {tn('T1')} edit also lifted {and_list(tn(t) for t in lifted)}."
+    fresh_se = [(t, T["side_effects"][t]["pi05"]) for t in ("T2", "T3", "T4", "T5", "T6", "T7", "R1")
+                if _ok(T["side_effects"].get(t, {}).get("pi05"), ("a", "b", "n")) and not T["side_effects"][t]["pi05"].get("prov")]
+    if fresh_se:
+        s += (" On this page’s starts so far, with the edit " + and_list(
+            f"{tn(t)} went from {c['a']} to {c['b']} of {c['n']}"
+            + (" (clearly better)" if c.get("p") is not None and c["p"] < SIG and c["b"] > c["a"] else
+               " (clearly worse)" if c.get("p") is not None and c["p"] < SIG else "") for t, c in fresh_se)
+              + (", changes these starts cannot tell from chance" if all(c.get("p") is None or c["p"] >= SIG
+                                                                        for _, c in fresh_se) else "") + ".")
     s += (f" No edit helped {and_list(tn(t) for t in ('T4', 'T5', 'T6', 'T7'))}, whose failures are seeing, grasping or a "
           "missing skill, not reading. π0.5’s runs from this page’s starts replace these numbers as they land.")
     return f"<p>{esc(s)}</p>"
