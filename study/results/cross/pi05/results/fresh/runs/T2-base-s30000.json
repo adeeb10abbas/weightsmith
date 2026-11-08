@@ -1,0 +1,476 @@
+{
+ "tag": "T2-base-s30000",
+ "code": "T2",
+ "task": "PickGlassesTask",
+ "slot_start": 30000,
+ "n": 16,
+ "arm": "base",
+ "workspace": null,
+ "fp": null,
+ "prompt": null,
+ "rendering_type": null,
+ "video_mode": "sensor",
+ "status": "fresh",
+ "render_preset": "default",
+ "rendering_flag": "none (RoboLab default preset)",
+ "envs_per_process": 8,
+ "processes": [
+  {
+   "group": 1875,
+   "env_offset": 0,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T2-base-s30000-g1875o0a0-1108-154313",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T2-base-s30000-1108-154313/sim-g1875o0a0.log"
+  },
+  {
+   "group": 1875,
+   "env_offset": 8,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T2-base-s30000-g1875o8a0-1108-154743",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T2-base-s30000-1108-154313/sim-g1875o8a0.log"
+  }
+ ],
+ "fp_checked": null,
+ "server": {
+  "workspace": null
+ },
+ "server_fingerprint": null,
+ "server_log": "/home/ali/cross/pi05/fresh/logs/server-T3-base-s30000-1108-151750.log",
+ "server_started": 1794169070.6469495,
+ "server_ready_s": 30.0,
+ "rows": [
+  {
+   "slot": 30000,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "score": 0.5,
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 3,
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 2,
+    "wrong_objects_grabbed": [
+     "glasses",
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313/PickGlassesTask/Pick_up_the_eye_glasses_0_env0.mp4"
+  },
+  {
+   "slot": 30001,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 210,
+   "instruction": "Pick up the eye glasses",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_glasses' 1/1",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 3,
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "GRIPPER_HIT_TABLE": 1,
+    "wrong_objects_grabbed": [
+     "glasses",
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313/PickGlassesTask/Pick_up_the_eye_glasses_0_env1.mp4"
+  },
+  {
+   "slot": 30002,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "score": 0.5,
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 2,
+    "GRIPPER_HIT_TABLE": 1,
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "glasses",
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313/PickGlassesTask/Pick_up_the_eye_glasses_0_env2.mp4"
+  },
+  {
+   "slot": 30003,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "score": 0.5,
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 6,
+    "WRONG_OBJECT_GRABBED": 5,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 1,
+    "GRIPPER_HIT_TABLE": 1,
+    "wrong_objects_grabbed": [
+     "glasses",
+     "glasses",
+     "glasses",
+     "glasses",
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313/PickGlassesTask/Pick_up_the_eye_glasses_0_env3.mp4"
+  },
+  {
+   "slot": 30004,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "score": 0.5,
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "GRIPPER_HIT_OBJECT": 1,
+    "wrong_objects_grabbed": [
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313/PickGlassesTask/Pick_up_the_eye_glasses_0_env4.mp4"
+  },
+  {
+   "slot": 30005,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 308,
+   "instruction": "Pick up the eye glasses",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_glasses' 1/1",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "wrong_objects_grabbed": [
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313/PickGlassesTask/Pick_up_the_eye_glasses_0_env5.mp4"
+  },
+  {
+   "slot": 30006,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "score": 0.5,
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_FULLY_CLOSED": 3,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "GRIPPER_HIT_TABLE": 2,
+    "wrong_objects_grabbed": [
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313/PickGlassesTask/Pick_up_the_eye_glasses_0_env6.mp4"
+  },
+  {
+   "slot": 30007,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 221,
+   "instruction": "Pick up the eye glasses",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_glasses' 1/1",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 2,
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 1,
+    "wrong_objects_grabbed": [
+     "glasses",
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o0a0-1108-154313/PickGlassesTask/Pick_up_the_eye_glasses_0_env7.mp4"
+  },
+  {
+   "slot": 30008,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 193,
+   "instruction": "Pick up the eye glasses",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_glasses' 1/1",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "wrong_objects_grabbed": [
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743/PickGlassesTask/Pick_up_the_eye_glasses_0_env0.mp4"
+  },
+  {
+   "slot": 30009,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "score": 0.5,
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 1,
+    "GRIPPER_HIT_TABLE": 3
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743/PickGlassesTask/Pick_up_the_eye_glasses_0_env1.mp4"
+  },
+  {
+   "slot": 30010,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "score": 0.5,
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 5,
+    "WRONG_OBJECT_GRABBED": 4,
+    "GRIPPER_HIT_OBJECT": 1,
+    "wrong_objects_grabbed": [
+     "glasses",
+     "glasses",
+     "glasses",
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743/PickGlassesTask/Pick_up_the_eye_glasses_0_env2.mp4"
+  },
+  {
+   "slot": 30011,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 164,
+   "instruction": "Pick up the eye glasses",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_glasses' 1/1",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 4,
+    "GRIPPER_HIT_OBJECT": 1,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "wrong_objects_grabbed": [
+     "glasses",
+     "glasses",
+     "glasses",
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743/PickGlassesTask/Pick_up_the_eye_glasses_0_env3.mp4"
+  },
+  {
+   "slot": 30012,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 340,
+   "instruction": "Pick up the eye glasses",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_glasses' 1/1",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 1,
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "wrong_objects_grabbed": [
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743/PickGlassesTask/Pick_up_the_eye_glasses_0_env4.mp4"
+  },
+  {
+   "slot": 30013,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 281,
+   "instruction": "Pick up the eye glasses",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_glasses' 1/1",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "wrong_objects_grabbed": [
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743/PickGlassesTask/Pick_up_the_eye_glasses_0_env5.mp4"
+  },
+  {
+   "slot": 30014,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "score": 0.5,
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743/PickGlassesTask/Pick_up_the_eye_glasses_0_env6.mp4"
+  },
+  {
+   "slot": 30015,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "score": 0.5,
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 3,
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 1,
+    "wrong_objects_grabbed": [
+     "glasses",
+     "glasses"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T2-base-s30000-g1875o8a0-1108-154743/PickGlassesTask/Pick_up_the_eye_glasses_0_env7.mp4"
+  }
+ ],
+ "completed": 16,
+ "success": 7,
+ "started": 1794170593.1771324,
+ "finished": 1794171127.7083879,
+ "job_s": 534.5,
+ "gpu": 0,
+ "port": 8720,
+ "host": "ali-MS-7D25",
+ "gpu_name": "NVIDIA GeForce RTX 3090",
+ "log_root": "/home/ali/cross/pi05/fresh/logs/T2-base-s30000-1108-154313",
+ "videos": {
+  "30000": "/home/ali/cross/pi05/fresh/videos/T2/base/30000.mp4",
+  "30001": "/home/ali/cross/pi05/fresh/videos/T2/base/30001.mp4",
+  "30002": "/home/ali/cross/pi05/fresh/videos/T2/base/30002.mp4",
+  "30003": "/home/ali/cross/pi05/fresh/videos/T2/base/30003.mp4",
+  "30004": "/home/ali/cross/pi05/fresh/videos/T2/base/30004.mp4",
+  "30005": "/home/ali/cross/pi05/fresh/videos/T2/base/30005.mp4",
+  "30006": "/home/ali/cross/pi05/fresh/videos/T2/base/30006.mp4",
+  "30007": "/home/ali/cross/pi05/fresh/videos/T2/base/30007.mp4",
+  "30008": "/home/ali/cross/pi05/fresh/videos/T2/base/30008.mp4",
+  "30009": "/home/ali/cross/pi05/fresh/videos/T2/base/30009.mp4",
+  "30010": "/home/ali/cross/pi05/fresh/videos/T2/base/30010.mp4",
+  "30011": "/home/ali/cross/pi05/fresh/videos/T2/base/30011.mp4",
+  "30012": "/home/ali/cross/pi05/fresh/videos/T2/base/30012.mp4",
+  "30013": "/home/ali/cross/pi05/fresh/videos/T2/base/30013.mp4",
+  "30014": "/home/ali/cross/pi05/fresh/videos/T2/base/30014.mp4",
+  "30015": "/home/ali/cross/pi05/fresh/videos/T2/base/30015.mp4"
+ },
+ "sim_cmd_example": [
+  "/home/ali/vibes/weight-space-policy-lab/robolab_env/.venv/bin/python",
+  "/home/ali/cross/pi05/weightsmith/weightsmith/run_batched.py",
+  "--policy",
+  "pi05",
+  "--task",
+  "PickGlassesTask",
+  "--environment-seed",
+  "0",
+  "--sampling-seed-base",
+  "1875",
+  "--remote-port",
+  "8720",
+  "--num-envs",
+  "8",
+  "--num-runs",
+  "1",
+  "--headless",
+  "--video-mode",
+  "sensor",
+  "--output-folder-name",
+  "x05f-T2-base-s30000-g1875o8a0-1108-154743",
+  "--device",
+  "cuda:0",
+  "--/rtx/verifyDriverVersion/enabled=false",
+  "--/renderer/multiGpu/enabled=false",
+  "--/renderer/multiGpu/autoEnable=false",
+  "--/renderer/activeGpu=0"
+ ]
+}
