@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "b36a11689b67"
+    "commit": "4434c0490c88"
    }
   },
   {
@@ -58,9 +58,9 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "6a258854b0a5"
+    "commit": "9e9f39ba93e6"
    },
-   "fig_short": "control · shared slots: Cube then banana"
+   "fig_short": "control · 5 of 9 cells from earlier runs"
   }
  ],
  "tasks": [
@@ -272,7 +272,7 @@
      "pi05": {
       "v": "fixed: 27 → 106 of 128",
       "s": "ok",
-      "d": "distilled edit; 81 / 2, p = 7.2 × 10⁻²²; shared slots, unedited: 5 of 16",
+      "d": "distilled edit; 81 / 2, p = 7.2 × 10⁻²²; shared slots, unedited: 3 of 16",
       "prov": true
      }
     }
@@ -316,7 +316,7 @@
      "pi05": {
       "v": "Cube then banana edit: 8 → 36 of 64",
       "s": "ok",
-      "d": "no own edit submitted",
+      "d": "no own edit submitted; shared slots, unedited: 0 of 16",
       "prov": true
      }
     }
@@ -360,7 +360,7 @@
      "pi05": {
       "v": "no gain",
       "s": "ok",
-      "d": "own edit 8 → 11 of 64; the grasp slips",
+      "d": "own edit 8 → 11 of 64; the grasp slips; shared slots, unedited: 3 of 16",
       "prov": true
      }
     }
@@ -426,7 +426,7 @@
      "pi05": {
       "v": "fixed: 0 → 27 of 64",
       "s": "ok",
-      "d": "distilled edit; 27 / 0, p = 1.5 × 10⁻⁸",
+      "d": "distilled edit; 27 / 0, p = 1.5 × 10⁻⁸; shared slots, unedited: 0 of 16",
       "prov": true
      }
     }
@@ -1248,10 +1248,10 @@
        "n": 32
       },
       "pi05": {
-       "v": "5 of 16",
+       "v": "3 of 16",
        "s": "ok",
-       "d": "31%; slots 30000–30015; earlier slots: 27 of 128",
-       "k": 5,
+       "d": "19%; slots 30000–30015; earlier slots: 27 of 128",
+       "k": 3,
        "n": 16
       }
      }
@@ -1303,12 +1303,11 @@
        "n": 32
       },
       "pi05": {
-       "v": "8 of 64",
+       "v": "0 of 16",
        "s": "ok",
-       "d": "13%; slots 90000–90063; carries along a diagonal and leaves the cube behind the bowl",
-       "k": 8,
-       "n": 64,
-       "prov": true
+       "d": "0%; slots 30000–30015; earlier slots: 8 of 64",
+       "k": 0,
+       "n": 16
       }
      }
     },
@@ -1359,12 +1358,11 @@
        "n": 32
       },
       "pi05": {
-       "v": "8 of 64",
+       "v": "3 of 16",
        "s": "ok",
-       "d": "13%; slots 91008–91071; the bottle slips from a cap grasp mid-carry",
-       "k": 8,
-       "n": 64,
-       "prov": true
+       "d": "19%; slots 30000–30015; earlier slots: 8 of 64",
+       "k": 3,
+       "n": 16
       }
      }
     },
@@ -1443,12 +1441,11 @@
        "n": 32
       },
       "pi05": {
-       "v": "0 of 64",
+       "v": "0 of 16",
        "s": "ok",
-       "d": "0%; slots 92000–92063; takes the wrong object or carries it the wrong way",
+       "d": "0%; slots 30000–30015; earlier slots: 0 of 64",
        "k": 0,
-       "n": 64,
-       "prov": true
+       "n": 16
       }
      }
     },
@@ -3566,6 +3563,104 @@
     "values_changed": null,
     "notes": "same weights, wording via prompt override; fixed = only the alternative wording succeeds. target-first wording of the same goal (Same Goal, Different Words; known-good for pi0.5)",
     "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "wording_prospective",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "S1L",
+    "wording_pair": [
+     "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
+     "Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl."
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 1,
+    "edited_k": null,
+    "fixed": 7,
+    "broke": 1,
+    "p": 0.0703125,
+    "ci": {
+     "diff_pts": 37.5,
+     "bootstrap95_pts": [
+      6.25,
+      68.75
+     ],
+     "wilson95_orig_pct": [
+      1.1,
+      28.3
+     ],
+     "wilson95_alt_pct": [
+      23.1,
+      66.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 7,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "prospective token-count test: unedited, reference-first vs target-first wording of the same goal, both via prompt override",
+    "_task": "T3",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "wording_prospective",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "RubiksCubeRightOfBowlTask",
+    "code": "S1R",
+    "wording_pair": [
+     "Move the rubiks cube on the table so that the bowl is to the left of the rubiks cube.",
+     "Move the rubiks cube on the table so that the rubiks cube is to the right of the bowl."
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": 4,
+    "broke": 0,
+    "p": 0.125,
+    "ci": {
+     "diff_pts": 25.0,
+     "bootstrap95_pts": [
+      6.25,
+      50.0
+     ],
+     "wilson95_orig_pct": [
+      0.0,
+      19.4
+     ],
+     "wilson95_alt_pct": [
+      10.2,
+      49.5
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 4,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "prospective token-count test: unedited, reference-first vs target-first wording of the same goal, both via prompt override",
+    "_task": null,
     "_edit_task": null,
     "_prov": false,
     "extra": {
@@ -8741,12 +8836,12 @@
     "retention": null,
     "edit_location": null,
     "values_changed": null,
-    "notes": "FRESH but partial: the only pi0.5 episodes on the shared slots, one 16-slot group (first and only run of a fresh Isaac process, environment seed 0) on ali-ms GPU1 at 05:03 UTC before the pi0.5 queue moved to the pod; RoboLab performance preset (Tracks A and B use the default preset), so not a like-for-like failure-map entry",
+    "notes": "FRESH but partial: the only pi0.5 episodes on the shared slots, one 16-slot group (first and only run of a fresh Isaac process, environment seed 0) on ali-ms GPU1 at 05:03 UTC before the pi0.5 queue moved to the pod; RoboLab performance preset (Tracks A and B use the default preset), so not a like-for-like failure-map entry; relabelled provisional on 2026-11-08 20:30 UTC: superseded by the Track C' default-preset failure map on the same slots (run C-prime-default)",
     "_task": "T1",
     "_edit_task": null,
-    "_prov": false,
+    "_prov": true,
     "extra": {
-     "status": "fresh",
+     "status": "provisional",
      "hardware": "ali-ms, RTX 3090; weightsmith @ ad31044",
      "render_preset": "performance",
      "edit": null,
@@ -8800,6 +8895,267 @@
       "30015": [
        0
       ]
+     },
+     "run": "C-ali-ms-performance-0503"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeThenBananaTask",
+    "code": "T1",
+    "wording_pair": [
+     "Put the cube then the banana in the bowl"
+    ],
+    "slots": [
+     30000,
+     30015
+    ],
+    "n": 16,
+    "unedited_k": 3,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      6.6,
+      43.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited pi0.5, task's default instruction, practice slots, default render preset; every 16-slot group the first and only run of a fresh Isaac process",
+    "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": null,
+     "values_changed_note": null,
+     "per_slot": {
+      "30000": 0,
+      "30001": 0,
+      "30002": 1,
+      "30003": 0,
+      "30004": 0,
+      "30005": 0,
+      "30006": 1,
+      "30007": 0,
+      "30008": 0,
+      "30009": 1,
+      "30010": 0,
+      "30011": 0,
+      "30012": 0,
+      "30013": 0,
+      "30014": 0,
+      "30015": 0
+     }
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "T3",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl"
+    ],
+    "slots": [
+     30000,
+     30015
+    ],
+    "n": 16,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      0.0,
+      19.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited pi0.5, task's default instruction, practice slots, default render preset; every 16-slot group the first and only run of a fresh Isaac process",
+    "_task": "T3",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": null,
+     "values_changed_note": null,
+     "per_slot": {
+      "30000": 0,
+      "30001": 0,
+      "30002": 0,
+      "30003": 0,
+      "30004": 0,
+      "30005": 0,
+      "30006": 0,
+      "30007": 0,
+      "30008": 0,
+      "30009": 0,
+      "30010": 0,
+      "30011": 0,
+      "30012": 0,
+      "30013": 0,
+      "30014": 0,
+      "30015": 0
+     }
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardInLeftBinTask",
+    "code": "T5",
+    "wording_pair": [
+     "Put the mustard in the left bin"
+    ],
+    "slots": [
+     30000,
+     30015
+    ],
+    "n": 16,
+    "unedited_k": 3,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      6.6,
+      43.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited pi0.5, task's default instruction, practice slots, default render preset; every 16-slot group the first and only run of a fresh Isaac process",
+    "_task": "T5",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": null,
+     "values_changed_note": null,
+     "per_slot": {
+      "30000": 0,
+      "30001": 0,
+      "30002": 1,
+      "30003": 1,
+      "30004": 0,
+      "30005": 0,
+      "30006": 0,
+      "30007": 0,
+      "30008": 0,
+      "30009": 0,
+      "30010": 0,
+      "30011": 0,
+      "30012": 0,
+      "30013": 1,
+      "30014": 0,
+      "30015": 0
+     }
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+    ],
+    "slots": [
+     30000,
+     30015
+    ],
+    "n": 16,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95_pct": [
+      0.0,
+      19.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited pi0.5, task's default instruction, practice slots, default render preset; every 16-slot group the first and only run of a fresh Isaac process",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms GPU0, RTX 3090 24 GB; weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": null,
+     "values_changed_note": null,
+     "per_slot": {
+      "30000": 0,
+      "30001": 0,
+      "30002": 0,
+      "30003": 0,
+      "30004": 0,
+      "30005": 0,
+      "30006": 0,
+      "30007": 0,
+      "30008": 0,
+      "30009": 0,
+      "30010": 0,
+      "30011": 0,
+      "30012": 0,
+      "30013": 0,
+      "30014": 0,
+      "30015": 0
      }
     }
    }
@@ -8845,7 +9201,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "b36a11689b67"
+   "commit": "4434c0490c88"
   },
   "groot": {
    "kind": "branch",
@@ -8859,12 +9215,12 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "6a258854b0a5"
+   "commit": "9e9f39ba93e6"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "c80f0d29654a63a8",
- "updated": "2026-11-08T20:09Z",
- "updated_text": "8 Nov 2026, 20:09 UTC",
+ "content_hash": "5dc656ac447f526c",
+ "updated": "2026-11-08T20:42Z",
+ "updated_text": "8 Nov 2026, 20:42 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
