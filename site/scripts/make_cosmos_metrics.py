@@ -2125,23 +2125,24 @@ def tldr(tables, models):
             continue
         up = [(k, c) for k, c in off if lifted(c)]
         down = [(k, c) for k, c in off if c.get("p") is not None and c["p"] < SIG and c["delta"] < 0]
-        on = task_list([k for k, _ in off]) + (" and R1" if r1 else "")
-        t = f"{models[mid]['name']}’s {tgt} edit, run unchanged on {on}, "
-        t += ("lifted " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in up)) if up else "lifted no task"
-        t += (", made none detectably worse" if not down else
-              ", lowered " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in down))
+        on = task_list([k for k, _ in off] + (["R1"] if r1 else []))
+        cl = [("lifted " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in up)) if up else "lifted no task",
+              "made none detectably worse" if not down else
+              "lowered " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in down)]
         if r1:
-            t += (f", and kept the retention task R1 at {r1['b']} of {r1['n']}" if r1["delta"] == 0 else
-                  f", and moved the retention task R1 from {r1['a']} to {r1['b']} of {r1['n']}")
+            cl.append(f"kept the retention task R1 at {r1['b']} of {r1['n']}" if r1["delta"] == 0 else
+                      f"moved the retention task R1 from {r1['a']} to {r1['b']} of {r1['n']}")
+        t = f"{models[mid]['name']}’s {tgt} edit, run unchanged on {on}, " + ", ".join(cl[:-1]) + ", and " + cl[-1]
         parts.append(t + ".")
     if waiting:
         parts.append(f"{and_list(waiting)}: {RUNNING}.")
     items.append(dict(id="side-effects", lead="Side effects", kind=None, tag=None, text=" ".join(parts)))
 
+    early = [it["lead"] for it in items if it.get("tag")]
     note = ("Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. "
-            + ("π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs "
-               "replace them as they land." if models["pi05"]["status"] == "measured" else
-               "All three models are scored on the shared slots."))
+            + (f"{and_list(x + '’s' for x in early)} numbers are earlier records, each on its own slots and number of "
+               "starts; the shared-slot runs "
+               "replace them as they land." if early else "Every number here is from the shared slots."))
     return dict(items=items, note=note)
 
 
