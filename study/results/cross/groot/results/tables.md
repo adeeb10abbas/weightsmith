@@ -11,3 +11,4 @@
 | Task | Original | Alternative wording | Original k/n | Alternative k/n | alt only / orig only | exact p |
 |---|---|---|---|---|---|---|
 | T1 | Put the cube then the banana in the bowl | Put the cube in the bowl then put the banana in the bowl | 9/32 | 16/32 | 11 / 4 | 0.12 |
+| T3 | Put the rubiks cube to the left of the bowl | Pick up the rubiks cube and place it on the table to the left of the bowl | 1/32 | 0/32 | 0 / 1 | 1 |

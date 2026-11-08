@@ -1,0 +1,123 @@
+{
+ "meta": {
+  "first_difference": 234,
+  "orig_len": 242,
+  "expl_len": 246,
+  "token_positions": [
+   0,
+   1,
+   2,
+   3,
+   116,
+   117,
+   230,
+   231,
+   232,
+   233,
+   234,
+   235,
+   236,
+   237,
+   238,
+   239,
+   240,
+   241
+  ],
+  "token_positions_expl": [
+   0,
+   1,
+   2,
+   3,
+   116,
+   117,
+   230,
+   231,
+   232,
+   233,
+   237,
+   239,
+   240,
+   241,
+   242,
+   243,
+   244,
+   245
+  ],
+  "changed_positions": [
+   234,
+   235,
+   236,
+   237,
+   238,
+   239,
+   240,
+   241
+  ],
+  "image_cells": 56,
+  "keys_per_group": 74,
+  "aligned_token_ids": [
+   151644,
+   872,
+   198,
+   151652,
+   151653,
+   151652,
+   151653,
+   628,
+   279,
+   23739,
+   1221,
+   279,
+   43096,
+   304,
+   279,
+   19212,
+   151645,
+   198
+  ],
+  "site": "backbone",
+  "capture": "/home/ali/cross/groot/wsp/t1/cap",
+  "groups": {
+   "0": [
+    0
+   ],
+   "1": [
+    1
+   ],
+   "2": [
+    2
+   ],
+   "3": [
+    3
+   ],
+   "4": [
+    4
+   ],
+   "5": [
+    5
+   ]
+  },
+  "layers": [
+   15
+  ],
+  "lam_rel": 0.001,
+  "lam_stat": "median",
+  "values": "total",
+  "stack": true,
+  "alpha": 1.0,
+  "image_cells_grid": "4x7",
+  "wordings": {
+   "orig": "Put the cube then the banana in the bowl",
+   "expl": "Put the cube in the bowl then put the banana in the bowl"
+  }
+ },
+ "layers": [
+  {
+   "layer": 15,
+   "keys": 444,
+   "fro_dW": 21.623342263315653,
+   "fit_rel_err": 0.005123629549104905,
+   "V_norm": 1515.4634450760043
+  }
+ ]
+}

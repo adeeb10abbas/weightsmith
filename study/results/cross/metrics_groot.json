@@ -137,6 +137,40 @@
     30031
    ],
    "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T1 vs wd-T1-expl"
+  },
+  {
+   "experiment": "wording_sensitivity",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T3 RubiksCubeLeftOfBowlTask",
+   "wording_pair": [
+    "Put the rubiks cube to the left of the bowl",
+    "Pick up the rubiks cube and place it on the table to the left of the bowl"
+   ],
+   "n": 32,
+   "unedited_k": 1,
+   "edited_k": null,
+   "fixed": 0,
+   "broke": 1,
+   "p": 1.0,
+   "ci": {
+    "diff_bootstrap95": [
+     -0.09375,
+     0.0
+    ]
+   },
+   "control_k": null,
+   "teacher_k": 0,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": [
+    30000,
+    30031
+   ],
+   "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T3 vs wd-T3-alt"
   }
  ]
 }

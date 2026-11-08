@@ -1,0 +1,397 @@
+{
+ "items": [
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e0.npz",
+   "k": 31,
+   "slot": 30000
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e1.npz",
+   "k": 7,
+   "slot": 30001
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e2.npz",
+   "k": 47,
+   "slot": 30002
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e3.npz",
+   "k": 73,
+   "slot": 30003
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e5.npz",
+   "k": 111,
+   "slot": 30005
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e7.npz",
+   "k": 15,
+   "slot": 30007
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e9.npz",
+   "k": 5,
+   "slot": 30009
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e10.npz",
+   "k": 25,
+   "slot": 30010
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e11.npz",
+   "k": 73,
+   "slot": 30011
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e12.npz",
+   "k": 105,
+   "slot": 30012
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e14.npz",
+   "k": 59,
+   "slot": 30014
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1875/obs_r0_e15.npz",
+   "k": 7,
+   "slot": 30015
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e0.npz",
+   "k": 73,
+   "slot": 30016
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e1.npz",
+   "k": 9,
+   "slot": 30017
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e3.npz",
+   "k": 21,
+   "slot": 30019
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e4.npz",
+   "k": 5,
+   "slot": 30020
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e6.npz",
+   "k": 13,
+   "slot": 30022
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e8.npz",
+   "k": 61,
+   "slot": 30024
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e9.npz",
+   "k": 71,
+   "slot": 30025
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e10.npz",
+   "k": 9,
+   "slot": 30026
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e12.npz",
+   "k": 13,
+   "slot": 30028
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e14.npz",
+   "k": 5,
+   "slot": 30030
+  },
+  {
+   "obs": "/home/ali/cross/groot/runs/fm/fm-T1.obs/g1876/obs_r0_e15.npz",
+   "k": 7,
+   "slot": 30031
+  }
+ ],
+ "wordings": {
+  "orig": "Put the cube then the banana in the bowl"
+ },
+ "edit": {
+  "edit": "/home/ali/cross/groot/wsp/t1/var/v2.pt",
+  "sha256": "45d3c5603842a95ac3441f63f6abb9c78bce68909731000063c1f48380e8d822",
+  "fingerprint": "45d3c5603842a95a",
+  "tensors": 16,
+  "values_changed": 195372555,
+  "values_total": 201326592,
+  "meta": {
+   "first_difference": 234,
+   "orig_len": 242,
+   "expl_len": 246,
+   "token_positions": [
+    0,
+    1,
+    2,
+    3,
+    116,
+    117,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    240,
+    241
+   ],
+   "token_positions_expl": [
+    0,
+    1,
+    2,
+    3,
+    116,
+    117,
+    230,
+    231,
+    232,
+    233,
+    237,
+    239,
+    240,
+    241,
+    242,
+    243,
+    244,
+    245
+   ],
+   "changed_positions": [
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    240,
+    241
+   ],
+   "image_cells": 56,
+   "keys_per_group": 74,
+   "aligned_token_ids": [
+    151644,
+    872,
+    198,
+    151652,
+    151653,
+    151652,
+    151653,
+    628,
+    279,
+    23739,
+    1221,
+    279,
+    43096,
+    304,
+    279,
+    19212,
+    151645,
+    198
+   ],
+   "site": "backbone",
+   "capture": "/home/ali/cross/groot/wsp/t1/cap",
+   "groups": {
+    "0": [
+     0
+    ],
+    "1": [
+     1
+    ],
+    "2": [
+     2
+    ],
+    "3": [
+     3
+    ],
+    "4": [
+     4
+    ],
+    "5": [
+     5
+    ]
+   },
+   "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "lam_rel": 0.001,
+   "lam_stat": "median",
+   "values": "increment",
+   "stack": true,
+   "alpha": 1.0,
+   "image_cells_grid": "4x7",
+   "wordings": {
+    "orig": "Put the cube then the banana in the bowl",
+    "expl": "Put the cube in the bowl then put the banana in the bowl"
+   }
+  }
+ },
+ "files": [
+  {
+   "item": 0,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i000_orig.npz",
+   "seed": 12000031
+  },
+  {
+   "item": 1,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i001_orig.npz",
+   "seed": 12000107
+  },
+  {
+   "item": 2,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i002_orig.npz",
+   "seed": 12000247
+  },
+  {
+   "item": 3,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i003_orig.npz",
+   "seed": 12000373
+  },
+  {
+   "item": 4,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i004_orig.npz",
+   "seed": 12000611
+  },
+  {
+   "item": 5,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i005_orig.npz",
+   "seed": 12000715
+  },
+  {
+   "item": 6,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i006_orig.npz",
+   "seed": 12000905
+  },
+  {
+   "item": 7,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i007_orig.npz",
+   "seed": 12001025
+  },
+  {
+   "item": 8,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i008_orig.npz",
+   "seed": 12001173
+  },
+  {
+   "item": 9,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i009_orig.npz",
+   "seed": 12001305
+  },
+  {
+   "item": 10,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i010_orig.npz",
+   "seed": 12001459
+  },
+  {
+   "item": 11,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i011_orig.npz",
+   "seed": 12001507
+  },
+  {
+   "item": 12,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i012_orig.npz",
+   "seed": 12006473
+  },
+  {
+   "item": 13,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i013_orig.npz",
+   "seed": 12006509
+  },
+  {
+   "item": 14,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i014_orig.npz",
+   "seed": 12006721
+  },
+  {
+   "item": 15,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i015_orig.npz",
+   "seed": 12006805
+  },
+  {
+   "item": 16,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i016_orig.npz",
+   "seed": 12007013
+  },
+  {
+   "item": 17,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i017_orig.npz",
+   "seed": 12007261
+  },
+  {
+   "item": 18,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i018_orig.npz",
+   "seed": 12007371
+  },
+  {
+   "item": 19,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i019_orig.npz",
+   "seed": 12007409
+  },
+  {
+   "item": 20,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i020_orig.npz",
+   "seed": 12007613
+  },
+  {
+   "item": 21,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i021_orig.npz",
+   "seed": 12007805
+  },
+  {
+   "item": 22,
+   "wording": "orig",
+   "file": "/home/ali/cross/groot/wsp/t1/var/chk_v2/i022_orig.npz",
+   "seed": 12007907
+  }
+ ]
+}
