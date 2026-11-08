@@ -71,7 +71,7 @@ instructions, same slots, same render preset, same GPU model.
 | Metrics | [`scripts/fresh.py`](scripts/fresh.py) → records with `"status": "fresh"`, `"run": "C-prime-default"` in [`../metrics_pi05.json`](../metrics_pi05.json) and [`results/fresh/summary.json`](results/fresh/summary.json); per-job records in `results/fresh/runs/` |
 
 <!-- fresh2:begin -->
-Jobs finished: **9** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **1.35 GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
+Jobs finished: **10** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **1.56 GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
 
 **Failure map** (unedited π0.5, task's default instruction, practice slots). For context, Cosmos3 Edge on the same 16 starts (Track A's run records on ali-ms, default preset, 8 envs per process; `results/fresh/cosmos_same_slots_ali-ms.json`):
 
