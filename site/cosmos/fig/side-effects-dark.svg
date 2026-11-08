@@ -2386,13 +2386,13 @@ z
     </g>
    </g>
    <g id="text_24">
-    <!-- −8: 8 → 0 of 16* -->
+    <!-- −9: 9 → 0 of 32* -->
     <g style="fill: #141413" transform="translate(239.754062 173.551125) scale(0.088 -0.088)">
      <use xlink:href="#Arial-BoldMT-2212"/>
-     <use xlink:href="#Arial-BoldMT-38" transform="translate(58.398438 0)"/>
+     <use xlink:href="#Arial-BoldMT-39" transform="translate(58.398438 0)"/>
      <use xlink:href="#Arial-BoldMT-3a" transform="translate(114.013672 0)"/>
      <use xlink:href="#Arial-BoldMT-20" transform="translate(147.314453 0)"/>
-     <use xlink:href="#Arial-BoldMT-38" transform="translate(175.097656 0)"/>
+     <use xlink:href="#Arial-BoldMT-39" transform="translate(175.097656 0)"/>
      <use xlink:href="#Arial-BoldMT-20" transform="translate(230.712891 0)"/>
      <use xlink:href="#Arial-BoldMT-2192" transform="translate(258.496094 0)"/>
      <use xlink:href="#Arial-BoldMT-20" transform="translate(358.496094 0)"/>
@@ -2401,8 +2401,8 @@ z
      <use xlink:href="#Arial-BoldMT-6f" transform="translate(469.677734 0)"/>
      <use xlink:href="#Arial-BoldMT-66" transform="translate(530.761719 0)"/>
      <use xlink:href="#Arial-BoldMT-20" transform="translate(564.0625 0)"/>
-     <use xlink:href="#Arial-BoldMT-31" transform="translate(591.845703 0)"/>
-     <use xlink:href="#Arial-BoldMT-36" transform="translate(647.460938 0)"/>
+     <use xlink:href="#Arial-BoldMT-33" transform="translate(591.845703 0)"/>
+     <use xlink:href="#Arial-BoldMT-32" transform="translate(647.460938 0)"/>
      <use xlink:href="#Arial-BoldMT-2a" transform="translate(703.076172 0)"/>
     </g>
    </g>
