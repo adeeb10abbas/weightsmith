@@ -992,8 +992,8 @@ def row_cells(src):
                                                                where_txt(rr)) if x) or None,
                                          u=ic["unedited_k"], r=ic["control_k"], e=ic["edited_k"], n=ic["n"],
                                          t=ic["teacher_k"], prac=pc or None,
-                                         fl=f"{tid} {SHORT[tid]}" + (f", {ic['n']}" if ic["n"] else "")
-                                         + (" practice" if pc else ""))
+                                         fl=f"{tid} {SHORT[tid]}" + (f" ({ic['n']}{slot_kind(rr) or (' practice' if pc else '')})"
+                                                                     if ic["n"] else ""))
         rt = next((x for x in ed if as_float(x.get("recovery_pct")) is not None
                    or (ints(x)["teacher_k"] is not None and ints(x)["teacher_k"] != ints(x)["unedited_k"])), None)
         if rt is not None:
