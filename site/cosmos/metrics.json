@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "956b7feaa122"
+    "commit": "b8a1b6484c88"
    }
   },
   {
@@ -133,7 +133,7 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Edits lifted success on T8 from 0 to 28 of 32 unseen starts (p = 7.5 × 10⁻⁹). A random edit of the same size scored 0 of 32 on T8, against 0 unedited. Other tasks: {running}."
+    "text": "Edits lifted success on T8 from 0 to 42 of 48 unseen starts (p = 4.5 × 10⁻¹³). On 32 of those starts a random edit of the same size scored 0, against 28 for the edit and 0 unedited. Other tasks: {running}."
    },
    {
     "id": "groot",
@@ -404,9 +404,9 @@
     "label": "T8 Mustard right of the raisin box, reference-first",
     "cells": {
      "cosmos": {
-      "v": "0 → 28 of 32",
+      "v": "0 → 42 of 48",
       "s": "ok",
-      "d": "28 / 0, p = 7.5 × 10⁻⁹"
+      "d": "42 / 0, p = 4.5 × 10⁻¹³"
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -489,9 +489,9 @@
     "label": "Where to edit",
     "cells": {
      "cosmos": {
-      "v": "text pathway 28 of 32",
+      "v": "text pathway 42 of 48",
       "s": "ok",
-      "d": "T8, 32 unseen starts; unedited 0"
+      "d": "T8, 48 unseen starts; unedited 0"
      },
      "groot": {
       "v": "Cosmos-Reason2 backbone 0, diffusion action head 0 of 32",
@@ -1237,19 +1237,19 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "0 → 28 of 32",
+       "v": "0 → 42 of 48",
        "s": "ok",
-       "d": "text pathway (und mlp.down_proj, layers 0-26); 28 / 0, p = 7.5 × 10⁻⁹; +87.5 points [75.0, 96.9]; slots 96000–96031; on the practice starts it was built from: 0 → 13 of 16",
+       "d": "text pathway (und mlp.down_proj, layers 0-26); 42 / 0, p = 4.5 × 10⁻¹³; +87.5 points [77.1, 95.8]; slots 96000–96047; on the practice starts it was built from: 0 → 13 of 16",
        "a": 0,
-       "b": 28,
-       "n": 32,
-       "fx": 28,
+       "b": 42,
+       "n": 48,
+       "fx": 42,
        "br": 0,
-       "pv": 7.450580596923828e-09,
+       "pv": 4.547473508864641e-13,
        "ci": [
         87.5,
-        75.0,
-        96.9
+        77.1,
+        95.8
        ],
        "color": "teal",
        "loc": "text pathway (und mlp.down_proj, layers 0-26)",
@@ -1341,11 +1341,12 @@
       "cosmos": {
        "v": "control 0, unedited 0, edit 28 of 32",
        "s": "ok",
-       "d": "slots 96000–96031",
+       "d": "the control ran on 32 of the 48 starts; slots 96000–96031; edit against control p = 7.5 × 10⁻⁹",
        "u": 0,
        "r": 0,
        "e": 28,
        "n": 32,
+       "sub": true,
        "fl": "T8 Mustard, reference-first (32 unseen)"
       },
       "groot": {
@@ -1450,9 +1451,9 @@
      "label": "Task, starts",
      "cells": {
       "cosmos": {
-       "v": "T8, 32 unseen starts",
+       "v": "T8, 48 unseen starts",
        "s": "ok",
-       "d": "slots 96000–96031"
+       "d": "slots 96000–96047"
       },
       "groot": {
        "v": "T1, 32 practice starts",
@@ -1475,7 +1476,7 @@
      "label": "Unedited",
      "cells": {
       "cosmos": {
-       "v": "0 of 32",
+       "v": "0 of 48",
        "s": "ok"
       },
       "groot": {
@@ -1497,7 +1498,7 @@
      "label": "Backbone / text pathway",
      "cells": {
       "cosmos": {
-       "v": "text pathway (und mlp.down_proj, layers 0-26): 28 of 32",
+       "v": "text pathway (und mlp.down_proj, layers 0-26): 42 of 48",
        "s": "ok"
       },
       "groot": {
@@ -1568,11 +1569,36 @@
       "cosmos": {
        "v": "text pathway (und mlp.down_proj, layers 0-26): 91% (random, same size: −2%); video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20): 23% (random, same size: 1%)",
        "s": "ok",
-       "d": "T8, 30 recorded decisions held aside, never used to build either edit; share of the clearer wording’s action change reproduced, by end-effector distance at the end of the action chunk; offline, no rollouts"
+       "d": "T8, 30 recorded decisions held aside, never used to build either edit; share of the clearer wording’s action change reproduced, by end-effector distance at the end of the action chunk; offline, no rollouts",
+       "parts": [
+        [
+         "text pathway (und mlp.down_proj, layers 0-26)",
+         91.2,
+         -1.8
+        ],
+        [
+         "video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20)",
+         23.4,
+         0.7
+        ]
+       ]
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "backbone: −15% (random, same size: 0%); action head: 22%",
+       "s": "ok",
+       "d": "T1, 11 failed practice decisions that no build used; share of the clearer wording’s action change reproduced, as the projection of the edit’s change onto the wording’s over the executed actions (joints and gripper); offline, no rollouts",
+       "parts": [
+        [
+         "backbone",
+         -15.310076334760012,
+         -0.26354435264788945
+        ],
+        [
+         "action head",
+         21.875615897501223,
+         null
+        ]
+       ]
       },
       "pi05": {
        "v": "—",
@@ -1945,14 +1971,14 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "+28: 0 → 28 of 32",
+       "v": "+42: 0 → 42 of 48",
        "s": "ok",
-       "d": "28 / 0; p = 7.5 × 10⁻⁹; the target task; slots 96000–96031",
-       "delta": 28,
+       "d": "42 / 0; p = 4.5 × 10⁻¹³; the target task; slots 96000–96047",
+       "delta": 42,
        "a": 0,
-       "b": 28,
-       "n": 32,
-       "p": 7.450580596923828e-09,
+       "b": 42,
+       "n": 48,
+       "p": 4.547473508864641e-13,
        "target": true
       },
       "groot": {
@@ -2184,7 +2210,7 @@
      "label": "Smallest detectable change",
      "cells": {
       "cosmos": {
-       "v": "27 points at 32 pairs",
+       "v": "22 points at 48 pairs",
        "s": "ok",
        "d": "if about 30% of pairs differ"
       },
@@ -2418,29 +2444,29 @@
      "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
      "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
     ],
-    "n": 32,
+    "n": 48,
     "slots": [
      96000,
-     96031
+     96047
     ],
     "unedited_k": 0,
-    "edited_k": 28,
-    "fixed": 28,
+    "edited_k": 42,
+    "fixed": 42,
     "broke": 0,
-    "p": 7.450580596923828e-09,
+    "p": 4.547473508864641e-13,
     "ci": {
      "diff_pts": 87.5,
      "bootstrap95_pts": [
-      75.0,
-      96.88
+      77.08,
+      95.83
      ],
      "wilson95_unedited_pct": [
       0.0,
-      10.7
+      7.4
      ],
      "wilson95_edited_pct": [
-      71.9,
-      95.0
+      75.3,
+      94.1
      ]
     },
     "control_k": 0,
@@ -6266,7 +6292,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "956b7feaa122"
+   "commit": "b8a1b6484c88"
   },
   "groot": {
    "kind": "branch",
@@ -6284,8 +6310,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "f9b76fb68b8fba47",
- "updated": "2026-11-08T08:27Z",
- "updated_text": "8 Nov 2026, 08:27 UTC",
+ "content_hash": "f11908ba1f73600c",
+ "updated": "2026-11-08T08:40Z",
+ "updated_text": "8 Nov 2026, 08:40 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
