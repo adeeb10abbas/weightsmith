@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "b8a1b6484c88"
+    "commit": "7b122e6525e5"
    }
   },
   {
@@ -133,7 +133,7 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Edits lifted success on T8 from 0 to 42 of 48 unseen starts (p = 4.5 × 10⁻¹³). On 32 of those starts a random edit of the same size scored 0, against 28 for the edit and 0 unedited. Other tasks: {running}."
+    "text": "Edits lifted success on T8 from 0 to 42 of 48 unseen starts (p = 4.5 × 10⁻¹³). A random edit of the same size scored 0 of 48 on T8, against 0 unedited. Other tasks: {running}."
    },
    {
     "id": "groot",
@@ -467,7 +467,7 @@
     "label": "Random control, same size",
     "cells": {
      "cosmos": {
-      "v": "control 0, unedited 0, edit 28 of 32",
+      "v": "control 0, unedited 0, edit 42 of 48",
       "s": "ok",
       "d": "T8"
      },
@@ -1339,15 +1339,14 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "control 0, unedited 0, edit 28 of 32",
+       "v": "control 0, unedited 0, edit 42 of 48",
        "s": "ok",
-       "d": "the control ran on 32 of the 48 starts; slots 96000–96031; edit against control p = 7.5 × 10⁻⁹",
+       "d": "slots 96000–96047",
        "u": 0,
        "r": 0,
-       "e": 28,
-       "n": 32,
-       "sub": true,
-       "fl": "T8 Mustard, reference-first (32 unseen)"
+       "e": 42,
+       "n": 48,
+       "fl": "T8 Mustard, reference-first (48 unseen)"
       },
       "groot": {
        "v": "running",
@@ -2476,29 +2475,29 @@
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 0 broke 0 p = 1; edit vs control p = 7.45e-09",
+    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 0 broke 0 p = 1; edit vs control p = 4.55e-13",
     "_task": "T8",
     "_edit_task": null,
     "_prov": false,
     "extra": {
      "machine": "ali-ms",
-     "control_n": 32,
+     "control_n": 48,
      "teacher_n": null,
      "edit_vs_control": {
-      "n": 32,
+      "n": 48,
       "ref_k": 0,
-      "cand_k": 28,
-      "fixed": 28,
+      "cand_k": 42,
+      "fixed": 42,
       "broke": 0,
-      "p": 7.450580596923828e-09,
+      "p": 4.547473508864641e-13,
       "slots": [
        96000,
-       96031
+       96047
       ]
      },
      "control_slots": [
       96000,
-      96031
+      96047
      ],
      "teacher_slots": null
     }
@@ -6292,7 +6291,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "b8a1b6484c88"
+   "commit": "7b122e6525e5"
   },
   "groot": {
    "kind": "branch",
@@ -6310,8 +6309,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "f11908ba1f73600c",
- "updated": "2026-11-08T08:40Z",
- "updated_text": "8 Nov 2026, 08:40 UTC",
+ "content_hash": "9d92e72a98e0905d",
+ "updated": "2026-11-08T08:52Z",
+ "updated_text": "8 Nov 2026, 08:52 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
