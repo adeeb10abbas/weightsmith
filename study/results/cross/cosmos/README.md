@@ -103,6 +103,17 @@ As on π0.5, the edit to the language pathway carries the wording's effect; the 
 built from 30 other decisions of the same task, carries a fifth of it. In closed loop on the practice starts the
 video/action-pathway edit `t8gen` solves 0/16 (unedited 0/16, text-pathway `t8und` 13/16). `results/offline/ali-ms/t8_offline_check.json`.
 
+### Clips (`videos/`, H.264, 2x speed, top = unedited, bottom = edited, same start)
+
+| File | What it shows |
+|---|---|
+| `t8_96003_unedited_vs_t8und.mp4` | T8, held-out start 96003: the unedited policy fails under the RF wording; `t8und` moves the mustard to the right of the raisin box |
+| `t8_30008_unedited_vs_t8und.mp4` | T8, practice start 30008: the unedited policy picks up the raisin box; `t8und` moves the mustard |
+| `t8_30000_rf_vs_tf.mp4` | T8, practice start 30000: the unedited policy under the RF vs the TF wording (top RF, bottom TF) |
+| `t5_96000_unedited_vs_t8und.mp4` | side effect, T5, held-out start 96000: unedited puts the mustard in the left bin; `t8und` does not |
+| `t5_30001_unedited_vs_t8und.mp4` | side effect, T5, practice start 30001: `t8und` carries the mustard to the other bin |
+| `t3_96004_unedited_vs_t8und.mp4` | side effect, T3, held-out start 96004: unedited puts the cube left of the bowl; `t8und` puts it elsewhere |
+
 ### Side effects of `t8und` on the other tasks (practice starts 30000-30015, each task's default instruction)
 
 Each task is run unedited and with `t8und`, on the same 16 starts and the same GPU. Table, plots
