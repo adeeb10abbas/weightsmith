@@ -1232,7 +1232,7 @@ THEMES = {
 LAYOUTS = {
     "page": dict(W=8.0, FS=9.8, FS_S=8.8, FS_H=10.2, left=3.2, right=1.35, row=0.25, top=0.44, bottom=0.4,
                  lx=0.12, lx2=0.32, ms=7.5, lw=2.2, bar=0.21, leg_ms=7),
-    "brief": dict(W=3.72, FS=6.8, FS_S=6.2, FS_H=7.1, left=1.3, right=0.66, row=0.168, top=0.36, bottom=0.31,
+    "brief": dict(W=3.72, FS=6.8, FS_S=6.2, FS_H=7.1, left=1.5, right=0.66, row=0.15, top=0.36, bottom=0.31,
                   lx=0.02, lx2=0.1, ms=4.6, lw=1.5, bar=0.21, leg_ms=4.8),
 }
 FIGNAME = {"pi05": "π0.5", "cosmos": "Cosmos3 Edge", "groot": "GR00T N1.7"}
@@ -1388,8 +1388,7 @@ def fig_failure_map(tb, models, T, L):
             ax.text(j + 0.5, -0.16, models[m]["short"], ha="center", va="bottom", fontsize=L["FS_S"] - 0.6,
                     color=T["mute"])
     for i, r in enumerate(fm):
-        lab = f"{r['key']} {SHORT[r['key']]}" if (r["key"] in SHORT and not brief) else (
-            f"{r['key']} {SHORT[r['key']]}"[:22] if r["key"] in SHORT else r["label"])
+        lab = f"{r['key']} {SHORT[r['key']]}" if r["key"] in SHORT else r["label"]
         put(fig, ax, L, L["lx"], i + 0.5, lab, T)
         for j, m in enumerate(ORDER):
             c = r["cells"][m]
@@ -1569,7 +1568,7 @@ def fig_side_effects(tb, models, T, L):
     cw = (L["W"] - lw - 0.05) / 3
     ch = L["row"] * (1.25 if brief else 1.35)
     top = 0.36 if brief else 0.86
-    bottom = 0.34 if brief else 0.62
+    bottom = 0.44 if brief else 0.62
     H = top + nrow * ch + bottom
     fig = plt.figure(figsize=(L["W"], H))
     ax = fig.add_axes([lw / L["W"], bottom / H, 3 * cw / L["W"], nrow * ch / H])
@@ -1588,7 +1587,7 @@ def fig_side_effects(tb, models, T, L):
     grey = mix(T["empty"], T["grey"], 0.55)
     for i, r in enumerate(rows):
         lab = f"{r['key']} {SHORT[r['key']]}" if r["key"] in SHORT else r["label"]
-        put(fig, ax, L, L["lx"], i + 0.5, lab[:22] if brief else lab, T)
+        put(fig, ax, L, L["lx"], i + 0.5, lab, T)
         for j, m in enumerate(ORDER):
             c = r["cells"][m]
             x0, y0, wd, ht = j + 0.025, i + 0.06, 0.95, 0.88
@@ -1617,12 +1616,12 @@ def fig_side_effects(tb, models, T, L):
     from matplotlib.patches import Patch
     hs = [Patch(fc=T["teal"], ec="none", label="gain, p < 0.05"), Patch(fc=T["dark"], ec="none", label="loss, p < 0.05"),
           Patch(fc=grey, ec="none", label="no detectable change")]
-    leg = fig.legend(handles=hs, loc="upper left", bbox_to_anchor=(lw / L["W"] - 0.004, (bottom - 0.06) / H), ncol=3,
+    leg = fig.legend(handles=hs, loc="upper left", bbox_to_anchor=((L["lx"] if brief else lw) / L["W"], (bottom - 0.06) / H), ncol=3,
                      frameon=False, fontsize=L["FS_S"], handlelength=1.0, handleheight=0.9, handletextpad=0.4,
                      columnspacing=1.2, borderaxespad=0)
     for tx_ in leg.get_texts():
         tx_.set_color(T["ink2"])
-    fig.text(lw / L["W"], (0.13 if brief else 0.2) / H, "* exact McNemar p < 0.05. Outlined: the task the edit was built "
+    fig.text((L["lx"] if brief else lw) / L["W"], (0.1 if brief else 0.2) / H, "* exact McNemar p < 0.05. Outlined: the task the edit was built "
              "for." if not brief else "* p < 0.05; outlined: the edit's own task", fontsize=L["FS_S"] - 0.6,
              color=T["mute"], ha="left", va="center")
     return fig
@@ -1674,7 +1673,7 @@ def draw_figures(tables, models):
 
 
 FIGS = [
-    ("failure-map", "Unedited success on each shared task; darker is higher. Each cell gives successes of starts."),
+    ("failure-map", "Unedited success on each shared task; stronger shading is higher. Each cell gives successes of starts."),
     ("wording-gap", "The unedited model under the original wording (grey) and the clear wording (ring), on the same "
                     "starts."),
     ("edit-gain", "Edited minus unedited success on held-out starts, paired by start, with the paired bootstrap 95% "
@@ -1687,6 +1686,98 @@ FIGS = [
                      "starts. Teal: a gain, dark: a loss (exact McNemar p < 0.05); grey: no detectable change; the outlined "
                      "cell is the task the edit was built for."),
 ]
+
+
+# ---------------------------------------------------------------- clips (MP4s dropped into site/cosmos/video/)
+VID = OUT / "video"
+CLIPS = [  # (file stem, group, title, caption, fallback poster for the placeholder)
+    ("t1_three_models", "three", "T1 Cube then banana",
+     "One start, the three models unedited, the same initial scene; each panel is labelled.", None),
+    ("t8_three_models", "three", "T8 Mustard right of the raisin box, reference-first",
+     "One start, the three models unedited, the same initial scene; each panel is labelled.", None),
+    ("cosmos_before_after", "before", "Cosmos3 Edge Policy",
+     "Unedited and after the edit, on a start where the edit helped.", None),
+    ("groot_before_after", "before", "GR00T N1.7",
+     "Unedited and after the edit, on a start where the edit helped.", None),
+    ("pi05_before_after", "before", "π0.5",
+     "Unedited and after the edit, on a start where the edit helped.",
+     ("../assets/video/cube_then_banana.jpg",
+      "Until the shared-slot clip lands: a frame of the earlier T1 clip, held-out start 90002, unedited above and edited "
+      "below. The clip itself is on the project page.")),
+]
+GIF_ORDER = ["t1_three_models", "t8_three_models", "cosmos_before_after", "groot_before_after", "pi05_before_after"]
+
+
+def ff(*args):
+    exe = shutil.which("ffmpeg")
+    if not exe:
+        return False
+    return subprocess.run([exe, "-v", "error", "-y", *args], capture_output=True).returncode == 0
+
+
+def probe_size(path):
+    exe = shutil.which("ffprobe")
+    if not exe:
+        return None
+    r = subprocess.run([exe, "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of",
+                        "csv=p=0", str(path)], capture_output=True, text=True)
+    try:
+        w, h = (int(x) for x in r.stdout.strip().split(",")[:2])
+        return w, h
+    except ValueError:
+        return None
+
+
+def prepare_clips():
+    """Which clips exist; first-frame posters for those without one; the brief's GIF (first frame prints as a still)."""
+    info = {}
+    for stem, *_ in CLIPS:
+        mp4, jpg = VID / f"{stem}.mp4", VID / f"{stem}.jpg"
+        ok = mp4.exists() and mp4.stat().st_size > 0
+        if ok and not jpg.exists():
+            ff("-i", str(mp4), "-frames:v", "1", "-q:v", "3", str(jpg))
+        info[stem] = dict(exists=ok, poster=jpg.exists(), size=probe_size(mp4) if ok else None)
+    gif, src_note = VID / "brief.gif", VID / "brief.gif.src"
+    best = next((s for s in GIF_ORDER if info[s]["exists"]), None)
+    if best:
+        mp4 = VID / f"{best}.mp4"
+        stale = (not gif.exists() or not src_note.exists() or src_note.read_text().strip() != best
+                 or gif.stat().st_mtime < mp4.stat().st_mtime)
+        if stale and ff("-t", "6", "-i", str(mp4), "-vf", "fps=8,scale=480:-2:flags=lanczos,split[a][b];"
+                        "[a]palettegen=max_colors=96[p];[b][p]paletteuse=dither=bayer", "-loop", "0", str(gif)):
+            src_note.write_text(best + "\n")
+            print(f"  brief GIF from {best}.mp4")
+    info["_gif"] = best if gif.exists() else None
+    return info
+
+
+def clip_html(stem, title, caption, fallback, info):
+    i = info[stem]
+    src = f"video/{stem}.mp4"
+    if i["exists"]:
+        w, h = i["size"] or (960, 540)
+        poster = f' poster="video/{stem}.jpg"' if i["poster"] else ""
+        return (f'<figure class="clip"><video controls muted loop playsinline preload="metadata"{poster} width="{w}" '
+                f'height="{h}" aria-label="{esc(title + ". " + caption)}"><source src="{src}" type="video/mp4"></video>'
+                f'<figcaption><b>{esc(title)}.</b> {esc(caption)}</figcaption></figure>')
+    img, note = (fallback or (None, None))
+    inner = (f'<img src="{esc(img)}" alt="" width="960" height="540" loading="lazy" decoding="async">' if img else "")
+    return (f'<figure class="clip clip-pending" data-clip="{src}" data-title="{esc(title)}" data-caption="{esc(caption)}">'
+            f'<div class="ph" role="img" aria-label="{esc(title)}: clip coming">{inner}'
+            f'<span class="ph-t">Clip coming</span></div>'
+            f'<figcaption><b>{esc(title)}.</b> {esc(caption)}' + (f' {esc(note)}' if note else "") + '</figcaption></figure>')
+
+
+def clips_section(group, info):
+    return "".join(clip_html(stem, t, c, fb, info) for stem, g, t, c, fb in CLIPS if g == group)
+
+
+def gif_html(info):
+    if not info.get("_gif"):
+        return ""
+    title = next(t for s, g, t, c, fb in CLIPS if s == info["_gif"])
+    return (f'<figure class="gif"><img src="video/brief.gif" alt="{esc(title)}: first frame of the clip">'
+            f'<figcaption>{esc(title)}; the clip plays on the live page.</figcaption></figure>')
 
 
 def figure_html(name, alt, caption, pdf=False):
@@ -1725,9 +1816,8 @@ def brief_lines(P, rc, models, cross):
         "instruction stays the same.</li>",
         f"<li><b>π0.5, the control (earlier records).</b> Distillation fixed its two language failures: T1 {e['base']} → "
         f"{e['cand']} of {e['n']} unseen starts ({e['fixed']} fixed, {e['broke']} broke, p = {fp(e['p'])}) and T8 "
-        f"{s4ho['base']} → {s4ho['cand']} of {s4ho['n']}. A random edit of the same size did nothing ({c['rand']} vs "
-        f"{c['base']} of {c['n']}); the T1 edit also lifted T2 and T3 and harmed nothing detectably; no edit helped "
-        "T4–T7.</li>",
+        f"{s4ho['base']} → {s4ho['cand']} of {s4ho['n']}; a random edit of the same size did nothing ({c['rand']} vs "
+        f"{c['base']} of {c['n']}); the T1 edit also lifted T2 and T3; no edit helped T4–T7.</li>",
     ]
     parts = []
     for mid in ("cosmos", "groot"):
@@ -1855,6 +1945,9 @@ def main():
         page = replace_region(page, f"table:{t['id']}", block_html(t, models))
     for name, cap in FIGS:
         page = replace_region(page, f"fig:{name}", figure_html(name, alts[name], cap))
+    clips = prepare_clips()
+    page = replace_region(page, "clips:three", clips_section("three", clips))
+    page = replace_region(page, "clips:before", clips_section("before", clips))
     idx.write_text(page)
     print(f"wrote {idx.relative_to(ROOT)}")
 
@@ -1862,6 +1955,7 @@ def main():
     btxt = br.read_text()
     btxt = replace_region(btxt, "stamp", esc(f"Draft for discussion · {data['status_text']} · {data['updated_text']}"))
     btxt = replace_region(btxt, "summary-lines", brief_lines(P, rc, models, cross))
+    btxt = replace_region(btxt, "gif", gif_html(clips))
     btxt = replace_region(btxt, "table:summary", table_html(summary, models))
     caps = dict(FIGS)
     for name in BRIEF_FIGS:
