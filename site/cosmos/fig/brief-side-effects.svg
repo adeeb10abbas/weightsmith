@@ -100,7 +100,7 @@ L 151.488 53.73
 L 151.488 65.61 
 L 98.592 65.61 
 z
-" clip-path="url(#p8d03b00220)" style="fill: #d7d5cf"/>
+" clip-path="url(#p8d03b00220)" style="fill: #3b3a36"/>
    </g>
    <g id="patch_11">
     <path d="M 154.272 53.73 
@@ -1670,43 +1670,16 @@ z
     </g>
    </g>
    <g id="text_13">
-    <!-- −4 / 16 -->
-    <g style="fill: #1a1915" transform="translate(115.474078 61.272797) scale(0.062 -0.062)">
-     <defs>
-      <path id="ArialMT-2212" d="M 3381 1997 
-L 356 1997 
-L 356 2522 
-L 3381 2522 
-L 3381 1997 
-z
-" transform="scale(0.015625)"/>
-      <path id="ArialMT-34" d="M 2069 0 
-L 2069 1097 
-L 81 1097 
-L 81 1613 
-L 2172 4581 
-L 2631 4581 
-L 2631 1613 
-L 3250 1613 
-L 3250 1097 
-L 2631 1097 
-L 2631 0 
-L 2069 0 
-z
-M 2069 1613 
-L 2069 3678 
-L 634 1613 
-L 2069 1613 
-z
-" transform="scale(0.015625)"/>
-     </defs>
-     <use xlink:href="#ArialMT-2212"/>
-     <use xlink:href="#ArialMT-34" transform="translate(58.398438 0)"/>
-     <use xlink:href="#ArialMT-20" transform="translate(114.013672 0)"/>
-     <use xlink:href="#ArialMT-2f" transform="translate(141.796875 0)"/>
-     <use xlink:href="#ArialMT-20" transform="translate(169.580078 0)"/>
-     <use xlink:href="#ArialMT-31" transform="translate(197.363281 0)"/>
-     <use xlink:href="#ArialMT-36" transform="translate(252.978516 0)"/>
+    <!-- −7 / 16* -->
+    <g style="fill: #ffffff" transform="translate(114.2675 61.277156) scale(0.062 -0.062)">
+     <use xlink:href="#Arial-BoldMT-2212"/>
+     <use xlink:href="#Arial-BoldMT-37" transform="translate(58.398438 0)"/>
+     <use xlink:href="#Arial-BoldMT-20" transform="translate(114.013672 0)"/>
+     <use xlink:href="#Arial-BoldMT-2f" transform="translate(141.796875 0)"/>
+     <use xlink:href="#Arial-BoldMT-20" transform="translate(169.580078 0)"/>
+     <use xlink:href="#Arial-BoldMT-31" transform="translate(197.363281 0)"/>
+     <use xlink:href="#Arial-BoldMT-36" transform="translate(252.978516 0)"/>
+     <use xlink:href="#Arial-BoldMT-2a" transform="translate(308.59375 0)"/>
     </g>
    </g>
    <g id="text_14">
@@ -1739,6 +1712,25 @@ z
     <!-- T4 Stack yellow on red -->
     <g style="fill: #1a1915" transform="translate(1.44 74.9295) scale(0.068 -0.068)">
      <defs>
+      <path id="ArialMT-34" d="M 2069 0 
+L 2069 1097 
+L 81 1097 
+L 81 1613 
+L 2172 4581 
+L 2631 4581 
+L 2631 1613 
+L 3250 1613 
+L 3250 1097 
+L 2631 1097 
+L 2631 0 
+L 2069 0 
+z
+M 2069 1613 
+L 2069 3678 
+L 634 1613 
+L 2069 1613 
+z
+" transform="scale(0.015625)"/>
       <path id="ArialMT-53" d="M 288 1472 
 L 859 1522 
 Q 900 1178 1048 958 
