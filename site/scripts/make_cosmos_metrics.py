@@ -876,7 +876,8 @@ def row_cells(src):
     for tid, rs in by_task.items():
         rs = sorted(rs, key=lambda r: not (r.get("headline") is True or as_int(r.get("headline")) == 1))
         un = [r for r in rs if None not in (as_int(r.get("unedited_k")), as_int(r.get("n")))]
-        un = [r for r in un if "failure" in nk(describe(r.get("experiment")) or "")] or un
+        un = ([r for r in un if "failure" in nk(describe(r.get("experiment")) or "")]
+              or [r for r in un if as_int(r.get("edited_k")) is None and as_int(r.get("teacher_k")) is None] or un)
         if un:
             r = max(un, key=lambda r: as_int(r.get("n")))
             k, n = as_int(r.get("unedited_k")), as_int(r.get("n"))
@@ -916,11 +917,13 @@ def row_cells(src):
         det += [where_txt(r)] + [x for x in (p_note, ci_note) if x]
         if len(ed) > 1:
             det.append(f"{len(ed) - 1} more edit(s) on this task in the where-to-edit table")
+        short_loc = (loc[:26] + "…") if loc and len(loc) > 27 else loc
         cell = C(f"{i['unedited_k']} → {i['edited_k']}" + (f" of {i['n']}" if i["n"] else ""),
-                 "; ".join(x for x in det if x), a=i["unedited_k"], b=i["edited_k"], n=i["n"],
+                 "; ".join(x for x in det if x), a=i["unedited_k"], b=i["edited_k"], n=i["n"], fx=i["fixed"], br=i["broke"],
+                 pv=p,
                  ci=[d, *ci] if (ci is not None and d is not None) else None,
                  color="teal" if loc_class(loc) in (None, "backbone", "both") else "dark",
-                 fl=f"{tid} {SHORT[tid]}" + (f", {loc}" if loc else ""), fb=f"{tid}" + (f" {loc}"[:18] if loc else ""))
+                 fl=f"{tid} {SHORT[tid]}" + (f", {short_loc}" if loc else ""), fb=f"{tid}" + (f" {loc}"[:18] if loc else ""))
         if tid == "R1":
             T["retention"]["R1"] = cell
         else:
@@ -1116,13 +1119,13 @@ def summary_table(P, tables, cross, rc):
     e, c, w, s4ho, bl, tx = P["edit"], P["ctl"], P["where"], P["s4ho"], P["blind"], P["where"]["tx"]
     pi = {
         "T1": C(f"fixed: {e['base']} → {e['cand']} of {e['n']}", f"distilled edit; {e['fixed']} / {e['broke']}, p = {fp(e['p'])}"),
-        "T2": C(f"lifted by the T1 edit: {P['eye']['base']} → {P['eye']['cand']} of {P['eye']['n']}",
-                f"its own edit: {bl['T2']['base']} → {bl['T2']['cand']} of {bl['T2']['n']}, not significant"),
-        "T3": C(f"lifted by the T1 edit: {P['left']['base']} → {P['left']['cand']} of {P['left']['n']}", "no own edit submitted"),
-        "T4": C("no gain", "lookalike perception; no clear wording to distil"),
-        "T5": C("no gain", f"its own edit: {bl['T5']['base']} → {bl['T5']['cand']} of {bl['T5']['n']}; the grasp slips"),
-        "T6": C("no gain", f"its own edit: {bl['T6']['base']} → {bl['T6']['cand']} of {bl['T6']['n']}"),
-        "T7": C("no gain", "a skill the policy lacks; 0 of 64 unedited"),
+        "T2": C(f"T1 edit: {P['eye']['base']} → {P['eye']['cand']} of {P['eye']['n']}",
+                f"own edit {bl['T2']['base']} → {bl['T2']['cand']} of {bl['T2']['n']}, not significant"),
+        "T3": C(f"T1 edit: {P['left']['base']} → {P['left']['cand']} of {P['left']['n']}", "no own edit submitted"),
+        "T4": C("no gain", "lookalike perception; no clear wording"),
+        "T5": C("no gain", f"own edit {bl['T5']['base']} → {bl['T5']['cand']} of {bl['T5']['n']}; the grasp slips"),
+        "T6": C("no gain", f"own edit {bl['T6']['base']} → {bl['T6']['cand']} of {bl['T6']['n']}"),
+        "T7": C("no gain", "a missing skill; 0 of 64 unedited"),
         "T8": C(f"fixed: {s4ho['base']} → {s4ho['cand']} of {s4ho['n']}", f"distilled edit; {s4ho['fixed']} / {s4ho['broke']}, "
                                                                           f"p = {fp(s4ho['p'])}"),
         "R1": C(f"kept: {tx['cube']['base']} → {tx['cube']['arms']['v1full']} of {tx['cube']['n']}", "cube into the bowl, T1 edit"),
@@ -1138,15 +1141,19 @@ def summary_table(P, tables, cross, rc):
             g = rc[mid]["edit_gain" if tid != "R1" else "retention"].get(tid)
             u = rc[mid]["failure_map"].get(tid)
             if g:
-                cell = C(g["v"], g.get("d"))
-            elif u:
-                cell = C(f"unedited {u['v']}", "not edited" if (src and src["final"]) else "not edited yet")
+                bits = [f"{g['fx']} / {g['br']}" if g.get("fx") is not None and g.get("br") is not None else None,
+                        f"p = {fp(g['pv'])}" if g.get("pv") is not None else None]
+                cell = C(g["v"], ", ".join(x for x in bits if x) or None)
+                if mid == "pi05":
+                    cell["d"] = "; ".join(x for x in (cell.get("d"), f"earlier record: {pi[tid]['v']}") if x)
             elif mid == "pi05":
                 cell = dict(pi[tid], prov=True)
+                if u:
+                    cell["d"] = "; ".join(x for x in (cell.get("d"), f"shared slots, unedited: {u['v']}") if x)
+            elif u:
+                cell = C(f"unedited {u['v']}", "not edited" if (src and src["final"]) else "not edited yet")
             else:
                 cell = NA if (src and src["final"]) else RUN
-            if mid == "pi05" and (g or u):
-                cell["d"] = "; ".join(x for x in (cell.get("d"), f"earlier record: {pi[tid]['v']}") if x)
             r["cells"][mid] = cell
         rows.append(r)
     for key, label, tid in (("control", "Random control, same size", "random_control"), ("where", "Where to edit", "where")):
@@ -1317,13 +1324,30 @@ def legend(fig, items, T, H, L, ncol=None):
         t.set_color(T["ink2"])
 
 
+CHANGED = set()
+
+
+def write_if_changed(path, data):
+    """Write bytes only when they differ, so unchanged figures keep their mtime and git sees no change."""
+    if path.exists() and path.read_bytes() == data:
+        return False
+    path.write_bytes(data)
+    CHANGED.add(path.name)
+    return True
+
+
 def save_fig(fig, stem, T, png=True):
+    import io
     import matplotlib.pyplot as plt
     FIG.mkdir(parents=True, exist_ok=True)
     fig.patch.set_facecolor(T["bg"])
-    fig.savefig(FIG / f"{stem}.svg", facecolor=T["bg"], metadata={"Date": None})
+    buf = io.BytesIO()
+    fig.savefig(buf, format="svg", facecolor=T["bg"], metadata={"Date": None})
+    write_if_changed(FIG / f"{stem}.svg", buf.getvalue())
     if png:
-        fig.savefig(FIG / f"{stem}.png", facecolor=T["bg"], dpi=192, metadata={"Software": None})
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png", facecolor=T["bg"], dpi=192, metadata={"Software": None})
+        write_if_changed(FIG / f"{stem}.png", buf.getvalue())
     plt.close(fig)
 
 
@@ -1582,6 +1606,7 @@ def fig_side_effects(tb, models, T, L):
             ax.text(j + 0.5, -0.78, models[m]["name"], ha="center", va="bottom", fontsize=L["FS"], weight="bold",
                     color=T["ink"])
             ed = (t.get("edit") or {}).get(m)
+            ed = re.match(r"the [TR]\d edit", ed).group(0) if ed and re.match(r"the [TR]\d edit", ed) else ed
             ax.text(j + 0.5, -0.16, ed or "edit: running", ha="center", va="bottom", fontsize=L["FS_S"] - 0.6,
                     color=T["mute"])
     grey = mix(T["empty"], T["grey"], 0.55)
@@ -1746,6 +1771,7 @@ def prepare_clips():
         if stale and ff("-t", "6", "-i", str(mp4), "-vf", "fps=8,scale=480:-2:flags=lanczos,split[a][b];"
                         "[a]palettegen=max_colors=96[p];[b][p]paletteuse=dither=bayer", "-loop", "0", str(gif)):
             src_note.write_text(best + "\n")
+            CHANGED.add(gif.name)
             print(f"  brief GIF from {best}.mp4")
     info["_gif"] = best if gif.exists() else None
     return info
@@ -1834,24 +1860,31 @@ def brief_lines(P, rc, models, cross):
 
 
 def print_pdf(src_html, pdf):
+    """Print brief.html to one Letter page: step down the zoom (body data-fit 0-3) until it fits."""
     if not Path(CHROME).exists():
         print(f"  skip PDF: Chrome not found at {CHROME} (set CHROME=...)")
         return
+    text = src_html.read_text()
     with tempfile.TemporaryDirectory() as td:
-        tmp = Path(td) / "brief.pdf"
-        cmd = [CHROME, "--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
-               f"--user-data-dir={td}/profile", "--no-pdf-header-footer", "--virtual-time-budget=10000",
-               f"--print-to-pdf={tmp}", src_html.resolve().as_uri()]
-        subprocess.run(cmd, capture_output=True, text=True, timeout=180)
-        if not tmp.exists():
-            print("  PDF failed: Chrome wrote nothing")
-            return
-        b = tmp.read_bytes()
-        pages = len(re.findall(rb"/Type\s*/Page[^s]", b))
+        for fit in range(4):
+            html_fit = re.sub(r'<body[^>]*>', f'<body data-fit="{fit}">', text, count=1)
+            src_html.write_text(html_fit)
+            tmp = Path(td) / f"brief{fit}.pdf"
+            cmd = [CHROME, "--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
+                   f"--user-data-dir={td}/profile", "--no-pdf-header-footer", "--virtual-time-budget=10000",
+                   f"--print-to-pdf={tmp}", src_html.resolve().as_uri()]
+            subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+            if not tmp.exists():
+                print("  PDF failed: Chrome wrote nothing")
+                return
+            b = tmp.read_bytes()
+            pages = len(re.findall(rb"/Type\s*/Page[^s]", b))
+            if pages == 1:
+                break
         shutil.copyfile(tmp, pdf)
-        print(f"wrote {pdf.relative_to(ROOT)} ({pages} page{'s' if pages != 1 else ''}, {len(b) // 1024} KB)")
+        print(f"wrote {pdf.relative_to(ROOT)} ({pages} page{'s' if pages != 1 else ''}, zoom step {fit}, {len(b) // 1024} KB)")
         if pages != 1:
-            print("  WARNING: the brief should be one page; tighten brief.html")
+            print("  WARNING: the brief does not fit one page even at the smallest zoom; shorten brief.html")
 
 
 # ---------------------------------------------------------------- main
@@ -1934,7 +1967,7 @@ def main():
         alts = {n: c for n, c in FIGS}
     else:
         alts = draw_figures(tables, models)
-        print(f"wrote {len(FIGS) * 4 + len(BRIEF_FIGS)} figure files to {FIG.relative_to(ROOT)}/")
+        print(f"checked {len(FIGS) * 4 + len(BRIEF_FIGS)} figure files in {FIG.relative_to(ROOT)}/")
 
     idx = OUT / "index.html"
     page = idx.read_text()
@@ -1952,7 +1985,7 @@ def main():
     print(f"wrote {idx.relative_to(ROOT)}")
 
     br = OUT / "brief.html"
-    btxt = br.read_text()
+    btxt = old_brief = br.read_text()
     btxt = replace_region(btxt, "stamp", esc(f"Draft for discussion · {data['status_text']} · {data['updated_text']}"))
     btxt = replace_region(btxt, "summary-lines", brief_lines(P, rc, models, cross))
     btxt = replace_region(btxt, "gif", gif_html(clips))
@@ -1964,8 +1997,11 @@ def main():
     print(f"wrote {br.relative_to(ROOT)}")
 
     pdf = OUT / "weightsmith-cosmos-brief.pdf"
-    if not args.no_pdf and (changed or args.force or not pdf.exists()):
+    inputs_changed = btxt != old_brief or any(n.startswith("brief") for n in CHANGED)
+    if not args.no_pdf and (inputs_changed or args.force or not pdf.exists()):
         print_pdf(br, pdf)
+    print(f"  figures rewritten: {len(CHANGED)}" + (f" ({', '.join(sorted(CHANGED)[:6])}{', ...' if len(CHANGED) > 6 else ''})"
+                                                     if CHANGED else ""))
 
 
 if __name__ == "__main__":

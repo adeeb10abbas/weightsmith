@@ -151,9 +151,9 @@
       "s": "running"
      },
      "pi05": {
-      "v": "lifted by the T1 edit: 22 → 44 of 64",
+      "v": "T1 edit: 22 → 44 of 64",
       "s": "ok",
-      "d": "its own edit: 18 → 27 of 64, not significant",
+      "d": "own edit 18 → 27 of 64, not significant",
       "prov": true
      }
     }
@@ -171,7 +171,7 @@
       "s": "running"
      },
      "pi05": {
-      "v": "lifted by the T1 edit: 8 → 36 of 64",
+      "v": "T1 edit: 8 → 36 of 64",
       "s": "ok",
       "d": "no own edit submitted",
       "prov": true
@@ -193,7 +193,7 @@
      "pi05": {
       "v": "no gain",
       "s": "ok",
-      "d": "lookalike perception; no clear wording to distil",
+      "d": "lookalike perception; no clear wording",
       "prov": true
      }
     }
@@ -213,7 +213,7 @@
      "pi05": {
       "v": "no gain",
       "s": "ok",
-      "d": "its own edit: 8 → 11 of 64; the grasp slips",
+      "d": "own edit 8 → 11 of 64; the grasp slips",
       "prov": true
      }
     }
@@ -233,7 +233,7 @@
      "pi05": {
       "v": "no gain",
       "s": "ok",
-      "d": "its own edit: 35 → 39 of 64",
+      "d": "own edit 35 → 39 of 64",
       "prov": true
      }
     }
@@ -253,7 +253,7 @@
      "pi05": {
       "v": "no gain",
       "s": "ok",
-      "d": "a skill the policy lacks; 0 of 64 unedited",
+      "d": "a missing skill; 0 of 64 unedited",
       "prov": true
      }
     }
@@ -1934,8 +1934,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "74f105b8fd92cd21",
- "updated": "2026-11-08T05:11Z",
- "updated_text": "8 Nov 2026, 05:11 UTC",
+ "content_hash": "bc12afaa8d507713",
+ "updated": "2026-11-08T05:20Z",
+ "updated_text": "8 Nov 2026, 05:20 UTC",
  "status_text": "Cosmos3 Edge Policy: running · GR00T N1.7: running · π0.5: earlier records"
 }
