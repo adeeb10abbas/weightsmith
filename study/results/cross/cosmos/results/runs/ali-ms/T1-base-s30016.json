@@ -1,0 +1,263 @@
+{
+ "tag": "T1-base-s30016",
+ "machine": "ali-ms",
+ "gpu": 0,
+ "task": "RubiksCubeThenBananaTask",
+ "prompt": null,
+ "edit": null,
+ "slots": [
+  30016,
+  30031
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 11,
+ "groups": [
+  {
+   "group": 1876,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 636.6,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.robolab/cosmosx-T1-base-s30016-g1876o0-1108-114819"
+  },
+  {
+   "group": 1876,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 627.6,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.robolab/cosmosx-T1-base-s30016-g1876o8-1108-115855"
+  }
+ ],
+ "server_load": {
+  "edit": null,
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 11.6
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 1306.4,
+ "server_ready_s": 12.0,
+ "started": "2026-11-08 11:48:07",
+ "finished": "2026-11-08 12:09:53",
+ "rows": [
+  {
+   "slot": 30016,
+   "group": 1876,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_in_container(object=rubiks_cube, container=bowl, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30017,
+   "group": 1876,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 360,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 2/2",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30018,
+   "group": 1876,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 740,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 2/2",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30019,
+   "group": 1876,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=banana) (step 1/2)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30020,
+   "group": 1876,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 664,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Wrong object that was grabbed is now detached: 'banana'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30021,
+   "group": 1876,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=banana) (step 1/2)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30022,
+   "group": 1876,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 552,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 2/2",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30023,
+   "group": 1876,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 803,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Wrong object that was grabbed is now detached: 'banana'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 30024,
+   "group": 1876,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 835,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 2/2",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30025,
+   "group": 1876,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 450,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 2/2",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30026,
+   "group": 1876,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=banana) (step 1/2)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30027,
+   "group": 1876,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 331,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 2/2",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30028,
+   "group": 1876,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 642,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 2/2",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30029,
+   "group": 1876,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 311,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 2/2",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30030,
+   "group": 1876,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=banana) (step 1/2)",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30031,
+   "group": 1876,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 422,
+   "instruction": "Put the cube then the banana in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 2/2",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T1-base-s30016.obs/g1876o8/obs_r0_e7.npz"
+  }
+ ]
+}
