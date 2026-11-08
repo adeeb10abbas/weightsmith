@@ -23,7 +23,8 @@ Inputs
   "status": "final" turns that model's empty cells from "running" to "—". Rows name their edit in an edit field or as
   "edit NAME" in the notes (offline records in offline.edit). Follow-up builds of an edit, named like it with one more
   letter ("t8undp", "t8undr" after "t8und"; hyphens ignored), stay out of the main tables and fill the subsection
-  "Can the side effect be prevented?" (PREVENT), with their offline gates.
+  "Can the side effect be prevented?" (PREVENT), with their offline gates. Stacked edits, named after two tasks
+  ("t8t3und"), stay out of the main tables (stacked()); the headline task (PREVENT["target"]) is the main fix.
   pi0.5's earlier records fill its column until the shared-slot runs land, each labelled with its own slots and n:
     study/results/opus/heldout/*.json              held-out runs: per-slot outcomes, Wilson CIs, exact McNemar p
     study/results/opus/comparisons.json            every paired comparison (noise controls, transfer map)
@@ -988,6 +989,11 @@ def edit_key(r):
     return nk(n) if n else None
 
 
+def stacked(name):
+    """True for an edit named after two tasks or more ('t8t3und'), i.e. one task's edit built on another's."""
+    return bool(name) and len(re.findall(r"[tr][1-8]", name)) > 1
+
+
 def followups(rows):
     """Follow-up builds of an edit, named like it with one letter more ('t8undp', 't8undr' after 't8und'):
     {follow-up: base}. They are not other edit locations, so the main tables leave them out."""
@@ -1035,7 +1041,9 @@ def row_cells(src):
     if not src or not src["rows"]:
         return T
     fu = followups(src["rows"])   # follow-up builds of an edit go to their own table (prevention), not these
-    rows = [r for r in src["rows"] if edit_key(r) not in fu]
+    # stacked edits ('t8t3und': one task's edit built on top of another's) are neither task's own edit: kept out of
+    # these tables, so they never stand in for a task's edit, its where-to-edit bars or its side-effect map
+    rows = [r for r in src["rows"] if edit_key(r) not in fu and not stacked(edit_key(r))]
     own = [r for r in rows if r["_task"] and not (r["_edit_task"] and r["_edit_task"] != r["_task"])]
     by_task = {}
     for r in own:
@@ -2087,7 +2095,7 @@ def summary_table(P, tables, cross, rc):
             src = cross.get(mid)
             got = rc[mid][tid]
             if key == "control" and got:
-                k0 = sorted(got)[0]
+                k0 = (PREVENT["target"] if mid == PREVENT["model"] and PREVENT["target"] in got else sorted(got)[0])
                 r["cells"][mid] = C(got[k0]["v"], k0, prac=got[k0].get("prac"))
             elif key == "where" and got.get("_bars"):
                 wb = got["_bars"]
@@ -3031,7 +3039,10 @@ def _ok(c, f=("a", "b", "n")):
 def main_fix(tables, mid="cosmos"):
     """The model's edit on unseen starts with a significant gain, and its random control: (task, cell, control) or None."""
     T = _cells(tables)
-    for tid in [t[0] for t in TASKS]:
+    order = [t[0] for t in TASKS]
+    if mid == PREVENT["model"]:     # the page's headline task first: a later edit for another task never takes its place
+        order = [PREVENT["target"]] + [t for t in order if t != PREVENT["target"]]
+    for tid in order:
         c = T["edit_gain"].get(tid, {}).get(mid)
         if _ok(c) and not c.get("prac") and c.get("pv") is not None and c["pv"] < SIG and c["b"] > c["a"]:
             return tid, c, T["random_control"].get(tid, {}).get(mid)
