@@ -759,28 +759,28 @@
   "wording_pair": [
    "Put the cube in the bowl"
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    30000,
-   30015
+   30031
   ],
-  "unedited_k": 9,
-  "edited_k": 13,
-  "fixed": 6,
-  "broke": 2,
-  "p": 0.2890625,
+  "unedited_k": 21,
+  "edited_k": 27,
+  "fixed": 9,
+  "broke": 3,
+  "p": 0.14599609375,
   "ci": {
-   "diff_pts": 25.0,
+   "diff_pts": 18.75,
    "bootstrap95_pts": [
-    -6.25,
-    56.25
+    0.0,
+    40.62
    ]
   },
   "control_k": null,
   "teacher_k": null,
   "recovery_pct": null,
   "transfer": null,
-  "retention": 25.0,
+  "retention": 18.75,
   "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
   "values_changed": 179010015,
   "notes": "edit t8und built for T8, run on R1 with R1's default instruction, practice slots"
