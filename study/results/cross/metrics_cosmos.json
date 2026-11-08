@@ -32,5 +32,49 @@
   "edit_location": null,
   "values_changed": null,
   "notes": "unedited policy, task's default instruction, practice slots, default render"
+ },
+ {
+  "experiment": "wording",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "MustardRightOfRaisinRFTask",
+  "code": "T8",
+  "wording_pair": [
+   "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 0,
+  "edited_k": null,
+  "fixed": 15,
+  "broke": 0,
+  "p": 6.103515625e-05,
+  "ci": {
+   "diff_pts": 93.75,
+   "bootstrap95_pts": [
+    81.25,
+    100.0
+   ],
+   "wilson95_orig_pct": [
+    0.0,
+    19.4
+   ],
+   "wilson95_alt_pct": [
+    71.7,
+    98.9
+   ]
+  },
+  "control_k": null,
+  "teacher_k": 15,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": null,
+  "values_changed": null,
+  "notes": "same weights, wording via prompt override; fixed = only the alternative wording succeeds. target-first wording of the same goal (Same Goal, Different Words; known-good for pi0.5)"
  }
 ]

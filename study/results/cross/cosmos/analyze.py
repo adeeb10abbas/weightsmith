@@ -23,7 +23,7 @@ RUNS = HERE / "results" / "runs"
 PLOTS = HERE / "plots"
 METRICS = HERE.parent / "metrics_cosmos.json"
 MODEL = "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288"
-GPU_NAMES = {"ali-ms": "RTX 3090 24 GB", "us-pod": "RTX 4080 SUPER 32 GB"}
+GPU_NAMES = {"ali-ms": "RTX 3090 24 GB", "korea-rtxpro4000": "RTX PRO 4000 Blackwell 24 GB"}
 
 sys.path.insert(0, str(HERE / "scripts"))
 from tasks import TASKS as _T, WORDINGS as _W  # noqa: E402
