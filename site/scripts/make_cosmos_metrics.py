@@ -3,7 +3,11 @@
 
     python3 site/scripts/make_cosmos_metrics.py            # fetch the three cross-model branches, rebuild all outputs
     python3 site/scripts/make_cosmos_metrics.py --no-fetch # use the remote-tracking refs as they are
-    python3 site/scripts/make_cosmos_metrics.py --cosmos a.json --groot b.json --pi05 c.json   # local files instead
+    python3 site/scripts/make_cosmos_metrics.py --cosmos a.json --out /tmp/site-test  # test records: a copy of site/
+
+Test records (--cosmos / --groot / --pi05 files) need --out DIR: every output then goes to a fresh copy of site/ there,
+never to site/cosmos. The "updated" stamp moves only when a source branch moved and a number the page shows changed,
+both against the committed metrics.json (HEAD; numbers_hash); --set-updated resets it by hand.
 
 The page asks where weight-space programming fixes failures in a world-action model (NVIDIA Cosmos3 Edge Policy) and
 in a VLA on a reasoning backbone (NVIDIA GR00T N1.7 DROID, Cosmos-Reason2-2B), with OpenPI pi0.5 as the control, on
@@ -2017,6 +2021,13 @@ def build_tables(P, cross):
     rc = {mid: row_cells(subset(cross.get(mid), False)) for mid in ORDER}   # shared-slot runs
     rcp = {mid: row_cells(subset(cross.get(mid), True)) for mid in ORDER}   # a track's earlier records
     cross_check(prov, rcp)
+    # fresh pi0.5 cells replace the earlier records only where they cover the same comparison: a where-to-edit with
+    # fewer places than the earlier one does not, nor does one sample size's detectable effect replace the whole curve
+    locs = lambda d: sum(k in d for k in ("backbone", "action", "both"))
+    if locs(rc["pi05"]["where"]) < locs(prov["where"]):
+        rc["pi05"]["where"] = {}
+    if "mde" in prov["noise"]:
+        rc["pi05"]["noise"].pop("mde", None)
     tables = []
     order = {t[0]: i for i, t in enumerate(TASKS)}
     rcell = render_cells(cross)
@@ -2100,9 +2111,23 @@ def summary_table(P, tables, cross, rc):
                 if mid == "pi05":
                     cell["d"] = "; ".join(x for x in (cell.get("d"), f"earlier record: {pi[tid]['v']}") if x)
             elif mid == "pi05":
-                cell = dict(pi[tid], prov=True)
-                if u:
-                    cell["d"] = "; ".join(x for x in (cell.get("d"), f"shared slots, unedited: {u['v']}") if x)
+                se = rc[mid]["side_effects"].get(tid) or {}
+                fresh_se = se.get("s") == "ok" and not se.get("target")
+                m_et = re.match(r"the ([TR]\d) edit", (rc[mid]["side_effects"].get("_edit") or {}).get("v") or "")
+                same = fresh_se and m_et and (pi[tid]["v"].startswith(f"{m_et.group(1)} edit")
+                                              or (tid == "R1" and f"{m_et.group(1)} edit" in (pi[tid].get("d") or "")))
+                if same:   # a fresh run of the same comparison replaces the earlier record, which moves to the detail
+                    cell = C(f"{m_et.group(1)} edit: {se['a']} → {se['b']} of {se['n']}" if tid != "R1" else
+                             f"{'kept' if se['b'] >= se['a'] else 'lowered'}: {se['a']} → {se['b']} of {se['n']}",
+                             "; ".join(x for x in (se.get("d", "").split("; slots")[0].replace("; practice starts", ""),
+                                                   f"earlier record: {pi[tid]['v']}") if x), prac=se.get("prac"))
+                else:
+                    cell = dict(pi[tid], prov=True)
+                    if u:
+                        cell["d"] = "; ".join(x for x in (cell.get("d"), f"shared slots, unedited: {u['v']}") if x)
+                    if fresh_se and m_et:
+                        cell["d"] = "; ".join(x for x in (cell.get("d"), f"shared slots, {m_et.group(1)} edit: "
+                                                          f"{se['a']} → {se['b']} of {se['n']}") if x)
             elif (rc[mid]["side_effects"].get(tid) or {}).get("s") == "ok" and not rc[mid]["side_effects"][tid].get("target"):
                 se = rc[mid]["side_effects"][tid]
                 m_et = re.match(r"the ([TR]\d) edit", (rc[mid]["side_effects"].get("_edit") or {}).get("v") or "")
@@ -3358,9 +3383,16 @@ def control_text(P, tables):
     lifted = [t for t in ("T2", "T3", "T4", "T5", "T6", "T7") if _ok(T["side_effects"].get(t, {}).get("pi05"), ("a", "b", "n", "delta"))
               and T["side_effects"][t]["pi05"].get("p") is not None and T["side_effects"][t]["pi05"]["p"] < SIG
               and T["side_effects"][t]["pi05"]["delta"] > 0]
-    s = (f"π0.5 is where the method comes from, and our control. In earlier runs, from other starts, the edit lifted "
-         f"{tn('T1')} from {e['base']} to {e['cand']} of {e['n']} unseen starts and {tn('T8')} from {s4['base']} to "
-         f"{s4['cand']} of {s4['n']}; a random edit of the same size scored {c['rand']} of {c['n']} on {tn('T1')}, "
+    fe, fr = T["edit_gain"].get("T1", {}).get("pi05"), T["random_control"].get("T1", {}).get("pi05")
+    fresh = ""
+    if _ok(fe) and not fe.get("prov"):   # this page's own starts first; the earlier runs follow as context
+        fresh = (f" From this page’s {fe['n']}{' practice' if fe.get('prac') else ' unseen'} starts, the edit lifted "
+                 f"{tn('T1')} from {fe['a']} to {fe['b']}"
+                 + (f"; a random edit of the same size scored {fr['r']}" if fr and fr.get("s") == "ok" and not fr.get("prov")
+                    and fr.get("r") is not None and fr.get("n") == fe["n"] else "") + ".")
+    s = (f"π0.5 is where the method comes from, and our control.{fresh} In earlier runs, from other starts, the edit "
+         f"lifted {tn('T1')} from {e['base']} to {e['cand']} of {e['n']} unseen starts and {tn('T8')} from {s4['base']} "
+         f"to {s4['cand']} of {s4['n']}; a random edit of the same size scored {c['rand']} of {c['n']} on {tn('T1')}, "
          f"against {c['base']} unedited.")
     if lifted:
         s += f" The {tn('T1')} edit also lifted {and_list(tn(t) for t in lifted)}."
@@ -4815,6 +4847,33 @@ def conclusion_html(tables, models, prevent=None):
     return "".join(out)
 
 
+def numbers_hash(data):
+    """A hash of every number the page's tables show (cell values and details, by table, row and model), the TL;DR
+    and the generated paragraphs' numbers; wording changes in the code do not change it, new or changed numbers do."""
+    nums = []
+
+    def cells(prefix, rows, key="key"):
+        for r in rows:
+            for m, c in (r.get("cells") or {}).items():
+                if isinstance(c, dict):
+                    for f in ("v", "d"):
+                        nums.append((prefix, str(r.get(key)), m, f, re.findall(r"\d+(?:\.\d+)?", str(c.get(f) or ""))))
+    for t in data["tables"] + [data["summary"]]:
+        cells(t["id"], t["rows"])
+    cells("prevention", (data.get("prevention") or {}).get("rows") or [], "name")
+    cells("second", (data.get("second_edit") or {}).get("rows") or [], "name")
+    nums.append(("tldr", re.findall(r"\d+(?:\.\d+)?", json.dumps(data.get("tldr"), ensure_ascii=False))))
+    return hashlib.sha256(json.dumps(nums, ensure_ascii=False).encode()).hexdigest()[:16]
+
+
+def rel(path):
+    """A path for messages: relative to the repository when inside it (a test copy under --out may not be)."""
+    try:
+        return Path(path).resolve().relative_to(ROOT)
+    except ValueError:
+        return path
+
+
 def print_pdf(src_html, pdf):
     """Print brief.html to one Letter page: step down the zoom (body data-fit 0-3) until it fits."""
     if not Path(CHROME).exists():
@@ -4838,7 +4897,7 @@ def print_pdf(src_html, pdf):
             if pages == 1:
                 break
         shutil.copyfile(tmp, pdf)
-        print(f"wrote {pdf.relative_to(ROOT)} ({pages} page{'s' if pages != 1 else ''}, zoom step {fit}, {len(b) // 1024} KB)")
+        print(f"wrote {rel(pdf)} ({pages} page{'s' if pages != 1 else ''}, zoom step {fit}, {len(b) // 1024} KB)")
         if pages != 1:
             print("  WARNING: the brief does not fit one page even at the smallest zoom; shorten brief.html")
 
@@ -4853,7 +4912,25 @@ def main():
     ap.add_argument("--no-figures", action="store_true")
     ap.add_argument("--no-pdf", action="store_true")
     ap.add_argument("--force", action="store_true", help="print the PDF even if nothing changed")
+    ap.add_argument("--out", help="write everything into a fresh copy of site/ at this directory (videos linked), never "
+                                  "into site/cosmos; required with --cosmos / --groot / --pi05, so test records can never "
+                                  "touch the committed outputs or the updated stamp")
+    ap.add_argument("--set-updated", help="set the updated stamp (YYYY-MM-DDTHH:MMZ), to reset it to the last real data "
+                                          "change")
     args = ap.parse_args()
+    global OUT, FIG, VID
+    if (args.cosmos or args.groot or args.pi05) and not args.out:
+        ap.error("local record files are for tests: pass --out DIR so the committed outputs stay untouched")
+    if args.out:
+        dst = Path(args.out).resolve()
+        site = (ROOT / "site").resolve()
+        if dst == site or site in dst.parents or dst in site.parents:
+            ap.error("--out must be outside site/")
+        shutil.rmtree(dst, ignore_errors=True)
+        shutil.copytree(site, dst, ignore=shutil.ignore_patterns("video"))
+        (dst / "cosmos" / "video").symlink_to(site / "cosmos" / "video")
+        OUT, FIG, VID = dst / "cosmos", dst / "cosmos" / "fig", dst / "cosmos" / "video"
+        print(f"  test run: every output goes to {dst}")
 
     if not args.no_fetch:
         for _, branch, _ in SOURCES:
@@ -4945,18 +5022,31 @@ def main():
     changed = old.get("content_hash") != h
     now = dt.datetime.now(dt.timezone.utc)
     data["content_hash"] = h
-    data["updated"] = old["updated"] if (not changed and old.get("updated")) else now.strftime("%Y-%m-%dT%H:%MZ")
+    # The "updated" stamp says when the data last changed: it moves only when a source branch moved AND a number the
+    # page shows changed, both against the committed outputs (HEAD), so a code change, a rerun or a test cannot move it.
+    head = git("show", "HEAD:site/cosmos/metrics.json")
+    try:
+        ref = json.loads(head) if head else old
+    except ValueError:
+        ref = old
+    nh = numbers_hash(data)
+    commits = {m: (data["sources"].get(m) or {}).get("commit") for m in ORDER}
+    ref_commits = {m: ((ref.get("sources") or {}).get(m) or {}).get("commit") for m in ORDER}
+    moved = ref.get("numbers_hash") is not None and nh != ref.get("numbers_hash") and commits != ref_commits
+    data["numbers_hash"] = nh
+    data["updated"] = (args.set_updated or (now.strftime("%Y-%m-%dT%H:%MZ") if moved or not ref.get("updated")
+                                            else ref["updated"]))
     upd = dt.datetime.strptime(data["updated"], "%Y-%m-%dT%H:%MZ")
     data["updated_text"] = f"{upd.day} {upd:%b %Y}, {upd:%H:%M} UTC"
     data["status_text"] = " · ".join(f"{models[m]['name']}: {STATUS[models[m]['status']]}" for m in ORDER)
     mpath.write_text(json.dumps(data, indent=1, ensure_ascii=False) + "\n")
-    print(f"wrote {mpath.relative_to(ROOT)} ({'changed' if changed else 'unchanged'}, {h})")
+    print(f"wrote {rel(mpath)} ({'changed' if changed else 'unchanged'}, {h})")
 
     if args.no_figures:
         alts = {n: c for n, c in FIGS}
     else:
         alts = draw_figures(dename_deep(tables), models)
-        print(f"checked {len(FIGS) * 4 + len(BRIEF_FIGS)} figure files in {FIG.relative_to(ROOT)}/")
+        print(f"checked {len(FIGS) * 4 + len(BRIEF_FIGS)} figure files in {rel(FIG)}/")
 
     idx = OUT / "index.html"
     page = replace_region(page, "tldr", tldr_html(data["tldr"]))
@@ -5008,7 +5098,7 @@ def main():
     page = (dename(page[:keep.start()]) + keep.group(0) + dename(page[keep.end():])) if keep else dename(page)
     idx.write_text(page)
     print(f"  {nfig} numbered figures and clips; {words:,} words, {mins} min read")
-    print(f"wrote {idx.relative_to(ROOT)}")
+    print(f"wrote {rel(idx)}")
 
     br = OUT / "brief.html"
     btxt = old_brief = br.read_text()
@@ -5020,14 +5110,14 @@ def main():
     for r in sb["rows"]:
         c = r["cells"].get("pi05") or {}
         if c.get("d"):
-            c["d"] = re.sub(r"(?:^|; )shared slots, unedited: [^;]*", "", c["d"]) or None
+            c["d"] = re.sub(r"(?:^|; )shared slots, [^;]*", "", c["d"]) or None
     btxt = replace_region(btxt, "table:summary", table_html(sb, models))
     caps = dict(FIGS)
     for name in BRIEF_FIGS:
         btxt = replace_region(btxt, f"fig:{name}", figure_html(name, alts[name], caps[name], pdf=True))
     btxt = dename(btxt)
     br.write_text(btxt)
-    print(f"wrote {br.relative_to(ROOT)}")
+    print(f"wrote {rel(br)}")
 
     pdf = OUT / "weightsmith-cosmos-brief.pdf"
     inputs_changed = btxt != old_brief or any(n.startswith("brief") for n in CHANGED)
