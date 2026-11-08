@@ -1,0 +1,261 @@
+{
+ "tag": "T5-base-s96000",
+ "task": "MustardInLeftBinTask",
+ "prompt": null,
+ "edit": null,
+ "slots": [
+  96000,
+  96015
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 8,
+ "groups": [
+  {
+   "group": 6000,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 285.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.robolab/cosmosx-T5-base-s96000-g6000o0-1108-063405"
+  },
+  {
+   "group": 6000,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 264.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.robolab/cosmosx-T5-base-s96000-g6000o8-1108-063851"
+  }
+ ],
+ "server_load": {
+  "edit": null,
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 13.0
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 593.8,
+ "server_ready_s": 14.0,
+ "started": "2026-11-08 06:33:51",
+ "finished": "2026-11-08 06:43:45",
+ "rows": [
+  {
+   "slot": 96000,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 229,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96001,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 181,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96002,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96003,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96004,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96005,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 150,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96006,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96007,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 96008,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 415,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96009,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 226,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96010,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96011,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_in_container(object=mustard, container=grey_bin_left, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96012,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Condition not satisfied: object_in_container(object=mustard, container=grey_bin_left, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96013,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 123,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96014,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 148,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96015,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 156,
+   "instruction": "Put the mustard in the left bin",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T5-base-s96000.obs/g6000o8/obs_r0_e7.npz"
+  }
+ ]
+}
