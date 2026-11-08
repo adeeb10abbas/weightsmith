@@ -3337,7 +3337,7 @@
     71.9
    ]
   },
-  "control_k": null,
+  "control_k": 0,
   "teacher_k": null,
   "recovery_pct": null,
   "transfer": null,
@@ -3349,71 +3349,87 @@
   "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
   "values_changed": 450468837,
   "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the explicit wording 'Put the cube in the bowl then put the banana in the bowl'",
-  "notes": "held-out slots (never used for any choice); instruction unchanged (task default); per_slot = [unedited, edited]",
+  "notes": "held-out slots (never used for any choice); instruction unchanged (task default); per_slot = [unedited, edited, control]",
   "per_slot": {
    "96000": [
     0,
-    1
+    1,
+    0
    ],
    "96001": [
+    0,
     0,
     0
    ],
    "96002": [
     0,
-    1
+    1,
+    0
    ],
    "96003": [
     1,
-    1
+    1,
+    0
    ],
    "96004": [
     0,
-    1
+    1,
+    0
    ],
    "96005": [
     0,
-    1
+    1,
+    0
    ],
    "96006": [
     0,
-    1
+    1,
+    0
    ],
    "96007": [
+    0,
     0,
     0
    ],
    "96008": [
     0,
+    0,
     0
    ],
    "96009": [
     0,
-    1
+    1,
+    0
    ],
    "96010": [
     0,
-    1
+    1,
+    0
    ],
    "96011": [
+    0,
     0,
     0
    ],
    "96012": [
     0,
+    0,
     0
    ],
    "96013": [
+    0,
     0,
     0
    ],
    "96014": [
     0,
+    0,
     0
    ],
    "96015": [
     0,
-    1
+    1,
+    0
    ],
    "96016": [
     0,
@@ -3479,6 +3495,35 @@
     0,
     1
    ]
+  },
+  "control": {
+   "name": "ctl-rand",
+   "fingerprint": "1efd3512a92642f7",
+   "slots": [
+    96000,
+    96015
+   ],
+   "n": 16,
+   "k": 0,
+   "wilson95_pct": [
+    0.0,
+    19.4
+   ],
+   "unedited_k_same_slots": 1,
+   "edited_k_same_slots": 9,
+   "vs_unedited": {
+    "fixed": 0,
+    "broke": 1,
+    "p": 1.0
+   },
+   "edit_vs_control": {
+    "edit_only": 9,
+    "control_only": 0,
+    "p": 0.00390625
+   },
+   "edit_location": "same layers as v2mi-f",
+   "values_changed": 502291925,
+   "values_changed_note": "random-direction control: v2mi-f's layers, rank and singular values, random orthonormal directions (seed 0)"
   }
  }
 ]

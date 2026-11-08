@@ -40,7 +40,7 @@ EDIT_INFO = {
                "values_changed": 450468837,
                "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the "
                                       "explicit wording 'Put the cube in the bowl then put the banana in the bowl'"},
-    "ctl-rand": {"edit_location": "same layers as v2mi-f", "values_changed": 450468837,
+    "ctl-rand": {"edit_location": "same layers as v2mi-f", "values_changed": None,
                  "values_changed_note": "random-direction control: v2mi-f's layers, rank and singular values, random "
                                         "orthonormal directions (seed 0)"},
 }
@@ -64,6 +64,12 @@ def load_runs():
         for row in r["rows"]:
             d[row["slot"]] = bool(row["success"])
         recs[r["tag"]] = r
+        ce = (r.get("server") or {}).get("changed_elements")
+        if r["arm"] in EDIT_INFO and ce is not None:
+            prev = EDIT_INFO[r["arm"]]["values_changed"]
+            if prev is not None and prev != ce:
+                raise SystemExit(f"{r['tag']}: server changed {ce} values, expected {prev}")
+            EDIT_INFO[r["arm"]]["values_changed"] = ce
     envs = sorted({r.get("envs_per_process") for r in recs.values()})
     if len(envs) > 1:
         raise SystemExit(f"mixed process layouts {envs}: pair only like with like")
