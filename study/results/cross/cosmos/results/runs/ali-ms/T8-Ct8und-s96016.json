@@ -1,0 +1,484 @@
+{
+ "tag": "T8-Ct8und-s96016",
+ "task": "MustardRightOfRaisinRFTask",
+ "prompt": null,
+ "edit": "edits/t8und-ctl.pt",
+ "slots": [
+  96016,
+  96031
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 0,
+ "groups": [
+  {
+   "group": 6001,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 387.4,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.robolab/cosmosx-T8-Ct8und-s96016-g6001o0-1108-030306"
+  },
+  {
+   "group": 6001,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 333.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.robolab/cosmosx-T8-Ct8und-s96016-g6001o8-1108-030934"
+  }
+ ],
+ "server_load": {
+  "edit": {
+   "file": "edits/t8und-ctl.pt",
+   "sha256_16": "281d2212c1129b6b",
+   "params": {
+    "net.language_model.model.layers.0.mlp.down_proj.weight": {
+     "before": "1d39ef5603a6f978",
+     "after": "35e53445d1a550b8",
+     "rank": 72,
+     "stored_values": 811008,
+     "changed_values": 18672000,
+     "rel_fro": 0.2291042403432918
+    },
+    "net.language_model.model.layers.1.mlp.down_proj.weight": {
+     "before": "391726b0f6ce600d",
+     "after": "e0f9faa4ba63555e",
+     "rank": 186,
+     "stored_values": 2095104,
+     "changed_values": 5641373,
+     "rel_fro": 0.0015642175327847368
+    },
+    "net.language_model.model.layers.2.mlp.down_proj.weight": {
+     "before": "5f13aae5da43e3db",
+     "after": "21a21475ea4ed13f",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 18492109,
+     "rel_fro": 0.13174783154870462
+    },
+    "net.language_model.model.layers.3.mlp.down_proj.weight": {
+     "before": "8b66d5174d9e3dd7",
+     "after": "ac1b9ea04578e172",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 17251377,
+     "rel_fro": 0.032933263125813995
+    },
+    "net.language_model.model.layers.4.mlp.down_proj.weight": {
+     "before": "9db48a6f35258710",
+     "after": "016abb0702223c91",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 12884311,
+     "rel_fro": 0.0057679616635117675
+    },
+    "net.language_model.model.layers.5.mlp.down_proj.weight": {
+     "before": "0d51d74d0f8daac7",
+     "after": "55d12d6cfe12494e",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 16122079,
+     "rel_fro": 0.015171114808197378
+    },
+    "net.language_model.model.layers.6.mlp.down_proj.weight": {
+     "before": "5bd7035fb223095d",
+     "after": "fed02941f7784938",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 13073619,
+     "rel_fro": 0.006139513456993522
+    },
+    "net.language_model.model.layers.7.mlp.down_proj.weight": {
+     "before": "ab727ad94296aef6",
+     "after": "fcd3d6ab5a165d09",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 16749621,
+     "rel_fro": 0.02295421111609628
+    },
+    "net.language_model.model.layers.8.mlp.down_proj.weight": {
+     "before": "74cd2e356e4867ba",
+     "after": "1f77aff87d23acd1",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 16998272,
+     "rel_fro": 0.02995048747844924
+    },
+    "net.language_model.model.layers.9.mlp.down_proj.weight": {
+     "before": "a0ed89101004e555",
+     "after": "60818666df2bf29a",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 16700528,
+     "rel_fro": 0.02887173971563847
+    },
+    "net.language_model.model.layers.10.mlp.down_proj.weight": {
+     "before": "bbd735403d342bf4",
+     "after": "5bbb68e0da466b88",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 14695221,
+     "rel_fro": 0.010841051615055051
+    },
+    "net.language_model.model.layers.11.mlp.down_proj.weight": {
+     "before": "36241a3cb268d490",
+     "after": "edb100f231aae124",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 15686974,
+     "rel_fro": 0.013481857427942645
+    },
+    "net.language_model.model.layers.12.mlp.down_proj.weight": {
+     "before": "fc00fcc1d09fcbc5",
+     "after": "0d992d688630e3f8",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 11934736,
+     "rel_fro": 0.00571419451697733
+    },
+    "net.language_model.model.layers.13.mlp.down_proj.weight": {
+     "before": "efd7df5f28ff359e",
+     "after": "d80464363a8b9225",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 15601972,
+     "rel_fro": 0.014834626816940488
+    },
+    "net.language_model.model.layers.14.mlp.down_proj.weight": {
+     "before": "1eb21952024e720a",
+     "after": "3ed9b6f59ca6078b",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 8957606,
+     "rel_fro": 0.002545594908258195
+    },
+    "net.language_model.model.layers.15.mlp.down_proj.weight": {
+     "before": "eabef15a9d45f5d4",
+     "after": "620e812474fc2725",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 15495296,
+     "rel_fro": 0.01412310367239052
+    },
+    "net.language_model.model.layers.16.mlp.down_proj.weight": {
+     "before": "8fe1bfb53c7e12d4",
+     "after": "757141179e8ab1a1",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 14306999,
+     "rel_fro": 0.009005069221003772
+    },
+    "net.language_model.model.layers.17.mlp.down_proj.weight": {
+     "before": "e7ea1d6f0204955d",
+     "after": "ce5db53b2cda0939",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 13654215,
+     "rel_fro": 0.007353973489836395
+    },
+    "net.language_model.model.layers.18.mlp.down_proj.weight": {
+     "before": "cbb9165c17c5be7a",
+     "after": "211122dead72da7a",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 13126197,
+     "rel_fro": 0.006317383047331647
+    },
+    "net.language_model.model.layers.19.mlp.down_proj.weight": {
+     "before": "6caa3f6d87e10535",
+     "after": "1b57c75ad90b9043",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 13137875,
+     "rel_fro": 0.006105614998324726
+    },
+    "net.language_model.model.layers.20.mlp.down_proj.weight": {
+     "before": "6c170ee596770496",
+     "after": "ba3867e9fbbd8d15",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 12469562,
+     "rel_fro": 0.005463375154574374
+    },
+    "net.language_model.model.layers.21.mlp.down_proj.weight": {
+     "before": "482755ac9431f291",
+     "after": "af1ccc88ca1a385e",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 12506733,
+     "rel_fro": 0.005313461905817749
+    },
+    "net.language_model.model.layers.22.mlp.down_proj.weight": {
+     "before": "b87e6ef3147df623",
+     "after": "0457db59cbaff9d7",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 12558441,
+     "rel_fro": 0.005922092960854464
+    },
+    "net.language_model.model.layers.23.mlp.down_proj.weight": {
+     "before": "9e45ef6a40769b69",
+     "after": "d6fc6fdea3ae864b",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 11598534,
+     "rel_fro": 0.004510484693865172
+    },
+    "net.language_model.model.layers.24.mlp.down_proj.weight": {
+     "before": "a0489b9b94a41f73",
+     "after": "1fb4c5aa7c30b0da",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 12515784,
+     "rel_fro": 0.006225953260975021
+    },
+    "net.language_model.model.layers.25.mlp.down_proj.weight": {
+     "before": "7409fd875211c58a",
+     "after": "b93a07c379d26bd3",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 10453253,
+     "rel_fro": 0.0034086639133027725
+    },
+    "net.language_model.model.layers.26.mlp.down_proj.weight": {
+     "before": "5b66551a9de57c3d",
+     "after": "ba8bef617d1a0eed",
+     "rank": 190,
+     "stored_values": 2140160,
+     "changed_values": 10490394,
+     "rel_fro": 0.003455769617197593
+    }
+   },
+   "stored_values": 56410112,
+   "changed_values": 371775081
+  },
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 26.6
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 778.9,
+ "server_ready_s": 28.0,
+ "started": "2026-11-08 03:02:38",
+ "finished": "2026-11-08 03:15:37",
+ "rows": [
+  {
+   "slot": 96016,
+   "group": 6001,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96017,
+   "group": 6001,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96018,
+   "group": 6001,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96019,
+   "group": 6001,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96020,
+   "group": 6001,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96021,
+   "group": 6001,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96022,
+   "group": 6001,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96023,
+   "group": 6001,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 96024,
+   "group": 6001,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96025,
+   "group": 6001,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96026,
+   "group": 6001,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96027,
+   "group": 6001,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96028,
+   "group": 6001,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96029,
+   "group": 6001,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96030,
+   "group": 6001,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96031,
+   "group": 6001,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "reason": "Conditions not satisfied: object_grabbed(object=mustard_bottle) (step 1/1); object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.3333333432674408,
+   "obs": "/home/ali/cross/cosmos/runs/q/T8-Ct8und-s96016.obs/g6001o8/obs_r0_e7.npz"
+  }
+ ]
+}
