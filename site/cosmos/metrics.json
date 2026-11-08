@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "8d76b2cde276"
+    "commit": "47e9b54d13ac"
    }
   },
   {
@@ -131,7 +131,7 @@
    {
     "id": "where",
     "lead": "Where it works",
-    "text": "Only when written into the part of the model that reads the instruction; written into the part that turns it into motion, the same edit did less (π0.5) or nothing (Cosmos3 Edge). On GR00T N1.7 every version of the edit made the robot worse.",
+    "text": "Only when written into the part of the model that reads the instruction; written into the part that turns it into motion, the same edit did less (π0.5) or nothing (Cosmos3 Edge). On GR00T N1.7 every version of the edit made the robot worse. On both NVIDIA models it works when the clear wording changes words in place, not when it adds words.",
     "kind": null,
     "tag": null
    },
@@ -203,6 +203,11 @@
    "id": "where",
    "title": "Where to edit",
    "level": 2
+  },
+  {
+   "id": "when",
+   "title": "When does the edit work?",
+   "level": 3
   },
   {
    "id": "side-effects",
@@ -912,7 +917,9 @@
       "slots": "96000; 96031"
      }
     },
-    "measured": true
+    "measured": true,
+    "gate_failed": null,
+    "build": null
    },
    {
     "name": "t3und",
@@ -920,19 +927,41 @@
     "built": "built for Cube left of bowl",
     "cells": {
      "T8": {
-      "v": "running",
-      "s": "running"
+      "v": "—",
+      "s": "na",
+      "d": "didn’t pass the offline check, not run on the robot"
      },
      "T3": {
-      "v": "running",
-      "s": "running"
+      "v": "—",
+      "s": "na",
+      "d": "didn’t pass the offline check, not run on the robot"
      },
      "T5": {
-      "v": "running",
-      "s": "running"
+      "v": "—",
+      "s": "na",
+      "d": "didn’t pass the offline check, not run on the robot"
      }
     },
-    "measured": false
+    "measured": false,
+    "gate_failed": {
+     "passed": false,
+     "gaps": [
+      [
+       "T3",
+       -85.62569667613064
+      ]
+     ],
+     "ctl": -2.5011124555874398,
+     "n": 30,
+     "rule": "Cube left of bowl gap closed >= 85% and |control gap closed| <= 15%",
+     "path": "results/offline/ali-ms/t3und_gate.json"
+    },
+    "build": {
+     "orig": 159,
+     "good": 167,
+     "matched": 151,
+     "align": "ps"
+    }
    },
    {
     "name": "t8t3und",
@@ -952,24 +981,26 @@
       "s": "running"
      }
     },
-    "measured": false
+    "measured": false,
+    "gate_failed": null,
+    "build": null
    }
   ],
   "wording": {
-   "v": "4 → 11 of 16",
+   "v": "13 → 26 of 32",
    "s": "ok",
-   "d": "8 / 1, p = 0.039; +43.8 points [12.5, 75.0]; slots 30000–30015; “Put the rubiks cube to the left of the bowl” → “Pick up the rubiks cube and place it on the table to the left side of the bowl”",
-   "a": 4,
-   "b": 11,
-   "n": 16,
-   "pv": 0.0390625,
-   "fl": "Cube left of bowl (16 practice)"
+   "d": "15 / 2, p = 0.0023; +40.6 points [18.8, 59.4]; slots 30000–30031; “Put the rubiks cube to the left of the bowl” → “Pick up the rubiks cube and place it on the table to the left side of the bowl”",
+   "a": 13,
+   "b": 26,
+   "n": 32,
+   "pv": 0.002349853515625,
+   "fl": "Cube left of bowl (32 practice)"
   },
   "wording_pair": [
    "Put the rubiks cube to the left of the bowl",
    "Pick up the rubiks cube and place it on the table to the left side of the bowl"
   ],
-  "text": "",
+  "text": "The cube-left edit didn’t pass the offline check, so it never ran on the robot: on 30 held-aside moments, it moved the robot’s planned motion further from the clearer wording’s on Cube left of bowl (−86% of the gap); a random edit of the same size, −2.5%. The two wordings are 159 and 167 tokens long, so the edit could only copy the 151 template positions they share, as in the rebuild above that copies only the words both wordings share.",
   "sources": [
    "cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
@@ -1476,14 +1507,14 @@
      "label": "Cube then banana",
      "cells": {
       "cosmos": {
-       "v": "10 → 10 of 16",
+       "v": "21 → 15 of 32",
        "s": "ok",
-       "d": "1 / 1, p = 1; 0.0 points [−18.8, 18.8]; slots 30000–30015; “Put the cube then the banana in the bowl” → “Put the cube in the bowl then put the banana in the bowl”",
-       "a": 10,
-       "b": 10,
-       "n": 16,
-       "pv": 1.0,
-       "fl": "Cube then banana (16 practice)"
+       "d": "3 / 9, p = 0.15; −18.8 points [−37.5, 0.0]; slots 30000–30031; “Put the cube then the banana in the bowl” → “Put the cube in the bowl then put the banana in the bowl”",
+       "a": 21,
+       "b": 15,
+       "n": 32,
+       "pv": 0.14599609375,
+       "fl": "Cube then banana (32 practice)"
       },
       "groot": {
        "v": "9 → 16 of 32",
@@ -1515,14 +1546,14 @@
      "label": "Cube left of bowl",
      "cells": {
       "cosmos": {
-       "v": "4 → 11 of 16",
+       "v": "13 → 26 of 32",
        "s": "ok",
-       "d": "8 / 1, p = 0.039; +43.8 points [12.5, 75.0]; slots 30000–30015; “Put the rubiks cube to the left of the bowl” → “Pick up the rubiks cube and place it on the table to the left side of the bowl”",
-       "a": 4,
-       "b": 11,
-       "n": 16,
-       "pv": 0.0390625,
-       "fl": "Cube left of bowl (16 practice)"
+       "d": "15 / 2, p = 0.0023; +40.6 points [18.8, 59.4]; slots 30000–30031; “Put the rubiks cube to the left of the bowl” → “Pick up the rubiks cube and place it on the table to the left side of the bowl”",
+       "a": 13,
+       "b": 26,
+       "n": 32,
+       "pv": 0.002349853515625,
+       "fl": "Cube left of bowl (32 practice)"
       },
       "groot": {
        "v": "1 → 0 of 32",
@@ -2616,7 +2647,7 @@
       "cosmos": {
        "v": "−2: 24 → 22 of 32",
        "s": "ok",
-       "d": "4 / 6; p = 0.75; slots 96000–96031; practice starts: 12 → 14 of 16, p = 0.62 (slots 30000–30015)",
+       "d": "4 / 6; p = 0.75; slots 96000–96031; practice starts: 22 → 26 of 32, p = 0.39 (slots 30000–30031)",
        "delta": -2,
        "a": 24,
        "b": 22,
@@ -3375,33 +3406,33 @@
      "Put the cube then the banana in the bowl",
      "Put the cube in the bowl then put the banana in the bowl"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
-    "unedited_k": 10,
+    "unedited_k": 21,
     "edited_k": null,
-    "fixed": 1,
-    "broke": 1,
-    "p": 1.0,
+    "fixed": 3,
+    "broke": 9,
+    "p": 0.14599609375,
     "ci": {
-     "diff_pts": 0.0,
+     "diff_pts": -18.75,
      "bootstrap95_pts": [
-      -18.75,
-      18.75
+      -37.5,
+      0.0
      ],
      "wilson95_orig_pct": [
-      38.6,
-      81.5
+      48.3,
+      79.6
      ],
      "wilson95_alt_pct": [
-      38.6,
-      81.5
+      30.9,
+      63.6
      ]
     },
     "control_k": null,
-    "teacher_k": 10,
+    "teacher_k": 15,
     "recovery_pct": null,
     "transfer": null,
     "retention": null,
@@ -3424,33 +3455,33 @@
      "Put the rubiks cube to the left of the bowl",
      "Pick up the rubiks cube and place it on the table to the left side of the bowl"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
-    "unedited_k": 4,
+    "unedited_k": 13,
     "edited_k": null,
-    "fixed": 8,
-    "broke": 1,
-    "p": 0.0390625,
+    "fixed": 15,
+    "broke": 2,
+    "p": 0.002349853515625,
     "ci": {
-     "diff_pts": 43.75,
+     "diff_pts": 40.62,
      "bootstrap95_pts": [
-      12.5,
-      75.0
+      18.75,
+      59.38
      ],
      "wilson95_orig_pct": [
-      10.2,
-      49.5
+      25.5,
+      57.7
      ],
      "wilson95_alt_pct": [
-      44.4,
-      85.8
+      64.7,
+      91.1
      ]
     },
     "control_k": null,
-    "teacher_k": 11,
+    "teacher_k": 26,
     "recovery_pct": null,
     "transfer": null,
     "retention": null,
@@ -3807,21 +3838,21 @@
     "wording_pair": [
      "Stack the yellow block on the red block"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
-    "unedited_k": 12,
-    "edited_k": 14,
-    "fixed": 3,
-    "broke": 1,
-    "p": 0.625,
+    "unedited_k": 22,
+    "edited_k": 26,
+    "fixed": 8,
+    "broke": 4,
+    "p": 0.3876953125,
     "ci": {
      "diff_pts": 12.5,
      "bootstrap95_pts": [
-      -12.5,
-      37.5
+      -9.38,
+      34.38
      ]
     },
     "control_k": null,
@@ -8786,7 +8817,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "8d76b2cde276"
+   "commit": "47e9b54d13ac"
   },
   "groot": {
    "kind": "branch",
@@ -8804,8 +8835,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "700bca9dd61220f9",
- "updated": "2026-11-08T19:09Z",
- "updated_text": "8 Nov 2026, 19:09 UTC",
+ "content_hash": "97d86118cad06986",
+ "updated": "2026-11-08T19:36Z",
+ "updated_text": "8 Nov 2026, 19:36 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
