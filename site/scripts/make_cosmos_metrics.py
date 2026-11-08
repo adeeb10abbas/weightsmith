@@ -36,7 +36,11 @@ Inputs
 
 Outputs (all under site/cosmos/)
   metrics.json                 every table of the page, with raw rows, display strings and sources
-  index.html, brief.html       generated regions between <!-- gen:NAME --> and <!-- /gen:NAME --> markers
+  index.html, brief.html       generated regions between <!-- gen:NAME --> and <!-- /gen:NAME --> markers. index.html
+                               reads as nine short sections (TL;DR from tldr_story; prose with numbers from fix_text,
+                               left_text, groot_text, control_text; inline-SVG diagrams dg_*); every table, figure and
+                               record sits in one collapsed "All numbers and records" section (<!-- allnums -->), and
+                               the remaining clips in "More clips" (<!-- gallery -->); neither counts toward the read time
   fig/<name>[-dark].svg|png    six figures, SVG and PNG at 2x, light and dark; fig/brief-*.svg for the PDF
   weightsmith-cosmos-brief.pdf one-page brief printed from brief.html by headless Chrome
 
@@ -1294,14 +1298,16 @@ PREVENT = dict(
     # change); always (a row even before any record; others appear once a record names them); intro (an extra sentence)
     edits=[dict(name="t8und", label="the T8 edit, as above", always=True),
            dict(name="t8undp", label="+ preservation keys from 65 generic RoboLab instructions",
-                short="preservation keys from 65 generic instructions", keys="65 generic instructions", always=True),
+                short="preservation keys from 65 generic instructions", keys="65 generic instructions", always=True,
+                nick="the generic rebuild"),
            dict(name="t8undr", label="+ preservation keys from 24 left/right instructions of other RoboLab tasks",
                 short="preservation keys from 24 left/right instructions of other tasks",
-                keys="24 left/right instructions of other tasks", always=True,
+                keys="24 left/right instructions of other tasks", always=True, nick="the left/right rebuild",
                 intro="For `t8undr` a rule fixed before the build leaves out every T3, T5 and T8 instruction and object "
                       "pair, so T3 and T5 stay unseen tests; it has its own random control."),
            dict(name="t8unds", label="only the instruction template aligned, + the 65 generic preservation keys",
                 short="only the instruction template aligned and the 65 generic preservation keys",
+                nick="the template-only rebuild",
                 intro="`t8unds` tests whether the word-for-word alignment causes the break: it aligns only the "
                       "template around the instruction, leaves the differing words unconstrained, and keeps the "
                       "generic keys of `t8undp`.")],
@@ -1344,7 +1350,7 @@ def prevent_closed(rs):
     if i["control_k"] is not None:
         cn = as_int(r.get("control_n") if r.get("control_n") is not None else r["_extra"].get("control_n")) or i["n"]
         det.append(f"random control {i['control_k']} of {cn}")
-    runs = {("held-out" if x in held else "practice"): [ints(x)["unedited_k"], ints(x)["edited_k"], ints(x)["n"],
+    runs = {("unseen" if x in held else "practice"): [ints(x)["unedited_k"], ints(x)["edited_k"], ints(x)["n"],
                                                          describe(x.get("slots"))] for x in reversed(held + prac)}
     return C(f"{i['unedited_k']} → {i['edited_k']} of {i['n']}", "; ".join(x for x in det if x), a=i["unedited_k"],
              b=i["edited_k"], n=i["n"], p=p, delta=i["edited_k"] - i["unedited_k"], prac=pr or None,
@@ -1439,7 +1445,7 @@ FAILED = ("broke", "unrestored")
 
 
 def kind_of(c):
-    return " practice" if c.get("prac") else " held-out"
+    return " practice" if c.get("prac") else " unseen"
 
 
 def prevent_parts(r, base, bname):
@@ -1536,19 +1542,26 @@ def prevent_finding(rows):
     return " ".join(parts)
 
 
-def prevent_html(P):
-    """The subsection's intro, table, records and the sentence on what the rows show."""
+def prevent_html(P, full=True):
+    """The subsection's intro, table, records and the sentence on what the rows show; compact (values and tags only,
+    a one-line intro) for the main flow."""
     run = '<span class="run">running</span>'
     head = "".join(f'<th scope="col"><span class="mn">{esc(a)}</span><span class="mk">{esc(b)}</span></th>'
                    for _, a, b in PCOLS)
+    cols = PCOLS if full else PCOLS[:3]
+    if not full:
+        head = "".join(f'<th scope="col"><span class="mn">{esc(a)}</span><span class="mk">{esc(b)}</span></th>'
+                       for _, a, b in cols)
     body = []
     for r in P["rows"]:
         body.append(f'<tr><th scope="row"><code>{esc(r["name"])}</code><span class="rd">{esc(r["label"])}</span></th>'
-                    + "".join(td_html(r["cells"][k], f"{a}, {b}") for k, a, b in PCOLS) + "</tr>")
-    table = (f'<table class="ctable ptable"><thead><tr><th scope="col"><span class="vh">Edit</span></th>{head}</tr></thead>'
-             f'<tbody>{"".join(body)}</tbody></table>')
+                    + "".join(td_html(r["cells"][k] if full or r["cells"][k]["s"] == "na" else
+                                      {x: v for x, v in r["cells"][k].items() if x != "d"}, f"{a}, {b}")
+                              for k, a, b in cols) + "</tr>")
+    table = (f'<table class="ctable ptable{"" if full else " ptable-s"}"><thead><tr><th scope="col"><span class="vh">Edit'
+             f'</span></th>{head}</tr></thead><tbody>{"".join(body)}</tbody></table>')
     left = and_list([f"{t} ({TASK[t][1].lower()})" for t in P["left"]])
-    note = ("Closed loop: unedited → edited on the same starts, held-out where run, else practice (tagged). Offline, "
+    note = ("Closed loop: unedited → edited on the same starts, unseen where run, else practice (tagged). Offline, "
             "on recorded decisions, before any closed loop: T8 gap closed is the share of the clearer wording’s action "
             "change a build reproduces on held-aside T8 decisions; T5 deviation is how far the build moves the action "
             "chunk from the unedited policy’s on T5 practice decisions the unedited policy solved (T3 the same way, in the "
@@ -1559,8 +1572,39 @@ def prevent_html(P):
              + "".join(" " + inline(pe(r["name"])["intro"]) for r in P["rows"] if pe(r["name"]).get("intro"))
              + "</p>")
     finding = f'<p>{inline(P["text"]).replace(esc(RUNNING), run)}</p>' if P["text"] else ""
+    if not full:
+        intro = ("<p>We rebuilt the edit with preservation keys: other instructions whose internal states the solve "
+                 "must leave as they were.</p>")
+        short = prevent_tldr(P).strip()
+        off = prevent_offline_note(P)
+        finding = (f'<p>{inline(short + (" " + off if off else "")).replace(esc(RUNNING), run)}</p>' if short or off
+                   else "")
+        return intro + f'<div class="tblock wide">{table}</div>' + finding
     return (intro + f'<div class="tblock wide">{table}{sources_html(P["sources"])}<p class="tnote">{esc(note)}</p></div>'
             + finding)
+
+
+def prevent_offline_note(P):
+    """A rebuild that failed in closed loop although offline it moved the left tasks' actions far less than the
+    original edit: the offline check did not predict the closed loop."""
+    base = next((r for r in P["rows"] if r["name"] == P["base"]), None)
+    bd = base["cells"]["dev"] if base else None
+    for r in P["rows"]:
+        if r is base:
+            continue
+        res = prevent_parts(r, base, "")
+        d = r["cells"]["dev"]
+        if not res or d["s"] != "ok" or not bd or bd["s"] != "ok":
+            continue
+        failed = {x[0] for x in res["left"] if x[1] in FAILED}
+        pairs = [(t, d.get(k), bd.get(k)) for t, k in (("T5", "x"), ("T3", "x3")) if t in failed]
+        pairs = [(t, x, y) for t, x, y in pairs if x is not None and y and x / y < 0.9]
+        if pairs:
+            who = pe(r["name"]).get("nick") or f"`{r['name']}`"
+            return (f"Offline, {who} had moved " + and_list(f"{t}’s actions {x:.1f}" for t, x, _ in pairs)
+                    + " cm from the unedited policy’s, against " + and_list(f"{y:.1f}" for _, _, y in pairs)
+                    + " cm for the original edit, so the offline check did not predict the closed loop.")
+    return ""
 
 
 def prevent_tldr(P):
@@ -2426,7 +2470,7 @@ FIGS = [
     ("failure-map", "Unedited success on each shared task; stronger shading is higher. Each cell gives successes of starts."),
     ("wording-gap", "The unedited model under the original wording (grey) and the clear wording (ring), on the same "
                     "starts."),
-    ("edit-gain", "Edited minus unedited success on held-out starts, paired by start, with the paired bootstrap 95% "
+    ("edit-gain", "Edited minus unedited success on unseen starts, paired by start, with the paired bootstrap 95% "
                   "interval. Teal: distilled edits; neutral: edits the blind editors designed themselves."),
     ("random-control", "The edit against a random edit of the same layers, rank and singular values, on the same "
                        "unseen starts."),
@@ -2758,7 +2802,7 @@ def dg_where_html(sites):
     cap = ((f"In {and_list(fixed)} only the edit where the instruction is read (A) fixed the task; " if fixed else "")
            + (f"in {and_list(broke)} every edit broke it." if broke else ""))
     cap = cap[0].upper() + cap[1:] if cap else "Each edit tried, by where it went and what it did."
-    return (f'<figure class="dgfig dg2">{dg_legend()}<div class="dg2-grid">'
+    return (f'<figure class="dgfig dg2 wide">{dg_legend()}<div class="dg2-grid">'
             + "".join(f'<div class="dg2-p">{dg_panel(m)}</div>' for m in sites)
             + f'</div><figcaption>{esc(cap.rstrip("; ") + ("" if cap.endswith(".") else "."))}</figcaption></figure>')
 
@@ -2771,6 +2815,251 @@ def dg_groot_html(tables, cross):
     return (f'<figure class="dgfig dg3">{svg}<figcaption>The clear wording adds a clause that has no position in the '
             f'original prompt; distillation copies only the aligned positions, so the edit acts from the first reach '
             f'and breaks the task.</figcaption></figure>'), data
+
+
+# ---------------------------------------------------------------- the story: TL;DR and the main flow's numbered prose
+# The page reads top to bottom as nine short sections; everything else sits in one collapsed "All numbers and records"
+# section. These functions write the prose that carries numbers, so a refresh updates it with the tables.
+def _cells(tables):
+    return {t["id"]: {r["key"]: r["cells"] for r in t["rows"]} for t in tables}
+
+
+def _ok(c, f=("a", "b", "n")):
+    return bool(c) and c.get("s") == "ok" and all(isinstance(c.get(x), int) for x in f)
+
+
+def main_fix(tables, mid="cosmos"):
+    """The model's edit on unseen starts with a significant gain, and its random control: (task, cell, control) or None."""
+    T = _cells(tables)
+    for tid in [t[0] for t in TASKS]:
+        c = T["edit_gain"].get(tid, {}).get(mid)
+        if _ok(c) and not c.get("prac") and c.get("pv") is not None and c["pv"] < SIG and c["b"] > c["a"]:
+            return tid, c, T["random_control"].get(tid, {}).get(mid)
+    return None
+
+
+def left_drops(tables, mid="cosmos"):
+    """Off-target tasks the main edit lowered significantly, unseen starts first."""
+    T = _cells(tables)
+    out = []
+    for tid in [t[0] for t in TASKS]:
+        c = T["side_effects"].get(tid, {}).get(mid)
+        if _ok(c, ("a", "b", "n", "delta")) and not c.get("target") and c.get("p") is not None and c["p"] < SIG and c["delta"] < 0:
+            out.append((tid, c))
+    return out
+
+
+def _says_left(tids):
+    return bool(tids) and all("left" in TASK[t][1].lower() for t in tids)
+
+
+def tldr_story(tables, models, prevent, sites):
+    """At most three plain bullets: the fix, where it works, the cost. '{running}' marks what is not measured yet."""
+    items = []
+    fx = main_fix(tables)
+    if fx:
+        tid, c, rc0 = fx
+        ctl = (f" A random edit of the same size: {rc0['r']}." if _ok(rc0, ("r", "n")) and rc0["n"] == c["n"]
+               and not rc0.get("prac") else "")
+        items.append(dict(id="fix", lead="The fix",
+                          text=f"On NVIDIA’s Cosmos3 Edge, a weight edit fixed a task the model failed only because of how "
+                               f"the instruction was worded: {c['a']} → {c['b']} of {c['n']} unseen starts.{ctl}"))
+    else:
+        items.append(dict(id="fix", lead="The fix", text=f"Cosmos3 Edge’s edit on unseen starts: {RUNNING}."))
+    byid = {m["id"]: m for m in sites}
+    a_fixed = [m for m in sites if any(s["oc"] == "fixed" for s in m["blocks"][0]["sites"])]
+    act = [s["oc"] for m in a_fixed for b in m["blocks"][1:] for s in b["sites"]]
+    where = {"pi05": "π0.5’s vision-language model", "cosmos": "Cosmos3 Edge’s text pathway"}
+    bits = []
+    if a_fixed:
+        bits.append("Only where the model reads the instruction (" + and_list(where.get(m["id"], m["name"]) for m in a_fixed)
+                    + ")" + ("; on the action side the same edit did less or nothing." if act and "fixed" not in act else "."))
+    g = byid.get("groot")
+    if g and any(b["sites"] for b in g["blocks"]) and all(s["oc"] == "broke" for b in g["blocks"] for s in b["sites"]):
+        bits.append("On GR00T N1.7 every edit broke the task.")
+    items.append(dict(id="where", lead="Where it works", text=" ".join(bits) or f"{RUNNING}."))
+    drops = left_drops(tables)
+    if drops:
+        n = drops[0][1]["n"] if len({c["n"] for _, c in drops}) == 1 else None
+        what = ("the two other tasks whose instructions say “left”" if len(drops) == 2 and _says_left([t for t, _ in drops])
+                else "other tasks")
+        txt = (f"It breaks {what}: " + and_list(f"{t} {c['a']} → {c['b']}" for t, c in drops)
+               + (f" of {n} unseen starts." if n and not any(c.get("prac") for _, c in drops) else "."))
+        base = next((x for x in prevent["rows"] if x["name"] == prevent["base"]), None)
+        tried = [r for r in prevent["rows"] if r["name"] != prevent["base"]
+                 and any(r["cells"][t]["s"] == "ok" for t in prevent["left"])]
+        failed = [r for r in tried if any(x[1] in FAILED for x in (prevent_parts(r, base, "") or {"left": []})["left"])]
+        if tried and len(failed) == len(tried):
+            pend = any(r["cells"][t]["s"] == "running" for r in prevent["rows"] for t in (prevent["target"], *prevent["left"]))
+            t8s = [r["cells"][prevent["target"]] for r in tried]
+            kept = all(c["s"] == "ok" and c.get("p") is not None and c["p"] < SIG and c["b"] > c["a"] for c in t8s)
+            txt += (f" {'Two rebuilds' if len(tried) == 2 else 'Rebuilds'} that tell it to leave other instructions alone "
+                    + (("kept the fix" + (" on practice starts" if all(c.get("prac") for c in t8s) else "") + " but ")
+                       if kept else "")
+                    + f"{'have not stopped' if pend else 'did not stop'} the break.")
+        items.append(dict(id="cost", lead="The cost", text=txt))
+    for it in items:
+        it.update(kind=None, tag=None)
+        it["text"] = re.sub(r"\s*→\s*", " → ", it["text"])
+    note = ("Unseen starts: simulated starting scenes never used to build or choose an edit; practice starts: the scenes "
+            "an edit is built and checked on. Every count compares the edited and the unedited model on the same starts.")
+    return dict(items=items, note=note)
+
+
+def fix_text(tables, cross):
+    T = _cells(tables)
+    fx = main_fix(tables)
+    if not fx:
+        return f'<p>Cosmos3 Edge’s edit on unseen starts is <span class="run">running</span>.</p>'
+    tid, c, rc0 = fx
+    w = T["wording"].get(tid, {}).get("cosmos")
+    rows = (cross.get("cosmos") or {}).get("rows") or []
+    wp = next((r.get("wording_pair") for r in rows if r["_task"] == tid and isinstance(r.get("wording_pair"), list)
+               and len(r["wording_pair"]) == 2), None)
+    s = []
+    if wp and _ok(w):
+        s.append(f"Cosmos3 Edge fails {tid} as worded, “{wp[0].rstrip('.')}”: {w['a']} of {w['n']} practice starts. "
+                 f"Worded from the other object’s side, “{wp[1].rstrip('.')},” the same goal succeeds {w['b']} of {w['n']}.")
+    s.append("The edit copies the clearer wording into the text pathway.")
+    ctl = (f" and 0 for a random edit of the same size" if _ok(rc0, ("r", "n")) and rc0["r"] == 0 and rc0["n"] == c["n"]
+           else f" and {rc0['r']} for a random edit of the same size" if _ok(rc0, ("r", "n")) and rc0["n"] == c["n"] else "")
+    s.append(f"On {c['n']} unseen starts it succeeds {c['b']} times, against {c['a']} for the unedited model{ctl}.")
+    return f"<p>{esc(' '.join(s))}</p>"
+
+
+def dg_fix_chart(tables):
+    """The fix as three bars on the same unseen starts: unedited, a random edit of the same size, the edit."""
+    fx = main_fix(tables)
+    if not fx:
+        return ""
+    tid, c, rc0 = fx
+    bars = [("unedited", c["a"], "dg-bar-base")]
+    if _ok(rc0, ("r", "n")) and rc0["n"] == c["n"]:
+        bars.append(("random edit, same size", rc0["r"], "dg-bar-base"))
+    bars.append(("the edit", c["b"], "dg-bar-acc"))
+    x0, L, W = 158, 130, []
+    W.append(_t(0, 14, f"{tid}, {c['n']} unseen starts: successes", "dg-s dg-mu"))
+    y = 30
+    for lab, k, cls in bars:
+        w = L * k / c["n"]
+        W.append(f'<g><title>{esc(lab)}: {k} of {c["n"]}</title>' + _t(x0 - 10, y + 13, lab, "dg-s", "end")
+                 + (f'<rect x="{x0}" y="{y}" width="{w:.1f}" height="18" rx="3" class="{cls}"/>' if k else "")
+                 + _t(x0 + w + 7, y + 13, f"{k} of {c['n']}" if k else "0", "dg-s dg-b") + "</g>")
+        y += 30
+    W.append(f'<line x1="{x0}" y1="24" x2="{x0}" y2="{y - 6}" class="dg-axis"/>')
+    desc = "; ".join(f"{lab}: {k} of {c['n']}" for lab, k, _ in bars)
+    svg = _svg(350, y, f"{tid} on {c['n']} unseen starts", desc + ".", "".join(W), "dg-fixchart", "dg-fix")
+    who = {"unedited": "the unedited model", "random edit, same size": "a random edit of the same size"}
+    cap = (f"On the same {c['n']} unseen starts: the edit {c['b']}, "
+           + and_list(f"{who.get(lab, lab)} {k}" for lab, k, _ in bars[:-1]) + ".")
+    return f'<figure class="dgfig dg-fix">{svg}<figcaption>{esc(cap[0].upper() + cap[1:])}</figcaption></figure>'
+
+
+def dg_side_chart(tables, mid="cosmos"):
+    """The main edit, unchanged, on every other task: one bar per task, the change in success as a share of the starts.
+    Dark and bold: a significant loss; teal and bold: a significant gain; grey: no detectable change."""
+    T = _cells(tables)
+    rows = []
+    for tid in [t[0] for t in TASKS]:
+        c = T["side_effects"].get(tid, {}).get(mid)
+        if _ok(c, ("a", "b", "n", "delta")) and not c.get("target"):
+            rows.append((tid, c))
+    if not rows:
+        return ""
+    x0, half, W = 175, 160, []
+    W.append(_t(0, 14, "Change in success, edited minus unedited", "dg-s dg-mu"))
+    y = 30
+    for tid, c in rows:
+        sig = c.get("p") is not None and c["p"] < SIG
+        d = 100 * c["delta"] / c["n"]
+        cls = "dg-bar-acc" if sig and d > 0 else "dg-bar-loss" if sig else "dg-bar-base"
+        w = half * abs(d) / 100
+        val = f"{c['a']} → {c['b']} of {c['n']}" + (", practice" if c.get("prac") else "")
+        W.append(f'<g><title>{esc(f"{tid} {SHORT[tid]}: {val}" + (f", p = {fp(c[chr(112)])}" if c.get("p") is not None else ""))}</title>'
+                 + _t(0, y + 4, f"{tid} {SHORT[tid]}", "dg-s dg-b" if sig else "dg-s")
+                 + _t(350, y + 4, val, "dg-s dg-b" if sig else "dg-s dg-mu", "end")
+                 + (f'<rect x="{x0 - w if d < 0 else x0:.1f}" y="{y + 10}" width="{max(w, 0):.1f}" height="12" rx="2" '
+                    f'class="{cls}"/>' if w else "") + "</g>")
+        y += 40
+    W.append(f'<line x1="{x0}" y1="34" x2="{x0}" y2="{y - 4}" class="dg-axis"/>'
+             + _t(x0 - half, y + 10, "−100%", "dg-xs dg-mu") + _t(x0, y + 10, "0", "dg-xs dg-mu", "middle")
+             + _t(x0 + half, y + 10, "+100%", "dg-xs dg-mu", "end"))
+    desc = "; ".join(f"{tid}: {c['a']} → {c['b']} of {c['n']}" + (" (significant)" if c.get("p") is not None and c["p"] < SIG
+                                                                 else "") for tid, c in rows)
+    svg = _svg(350, y + 16, "The edit, unchanged, on every other task", desc + ".", "".join(W), "dg-side", "dg-side")
+    drops = [t for t, c in rows if c.get("p") is not None and c["p"] < SIG and c["delta"] < 0]
+    cap = ("Dark bars and bold labels: a significant loss (exact McNemar p < 0.05, paired by start); grey: no "
+           "detectable change. " + (f"Only {and_list(drops)} changed." if drops else "No task changed detectably."))
+    return f'<figure class="dgfig dg-sidefig">{svg}<figcaption>{esc(cap)}</figcaption></figure>'
+
+
+def left_text(tables):
+    drops = left_drops(tables)
+    T = _cells(tables)
+    if not drops:
+        return f'<p>Side effects on the other tasks are <span class="run">running</span>.</p>'
+    tids = [t for t, _ in drops]
+    head = ("It breaks the two other tasks whose instructions say “left”: " if len(drops) == 2 and _says_left(tids)
+            else "It breaks " + and_list(tids) + ": ")
+    s = head + and_list(f"{t} falls from {c['a']} to {c['b']} of {c['n']}"
+                        + (" practice starts" if c.get("prac") else " unseen starts" if i == len(drops) - 1 else "")
+                        for i, (t, c) in enumerate(drops)) + "."
+    if "T5" in tids:
+        s += " On T5 the edited robot carries the mustard to the other bin."
+    s += (" The edit was distilled from one sentence pair that turns “the raisin box is to the left of the mustard” into "
+          "“the mustard is to the right of the raisin box”, and it seems to have taught the text pathway something like "
+          "left\u00a0→\u00a0right beyond that sentence." if _says_left(tids) else "")
+    return f"<p>{esc(s)}</p>"
+
+
+def groot_text(tables):
+    T = _cells(tables)
+    fm = [(t, T["failure_map"].get(t, {}).get("groot")) for t in [x[0] for x in TASKS]]
+    fm = [(t, c) for t, c in fm if _ok(c, ("k", "n"))]
+    if not fm:
+        return f'<p>GR00T N1.7’s runs are <span class="run">running</span>.</p>'
+    some = [(t, c) for t, c in fm if c["k"] > 0]
+    none = [t for t, c in fm if c["k"] == 0]
+    s = ("GR00T N1.7 mostly fails in how it moves, not in how it reads. Unedited, it succeeds on "
+         + and_list(f"{t} in {c['k']} of {c['n']}" for t, c in some) + " practice starts"
+         + (f", and never on {task_list(none)}." if none else "."))
+    wd = [(t, T["wording"].get(t, {}).get("groot")) for t in [x[0] for x in TASKS]]
+    up = [(t, c) for t, c in wd if _ok(c) and c["b"] > c["a"]]
+    if up:
+        s += (" A clearer wording helps only on " + and_list(t for t, _ in up) + ", and weakly: "
+              + and_list(f"{c['a']} → {c['b']} of {c['n']}" + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "")
+                         for _, c in up) + ".")
+    tid = up[0][0] if up else "T1"
+    e = T["edit_gain"].get(tid, {}).get("groot")
+    rc0 = T["random_control"].get(tid, {}).get("groot")
+    if _ok(e) and e.get("prac"):
+        same = [x for x in (e.get("alts") or []) if (x["a"], x["b"], x["n"]) == (e["a"], e["b"], e["n"])]
+        ctl = [rc0.get("r")] if rc0 and rc0.get("r") is not None else []
+        ctl += [x["ctl"] for x in same if x.get("ctl") is not None]
+        if e["b"] < e["a"]:
+            s += (f" Distilling it lowered {tid} "
+                  + ("in both places we wrote it, the backbone and the action head: " if same else ": ")
+                  + f"{e['a']} → {e['b']} of {e['n']}" + (" each" if same else "")
+                  + (f", where random edits of the same sizes scored {and_list(str(v) for v in ctl)}." if len(ctl) > 1 else
+                     f", where a random edit of the same size scored {ctl[0]}." if ctl else ".")
+                  + " So there was nothing to test on unseen starts. The figure shows why the copy backfires.")
+    return f"<p>{esc(s)}</p>"
+
+
+def control_text(P, tables):
+    e, s4, c = P["edit"], P["s4ho"], P["ctl"]
+    T = _cells(tables)
+    lifted = [t for t in ("T2", "T3", "T4", "T5", "T6", "T7") if _ok(T["side_effects"].get(t, {}).get("pi05"), ("a", "b", "n", "delta"))
+              and T["side_effects"][t]["pi05"].get("p") is not None and T["side_effects"][t]["pi05"]["p"] < SIG
+              and T["side_effects"][t]["pi05"]["delta"] > 0]
+    s = (f"π0.5 is where the method comes from, and the control. On its earlier records, on other starts, the edit lifted "
+         f"T1 from {e['base']} to {e['cand']} of {e['n']} unseen starts and T8 from {s4['base']} to {s4['cand']} of "
+         f"{s4['n']}; a random edit of the same size scored {c['rand']} of {c['n']} on T1, against {c['base']} unedited.")
+    if lifted:
+        s += f" The T1 edit also lifted {and_list(lifted)}."
+    s += (" No edit helped T4–T7, whose failures are perception, contact or a missing skill, not reading. π0.5’s runs "
+          "on this page’s starts replace these numbers as they land.")
+    return f"<p>{esc(s)}</p>"
 
 
 VID = OUT / "video"
@@ -2843,11 +3132,11 @@ def cap_edit_heldout(where, slot, base, edited, mid, tid):
         b, sb = run_row(where, edited, slot)
         if not (a and b):
             return None, []
-        s = (f"Held-out start {slot}, never used to build the edit: the unedited policy on top, the edited policy "
+        s = (f"Unseen start {slot}, never used to build the edit: the unedited policy on top, the edited policy "
              f"below, both given the original wording. Unedited: {outcome(a)}; edited: {outcome(b)}.")
         c = table_cell(tables, "edit_gain", tid, mid)
         if c and not c.get("prac"):
-            s += (f" Over all {c['n']} held-out starts{' so far' if c['n'] < 64 else ''}: {c['a']} → {c['b']} successes"
+            s += (f" Over all {c['n']} unseen starts{' so far' if c['n'] < 64 else ''}: {c['a']} → {c['b']} successes"
                   + (f" (exact McNemar p = {fp(c['pv'])})." if c.get("pv") is not None else "."))
         return s, [sa, sb]
     return f
@@ -2880,7 +3169,7 @@ def cap_side(where, slot, base, edited, mid, tid, et):
              f"panels and the task’s own instruction: unedited (top) {outcome(a)}; edited (bottom) {outcome(b)}.")
         c = table_cell(tables, "side_effects", tid, mid)
         if c and c.get("n"):
-            s += (f" Over all {c['n']} {'practice' if c.get('prac') else 'held-out'} starts: {c['a']} → {c['b']}"
+            s += (f" Over all {c['n']} {'practice' if c.get('prac') else 'unseen'} starts: {c['a']} → {c['b']}"
                   + (f" (exact McNemar p = {fp(c['p'])})." if c.get("p") is not None else "."))
         return s, [sa, sb]
     return f
@@ -2915,7 +3204,7 @@ def cap_pi05(file, lead):
             return x["label"].replace("edited: ", "edited, ").replace("unedited + ", "unedited, with the ")
         panels = "; ".join(f"{lab(x)}: {outcome(x)}" for x in c["panels"])
         hw = ", ".join(x for x in (c.get("hardware"), (c.get("render_preset") or "") + " render preset") if x)
-        s = (f"{lead} Held-out start {c['slot']} on π0.5’s earlier slots, the same scene and noise seeds in every "
+        s = (f"{lead} Unseen start {c['slot']} on π0.5’s earlier slots, the same scene and noise seeds in every "
              f"panel. Top to bottom: {panels}. An earlier record ({hw}), {c.get('speed', 3):g}× speed.")
         return s, [f"{PI05_CLIPS[0]}:{PI05_CLIPS[1]}"]
     return f
@@ -2926,35 +3215,35 @@ def fixed_cap(text):
 
 
 CLIPS = [
-    dict(stem="cosmos_t8_wording", group="demo", title="Cosmos3 Edge Policy, T8: the wording gap",
+    dict(stem="cosmos_t8_wording", group="gallery", title="Cosmos3 Edge Policy, T8: the wording gap",
          cap=cap_wording(X_COSMOS, "T8", 30000, "T8-base-s30000", "T8-wtf-s30000", "cosmos", "T8",
                          "the original, reference-first wording", "the clearer, target-first wording")),
-    dict(stem="groot_t1_wording", group="demo", title="GR00T N1.7, T1: the wording gap",
+    dict(stem="groot_t1_wording", group="gallery", title="GR00T N1.7, T1: the wording gap",
          cap=cap_wording(X_GROOT, "T1", 30003, "fm-T1", "wd-T1-expl", "groot", "T1",
                          "the original wording", "the explicit two-step wording")),
-    dict(stem="groot_t1_edits", group="demo", title="GR00T N1.7, T1: two edits that make things worse",
+    dict(stem="groot_t1_edits", group="gallery", title="GR00T N1.7, T1: two edits that make things worse",
          cap=cap_panels(X_GROOT, 30004, [("fm-T1", "unedited"), ("ed-bb-T1", "edited in the Cosmos-Reason2 backbone"),
                                          ("ed-dit-T1", "edited in the diffusion action head")],
                         "Both edits distil the explicit two-step wording; neither picks up the cube.", "groot", "T1")),
-    dict(stem="t1_same_start", group="demo", title="T1, one start, two NVIDIA models", cap=cap_same_start(30000)),
-    dict(stem="pi05_t1_edit_control_teacher", group="demo", title="π0.5, T1: the edit against its controls",
+    dict(stem="t1_same_start", group="gallery", title="T1, one start, two NVIDIA models", cap=cap_same_start(30000)),
+    dict(stem="pi05_t1_edit_control_teacher", group="gallery", title="π0.5, T1: the edit against its controls",
          cap=cap_pi05("t1_v2mi-f_vs_control_vs_teacher_90000.mp4",
                       "The unedited policy, a random edit of the same size, the distilled edit and the clearer wording.")),
-    dict(stem="pi05_t8_edit_control", group="demo", title="π0.5, T8: the edit against a random edit",
+    dict(stem="pi05_t8_edit_control", group="gallery", title="π0.5, T8: the edit against a random edit",
          cap=cap_pi05("t8_s4r-grp3_vs_control_92001.mp4",
                       "The reference-first wording throughout; the edit distils the target-first wording.")),
-    dict(stem="cosmos_before_after", group="before", title="Cosmos3 Edge Policy, T8",
+    dict(stem="cosmos_before_after", group="fix", title="Cosmos3 Edge Policy, T8",
          cap=cap_edit_heldout(X_COSMOS, 96003, "T8-base-s96000", "T8-Et8und-s96000", "cosmos", "T8")),
-    dict(stem="groot_before_after", group="before", title="GR00T N1.7", mid="groot",
-         cap=fixed_cap("Unedited and edited, on a held-out start where the edit helped.")),
-    dict(stem="cosmos_t5_side_effect", group="transfer",
+    dict(stem="groot_before_after", group="gallery", title="GR00T N1.7", mid="groot",
+         cap=fixed_cap("Unedited and edited, on an unseen start where the edit helped.")),
+    dict(stem="cosmos_t5_side_effect", group="gallery",
          title="Cosmos3 Edge Policy, T5 Mustard into the left bin: a start the T8 edit breaks",
          cap=cap_side(X_COSMOS, 30001, "T5-base-s30000", "T5-Et8und-s30000", "cosmos", "T5", "T8")),
-    dict(stem="pi05_t2_fixed", group="transfer", title="π0.5, T2 Pick up the eyeglasses: a start the T1 edit fixes",
+    dict(stem="pi05_t2_fixed", group="gallery", title="π0.5, T2 Pick up the eyeglasses: a start the T1 edit fixes",
          cap=cap_pi05("t2_v2mi-f_side_effect_fixed_90000.mp4", "The T1 edit, unchanged, on a task it was not built for.")),
-    dict(stem="pi05_t3_fixed", group="transfer", title="π0.5, T3 Cube left of the bowl: a start the T1 edit fixes",
+    dict(stem="pi05_t3_fixed", group="gallery", title="π0.5, T3 Cube left of the bowl: a start the T1 edit fixes",
          cap=cap_pi05("t3_v2mi-f_side_effect_fixed_90000.mp4", "The T1 edit, unchanged, on a task it was not built for.")),
-    dict(stem="pi05_t2_broke", group="transfer", title="π0.5, T2 Pick up the eyeglasses: a start the T1 edit breaks",
+    dict(stem="pi05_t2_broke", group="gallery", title="π0.5, T2 Pick up the eyeglasses: a start the T1 edit breaks",
          cap=cap_pi05("t2_v2mi-f_side_effect_broke_90001.mp4",
                       "Transfer is not free: the same edit also breaks some T2 starts.")),
 ]
@@ -3014,9 +3303,11 @@ def prepare_clips():
     return info
 
 
-def clip_html(c, info, tables):
+def clip_html(c, info, tables, compact=False):
     i = info[c["stem"]]
     caption, srcs = c["cap"](tables)
+    if compact and caption:
+        caption, srcs = caption.split(" Over all")[0], []
     title = c["title"]
     rec = ("" if not srcs else " Records: " + ", ".join(
         f'<a href="{esc(gh(s))}"><code>{esc(s.split("/")[-1])}</code></a>' for s in srcs) + ".")
@@ -3035,8 +3326,16 @@ def clip_html(c, info, tables):
 
 
 def clips_section(group, info, tables, models=None):
-    """A finished track's placeholder is dropped: its clip will not come."""
-    return "".join(clip_html(c, info, tables) for c in CLIPS if c["group"] == group
+    """A finished track's placeholder is dropped: its clip will not come. The fix clip's caption is short; its full
+    caption and records lead the gallery."""
+    if group == "gallery":
+        full = "".join(f'<p class="note"><b>{esc(c["title"])}</b> (in “The fix on Cosmos3 Edge”): '
+                       + re.sub(r"^.*?</b> ", "", clip_html(c, info, tables).split("<figcaption>")[1]).split("</figcaption>")[0]
+                       + "</p>" for c in CLIPS if c["group"] == "fix" and info[c["stem"]]["exists"])
+        return full + "".join(clip_html(c, info, tables) for c in CLIPS if c["group"] == group
+                              and not (c.get("mid") and models and models[c["mid"]]["status"] == "final"
+                                       and not info[c["stem"]]["exists"]))
+    return "".join(clip_html(c, info, tables, compact=group == "fix") for c in CLIPS if c["group"] == group
                    and not (c.get("mid") and models and models[c["mid"]]["status"] == "final"
                             and not info[c["stem"]]["exists"]))
 
@@ -3350,7 +3649,8 @@ def page_sections(page):
     """Every section (h2) and subsection (h3) of the article in page order, and any h4 marked data-toc (nested under
     its h3): the contents list follows the page. Generated regions are skipped, so headings inside them (the model
     cards) never enter the list."""
-    page = re.sub(r"<!-- gen:([a-z0-9:-]+) -->.*?<!-- /gen:\1 -->", "", page, flags=re.S)
+    page = re.sub(r"<!-- gen:([a-z0-9:_-]+) -->.*?<!-- /gen:\1 -->", "", page, flags=re.S)
+    page = re.sub(r"<!-- (allnums|gallery) -->.*?<!-- /\1 -->", "", page, flags=re.S)
     a, b = article(page)
     secs = []
     pat = re.compile(r'<section id="([a-z0-9-]+)"[^>]*>\s*<h2[^>]*>(.*?)</h2>|<h3 id="([a-z0-9-]+)"[^>]*>(.*?)</h3>'
@@ -3393,7 +3693,9 @@ WPM = 230
 def read_minutes(page):
     """Words a reader meets in the article (collapsed tables and code excluded), at 230 words a minute."""
     a, b = article(page)
-    art = re.sub(r'<details class="tdetails.*?</details>', " ", page[a:b], flags=re.S)
+    art = re.sub(r"<!-- (allnums|gallery) -->.*?<!-- /\1 -->", " ", page[a:b], flags=re.S)
+    art = re.sub(r'<details class="tdetails.*?</details>', " ", art, flags=re.S)
+    art = re.sub(r"<svg\b.*?</svg>", " ", art, flags=re.S)
     art = re.sub(r"<(script|style|table|pre)\b.*?</\1>", " ", art, flags=re.S)
     words = len(re.findall(r"\w+", html.unescape(re.sub(r"<[^>]+>", " ", art))))
     return max(1, round(words / WPM)), words
@@ -3633,7 +3935,8 @@ def main():
         "shared_slots": SHARED_SLOTS,
         "models": [dict(id=mid, **models[mid]) for mid in ORDER],
         "tasks": [dict(id=t[0], name=t[1], robolab=t[2], pi05_failure=t[4]) for t in TASKS],
-        "tldr": tldr(tables, models, prevent),
+        "tldr": None,
+        "tldr_models": tldr(tables, models, prevent),
         "sections": page_sections(page),
         "summary": summary,
         "prevention": prevent,
@@ -3645,6 +3948,8 @@ def main():
         "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference "
                   "(20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
     }
+    data["tldr"] = tldr_story(tables, models, prevent, data["diagrams"]["where"])
+
     def no_commit(x):  # a branch commit that changes no number does not move the "updated" stamp
         if isinstance(x, dict):
             return {k: no_commit(v) for k, v in x.items() if k != "commit"}
@@ -3678,7 +3983,15 @@ def main():
     page = replace_region(page, "models", models_html(models))
     page = replace_region(page, "render-note", render_note(tables))
     page = replace_region(page, "conclusion", conclusion_html(tables, models, data["prevention"]))
-    page = replace_region(page, "prevent", prevent_html(data["prevention"]))
+    page = replace_region(page, "prevent", prevent_html(data["prevention"], full=False))
+    page = replace_region(page, "prevent-full", prevent_html(data["prevention"]))
+    page = replace_region(page, "tldr-models", "<ul>" + tldr_html(data["tldr_models"]) + "</ul>")
+    page = replace_region(page, "fix-text", fix_text(tables, cross))
+    page = replace_region(page, "dg:fix", dg_fix_chart(tables))
+    page = replace_region(page, "left-text", left_text(tables))
+    page = replace_region(page, "dg:side", dg_side_chart(tables))
+    page = replace_region(page, "groot-text", groot_text(tables))
+    page = replace_region(page, "control-text", control_text(P, tables))
     page = replace_region(page, "dg:schematic", dg_schematic_html())
     page = replace_region(page, "dg:where", dg_where_html(data["diagrams"]["where"]))
     page = replace_region(page, "dg:groot", dg_groot_html(tables, cross)[0])
@@ -3696,7 +4009,7 @@ def main():
             cap += " Hollow, dashed: scored on the practice starts the edit was built from, not on unseen starts."
         page = replace_region(page, f"fig:{name}", figure_html(name, alts[name], cap))
     clips = prepare_clips()
-    for group in ("demo", "before", "transfer"):
+    for group in ("fix", "gallery"):
         page = replace_region(page, f"clips:{group}", clips_section(group, clips, tables, models))
     page, nfig = number_figures(page)
     mins, words = read_minutes(page)

@@ -1014,3 +1014,31 @@
     margin: 0 auto;
   }
 }
+
+/* the fix as three bars on the same unseen starts */
+.dg .dg-bar-base { fill: var(--mark-base); }
+.dg .dg-bar-acc { fill: var(--accent); }
+.dg .dg-axis { stroke: var(--ink-2); stroke-width: 1; }
+.dg .dg-bar-loss { fill: var(--mark-other); }
+
+.dg-sidefig .dg {
+  max-width: 520px;
+}
+
+.dg-fix .dg {
+  max-width: 400px;
+}
+
+/* the one collapsed section near the end: every number and record, and more clips */
+.allnums-in {
+  padding: 0.4rem 0 0.6rem;
+}
+
+.allnums-in > h3:first-child {
+  margin-top: 0.6rem;
+}
+
+/* the small prevention table in the main flow: three result columns */
+.ptable-s thead th:first-child {
+  width: 40%;
+}
