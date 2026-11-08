@@ -80,7 +80,7 @@ if [ "$(git -C "$TP/openpi" rev-parse HEAD~1 2>/dev/null)" != "$OPENPI_BASE" ]; 
 fi
 
 echo "[2/5] RoboLab (git-lfs assets, ~10 GB)"
-[ -d "$TP/RoboLab/.git" ] || git clone -q "$ROBOLAB_URL" "$TP/RoboLab"
+[ -d "$TP/RoboLab/.git" ] || GIT_LFS_SKIP_SMUDGE="${SKIP_LFS:-0}" git clone -q "$ROBOLAB_URL" "$TP/RoboLab"
 if [ "$(git -C "$TP/RoboLab" rev-parse HEAD~6 2>/dev/null)" != "$ROBOLAB_BASE" ]; then
   apply "$TP/RoboLab" "$ROBOLAB_BASE" "$repo/third_party/patches/robolab"
 fi

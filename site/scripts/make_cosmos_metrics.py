@@ -1554,7 +1554,8 @@ def fig_failure_map(tb, models, T, L):
         else:
             ax.text(j + 0.5, -0.5, models[m]["name"], ha="center", va="bottom", fontsize=L["FS"], weight="bold",
                     color=T["ink"])
-            ax.text(j + 0.5, -0.16, models[m]["short"], ha="center", va="bottom", fontsize=L["FS_S"] - 0.6,
+            ax.text(j + 0.5, -0.16, models[m].get("fig_short") or models[m]["short"], ha="center", va="bottom",
+                    fontsize=L["FS_S"] - 0.6,
                     color=T["mute"])
     for i, r in enumerate(fm):
         lab = f"{r['key']} {SHORT[r['key']]}" if r["key"] in SHORT else r["label"]
@@ -2099,7 +2100,11 @@ def tldr(tables, models):
         done = {k for k, _ in gains} | {k for k, _ in flat}
         if not done:
             fm = [k for k in [t[0] for t in TASKS] if nums(cell("failure_map", k, mid), ("k", "n"))]
-            if fm:
+            if 0 < len(fm) <= 3:
+                bits.append("Unedited so far: " + and_list(
+                    f"{k} {cell('failure_map', k, mid)['k']} of {cell('failure_map', k, mid)['n']}" for k in fm)
+                    + f" starts. Other tasks and edits: {RUNNING}.")
+            elif fm:
                 bits.append(f"Unedited success is in for {len(fm)} of {len(TASKS)} tasks; edits {RUNNING}.")
             elif m["status"] == "final":
                 bits.append("No edit results.")
@@ -2125,23 +2130,24 @@ def tldr(tables, models):
             continue
         up = [(k, c) for k, c in off if lifted(c)]
         down = [(k, c) for k, c in off if c.get("p") is not None and c["p"] < SIG and c["delta"] < 0]
-        on = task_list([k for k, _ in off]) + (" and R1" if r1 else "")
-        t = f"{models[mid]['name']}’s {tgt} edit, run unchanged on {on}, "
-        t += ("lifted " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in up)) if up else "lifted no task"
-        t += (", made none detectably worse" if not down else
-              ", lowered " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in down))
+        on = task_list([k for k, _ in off] + (["R1"] if r1 else []))
+        cl = [("lifted " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in up)) if up else "lifted no task",
+              "made none detectably worse" if not down else
+              "lowered " + and_list(f"{k} ({c['a']}\u00a0→ {c['b']} of {c['n']})" for k, c in down)]
         if r1:
-            t += (f", and kept the retention task R1 at {r1['b']} of {r1['n']}" if r1["delta"] == 0 else
-                  f", and moved the retention task R1 from {r1['a']} to {r1['b']} of {r1['n']}")
+            cl.append(f"kept the retention task R1 at {r1['b']} of {r1['n']}" if r1["delta"] == 0 else
+                      f"moved the retention task R1 from {r1['a']} to {r1['b']} of {r1['n']}")
+        t = f"{models[mid]['name']}’s {tgt} edit, run unchanged on {on}, " + ", ".join(cl[:-1]) + ", and " + cl[-1]
         parts.append(t + ".")
     if waiting:
         parts.append(f"{and_list(waiting)}: {RUNNING}.")
     items.append(dict(id="side-effects", lead="Side effects", kind=None, tag=None, text=" ".join(parts)))
 
+    early = [it["lead"] for it in items if it.get("tag")]
     note = ("Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. "
-            + ("π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs "
-               "replace them as they land." if models["pi05"]["status"] == "measured" else
-               "All three models are scored on the shared slots."))
+            + (f"{and_list(x + '’s' for x in early)} numbers are earlier records, each on its own slots and number of "
+               "starts; the shared-slot runs "
+               "replace them as they land." if early else "Every number here is from the shared slots."))
     return dict(items=items, note=note)
 
 
@@ -2257,6 +2263,7 @@ def main():
         m["source"] = meta.get(mid)
         if mid == "pi05" and m["status"] == "measured":
             m["short"] = "OpenPI VLA, control · earlier slots"
+            m["fig_short"] = "control · earlier slots"   # fits the figure's column head
         models[mid] = m
 
     tables, rc, prov, rcp = build_tables(P, cross)
@@ -2286,7 +2293,11 @@ def main():
         "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference "
                   "(20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
     }
-    blob = json.dumps(data, sort_keys=True, ensure_ascii=False)
+    def no_commit(x):  # a branch commit that changes no number does not move the "updated" stamp
+        if isinstance(x, dict):
+            return {k: no_commit(v) for k, v in x.items() if k != "commit"}
+        return [no_commit(v) for v in x] if isinstance(x, list) else x
+    blob = json.dumps(no_commit(data), sort_keys=True, ensure_ascii=False)
     h = hashlib.sha256(blob.encode()).hexdigest()[:16]
     mpath = OUT / "metrics.json"
     old = json.loads(mpath.read_text()) if mpath.exists() else {}
