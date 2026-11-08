@@ -3,7 +3,9 @@
 | Task | RoboLab task | Success | Rate | Wilson 95% |
 |---|---|---|---|---|
 | T1 | RubiksCubeThenBananaTask | 9/32 | 28% | 16-45% |
+| T2 | PickGlassesTask | 0/32 | 0% | 0-11% |
 | T3 | RubiksCubeLeftOfBowlTask | 1/32 | 3% | 1-16% |
+| T5 | MustardInLeftBinTask | 0/32 | 0% | 0-11% |
 | T8 | MustardRightOfRaisinRFTask | 0/32 | 0% | 0-11% |
 | R1 | RubiksCubeTask | 28/32 | 88% | 72-95% |
 
