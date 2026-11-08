@@ -1,0 +1,394 @@
+{
+ "tag": "T5-base-s30000",
+ "code": "T5",
+ "task": "MustardInLeftBinTask",
+ "slot_start": 30000,
+ "n": 16,
+ "arm": "base",
+ "workspace": null,
+ "fp": null,
+ "prompt": null,
+ "rendering_type": null,
+ "video_mode": "sensor",
+ "status": "fresh",
+ "render_preset": "default",
+ "rendering_flag": "none (RoboLab default preset)",
+ "envs_per_process": 8,
+ "processes": [
+  {
+   "group": 1875,
+   "env_offset": 0,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T5-base-s30000-g1875o0a0-1108-152448",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T5-base-s30000-1108-152448/sim-g1875o0a0.log"
+  },
+  {
+   "group": 1875,
+   "env_offset": 8,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T5-base-s30000-g1875o8a0-1108-152815",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T5-base-s30000-1108-152448/sim-g1875o8a0.log"
+  }
+ ],
+ "fp_checked": null,
+ "server": {
+  "workspace": null
+ },
+ "server_fingerprint": null,
+ "server_log": "/home/ali/cross/pi05/fresh/logs/server-T3-base-s30000-1108-151750.log",
+ "server_started": 1794169070.6469495,
+ "server_ready_s": 30.0,
+ "rows": [
+  {
+   "slot": 30000,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 10,
+    "GRIPPER_FULLY_CLOSED": 4
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env0.mp4"
+  },
+  {
+   "slot": 30001,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 4,
+    "GRIPPER_FULLY_CLOSED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env1.mp4"
+  },
+  {
+   "slot": 30002,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 394,
+   "instruction": "Put the mustard in the left bin",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 5,
+    "TARGET_OBJECT_DROPPED": 4
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env2.mp4"
+  },
+  {
+   "slot": 30003,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 281,
+   "instruction": "Put the mustard in the left bin",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 1,
+    "TARGET_OBJECT_DROPPED": 3
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env3.mp4"
+  },
+  {
+   "slot": 30004,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_in_container(object=mustard, container=grey_bin_left, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 7,
+    "GRIPPER_FULLY_CLOSED": 3
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env4.mp4"
+  },
+  {
+   "slot": 30005,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_in_container(object=mustard, container=grey_bin_left, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 3,
+    "TARGET_OBJECT_DROPPED": 6
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env5.mp4"
+  },
+  {
+   "slot": 30006,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 5,
+    "TARGET_OBJECT_DROPPED": 5
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env6.mp4"
+  },
+  {
+   "slot": 30007,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 2,
+    "TARGET_OBJECT_DROPPED": 4,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o0a0-1108-152448/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env7.mp4"
+  },
+  {
+   "slot": 30008,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 7,
+    "GRIPPER_FULLY_CLOSED": 2
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env0.mp4"
+  },
+  {
+   "slot": 30009,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_in_container(object=mustard, container=grey_bin_left, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 7,
+    "GRIPPER_FULLY_CLOSED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env1.mp4"
+  },
+  {
+   "slot": 30010,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_in_container(object=mustard, container=grey_bin_left, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 8,
+    "GRIPPER_FULLY_CLOSED": 4
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env2.mp4"
+  },
+  {
+   "slot": 30011,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 4,
+    "TARGET_OBJECT_DROPPED": 8
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env3.mp4"
+  },
+  {
+   "slot": 30012,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 14,
+    "GRIPPER_FULLY_CLOSED": 2
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env4.mp4"
+  },
+  {
+   "slot": 30013,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 168,
+   "instruction": "Put the mustard in the left bin",
+   "score": 1.0,
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 2,
+    "GRIPPER_FULLY_CLOSED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env5.mp4"
+  },
+  {
+   "slot": 30014,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_in_container(object=mustard, container=grey_bin_left, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 6,
+    "GRIPPER_FULLY_CLOSED": 6
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env6.mp4"
+  },
+  {
+   "slot": 30015,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the mustard in the left bin",
+   "score": 0.0,
+   "reason": "Condition not satisfied: object_grabbed(object=mustard) (step 1/2)",
+   "events": {
+    "TARGET_OBJECT_DROPPED": 2,
+    "GRIPPER_FULLY_CLOSED": 1
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T5-base-s30000-g1875o8a0-1108-152815/MustardInLeftBinTask/Put_the_mustard_in_the_left_bin_0_env7.mp4"
+  }
+ ],
+ "completed": 16,
+ "success": 3,
+ "started": 1794169488.0771735,
+ "finished": 1794169920.5061495,
+ "job_s": 432.4,
+ "gpu": 0,
+ "port": 8720,
+ "host": "ali-MS-7D25",
+ "gpu_name": "NVIDIA GeForce RTX 3090",
+ "log_root": "/home/ali/cross/pi05/fresh/logs/T5-base-s30000-1108-152448",
+ "videos": {
+  "30000": "/home/ali/cross/pi05/fresh/videos/T5/base/30000.mp4",
+  "30001": "/home/ali/cross/pi05/fresh/videos/T5/base/30001.mp4",
+  "30002": "/home/ali/cross/pi05/fresh/videos/T5/base/30002.mp4",
+  "30003": "/home/ali/cross/pi05/fresh/videos/T5/base/30003.mp4",
+  "30004": "/home/ali/cross/pi05/fresh/videos/T5/base/30004.mp4",
+  "30005": "/home/ali/cross/pi05/fresh/videos/T5/base/30005.mp4",
+  "30006": "/home/ali/cross/pi05/fresh/videos/T5/base/30006.mp4",
+  "30007": "/home/ali/cross/pi05/fresh/videos/T5/base/30007.mp4",
+  "30008": "/home/ali/cross/pi05/fresh/videos/T5/base/30008.mp4",
+  "30009": "/home/ali/cross/pi05/fresh/videos/T5/base/30009.mp4",
+  "30010": "/home/ali/cross/pi05/fresh/videos/T5/base/30010.mp4",
+  "30011": "/home/ali/cross/pi05/fresh/videos/T5/base/30011.mp4",
+  "30012": "/home/ali/cross/pi05/fresh/videos/T5/base/30012.mp4",
+  "30013": "/home/ali/cross/pi05/fresh/videos/T5/base/30013.mp4",
+  "30014": "/home/ali/cross/pi05/fresh/videos/T5/base/30014.mp4",
+  "30015": "/home/ali/cross/pi05/fresh/videos/T5/base/30015.mp4"
+ },
+ "sim_cmd_example": [
+  "/home/ali/vibes/weight-space-policy-lab/robolab_env/.venv/bin/python",
+  "/home/ali/cross/pi05/weightsmith/weightsmith/run_batched.py",
+  "--policy",
+  "pi05",
+  "--task",
+  "MustardInLeftBinTask",
+  "--environment-seed",
+  "0",
+  "--sampling-seed-base",
+  "1875",
+  "--remote-port",
+  "8720",
+  "--num-envs",
+  "8",
+  "--num-runs",
+  "1",
+  "--headless",
+  "--video-mode",
+  "sensor",
+  "--output-folder-name",
+  "x05f-T5-base-s30000-g1875o8a0-1108-152815",
+  "--device",
+  "cuda:0",
+  "--/rtx/verifyDriverVersion/enabled=false",
+  "--/renderer/multiGpu/enabled=false",
+  "--/renderer/multiGpu/autoEnable=false",
+  "--/renderer/activeGpu=0"
+ ]
+}

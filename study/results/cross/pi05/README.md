@@ -15,8 +15,7 @@ Machine-readable: [`../metrics_pi05.json`](../metrics_pi05.json) (one record per
 job, one row per slot), [`results/summary.json`](results/summary.json), [`results/provisional.json`](results/provisional.json).
 
 <!-- summary:begin -->
-**Status (2026-11-08 06:40 UTC). No fresh π0.5 episodes: the rented pod cannot run Isaac Sim.** The Japan pod (2× RTX 4080 SUPER, driver 595.58 = CUDA 13.2) finished setup at 06:08 UTC, but every Isaac Sim 5.0 process segfaults when the RTX renderer starts (`librtx.scenedb.plugin.so` inside `UsdManager::createHydraEngine`, before any scene loads), and Warp 1.7.2 cannot initialise CUDA on this driver (`cuDeviceGetUuid` entry point). Fixes tried within the 20-minute timebox: the Vulkan ICD path (`/etc/vulkan/icd.d`), the missing `libGLU`/`libXt` libraries, with and without `CUDA_VISIBLE_DEVICES`, single-GPU RTX settings, and a `libcuda` shim; none changed the crash. The policy server itself (JAX) runs on the pod. π0.5 GPU work stays off ali-ms (its GPUs belong to Tracks A and B tonight), so this page's π0.5 column is the **PROVISIONAL** one below. The only π0.5 episodes on the shared slots are one 16-slot T1 group on ali-ms before the move (5/16, `performance` preset; see the fresh section). Provisional plots and before/after clips made from the
-earlier runs' videos are below.
+**Status (2026-11-08 20:30 UTC). Fresh π0.5 numbers are being run on ali-ms GPU0 (Track C'), like for like with Tracks A and B: the same tasks, instructions and slots, RoboLab's default render preset, RTX 3090, and Track A's process layout (8 envs per Isaac process, two fresh processes per 16-slot group, seeds kept identical). Every finished number is in [FRESH (Track C')](#fresh-track-c-ali-ms-gpu0-default-render-preset-the-slots-of-tracks-a-and-b) and in `../metrics_pi05.json` (`"status": "fresh"`, `"run": "C-prime-default"`). The rented pod planned for this earlier could not run Isaac Sim (notes below); the provisional column (earlier runs, other slots, `performance` preset) is kept further down for reference.
 
 **At a glance (PROVISIONAL π0.5 column: earlier runs, own slots, ali-ms RTX 3090, `performance` preset).** Every
 comparison is paired on identical starts; p is the exact two-sided McNemar test.
@@ -30,7 +29,7 @@ comparison is paired on identical starts; p is the exact two-sided McNemar test.
 | T8 wording gap (unedited) | RF 0/32 vs TF **27/32** (27 / 0, p = 1.5 × 10⁻⁸) | 20000–20031 |
 | T8 own edit `s4r-grp3` (TF distilled), RF wording | 0/64 → **27/64** (27 / 0, p = 1.5 × 10⁻⁸); control 0/64 | 92000–92063 |
 | Where the T1 edit goes | VLM 55/64, VLM image cells 41/64, action expert 20/64, action head 0–30/64 (unedited 5/64) | 94016–94079 |
-| FRESH, shared slots | T1 unedited **5/16** (one group, `performance` preset); nothing else ran | 30000–30015 |
+| FRESH (Track C') | see the FRESH (Track C') section: default preset, the slots of Tracks A and B | 30000–30015, 96000–96063 |
 
 Before/after clips: [`videos/`](videos/) (table at the end of the provisional section).
 <!-- summary:end -->
@@ -72,7 +71,7 @@ instructions, same slots, same render preset, same GPU model.
 | Metrics | [`scripts/fresh.py`](scripts/fresh.py) → records with `"status": "fresh"`, `"run": "C-prime-default"` in [`../metrics_pi05.json`](../metrics_pi05.json) and [`results/fresh/summary.json`](results/fresh/summary.json); per-job records in `results/fresh/runs/` |
 
 <!-- fresh2:begin -->
-Jobs finished: **2** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **0.32 GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
+Jobs finished: **3** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **0.44 GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
 
 **Failure map** (unedited π0.5, task's default instruction, practice slots):
 
@@ -80,6 +79,7 @@ Jobs finished: **2** (16 slots each, two fresh 8-env Isaac processes per group);
 |---|---|---|---|
 | T1 RubiksCubeThenBananaTask | **3/16** | 7–43% | 30000–30015 |
 | T3 RubiksCubeLeftOfBowlTask | **0/16** | 0–19% | 30000–30015 |
+| T5 MustardInLeftBinTask | **3/16** | 7–43% | 30000–30015 |
 
 <!-- fresh2:end -->
 
@@ -115,13 +115,13 @@ by none, so the models fail on largely different starts.
 <!-- fresh:begin -->
 Jobs finished: **0** (16 slots each); pod GPU time in finished jobs: **0.0 GPU-h**. Every row below pairs arms on the same slots (same scene, same noise seeds), default render preset unless stated.
 
-### Fresh but partial: the only π0.5 episodes on the shared slots
+### Performance-preset group on the shared slots (now provisional; superseded by Track C')
 
 | Task | Unedited | Wilson 95% | Slots | Machine | Preset |
 |---|---|---|---|---|---|
 | T1 cube then banana | **5/16** | 14–56% | 30000–30015 | ali-ms RTX 3090 | `performance` |
 
-One 16-slot group (first and only run of a fresh Isaac process, environment seed 0), run before the π0.5 queue left ali-ms. It used the `performance` preset, not the default preset of Tracks A and B, so it is not a like-for-like failure-map entry. Per-slot outcomes are in the record.
+One 16-slot group (first and only run of a fresh Isaac process, environment seed 0), run before the π0.5 queue left ali-ms. It used the `performance` preset, not the default preset of Tracks A and B, so it is not a like-for-like failure-map entry; its record is now labelled `provisional` (`run`: `C-ali-ms-performance-0503`). Per-slot outcomes are in the record.
 
 <!-- fresh:end -->
 
