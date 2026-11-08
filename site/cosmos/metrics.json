@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "0297c0db6d30"
+    "commit": "419d40d859f0"
    }
   },
   {
@@ -147,7 +147,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5 and R1, lifted no task, lowered T5 (8 → 0 of 16), and moved the retention task R1 from 9 to 13 of 16. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5, T7 and R1, lifted no task, lowered T5 (8 → 0 of 16), and moved the retention task R1 from 9 to 13 of 16. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -395,9 +395,10 @@
     "label": "T7 Pick up the flat box",
     "cells": {
      "cosmos": {
-      "v": "unedited 0 of 16",
+      "v": "T8 edit: 0 → 0 of 16",
       "s": "ok",
-      "d": "not edited yet"
+      "d": "0 / 0; p = 1",
+      "prac": true
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -2034,8 +2035,15 @@
      "label": "T7 Pick up the flat box",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "±0: 0 → 0 of 16",
+       "s": "ok",
+       "d": "0 / 0; p = 1; practice starts; slots 30000–30015",
+       "delta": 0,
+       "a": 0,
+       "b": 0,
+       "n": 16,
+       "p": 1.0,
+       "prac": true
       },
       "groot": {
        "v": "not run",
@@ -2867,7 +2875,7 @@
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und built for T8, run on T1 with T1's default instruction",
+    "notes": "edit t8und built for T8, run on T1 with T1's default instruction, practice slots",
     "_task": "T1",
     "_edit_task": "T8",
     "_prov": false,
@@ -2907,7 +2915,7 @@
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und built for T8, run on T2 with T2's default instruction",
+    "notes": "edit t8und built for T8, run on T2 with T2's default instruction, practice slots",
     "_task": "T2",
     "_edit_task": "T8",
     "_prov": false,
@@ -2947,7 +2955,7 @@
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und built for T8, run on T3 with T3's default instruction",
+    "notes": "edit t8und built for T8, run on T3 with T3's default instruction, practice slots",
     "_task": "T3",
     "_edit_task": "T8",
     "_prov": false,
@@ -2987,7 +2995,7 @@
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und built for T8, run on T4 with T4's default instruction",
+    "notes": "edit t8und built for T8, run on T4 with T4's default instruction, practice slots",
     "_task": "T4",
     "_edit_task": "T8",
     "_prov": false,
@@ -3027,8 +3035,48 @@
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und built for T8, run on T5 with T5's default instruction",
+    "notes": "edit t8und built for T8, run on T5 with T5's default instruction, practice slots",
     "_task": "T5",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "PickUpGreenObjectTask",
+    "code": "T7",
+    "wording_pair": [
+     "Pick up the green vegetable block"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 0,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "diff_pts": 0.0,
+     "bootstrap95_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": 0.0,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und built for T8, run on T7 with T7's default instruction, practice slots",
+    "_task": "T7",
     "_edit_task": "T8",
     "_prov": false,
     "extra": {
@@ -3067,7 +3115,7 @@
     "retention": 25.0,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und built for T8, run on R1 with R1's default instruction",
+    "notes": "edit t8und built for T8, run on R1 with R1's default instruction, practice slots",
     "_task": "R1",
     "_edit_task": "T8",
     "_prov": false,
@@ -7077,7 +7125,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "0297c0db6d30"
+   "commit": "419d40d859f0"
   },
   "groot": {
    "kind": "branch",
@@ -7095,8 +7143,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "dafd24cfbccd235b",
- "updated": "2026-11-08T11:11Z",
- "updated_text": "8 Nov 2026, 11:11 UTC",
+ "content_hash": "7af5f323c3b5929c",
+ "updated": "2026-11-08T11:17Z",
+ "updated_text": "8 Nov 2026, 11:17 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
