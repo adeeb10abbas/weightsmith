@@ -2,7 +2,9 @@
    1. Renders the TL;DR and the comparison tables from metrics.json. The page ships the same tables pre-rendered (no-JS fallback,
       written by site/scripts/make_cosmos_metrics.py), so this only matters when metrics.json is newer than the HTML.
    2. Clips: a placeholder becomes a player as soon as its MP4 exists in video/, and players run only while in view,
-      never for readers who ask for reduced motion. */
+      never for readers who ask for reduced motion.
+   3. Contents: the sticky list marks the section being read; the folded list closes after a pick.
+   4. Citation: a copy button for the BibTeX. */
 (function () {
   'use strict';
 
@@ -69,6 +71,12 @@
           tag.textContent = 'earlier slots';
           v.appendChild(document.createTextNode(' '));
           v.appendChild(tag);
+        }
+        if (c.prac) {
+          var ptag = el('span', 'tag');
+          ptag.textContent = 'practice starts';
+          v.appendChild(document.createTextNode(' '));
+          v.appendChild(ptag);
         }
         td.appendChild(v);
         if (c.d) td.appendChild(inline(el('span', 'd'), c.d));
@@ -235,6 +243,65 @@
     Array.prototype.forEach.call(document.querySelectorAll('.clip-pending[data-clip]'), function (fig) {
       exists(fig.getAttribute('data-clip'), 'video').then(function (ok) {
         if (ok) upgrade(fig);
+      }).catch(function () {});
+    });
+  }
+
+  /* ---------- contents: mark the section being read ---------- */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc-side a[href^="#"]'));
+  var marks = tocLinks.map(function (a) {
+    return { a: a, t: document.getElementById(a.getAttribute('href').slice(1)) };
+  }).filter(function (m) { return m.t; });
+  var current = null;
+  var queued = false;
+  function spy() {
+    queued = false;
+    var line = Math.min(160, window.innerHeight * 0.3);
+    var hit = null;
+    for (var i = 0; i < marks.length; i++) {
+      if (marks[i].t.getBoundingClientRect().top <= line) hit = marks[i];
+    }
+    // at the very bottom the last sections cannot reach the line: the last one on screen is the one being read
+    var doc = document.documentElement;
+    if (window.innerHeight + window.scrollY >= doc.scrollHeight - 2) {
+      for (var k = marks.length - 1; k >= 0; k--) {
+        if (marks[k].t.getBoundingClientRect().top < window.innerHeight) { hit = marks[k]; break; }
+      }
+    }
+    if (hit !== current) {
+      if (current) current.a.removeAttribute('aria-current');
+      if (hit) hit.a.setAttribute('aria-current', 'true');
+      current = hit;
+    }
+  }
+  if (marks.length) {
+    window.addEventListener('scroll', function () {
+      if (!queued) {
+        queued = true;
+        window.requestAnimationFrame(spy);
+      }
+    }, { passive: true });
+    window.addEventListener('resize', spy);
+    spy();
+  }
+
+  // the folded contents list closes once a reader picks a section
+  var mob = document.querySelector('.toc-mob');
+  if (mob) {
+    mob.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a')) mob.open = false;
+    });
+  }
+
+  /* ---------- citation: copy the BibTeX ---------- */
+  var copy = document.querySelector('.bib-copy');
+  var bib = document.getElementById('bibtex');
+  if (copy && bib && navigator.clipboard && window.isSecureContext) {
+    copy.hidden = false;
+    copy.addEventListener('click', function () {
+      navigator.clipboard.writeText(bib.textContent).then(function () {
+        copy.textContent = 'Copied';
+        setTimeout(function () { copy.textContent = 'Copy'; }, 1600);
       }).catch(function () {});
     });
   }
