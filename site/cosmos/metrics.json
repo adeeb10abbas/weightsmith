@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "098ae871f1f8"
+    "commit": "ae0214a5e1b9"
    }
   },
   {
@@ -147,7 +147,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5, T7 and R1, lifted no task, lowered T3 (13 → 0 of 32) and T5 (9 → 0 of 32), and moved the retention task R1 from 13 to 15 of 16. Rebuilt with preservation keys from 65 generic instructions, the edit kept T8 (0 → 12 of 16 practice starts) but did not prevent the break: T5 still fell from 8 to 0 of 16 practice starts. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy’s T8 edit, run unchanged on T1–T5, T7 and R1, lifted no task, lowered T3 (13 → 0 of 32) and T5 (9 → 0 of 32), and moved the retention task R1 from 24 to 28 of 32. Rebuilding the edit with preservation keys has not prevented the break so far: with 65 generic instructions, T5 still fell from 8 to 0 of 16 practice starts, while T8 kept its fix (0 → 12 of 16); with 24 left/right instructions of other tasks, T3 went 4 → 1 of 16 practice starts, against 0 for the original edit, while T8 kept its fix (0 → 13 of 16). GR00T N1.7: not run, because its T1 edits lowered success on T1 itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -263,9 +263,9 @@
     "label": "T1 Cube then banana",
     "cells": {
      "cosmos": {
-      "v": "T8 edit: 9 → 10 of 16",
+      "v": "T8 edit: 18 → 18 of 32",
       "s": "ok",
-      "d": "4 / 3; p = 1"
+      "d": "9 / 9; p = 1"
      },
      "groot": {
       "v": "9 → 0 of 32",
@@ -443,7 +443,7 @@
     "label": "R1 Retention task",
     "cells": {
      "cosmos": {
-      "v": "13 → 15 of 16",
+      "v": "24 → 28 of 32",
       "s": "ok"
      },
      "groot": {
@@ -550,7 +550,22 @@
       "n": 64,
       "p": 2.7755575615628914e-17,
       "delta": 56,
-      "held": true
+      "held": true,
+      "runs": {
+       "practice": [
+        0,
+        13,
+        16,
+        "30000; 30015"
+       ],
+       "held-out": [
+        0,
+        56,
+        64,
+        "96000; 96063"
+       ]
+      },
+      "slots": "96000; 96063"
      },
      "T5": {
       "v": "9 → 0 of 32",
@@ -561,7 +576,22 @@
       "n": 32,
       "p": 0.00390625,
       "delta": -9,
-      "held": true
+      "held": true,
+      "runs": {
+       "practice": [
+        8,
+        0,
+        16,
+        "30000; 30015"
+       ],
+       "held-out": [
+        9,
+        0,
+        32,
+        "96000; 96031"
+       ]
+      },
+      "slots": "96000; 96031"
      },
      "T3": {
       "v": "13 → 0 of 32",
@@ -572,7 +602,22 @@
       "n": 32,
       "p": 0.000244140625,
       "delta": -13,
-      "held": true
+      "held": true,
+      "runs": {
+       "practice": [
+        4,
+        0,
+        16,
+        "30000; 30015"
+       ],
+       "held-out": [
+        13,
+        0,
+        32,
+        "96000; 96031"
+       ]
+      },
+      "slots": "96000; 96031"
      },
      "gap": {
       "v": "91%",
@@ -583,8 +628,9 @@
      "dev": {
       "v": "13.7 cm",
       "s": "ok",
-      "d": "38 decisions",
-      "x": 13.73
+      "d": "38 decisions; T3: 29.6 cm on 20",
+      "x": 13.73,
+      "x3": 29.64
      }
     },
     "measured": true
@@ -602,7 +648,16 @@
       "n": 16,
       "p": 0.00048828125,
       "delta": 12,
-      "prac": true
+      "prac": true,
+      "runs": {
+       "practice": [
+        0,
+        12,
+        16,
+        "30000; 30015"
+       ]
+      },
+      "slots": "30000; 30015"
      },
      "T5": {
       "v": "8 → 0 of 16",
@@ -613,7 +668,16 @@
       "n": 16,
       "p": 0.0078125,
       "delta": -8,
-      "prac": true
+      "prac": true,
+      "runs": {
+       "practice": [
+        8,
+        0,
+        16,
+        "30000; 30015"
+       ]
+      },
+      "slots": "30000; 30015"
      },
      "T3": {
       "v": "—",
@@ -640,34 +704,71 @@
     "label": "+ preservation keys from 24 left/right instructions of other RoboLab tasks",
     "cells": {
      "T8": {
-      "v": "running",
-      "s": "running"
+      "v": "0 → 13 of 16",
+      "s": "ok",
+      "d": "p = 2.4 × 10⁻⁴",
+      "a": 0,
+      "b": 13,
+      "n": 16,
+      "p": 0.000244140625,
+      "delta": 13,
+      "prac": true,
+      "runs": {
+       "practice": [
+        0,
+        13,
+        16,
+        "30000; 30015"
+       ]
+      },
+      "slots": "30000; 30015"
      },
      "T5": {
       "v": "running",
       "s": "running"
      },
      "T3": {
-      "v": "running",
-      "s": "running"
+      "v": "4 → 1 of 16",
+      "s": "ok",
+      "d": "p = 0.38",
+      "a": 4,
+      "b": 1,
+      "n": 16,
+      "p": 0.375,
+      "delta": -3,
+      "prac": true,
+      "runs": {
+       "practice": [
+        4,
+        1,
+        16,
+        "30000; 30015"
+       ]
+      },
+      "slots": "30000; 30015"
      },
      "gap": {
-      "v": "running",
-      "s": "running"
+      "v": "94%",
+      "s": "ok",
+      "d": "30 held-aside decisions",
+      "x": 93.6
      },
      "dev": {
-      "v": "running",
-      "s": "running"
+      "v": "5.9 cm",
+      "s": "ok",
+      "d": "38 decisions; T3: 6.5 cm on 20",
+      "x": 5.88,
+      "x3": 6.46
      }
     },
-    "measured": false
+    "measured": true
    }
   ],
   "sources": [
    "cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ],
-  "text": "`t8undp` (preservation keys from 65 generic instructions) keeps the T8 fix (0 → 12 of 16 practice starts) but does not prevent the break: T5 still falls from 8 to 0 of 16 practice starts (p = 0.0078); offline it closes 93% of the T8 gap and moves T5’s actions 13.9 cm from the unedited policy’s, about the same as `t8und` (13.7 cm). `t8undr` (preservation keys from 24 left/right instructions of other tasks): {running}."
+  "text": "`t8undp` (preservation keys from 65 generic instructions) keeps the T8 fix (0 → 12 of 16 practice starts) but does not prevent the break: T5 still falls from 8 to 0 of 16 practice starts (p = 0.0078); offline it closes 93% of the T8 gap and moves T5’s actions 13.9 cm (`t8und`: 13.7 cm) from the unedited policy’s. `t8undr` (preservation keys from 24 left/right instructions of other tasks) keeps the T8 fix (0 → 13 of 16 practice starts) but does not prevent the break: T3 goes from 4 to 1 of 16 practice starts (p = 0.38; `t8und`: 0); offline it closes 94% of the T8 gap and moves T5’s actions 5.9 cm (`t8und`: 13.7 cm) and T3’s 6.5 cm (`t8und`: 29.6 cm) from the unedited policy’s, so the smaller offline deviation on T3 does not carry over to the closed loop; T5: {running}."
  },
  "tables": [
   {
@@ -1993,13 +2094,13 @@
      "label": "T1 Cube then banana",
      "cells": {
       "cosmos": {
-       "v": "+1: 9 → 10 of 16",
+       "v": "±0: 18 → 18 of 32",
        "s": "ok",
-       "d": "4 / 3; p = 1; slots 96000–96015",
-       "delta": 1,
-       "a": 9,
-       "b": 10,
-       "n": 16,
+       "d": "9 / 9; p = 1; slots 96000–96031",
+       "delta": 0,
+       "a": 18,
+       "b": 18,
+       "n": 32,
        "p": 1.0
       },
       "groot": {
@@ -2250,14 +2351,14 @@
      "label": "R1 Retention task",
      "cells": {
       "cosmos": {
-       "v": "+2: 13 → 15 of 16",
+       "v": "+4: 24 → 28 of 32",
        "s": "ok",
-       "d": "3 / 1; p = 0.62; slots 96000–96015",
-       "delta": 2,
-       "a": 13,
-       "b": 15,
-       "n": 16,
-       "p": 0.625
+       "d": "7 / 3; p = 0.34; slots 96000–96031",
+       "delta": 4,
+       "a": 24,
+       "b": 28,
+       "n": 32,
+       "p": 0.34375
       },
       "groot": {
        "v": "not run",
@@ -2296,9 +2397,9 @@
      "label": "R1 Retention task",
      "cells": {
       "cosmos": {
-       "v": "13 → 15 of 16",
+       "v": "24 → 28 of 32",
        "s": "ok",
-       "d": "the T8 edit, unchanged; 3 / 1; p = 0.62; slots 96000–96015"
+       "d": "the T8 edit, unchanged; 7 / 3; p = 0.34; slots 96000–96031"
       },
       "groot": {
        "v": "—",
@@ -3322,27 +3423,27 @@
     "wording_pair": [
      "Put the cube then the banana in the bowl"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      96000,
-     96015
+     96031
     ],
-    "unedited_k": 9,
-    "edited_k": 10,
-    "fixed": 4,
-    "broke": 3,
+    "unedited_k": 18,
+    "edited_k": 18,
+    "fixed": 9,
+    "broke": 9,
     "p": 1.0,
     "ci": {
-     "diff_pts": 6.25,
+     "diff_pts": 0.0,
      "bootstrap95_pts": [
       -25.0,
-      37.5
+      25.0
      ]
     },
     "control_k": null,
     "teacher_k": null,
     "recovery_pct": null,
-    "transfer": 6.25,
+    "transfer": 0.0,
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
@@ -3442,21 +3543,21 @@
     "wording_pair": [
      "Put the cube in the bowl"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      96000,
-     96015
+     96031
     ],
-    "unedited_k": 13,
-    "edited_k": 15,
-    "fixed": 3,
-    "broke": 1,
-    "p": 0.625,
+    "unedited_k": 24,
+    "edited_k": 28,
+    "fixed": 7,
+    "broke": 3,
+    "p": 0.34375,
     "ci": {
      "diff_pts": 12.5,
      "bootstrap95_pts": [
-      -12.5,
-      37.5
+      -6.25,
+      31.25
      ]
     },
     "control_k": null,
@@ -3622,6 +3723,103 @@
     "values_changed": 449299249,
     "notes": "edit t8undp built for T8, run on T5 with T5's default instruction, practice slots",
     "_task": "T5",
+    "_edit_task": "T8",
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "edit_practice",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 0,
+    "edited_k": 13,
+    "fixed": 13,
+    "broke": 0,
+    "p": 0.000244140625,
+    "ci": {
+     "diff_pts": 81.25,
+     "bootstrap95_pts": [
+      62.5,
+      100.0
+     ],
+     "wilson95_unedited_pct": [
+      0.0,
+      19.4
+     ],
+     "wilson95_edited_pct": [
+      57.0,
+      93.4
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 15,
+    "recovery_pct": 86.7,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26), with relation-aware preservation keys",
+    "values_changed": 443281016,
+    "notes": "edit t8undr (t8und's sequential closed-form distillation plus zero-change preservation keys from 24 left/right instructions of other RoboLab tasks (tasks/preserve_relation.json; T3/T5/T8 object pairs and all shared-set tasks excluded; 1816 keys at every position after the template's common prefix); lam_rel 1e-3; built after the T5/T3 side effect of t8und was seen); control: same rank and singular values, random directions",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms",
+     "control_n": null,
+     "teacher_n": 16,
+     "edit_vs_control": null,
+     "control_slots": null,
+     "teacher_slots": [
+      30000,
+      30015
+     ]
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "code": "T3",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl"
+    ],
+    "n": 16,
+    "slots": [
+     30000,
+     30015
+    ],
+    "unedited_k": 4,
+    "edited_k": 1,
+    "fixed": 1,
+    "broke": 4,
+    "p": 0.375,
+    "ci": {
+     "diff_pts": -18.75,
+     "bootstrap95_pts": [
+      -43.75,
+      6.25
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": -18.75,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26), with relation-aware preservation keys",
+    "values_changed": 443281016,
+    "notes": "edit t8undr built for T8, run on T3 with T3's default instruction, practice slots",
+    "_task": "T3",
     "_edit_task": "T8",
     "_prov": false,
     "extra": {
@@ -3839,6 +4037,10 @@
       "machine": "ali-ms",
       "edit": "t8undp",
       "t8_n": 30,
+      "t8_control_gap_closed_pct": null,
+      "t3_n": null,
+      "t3_t8und_dev_cm": null,
+      "t3_variant_dev_cm": null,
       "t8_unedited_ee_cm": 8.75,
       "t8_edited_ee_cm": 0.61,
       "t8_gap_closed_pct": 93.1,
@@ -3847,6 +4049,52 @@
       "t5_t8und_dev_cm": 13.73,
       "t5_variant_dev_cm": 13.89,
       "t5_dev_removed_pct": -1.2
+     }
+    }
+   },
+   {
+    "experiment": "preservation_offline",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardInLeftBinTask",
+    "code": "T5",
+    "wording_pair": null,
+    "n": null,
+    "slots": null,
+    "unedited_k": null,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": null,
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26), with relation-aware preservation keys",
+    "values_changed": 443281016,
+    "notes": "t8undr vs t8und, offline replays at fixed seeds: T8 = chunk-end end-effector distance to the TF wording's chunk on 30 held-aside RF-failure decisions (slots 30006-30011, replans 1-5); T5 = distance of the edited chunk from the unedited chunk on 38 decisions of T5 practice episodes the unedited policy solved (replans 1-5); dev removed = 1 - t8undr/t8und",
+    "_task": "T5",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms",
+     "offline": {
+      "machine": "ali-ms",
+      "edit": "t8undr",
+      "t8_n": 30,
+      "t8_control_gap_closed_pct": -10.5,
+      "t3_n": 20,
+      "t3_t8und_dev_cm": 29.64,
+      "t3_variant_dev_cm": 6.46,
+      "t8_unedited_ee_cm": 8.75,
+      "t8_edited_ee_cm": 0.56,
+      "t8_gap_closed_pct": 93.6,
+      "t8und_gap_closed_pct": null,
+      "t5_n": 38,
+      "t5_t8und_dev_cm": 13.73,
+      "t5_variant_dev_cm": 5.88,
+      "t5_dev_removed_pct": 57.2
      }
     }
    }
@@ -7672,7 +7920,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "098ae871f1f8"
+   "commit": "ae0214a5e1b9"
   },
   "groot": {
    "kind": "branch",
@@ -7690,8 +7938,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "1bf416a7df1e85b9",
- "updated": "2026-11-08T13:52Z",
- "updated_text": "8 Nov 2026, 13:52 UTC",
+ "content_hash": "77e65672f4ea4146",
+ "updated": "2026-11-08T14:29Z",
+ "updated_text": "8 Nov 2026, 14:29 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }

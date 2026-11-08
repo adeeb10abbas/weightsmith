@@ -1324,16 +1324,20 @@ def prevent_closed(rs):
     if i["control_k"] is not None:
         cn = as_int(r.get("control_n") if r.get("control_n") is not None else r["_extra"].get("control_n")) or i["n"]
         det.append(f"random control {i['control_k']} of {cn}")
+    runs = {("held-out" if x in held else "practice"): [ints(x)["unedited_k"], ints(x)["edited_k"], ints(x)["n"],
+                                                         describe(x.get("slots"))] for x in reversed(held + prac)}
     return C(f"{i['unedited_k']} → {i['edited_k']} of {i['n']}", "; ".join(x for x in det if x), a=i["unedited_k"],
              b=i["edited_k"], n=i["n"], p=p, delta=i["edited_k"] - i["unedited_k"], prac=pr or None,
-             held=bool(held) or None)
+             held=bool(held) or None, runs=runs, slots=describe(r.get("slots")))
 
 
 def prevent_offline(rows, name):
     """Offline cells of one build: the share of the T8 wording gap it closes on held-aside decisions, and how far it
-    moves T5's actions from the unedited policy's. Its own record first; else the value another record gives for it as
-    the reference ('t8und_gap_closed_pct', 't5_t8und_dev_cm')."""
-    gap = dev = None
+    moves T5's actions (and T3's, where measured; in the detail) from the unedited policy's. Its own record first;
+    else the value another record gives for it as the reference ('t8und_gap_closed_pct', 't5_t8und_dev_cm')."""
+    gap, dev = None, {}
+    own = [o for o in map(offline_of, rows) if o and nk(o.get("edit") or "") == name]
+    ref = [o for o in map(offline_of, rows) if o and nk(o.get("edit") or "") not in ("", name)]
     for r, o in ((r, offline_of(r)) for r in rows):
         if not o or nk(o.get("edit") or "") != name:
             continue
@@ -1343,13 +1347,7 @@ def prevent_offline(rows, name):
         if v is not None and gap is None:
             n = as_int(o.get("t8_n")) or as_int(o.get("n"))
             gap = C(f"{sgn(v, False, 0)}%", f"{n} held-aside decisions" if n else None, x=v)
-        v, _ = ofind(o, "t5_variant_dev_cm", f"t5_{name}_dev_cm", "t5_dev_cm", "t5_edited_dev_cm")
-        if v is not None and dev is None:
-            n = as_int(o.get("t5_n"))
-            dev = C(f"{v:.1f} cm", f"{n} decisions" if n else None, x=v)
-    for r, o in ((r, offline_of(r)) for r in rows):   # the build as another record's reference
-        if not o or nk(o.get("edit") or "") == name:
-            continue
+    for o in ref:   # the build as another record's reference
         v, _ = ofind(o, f"{name}_gap_closed_pct", f"t8_{name}_gap_closed_pct")
         if v is not None:
             if gap is None:
@@ -1357,13 +1355,26 @@ def prevent_offline(rows, name):
                 gap = C(f"{sgn(v, False, 0)}%", f"{n} held-aside decisions" if n else None, x=v)
             elif abs(gap["x"] - v) > 0.05:
                 print(f"  CHECK prevention: {name} T8 gap closed {gap['x']} in its own record, {v} in {o.get('edit')}'s")
-        v, _ = ofind(o, f"t5_{name}_dev_cm")
-        if v is not None and dev is None:
-            n = as_int(o.get("t5_n"))
-            dev = C(f"{v:.1f} cm", f"{n} decisions" if n else None, x=v)
-        elif v is not None and abs(dev["x"] - v) > 0.005:
-            print(f"  CHECK prevention: {name} T5 deviation {dev['x']} here, {v} in {o.get('edit')}'s record")
-    return gap, dev
+    for t in ("t5", "t3"):
+        for o in own:
+            v, _ = ofind(o, f"{t}_variant_dev_cm", f"{t}_{name}_dev_cm", f"{t}_dev_cm", f"{t}_edited_dev_cm")
+            if v is not None and t not in dev:
+                dev[t] = (v, as_int(o.get(f"{t}_n")))
+        for o in ref:
+            v, _ = ofind(o, f"{t}_{name}_dev_cm")
+            if v is not None and t not in dev:
+                dev[t] = (v, as_int(o.get(f"{t}_n")))
+            elif v is not None and abs(dev[t][0] - v) > 0.005:
+                print(f"  CHECK prevention: {name} {t.upper()} deviation {dev[t][0]} here, {v} in {o.get('edit')}'s record")
+    dcell = None
+    if "t5" in dev:
+        v, n = dev["t5"]
+        d3 = dev.get("t3")
+        dcell = C(f"{v:.1f} cm", "; ".join(x for x in (f"{n} decisions" if n else None,
+                                                        f"T3: {d3[0]:.1f} cm" + (f" on {d3[1]}" if d3[1] else "")
+                                                        if d3 else None) if x) or None,
+                  x=v, x3=d3[0] if d3 else None)
+    return gap, dcell
 
 
 def prevention(cross):
@@ -1392,85 +1403,114 @@ def prevention(cross):
                 cells[k] = (NA if final else
                             C("—", "not run: further runs only if a build restores T5", s="na")
                             if name != PREVENT["base"] and broke and k in (PREVENT["target"], *PREVENT["left"]) else RUN)
-        if mine and name in fu:
-            m = re.search(r"from (\d+) ", labels.get(name, ""))
-            if m and not any(re.search(rf"\b{m.group(1)}\b", describe(r.get("notes")) or "") for r in mine):
-                print(f"  CHECK prevention: {name}: no record's notes repeat the README's count ({m.group(1)})")
+        m = re.search(r"from (\d+) ", labels.get(name, ""))
+        for r in mine if m else []:
+            m2 = re.search(r"from (\d+) [\w/ -]*instructions", describe(r.get("notes")) or "")
+            if m2 and m2.group(1) != m.group(1):
+                print(f"  CHECK prevention: {name}: a record says {m2.group(1)} instructions, the label {m.group(1)}")
         out.append(dict(name=name, label=labels.get(name, f"a follow-up of {fu.get(name)}"), cells=cells,
                         measured=bool(mine)))
     return dict(model=PREVENT["model"], base=PREVENT["base"], target=PREVENT["target"], left=list(PREVENT["left"]),
                 rows=out, sources=[PREVENT["records"], PREVENT["readme"]], text=prevent_finding(out))
 
 
-def prevent_result(r, base=None):
-    """(T8 clause, [left-task clauses], broke?) of one follow-up row, from its closed-loop cells; None if none yet."""
-    def kind(c):
-        return " practice" if c.get("prac") else " held-out"
+FAILED = ("broke", "unrestored")
+
+
+def kind_of(c):
+    return " practice" if c.get("prac") else " held-out"
+
+
+def prevent_parts(r, base, bname):
+    """A follow-up build's closed-loop results, each with a verdict, in present and past tense; None while it has none.
+    A left task 'broke' if it drops significantly (exact p < 0.05); 'unrestored' if the original edit lowered it on the
+    same starts and the build's count is at least as close to the original edit's as to the unedited one; 'near' if
+    closer to the unedited one; else 'plain'. bname names the original edit in the text."""
     c8 = r["cells"][PREVENT["target"]]
     left = [(t, r["cells"][t]) for t in PREVENT["left"] if r["cells"][t]["s"] == "ok"]
     if not left and c8["s"] != "ok":
         return None
     t8 = None
     if c8["s"] == "ok":
-        sig = c8.get("p") is not None and c8["p"] < SIG
-        t8 = (f"keeps the T8 fix ({c8['a']} → {c8['b']} of {c8['n']}{kind(c8)} starts)" if c8["b"] > c8["a"] and sig else
-              f"lifts T8 only from {c8['a']} to {c8['b']} of {c8['n']}{kind(c8)} starts"
-              + (f" (p = {fp(c8['p'])})" if c8.get("p") is not None else "") if c8["b"] > c8["a"] else
-              f"loses the T8 fix ({c8['a']} → {c8['b']} of {c8['n']}{kind(c8)} starts)")
-    out, broke = [], False
-    for t, c in left:
-        pv = f" (p = {fp(c['p'])})" if c.get("p") is not None else ""
-        if c.get("p") is not None and c["p"] < SIG and c["b"] < c["a"]:
-            broke = True
-            out.append((True, f"{t} still falls from {c['a']} to {c['b']} of {c['n']}{kind(c)} starts{pv}"))
-        elif c["b"] < c["a"]:
-            out.append((False, f"{t} falls from {c['a']} to {c['b']} of {c['n']}{kind(c)} starts, not significant{pv}"))
+        a, b, n, k = c8["a"], c8["b"], c8["n"], kind_of(c8)
+        if b > a and c8.get("p") is not None and c8["p"] < SIG:
+            t8 = ("kept", f"keeps the T8 fix ({a} → {b} of {n}{k} starts)", f"T8 kept its fix ({a} → {b} of {n})")
+        elif b > a:
+            t8 = ("weak", f"lifts T8 only from {a} to {b} of {n}{k} starts" + (f" (p = {fp(c8['p'])})" if c8.get("p")
+                                                                                 is not None else ""),
+                  f"T8 rose only from {a} to {b} of {n}")
         else:
-            out.append((False, f"{t} holds, {c['a']} → {c['b']} of {c['n']}{kind(c)} starts{pv}"))
-    return t8, out, broke
+            t8 = ("lost", f"loses the T8 fix ({a} → {b} of {n}{k} starts)", f"T8 lost its fix ({a} → {b} of {n})")
+    out = []
+    for t, c in left:
+        a, b, n, k = c["a"], c["b"], c["n"], kind_of(c)
+        pv = f"p = {fp(c['p'])}" if c.get("p") is not None else None
+        bc = ((base or {}).get("cells", {}).get(t) or {}).get("runs", {}).get(k.strip())
+        bb = bc[1] if bc and bc[3] == c.get("slots") and bc[2] == n else None
+        if c.get("p") is not None and c["p"] < SIG and b < a:
+            out.append((t, "broke", f"{t} still falls from {a} to {b} of {n}{k} starts ({pv})",
+                        f"{t} still fell from {a} to {b} of {n}{k} starts"))
+        elif bb is not None and bb < a:
+            v = "unrestored" if abs(b - bb) <= abs(b - a) else "near"
+            out.append((t, v, (f"{t} goes from {a} to {b} of {n}{k} starts" if v == "unrestored" else
+                               f"{t} stays near its unedited rate, {a} → {b} of {n}{k} starts")
+                        + f" ({pv + '; ' if pv else ''}{bname}: {bb})",
+                        f"{t} went {a} → {b} of {n}{k} starts, against {bb} for the original edit"))
+        else:
+            out.append((t, "plain", f"{t} goes from {a} to {b} of {n}{k} starts" + (f" ({pv})" if pv else ""),
+                        f"{t} went {a} → {b} of {n}{k} starts" + (f" ({pv})" if pv else "")))
+    running = [t for t in (PREVENT["target"], *PREVENT["left"]) if r["cells"][t]["s"] == "running"]
+    return dict(t8=t8, left=out, running=running)
+
+
+def present_clause(subject, parts):
+    """'<subject> keeps the T8 fix (...) but does not prevent the break: T5 still falls ...; T3 goes ...'."""
+    t8, fails = parts["t8"], [x for x in parts["left"] if x[1] in FAILED]
+    others = [x for x in parts["left"] if x[1] not in FAILED]
+    s = subject + (f" {t8[1]}" if t8 else "")
+    if fails:
+        s += (" but" if t8 and t8[0] == "kept" else " and" if t8 else "") + " does not prevent the break: " + and_list(
+            x[2] for x in fails)
+    if others:
+        s += ("; " if fails else ", and " if t8 else ": ") + and_list(x[2] for x in others)
+    return s
 
 
 def prevent_finding(rows):
     """One sentence per follow-up build: what its row shows. '{running}' marks what is not measured yet."""
     base = next((r for r in rows if r["name"] == PREVENT["base"]), None)
     bdev = base["cells"]["dev"] if base else None
+    bn = f"`{PREVENT['base']}`"
     parts = []
     for r in rows:
         if r["name"] == PREVENT["base"]:
             continue
         who = f"`{r['name']}` ({PREVENT['short'].get(r['name'], r['label'])})"
-        res = prevent_result(r)
+        res = prevent_parts(r, base, bn)
         g, d = r["cells"]["gap"], r["cells"]["dev"]
-        off = []
+        off, smaller = [], set()
         if g["s"] == "ok":
             off.append(f"closes {g['v']} of the T8 gap")
-        if d["s"] == "ok" and bdev and bdev["s"] == "ok":
-            rel = d["x"] / bdev["x"] if bdev["x"] else 1
-            word = "about the same as" if 0.9 <= rel <= 1.1 else "less than" if rel < 0.9 else "more than"
-            off.append(f"moves T5’s actions {d['v']} from the unedited policy’s, {word} `{PREVENT['base']}` "
-                       f"({bdev['v']})")
-        elif d["s"] == "ok":
-            off.append(f"moves T5’s actions {d['v']} from the unedited policy’s")
+        if d["s"] == "ok":
+            mv = []
+            for t, x, bx in (("T5", d.get("x"), (bdev or {}).get("x")), ("T3", d.get("x3"), (bdev or {}).get("x3"))):
+                if x is None:
+                    continue
+                mv.append(f"{t}’s {x:.1f} cm" + (f" ({bn}: {bx:.1f} cm)" if bx is not None else ""))
+                if bx and x / bx < 0.9:
+                    smaller.add(t)
+            off.append("moves " + and_list(mv).replace("’s ", "’s actions ", 1) + " from the unedited policy’s")
         if res is None:
             parts.append(f"{who}: " + (f"offline it {and_list(off)}; closed loop {RUNNING}." if off else f"{RUNNING}."))
             continue
-        t8, left, broke = res
-        bad = [s for b, s in left if b]
-        good = [s for b, s in left if not b]
-        if t8:
-            s = f"{who} {t8}"
-            if bad:
-                s += (" but" if "keeps" in t8 else " and") + " does not prevent the break: " + and_list(bad)
-            if good:
-                s += ("; " if bad else ", and ") + and_list(good)
-        else:
-            s = (f"{who} does not prevent the break: {and_list(bad)}" + (f"; {and_list(good)}" if good else "")
-                 if bad else f"{who}: {and_list(good)}")
+        s = present_clause(who, res)
         if off:
             s += f"; offline it {and_list(off)}"
-        missing = [t for t in (PREVENT["target"], *PREVENT["left"]) if r["cells"][t]["s"] == "running"]
-        if missing:
-            s += f"; {and_list(missing)}: {RUNNING}"
+        lost = [x[0] for x in res["left"] if x[1] in FAILED and x[0] in smaller]
+        if lost:
+            s += (f", so the smaller offline deviation on {and_list(lost)} does not carry over to the closed loop")
+        if res["running"]:
+            s += f"; {and_list(res['running'])}: {RUNNING}"
         parts.append(s + ".")
     return " ".join(parts)
 
@@ -1490,8 +1530,8 @@ def prevent_html(P):
     note = ("Closed loop: unedited → edited on the same starts, held-out where run, else practice (tagged). Offline, "
             "on recorded decisions, before any closed loop: T8 gap closed is the share of the clearer wording’s action "
             "change a build reproduces on held-aside T8 decisions; T5 deviation is how far the build moves the action "
-            "chunk from the unedited policy’s on T5 practice decisions the unedited policy solved. These decide which "
-            "builds run closed loop.")
+            "chunk from the unedited policy’s on T5 practice decisions the unedited policy solved (T3 the same way, in the "
+            "detail). These decide which builds run closed loop.")
     names = [r["name"] for r in P["rows"]]
     rel = next((n for n in names if n.endswith("r") and n != P["base"]), None)
     intro = (f"<p>The T8 edit <code>{esc(P['base'])}</code> breaks {esc(left)}, the two other tasks whose instructions "
@@ -1506,60 +1546,44 @@ def prevent_html(P):
 
 
 def prevent_tldr(P):
-    """For the TL;DR's side-effect bullet: follow-up builds with a closed-loop T5 or T3 result, one plain sentence
-    each, past tense; nothing while none has one."""
-    out = []
+    """For the TL;DR's side-effect bullet, past tense: the follow-up builds with a closed-loop T5 or T3 result; says
+    plainly when a build did not prevent the break; nothing while none has such a result."""
+    base = next((r for r in P["rows"] if r["name"] == P["base"]), None)
+    fails, others, pending = [], [], False
     for r in P["rows"]:
         if r["name"] == P["base"]:
             continue
-        left = [(t, r["cells"][t]) for t in P["left"] if r["cells"][t]["s"] == "ok"]
-        if not left:
+        res = prevent_parts(r, base, "the original edit")
+        pending |= any(r["cells"][t]["s"] == "running" for t in (P["target"], *P["left"]))
+        if not res or not res["left"]:
             continue
-        kind = lambda c: " practice" if c.get("prac") else " held-out"
-        short = PREVENT["short"].get(r["name"], r["label"])
-        bad = [(t, c) for t, c in left if c.get("p") is not None and c["p"] < SIG and c["b"] < c["a"]]
-        c8 = r["cells"][P["target"]]
-        t8 = None
-        if c8["s"] == "ok":
-            sig = c8.get("p") is not None and c8["p"] < SIG
-            t8 = (f"kept T8 ({c8['a']} → {c8['b']} of {c8['n']}{kind(c8)} starts)" if c8["b"] > c8["a"] and sig else
-                  f"lifted T8 only from {c8['a']} to {c8['b']} of {c8['n']}{kind(c8)} starts" if c8["b"] > c8["a"] else
-                  f"lost the T8 fix ({c8['a']} → {c8['b']} of {c8['n']}{kind(c8)} starts)")
-        lead = f"Rebuilt with {short}, the edit" + (f" {t8}" if t8 else "")
-        if bad:
-            out.append(lead + (" but" if t8 and t8.startswith("kept") else " and" if t8 else "")
-                       + " did not prevent the break: " + and_list(
-                           f"{t} still fell from {c['a']} to {c['b']} of {c['n']}{kind(c)} starts" for t, c in bad) + ".")
-        else:
-            out.append((lead + ", and " if t8 else f"Rebuilt with {short}: ") + and_list(
-                f"{t} went {c['a']} → {c['b']} of {c['n']}{kind(c)} starts"
-                + (f" (p = {fp(c['p'])})" if c.get("p") is not None else "") for t, c in left) + ".")
-    return "".join(" " + x for x in out)
+        keys = PREVENT["short"].get(r["name"], r["label"]).replace("preservation keys from ", "")
+        bad = [x for x in res["left"] if x[1] in FAILED]
+        rest = [x for x in res["left"] if x[1] not in FAILED]
+        t8 = f", while {res['t8'][2]}" if res["t8"] else ""
+        txt = f"with {keys}, " + and_list(x[3] for x in bad + rest) + t8
+        (fails if bad else others).append(txt)
+    out = ""
+    if fails:
+        out += (" Rebuilding the edit with preservation keys " + ("has not prevented the break so far: " if pending
+                                                                 else "did not prevent the break: ")
+                + "; ".join(fails) + ".")
+    if others:
+        out += " Rebuilt " + "; rebuilt ".join(others) + "."
+    return out
 
 
 def prevent_conclusion(P):
     """Conclusion clauses, present tense: each follow-up build with a closed-loop result."""
+    base = next((r for r in P["rows"] if r["name"] == P["base"]), None)
     out = []
     for r in P["rows"]:
         if r["name"] == P["base"]:
             continue
-        res = prevent_result(r)
-        if not res:
-            continue
-        t8, left, _ = res
-        bad = [s for b, s in left if b]
-        good = [s for b, s in left if not b]
-        s = f"rebuilt with {PREVENT['short'].get(r['name'], r['label'])}, the edit"
-        if t8:
-            s += f" {t8}"
-            if bad:
-                s += (" but" if "keeps" in t8 else " and") + " does not prevent the break: " + and_list(bad)
-            if good:
-                s += ("; " if bad else ", and ") + and_list(good)
-        else:
-            s += (f" does not prevent the break: {and_list(bad)}" + (f"; {and_list(good)}" if good else "")
-                  if bad else f": {and_list(good)}")
-        out.append(s.replace("p = ", "p\u00a0=\u00a0"))
+        res = prevent_parts(r, base, "the original edit")
+        if res:
+            out.append(present_clause(f"rebuilt with {PREVENT['short'].get(r['name'], r['label'])}, the edit", res)
+                       .replace("p = ", "p\u00a0=\u00a0"))
     return out
 
 
