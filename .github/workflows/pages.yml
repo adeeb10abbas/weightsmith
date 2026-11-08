@@ -46,6 +46,28 @@ jobs:
             echo "paper links now point to paper.pdf?v=$h ($(grep -o "paper.pdf?v=$h" site/*.html | wc -l) links)"
           fi
 
+      # The same for stylesheets and scripts: browsers keep them for 4 hours (max-age=14400), so a page could
+      # arrive with a stale style.css and render new figures unstyled. Each local .css/.js link gets ?v=<hash>.
+      - name: Version the stylesheet and script links
+        run: |
+          python3 - <<'EOF'
+          import hashlib, pathlib, re
+          site = pathlib.Path("site")
+          ref = re.compile(r'((?:href|src)=")([^"?#:]+\.(?:css|js))(")')
+          for page in site.rglob("*.html"):
+              text = page.read_text(encoding="utf-8")
+              def stamp(m):
+                  target = (page.parent / m.group(2)).resolve()
+                  if not target.is_file():
+                      return m.group(0)
+                  h = hashlib.sha256(target.read_bytes()).hexdigest()[:12]
+                  return f"{m.group(1)}{m.group(2)}?v={h}{m.group(3)}"
+              new, n = ref.subn(stamp, text)
+              if new != text:
+                  page.write_text(new, encoding="utf-8")
+                  print(f"{page}: {n} css/js links versioned")
+          EOF
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
