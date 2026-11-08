@@ -290,3 +290,45 @@ On T8 that is possible (equal token counts), and the edit is both strong and lea
 matching the shared positions moves the actions away from the good wording (`t3und`) or undoes part of `t8und`
 (`t8t3und`). GPU time used for this block: about 13 min (two builds, three captures, one attempt discarded), far
 inside the 3 h timebox.
+
+### Prospective test of the token-count rule (pre-registered 15:05 ET, before any screen or build)
+
+The rule from T8 and T3: on Cosmos3 Edge, the `t8und` recipe works when the clear wording changes words in place, so
+both wordings have equal token counts and every position can be matched. It fails when the clear wording adds words
+(`t3und`, `t8t3und`). Coordinator's request (14:50 ET): predict a new pair before building, then test the prediction.
+
+**Candidates.** The "Same Goal, Different Words" template for scene S1 (`rubiks_cube_banana_bowl.usda`), applied exactly as
+on S4-R ("Move the X on the table so that ..."), on stock RoboLab tasks with their native success terms. Token counts
+come from the Cosmos-Reason2-2B tokenizer applied to the server's full JSON prompt. That tokenizer reproduces the known
+pairs' differences (T8 RF vs TF: equal; T3 default vs specific: +8). The build itself is the real check: `--align all`
+refuses unequal counts.
+
+| Code | RoboLab task | Original: reference-first (RF) | Clear: target-first (TF) | Tokens RF / TF |
+|---|---|---|---|---|
+| S1L | RubiksCubeLeftOfBowlTask | Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube. | Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl. | 142 / 142 |
+| S1R | RubiksCubeRightOfBowlTask | Move the rubiks cube on the table so that the bowl is to the left of the rubiks cube. | Move the rubiks cube on the table so that the rubiks cube is to the right of the bowl. | 142 / 142 |
+| S1F (negative) | RubiksCubeInFrontOfBowlTask | Move the rubiks cube on the table so that the bowl is behind the rubiks cube. | Move the rubiks cube on the table so that the rubiks cube is in front of the bowl. | 139 / 141 |
+
+Both wordings go through the prompt override. Arms: `<code>-rf` (unedited, RF), `<code>-tf` (unedited, TF), `<code>-E<edit>`
+(edited, RF) and `<code>-C<edit>` (random control, RF). Everything runs on GPU1.
+
+1. **Screen** S1L and S1R unedited on practice 30000-30015, RF vs TF. Pick the pair with the larger paired TF - RF gap,
+   counted as TF-only starts minus RF-only starts; on a tie, S1L. Also run S1F RF on 30000-30015, to get decisions for
+   the negative prediction.
+2. **Prediction for the chosen equal-length pair, fixed now:** equal token counts, so the `t8und` recipe (unchanged:
+   `seq_build.py`, layers 0-26, `--align all`, lam_rel 1e-3, unconditional-pass keys, random control) should close at
+   least 85% of the RF -> TF action gap offline, and should fix the task in closed loop.
+3. **Decisions.** RF failures of the unedited policy on 30000-30015, in slot order. The build uses the first failure
+   (replan 1), with checks at the 2nd, 3rd and 4th failures (replans 1, 2, 3). The held-aside gate set is the failure
+   episodes after the first four (at most 6), replans 1-5.
+4. **Offline gate:** at least 85% of the RF -> TF gap closed (chunk-end end-effector distance to TF's chunk, same seed),
+   and the random control within +/-15%.
+5. **Closed loop if the gate passes:** practice 30000-30015, edit and control (RF), paired with `-rf` and `-tf`. Held-out
+   runs need both of the following: the edit recovers at least 50% of TF's paired gain, and it solves more starts than
+   its control. Held-out = 32 starts no run of that task has used (S1L: 96032-96063, because T3's side-effect runs used
+   96000-96031 on the same task; S1R: 96000-96031): RF, edit, control and TF, all on GPU1.
+6. **Negative prediction (if time remains), offline only:** S1F has unequal counts, so the recipe falls back to `--align ps`
+   and should **fail** the same offline gate, at less than 85% of the gap closed.
+
+If neither equal-length pair shows a TF - RF gap on the screen, the offline gate still runs on the larger one, and the
+README says plainly that closed loop cannot show a fix there.
