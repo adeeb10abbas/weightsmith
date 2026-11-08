@@ -370,7 +370,7 @@ def main():
     # preservation variants, offline: T8 gap closed (held-aside decisions) and T5 deviation from the unedited policy
     pres = []
     for m in machines:
-        for ed, var in (("t8undp", "O+undp"), ("t8undr", "O+undr")):
+        for ed, var in (("t8undp", "O+undp"), ("t8undr", "O+undr"), ("t8unds", "O+unds")):
             f8 = RUNS.parent / "offline" / m / f"{ed}_t8_check.json"
             f5 = RUNS.parent / "offline" / m / f"{ed}_t5_check.json"
             if not (f8.exists() and f5.exists()):

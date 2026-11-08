@@ -153,3 +153,11 @@ simulator outcomes are identical across the two GPUs, so the held-out runs of `t
 T5 2/16 (unedited 8/16, `t8und` 0/16; 6 broke, 0 fixed); T3 1/16 (unedited 4/16, `t8und` 0/16; 4 broke, 1 fixed).
 Relation-aware preservation removes 57-78% of the offline action deviation on T5 and T3, which is not enough to keep
 those tasks working. Per the plan, no held-out runs were made for it.
+
+**`t8und-s` (approved 09:40 ET, building).** Hypothesis: the break comes from the word-for-word alignment. RF and TF have
+equal token counts, so `--align all` maps "left" onto "right" and "raisin" onto "mustard". `t8und-s` maps only the shared
+template prefix and suffix states (`--align ps`) and leaves the differing instruction words unconstrained, plus the 65
+generic preservation prompts of `t8und-p` (the suffix tokens are identical in every prompt). Gates: T8 gap closed >= 85%
+and T5/T3 deviation below `t8und-r`'s (5.88 / 6.46 cm). A T8 gap below 85% would itself say that the fix lives in the
+word-aligned positions. Closed loop on T5, T3 and T8 practice runs only if both gates pass; held-out with control only if T5 and T3 then
+recover with T8 held.
