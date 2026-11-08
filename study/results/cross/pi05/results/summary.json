@@ -1,6 +1,7 @@
 {
  "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
  "hardware": "rented pod, 2x RTX 4080 SUPER 32 GB (driver 595), weightsmith @ ad31044",
+ "video_picks": {},
  "jobs": [],
  "jobs_ali_ms": [
   {

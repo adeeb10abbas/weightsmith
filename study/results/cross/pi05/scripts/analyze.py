@@ -45,6 +45,9 @@ EDITS = {
 }
 
 
+ROWS: dict[tuple[str, str], dict[int, dict]] = {}
+
+
 def load_runs(d: Path):
     arms: dict[tuple[str, str], dict[int, bool]] = {}
     meta: list[dict] = []
@@ -57,6 +60,12 @@ def load_runs(d: Path):
         key = (r["code"], r["arm"])
         rows = {x["slot"]: bool(x["success"]) for x in r["rows"] if x.get("ok")}
         arms.setdefault(key, {}).update(rows)
+        if d == RUNS:
+            for x in r["rows"]:
+                if x.get("ok"):
+                    ROWS.setdefault(key, {})[x["slot"]] = {"success": bool(x["success"]), "steps": x.get("steps"),
+                                                           "reason": x.get("reason"),
+                                                           "video": (r.get("videos") or {}).get(str(x["slot"]))}
         meta.append({k: r.get(k) for k in ("tag", "code", "task", "arm", "slot_start", "n", "prompt", "fp",
                                            "fp_checked", "server_fingerprint", "completed", "success", "gpu",
                                            "lock_wait_s", "gpu_s", "started", "finished", "host")})
@@ -148,6 +157,32 @@ def fresh_records(arms):
                        "paired with the unedited arm on the same slots"), per_slot=c["per_slot"]))
             table.setdefault(code, {})[arm] = c
     return recs, table
+
+
+def video_picks(slots=range(30000, 30016)):
+    """Per task, on the slots with sensor videos: clear failures of the unedited policy, slots the edit fixes
+    (unedited fails, v2mi-f succeeds; shortest edited episode first) and slots it breaks."""
+    out = {}
+    for code in ORDER:
+        b, e = ROWS.get((code, "base"), {}), ROWS.get((code, "v2mi-f"), {})
+        common = [s for s in slots if s in b and s in e]
+        if not common:
+            continue
+        fixes = sorted((s for s in common if not b[s]["success"] and e[s]["success"]), key=lambda s: e[s]["steps"])
+        breaks = [s for s in common if b[s]["success"] and not e[s]["success"]]
+        fails = [s for s in common if not b[s]["success"] and not e[s]["success"]]
+        out[code] = {
+            "clear_fix": [{"slot": s, "unedited": f"fail ({b[s]['steps']} steps): {b[s]['reason']}",
+                           "edited": f"success in {e[s]['steps']} steps",
+                           "videos": [b[s]["video"], e[s]["video"]]} for s in fixes[:3]],
+            "clear_failure": [{"slot": s, "unedited": f"fail ({b[s]['steps']} steps): {b[s]['reason']}",
+                               "edited": "fail" if not e[s]["success"] else "success",
+                               "video": b[s]["video"]}
+                              for s in (fixes[:1] + fails[:2])],
+            "broke": [{"slot": s, "unedited": f"success in {b[s]['steps']} steps",
+                       "edited": f"fail ({e[s]['steps']} steps): {e[s]['reason']}"} for s in breaks],
+        }
+    return out
 
 
 def calibration(arms_pod, arms_old):
@@ -253,7 +288,8 @@ def main():
     fresh, table = fresh_records(arms)
     fresh += calibration(arms, arms_old)
     gpu_s = sum((m.get("gpu_s") or 0) for m in meta)
-    summary = {"model": MODEL, "hardware": HW_POD, "jobs": meta, "jobs_ali_ms": meta_old,
+    summary = {"model": MODEL, "hardware": HW_POD, "video_picks": video_picks(), "jobs": meta,
+               "jobs_ali_ms": meta_old,
                "gpu_hours_pod_jobs": round(gpu_s / 3600, 2),
                "table": {c: {a: (v if not isinstance(v, dict) else {k: x for k, x in v.items() if k != "per_slot"})
                              for a, v in d.items()} for c, d in table.items()}}
