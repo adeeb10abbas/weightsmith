@@ -15,6 +15,8 @@ Inputs (all inside this repository):
   paper/figures/src/heldout_v2mif_events.json
                                              per-slot event summary of the held-out cube-then-banana run, built by
                                              scripts/summarize_heldout_events.py (cube drops, Fig. 1 slot rule)
+  study/results/opus/where/results/*.json   where-to-edit study: held-out and transfer comparisons, stages and
+                                             behaviour per arm (Fig. 4, Table where-stages)
 
 Outputs: paper/figures/*.pdf (embedded in the paper), paper/figures/preview/*.png (for inspection),
          paper/generated/*.tex (tables input by main.tex).
