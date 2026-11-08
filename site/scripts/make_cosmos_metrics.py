@@ -912,6 +912,15 @@ def slot_kind(r):
     return " unseen" if lo is not None and lo >= 96000 else " practice" if lo is not None and 30000 <= lo < 30032 else ""
 
 
+def edit_id(r):
+    """The edit's own name ('t8und', 't8und-p'): its edit field, else the first "edit NAME" in its notes."""
+    n = edit_name(r) if "_extra" in r else None
+    if n:
+        return n
+    m = re.search(r"\bedit ([A-Za-z][\w.-]*\d[\w.-]*|[a-z]+\d\w*(?:-\w+)?)", describe(r.get("notes")) or "")
+    return m.group(1) if m else None
+
+
 def loc_short(loc):
     """'text pathway', 'VLM backbone', 'diffusion transformer': the shorter of a location's name and its gloss."""
     m = re.match(r"\s*(.*?)\s*\((.*)\)\s*$", loc or "")
@@ -980,7 +989,8 @@ def row_cells(src):
         if ci is not None and d is not None:
             det.append(fci(d, *ci))
         det += [where_txt(r)] + [x for x in (p_note, ci_note) if x]
-        same_edit = [x for x in ed[1:] if describe(x.get("edit_location")) == loc and is_practice(x) and not prac]
+        same_edit = [x for x in ed[1:] if describe(x.get("edit_location")) == loc and is_practice(x) and not prac
+                     and edit_id(x) == edit_id(r)]
         for x in same_edit:
             ix = ints(x)
             det.append(f"on the practice starts it was built from: {ix['unedited_k']} → {ix['edited_k']}"
@@ -991,7 +1001,7 @@ def row_cells(src):
         short_loc = (loc[:26] + "…") if loc and len(loc) > 27 else loc
         alts = [dict(loc=describe(x.get("edit_location")), a=ints(x)["unedited_k"], b=ints(x)["edited_k"], n=ints(x)["n"],
                      p=as_float(x.get("p")), prac=is_practice(x), ctl=ints(x)["control_k"])
-                for x in ed[1:] if describe(x.get("edit_location")) != loc]
+                for x in ed[1:] if describe(x.get("edit_location")) != loc or edit_id(x) != edit_id(r)]
         cell = C(f"{i['unedited_k']} → {i['edited_k']}" + (f" of {i['n']}" if i["n"] else ""),
                  "; ".join(x for x in det if x), a=i["unedited_k"], b=i["edited_k"], n=i["n"], fx=i["fixed"], br=i["broke"],
                  pv=p,
