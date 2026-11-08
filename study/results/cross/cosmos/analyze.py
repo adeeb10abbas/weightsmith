@@ -29,9 +29,24 @@ sys.path.insert(0, str(HERE / "scripts"))
 from tasks import TASKS as _T, WORDINGS as _W  # noqa: E402
 
 TASKS = {c: (t[0], t[1]) for c, t in _T.items()}
+# prospective token-count test (README): stock S1 tasks, both wordings through the prompt override; the original
+# (reference-first, RF) arm is <code>-rf, the clear (target-first, TF) arm <code>-tf
+PROSPECTIVE = {
+    "S1L": ("RubiksCubeLeftOfBowlTask",
+            "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
+            "Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl."),
+    "S1R": ("RubiksCubeRightOfBowlTask",
+            "Move the rubiks cube on the table so that the bowl is to the left of the rubiks cube.",
+            "Move the rubiks cube on the table so that the rubiks cube is to the right of the bowl."),
+    "S1F": ("RubiksCubeInFrontOfBowlTask",
+            "Move the rubiks cube on the table so that the bowl is behind the rubiks cube.",
+            "Move the rubiks cube on the table so that the rubiks cube is in front of the bowl."),
+}
+TASKS.update({c: (v[0], v[1]) for c, v in PROSPECTIVE.items()})  # edit records name the task and its RF wording
 LABELS = {"T1": "T1 cube then banana", "T2": "T2 pick glasses", "T3": "T3 cube left of bowl",
           "T4": "T4 stack yellow on red", "T5": "T5 mustard in left bin", "T6": "T6 stack 3 cubes",
-          "T7": "T7 pick green block", "T8": "T8 mustard right of raisin (RF)", "R1": "R1 cube in bowl"}
+          "T7": "T7 pick green block", "T8": "T8 mustard right of raisin (RF)", "R1": "R1 cube in bowl",
+          "S1L": "S1L cube left of bowl (RF)", "S1R": "S1R cube right of bowl (RF)", "S1F": "S1F cube in front of bowl (RF)"}
 PRACTICE = range(30000, 30032)
 HELDOUT = range(96000, 96064)
 WORDINGS = [(c, w[0], w[1], w[2]) for c, w in _W.items()]
@@ -278,10 +293,25 @@ def main():
                                   teacher_k=c["cand_k"],
                                   notes=f"same weights, wording via prompt override; fixed = only the alternative "
                                         f"wording succeeds. {why}"))
+        # prospective screens: RF (original) vs TF (clear), same weights, both through the prompt override
+        for code, (task, rf, tf) in PROSPECTIVE.items():
+            a_rf, a_tf = arms.get((m, f"{code}-rf")), arms.get((m, f"{code}-tf"))
+            c = paired(a_rf, a_tf, PRACTICE) if a_rf and a_tf else {}
+            if not c:
+                continue
+            wrows.append({"machine": m, "code": code, "alt": tf, **c})
+            records.append(record(experiment="wording_prospective", machine=m, task=task, code=code,
+                                  wording_pair=[rf, tf], n=c["n"], slots=c["slots"], unedited_k=c["ref_k"],
+                                  fixed=c["fixed"], broke=c["broke"], p=c["p"], teacher_k=c["cand_k"],
+                                  ci={"diff_pts": c["diff_pts"], "bootstrap95_pts": c["diff_ci95_pts"],
+                                      "wilson95_orig_pct": wilson_pct(c["ref_k"], c["n"]),
+                                      "wilson95_alt_pct": wilson_pct(c["cand_k"], c["n"])},
+                                  notes="prospective token-count test: unedited, reference-first vs target-first "
+                                        "wording of the same goal, both via prompt override"))
         # metric 3-5: edits
         for e in edits:
             code, name, teach = e["code"], e["name"], e.get("teacher_arm")
-            base = arms.get((m, f"{code}-base"))
+            base = arms.get((m, f"{code}-{e.get('base_arm', 'base')}"))
             ed, ctl = arms.get((m, f"{code}-E{name}")), arms.get((m, f"{code}-C{name}"))
             tch = arms.get((m, f"{code}-{teach}")) if teach else None
             for split, slots in (("practice", PRACTICE), ("heldout", HELDOUT)):

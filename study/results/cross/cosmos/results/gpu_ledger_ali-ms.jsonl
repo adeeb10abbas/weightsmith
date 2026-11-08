@@ -124,3 +124,4 @@
 {"tag": "T3-wspec-s30016", "gpu": 1, "start": 1794165761.6209161, "end": 1794166292.2949617, "gpu_s": 530.7, "kind": "eval", "n": 16}
 {"tag": "T6-base-s30016", "machine": "ali-ms", "gpu": 0, "start": 1794165295.649563, "end": 1794166713.224613, "gpu_s": 1417.6, "kind": "eval", "n": 16}
 {"tag": "t8t3und", "machine": "ali-ms", "gpu": 1, "start": 1794166337.454626, "end": 1794166730.6492183, "gpu_s": 393.2, "kind": "build", "rc": 0}
+{"tag": "T6-Et8und-s30016", "machine": "ali-ms", "gpu": 0, "start": 1794166713.2253501, "end": 1794168010.6999652, "gpu_s": 1297.5, "kind": "eval", "n": 16}

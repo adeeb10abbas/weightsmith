@@ -291,7 +291,7 @@ matching the shared positions moves the actions away from the good wording (`t3u
 (`t8t3und`). GPU time used for this block: about 13 min (two builds, three captures, one attempt discarded), far
 inside the 3 h timebox.
 
-### Prospective test of the token-count rule (pre-registered 15:05 ET, before any screen or build)
+### Prospective test of the token-count rule (pre-registered 14:59 ET, before any screen or build)
 
 The rule from T8 and T3: on Cosmos3 Edge, the `t8und` recipe works when the clear wording changes words in place, so
 both wordings have equal token counts and every position can be matched. It fails when the clear wording adds words
