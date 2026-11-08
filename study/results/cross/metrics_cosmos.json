@@ -690,6 +690,58 @@
   "notes": "edit t8und built for T8, run on R1 with R1's default instruction, practice slots"
  },
  {
+  "experiment": "edit_practice",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "MustardRightOfRaisinRFTask",
+  "code": "T8",
+  "wording_pair": [
+   "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 0,
+  "edited_k": 0,
+  "fixed": 0,
+  "broke": 0,
+  "p": 1.0,
+  "ci": {
+   "diff_pts": 0.0,
+   "bootstrap95_pts": [
+    0.0,
+    0.0
+   ],
+   "wilson95_unedited_pct": [
+    0.0,
+    19.4
+   ],
+   "wilson95_edited_pct": [
+    0.0,
+    19.4
+   ]
+  },
+  "control_k": null,
+  "teacher_k": 15,
+  "recovery_pct": 0.0,
+  "transfer": null,
+  "retention": null,
+  "edit_location": "video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20)",
+  "values_changed": null,
+  "notes": "edit t8gen (closed-form distillation of the TF wording's effect on the action tokens and pooled video cells (per denoising pass, averaged over 30 RF-failure decisions of slots 30000-30005, replans 1-5), lam_rel 1e-3); control: same rank and singular values, random directions",
+  "control_n": null,
+  "teacher_n": 16,
+  "edit_vs_control": null,
+  "control_slots": null,
+  "teacher_slots": [
+   30000,
+   30015
+  ]
+ },
+ {
   "experiment": "where_to_edit_offline",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",

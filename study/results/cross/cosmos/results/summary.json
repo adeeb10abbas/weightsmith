@@ -452,6 +452,28 @@
    "k": 1,
    "n": 80
   },
+  "ali-ms/T8-Et8gen": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 0,
+   "n": 16
+  },
   "ali-ms/T8-Et8und": {
    "slots": [
     30000,
@@ -939,6 +961,52 @@
     ]
    },
    "recovery_pct": null
+  },
+  {
+   "machine": "ali-ms",
+   "code": "T8",
+   "edit": "t8gen",
+   "split": "practice",
+   "location": "video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20)",
+   "n": 16,
+   "ref_k": 0,
+   "cand_k": 0,
+   "fixed": 0,
+   "broke": 0,
+   "both": 0,
+   "neither": 16,
+   "p": 1.0,
+   "diff_pts": 0.0,
+   "diff_ci95_pts": [
+    0.0,
+    0.0
+   ],
+   "slots": [
+    30000,
+    30015
+   ],
+   "control": null,
+   "teacher": {
+    "n": 16,
+    "ref_k": 0,
+    "cand_k": 15,
+    "fixed": 15,
+    "broke": 0,
+    "both": 0,
+    "neither": 1,
+    "p": 6.103515625e-05,
+    "diff_pts": 93.75,
+    "diff_ci95_pts": [
+     81.25,
+     100.0
+    ],
+    "slots": [
+     30000,
+     30015
+    ]
+   },
+   "edit_vs_control": null,
+   "recovery_pct": 0.0
   }
  ],
  "side_effects": [
@@ -1477,6 +1545,26 @@
     "finished": "2026-11-08 04:26:03"
    }
   ],
+  "ali-ms/T8-Et8gen": [
+   {
+    "tag": "T8-Et8gen-s30000",
+    "task": "MustardRightOfRaisinRFTask",
+    "prompt": null,
+    "edit": "edits/t8gen.pt",
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 0,
+    "gpu_s": 727.0,
+    "started": "2026-11-08 06:11:02",
+    "finished": "2026-11-08 06:23:09"
+   }
+  ],
   "ali-ms/T8-Et8und": [
    {
     "tag": "T8-Et8und-s30000",
@@ -1682,5 +1770,5 @@
    }
   ]
  },
- "records": 22
+ "records": 23
 }

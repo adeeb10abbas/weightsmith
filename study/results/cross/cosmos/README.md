@@ -95,7 +95,8 @@ the chunk-end end-effector distance to the TF-wording action chunk:
 | video/action pathway `t8gen` (`mlp_moe_gen.down_proj`, layers 8-20) | 6.70 cm | 23.4% | 0.7% |
 
 As on π0.5, the edit to the language pathway carries the wording's effect; the edit to the action-generation pathway,
-built from 30 other decisions of the same task, carries a fifth of it. `results/offline/ali-ms/t8_offline_check.json`.
+built from 30 other decisions of the same task, carries a fifth of it. In closed loop on the practice starts the
+video/action-pathway edit `t8gen` solves 0/16 (unedited 0/16, text-pathway `t8und` 13/16). `results/offline/ali-ms/t8_offline_check.json`.
 
 ### Side effects of `t8und` on the other tasks (practice starts 30000-30015, each task's default instruction)
 
