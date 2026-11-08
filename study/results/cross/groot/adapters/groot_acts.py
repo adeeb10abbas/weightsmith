@@ -131,7 +131,8 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--edit", default=None)
     ap.add_argument("--head", action="store_true", help="also record the action head (DiT, VL self-attention)")
-    ap.add_argument("--actions-only", action="store_true", help="store only actions and token ids (offline checks)")
+    ap.add_argument("--actions-only", action="store_true", help="store only actions (offline checks), batched")
+    ap.add_argument("--batch", type=int, default=8)
     a = ap.parse_args()
     items = json.loads(Path(a.items).read_text())
     wordings = json.loads(Path(a.wordings).read_text()) if a.wordings.endswith(".json") else json.loads(a.wordings)
@@ -142,20 +143,32 @@ def main():
     rec = None if a.actions_only else Recorder(base.model, head=a.head)
     index = {"items": items, "wordings": wordings, "edit": report and {k: v for k, v in report.items() if k != "per_tensor"},
              "files": []}
-    for i, it in enumerate(items):
+    if a.actions_only:  # batched replays (same chunking for every arm, so arms stay comparable)
+        bs = max(1, a.batch)
         for wn, text in wordings.items():
-            obs, seed = request(it["obs"], int(it["k"]), text)
-            if rec:
+            for i0 in range(0, len(items), bs):
+                chunk = list(range(i0, min(i0 + bs, len(items))))
+                reqs = [request(items[i]["obs"], int(items[i]["k"]), text) for i in chunk]
+                obs = {k: (np.concatenate([r[0][k] for r in reqs]) if k != "annotation.language.language_instruction"
+                           else [text] * len(reqs)) for k in reqs[0][0]}
+                act, _ = pol.get_action(obs, {"seeds": [r[1] for r in reqs]})
+                for j, i in enumerate(chunk):
+                    o = {k2.replace("action.", "act_"): np.asarray(v)[j].astype(np.float32) for k2, v in act.items()}
+                    f = out / f"i{i:03d}_{wn}.npz"
+                    np.savez(f, **o)
+                    index["files"].append({"item": i, "wording": wn, "file": str(f), "seed": reqs[j][1]})
+            print(f"wording {wn}: {len(items)} items", flush=True)
+    else:
+        for i, it in enumerate(items):
+            for wn, text in wordings.items():
+                obs, seed = request(it["obs"], int(it["k"]), text)
                 rec.clear()
-            act, _ = pol.get_action(obs, {"seeds": [seed]})
-            if rec:
+                act, _ = pol.get_action(obs, {"seeds": [seed]})
                 o = pack(rec.rec, act, a.head)
-            else:
-                o = {k2.replace("action.", "act_"): np.asarray(v)[0].astype(np.float32) for k2, v in act.items()}
-            f = out / f"i{i:03d}_{wn}.npz"
-            np.savez(f, **o)
-            index["files"].append({"item": i, "wording": wn, "file": str(f), "seed": seed})
-        print(f"item {i+1}/{len(items)}", flush=True)
+                f = out / f"i{i:03d}_{wn}.npz"
+                np.savez(f, **o)
+                index["files"].append({"item": i, "wording": wn, "file": str(f), "seed": seed})
+            print(f"item {i+1}/{len(items)}", flush=True)
     (out / "index.json").write_text(json.dumps(index, indent=1))
     print("done", flush=True)
 

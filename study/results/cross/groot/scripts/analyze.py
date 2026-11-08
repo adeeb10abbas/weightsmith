@@ -117,11 +117,115 @@ def main():
                      "values_changed": None, "slots": c["slots"],
                      "notes": f"alternative wording given to the unedited model (teacher); fixed = succeeds only "
                               f"under the alternative wording; tags {base['tag']} vs {tag}"})
+    # ---------------------------------------------------------------- render-preset sensitivity
+    for tag in sorted(t for t in runs if t.startswith("rp-")):
+        tid = tag.split("-")[1]
+        base = runs.get(f"fm-{tid}")
+        if not base:
+            continue
+        c = pair(runs[tag], base)  # reference = performance preset, candidate = default preset
+        lines += ["", f"## Render-preset sensitivity ({tid}, unedited, paired slots {c['slots'][0]}-{c['slots'][1]})", "",
+                  "| Preset | Success | default only / performance only | exact p |", "|---|---|---|---|",
+                  f"| performance (`--rendering-type performance`) | {c['ref_k']}/{c['n']} | | |",
+                  f"| default (unset) | {c['cand_k']}/{c['n']} | {c['fixed']} / {c['broke']} | {fmt_p(c['p'])} |"]
+        recs.append({"experiment": "render_preset_sensitivity", "model": MODEL, "task": f"{tid} {base['task']}",
+                     "wording_pair": None, "n": c["n"], "unedited_k": c["cand_k"], "edited_k": None,
+                     "fixed": c["fixed"], "broke": c["broke"], "p": c["p"], "ci": {"diff_bootstrap95": c["diff_ci95"]},
+                     "control_k": None, "teacher_k": None, "recovery_pct": None, "transfer": None, "retention": None,
+                     "edit_location": None, "values_changed": None, "slots": c["slots"],
+                     "notes": f"unedited model; default preset {c['cand_k']}/{c['n']} vs performance preset "
+                              f"{c['ref_k']}/{c['n']} on the same slots; fixed = succeeds only under the default preset"})
+    # ---------------------------------------------------------------- edits (practice, control, held-out, side effects)
+    recs += edit_records(runs, lines)
     METRICS.write_text(json.dumps({"track": "B", "model": MODEL, "records": recs}, indent=1))
     (G / "results/tables.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))
     if fm:
         plot_failure_map(fm)
+    for e, m in EDITS.items():
+        plot_edit(runs, e, m)
+
+
+EDITS = {}  # filled from results/edits.json: {edit: {"task": tid, "location": ..., "values_changed": ..., "wording": [o, x]}}
+
+
+def edit_records(runs, lines):
+    meta_f = G / "results/edits.json"
+    if not meta_f.exists():
+        return []
+    EDITS.update(json.loads(meta_f.read_text()))
+    recs = []
+    for e, m in EDITS.items():
+        tid = m["task"]
+        base, teach = runs.get(f"fm-{tid}"), runs.get(m.get("teacher_tag", ""))
+        ed, ctl = runs.get(f"ed-{e}-{tid}"), runs.get(f"ctl-{e}-{tid}")
+        if not (base and ed):
+            continue
+        c = pair(base, ed)
+        cc = pair(base, ctl) if ctl else None
+        tk = pair(base, teach)["cand_k"] if teach else None
+        rec_pct = (100 * (c["cand_k"] - c["ref_k"]) / (tk - c["ref_k"])) if tk is not None and tk != c["ref_k"] else None
+        lines += ["", f"## Edit `{e}` ({m['location']}) on {tid}, practice slots {c['slots'][0]}-{c['slots'][1]}", "",
+                  "| Arm | Success | fixed / broke vs unedited | exact p | 95% CI of difference |", "|---|---|---|---|---|",
+                  f"| unedited | {c['ref_k']}/{c['n']} | | | |",
+                  f"| edited | {c['cand_k']}/{c['n']} | {c['fixed']} / {c['broke']} | {fmt_p(c['p'])} | "
+                  f"{100*c['diff_ci95'][0]:+.0f} to {100*c['diff_ci95'][1]:+.0f} pts |"]
+        if cc:
+            lines.append(f"| random-direction control | {cc['cand_k']}/{cc['n']} | {cc['fixed']} / {cc['broke']} | "
+                         f"{fmt_p(cc['p'])} | {100*cc['diff_ci95'][0]:+.0f} to {100*cc['diff_ci95'][1]:+.0f} pts |")
+        if tk is not None:
+            lines.append(f"| teacher (explicit wording, unedited) | {tk}/{c['n']} | | | |")
+        recs.append({"experiment": "wsp_edit_practice", "model": MODEL, "task": f"{tid} {base['task']}",
+                     "wording_pair": m.get("wording"), "n": c["n"], "unedited_k": c["ref_k"], "edited_k": c["cand_k"],
+                     "fixed": c["fixed"], "broke": c["broke"], "p": c["p"], "ci": {"diff_bootstrap95": c["diff_ci95"]},
+                     "control_k": cc["cand_k"] if cc else None, "control_fixed_broke": [cc["fixed"], cc["broke"]] if cc else None,
+                     "control_p": cc["p"] if cc else None, "teacher_k": tk,
+                     "recovery_pct": rec_pct, "transfer": None, "retention": None, "edit_location": m["location"],
+                     "values_changed": m.get("values_changed"), "slots": c["slots"], "notes": m.get("notes", "")})
+        # held-out
+        hb, he = runs.get(f"ho-{tid}-base"), runs.get(f"ho-{tid}-{e}")
+        if hb and he:
+            h = pair(hb, he)
+            hc = runs.get(f"ho-{tid}-ctl-{e}")
+            hcc = pair(hb, hc) if hc else None
+            lines += ["", f"### Held-out ({tid}, slots {h['slots'][0]}-{h['slots'][1]})", "",
+                      f"edited {h['cand_k']}/{h['n']} vs unedited {h['ref_k']}/{h['n']}: {h['fixed']} fixed / {h['broke']} broke, "
+                      f"exact p = {fmt_p(h['p'])}, difference {100*h['diff']:+.1f} pts "
+                      f"[{100*h['diff_ci95'][0]:+.1f}, {100*h['diff_ci95'][1]:+.1f}]"
+                      + (f"; random control {hcc['cand_k']}/{hcc['n']} ({hcc['fixed']}/{hcc['broke']}, p = {fmt_p(hcc['p'])})" if hcc else "")]
+            lo, hi = wilson(h["cand_k"], h["n"])
+            recs.append({"experiment": "wsp_edit_heldout", "model": MODEL, "task": f"{tid} {hb['task']}",
+                         "wording_pair": m.get("wording"), "n": h["n"], "unedited_k": h["ref_k"], "edited_k": h["cand_k"],
+                         "fixed": h["fixed"], "broke": h["broke"], "p": h["p"],
+                         "ci": {"diff_bootstrap95": h["diff_ci95"], "edited_wilson95": [lo, hi],
+                                "unedited_wilson95": list(wilson(h["ref_k"], h["n"]))},
+                         "control_k": hcc["cand_k"] if hcc else None, "teacher_k": None, "recovery_pct": None,
+                         "transfer": None, "retention": None, "edit_location": m["location"],
+                         "values_changed": m.get("values_changed"), "slots": h["slots"], "notes": "held-out slots never used for design"})
+        # side effects / transfer / retention: the edited model on every task, paired with the failure map
+        se = []
+        for t2, cls2, instr2 in TASKS:
+            r = runs.get(f"se-{e}-{t2}") or (ed if t2 == tid else None)
+            b2 = runs.get(f"fm-{t2}")
+            if r and b2:
+                se.append((t2, pair(b2, r)))
+        if se:
+            lines += ["", f"### Side-effect map of `{e}` (edited vs unedited, each task's own wording, slots 30000-30031)", "",
+                      "| Task | Unedited | Edited | fixed / broke | exact p |", "|---|---|---|---|---|"]
+            for t2, c2 in se:
+                lines.append(f"| {t2} | {c2['ref_k']}/{c2['n']} | {c2['cand_k']}/{c2['n']} | {c2['fixed']} / {c2['broke']} | {fmt_p(c2['p'])} |")
+                if t2 != tid:
+                    recs.append({"experiment": "wsp_side_effect" if t2 != "R1" else "wsp_retention", "model": MODEL,
+                                 "task": f"{t2} {runs[f'fm-{t2}']['task']}", "wording_pair": None, "n": c2["n"],
+                                 "unedited_k": c2["ref_k"], "edited_k": c2["cand_k"], "fixed": c2["fixed"],
+                                 "broke": c2["broke"], "p": c2["p"], "ci": {"diff_bootstrap95": c2["diff_ci95"]},
+                                 "control_k": None, "teacher_k": None, "recovery_pct": None,
+                                 "transfer": f"edit `{e}` built on {tid}" if t2 != "R1" else None,
+                                 "retention": f"{c2['cand_k']}/{c2['n']} vs {c2['ref_k']}/{c2['n']}" if t2 == "R1" else None,
+                                 "edit_location": m["location"], "values_changed": m.get("values_changed"),
+                                 "slots": c2["slots"], "notes": f"edit {e} unchanged, task's own wording"})
+            m["_side_effects"] = se
+    return recs
 
 
 def _style():
@@ -159,6 +263,60 @@ def plot_failure_map(fm):
     fig.savefig(PLOTS / "failure_map.svg")
     fig.savefig(PLOTS / "failure_map.png", dpi=200)
     plt.close(fig)
+
+
+
+def plot_edit(runs, e, m):
+    """Edit vs control (and teacher) on practice, held-out if present; side-effect map if present."""
+    plt = _style()
+    tid = m["task"]
+    base = runs.get(f"fm-{tid}")
+    arms = [("unedited", base, GREY), ("random control", runs.get(f"ctl-{e}-{tid}"), "#C9CDD2"),
+            ("WSP edit", runs.get(f"ed-{e}-{tid}"), TEAL), ("explicit wording\n(teacher)", runs.get(m.get("teacher_tag", "")), "#7FB8C4")]
+    arms = [a for a in arms if a[1]]
+    groups = [("practice (30000-30031)", arms)]
+    hb, he = runs.get(f"ho-{tid}-base"), runs.get(f"ho-{tid}-{e}")
+    if hb and he:
+        hold = [("unedited", hb, GREY), ("random control", runs.get(f"ho-{tid}-ctl-{e}"), "#C9CDD2"), ("WSP edit", he, TEAL)]
+        groups.append(("held-out (96000-96063)", [a for a in hold if a[1]]))
+    fig, axes = plt.subplots(1, len(groups), figsize=(3.6 * len(groups) + 0.6, 3.3), squeeze=False)
+    for ax, (title, arms_) in zip(axes[0], groups):
+        for i, (name, run, col) in enumerate(arms_):
+            k, n, lo, hi = rate(run)
+            ax.bar(i, k / n, color=col, width=0.66, zorder=2)
+            ax.errorbar(i, k / n, yerr=[[k / n - lo], [hi - k / n]], fmt="none", ecolor=INK, elinewidth=1, capsize=3, zorder=3)
+            ax.text(i, hi + 0.03, f"{k}/{n}", ha="center", fontsize=8.5, color=INK)
+        ax.set_xticks(range(len(arms_)), [a[0] for a in arms_], fontsize=8)
+        ax.set_ylim(0, 1.15)
+        ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "25", "50", "75", "100"])
+        ax.set_title(title, fontsize=9.5, loc="left")
+        ax.grid(axis="y", color="#E8EAED", zorder=0)
+    axes[0][0].set_ylabel("Success (%)")
+    fig.suptitle(f"GR00T N1.7 DROID, {tid}: closed-form edit `{e}` ({m['location']}), Wilson 95%", fontsize=10, x=0.01, ha="left")
+    fig.tight_layout()
+    fig.savefig(PLOTS / f"edit_vs_control_{e}.svg")
+    fig.savefig(PLOTS / f"edit_vs_control_{e}.png", dpi=200)
+    plt.close(fig)
+    se = m.get("_side_effects")
+    if se:
+        fig, ax = plt.subplots(figsize=(7.2, 3.2))
+        x = range(len(se))
+        for i, (t2, c2) in enumerate(se):
+            ax.bar(i - 0.18, c2["ref_k"] / c2["n"], width=0.34, color=GREY, zorder=2)
+            ax.bar(i + 0.18, c2["cand_k"] / c2["n"], width=0.34, color=TEAL, zorder=2)
+            star = "*" if c2["p"] < 0.05 else ""
+            ax.text(i, max(c2["ref_k"], c2["cand_k"]) / c2["n"] + 0.04, f"+{c2['fixed']}/-{c2['broke']}{star}", ha="center", fontsize=7.5, color=INK)
+        ax.set_xticks(list(x), [t for t, _ in se])
+        ax.set_ylim(0, 1.15)
+        ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "25", "50", "75", "100"])
+        ax.set_ylabel("Success (%)")
+        ax.set_title(f"Side effects of `{e}` (built on {tid}): grey unedited, teal edited; +fixed/-broke, * exact p < 0.05",
+                     fontsize=9, loc="left")
+        ax.grid(axis="y", color="#E8EAED", zorder=0)
+        fig.tight_layout()
+        fig.savefig(PLOTS / f"side_effects_{e}.svg")
+        fig.savefig(PLOTS / f"side_effects_{e}.png", dpi=200)
+        plt.close(fig)
 
 
 if __name__ == "__main__":
