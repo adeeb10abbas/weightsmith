@@ -165,29 +165,29 @@
    "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
    "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
   ],
-  "n": 16,
+  "n": 32,
   "slots": [
    96000,
-   96015
+   96031
   ],
   "unedited_k": 0,
-  "edited_k": 15,
-  "fixed": 15,
+  "edited_k": 28,
+  "fixed": 28,
   "broke": 0,
-  "p": 6.103515625e-05,
+  "p": 7.450580596923828e-09,
   "ci": {
-   "diff_pts": 93.75,
+   "diff_pts": 87.5,
    "bootstrap95_pts": [
-    81.25,
-    100.0
+    75.0,
+    96.88
    ],
    "wilson95_unedited_pct": [
     0.0,
-    19.4
+    10.7
    ],
    "wilson95_edited_pct": [
-    71.7,
-    98.9
+    71.9,
+    95.0
    ]
   },
   "control_k": 0,
