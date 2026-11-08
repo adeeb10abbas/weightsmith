@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "4415991ab4da"
+    "commit": "e7483a028523"
    }
   },
   {
@@ -39,7 +39,7 @@
     "branch": "cross-groot/v1",
     "path": "study/results/cross/metrics_groot.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-    "commit": "92193d19150b"
+    "commit": "f69423fca8c2"
    }
   },
   {
@@ -132,14 +132,14 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Unedited so far: T1 10 of 16 and T8 0 of 16 starts. Clearer wording, same weights: T8 0 → 15 of 16 (p = 6.1 × 10⁻⁵). The T8 edit, on the 16 practice starts it was built from: 0 → 13 (p = 2.4 × 10⁻⁴); on unseen starts, {running}. Other tasks: {running}."
+    "text": "Unedited so far: T1 10 of 16 and T8 0 of 16 starts. Clearer wording, same weights: T8 0 → 15 of 16 (p = 6.1 × 10⁻⁵). The T8 edit, on the 16 practice starts it was built from: 0 → 13 (p = 2.4 × 10⁻⁴); a random edit of the same size, 1 of 16; on unseen starts, {running}. Other tasks: {running}."
    },
    {
     "id": "groot",
     "lead": "GR00T N1.7",
     "kind": "reasoning-backbone VLA",
     "tag": null,
-    "text": "Unedited so far: T1 9 of 32, T3 1 of 32 and T8 0 of 32 starts. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12). Other tasks and edits: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
+    "text": "Unedited so far: T1 9 of 32, T3 1 of 32 and T8 0 of 32 starts. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12), T3 1 → 0 of 32 (p = 1) and T8 0 → 0 of 32 (p = 1). Other tasks and edits: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
     "id": "side-effects",
@@ -463,8 +463,9 @@
     "label": "Random control, same size",
     "cells": {
      "cosmos": {
-      "v": "running",
-      "s": "running"
+      "v": "control 1, unedited 0, edit 13 of 16",
+      "s": "ok",
+      "d": "T8"
      },
      "groot": {
       "v": "running",
@@ -804,6 +805,30 @@
      }
     },
     {
+     "key": "T3",
+     "label": "T3 Cube left of the bowl",
+     "cells": {
+      "cosmos": {
+       "v": "running",
+       "s": "running"
+      },
+      "groot": {
+       "v": "1 → 0 of 32",
+       "s": "ok",
+       "d": "0 / 1, p = 1; −3.1 points [−9.4, 0.0]; slots 30000–30031; “Put the rubiks cube to the left of the bowl” → “Pick up the rubiks cube and place it on the table to the left of the bowl”",
+       "a": 1,
+       "b": 0,
+       "n": 32,
+       "pv": 1.0,
+       "fl": "T3 Cube left of bowl (32 practice)"
+      },
+      "pi05": {
+       "v": "running",
+       "s": "running"
+      }
+     }
+    },
+    {
      "key": "T4",
      "label": "T4 Stack yellow on red",
      "cells": {
@@ -838,8 +863,14 @@
        "fl": "T8 Mustard, reference-first (16 practice)"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "0 → 0 of 32",
+       "s": "ok",
+       "d": "0 / 0, p = 1; 0.0 points [0.0, 0.0]; slots 30000–30031; “Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.” → “Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.”",
+       "a": 0,
+       "b": 0,
+       "n": 32,
+       "pv": 1.0,
+       "fl": "T8 Mustard, reference-first (32 practice)"
       },
       "pi05": {
        "v": "0 → 27 of 32",
@@ -1266,8 +1297,16 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "running",
-       "s": "running"
+       "v": "control 1, unedited 0, edit 13 of 16",
+       "s": "ok",
+       "d": "practice starts the edit was built from; slots 30000–30015",
+       "u": 0,
+       "r": 1,
+       "e": 13,
+       "n": 16,
+       "t": 15,
+       "prac": true,
+       "fl": "T8 Mustard, reference-first, 16 practice"
       },
       "groot": {
        "v": "running",
@@ -1476,6 +1515,25 @@
         "study/results/opus/where/results/heldout_analysis.json"
        ],
        "prov": true
+      }
+     }
+    },
+    {
+     "key": "offline_where",
+     "label": "Offline check: share of the wording’s action change reproduced",
+     "cells": {
+      "cosmos": {
+       "v": "text pathway (und mlp.down_proj, layers 0-26): 91% (random, same size: −2%); video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20): 23% (random, same size: 1%)",
+       "s": "ok",
+       "d": "T8, 30 recorded decisions held aside, never used to build either edit; share of the clearer wording’s action change reproduced, by end-effector distance at the end of the action chunk; offline, no rollouts"
+      },
+      "groot": {
+       "v": "running",
+       "s": "running"
+      },
+      "pi05": {
+       "v": "—",
+       "s": "na"
       }
      }
     },
@@ -1881,7 +1939,7 @@
    "note": "Each model's main edit, unchanged, on every suite task. π0.5's earlier records use the T1 edit: T1–T3 on unseen starts (128 or 64), T4–T7 on 32 practice starts, R1 on 32 fresh starts; it was not run on T8. Across fifteen other surveyed tasks it harmed none detectably.",
    "sources": [],
    "edit": {
-    "cosmos": "the T8 edit (text pathway (und mlp.down_proj, layers 0-26))",
+    "cosmos": "the T8 edit on practice starts (text pathway (und mlp.down_proj, layers 0-26))",
     "groot": null,
     "pi05": "the T1 edit (distilled, VLM)"
    }
@@ -2254,19 +2312,199 @@
       93.4
      ]
     },
-    "control_k": null,
+    "control_k": 1,
     "teacher_k": 15,
     "recovery_pct": 86.7,
     "transfer": null,
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions",
+    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 1 broke 0 p = 1; edit vs control p = 0.000488",
     "_task": "T8",
     "_edit_task": null,
     "_prov": false,
     "extra": {
      "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "where_to_edit_offline",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 30,
+    "slots": null,
+    "unedited_k": null,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": null,
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "offline replay of 30 RF-failure decisions (build set: decisions the gen edit was built from, slots 30000-30005, replans 1-5): chunk-end end-effector distance to the TF-wording action chunk, same seed; gap closed = 1 - edited/unedited distance; control = same-size random directions",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms",
+     "offline": {
+      "machine": "ali-ms",
+      "edit": "t8und",
+      "group": "build",
+      "n": 30,
+      "unedited_ee_cm": 5.42,
+      "edited_ee_cm": 0.5,
+      "control_ee_cm": 5.21,
+      "gap_closed_pct": 90.8,
+      "control_gap_closed_pct": 3.8,
+      "closer_to_teacher": 30,
+      "control_closer_to_teacher": 18
+     }
+    }
+   },
+   {
+    "experiment": "where_to_edit_offline",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 30,
+    "slots": null,
+    "unedited_k": null,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": null,
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20)",
+    "values_changed": null,
+    "notes": "offline replay of 30 RF-failure decisions (build set: decisions the gen edit was built from, slots 30000-30005, replans 1-5): chunk-end end-effector distance to the TF-wording action chunk, same seed; gap closed = 1 - edited/unedited distance; control = same-size random directions",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms",
+     "offline": {
+      "machine": "ali-ms",
+      "edit": "t8gen",
+      "group": "build",
+      "n": 30,
+      "unedited_ee_cm": 5.42,
+      "edited_ee_cm": 4.55,
+      "control_ee_cm": 5.07,
+      "gap_closed_pct": 16.1,
+      "control_gap_closed_pct": 6.5,
+      "closer_to_teacher": 13,
+      "control_closer_to_teacher": 20
+     }
+    }
+   },
+   {
+    "experiment": "where_to_edit_offline",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 30,
+    "slots": null,
+    "unedited_k": null,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": null,
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "offline replay of 30 RF-failure decisions (check set: held-aside decisions, slots 30006-30011, never used to build either edit, replans 1-5): chunk-end end-effector distance to the TF-wording action chunk, same seed; gap closed = 1 - edited/unedited distance; control = same-size random directions",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms",
+     "offline": {
+      "machine": "ali-ms",
+      "edit": "t8und",
+      "group": "check",
+      "n": 30,
+      "unedited_ee_cm": 8.75,
+      "edited_ee_cm": 0.77,
+      "control_ee_cm": 8.9,
+      "gap_closed_pct": 91.2,
+      "control_gap_closed_pct": -1.8,
+      "closer_to_teacher": 25,
+      "control_closer_to_teacher": 11
+     }
+    }
+   },
+   {
+    "experiment": "where_to_edit_offline",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 30,
+    "slots": null,
+    "unedited_k": null,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": null,
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "video/action pathway (gen mlp_moe_gen.down_proj, layers 8-20)",
+    "values_changed": null,
+    "notes": "offline replay of 30 RF-failure decisions (check set: held-aside decisions, slots 30006-30011, never used to build either edit, replans 1-5): chunk-end end-effector distance to the TF-wording action chunk, same seed; gap closed = 1 - edited/unedited distance; control = same-size random directions",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms",
+     "offline": {
+      "machine": "ali-ms",
+      "edit": "t8gen",
+      "group": "check",
+      "n": 30,
+      "unedited_ee_cm": 8.75,
+      "edited_ee_cm": 6.7,
+      "control_ee_cm": 8.68,
+      "gap_closed_pct": 23.4,
+      "control_gap_closed_pct": 0.7,
+      "closer_to_teacher": 16,
+      "control_closer_to_teacher": 19
+     }
     }
    }
   ],
@@ -2419,8 +2657,86 @@
      30000,
      30031
     ],
-    "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T1 vs wd-T1-expl",
+    "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T1 vs wd-T1-expl; GR00T's only wording-sensitive task among those screened (T1, T3, T8)",
     "_task": "T1",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "wording_sensitivity",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T3 RubiksCubeLeftOfBowlTask",
+    "wording_pair": [
+     "Put the rubiks cube to the left of the bowl",
+     "Pick up the rubiks cube and place it on the table to the left of the bowl"
+    ],
+    "n": 32,
+    "unedited_k": 1,
+    "edited_k": null,
+    "fixed": 0,
+    "broke": 1,
+    "p": 1.0,
+    "ci": {
+     "diff_bootstrap95": [
+      -0.09375,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 0,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T3 vs wd-T3-alt; not wording-sensitive: under both wordings GR00T grasps the cube and holds it near the bowl until the episode ends (final frames of slots 30000-30005)",
+    "_task": "T3",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "wording_sensitivity",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T8 MustardRightOfRaisinRFTask",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "diff_bootstrap95": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 0,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T8 vs wd-T8-tf; the target-first wording does not rescue GR00T (0/32 under both; Cosmos3 Edge went 0 -> 15/16 under TF in Track A); under TF every episode grasps the mustard (RF: 10/32 never grasp it) but none ends with it right of the raisin box",
+    "_task": "T8",
     "_edit_task": null,
     "_prov": false,
     "extra": {
@@ -5439,14 +5755,14 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "4415991ab4da"
+   "commit": "e7483a028523"
   },
   "groot": {
    "kind": "branch",
    "branch": "cross-groot/v1",
    "path": "study/results/cross/metrics_groot.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-   "commit": "92193d19150b"
+   "commit": "f69423fca8c2"
   },
   "pi05": {
    "kind": "branch",
@@ -5457,8 +5773,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "e3eaa5bb9161e86c",
- "updated": "2026-11-08T06:47Z",
- "updated_text": "8 Nov 2026, 06:47 UTC",
+ "content_hash": "445af266be63df5e",
+ "updated": "2026-11-08T07:13Z",
+ "updated_text": "8 Nov 2026, 07:13 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
