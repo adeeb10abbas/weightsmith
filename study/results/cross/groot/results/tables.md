@@ -5,7 +5,10 @@
 | T1 | RubiksCubeThenBananaTask | 30000-30031 | 9/32 | 28% | 16-45% |
 | T2 | PickGlassesTask | 30000-30031 | 0/32 | 0% | 0-11% |
 | T3 | RubiksCubeLeftOfBowlTask | 30000-30031 | 1/32 | 3% | 1-16% |
+| T4 | StackYellowOnRedTask | 30000-30015 | 0/16 | 0% | 0-19% |
 | T5 | MustardInLeftBinTask | 30000-30031 | 0/32 | 0% | 0-11% |
+| T6 | Stack3RubiksCubeTask | 30000-30015 | 0/16 | 0% | 0-19% |
+| T7 | PickUpGreenObjectTask | 30000-30031 | 0/32 | 0% | 0-11% |
 | T8 | MustardRightOfRaisinRFTask | 30000-30031 | 0/32 | 0% | 0-11% |
 | R1 | RubiksCubeTask | 30000-30031 | 28/32 | 88% | 72-95% |
 

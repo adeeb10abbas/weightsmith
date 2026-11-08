@@ -8,8 +8,10 @@ G=~/cross/groot
 CKPT=~/.cache/huggingface/hub/models--nvidia--GR00T-N1.7-DROID/snapshots/05e7cc97e40dbd33b0890c35cc0214fcb0547ab5
 R=~/vibes/weight-space-policy-lab/robolab_checkout
 SIM=~/vibes/weight-space-policy-lab/robolab_env/.venv/bin/python
-exec 8>~/.cache/weightsmith/locks/gpu0.lock; flock 8
-exec 9>~/vibes/opus-weight-surgery/state/gpu0.lock; flock 9
+if [[ "${OFFICIAL_LOCKED:-0}" != 1 ]]; then   # set OFFICIAL_LOCKED=1 when run under locked.sh (it holds the flocks)
+  exec 8>~/.cache/weightsmith/locks/gpu0.lock; flock 8
+  exec 9>~/vibes/opus-weight-surgery/state/gpu0.lock; flock 9
+fi
 cd $G/Isaac-GR00T
 PYTHONUNBUFFERED=1 CUDA_VISIBLE_DEVICES=0 .venv/bin/python gr00t/eval/run_gr00t_server.py --model-path $CKPT \
   --embodiment-tag OXE_DROID_RELATIVE_EEF_RELATIVE_JOINT --device cuda --host 127.0.0.1 --port 8601 \

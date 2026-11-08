@@ -14,6 +14,7 @@ fm-T5|eval|fm|MustardInLeftBinTask|30000|32|-|-|--arm unedited --record-obs --re
 fm-T7|eval|fm|PickUpGreenObjectTask|30000|32|-|-|--arm unedited --record-obs --rendering default --max-batch 4
 fm-T4|eval|fm|StackYellowOnRedTask|30000|16|-|-|--arm unedited --record-obs --rendering default --max-batch 4
 fm-T6|eval|fm|Stack3RubiksCubeTask|30000|16|-|-|--arm unedited --record-obs --rendering default --max-batch 4
+val-T7-official|after:fm-T6|cmd|cd ~/cross/groot && OFFICIAL_LOCKED=1 bash src/scripts/official_path.sh PickUpGreenObjectTask 16 groot-official-t7-16
 ctl-bb-T1|after:wsp-t1,ok-t1|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/bb_rand.pt|--arm ctl-bb --rendering default --max-batch 4
 ctl-dit-T1|after:ok-dit|eval|ed|RubiksCubeThenBananaTask|30000|32|-|/home/ali/cross/groot/wsp/t1/dit_rand.pt|--arm ctl-dit --rendering default --max-batch 4
 stop-g0|after:ctl-dit-T1|cmd|touch /home/ali/cross/groot/jobs/STOP.g0

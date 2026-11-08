@@ -108,6 +108,40 @@
    "experiment": "failure_map",
    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
    "machine": "ali-ms-rtx3090",
+   "task": "T4 StackYellowOnRedTask",
+   "wording_pair": [
+    "Stack the yellow block on the red block",
+    null
+   ],
+   "n": 16,
+   "unedited_k": 0,
+   "edited_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null,
+   "ci": {
+    "unedited_wilson95": [
+     0.0,
+     0.1936076805344364
+    ]
+   },
+   "control_k": null,
+   "teacher_k": null,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": [
+    30000,
+    30015
+   ],
+   "notes": "tag fm-T4; envs 16; env seed 0; one fresh simulator process per 16-slot group"
+  },
+  {
+   "experiment": "failure_map",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
    "task": "T5 MustardInLeftBinTask",
    "wording_pair": [
     "Put the mustard in the left bin",
@@ -137,6 +171,74 @@
     30031
    ],
    "notes": "tag fm-T5; envs 16; env seed 0; one fresh simulator process per 16-slot group"
+  },
+  {
+   "experiment": "failure_map",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T6 Stack3RubiksCubeTask",
+   "wording_pair": [
+    "Stack the rubiks cubes in a tower",
+    null
+   ],
+   "n": 16,
+   "unedited_k": 0,
+   "edited_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null,
+   "ci": {
+    "unedited_wilson95": [
+     0.0,
+     0.1936076805344364
+    ]
+   },
+   "control_k": null,
+   "teacher_k": null,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": [
+    30000,
+    30015
+   ],
+   "notes": "tag fm-T6; envs 16; env seed 0; one fresh simulator process per 16-slot group"
+  },
+  {
+   "experiment": "failure_map",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T7 PickUpGreenObjectTask",
+   "wording_pair": [
+    "Pick up the green vegetable block",
+    null
+   ],
+   "n": 32,
+   "unedited_k": 0,
+   "edited_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null,
+   "ci": {
+    "unedited_wilson95": [
+     0.0,
+     0.10717919825507057
+    ]
+   },
+   "control_k": null,
+   "teacher_k": null,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": [
+    30000,
+    30031
+   ],
+   "notes": "tag fm-T7; envs 16; env seed 0; one fresh simulator process per 16-slot group"
   },
   {
    "experiment": "failure_map",
