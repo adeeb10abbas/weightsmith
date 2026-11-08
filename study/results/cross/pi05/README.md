@@ -15,7 +15,7 @@ Machine-readable: [`../metrics_pi05.json`](../metrics_pi05.json) (one record per
 job, one row per slot), [`results/summary.json`](results/summary.json), [`results/provisional.json`](results/provisional.json).
 
 <!-- summary:begin -->
-**Status (2026-11-08 01:00 ET).** Pod setup in progress; no fresh result yet.
+**Status (2026-11-08 06:45 UTC). No fresh π0.5 episodes: the rented pod cannot run Isaac Sim.** The Japan pod (2× RTX 4080 SUPER, driver 595.58 = CUDA 13.2) finished setup at 06:08 UTC, but every Isaac Sim 5.0 process segfaults when the RTX renderer starts (`librtx.scenedb.plugin.so` inside `UsdManager::createHydraEngine`, before any scene loads), and Warp 1.7.2 cannot initialise CUDA on this driver (`cuDeviceGetUuid` entry point). Fixes tried within the 20-minute timebox: the Vulkan ICD path (`/etc/vulkan/icd.d`), the missing `libGLU`/`libXt` libraries, with and without `CUDA_VISIBLE_DEVICES`, single-GPU RTX settings, and a `libcuda` shim; none changed the crash. The policy server itself (JAX) runs on the pod. π0.5 GPU work stays off ali-ms (its GPUs belong to Tracks A and B tonight), so this page's π0.5 column is the **PROVISIONAL** one below. The only π0.5 episodes on the shared slots are one 16-slot T1 group on ali-ms before the move (5/16, `performance` preset; see *Fresh: what exists*).
 <!-- summary:end -->
 
 ## Shared design
@@ -62,9 +62,6 @@ Jobs finished: **0** (16 slots each); pod GPU time in finished jobs: **0.0 GPU-h
 
 <!-- fresh:end -->
 
-![Failure map](plots/failure_map.png)
-
-![Side-effect map of v2mi-f](plots/side_effects_v2mi-f.png)
 
 ## PROVISIONAL: existing π0.5 results (own slots, ali-ms RTX 3090, `performance` preset)
 
