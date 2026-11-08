@@ -1004,5 +1004,42 @@
    "closer_to_teacher": 16,
    "control_closer_to_teacher": 19
   }
+ },
+ {
+  "experiment": "preservation_offline",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "MustardInLeftBinTask",
+  "code": "T5",
+  "wording_pair": null,
+  "n": null,
+  "slots": null,
+  "unedited_k": null,
+  "edited_k": null,
+  "fixed": null,
+  "broke": null,
+  "p": null,
+  "ci": null,
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26), with generic preservation keys",
+  "values_changed": 449299249,
+  "notes": "t8undp vs t8und, offline replays at fixed seeds: T8 = chunk-end end-effector distance to the TF wording's chunk on 30 held-aside RF-failure decisions (slots 30006-30011, replans 1-5); T5 = distance of the edited chunk from the unedited chunk on 38 decisions of T5 practice episodes the unedited policy solved (replans 1-5); dev removed = 1 - t8undp/t8und",
+  "offline": {
+   "machine": "ali-ms",
+   "edit": "t8undp",
+   "t8_n": 30,
+   "t8_unedited_ee_cm": 8.75,
+   "t8_edited_ee_cm": 0.61,
+   "t8_gap_closed_pct": 93.1,
+   "t8und_gap_closed_pct": 91.2,
+   "t5_n": 38,
+   "t5_t8und_dev_cm": 13.73,
+   "t5_variant_dev_cm": 13.89,
+   "t5_dev_removed_pct": -1.2
+  }
  }
 ]

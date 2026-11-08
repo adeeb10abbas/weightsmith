@@ -367,7 +367,35 @@ def main():
                              "held-aside decisions, slots 30006-30011, never used to build either edit")
                           + ", replans 1-5): chunk-end end-effector distance to the TF-wording action chunk, same "
                             "seed; gap closed = 1 - edited/unedited distance; control = same-size random directions"))
-    summary = {"model": MODEL, "where_offline": where, "machines": {m: GPU_NAMES.get(m) for m in machines},
+    # preservation variants, offline: T8 gap closed (held-aside decisions) and T5 deviation from the unedited policy
+    pres = []
+    for m in machines:
+        for ed, var in (("t8undp", "O+undp"), ("t8unda", "O+unda")):
+            f8 = RUNS.parent / "offline" / m / f"{ed}_t8_check.json"
+            f5 = RUNS.parent / "offline" / m / f"{ed}_t5_check.json"
+            if not (f8.exists() and f5.exists()):
+                continue
+            g8 = json.loads(f8.read_text())["groups"]["all"]
+            g5 = json.loads(f5.read_text())["groups"]["all"]
+            v5 = g5[var.replace("O+", "O5+")]
+            row = {"machine": m, "edit": ed, "t8_n": g8[var]["n"],
+                   "t8_unedited_ee_cm": round(g8["student_vs_teacher"]["ee_end_cm"], 2),
+                   "t8_edited_ee_cm": round(g8[var]["vs_teacher"]["ee_end_cm"], 2),
+                   "t8_gap_closed_pct": round(g8[var]["gap_closed_ee_pct"], 1),
+                   "t8und_gap_closed_pct": round(g8["O+und"]["gap_closed_ee_pct"], 1) if "O+und" in g8 else None,
+                   "t5_n": v5["n"], "t5_t8und_dev_cm": round(g5["student_vs_teacher"]["ee_end_cm"], 2),
+                   "t5_variant_dev_cm": round(v5["vs_teacher"]["ee_end_cm"], 2),
+                   "t5_dev_removed_pct": round(v5["gap_closed_ee_pct"], 1)}
+            pres.append(row)
+            records.append(record(
+                experiment="preservation_offline", machine=m, task=TASKS["T5"][0], code="T5",
+                edit_location=next((e["location"] for e in edits if e["name"] == ed), None), offline=row,
+                values_changed=next((e.get("values_changed") for e in edits if e["name"] == ed), None),
+                notes=f"{ed} vs t8und, offline replays at fixed seeds: T8 = chunk-end end-effector distance to the TF "
+                      f"wording's chunk on {row['t8_n']} held-aside RF-failure decisions (slots 30006-30011, replans 1-5); "
+                      f"T5 = distance of the edited chunk from the unedited chunk on {row['t5_n']} decisions of T5 "
+                      f"practice episodes the unedited policy solved (replans 1-5); dev removed = 1 - {ed}/t8und"))
+    summary = {"model": MODEL, "where_offline": where, "preservation_offline": pres, "machines": {m: GPU_NAMES.get(m) for m in machines},
                "arms": {f"{m}/{a}": {"slots": sorted(v), "k": sum(v.values()), "n": len(v)} for (m, a), v in arms.items()},
                "failure_map": fmap, "wording": wrows, "edits": edit_rows, "side_effects": side, "runs": meta,
                "records": len(records)}
@@ -421,6 +449,9 @@ def main():
               f"ctl={r['control'] and str(r['control']['cand_k']) + '/' + str(r['control']['n'])} "
               f"teacher={r['teacher'] and str(r['teacher']['cand_k']) + '/' + str(r['teacher']['n'])} "
               f"recovery={r['recovery_pct']}")
+    for r in pres:
+        print(f"{r['machine']:7s} preserve {r['edit']}: T8 gap closed {r['t8_gap_closed_pct']}% (t8und "
+              f"{r['t8und_gap_closed_pct']}%); T5 deviation {r['t5_variant_dev_cm']} cm vs t8und {r['t5_t8und_dev_cm']} cm")
     for r in where:
         print(f"{r['machine']:7s} where {r['edit']} {r['group']}: ee {r['unedited_ee_cm']} -> {r['edited_ee_cm']} cm "
               f"(gap closed {r['gap_closed_pct']}%, control {r['control_gap_closed_pct']}%), n={r['n']}")
