@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "e7483a028523"
+    "commit": "72c23755348f"
    }
   },
   {
@@ -132,7 +132,7 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Unedited so far: T1 10 of 16 and T8 0 of 16 starts. Clearer wording, same weights: T8 0 → 15 of 16 (p = 6.1 × 10⁻⁵). The T8 edit, on the 16 practice starts it was built from: 0 → 13 (p = 2.4 × 10⁻⁴); a random edit of the same size, 1 of 16; on unseen starts, {running}. Other tasks: {running}."
+    "text": "Edits lifted success on T8 from 0 to 15 of 16 unseen starts (p = 6.1 × 10⁻⁵). On the practice starts the edit was built from, a random edit of the same size scored 1 of 16 on T8, against 0 unedited and 13 edited. Other tasks: {running}."
    },
    {
     "id": "groot",
@@ -400,10 +400,9 @@
     "label": "T8 Mustard right of the raisin box, reference-first",
     "cells": {
      "cosmos": {
-      "v": "0 → 13 of 16",
+      "v": "0 → 15 of 16",
       "s": "ok",
-      "d": "13 / 0, p = 2.4 × 10⁻⁴",
-      "prac": true
+      "d": "15 / 0, p = 6.1 × 10⁻⁵"
      },
      "groot": {
       "v": "unedited 0 of 32",
@@ -485,7 +484,7 @@
     "label": "Where to edit",
     "cells": {
      "cosmos": {
-      "v": "text pathway (und mlp.down_proj, layers 0-26): 13 of 16",
+      "v": "text pathway (und mlp.down_proj, layers 0-26): 15 of 16",
       "s": "ok"
      },
      "groot": {
@@ -1195,24 +1194,23 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "0 → 13 of 16",
+       "v": "0 → 15 of 16",
        "s": "ok",
-       "d": "scored on the practice starts the edit was built from, not on unseen starts; text pathway (und mlp.down_proj, layers 0-26); 13 / 0, p = 2.4 × 10⁻⁴; +81.2 points [62.5, 100.0]; slots 30000–30015",
+       "d": "text pathway (und mlp.down_proj, layers 0-26); 15 / 0, p = 6.1 × 10⁻⁵; +93.8 points [81.2, 100.0]; slots 96000–96015; on the practice starts it was built from: 0 → 13 of 16",
        "a": 0,
-       "b": 13,
+       "b": 15,
        "n": 16,
-       "fx": 13,
+       "fx": 15,
        "br": 0,
-       "pv": 0.000244140625,
+       "pv": 6.103515625e-05,
        "ci": [
+        93.8,
         81.2,
-        62.5,
         100.0
        ],
        "color": "teal",
-       "prac": true,
-       "fl": "T8 Mustard, reference-first, practice starts",
-       "fb": "T8 practice"
+       "fl": "T8 Mustard, reference-first, text pathway (und mlp.down…",
+       "fb": "T8 text pathway (und"
       },
       "groot": {
        "v": "running",
@@ -1408,9 +1406,9 @@
      "label": "Task, starts",
      "cells": {
       "cosmos": {
-       "v": "T8, 16 practice starts",
+       "v": "T8, 16 unseen starts",
        "s": "ok",
-       "d": "slots 30000–30015"
+       "d": "slots 96000–96015"
       },
       "groot": {
        "v": "running",
@@ -1454,7 +1452,7 @@
      "label": "Backbone / text pathway",
      "cells": {
       "cosmos": {
-       "v": "text pathway (und mlp.down_proj, layers 0-26): 13 of 16",
+       "v": "text pathway (und mlp.down_proj, layers 0-26): 15 of 16",
        "s": "ok"
       },
       "groot": {
@@ -1888,14 +1886,14 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "+13: 0 → 13 of 16",
+       "v": "+15: 0 → 15 of 16",
        "s": "ok",
-       "d": "13 / 0; p = 2.4 × 10⁻⁴; the target task; practice starts; slots 30000–30015",
-       "delta": 13,
+       "d": "15 / 0; p = 6.1 × 10⁻⁵; the target task; slots 96000–96015",
+       "delta": 15,
        "a": 0,
-       "b": 13,
+       "b": 15,
        "n": 16,
-       "p": 0.000244140625,
+       "p": 6.103515625e-05,
        "target": true
       },
       "groot": {
@@ -1939,7 +1937,7 @@
    "note": "Each model's main edit, unchanged, on every suite task. π0.5's earlier records use the T1 edit: T1–T3 on unseen starts (128 or 64), T4–T7 on 32 practice starts, R1 on 32 fresh starts; it was not run on T8. Across fifteen other surveyed tasks it harmed none detectably.",
    "sources": [],
    "edit": {
-    "cosmos": "the T8 edit on practice starts (text pathway (und mlp.down_proj, layers 0-26))",
+    "cosmos": "the T8 edit (text pathway (und mlp.down_proj, layers 0-26))",
     "groot": null,
     "pi05": "the T1 edit (distilled, VLM)"
    }
@@ -2320,6 +2318,55 @@
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
     "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 1 broke 0 p = 1; edit vs control p = 0.000488",
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms"
+    }
+   },
+   {
+    "experiment": "edit_heldout",
+    "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "n": 16,
+    "slots": [
+     96000,
+     96015
+    ],
+    "unedited_k": 0,
+    "edited_k": 15,
+    "fixed": 15,
+    "broke": 0,
+    "p": 6.103515625e-05,
+    "ci": {
+     "diff_pts": 93.75,
+     "bootstrap95_pts": [
+      81.25,
+      100.0
+     ],
+     "wilson95_unedited_pct": [
+      0.0,
+      19.4
+     ],
+     "wilson95_edited_pct": [
+      71.7,
+      98.9
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+    "values_changed": 179010015,
+    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions",
     "_task": "T8",
     "_edit_task": null,
     "_prov": false,
@@ -5755,7 +5802,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "e7483a028523"
+   "commit": "72c23755348f"
   },
   "groot": {
    "kind": "branch",
@@ -5773,8 +5820,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "445af266be63df5e",
- "updated": "2026-11-08T07:13Z",
- "updated_text": "8 Nov 2026, 07:13 UTC",
+ "content_hash": "18244e2fd854b7eb",
+ "updated": "2026-11-08T07:26Z",
+ "updated_text": "8 Nov 2026, 07:26 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
