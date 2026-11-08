@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "5dadf204dcde"
+    "commit": "8e899a94c937"
    }
   },
   {
@@ -554,7 +554,7 @@
      "T5": {
       "v": "9 → 0 of 32",
       "s": "ok",
-      "d": "p = 0.0039; practice 8 → 0 of 16",
+      "d": "p = 0.0039; practice 11 → 0 of 32",
       "a": 9,
       "b": 0,
       "n": 32,
@@ -563,10 +563,10 @@
       "held": true,
       "runs": {
        "practice": [
-        8,
+        11,
         0,
-        16,
-        "30000; 30015"
+        32,
+        "30000; 30031"
        ],
        "unseen": [
         9,
@@ -1126,11 +1126,11 @@
      "label": "Mustard in left bin",
      "cells": {
       "cosmos": {
-       "v": "8 of 16",
+       "v": "11 of 32",
        "s": "ok",
-       "d": "50%; slots 30000–30015",
-       "k": 8,
-       "n": 16
+       "d": "34%; slots 30000–30031",
+       "k": 11,
+       "n": 32
       },
       "groot": {
        "v": "0 of 32",
@@ -1182,11 +1182,11 @@
      "label": "Flat box",
      "cells": {
       "cosmos": {
-       "v": "0 of 16",
+       "v": "0 of 32",
        "s": "ok",
-       "d": "0%; slots 30000–30015",
+       "d": "0%; slots 30000–30031",
        "k": 0,
-       "n": 16
+       "n": 32
       },
       "groot": {
        "v": "0 of 32",
@@ -2476,7 +2476,7 @@
       "cosmos": {
        "v": "−9: 9 → 0 of 32",
        "s": "ok",
-       "d": "0 / 9; p = 0.0039; slots 96000–96031; practice starts: 8 → 0 of 16, p = 0.0078 (slots 30000–30015)",
+       "d": "0 / 9; p = 0.0039; slots 96000–96031; practice starts: 11 → 0 of 32, p = 9.8 × 10⁻⁴ (slots 30000–30031)",
        "delta": -9,
        "a": 9,
        "b": 0,
@@ -2540,7 +2540,7 @@
       "cosmos": {
        "v": "±0: 0 → 0 of 16",
        "s": "ok",
-       "d": "0 / 0; p = 1; slots 96000–96015; practice starts: 0 → 0 of 16, p = 1 (slots 30000–30015)",
+       "d": "0 / 0; p = 1; slots 96000–96015; practice starts: 0 → 0 of 32, p = 1 (slots 30000–30031)",
        "delta": 0,
        "a": 0,
        "b": 0,
@@ -2600,7 +2600,7 @@
       "cosmos": {
        "v": "+4: 24 → 28 of 32",
        "s": "ok",
-       "d": "7 / 3; p = 0.34; slots 96000–96031; practice starts: 9 → 13 of 16, p = 0.29 (slots 30000–30015)",
+       "d": "7 / 3; p = 0.34; slots 96000–96031; practice starts: 21 → 27 of 32, p = 0.15 (slots 30000–30031)",
        "delta": 4,
        "a": 24,
        "b": 28,
@@ -2646,7 +2646,7 @@
       "cosmos": {
        "v": "24 → 28 of 32",
        "s": "ok",
-       "d": "the Mustard right of raisin box edit, unchanged; 7 / 3; p = 0.34; slots 96000–96031; practice starts: 9 → 13 of 16, p = 0.29 (slots 30000–30015)"
+       "d": "the Mustard right of raisin box edit, unchanged; 7 / 3; p = 0.34; slots 96000–96031; practice starts: 21 → 27 of 32, p = 0.15 (slots 30000–30031)"
       },
       "groot": {
        "v": "—",
@@ -3007,20 +3007,20 @@
     "wording_pair": [
      "Put the mustard in the left bin"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
-    "unedited_k": 8,
+    "unedited_k": 11,
     "edited_k": null,
     "fixed": null,
     "broke": null,
     "p": null,
     "ci": {
      "wilson95_pct": [
-      28.0,
-      72.0
+      20.4,
+      51.7
      ]
     },
     "control_k": null,
@@ -3085,10 +3085,10 @@
     "wording_pair": [
      "Pick up the green vegetable block"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
     "unedited_k": 0,
     "edited_k": null,
@@ -3098,7 +3098,7 @@
     "ci": {
      "wilson95_pct": [
       0.0,
-      19.4
+      10.7
      ]
     },
     "control_k": null,
@@ -3577,27 +3577,27 @@
     "wording_pair": [
      "Put the mustard in the left bin"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
-    "unedited_k": 8,
+    "unedited_k": 11,
     "edited_k": 0,
     "fixed": 0,
-    "broke": 8,
-    "p": 0.0078125,
+    "broke": 11,
+    "p": 0.0009765625,
     "ci": {
-     "diff_pts": -50.0,
+     "diff_pts": -34.38,
      "bootstrap95_pts": [
-      -75.0,
-      -25.0
+      -50.0,
+      -18.75
      ]
     },
     "control_k": null,
     "teacher_k": null,
     "recovery_pct": null,
-    "transfer": -50.0,
+    "transfer": -34.38,
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
@@ -3657,10 +3657,10 @@
     "wording_pair": [
      "Pick up the green vegetable block"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
     "unedited_k": 0,
     "edited_k": 0,
@@ -3697,28 +3697,28 @@
     "wording_pair": [
      "Put the cube in the bowl"
     ],
-    "n": 16,
+    "n": 32,
     "slots": [
      30000,
-     30015
+     30031
     ],
-    "unedited_k": 9,
-    "edited_k": 13,
-    "fixed": 6,
-    "broke": 2,
-    "p": 0.2890625,
+    "unedited_k": 21,
+    "edited_k": 27,
+    "fixed": 9,
+    "broke": 3,
+    "p": 0.14599609375,
     "ci": {
-     "diff_pts": 25.0,
+     "diff_pts": 18.75,
      "bootstrap95_pts": [
-      -6.25,
-      56.25
+      0.0,
+      40.62
      ]
     },
     "control_k": null,
     "teacher_k": null,
     "recovery_pct": null,
     "transfer": null,
-    "retention": 25.0,
+    "retention": 18.75,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
     "notes": "edit t8und built for T8, run on R1 with R1's default instruction, practice slots",
@@ -8516,7 +8516,7 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "5dadf204dcde"
+   "commit": "8e899a94c937"
   },
   "groot": {
    "kind": "branch",
@@ -8534,8 +8534,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "01eb7082db3e1227",
- "updated": "2026-11-08T17:59Z",
- "updated_text": "8 Nov 2026, 17:59 UTC",
+ "content_hash": "d42d352308818634",
+ "updated": "2026-11-08T18:31Z",
+ "updated_text": "8 Nov 2026, 18:31 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: complete · π0.5: first results"
 }
