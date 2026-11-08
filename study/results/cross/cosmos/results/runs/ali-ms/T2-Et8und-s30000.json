@@ -1,0 +1,484 @@
+{
+ "tag": "T2-Et8und-s30000",
+ "task": "PickGlassesTask",
+ "prompt": null,
+ "edit": "edits/t8und.pt",
+ "slots": [
+  30000,
+  30015
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 0,
+ "groups": [
+  {
+   "group": 1875,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 375.4,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.robolab/cosmosx-T2-Et8und-s30000-g1875o0-1108-053754"
+  },
+  {
+   "group": 1875,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 384.4,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.robolab/cosmosx-T2-Et8und-s30000-g1875o8-1108-054409"
+  }
+ ],
+ "server_load": {
+  "edit": {
+   "file": "edits/t8und.pt",
+   "sha256_16": "c1abc9187f892310",
+   "params": {
+    "net.language_model.model.layers.0.mlp.down_proj.weight": {
+     "before": "1d39ef5603a6f978",
+     "after": "c9b15b0ff4121fde",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 15511754,
+     "rel_fro": 0.22910424013111036
+    },
+    "net.language_model.model.layers.1.mlp.down_proj.weight": {
+     "before": "391726b0f6ce600d",
+     "after": "cda166c75d78d3b3",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 801994,
+     "rel_fro": 0.0015642175074052059
+    },
+    "net.language_model.model.layers.2.mlp.down_proj.weight": {
+     "before": "5f13aae5da43e3db",
+     "after": "992b07dc9a0fec21",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 11029461,
+     "rel_fro": 0.1317478294683194
+    },
+    "net.language_model.model.layers.3.mlp.down_proj.weight": {
+     "before": "8b66d5174d9e3dd7",
+     "after": "47280b27e064d0a2",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 5497052,
+     "rel_fro": 0.03293326134872709
+    },
+    "net.language_model.model.layers.4.mlp.down_proj.weight": {
+     "before": "9db48a6f35258710",
+     "after": "e09e79081aff5c66",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 4262659,
+     "rel_fro": 0.005767961424914842
+    },
+    "net.language_model.model.layers.5.mlp.down_proj.weight": {
+     "before": "0d51d74d0f8daac7",
+     "after": "feb82c3f6cccd189",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 5647352,
+     "rel_fro": 0.015171113282781108
+    },
+    "net.language_model.model.layers.6.mlp.down_proj.weight": {
+     "before": "5bd7035fb223095d",
+     "after": "11183bdc4dcee81d",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 5032092,
+     "rel_fro": 0.006139513347913676
+    },
+    "net.language_model.model.layers.7.mlp.down_proj.weight": {
+     "before": "ab727ad94296aef6",
+     "after": "7a5d6dea4b79dd8d",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6282971,
+     "rel_fro": 0.022954211551267537
+    },
+    "net.language_model.model.layers.8.mlp.down_proj.weight": {
+     "before": "74cd2e356e4867ba",
+     "after": "eda30538394ca2ed",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6632470,
+     "rel_fro": 0.029950487223317
+    },
+    "net.language_model.model.layers.9.mlp.down_proj.weight": {
+     "before": "a0ed89101004e555",
+     "after": "494fbfa834b90eba",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6425431,
+     "rel_fro": 0.028871739623415736
+    },
+    "net.language_model.model.layers.10.mlp.down_proj.weight": {
+     "before": "bbd735403d342bf4",
+     "after": "a0f60dc433472e57",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 5704247,
+     "rel_fro": 0.010841051311365745
+    },
+    "net.language_model.model.layers.11.mlp.down_proj.weight": {
+     "before": "36241a3cb268d490",
+     "after": "48b6e1ed3ca19fba",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6443866,
+     "rel_fro": 0.013481857869607669
+    },
+    "net.language_model.model.layers.12.mlp.down_proj.weight": {
+     "before": "fc00fcc1d09fcbc5",
+     "after": "e72e8c6dae2df57a",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6052143,
+     "rel_fro": 0.005714194444904935
+    },
+    "net.language_model.model.layers.13.mlp.down_proj.weight": {
+     "before": "efd7df5f28ff359e",
+     "after": "b6846f8650f6f745",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 7529684,
+     "rel_fro": 0.014834626845910826
+    },
+    "net.language_model.model.layers.14.mlp.down_proj.weight": {
+     "before": "1eb21952024e720a",
+     "after": "b7699549c72eaf66",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 5611749,
+     "rel_fro": 0.0025455949062784242
+    },
+    "net.language_model.model.layers.15.mlp.down_proj.weight": {
+     "before": "eabef15a9d45f5d4",
+     "after": "d4599dcbaf8efb55",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 8189918,
+     "rel_fro": 0.014123103747833857
+    },
+    "net.language_model.model.layers.16.mlp.down_proj.weight": {
+     "before": "8fe1bfb53c7e12d4",
+     "after": "ec5d1ea620d4c889",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 7519604,
+     "rel_fro": 0.009005069231488461
+    },
+    "net.language_model.model.layers.17.mlp.down_proj.weight": {
+     "before": "e7ea1d6f0204955d",
+     "after": "c9cfed5a890878f9",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 7162174,
+     "rel_fro": 0.007353973503330607
+    },
+    "net.language_model.model.layers.18.mlp.down_proj.weight": {
+     "before": "cbb9165c17c5be7a",
+     "after": "61fb63db8a273990",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 7294751,
+     "rel_fro": 0.0063173830602241245
+    },
+    "net.language_model.model.layers.19.mlp.down_proj.weight": {
+     "before": "6caa3f6d87e10535",
+     "after": "8d4fa564c6ad4e34",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 7067357,
+     "rel_fro": 0.0061056150563971005
+    },
+    "net.language_model.model.layers.20.mlp.down_proj.weight": {
+     "before": "6c170ee596770496",
+     "after": "ffee8463f942113b",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6434031,
+     "rel_fro": 0.005463375113603694
+    },
+    "net.language_model.model.layers.21.mlp.down_proj.weight": {
+     "before": "482755ac9431f291",
+     "after": "f5b422d652d8b17e",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6454789,
+     "rel_fro": 0.005313461899079853
+    },
+    "net.language_model.model.layers.22.mlp.down_proj.weight": {
+     "before": "b87e6ef3147df623",
+     "after": "ea0aae081f4cbae8",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6149873,
+     "rel_fro": 0.005922092961124724
+    },
+    "net.language_model.model.layers.23.mlp.down_proj.weight": {
+     "before": "9e45ef6a40769b69",
+     "after": "f13ce18203542bfc",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6056101,
+     "rel_fro": 0.004510484694932798
+    },
+    "net.language_model.model.layers.24.mlp.down_proj.weight": {
+     "before": "a0489b9b94a41f73",
+     "after": "7411963a04eafe65",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6102389,
+     "rel_fro": 0.006225953162214836
+    },
+    "net.language_model.model.layers.25.mlp.down_proj.weight": {
+     "before": "7409fd875211c58a",
+     "after": "e9075c6f5407d8a3",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 5993872,
+     "rel_fro": 0.0034086639364474484
+    },
+    "net.language_model.model.layers.26.mlp.down_proj.weight": {
+     "before": "5b66551a9de57c3d",
+     "after": "7b19e20bc9d232f4",
+     "rank": 191,
+     "stored_values": 2151424,
+     "changed_values": 6120231,
+     "rel_fro": 0.003455769655315754
+    }
+   },
+   "stored_values": 58088448,
+   "changed_values": 179010015
+  },
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 20.2
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 812.0,
+ "server_ready_s": 22.0,
+ "started": "2026-11-08 05:37:32",
+ "finished": "2026-11-08 05:51:04",
+ "rows": [
+  {
+   "slot": 30000,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30001,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30002,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30003,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30004,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30005,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30006,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30007,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 30008,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30009,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30010,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30011,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Condition not satisfied: object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.5,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30012,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30013,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30014,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30015,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Pick up the eye glasses",
+   "reason": "Conditions not satisfied: object_grabbed(object=glasses) (step 1/1); object_above(object=glasses, reference_object=table, z_margin=0.05) (step 1/1)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T2-Et8und-s30000.obs/g1875o8/obs_r0_e7.npz"
+  }
+ ]
+}

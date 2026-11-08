@@ -131,6 +131,9 @@ def main():
     ap.add_argument("--preserve-file", default=None,
                     help="JSON {'kept': [[task, instruction], ...]}: instructions whose text states must not change "
                          "(zero-change keys at every position after the prompt template's common prefix)")
+    ap.add_argument("--preserve-stride", type=int, default=1, help="keep every n-th preserved position (and the last)")
+    ap.add_argument("--gpu-solve", action="store_true", help="Gram matrix, solve and update in float64 on the GPU")
+    ap.add_argument("--no-ctl", action="store_true", help="skip the random-direction control (saves the SVDs)")
     ap.add_argument("--probe", nargs="*", default=[], help="NAME=PROMPT: report text-state drift for these after the edit")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", required=True)
@@ -171,6 +174,7 @@ def main():
     for _task, instr in keep:
         (ids, st), _, _ = rec.run(svc, obs, seed, instr)
         pos = np.arange(prefix_len(ids, io_ids), len(ids))
+        pos = np.unique(np.concatenate([pos[::a.preserve_stride], pos[-1:]]))
         P0.append((instr, pos, {L: st[("res", L)][pos].astype(np.float32) for L in layers}))
     rep["preserve"] = {"file": a.preserve_file, "prompts": len(P0), "keys": int(sum(len(x[1]) for x in P0))}
     probes = [tuple(x.split("=", 1)) for x in a.probe]
@@ -198,26 +202,51 @@ def main():
                 Vs.append(st0[L].astype(np.float64) - Pc[("res", L)][pos])
                 pdrift += float(np.linalg.norm(Vs[-1]) ** 2)
             K, V = np.concatenate(Ks), np.concatenate(Vs)
-        Gm = K @ K.T
-        lam = a.lam_rel * np.trace(Gm) / len(Gm)
-        Z = np.linalg.solve(Gm + lam * np.eye(len(Gm)), V)
-        A32, B32 = torch.from_numpy(Z.T.astype(np.float32)), torch.from_numpy(K.astype(np.float32))
         name = UND.format(L)
         p = params[name]
         orig_w[name] = p.detach().clone()
         with torch.no_grad():
-            w0 = p.detach().double().cpu()
-            new = (w0 + A32.double() @ B32.double()).to(p.dtype)
-            changed = int((new != p.detach().cpu()).sum())
-            p.copy_(new.to(p.device))
-        s = svd_factors(Z.T, K)
-        r = int((s > s[0] * 1e-6).sum()) if s.size and s[0] > 0 else 0
-        Ur = np.linalg.qr(rng.standard_normal((Z.shape[1], r)))[0]
-        Vr = np.linalg.qr(rng.standard_normal((K.shape[1], r)))[0]
+            if a.gpu_solve:  # same float64 algebra on the GPU (the CPU path takes minutes per layer with ~5k keys)
+                dev = p.device
+                Kt, Vt = torch.from_numpy(K).to(dev), torch.from_numpy(V).to(dev)
+                Gt = Kt @ Kt.T
+                lam = float(a.lam_rel * torch.trace(Gt) / len(Gt))
+                Zt = torch.linalg.solve(Gt + lam * torch.eye(len(Gt), dtype=Gt.dtype, device=dev), Vt)
+                A32, B32 = Zt.T.float().cpu().contiguous(), Kt.float().cpu().contiguous()
+                Z = None
+                del Gt, Vt, Kt
+                D = A32.to(dev).double() @ B32.to(dev).double()
+                w0 = p.detach().double()
+                new = (w0 + D).to(p.dtype)
+                dnorm = float(torch.linalg.norm(D))
+                del D
+                changed = int((new != p.detach()).sum())
+                p.copy_(new)
+                w0 = w0.cpu()
+            else:
+                Gm = K @ K.T
+                lam = a.lam_rel * np.trace(Gm) / len(Gm)
+                Z = np.linalg.solve(Gm + lam * np.eye(len(Gm)), V)
+                A32, B32 = torch.from_numpy(Z.T.astype(np.float32)), torch.from_numpy(K.astype(np.float32))
+                w0 = p.detach().double().cpu()
+                D = A32.double() @ B32.double()
+                dnorm = float(torch.linalg.norm(D))
+                new = (w0 + D).to(p.dtype)
+                changed = int((new != p.detach().cpu()).sum())
+                p.copy_(new.to(p.device))
         edit[name] = {"A": A32, "B": B32}
-        ctl[name] = {"A": torch.from_numpy((Ur * s[:r]).astype(np.float32)), "B": torch.from_numpy(Vr.T.astype(np.float32))}
-        rep["per_layer"].append({"layer": L, "keys": int(len(K)), "rank": r, "fro": float(np.sqrt((s ** 2).sum())),
-                                 "rel_fro_w": float(np.sqrt((s ** 2).sum()) / np.linalg.norm(w0.numpy())),
+        if a.no_ctl:
+            s, r = np.zeros(0), None
+        else:
+            s = svd_factors(A32.numpy().astype(np.float64), K)
+            r = int((s > s[0] * 1e-6).sum()) if s.size and s[0] > 0 else 0
+            Ur = np.linalg.qr(rng.standard_normal((A32.shape[0], r)))[0]
+            Vr = np.linalg.qr(rng.standard_normal((K.shape[1], r)))[0]
+            ctl[name] = {"A": torch.from_numpy((Ur * s[:r]).astype(np.float32)),
+                         "B": torch.from_numpy(Vr.T.astype(np.float32))}
+        dfro = dnorm if a.no_ctl else float(np.sqrt((s ** 2).sum()))
+        rep["per_layer"].append({"layer": L, "keys": int(len(K)), "rank": r, "fro": dfro,
+                                 "rel_fro_w": dfro / float(np.linalg.norm(w0.numpy())),
                                  "lam": float(lam), "gap_before": float(np.linalg.norm(Vc)),
                                  "uncond_drift_before": float(np.linalg.norm(U0[("res", L)] - Uc[("res", L)])),
                                  "preserve_drift_before": float(np.sqrt(pdrift)),
@@ -246,8 +275,10 @@ def main():
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.save(edit, str(out) + ".pt")
-    torch.save(ctl, str(out) + "-ctl.pt")
-    rep["sha256_16"] = {f: hashlib.sha256(Path(str(out) + f).read_bytes()).hexdigest()[:16] for f in (".pt", "-ctl.pt")}
+    if ctl:
+        torch.save(ctl, str(out) + "-ctl.pt")
+    rep["sha256_16"] = {f: hashlib.sha256(Path(str(out) + f).read_bytes()).hexdigest()[:16]
+                        for f in ((".pt", "-ctl.pt") if ctl else (".pt",))}
     rep["stored_values"] = int(sum(v["A"].numel() + v["B"].numel() for v in edit.values()))
     rep["changed_values"] = int(sum(r["changed_values"] for r in rep["per_layer"]))
     # actions on the check decisions: O, G, O+edit (edited weights live now), then O+ctl
@@ -268,10 +299,10 @@ def main():
         for n, d in ctl.items():
             w = params[n]
             w.copy_((w.detach().double().cpu() + d["A"].double() @ d["B"].double()).to(w.dtype).to(w.device))
-    for pth, k in dec:
+    for pth, k in dec if ctl else []:
         ob, sd = load_decision(pth, k)
         acts["O+ctl"].append(np.asarray(infer_seeded(svc, dict(ob, prompt=a.orig), sd)["action"], np.float32))
-    np.savez(str(out) + ".actions.npz", **{k: np.stack(v) for k, v in acts.items()},
+    np.savez(str(out) + ".actions.npz", **{k: np.stack(v) for k, v in acts.items() if v},
              decisions=np.array([f"{p}:{k}" for p, k in dec]))
     rep["decisions"] = [f"{p}:{k}" for p, k in dec]
     rep["s"] = round(time.time() - t0, 1)
