@@ -353,6 +353,50 @@
   "experiment": "wording",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeLeftOfBowlTask",
+  "code": "T3",
+  "wording_pair": [
+   "Put the rubiks cube to the left of the bowl",
+   "Pick up the rubiks cube and place it on the table to the left side of the bowl"
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 4,
+  "edited_k": null,
+  "fixed": 8,
+  "broke": 1,
+  "p": 0.0390625,
+  "ci": {
+   "diff_pts": 43.75,
+   "bootstrap95_pts": [
+    12.5,
+    75.0
+   ],
+   "wilson95_orig_pct": [
+    10.2,
+    49.5
+   ],
+   "wilson95_alt_pct": [
+    44.4,
+    85.8
+   ]
+  },
+  "control_k": null,
+  "teacher_k": 11,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": null,
+  "values_changed": null,
+  "notes": "same weights, wording via prompt override; fixed = only the alternative wording succeeds. the task's own 'specific' instruction in RoboLab"
+ },
+ {
+  "experiment": "wording",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
   "task": "MustardRightOfRaisinRFTask",
   "code": "T8",
   "wording_pair": [

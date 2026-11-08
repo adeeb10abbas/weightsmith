@@ -683,6 +683,28 @@
    "k": 26,
    "n": 64
   },
+  "ali-ms/T3-wspec": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 11,
+   "n": 16
+  },
   "ali-ms/T4-Et8und": {
    "slots": [
     30000,
@@ -1778,6 +1800,28 @@
    "diff_ci95_pts": [
     -18.75,
     18.75
+   ],
+   "slots": [
+    30000,
+    30015
+   ]
+  },
+  {
+   "machine": "ali-ms",
+   "code": "T3",
+   "alt": "Pick up the rubiks cube and place it on the table to the left side of the bowl",
+   "n": 16,
+   "ref_k": 4,
+   "cand_k": 11,
+   "fixed": 8,
+   "broke": 1,
+   "both": 3,
+   "neither": 4,
+   "p": 0.0390625,
+   "diff_pts": 43.75,
+   "diff_ci95_pts": [
+    12.5,
+    75.0
    ],
    "slots": [
     30000,
@@ -3242,6 +3286,26 @@
     "finished": "2026-11-08 07:33:29"
    }
   ],
+  "ali-ms/T3-wspec": [
+   {
+    "tag": "T3-wspec-s30000",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "prompt": "Pick up the rubiks cube and place it on the table to the left side of the bowl",
+    "edit": null,
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 11,
+    "gpu_s": 572.7,
+    "started": "2026-11-08 13:32:38",
+    "finished": "2026-11-08 13:42:10"
+   }
+  ],
   "ali-ms/T4-Et8und": [
    {
     "tag": "T4-Et8und-s30000",
@@ -4215,5 +4279,5 @@
    }
   ]
  },
- "records": 42
+ "records": 43
 }
