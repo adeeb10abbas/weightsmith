@@ -379,6 +379,143 @@
     30031
    ],
    "notes": "same 6 build decisions as bb; keys = ff.net.2 inputs at every (denoising step, state/action token), 4 x 41 = 164 per block; values = explicit-minus-original block increments; lam = 1e-3 mean diag(KK^T); offline teacher projection +0.22 on the 11 failed episodes used for neither build (bb: -0.15); control = same singular values along random orthonormal directions (default_rng(0)). Closed loop on practice: 9/32 -> 0/32 (0 fixed / 9 broke); 31/32 edited episodes fail at object_grabbed(rubiks_cube), 1 at the banana."
+  },
+  {
+   "experiment": "wsp_offline_check",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T1 RubiksCubeThenBananaTask",
+   "wording_pair": [
+    "Put the cube then the banana in the bowl",
+    "Put the cube in the bowl then put the banana in the bowl"
+   ],
+   "edit": "bb",
+   "edit_location": "backbone",
+   "grasp_phase": {
+    "n_decisions": 16,
+    "decisions": "k = 4, 8, 12, 16 of slots 30016-30019 (none used to build)",
+    "mean_shift_vs_unedited_cm": 1.862347967835376,
+    "teacher_mean_shift_vs_unedited_cm": 0.8770811306021642,
+    "teacher_projection": -0.0716186033087405,
+    "gripper_rows_matching_teacher": "120/128",
+    "unedited_gripper_rows_matching_teacher": "121/128"
+   },
+   "unseen_failures": {
+    "n_decisions": 11,
+    "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+    "teacher_projection": -0.15310076334760012,
+    "mean_shift_vs_unedited_cm": 2.3911862358958884,
+    "teacher_mean_shift_vs_unedited_cm": 2.034298603592271
+   },
+   "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop."
+  },
+  {
+   "experiment": "wsp_offline_check",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T1 RubiksCubeThenBananaTask",
+   "wording_pair": [
+    "Put the cube then the banana in the bowl",
+    "Put the cube in the bowl then put the banana in the bowl"
+   ],
+   "edit": "bb_tok",
+   "edit_location": "backbone",
+   "grasp_phase": {
+    "n_decisions": 16,
+    "decisions": "k = 4, 8, 12, 16 of slots 30016-30019 (none used to build)",
+    "mean_shift_vs_unedited_cm": 1.8376651962171309,
+    "teacher_mean_shift_vs_unedited_cm": 0.8770811306021642,
+    "teacher_projection": -0.08338396692116268,
+    "gripper_rows_matching_teacher": "120/128",
+    "unedited_gripper_rows_matching_teacher": "121/128"
+   },
+   "unseen_failures": {
+    "n_decisions": 11,
+    "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+    "teacher_projection": -0.1660978186142906,
+    "mean_shift_vs_unedited_cm": 2.396676090376621,
+    "teacher_mean_shift_vs_unedited_cm": 2.032215103761039
+   },
+   "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop."
+  },
+  {
+   "experiment": "wsp_offline_check",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T1 RubiksCubeThenBananaTask",
+   "wording_pair": [
+    "Put the cube then the banana in the bowl",
+    "Put the cube in the bowl then put the banana in the bowl"
+   ],
+   "edit": "bb_span",
+   "edit_location": "backbone",
+   "grasp_phase": {
+    "n_decisions": 16,
+    "decisions": "k = 4, 8, 12, 16 of slots 30016-30019 (none used to build)",
+    "mean_shift_vs_unedited_cm": 3.495357137762767,
+    "teacher_mean_shift_vs_unedited_cm": 0.8770811306021642,
+    "teacher_projection": -0.13042248521510413,
+    "gripper_rows_matching_teacher": "119/128",
+    "unedited_gripper_rows_matching_teacher": "121/128"
+   },
+   "unseen_failures": {
+    "n_decisions": 11,
+    "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+    "teacher_projection": -0.18859429292194552,
+    "mean_shift_vs_unedited_cm": 2.615728955292566,
+    "teacher_mean_shift_vs_unedited_cm": 2.032215103761039
+   },
+   "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop."
+  },
+  {
+   "experiment": "wsp_offline_check",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T1 RubiksCubeThenBananaTask",
+   "wording_pair": [
+    "Put the cube then the banana in the bowl",
+    "Put the cube in the bowl then put the banana in the bowl"
+   ],
+   "edit": "dit",
+   "edit_location": "action head",
+   "grasp_phase": {
+    "n_decisions": 16,
+    "decisions": "k = 4, 8, 12, 16 of slots 30016-30019 (none used to build)",
+    "mean_shift_vs_unedited_cm": 1.2063241505529732,
+    "teacher_mean_shift_vs_unedited_cm": 0.8770811306021642,
+    "teacher_projection": 0.3140669254802602,
+    "gripper_rows_matching_teacher": "106/128",
+    "unedited_gripper_rows_matching_teacher": "121/128"
+   },
+   "unseen_failures": {
+    "n_decisions": 11,
+    "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+    "teacher_projection": 0.21875615897501224,
+    "mean_shift_vs_unedited_cm": 1.4456311039711265,
+    "teacher_mean_shift_vs_unedited_cm": 2.034298603592271
+   },
+   "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop."
+  },
+  {
+   "experiment": "wsp_offline_check",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T1 RubiksCubeThenBananaTask",
+   "wording_pair": [
+    "Put the cube then the banana in the bowl",
+    "Put the cube in the bowl then put the banana in the bowl"
+   ],
+   "edit": "bb_rand",
+   "edit_location": "backbone",
+   "grasp_phase": null,
+   "unseen_failures": {
+    "n_decisions": 11,
+    "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+    "teacher_projection": -0.0026354435264788947,
+    "mean_shift_vs_unedited_cm": 0.3309514915930446,
+    "teacher_mean_shift_vs_unedited_cm": 2.034298603592271
+   },
+   "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); shift = end-effector target of executed row 7. Only bb and dit were run closed loop."
   }
  ]
 }

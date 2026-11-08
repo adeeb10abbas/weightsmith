@@ -93,8 +93,8 @@ def main():
     runs = load_runs()
     recs, lines = [], []
     # ---------------------------------------------------------------- metric 1: failure map
-    lines += ["## Metric 1: failure map (unedited, task's own wording, slots 30000-30031)", "",
-              "| Task | RoboLab task | Success | Rate | Wilson 95% |", "|---|---|---|---|---|"]
+    lines += ["## Metric 1: failure map (unedited, task's own wording, practice slots from 30000)", "",
+              "| Task | RoboLab task | Slots | Success | Rate | Wilson 95% |", "|---|---|---|---|---|---|"]
     fm = {}
     for tid, cls, instr in TASKS:
         r = runs.get(f"fm-{tid}")
@@ -102,7 +102,7 @@ def main():
             continue
         k, n, lo, hi = rate(r)
         fm[tid] = (k, n, lo, hi)
-        lines.append(f"| {tid} | {cls} | {k}/{n} | {100*k/n:.0f}% | {100*lo:.0f}-{100*hi:.0f}% |")
+        lines.append(f"| {tid} | {cls} | {r['slots'][0]}-{r['slots'][1]} | {k}/{n} | {100*k/n:.0f}% | {100*lo:.0f}-{100*hi:.0f}% |")
         recs.append({"experiment": "failure_map", "model": MODEL, "machine": machine(r), "task": f"{tid} {cls}", "wording_pair": [instr, None],
                      "n": n, "unedited_k": k, "edited_k": None, "fixed": None, "broke": None, "p": None,
                      "ci": {"unedited_wilson95": [lo, hi]}, "control_k": None, "teacher_k": None, "recovery_pct": None,
@@ -161,6 +161,10 @@ def main():
     for e, m in EDITS.items():
         plot_edit(runs, e, m)
     plot_where(runs)
+    plot_wording(runs)
+    off = offline_records()
+    if off:
+        d = json.loads(METRICS.read_text()); d["records"] += off; METRICS.write_text(json.dumps(d, indent=1))
 
 
 EDITS = {}  # filled from results/edits.json: {edit: {"task": tid, "location": ..., "values_changed": ..., "wording": [o, x]}}
@@ -231,7 +235,7 @@ def edit_records(runs, lines):
             b2 = runs.get(f"fm-{t2}")
             if r and b2:
                 se.append((t2, pair(b2, r)))
-        if se:
+        if len(se) > 1:  # the edit's own task alone is not a side-effect map
             lines += ["", f"### Side-effect map of `{e}` (edited vs unedited, each task's own wording, paired on the slots both ran)", "",
                       "| Task | Unedited | Edited | fixed / broke | exact p |", "|---|---|---|---|---|"]
             for t2, c2 in se:
@@ -342,6 +346,114 @@ def plot_edit(runs, e, m):
         fig.savefig(PLOTS / f"side_effects_{e}.svg")
         fig.savefig(PLOTS / f"side_effects_{e}.png", dpi=200)
         plt.close(fig)
+
+
+OFFLINE = [  # (label, edit, location, grasp-phase check json, unseen banana-phase check json)
+    ("backbone (token-aligned, the closed-loop edit)", "bb", "backbone", "early/check_bb.json", "check11_bb.json"),
+    ("backbone, image tokens pinned", "bb_tok", "backbone", "early/check_bb_tok.json", "var/check11_bb_tok.json"),
+    ("backbone, span-aligned", "bb_span", "backbone", "early/check_bb_span.json", "var/check11_bb_span.json"),
+    ("action head (DiT, the closed-loop edit)", "dit", "action head", "early/check_dit.json", "check11_dit.json"),
+    ("backbone random control", "bb_rand", "backbone", None, "check11_bb_rand.json"),
+]
+
+
+def offline_records():
+    """Offline checks of the T1 edits on recorded decisions not used to build (CPU/GPU replays, noise seed fixed)."""
+    w = G / "results/wsp/t1"
+    recs, rows = [], []
+    for label, e, loc, fe, fu in OFFLINE:
+        early = json.loads((w / fe).read_text())["early"] if fe and (w / fe).exists() else None
+        unseen = json.loads((w / fu).read_text())["check"] if (w / fu).exists() else None
+        if not (early or unseen):
+            continue
+        rows.append((label, e, early, unseen))
+        recs.append({"experiment": "wsp_offline_check", "model": MODEL, "machine": "ali-ms-rtx3090", "task": "T1 RubiksCubeThenBananaTask",
+                     "wording_pair": EDITS.get("bb", {}).get("wording"), "edit": e, "edit_location": loc,
+                     "grasp_phase": None if not early else {
+                         "n_decisions": early["n"], "decisions": "k = 4, 8, 12, 16 of slots 30016-30019 (none used to build)",
+                         "mean_shift_vs_unedited_cm": early["mean_d_edited_unedited_cm"],
+                         "teacher_mean_shift_vs_unedited_cm": early["mean_d_unedited_teacher_cm"],
+                         "teacher_projection": early["teacher_projection"],
+                         "gripper_rows_matching_teacher": early["gripper_rows_matching_teacher"],
+                         "unedited_gripper_rows_matching_teacher": "121/128"},
+                     "unseen_failures": None if not unseen else {
+                         "n_decisions": unseen["n"], "decisions": "most-divergent replan of the 11 failed practice episodes used by neither the 6- nor a 12-decision build",
+                         "teacher_projection": unseen["teacher_projection"],
+                         "mean_shift_vs_unedited_cm": unseen["mean_d_edited_unedited_cm"],
+                         "teacher_mean_shift_vs_unedited_cm": unseen["mean_d_unedited_teacher_cm"]},
+                     "notes": "teacher_projection = sum <e-o, x-o> / sum |x-o|^2 over executed rows 0-7 (joints + gripper); "
+                              "shift = end-effector target of executed row 7. Only bb and dit were run closed loop."})
+    if rows:
+        plot_offline(rows)
+    return recs
+
+
+def plot_offline(rows):
+    plt = _style()
+    fig, axes = plt.subplots(1, 2, figsize=(7.6, 3.4))
+    ax = axes[0]
+    er = [(l, e, a) for l, e, a, _ in rows if a]
+    bars = [("teacher\nwording", er[0][2]["mean_d_unedited_teacher_cm"], "#7FB8C4")] + \
+           [({"bb": "backbone", "bb_tok": "backbone,\nimg pinned", "bb_span": "backbone,\nspan", "dit": "action\nhead"}[e],
+             a["mean_d_edited_unedited_cm"], TEAL) for l, e, a in er]
+    for i, (n, v, c) in enumerate(bars):
+        ax.bar(i, v, color=c, width=0.62, zorder=2)
+        ax.text(i, v + 0.06, f"{v:.2f}", ha="center", fontsize=8, color=INK)
+    ax.set_xticks(range(len(bars)), [b[0] for b in bars], fontsize=7.5)
+    ax.set_ylabel("cm")
+    ax.set_title("Grasp phase (16 decisions): shift of the\nexecuted end-effector target vs unedited", fontsize=9, loc="left")
+    ax.grid(axis="y", color="#E8EAED", zorder=0)
+    ax = axes[1]
+    ur = [(l, e, u) for l, e, _, u in rows if u]
+    for i, (l, e, u) in enumerate(ur):
+        v = u["teacher_projection"]
+        ax.bar(i, v, color="#C9CDD2" if e.endswith("rand") else TEAL, width=0.62, zorder=2)
+        ax.text(i, v + (0.02 if v >= -0.005 else -0.05), "0.00" if abs(v) < 0.005 else f"{v:+.2f}", ha="center", fontsize=8, color=INK)
+    ax.axhline(0, color=INK, lw=0.8)
+    ax.set_xticks(range(len(ur)), [{"bb": "backbone", "bb_tok": "backbone,\nimg pinned", "bb_span": "backbone,\nspan",
+                                     "dit": "action\nhead", "bb_rand": "random\ncontrol"}[e] for _, e, _ in ur], fontsize=7.5)
+    ax.set_ylim(-0.35, 0.45)
+    ax.set_ylabel("share of the teacher's change")
+    ax.set_title("Unseen failed episodes (11 decisions):\nteacher projection (1 = the wording's change)", fontsize=9, loc="left")
+    ax.grid(axis="y", color="#E8EAED", zorder=0)
+    fig.suptitle("GR00T T1 edits, offline on recorded decisions not used to build", fontsize=10, x=0.01, ha="left")
+    fig.tight_layout()
+    fig.savefig(PLOTS / "offline_checks_T1.svg")
+    fig.savefig(PLOTS / "offline_checks_T1.png", dpi=200)
+    plt.close(fig)
+
+
+def plot_wording(runs):
+    """Paired wording screens: each task's own wording vs the alternative, same slots."""
+    tags = sorted(t for t in runs if t.startswith("wd-"))
+    rows = []
+    for t in tags:
+        tid = t.split("-")[1]
+        if f"fm-{tid}" in runs:
+            rows.append((tid, pair(runs[f"fm-{tid}"], runs[t])))
+    if not rows:
+        return
+    plt = _style()
+    from matplotlib.patches import Patch
+    fig, ax = plt.subplots(figsize=(6.0, 3.2))
+    for i, (tid, c) in enumerate(rows):
+        ax.bar(i - 0.18, c["ref_k"] / c["n"], width=0.34, color=GREY, zorder=2)
+        ax.bar(i + 0.18, c["cand_k"] / c["n"], width=0.34, color="#7FB8C4", zorder=2)
+        ax.text(i - 0.18, c["ref_k"] / c["n"] + 0.03, f"{c['ref_k']}/{c['n']}", ha="center", fontsize=8, color=INK)
+        ax.text(i + 0.18, c["cand_k"] / c["n"] + 0.03, f"{c['cand_k']}/{c['n']}", ha="center", fontsize=8, color=INK)
+        ax.text(i, 0.66, f"+{c['fixed']} / -{c['broke']}\np = {fmt_p(c['p'])}", ha="center", fontsize=8, color=INK)
+    ax.set_xticks(range(len(rows)), [t for t, _ in rows])
+    ax.set_ylim(0, 1.1)
+    ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0], ["0", "25", "50", "75", "100"])
+    ax.set_ylabel("Success (%)")
+    ax.legend(handles=[Patch(color=GREY, label="task's own wording"), Patch(color="#7FB8C4", label="alternative wording")],
+              frameon=False, fontsize=8, loc="upper right")
+    ax.set_title("GR00T N1.7 DROID, unedited: wording screens, paired slots 30000-30031", fontsize=10, loc="left")
+    ax.grid(axis="y", color="#E8EAED", zorder=0)
+    fig.tight_layout()
+    fig.savefig(PLOTS / "wording_screens.svg")
+    fig.savefig(PLOTS / "wording_screens.png", dpi=200)
+    plt.close(fig)
 
 
 def plot_where(runs):

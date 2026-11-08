@@ -1,13 +1,13 @@
-## Metric 1: failure map (unedited, task's own wording, slots 30000-30031)
+## Metric 1: failure map (unedited, task's own wording, practice slots from 30000)
 
-| Task | RoboLab task | Success | Rate | Wilson 95% |
-|---|---|---|---|---|
-| T1 | RubiksCubeThenBananaTask | 9/32 | 28% | 16-45% |
-| T2 | PickGlassesTask | 0/32 | 0% | 0-11% |
-| T3 | RubiksCubeLeftOfBowlTask | 1/32 | 3% | 1-16% |
-| T5 | MustardInLeftBinTask | 0/32 | 0% | 0-11% |
-| T8 | MustardRightOfRaisinRFTask | 0/32 | 0% | 0-11% |
-| R1 | RubiksCubeTask | 28/32 | 88% | 72-95% |
+| Task | RoboLab task | Slots | Success | Rate | Wilson 95% |
+|---|---|---|---|---|---|
+| T1 | RubiksCubeThenBananaTask | 30000-30031 | 9/32 | 28% | 16-45% |
+| T2 | PickGlassesTask | 30000-30031 | 0/32 | 0% | 0-11% |
+| T3 | RubiksCubeLeftOfBowlTask | 30000-30031 | 1/32 | 3% | 1-16% |
+| T5 | MustardInLeftBinTask | 30000-30031 | 0/32 | 0% | 0-11% |
+| T8 | MustardRightOfRaisinRFTask | 30000-30031 | 0/32 | 0% | 0-11% |
+| R1 | RubiksCubeTask | 30000-30031 | 28/32 | 88% | 72-95% |
 
 ## Metric 2: wording sensitivity (unedited, paired on slots 30000-30031)
 
@@ -25,12 +25,6 @@
 | edited | 0/32 | 0 / 9 | 0.0039 | -44 to -12 pts |
 | teacher (explicit wording, unedited) | 16/32 | | | |
 
-### Side-effect map of `bb` (edited vs unedited, each task's own wording, paired on the slots both ran)
-
-| Task | Unedited | Edited | fixed / broke | exact p |
-|---|---|---|---|---|
-| T1 | 9/32 | 0/32 | 0 / 9 | 0.0039 |
-
 ## Edit `dit` (GR00T action head: 32 AlternateVLDiT blocks, ff.net.2 (diffusion transformer)) on T1, practice slots 30000-30031
 
 | Arm | Success | fixed / broke vs unedited | exact p | 95% CI of difference |
@@ -38,9 +32,3 @@
 | unedited | 9/32 | | | |
 | edited | 0/32 | 0 / 9 | 0.0039 | -44 to -12 pts |
 | teacher (explicit wording, unedited) | 16/32 | | | |
-
-### Side-effect map of `dit` (edited vs unedited, each task's own wording, paired on the slots both ran)
-
-| Task | Unedited | Edited | fixed / broke | exact p |
-|---|---|---|---|---|
-| T1 | 9/32 | 0/32 | 0 / 9 | 0.0039 |
