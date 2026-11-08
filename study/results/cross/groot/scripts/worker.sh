@@ -10,7 +10,9 @@
 #   setsid nohup bash src/scripts/worker.sh 0 8600 > jobs/worker-g0.log 2>&1 < /dev/null &
 set -u
 GPU="$1"; PORT="$2"
-G=~/cross/groot; Q=$G/jobs/queue.txt; S=$G/src/scripts
+G=${GROOT_WS:-$HOME/cross/groot}
+[[ -f $G/src/machine.env ]] && source $G/src/machine.env   # host layout (GROOT_WS, GROOT_LOCK_DIRS, ...); absent on ali-ms
+Q=$G/jobs/queue.txt; S=$G/src/scripts
 mkdir -p $G/jobs/claims $G/jobs/done $G/logs
 cd $G
 echo "$(date '+%F %T') worker gpu=$GPU port=$PORT queue=$Q"

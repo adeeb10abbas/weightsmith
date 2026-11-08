@@ -1,0 +1,74 @@
+{
+ "track": "B",
+ "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+ "records": [
+  {
+   "experiment": "failure_map",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T1 RubiksCubeThenBananaTask",
+   "wording_pair": [
+    "Put the cube then the banana in the bowl",
+    null
+   ],
+   "n": 32,
+   "unedited_k": 9,
+   "edited_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null,
+   "ci": {
+    "unedited_wilson95": [
+     0.1556458049774277,
+     0.4537450942591657
+    ]
+   },
+   "control_k": null,
+   "teacher_k": null,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": [
+    30000,
+    30031
+   ],
+   "notes": "tag fm-T1; envs 16; env seed 0; one fresh simulator process per 16-slot group"
+  },
+  {
+   "experiment": "wording_sensitivity",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T1 RubiksCubeThenBananaTask",
+   "wording_pair": [
+    "Put the cube then the banana in the bowl",
+    "Put the cube in the bowl then put the banana in the bowl"
+   ],
+   "n": 32,
+   "unedited_k": 9,
+   "edited_k": null,
+   "fixed": 11,
+   "broke": 4,
+   "p": 0.11846923828125,
+   "ci": {
+    "diff_bootstrap95": [
+     0.0,
+     0.4375
+    ]
+   },
+   "control_k": null,
+   "teacher_k": 16,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": [
+    30000,
+    30031
+   ],
+   "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T1 vs wd-T1-expl"
+  }
+ ]
+}

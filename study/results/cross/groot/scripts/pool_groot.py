@@ -13,13 +13,16 @@ import argparse, fcntl, json, os, shutil, signal, subprocess, sys, time
 from pathlib import Path
 
 HOME = Path.home()
-WS = HOME / "cross/groot"
+# Machine layout; defaults are ali-ms. Other hosts set these in src/machine.env (sourced by worker.sh).
+WS = Path(os.environ.get("GROOT_WS", HOME / "cross/groot"))
 SRC = WS / "src"
 GROOT_PY = WS / "Isaac-GR00T/.venv/bin/python"
-ROBOLAB = HOME / "vibes/weight-space-policy-lab/robolab_checkout"
-SIM_PY = HOME / "vibes/weight-space-policy-lab/robolab_env/.venv/bin/python"
-LOCKS = [HOME / ".cache/weightsmith/locks", HOME / "vibes/opus-weight-surgery/state"]
-VK_ICD = "/usr/share/vulkan/icd.d/nvidia_icd.json"
+ROBOLAB = Path(os.environ.get("GROOT_ROBOLAB", HOME / "vibes/weight-space-policy-lab/robolab_checkout"))
+SIM_PY = Path(os.environ.get("GROOT_SIM_PY", HOME / "vibes/weight-space-policy-lab/robolab_env/.venv/bin/python"))
+LOCKS = [Path(d) for d in os.environ.get(
+    "GROOT_LOCK_DIRS", f"{HOME}/.cache/weightsmith/locks:{HOME}/vibes/opus-weight-surgery/state").split(":")]
+MACHINE = os.environ.get("GROOT_MACHINE", "ali-ms-rtx3090")
+VK_ICD = os.environ.get("GROOT_VK_ICD", "/usr/share/vulkan/icd.d/nvidia_icd.json")
 TASK_DIRS = str(SRC / "tasks")
 ENV_SEED = 0
 
@@ -170,7 +173,7 @@ def main():
     text = slog.read_text(errors="ignore").splitlines()
     load = [l for l in text if l.startswith("loaded ")]
     edit = [l for l in text if l.startswith("edit ")]
-    summary = {"tag": a.tag, "task": a.task, "prompt": a.prompt, "edit": a.edit, "slots": [slots[0], slots[-1]],
+    summary = {"tag": a.tag, "machine": MACHINE, "task": a.task, "prompt": a.prompt, "edit": a.edit, "slots": [slots[0], slots[-1]],
                "envs": a.envs, "env_seed": ENV_SEED, "rendering": a.rendering, "max_batch": a.max_batch, "groups": groups, "n": len(rows), "completed": len(ok),
                "success": sum(r["success"] for r in ok), "error": err, "procs": procs,
                "server_load": json.loads(load[0][7:]) if load else None,

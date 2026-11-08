@@ -4,8 +4,9 @@
 # Usage: locked.sh GPU LOGFILE CMD...
 set -u
 GPU="$1"; LOG="$2"; shift 2
-exec 8>~/.cache/weightsmith/locks/gpu$GPU.lock; flock 8
-exec 9>~/vibes/opus-weight-surgery/state/gpu$GPU.lock; flock 9
+IFS=: read -r L1 L2 <<< "${GROOT_LOCK_DIRS:-$HOME/.cache/weightsmith/locks:$HOME/vibes/opus-weight-surgery/state}"
+mkdir -p "$L1"; exec 8>"$L1/gpu$GPU.lock"; flock 8
+if [[ -n "${L2:-}" ]]; then mkdir -p "$L2"; exec 9>"$L2/gpu$GPU.lock"; flock 9; fi
 echo "$(date +%T) lock gpu$GPU acquired: $*" >> "$LOG"
 t0=$(date +%s)
 GPU=$GPU CUDA_VISIBLE_DEVICES=$GPU PYTHONUNBUFFERED=1 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True "$@" >> "$LOG" 2>&1 8>&- 9>&-

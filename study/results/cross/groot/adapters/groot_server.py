@@ -117,6 +117,9 @@ def apply_edit(model: torch.nn.Module, path: str | Path) -> dict:
 
 
 def load_policy(ckpt: str = DEFAULT_CKPT, device: str = "cuda", edit: str | None = None):
+    import os
+    if os.environ.get("GROOT_NO_FLASH") == "1" or str(device) == "cpu":  # backbone falls back to sdpa attention
+        sys.modules["flash_attn"] = None
     from gr00t.policy.gr00t_policy import Gr00tPolicy, Gr00tSimPolicyWrapper
     install_seeded_noise()
     base = Gr00tPolicy(embodiment_tag=EMBODIMENT, model_path=ckpt, device=device, strict=True)

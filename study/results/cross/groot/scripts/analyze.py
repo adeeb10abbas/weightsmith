@@ -45,6 +45,11 @@ def load_runs():
     return runs
 
 
+def machine(*rs):
+    ms = sorted({r.get("machine", "ali-ms-rtx3090") for r in rs if r})
+    return ms[0] if len(ms) == 1 else "+".join(ms)
+
+
 def outcomes(run):
     return {r["slot"]: bool(r["success"]) for r in run["rows"] if r.get("ok")}
 
@@ -88,7 +93,7 @@ def main():
         k, n, lo, hi = rate(r)
         fm[tid] = (k, n, lo, hi)
         lines.append(f"| {tid} | {cls} | {k}/{n} | {100*k/n:.0f}% | {100*lo:.0f}-{100*hi:.0f}% |")
-        recs.append({"experiment": "failure_map", "model": MODEL, "task": f"{tid} {cls}", "wording_pair": [instr, None],
+        recs.append({"experiment": "failure_map", "model": MODEL, "machine": machine(r), "task": f"{tid} {cls}", "wording_pair": [instr, None],
                      "n": n, "unedited_k": k, "edited_k": None, "fixed": None, "broke": None, "p": None,
                      "ci": {"unedited_wilson95": [lo, hi]}, "control_k": None, "teacher_k": None, "recovery_pct": None,
                      "transfer": None, "retention": None, "edit_location": None, "values_changed": None,
@@ -109,7 +114,7 @@ def main():
         orig = next(i for t, _, i in TASKS if t == tid)
         lines.append(f"| {tid} | {orig} | {runs[tag]['prompt']} | {c['ref_k']}/{c['n']} | {c['cand_k']}/{c['n']} | "
                      f"{c['fixed']} / {c['broke']} | {fmt_p(c['p'])} |")
-        recs.append({"experiment": "wording_sensitivity", "model": MODEL, "task": f"{tid} {base['task']}",
+        recs.append({"experiment": "wording_sensitivity", "model": MODEL, "machine": machine(base, runs[tag]), "task": f"{tid} {base['task']}",
                      "wording_pair": [orig, runs[tag]["prompt"]], "n": c["n"], "unedited_k": c["ref_k"],
                      "edited_k": None, "fixed": c["fixed"], "broke": c["broke"], "p": c["p"],
                      "ci": {"diff_bootstrap95": c["diff_ci95"]}, "control_k": None, "teacher_k": c["cand_k"],
@@ -128,7 +133,7 @@ def main():
                   "| Preset | Success | default only / performance only | exact p |", "|---|---|---|---|",
                   f"| performance (`--rendering-type performance`) | {c['ref_k']}/{c['n']} | | |",
                   f"| default (unset) | {c['cand_k']}/{c['n']} | {c['fixed']} / {c['broke']} | {fmt_p(c['p'])} |"]
-        recs.append({"experiment": "render_preset_sensitivity", "model": MODEL, "task": f"{tid} {base['task']}",
+        recs.append({"experiment": "render_preset_sensitivity", "model": MODEL, "machine": machine(base, runs[tag]), "task": f"{tid} {base['task']}",
                      "wording_pair": None, "n": c["n"], "unedited_k": c["cand_k"], "edited_k": None,
                      "fixed": c["fixed"], "broke": c["broke"], "p": c["p"], "ci": {"diff_bootstrap95": c["diff_ci95"]},
                      "control_k": None, "teacher_k": None, "recovery_pct": None, "transfer": None, "retention": None,
@@ -175,7 +180,7 @@ def edit_records(runs, lines):
                          f"{fmt_p(cc['p'])} | {100*cc['diff_ci95'][0]:+.0f} to {100*cc['diff_ci95'][1]:+.0f} pts |")
         if tk is not None:
             lines.append(f"| teacher (explicit wording, unedited) | {tk}/{c['n']} | | | |")
-        recs.append({"experiment": "wsp_edit_practice", "model": MODEL, "task": f"{tid} {base['task']}",
+        recs.append({"experiment": "wsp_edit_practice", "model": MODEL, "machine": machine(base, ed, ctl), "task": f"{tid} {base['task']}",
                      "wording_pair": m.get("wording"), "n": c["n"], "unedited_k": c["ref_k"], "edited_k": c["cand_k"],
                      "fixed": c["fixed"], "broke": c["broke"], "p": c["p"], "ci": {"diff_bootstrap95": c["diff_ci95"]},
                      "control_k": cc["cand_k"] if cc else None, "control_fixed_broke": [cc["fixed"], cc["broke"]] if cc else None,
@@ -194,7 +199,7 @@ def edit_records(runs, lines):
                       f"[{100*h['diff_ci95'][0]:+.1f}, {100*h['diff_ci95'][1]:+.1f}]"
                       + (f"; random control {hcc['cand_k']}/{hcc['n']} ({hcc['fixed']}/{hcc['broke']}, p = {fmt_p(hcc['p'])})" if hcc else "")]
             lo, hi = wilson(h["cand_k"], h["n"])
-            recs.append({"experiment": "wsp_edit_heldout", "model": MODEL, "task": f"{tid} {hb['task']}",
+            recs.append({"experiment": "wsp_edit_heldout", "model": MODEL, "machine": machine(hb, he, hc), "task": f"{tid} {hb['task']}",
                          "wording_pair": m.get("wording"), "n": h["n"], "unedited_k": h["ref_k"], "edited_k": h["cand_k"],
                          "fixed": h["fixed"], "broke": h["broke"], "p": h["p"],
                          "ci": {"diff_bootstrap95": h["diff_ci95"], "edited_wilson95": [lo, hi],
@@ -215,7 +220,7 @@ def edit_records(runs, lines):
             for t2, c2 in se:
                 lines.append(f"| {t2} | {c2['ref_k']}/{c2['n']} | {c2['cand_k']}/{c2['n']} | {c2['fixed']} / {c2['broke']} | {fmt_p(c2['p'])} |")
                 if t2 != tid:
-                    recs.append({"experiment": "wsp_side_effect" if t2 != "R1" else "wsp_retention", "model": MODEL,
+                    recs.append({"experiment": "wsp_side_effect" if t2 != "R1" else "wsp_retention", "model": MODEL, "machine": machine(runs[f"fm-{t2}"], runs.get(f"se-{e}-{t2}")),
                                  "task": f"{t2} {runs[f'fm-{t2}']['task']}", "wording_pair": None, "n": c2["n"],
                                  "unedited_k": c2["ref_k"], "edited_k": c2["cand_k"], "fixed": c2["fixed"],
                                  "broke": c2["broke"], "p": c2["p"], "ci": {"diff_bootstrap95": c2["diff_ci95"]},
