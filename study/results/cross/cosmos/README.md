@@ -332,3 +332,9 @@ Both wordings go through the prompt override. Arms: `<code>-rf` (unedited, RF), 
 
 If neither equal-length pair shows a TF - RF gap on the screen, the offline gate still runs on the larger one, and the
 README says plainly that closed loop cannot show a fix there.
+
+**Screen result and choice (15:41 ET).** S1L: RF 1/16, TF 7/16 (7 TF-only, 1 RF-only, p = 0.070). S1R: RF 0/16, TF 4/16 (4 / 0,
+p = 0.125). By the pre-registered rule (larger TF-only minus RF-only count: 6 vs 4), **S1L** is the pair. Prediction, as
+fixed above: equal length, so `s1lund` should close at least 85% of the gap offline and fix S1L in closed loop. Build:
+`scripts/sessions/session_prosp.sh S1L s1lund all ...`. Decisions under the rule: build at slot 30000 (replan 1), checks
+at 30001/30002/30003, held-aside RF failures 30004-30009 (replans 1-5).

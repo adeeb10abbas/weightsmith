@@ -482,6 +482,50 @@
   "notes": "prospective token-count test: unedited, reference-first vs target-first wording of the same goal, both via prompt override"
  },
  {
+  "experiment": "wording_prospective",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeRightOfBowlTask",
+  "code": "S1R",
+  "wording_pair": [
+   "Move the rubiks cube on the table so that the bowl is to the left of the rubiks cube.",
+   "Move the rubiks cube on the table so that the rubiks cube is to the right of the bowl."
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 0,
+  "edited_k": null,
+  "fixed": 4,
+  "broke": 0,
+  "p": 0.125,
+  "ci": {
+   "diff_pts": 25.0,
+   "bootstrap95_pts": [
+    6.25,
+    50.0
+   ],
+   "wilson95_orig_pct": [
+    0.0,
+    19.4
+   ],
+   "wilson95_alt_pct": [
+    10.2,
+    49.5
+   ]
+  },
+  "control_k": null,
+  "teacher_k": 4,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": null,
+  "values_changed": null,
+  "notes": "prospective token-count test: unedited, reference-first vs target-first wording of the same goal, both via prompt override"
+ },
+ {
   "experiment": "edit_practice",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
