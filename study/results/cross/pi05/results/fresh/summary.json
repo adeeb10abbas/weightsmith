@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 11,
- "gpu_hours": 1.75,
+ "jobs": 12,
+ "gpu_hours": 1.98,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
@@ -12,7 +12,9 @@
   "T6/base/practice": "6/16",
   "T7/base/practice": "0/16",
   "T8/base/practice": "0/16",
-  "R1/base/practice": "16/16"
+  "R1/base/practice": "16/16",
+  "T1/base/heldout": "1/16",
+  "T1/v2mi-f/heldout": "9/16"
  },
  "records": [
   {
@@ -158,6 +160,22 @@
    "fixed": null,
    "broke": null,
    "p": null
+  },
+  {
+   "experiment": "edit_target",
+   "code": "T1",
+   "slots": [
+    96000,
+    96015
+   ],
+   "n": 16,
+   "unedited_k": 1,
+   "edited_k": 9,
+   "control_k": null,
+   "teacher_k": null,
+   "fixed": 8,
+   "broke": 0,
+   "p": 0.007812
   }
  ]
 }
