@@ -1,0 +1,14 @@
+base 0 / 32 first gripper-close replan (median) 13.0 never closed 8
+   k=0  hand x,y,z (cm, robot base) [36.0, -0.0, 34.0]
+   k=2  hand x,y,z (cm, robot base) [44.0, 9.6, 23.5]
+   k=4  hand x,y,z (cm, robot base) [46.8, 9.7, 20.1]
+   k=6  hand x,y,z (cm, robot base) [47.8, 7.4, 20.4]
+   k=8  hand x,y,z (cm, robot base) [47.7, 5.5, 21.5]
+base@p6dd52f 27 / 32 first gripper-close replan (median) 4.0 never closed 0
+   k=0  hand x,y,z (cm, robot base) [36.0, -0.0, 34.0]
+   k=2  hand x,y,z (cm, robot base) [41.5, 16.5, 20.3]
+   k=4  hand x,y,z (cm, robot base) [42.0, 21.8, 15.1]
+   k=6  hand x,y,z (cm, robot base) [45.8, 15.0, 19.1]
+   k=8  hand x,y,z (cm, robot base) [47.9, 6.5, 19.4]
+TRAJ_JSON {"base": {"n": 32, "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.", "success": 0, "ee_mean_cm_by_k": [[36.0, -0.0, 34.0], [41.5, 6.8, 28.8], [44.0, 9.6, 23.5], [45.3, 10.8, 19.8], [46.8, 9.7, 20.1], [47.1, 8.4, 20.8], [47.8, 7.4, 20.4], [47.3, 6.5, 21.0], [47.7, 5.5, 21.5], [47.9, 6.3, 20.9], [47.8, 6.1, 19.9], [47.7, 6.5, 19.3]], "first_close_k_median": 13.0, "never_close": 8}, "base@p6dd52f": {"n": 32, "prompt": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.", "success": 27, "ee_mean_cm_by_k": [[36.0, -0.0, 34.0], [40.2, 9.1, 27.2], [41.5, 16.5, 20.3], [41.1, 21.1, 16.1], [42.0, 21.8, 15.1], [43.8, 19.1, 18.1], [45.8, 15.0, 19.1], [46.4, 11.3, 19.8], [47.9, 6.5, 19.4], [48.8, 4.1, 18.1], [49.0, 2.7, 18.2], [49.1, 1.5, 17.9]], "first_close_k_median": 4.0, "never_close": 0}}
+

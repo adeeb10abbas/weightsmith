@@ -1,0 +1,408 @@
+{
+ "build": [
+  {
+   "episode": "base.base.s20000",
+   "k": 6
+  },
+  {
+   "episode": "base.base.s20001",
+   "k": 2
+  },
+  {
+   "episode": "base.base.s20002",
+   "k": 3
+  },
+  {
+   "episode": "base.base.s20003",
+   "k": 2
+  },
+  {
+   "episode": "base.base.s20007",
+   "k": 2
+  },
+  {
+   "episode": "base.base.s20008",
+   "k": 5
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 8
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 7
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 8
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 9
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 11
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 11
+  }
+ ],
+ "approach_check": [
+  {
+   "episode": "base.base.s20010",
+   "k": 2
+  },
+  {
+   "episode": "base.base.s20010",
+   "k": 3
+  },
+  {
+   "episode": "base.base.s20010",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20010",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20010",
+   "k": 6
+  },
+  {
+   "episode": "base.base.s20011",
+   "k": 2
+  },
+  {
+   "episode": "base.base.s20011",
+   "k": 3
+  },
+  {
+   "episode": "base.base.s20011",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20011",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20011",
+   "k": 6
+  },
+  {
+   "episode": "base.base.s20012",
+   "k": 2
+  },
+  {
+   "episode": "base.base.s20012",
+   "k": 3
+  },
+  {
+   "episode": "base.base.s20012",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20012",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20012",
+   "k": 6
+  },
+  {
+   "episode": "base.base.s20013",
+   "k": 2
+  },
+  {
+   "episode": "base.base.s20013",
+   "k": 3
+  },
+  {
+   "episode": "base.base.s20013",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20013",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20013",
+   "k": 6
+  },
+  {
+   "episode": "base.base.s20014",
+   "k": 2
+  },
+  {
+   "episode": "base.base.s20014",
+   "k": 3
+  },
+  {
+   "episode": "base.base.s20014",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20014",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20014",
+   "k": 6
+  },
+  {
+   "episode": "base.base.s20016",
+   "k": 2
+  },
+  {
+   "episode": "base.base.s20016",
+   "k": 3
+  },
+  {
+   "episode": "base.base.s20016",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20016",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20016",
+   "k": 6
+  }
+ ],
+ "transport_check": [
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 12
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 9
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 10
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 9
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 6
+  },
+  {
+   "episode": "base@p6dd52f.base.s20002",
+   "k": 11
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 10
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 8
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 6
+  },
+  {
+   "episode": "base@p6dd52f.base.s20001",
+   "k": 7
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 13
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 14
+  },
+  {
+   "episode": "base@p6dd52f.base.s20013",
+   "k": 7
+  },
+  {
+   "episode": "base@p6dd52f.base.s20003",
+   "k": 10
+  }
+ ],
+ "tf_noharm": [
+  {
+   "episode": "base@p6dd52f.base.s20000",
+   "k": 1
+  },
+  {
+   "episode": "base@p6dd52f.base.s20000",
+   "k": 2
+  },
+  {
+   "episode": "base@p6dd52f.base.s20000",
+   "k": 3
+  },
+  {
+   "episode": "base@p6dd52f.base.s20000",
+   "k": 4
+  },
+  {
+   "episode": "base@p6dd52f.base.s20000",
+   "k": 5
+  },
+  {
+   "episode": "base@p6dd52f.base.s20000",
+   "k": 6
+  },
+  {
+   "episode": "base@p6dd52f.base.s20000",
+   "k": 7
+  },
+  {
+   "episode": "base@p6dd52f.base.s20000",
+   "k": 8
+  },
+  {
+   "episode": "base@p6dd52f.base.s20007",
+   "k": 1
+  },
+  {
+   "episode": "base@p6dd52f.base.s20007",
+   "k": 2
+  },
+  {
+   "episode": "base@p6dd52f.base.s20007",
+   "k": 3
+  },
+  {
+   "episode": "base@p6dd52f.base.s20007",
+   "k": 4
+  },
+  {
+   "episode": "base@p6dd52f.base.s20007",
+   "k": 5
+  },
+  {
+   "episode": "base@p6dd52f.base.s20007",
+   "k": 6
+  },
+  {
+   "episode": "base@p6dd52f.base.s20007",
+   "k": 7
+  },
+  {
+   "episode": "base@p6dd52f.base.s20007",
+   "k": 8
+  },
+  {
+   "episode": "base@p6dd52f.base.s20008",
+   "k": 1
+  },
+  {
+   "episode": "base@p6dd52f.base.s20008",
+   "k": 2
+  },
+  {
+   "episode": "base@p6dd52f.base.s20008",
+   "k": 3
+  },
+  {
+   "episode": "base@p6dd52f.base.s20008",
+   "k": 4
+  },
+  {
+   "episode": "base@p6dd52f.base.s20008",
+   "k": 5
+  },
+  {
+   "episode": "base@p6dd52f.base.s20008",
+   "k": 6
+  },
+  {
+   "episode": "base@p6dd52f.base.s20008",
+   "k": 7
+  },
+  {
+   "episode": "base@p6dd52f.base.s20008",
+   "k": 8
+  },
+  {
+   "episode": "base@p6dd52f.base.s20010",
+   "k": 1
+  },
+  {
+   "episode": "base@p6dd52f.base.s20010",
+   "k": 2
+  },
+  {
+   "episode": "base@p6dd52f.base.s20010",
+   "k": 3
+  },
+  {
+   "episode": "base@p6dd52f.base.s20010",
+   "k": 4
+  },
+  {
+   "episode": "base@p6dd52f.base.s20010",
+   "k": 5
+  },
+  {
+   "episode": "base@p6dd52f.base.s20010",
+   "k": 6
+  },
+  {
+   "episode": "base@p6dd52f.base.s20010",
+   "k": 7
+  },
+  {
+   "episode": "base@p6dd52f.base.s20010",
+   "k": 8
+  },
+  {
+   "episode": "base@p6dd52f.base.s20011",
+   "k": 1
+  },
+  {
+   "episode": "base@p6dd52f.base.s20011",
+   "k": 2
+  },
+  {
+   "episode": "base@p6dd52f.base.s20011",
+   "k": 3
+  },
+  {
+   "episode": "base@p6dd52f.base.s20011",
+   "k": 4
+  },
+  {
+   "episode": "base@p6dd52f.base.s20011",
+   "k": 5
+  },
+  {
+   "episode": "base@p6dd52f.base.s20011",
+   "k": 6
+  },
+  {
+   "episode": "base@p6dd52f.base.s20011",
+   "k": 7
+  },
+  {
+   "episode": "base@p6dd52f.base.s20011",
+   "k": 8
+  }
+ ],
+ "groups": {
+  "build": [
+   0,
+   12
+  ],
+  "approach_heldout": [
+   12,
+   42
+  ],
+  "transport_heldout": [
+   42,
+   56
+  ]
+ }
+}

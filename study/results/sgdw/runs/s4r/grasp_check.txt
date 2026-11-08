@@ -1,0 +1,18 @@
+{
+ "heldout_grasp": {
+  "n": 6,
+  "closed_base_rf": 2,
+  "closed_base_tf": 6,
+  "closed_gchk-g3_rf": 6,
+  "closed_gchk-g2_rf": 5
+ },
+ "build_grasp": {
+  "n": 6,
+  "closed_base_rf": 1,
+  "closed_base_tf": 6,
+  "closed_gchk-g3_rf": 6,
+  "closed_gchk-g2_rf": 3
+ }
+}
+GRASP_JSON {"heldout_grasp": {"n": 6, "closed_base_rf": 2, "closed_base_tf": 6, "closed_gchk-g3_rf": 6, "closed_gchk-g2_rf": 5}, "build_grasp": {"n": 6, "closed_base_rf": 1, "closed_base_tf": 6, "closed_gchk-g3_rf": 6, "closed_gchk-g2_rf": 3}}
+
