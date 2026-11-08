@@ -37,6 +37,16 @@ TASKS = [  # (id, RoboLab class, default instruction)
 TID = {c: t for t, c, _ in TASKS}
 
 
+FINDINGS = {  # observations about a run that the numbers alone do not show (written after looking at the run)
+    "wd-T3-alt": "not wording-sensitive: under both wordings GR00T grasps the cube and holds it near the bowl until "
+                 "the episode ends (final frames of slots 30000-30005)",
+    "wd-T8-tf": "the target-first wording does not rescue GR00T (0/32 under both; Cosmos3 Edge went 0 -> 15/16 under "
+                "TF in Track A); under TF every episode grasps the mustard (RF: 10/32 never grasp it) but none ends "
+                "with it right of the raisin box",
+    "wd-T1-expl": "GR00T's only wording-sensitive task among those screened (T1, T3, T8)",
+}
+
+
 def load_runs():
     runs = {}
     for f in sorted(RUNS.glob("*.json")):
@@ -121,7 +131,8 @@ def main():
                      "recovery_pct": None, "transfer": None, "retention": None, "edit_location": None,
                      "values_changed": None, "slots": c["slots"],
                      "notes": f"alternative wording given to the unedited model (teacher); fixed = succeeds only "
-                              f"under the alternative wording; tags {base['tag']} vs {tag}"})
+                              f"under the alternative wording; tags {base['tag']} vs {tag}"
+                              + (f"; {FINDINGS[tag]}" if tag in FINDINGS else "")})
     # ---------------------------------------------------------------- render-preset sensitivity
     for tag in sorted(t for t in runs if t.startswith("rp-")):
         tid = tag.split("-")[1]

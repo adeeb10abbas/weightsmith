@@ -12,3 +12,4 @@
 |---|---|---|---|---|---|---|
 | T1 | Put the cube then the banana in the bowl | Put the cube in the bowl then put the banana in the bowl | 9/32 | 16/32 | 11 / 4 | 0.12 |
 | T3 | Put the rubiks cube to the left of the bowl | Pick up the rubiks cube and place it on the table to the left of the bowl | 1/32 | 0/32 | 0 / 1 | 1 |
+| T8 | Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle. | Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box. | 0/32 | 0/32 | 0 / 0 | 1 |

@@ -136,7 +136,7 @@
     30000,
     30031
    ],
-   "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T1 vs wd-T1-expl"
+   "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T1 vs wd-T1-expl; GR00T's only wording-sensitive task among those screened (T1, T3, T8)"
   },
   {
    "experiment": "wording_sensitivity",
@@ -170,7 +170,41 @@
     30000,
     30031
    ],
-   "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T3 vs wd-T3-alt"
+   "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T3 vs wd-T3-alt; not wording-sensitive: under both wordings GR00T grasps the cube and holds it near the bowl until the episode ends (final frames of slots 30000-30005)"
+  },
+  {
+   "experiment": "wording_sensitivity",
+   "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+   "machine": "ali-ms-rtx3090",
+   "task": "T8 MustardRightOfRaisinRFTask",
+   "wording_pair": [
+    "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+    "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+   ],
+   "n": 32,
+   "unedited_k": 0,
+   "edited_k": null,
+   "fixed": 0,
+   "broke": 0,
+   "p": 1.0,
+   "ci": {
+    "diff_bootstrap95": [
+     0.0,
+     0.0
+    ]
+   },
+   "control_k": null,
+   "teacher_k": 0,
+   "recovery_pct": null,
+   "transfer": null,
+   "retention": null,
+   "edit_location": null,
+   "values_changed": null,
+   "slots": [
+    30000,
+    30031
+   ],
+   "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T8 vs wd-T8-tf; the target-first wording does not rescue GR00T (0/32 under both; Cosmos3 Edge went 0 -> 15/16 under TF in Track A); under TF every episode grasps the mustard (RF: 10/32 never grasp it) but none ends with it right of the raisin box"
   }
  ]
 }
