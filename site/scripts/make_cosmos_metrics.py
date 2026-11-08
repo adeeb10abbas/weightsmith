@@ -1284,6 +1284,14 @@ def cross_check(prov, rcp):
     return bad
 
 
+# Experiments a track has dropped, with the reason and where it says so. Their empty cells read "not run", not
+# "running"; a measured cell still wins if one lands.
+NOT_RUN = {
+    ("groot", "side_effects"): ("not run", "dropped: both T1 edits lowered success on T1 itself, so no side-effect map "
+                                           "was run for them (cross-groot/v1 639a29b)"),
+}
+
+
 def build_tables(P, cross):
     prov, labels = pi05_cells(P)
 
@@ -1319,6 +1327,8 @@ def build_tables(P, cross):
                 src = cross.get(mid)
                 cell = merge_cell(tid, key, rc[mid][tid].get(key), rcp[mid][tid].get(key),
                                   prov[tid].get(key) if mid == "pi05" else None)
+                if cell is None and (mid, tid) in NOT_RUN and not key.startswith("_"):
+                    cell = C(NOT_RUN[(mid, tid)][0], NOT_RUN[(mid, tid)][1], s="na")
                 if cell is None:
                     cell = NA if (key in PI_ONLY or (src and src["final"]) or (mid == "pi05" and key == "offline_where")) else RUN
                 cells[mid] = cell
@@ -2451,6 +2461,9 @@ def tldr(tables, models):
     parts, waiting = [], []
     for mid in TLDR_ORDER:
         tgt, off, r1 = side(mid)
+        if (not tgt or not off) and (mid, "side_effects") in NOT_RUN:
+            parts.append(f"{models[mid]['name']}: not run, because its T1 edits lowered success on T1 itself.")
+            continue
         if not tgt or not off:
             waiting.append(models[mid]["name"])
             continue

@@ -20,7 +20,7 @@
     "branch": "cross-cosmos/v1",
     "path": "study/results/cross/metrics_cosmos.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-    "commit": "ad1a713be7db"
+    "commit": "956b7feaa122"
    }
   },
   {
@@ -39,7 +39,7 @@
     "branch": "cross-groot/v1",
     "path": "study/results/cross/metrics_groot.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-    "commit": "5795bf525d92"
+    "commit": "639a29b583b5"
    }
   },
   {
@@ -132,7 +132,7 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
-    "text": "Edits lifted success on T8 from 0 to 28 of 32 unseen starts (p = 7.5 × 10⁻⁹). On 16 of those starts a random edit of the same size scored 0, against 15 for the edit and 0 unedited. Other tasks: {running}."
+    "text": "Edits lifted success on T8 from 0 to 28 of 32 unseen starts (p = 7.5 × 10⁻⁹). A random edit of the same size scored 0 of 32 on T8, against 0 unedited. Other tasks: {running}."
    },
    {
     "id": "groot",
@@ -146,7 +146,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. Cosmos3 Edge Policy and GR00T N1.7: {running}."
+    "text": "π0.5’s T1 edit, run unchanged on T2–T7 and R1, lifted T2 (22 → 44 of 64) and T3 (8 → 36 of 64), made none detectably worse, and kept the retention task R1 at 32 of 32. GR00T N1.7: not run, because its T1 edits lowered success on T1 itself. Cosmos3 Edge Policy: {running}."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -464,7 +464,7 @@
     "label": "Random control, same size",
     "cells": {
      "cosmos": {
-      "v": "control 0, unedited 0, edit 15 of 16",
+      "v": "control 0, unedited 0, edit 28 of 32",
       "s": "ok",
       "d": "T8"
      },
@@ -1330,15 +1330,14 @@
      "label": "T8 Mustard right of the raisin box, reference-first",
      "cells": {
       "cosmos": {
-       "v": "control 0, unedited 0, edit 15 of 16",
+       "v": "control 0, unedited 0, edit 28 of 32",
        "s": "ok",
-       "d": "the control ran on 16 of the 32 starts; slots 96000–96015; edit against control p = 6.1 × 10⁻⁵",
+       "d": "slots 96000–96031",
        "u": 0,
        "r": 0,
-       "e": 15,
-       "n": 16,
-       "sub": true,
-       "fl": "T8 Mustard, reference-first (16 unseen)"
+       "e": 28,
+       "n": 32,
+       "fl": "T8 Mustard, reference-first (32 unseen)"
       },
       "groot": {
        "v": "running",
@@ -1785,8 +1784,9 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "not run",
+       "s": "na",
+       "d": "dropped: both T1 edits lowered success on T1 itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
        "v": "+22: 22 → 44 of 64",
@@ -1810,8 +1810,9 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "not run",
+       "s": "na",
+       "d": "dropped: both T1 edits lowered success on T1 itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
        "v": "+28: 8 → 36 of 64",
@@ -1835,8 +1836,9 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "not run",
+       "s": "na",
+       "d": "dropped: both T1 edits lowered success on T1 itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
        "v": "+3: 14 → 17 of 32",
@@ -1860,8 +1862,9 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "not run",
+       "s": "na",
+       "d": "dropped: both T1 edits lowered success on T1 itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
        "v": "+5: 7 → 12 of 32",
@@ -1885,8 +1888,9 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "not run",
+       "s": "na",
+       "d": "dropped: both T1 edits lowered success on T1 itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
        "v": "+5: 14 → 19 of 32",
@@ -1910,8 +1914,9 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "not run",
+       "s": "na",
+       "d": "dropped: both T1 edits lowered success on T1 itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
        "v": "±0: 0 → 0 of 32",
@@ -1942,8 +1947,9 @@
        "target": true
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "not run",
+       "s": "na",
+       "d": "dropped: both T1 edits lowered success on T1 itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
        "v": "not run",
@@ -1962,8 +1968,9 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "not run",
+       "s": "na",
+       "d": "dropped: both T1 edits lowered success on T1 itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
        "v": "±0: 32 → 32 of 32",
@@ -2434,29 +2441,29 @@
     "retention": null,
     "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
     "values_changed": 179010015,
-    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 0 broke 0 p = 1; edit vs control p = 6.1e-05",
+    "notes": "edit t8und (sequential closed-form distillation of the TF wording's text states into the RF wording, all 171 positions matched one to one, plus 19 unconditional-pass preservation keys; lam_rel 1e-3); control: same rank and singular values, random directions; control vs unedited fixed 0 broke 0 p = 1; edit vs control p = 7.45e-09",
     "_task": "T8",
     "_edit_task": null,
     "_prov": false,
     "extra": {
      "machine": "ali-ms",
-     "control_n": 16,
+     "control_n": 32,
      "teacher_n": null,
      "edit_vs_control": {
-      "n": 16,
+      "n": 32,
       "ref_k": 0,
-      "cand_k": 15,
-      "fixed": 15,
+      "cand_k": 28,
+      "fixed": 28,
       "broke": 0,
-      "p": 6.103515625e-05,
+      "p": 7.450580596923828e-09,
       "slots": [
        96000,
-       96015
+       96031
       ]
      },
      "control_slots": [
       96000,
-      96015
+      96031
      ],
      "teacher_slots": null
     }
@@ -6010,14 +6017,14 @@
    "branch": "cross-cosmos/v1",
    "path": "study/results/cross/metrics_cosmos.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
-   "commit": "ad1a713be7db"
+   "commit": "956b7feaa122"
   },
   "groot": {
    "kind": "branch",
    "branch": "cross-groot/v1",
    "path": "study/results/cross/metrics_groot.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-   "commit": "5795bf525d92"
+   "commit": "639a29b583b5"
   },
   "pi05": {
    "kind": "branch",
@@ -6028,8 +6035,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "a94d546f3b41f155",
- "updated": "2026-11-08T08:07Z",
- "updated_text": "8 Nov 2026, 08:07 UTC",
+ "content_hash": "e2a272e88fccd473",
+ "updated": "2026-11-08T08:19Z",
+ "updated_text": "8 Nov 2026, 08:19 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }
