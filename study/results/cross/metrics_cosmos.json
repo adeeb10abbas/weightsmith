@@ -794,6 +794,41 @@
   "notes": "edit t8und built for T8, run on T5 with T5's default instruction, heldout slots (never used for any choice on this task)"
  },
  {
+  "experiment": "side_effect_heldout",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeTask",
+  "code": "R1",
+  "wording_pair": [
+   "Put the cube in the bowl"
+  ],
+  "n": 16,
+  "slots": [
+   96000,
+   96015
+  ],
+  "unedited_k": 13,
+  "edited_k": 15,
+  "fixed": 3,
+  "broke": 1,
+  "p": 0.625,
+  "ci": {
+   "diff_pts": 12.5,
+   "bootstrap95_pts": [
+    -12.5,
+    37.5
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": 12.5,
+  "edit_location": "text pathway (und mlp.down_proj, layers 0-26)",
+  "values_changed": 179010015,
+  "notes": "edit t8und built for T8, run on R1 with R1's default instruction, heldout slots (never used for any choice on this task)"
+ },
+ {
   "experiment": "edit_practice",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
