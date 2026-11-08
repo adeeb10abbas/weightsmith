@@ -72,13 +72,14 @@ instructions, same slots, same render preset, same GPU model.
 | Metrics | [`scripts/fresh.py`](scripts/fresh.py) → records with `"status": "fresh"`, `"run": "C-prime-default"` in [`../metrics_pi05.json`](../metrics_pi05.json) and [`results/fresh/summary.json`](results/fresh/summary.json); per-job records in `results/fresh/runs/` |
 
 <!-- fresh2:begin -->
-Jobs finished: **1** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **0.21 GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
+Jobs finished: **2** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **0.32 GPU-h** (ali-ms GPU0, RTX 3090). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
 
 **Failure map** (unedited π0.5, task's default instruction, practice slots):
 
 | Task | Unedited | Wilson 95% | Slots |
 |---|---|---|---|
 | T1 RubiksCubeThenBananaTask | **3/16** | 7–43% | 30000–30015 |
+| T3 RubiksCubeLeftOfBowlTask | **0/16** | 0–19% | 30000–30015 |
 
 <!-- fresh2:end -->
 

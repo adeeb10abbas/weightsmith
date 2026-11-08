@@ -1,10 +1,11 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 1,
- "gpu_hours": 0.21,
+ "jobs": 2,
+ "gpu_hours": 0.32,
  "cells": {
-  "T1/base/practice": "3/16"
+  "T1/base/practice": "3/16",
+  "T3/base/practice": "0/16"
  },
  "records": [
   {
@@ -16,6 +17,22 @@
    ],
    "n": 16,
    "unedited_k": 3,
+   "edited_k": null,
+   "control_k": null,
+   "teacher_k": null,
+   "fixed": null,
+   "broke": null,
+   "p": null
+  },
+  {
+   "experiment": "failure_map",
+   "code": "T3",
+   "slots": [
+    30000,
+    30015
+   ],
+   "n": 16,
+   "unedited_k": 0,
    "edited_k": null,
    "control_k": null,
    "teacher_k": null,
