@@ -121,3 +121,23 @@ The set is fixed by rule before the build (`tasks/preserve_generic.json`): all R
 tasks, their near-duplicates and every instruction that mentions mustard, raisin, a bin, left or right. So a T5 recovery
 cannot come from a hand-picked mirror instruction. It runs first on T5 and on T8 practice; held-out and the full map
 follow only if it keeps T8 and restores T5.
+
+#### `t8und-p` result offline, and the relation-aware variant `t8und-r` (selection rule fixed before its build, 07:58 ET)
+
+Offline, `t8und-p` keeps T8 (it closes 93.1% of the RF -> TF action gap on the 30 held-aside decisions; `t8und`: 91.2%)
+but leaves T5 where `t8und` put it. On 38 decisions from T5 practice episodes the unedited policy solved, the edited chunk
+ends 13.9 cm from the unedited one (`t8und`: 13.7 cm). Generic preservation keys do not protect the semantic axis the
+edit moves. Its closed-loop T5 and T8 practice checks are queued so the record is complete.
+
+`t8und-r` is the same build with zero-change preservation keys from left/right spatial-relation instructions of
+**other** RoboLab tasks only. Rule (`scripts/make_preserve_relation.py`, output `tasks/preserve_relation.json`): every
+instruction variant (default / vague / specific / ...) of a RoboLab v0.2.1 task that contains "left" or "right", minus
+every shared-set task (T1-T8, R1, all of their variants), minus any instruction with T3's (rubiks cube + bowl), T5's
+(mustard + bin) or T8's (mustard + raisin box) object pair, minus anything mentioning mustard or raisin; duplicates
+removed. So T3 and T5 stay unseen tests. It yields 24 instructions (bowls, spring clamp, hammers, tools, food
+packing, mugs, spoon). A random-direction control with the same rank and singular values per layer is built with it.
+Offline gates before any closed loop: T8 gap closed >= 85%, and the T5 and T3 deviations from the unedited policy
+clearly below `t8und`'s. If it passes: T5 and T3 practice, then T8 practice. If those hold: held-out T5 and T3
+(96000-96031) and T8 (96000-96063), each with the control.
+(A broader targeted variant, `t8und-a`, preserving every non-shared-set RoboLab instruction including the mirror
+"Put the mustard in the right bin", was started at 07:49 and stopped at 07:55 before its first layer; it is not used.)

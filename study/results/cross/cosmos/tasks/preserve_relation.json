@@ -1,0 +1,363 @@
+{
+ "kept": [
+  [
+   "BowlStackingLeftOnRightTask",
+   "Stack the left bowl on the right bowl"
+  ],
+  [
+   "BowlStackingLeftOnRightTask",
+   "Stack the left bowl on the right"
+  ],
+  [
+   "BowlStackingLeftOnRightTask",
+   "Pick up the bowl to the left of the robot and place it on top of the bowl to the right of the robot"
+  ],
+  [
+   "BowlStackingRightOnLeftTask",
+   "Stack the right bowl on the left bowl"
+  ],
+  [
+   "BowlStackingRightOnLeftTask",
+   "Stack the right bowl on the left"
+  ],
+  [
+   "BowlStackingRightOnLeftTask",
+   "Pick up the bowl to the right of the robot and place it on top of the bowl to the left of the robot"
+  ],
+  [
+   "ClampInRightBinTask",
+   "Put the spring clamp in the right bin"
+  ],
+  [
+   "ClampInRightBinTask",
+   "Put the clamp in the right bin"
+  ],
+  [
+   "ClampInRightBinTask",
+   "Pick up the spring clamp from the table and place it in the bin on the right side"
+  ],
+  [
+   "FoodPackingByColorTask",
+   "Pack yellow objects in right container and blue object in the left container"
+  ],
+  [
+   "FoodPackingByColorTask",
+   "Pick up the yellow can and place it in the right container, then pick up the blue object and place it in the left container"
+  ],
+  [
+   "NonHammerToolsInRightBinTask",
+   "Put the non-hammer tools in the right bin"
+  ],
+  [
+   "NonHammerToolsInRightBinTask",
+   "Sort non-hammer tools to the right"
+  ],
+  [
+   "NonHammerToolsInRightBinTask",
+   "Pick up the cordless drill and the spring clamp and place both in the bin on the right side, leaving the hammers untouched"
+  ],
+  [
+   "PinkSpoonInPotTask",
+   "Pick up the pink spaghetti serving spoon that's on the left plate and place it inside the pot in the center of the table"
+  ],
+  [
+   "PutBowlOnShelfTopTask",
+   "Pick up the white serving bowl that's on the table to the right and place it on any open space on the shelf on the center of the table"
+  ],
+  [
+   "PutTwoMugsOnShelfTask",
+   "Select two mugs from the right side of the table and place them on the wire shelf in front of you"
+  ],
+  [
+   "ToolOrganizationBothTask",
+   "Put hammers in the right bin and do not touch anything else"
+  ],
+  [
+   "ToolOrganizationBothTask",
+   "Put hammers in the right bin"
+  ],
+  [
+   "ToolOrganizationBothTask",
+   "Pick up the red hammer and the black hammer and place them in the bin on the right side, leaving all other tools untouched"
+  ],
+  [
+   "HammersInLeftBinTask",
+   "Put the red hammer and black hammer in the left bin"
+  ],
+  [
+   "HammersInLeftBinTask",
+   "Put hammers in the left bin"
+  ],
+  [
+   "HammersInLeftBinTask",
+   "Pick up the red-handled hammer and the black-handled hammer and place both in the left bin"
+  ],
+  [
+   "ToolsPickingAllHammersTask",
+   "Remove every hammer from the left bin and place each one on the table in front of you"
+  ]
+ ],
+ "kept_with_variant": [
+  [
+   "BowlStackingLeftOnRightTask",
+   "Stack the left bowl on the right bowl",
+   "default"
+  ],
+  [
+   "BowlStackingLeftOnRightTask",
+   "Stack the left bowl on the right",
+   "vague"
+  ],
+  [
+   "BowlStackingLeftOnRightTask",
+   "Pick up the bowl to the left of the robot and place it on top of the bowl to the right of the robot",
+   "specific"
+  ],
+  [
+   "BowlStackingRightOnLeftTask",
+   "Stack the right bowl on the left bowl",
+   "default"
+  ],
+  [
+   "BowlStackingRightOnLeftTask",
+   "Stack the right bowl on the left",
+   "vague"
+  ],
+  [
+   "BowlStackingRightOnLeftTask",
+   "Pick up the bowl to the right of the robot and place it on top of the bowl to the left of the robot",
+   "specific"
+  ],
+  [
+   "ClampInRightBinTask",
+   "Put the spring clamp in the right bin",
+   "default"
+  ],
+  [
+   "ClampInRightBinTask",
+   "Put the clamp in the right bin",
+   "vague"
+  ],
+  [
+   "ClampInRightBinTask",
+   "Pick up the spring clamp from the table and place it in the bin on the right side",
+   "specific"
+  ],
+  [
+   "FoodPackingByColorTask",
+   "Pack yellow objects in right container and blue object in the left container",
+   "default"
+  ],
+  [
+   "FoodPackingByColorTask",
+   "Pick up the yellow can and place it in the right container, then pick up the blue object and place it in the left container",
+   "specific"
+  ],
+  [
+   "NonHammerToolsInRightBinTask",
+   "Put the non-hammer tools in the right bin",
+   "default"
+  ],
+  [
+   "NonHammerToolsInRightBinTask",
+   "Sort non-hammer tools to the right",
+   "vague"
+  ],
+  [
+   "NonHammerToolsInRightBinTask",
+   "Pick up the cordless drill and the spring clamp and place both in the bin on the right side, leaving the hammers untouched",
+   "specific"
+  ],
+  [
+   "PinkSpoonInPotTask",
+   "Pick up the pink spaghetti serving spoon that's on the left plate and place it inside the pot in the center of the table",
+   "specific"
+  ],
+  [
+   "PutBowlOnShelfTopTask",
+   "Pick up the white serving bowl that's on the table to the right and place it on any open space on the shelf on the center of the table",
+   "specific"
+  ],
+  [
+   "PutTwoMugsOnShelfTask",
+   "Select two mugs from the right side of the table and place them on the wire shelf in front of you",
+   "specific"
+  ],
+  [
+   "ToolOrganizationBothTask",
+   "Put hammers in the right bin and do not touch anything else",
+   "default"
+  ],
+  [
+   "ToolOrganizationBothTask",
+   "Put hammers in the right bin",
+   "vague"
+  ],
+  [
+   "ToolOrganizationBothTask",
+   "Pick up the red hammer and the black hammer and place them in the bin on the right side, leaving all other tools untouched",
+   "specific"
+  ],
+  [
+   "HammersInLeftBinTask",
+   "Put the red hammer and black hammer in the left bin",
+   "default"
+  ],
+  [
+   "HammersInLeftBinTask",
+   "Put hammers in the left bin",
+   "vague"
+  ],
+  [
+   "HammersInLeftBinTask",
+   "Pick up the red-handled hammer and the black-handled hammer and place both in the left bin",
+   "specific"
+  ],
+  [
+   "ToolsPickingAllHammersTask",
+   "Remove every hammer from the left bin and place each one on the table in front of you",
+   "specific"
+  ]
+ ],
+ "dropped": [
+  [
+   "MustardInLeftBinTask",
+   "default",
+   "Put the mustard in the left bin",
+   "a shared-set task (T1-T8, R1)"
+  ],
+  [
+   "MustardInLeftBinTask",
+   "vague",
+   "Use the left bin for mustard",
+   "a shared-set task (T1-T8, R1)"
+  ],
+  [
+   "MustardInLeftBinTask",
+   "specific",
+   "Pick up the mustard bottle and place it in the bin on the left side",
+   "a shared-set task (T1-T8, R1)"
+  ],
+  [
+   "MustardInRightBinTask",
+   "default",
+   "Put the mustard in the right bin",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "MustardInRightBinTask",
+   "vague",
+   "Use the right bin for mustard",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "MustardInRightBinTask",
+   "specific",
+   "Pick up the mustard bottle and place it in the bin on the right side",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeLeftOfBowlTask",
+   "default",
+   "Put the rubiks cube to the left of the bowl",
+   "a shared-set task (T1-T8, R1)"
+  ],
+  [
+   "RubiksCubeLeftOfBowlTask",
+   "vague",
+   "Put the cube left of the bowl",
+   "a shared-set task (T1-T8, R1)"
+  ],
+  [
+   "RubiksCubeLeftOfBowlTask",
+   "specific",
+   "Pick up the rubiks cube and place it on the table to the left side of the bowl",
+   "a shared-set task (T1-T8, R1)"
+  ],
+  [
+   "RubiksCubeLeftOfBowlMatchedTask",
+   "default",
+   "Put the Rubik's cube to the left of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeLeftOfBowlMatchedTask",
+   "vague",
+   "Put the cube left of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeLeftOfBowlMatchedTask",
+   "specific",
+   "Pick up the Rubik's cube and place it on the table to the left side of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeLeftOfBowlMatchedTask",
+   "declarative",
+   "The Rubik's cube should end up to the left of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeLeftOfBowlMatchedTask",
+   "contrastive",
+   "Put the Rubik's cube to the left of the bowl, not to the right of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeRightOfBowlTask",
+   "default",
+   "Put the rubiks cube to the right of the bowl",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeRightOfBowlTask",
+   "vague",
+   "Put the cube right of the bowl",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeRightOfBowlTask",
+   "specific",
+   "Pick up the rubiks cube and place it on the table to the right side of the bowl",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeRightOfBowlMatchedTask",
+   "default",
+   "Put the Rubik's cube to the right of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeRightOfBowlMatchedTask",
+   "vague",
+   "Put the cube right of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeRightOfBowlMatchedTask",
+   "specific",
+   "Pick up the Rubik's cube and place it on the table to the right side of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeRightOfBowlMatchedTask",
+   "declarative",
+   "The Rubik's cube should end up to the right of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "RubiksCubeRightOfBowlMatchedTask",
+   "contrastive",
+   "Put the Rubik's cube to the right of the bowl, not to the left of the bowl.",
+   "same object pair as T3, T5 or T8"
+  ],
+  [
+   "StackYellowOnRedTask",
+   "specific",
+   "Pick up the yellow block on the left and place it precisely on top of the red block in front of the birdhouse",
+   "a shared-set task (T1-T8, R1)"
+  ]
+ ],
+ "rule": "RELATION-AWARE (t8und-r, coordinator spec 07:55 ET, fixed before the build): every instruction variant (default / vague / specific / ...) of a RoboLab v0.2.1 task that contains the word 'left' or 'right', minus every shared-set task (T1-T8, R1; all of their instruction variants), minus any instruction with T3's (rubiks cube + bowl), T5's (mustard + bin) or T8's (mustard + raisin box) object pair, minus anything mentioning mustard or raisin; duplicates removed. Built by scripts/make_preserve_relation.py"
+}
