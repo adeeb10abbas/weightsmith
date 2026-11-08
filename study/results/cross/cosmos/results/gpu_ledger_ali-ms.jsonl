@@ -126,3 +126,4 @@
 {"tag": "t8t3und", "machine": "ali-ms", "gpu": 1, "start": 1794166337.454626, "end": 1794166730.6492183, "gpu_s": 393.2, "kind": "build", "rc": 0}
 {"tag": "T6-Et8und-s30016", "machine": "ali-ms", "gpu": 0, "start": 1794166713.2253501, "end": 1794168010.6999652, "gpu_s": 1297.5, "kind": "eval", "n": 16}
 {"tag": "S1L-rf-s30000", "machine": "ali-ms", "gpu": 1, "start": 1794167968.4951375, "end": 1794168559.2370489, "gpu_s": 590.7, "kind": "eval", "n": 16}
+{"tag": "S1L-tf-s30000", "machine": "ali-ms", "gpu": 1, "start": 1794168559.238009, "end": 1794169181.0113554, "gpu_s": 621.8, "kind": "eval", "n": 16}

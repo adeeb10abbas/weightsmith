@@ -438,6 +438,50 @@
   "notes": "same weights, wording via prompt override; fixed = only the alternative wording succeeds. target-first wording of the same goal (Same Goal, Different Words; known-good for pi0.5)"
  },
  {
+  "experiment": "wording_prospective",
+  "machine": "ali-ms",
+  "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
+  "task": "RubiksCubeLeftOfBowlTask",
+  "code": "S1L",
+  "wording_pair": [
+   "Move the rubiks cube on the table so that the bowl is to the right of the rubiks cube.",
+   "Move the rubiks cube on the table so that the rubiks cube is to the left of the bowl."
+  ],
+  "n": 16,
+  "slots": [
+   30000,
+   30015
+  ],
+  "unedited_k": 1,
+  "edited_k": null,
+  "fixed": 7,
+  "broke": 1,
+  "p": 0.0703125,
+  "ci": {
+   "diff_pts": 37.5,
+   "bootstrap95_pts": [
+    6.25,
+    68.75
+   ],
+   "wilson95_orig_pct": [
+    1.1,
+    28.3
+   ],
+   "wilson95_alt_pct": [
+    23.1,
+    66.8
+   ]
+  },
+  "control_k": null,
+  "teacher_k": 7,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit_location": null,
+  "values_changed": null,
+  "notes": "prospective token-count test: unedited, reference-first vs target-first wording of the same goal, both via prompt override"
+ },
+ {
   "experiment": "edit_practice",
   "machine": "ali-ms",
   "model": "nvidia/Cosmos3-Edge-Policy-DROID@a7c7288",
