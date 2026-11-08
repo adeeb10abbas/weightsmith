@@ -220,7 +220,7 @@ T3. No closed loop for `t8und-s` (gate failed).
 (T5 and T3 deviation = chunk-end end-effector distance of the edited policy's action chunk from the unedited one, on 38 / 20
 decisions of practice episodes the unedited policy solved. Practice = slots 30000-30015, paired with the unedited runs.)
 
-### Second wording-sensitive task: `t3und` and the stacked edit `t8t3und` (rules fixed 14:05 ET, before either build)
+### Second wording-sensitive task: `t3und` and the stacked edit `t8t3und` (rules fixed 13:54 ET, before either build)
 
 The T3 wording screen makes T3 wording-sensitive too: RoboLab's own "specific" instruction "Pick up the rubiks cube and
 place it on the table to the left side of the bowl" solves 11/16 practice starts where the default "Put the rubiks cube

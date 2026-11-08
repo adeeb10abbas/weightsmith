@@ -25,6 +25,12 @@ TF wordings do); --align ps pairs the longest common prefix and suffix only (wei
 The control (OUT-ctl.pt) has, per layer, the edit's rank and singular values along random orthonormal directions
 (numpy default_rng(--seed)), as study/results/opus/controls/ctl_rand.py.
 
+Stacked build (--base-edit PREV.pt): G's text states (the target) are captured on the unedited weights, then PREV is
+applied (edge_common.apply_edit) and the new edit is built on top of it, layer by layer as above. Besides NAME.pt (the
+new factors, relative to the PREV-edited weights) it writes NAME-stack.pt: the dense float32 difference between the
+stacked weights and the original weights, which apply_edit turns back into the stacked bf16 weights bit for bit
+(checked here, reported as stack.exact). In the --check replays, O and G then run on the PREV-edited weights.
+
 usage: seq_build.py --obs OBS.npz --k 1 --orig "..." --good "..." --layers 0-26 --out edits/NAME [--align auto]
 writes NAME.pt, NAME-ctl.pt, NAME.json (per-layer fit, final match, actions of O / G / O+edit / O+ctl on the
 decisions given with --check OBS.npz:K ...)
@@ -42,7 +48,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import numpy as np  # noqa: E402
 import torch  # noqa: E402
 from capture import decoder_layers, load_decision  # noqa: E402
-from edge_common import build_service, canonical, infer_seeded  # noqa: E402
+from edge_common import apply_edit, build_service, canonical, infer_seeded  # noqa: E402
 
 UND = "net.language_model.model.layers.{}.mlp.down_proj.weight"
 
@@ -156,6 +162,7 @@ def main():
     ap.add_argument("--no-ctl", action="store_true", help="skip the random-direction control (saves the SVDs)")
     ap.add_argument("--probe", nargs="*", default=[], help="NAME=PROMPT: report text-state drift for these after the edit")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--base-edit", default=None, help="stacked build: apply this edit after capturing G, build on top")
     ap.add_argument("--out", required=True)
     ap.add_argument("--check", nargs="*", default=[], help="OBS.npz:K decisions to replay O, G, O+edit, O+ctl on")
     a = ap.parse_args()
@@ -169,6 +176,16 @@ def main():
     layers = parse_layers(a.layers)
 
     (ig_ids, G), (_, GU), act_g = rec.run(svc, obs, seed, a.good)
+    W_orig, base_rep = {}, None
+    if a.base_edit:  # the target G stays the unedited model's; everything after runs on the base-edited weights
+        for L in layers:
+            W_orig[UND.format(L)] = params[UND.format(L)].detach().cpu().clone()
+        base_rep = apply_edit(model, a.base_edit)
+        for n in base_rep["params"]:
+            W_orig.setdefault(n, None)
+        if any(v is None for v in W_orig.values()):
+            raise SystemExit("--base-edit touches parameters outside the edited layers")
+        print("base edit", a.base_edit, base_rep["sha256_16"], "changed", base_rep["changed_values"], flush=True)
     (io_ids, O0), (iu_ids, U0), act_o = rec.run(svc, obs, seed, a.orig)
     pairs, mode = align(io_ids, ig_ids, a.align)
     io = np.array([i for i, _ in pairs])
@@ -176,6 +193,10 @@ def main():
     rep = {"orig": a.orig, "good": a.good, "obs": a.obs, "k": a.k, "seed": seed, "layers": layers, "align": mode,
            "lam_rel": a.lam_rel, "n_tokens_orig": len(io_ids), "n_tokens_good": len(ig_ids), "n_tokens_uncond": len(iu_ids),
            "matched": len(pairs), "uncond_keys": 0 if a.no_uncond else len(iu_ids), "per_layer": []}
+    if a.base_edit:
+        rep["base_edit"] = {"file": a.base_edit, "sha256_16": base_rep["sha256_16"],
+                            "changed_values": base_rep["changed_values"], "teacher_weights": "unedited",
+                            "check_O_G_weights": "base-edited"}
     # text states depend on the prompt only: a second decision must give the same states
     if a.check:
         p2, k2 = a.check[-1].rsplit(":", 1)
@@ -315,6 +336,21 @@ def main():
     for pth, k in dec:
         ob, sd = load_decision(pth, k)
         acts["O+edit"].append(np.asarray(infer_seeded(svc, dict(ob, prompt=a.orig), sd)["action"], np.float32))
+    if a.base_edit:  # dense stacked delta vs the original weights; apply_edit must give back the live weights exactly
+        stack, exact, changed = {}, True, 0
+        for n, w0 in W_orig.items():
+            w = params[n].detach().cpu()
+            d = (w.double() - w0.double()).float()
+            exact &= bool(torch.equal((w0.double() + d.double()).to(w.dtype), w))
+            changed += int((w != w0).sum())
+            stack[n] = d
+        torch.save(stack, str(out) + "-stack.pt")
+        rep["stack"] = {"file": str(out) + "-stack.pt", "exact": exact, "changed_values_vs_original": changed,
+                        "sha256_16": hashlib.sha256(Path(str(out) + "-stack.pt").read_bytes()).hexdigest()[:16]}
+        print("stack", json.dumps(rep["stack"]), flush=True)
+        del stack
+        if not exact:
+            raise SystemExit("stacked delta does not reproduce the stacked weights")
     with torch.no_grad():  # restore the original weights exactly, then apply the control the way apply_edit does
         for n, w0 in orig_w.items():
             params[n].copy_(w0)
