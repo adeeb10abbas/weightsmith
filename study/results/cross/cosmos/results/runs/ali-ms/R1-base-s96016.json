@@ -1,0 +1,263 @@
+{
+ "tag": "R1-base-s96016",
+ "machine": "ali-ms",
+ "gpu": 0,
+ "task": "RubiksCubeTask",
+ "prompt": null,
+ "edit": null,
+ "slots": [
+  96016,
+  96031
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 11,
+ "groups": [
+  {
+   "group": 6001,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 348.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.robolab/cosmosx-R1-base-s96016-g6001o0-1108-082700"
+  },
+  {
+   "group": 6001,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 435.4,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.robolab/cosmosx-R1-base-s96016-g6001o8-1108-083249"
+  }
+ ],
+ "server_load": {
+  "edit": null,
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 11.7
+ },
+ "wait_lock_s": 244.5,
+ "gpu_s": 826.0,
+ "server_ready_s": 12.0,
+ "started": "2026-11-08 08:26:48",
+ "finished": "2026-11-08 08:40:34",
+ "rows": [
+  {
+   "slot": 96016,
+   "group": 6001,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 119,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96017,
+   "group": 6001,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 133,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96018,
+   "group": 6001,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 137,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96019,
+   "group": 6001,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 123,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96020,
+   "group": 6001,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 127,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96021,
+   "group": 6001,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 116,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96022,
+   "group": 6001,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Condition not satisfied: object_in_container(object=rubiks_cube, container=bowl, require_contact_with=False, require_gripper_detached=True) (step 2/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96023,
+   "group": 6001,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 225,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 96024,
+   "group": 6001,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 238,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 96025,
+   "group": 6001,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 128,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 96026,
+   "group": 6001,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 96027,
+   "group": 6001,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 96028,
+   "group": 6001,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 295,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 96029,
+   "group": 6001,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 96030,
+   "group": 6001,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 498,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Completed subtask 'pick_and_place' 1/1",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 96031,
+   "group": 6001,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Put the cube in the bowl",
+   "reason": "Condition not satisfied: object_grabbed(object=rubiks_cube) (step 1/2)",
+   "score": 0.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/R1-base-s96016.obs/g6001o8/obs_r0_e7.npz"
+  }
+ ]
+}

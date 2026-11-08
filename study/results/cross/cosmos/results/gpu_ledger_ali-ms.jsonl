@@ -68,3 +68,8 @@
 {"tag": "t8undr-build", "machine": "ali-ms", "gpu": 0, "start": 1794142724.1175907, "end": 1794143418.551309, "gpu_s": 694.4, "kind": "build", "rc": 0}
 {"tag": "T1-base-s96000", "gpu": 1, "start": 1794142516.5167534, "end": 1794143671.9186068, "gpu_s": 1155.4, "kind": "eval", "n": 16}
 {"tag": "T5-Et8undp-s30000", "machine": "ali-ms", "gpu": 0, "start": 1794143418.5651982, "end": 1794144164.4394772, "gpu_s": 745.9, "kind": "eval", "n": 16}
+{"tag": "undr-chk-t8", "machine": "ali-ms", "gpu": 0, "start": 1794144164.4421225, "end": 1794144408.8824732, "gpu_s": 244.4, "kind": "check", "rc": 0}
+{"tag": "T1-Et8und-s96000", "gpu": 1, "start": 1794143671.919342, "end": 1794144715.0965378, "gpu_s": 1043.2, "kind": "eval", "n": 16}
+{"tag": "R1-base-s96016", "machine": "ali-ms", "gpu": 0, "start": 1794144408.895843, "end": 1794145234.8625717, "gpu_s": 826.0, "kind": "eval", "n": 16}
+{"tag": "undr-chk-t5", "machine": "ali-ms", "gpu": 0, "start": 1794145234.8652003, "end": 1794145461.3511384, "gpu_s": 226.5, "kind": "check", "rc": 0}
+{"tag": "T1-base-s96016", "gpu": 1, "start": 1794144715.0974805, "end": 1794145771.2865407, "gpu_s": 1056.2, "kind": "eval", "n": 16}
