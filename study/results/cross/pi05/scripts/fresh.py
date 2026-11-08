@@ -142,12 +142,20 @@ def readme_block(out, summary):
          "McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).", ""]
     fm = [r for r in out if r["experiment"] == "failure_map"]
     if fm:
-        L += ["**Failure map** (unedited π0.5, task's default instruction, practice slots):", "",
-              "| Task | Unedited | Wilson 95% | Slots |", "|---|---|---|---|"]
+        cf = PI05 / "results/fresh/cosmos_same_slots_ali-ms.json"
+        cos = json.loads(cf.read_text()) if cf.exists() else {}
+        L += ["**Failure map** (unedited π0.5, task's default instruction, practice slots). For context, Cosmos3 Edge on "
+              "the same 16 starts (Track A's run records on ali-ms, default preset, 8 envs per process; "
+              "`results/fresh/cosmos_same_slots_ali-ms.json`):", "",
+              "| Task | π0.5 unedited | Wilson 95% | Slots | Cosmos3 Edge, same starts | Solved by both |",
+              "|---|---|---|---|---|---|"]
         for r in fm:
             lo, hi = r["ci"]["wilson95_pct"]
+            c = cos.get(f"{r['code']}-base-s{r['slots'][0]}", {}).get("slots", {})
+            both = sum(1 for s_, v in r["per_slot"].items() if v and c.get(s_)) if c else None
+            ctxt = f"{sum(c.values())}/{len(c)}" if c else "–"
             L.append(f"| {r['code']} {r['task']} | **{r['unedited_k']}/{r['n']}** | {lo:.0f}–{hi:.0f}% | "
-                     f"{r['slots'][0]}–{r['slots'][1]} |")
+                     f"{r['slots'][0]}–{r['slots'][1]} | {ctxt} | {both if both is not None else '–'} |")
         L.append("")
     et = [r for r in out if r["experiment"] == "edit_target"]
     for r in et:
