@@ -39,7 +39,7 @@
     "branch": "cross-groot/v1",
     "path": "study/results/cross/metrics_groot.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-    "commit": "680e11c1eb67"
+    "commit": "fe743133a9ed"
    }
   },
   {
@@ -140,7 +140,7 @@
     "lead": "GR00T N1.7",
     "kind": "reasoning-backbone VLA",
     "tag": null,
-    "text": "Unedited so far, of 32 starts each: T1 9, T2 0, T3 1, T5 0, T8 0 and R1 28. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12); no gain on T3 and T8. T1 edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); further edits: {running}. Other tasks: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
+    "text": "Unedited, all 9 tasks: T1 9 of 32, T3 1 of 32 and R1 28 of 32; no success on T2 and T4–T8. Clearer wording, same weights: T1 9 → 16 of 32 (p = 0.12); no gain on T3 and T8. T1 edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); further edits: {running}. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
     "id": "side-effects",
@@ -327,8 +327,9 @@
       "s": "running"
      },
      "groot": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 0 of 16",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "pi05": {
       "v": "no gain",
@@ -368,8 +369,9 @@
       "s": "running"
      },
      "groot": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 0 of 16",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "pi05": {
       "v": "no gain",
@@ -388,8 +390,9 @@
       "s": "running"
      },
      "groot": {
-      "v": "running",
-      "s": "running"
+      "v": "unedited 0 of 32",
+      "s": "ok",
+      "d": "not edited yet"
      },
      "pi05": {
       "v": "no gain",
@@ -601,8 +604,11 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "0 of 16",
+       "s": "ok",
+       "d": "0%; slots 30000–30015",
+       "k": 0,
+       "n": 16
       },
       "pi05": {
        "v": "13 of 32",
@@ -648,8 +654,11 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "0 of 16",
+       "s": "ok",
+       "d": "0%; slots 30000–30015",
+       "k": 0,
+       "n": 16
       },
       "pi05": {
        "v": "35 of 64",
@@ -670,8 +679,11 @@
        "s": "running"
       },
       "groot": {
-       "v": "running",
-       "s": "running"
+       "v": "0 of 32",
+       "s": "ok",
+       "d": "0%; slots 30000–30031",
+       "k": 0,
+       "n": 32
       },
       "pi05": {
        "v": "0 of 32",
@@ -2804,6 +2816,45 @@
    {
     "experiment": "failure_map",
     "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T4 StackYellowOnRedTask",
+    "wording_pair": [
+     "Stack the yellow block on the red block",
+     null
+    ],
+    "n": 16,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "unedited_wilson95": [
+      0.0,
+      0.1936076805344364
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30015
+    ],
+    "notes": "tag fm-T4; envs 16; env seed 0; one fresh simulator process per 16-slot group",
+    "_task": "T4",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
     "task": "T5 MustardInLeftBinTask",
     "wording_pair": [
      "Put the mustard in the left bin",
@@ -2834,6 +2885,84 @@
     ],
     "notes": "tag fm-T5; envs 16; env seed 0; one fresh simulator process per 16-slot group",
     "_task": "T5",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T6 Stack3RubiksCubeTask",
+    "wording_pair": [
+     "Stack the rubiks cubes in a tower",
+     null
+    ],
+    "n": 16,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "unedited_wilson95": [
+      0.0,
+      0.1936076805344364
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30015
+    ],
+    "notes": "tag fm-T6; envs 16; env seed 0; one fresh simulator process per 16-slot group",
+    "_task": "T6",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "failure_map",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T7 PickUpGreenObjectTask",
+    "wording_pair": [
+     "Pick up the green vegetable block",
+     null
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "unedited_wilson95": [
+      0.0,
+      0.10717919825507057
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": [
+     30000,
+     30031
+    ],
+    "notes": "tag fm-T7; envs 16; env seed 0; one fresh simulator process per 16-slot group",
+    "_task": "T7",
     "_edit_task": null,
     "_prov": false,
     "extra": {
@@ -3029,6 +3158,72 @@
     ],
     "notes": "alternative wording given to the unedited model (teacher); fixed = succeeds only under the alternative wording; tags fm-T8 vs wd-T8-tf; the target-first wording does not rescue GR00T (0/32 under both; Cosmos3 Edge went 0 -> 15/16 under TF in Track A); under TF every episode grasps the mustard (RF: 10/32 never grasp it) but none ends with it right of the raisin box",
     "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "adapter_validation_official_path",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "- BananaOnPlateTask",
+    "wording_pair": null,
+    "n": 16,
+    "unedited_k": 16,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95": [
+      0.8063923194655636,
+      1.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": null,
+    "notes": "unmodified official server + RoboLab client, default preset, 16 envs; this adapter: 16/16; file official-bop16.episode_results.jsonl",
+    "_task": null,
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "machine": "ali-ms-rtx3090"
+    }
+   },
+   {
+    "experiment": "adapter_validation_official_path",
+    "model": "GR00T N1.7 DROID (nvidia/GR00T-N1.7-DROID@05e7cc97)",
+    "task": "T7 PickUpGreenObjectTask",
+    "wording_pair": null,
+    "n": 16,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": null,
+    "broke": null,
+    "p": null,
+    "ci": {
+     "wilson95": [
+      0.0,
+      0.1936076805344364
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "slots": null,
+    "notes": "unmodified official server + RoboLab client, default preset, 16 envs; this adapter: 0/32; file official-t7-16.episode_results.jsonl",
+    "_task": "T7",
     "_edit_task": null,
     "_prov": false,
     "extra": {
@@ -6298,7 +6493,7 @@
    "branch": "cross-groot/v1",
    "path": "study/results/cross/metrics_groot.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
-   "commit": "680e11c1eb67"
+   "commit": "fe743133a9ed"
   },
   "pi05": {
    "kind": "branch",
@@ -6309,8 +6504,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "9d92e72a98e0905d",
- "updated": "2026-11-08T08:52Z",
- "updated_text": "8 Nov 2026, 08:52 UTC",
+ "content_hash": "4a7f6033d0c366f5",
+ "updated": "2026-11-08T09:08Z",
+ "updated_text": "8 Nov 2026, 09:08 UTC",
  "status_text": "Cosmos3 Edge Policy: first results · GR00T N1.7: first results · π0.5: first results"
 }

@@ -2451,6 +2451,14 @@ def tldr(tables, models):
                 bits.append("Unedited so far: " + and_list(
                     f"{k} {cell('failure_map', k, mid)['k']} of {cell('failure_map', k, mid)['n']}" for k in fm)
                     + " starts.")
+            elif len(fm) > 4:
+                some = [k for k in fm if cell("failure_map", k, mid)["k"] > 0]
+                none = [k for k in fm if cell("failure_map", k, mid)["k"] == 0]
+                bits.append((f"Unedited, all {len(fm)} tasks: " if len(fm) == len(TASKS) else
+                             f"Unedited, {len(fm)} of {len(TASKS)} tasks: ")
+                            + and_list(f"{k} {cell('failure_map', k, mid)['k']} of {cell('failure_map', k, mid)['n']}"
+                                       for k in some)
+                            + (f"; no success on {task_list(none)}" if none else "") + ".")
             elif fm and len({cell("failure_map", k, mid)["n"] for k in fm}) == 1:
                 bits.append(f"Unedited so far, of {cell('failure_map', fm[0], mid)['n']} starts each: "
                             + and_list(f"{k} {cell('failure_map', k, mid)['k']}" for k in fm) + ".")
@@ -2482,7 +2490,8 @@ def tldr(tables, models):
                             + (f" (p = {fp(c['pv'])})" if c.get("pv") is not None else "") + ctl
                             + f"; on unseen starts, {RUNNING}.")
             if fm:
-                bits.append(f"Other tasks{'' if practice else ' and edits'}: {RUNNING}.")
+                if not (practice and len(fm) == len(TASKS)):
+                    bits.append(f"Other tasks{'' if practice else ' and edits'}: {RUNNING}.")
             elif m["status"] == "final":
                 bits.append("No edit results.")
             else:
@@ -2630,6 +2639,28 @@ def where_note(tables, models):
     return (f'<p>Offline, on recorded decisions no edit was built from, the share of the clearer wording’s action change '
             f'each edit reproduces: {esc("; ".join(bits))}.{rng} Closed loop is what counts: see the figure below and '
             f'the table.</p>')
+
+
+def adapter_note(cross, models):
+    """Adapter checks: NVIDIA's unmodified server and client against this study's adapter, from the track's records."""
+    out = []
+    for mid in ("cosmos", "groot"):
+        src = cross.get(mid)
+        rows = [r for r in (src["rows"] if src else []) if "official" in nk(describe(r.get("experiment")) or "")]
+        bits = []
+        for r in rows:
+            m = re.search(r"this adapter:\s*(\d+)\s*/\s*(\d+)", str(r.get("notes") or ""))
+            k, n = as_int(r.get("unedited_k")), as_int(r.get("n"))
+            if not m or None in (k, n):
+                continue
+            task = r["_task"] or re.sub(r"^[-\s]+|Task$", "", str(r.get("task") or "")).strip()
+            task = f"{task} {SHORT[task]}" if task in SHORT else re.sub(r"(?<!^)(?=[A-Z])", " ", task).lower()
+            bits.append(f"{task}: {k} of {n} with NVIDIA’s, {m.group(1)} of {m.group(2)} with ours")
+        if bits:
+            out.append(f"<p class=\"note\"><strong>Adapter check, {esc(models[mid]['name'])}.</strong> NVIDIA’s "
+                       f"unmodified server and RoboLab client against this study’s adapter, default render preset: "
+                       f"{esc('; '.join(bits))}. The zeros in the failure map are the model’s, not the adapter’s.</p>")
+    return "".join(out)
 
 
 def conclusion_html(tables, models):
@@ -2829,6 +2860,7 @@ def main():
     page = replace_region(page, "render-note", render_note(tables))
     page = replace_region(page, "conclusion", conclusion_html(tables, models))
     page = replace_region(page, "where-note", where_note(tables, models))
+    page = replace_region(page, "adapter-note", adapter_note(cross, models))
     page = replace_region(page, "table:summary", table_html(summary, models))
     for t in tables:
         page = replace_region(page, f"table:{t['id']}", block_html(t, models))
