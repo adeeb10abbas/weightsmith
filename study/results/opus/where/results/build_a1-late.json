@@ -1,0 +1,85 @@
+{
+ "cfg": {
+  "student": "a-orig",
+  "teacher": "a-expl",
+  "layers": [
+   13,
+   14,
+   15,
+   16,
+   17
+  ],
+  "lam_rel": 0.001,
+  "gated": true,
+  "compose": false,
+  "tag": "a1-late"
+ },
+ "layers": [
+  {
+   "layer": 13,
+   "tensor": "action.blocks.13.mlp_1.linear",
+   "keys": 150,
+   "rank": 150,
+   "lam": 0.16502751008770877,
+   "V_norm_mean": 13.958604098730648,
+   "fit_rel_err_gated": 0.23262193628840544,
+   "dW_rel_norm": 1.1080919709833057,
+   "changed_fraction": 0.9571089744567871,
+   "gate_median_abs": 0.08127972370515352
+  },
+  {
+   "layer": 14,
+   "tensor": "action.blocks.14.mlp_1.linear",
+   "keys": 150,
+   "rank": 150,
+   "lam": 0.13169385473535264,
+   "V_norm_mean": 10.374873611028505,
+   "fit_rel_err_gated": 0.25535538324596885,
+   "dW_rel_norm": 1.049497849634621,
+   "changed_fraction": 0.963597297668457,
+   "gate_median_abs": 0.06097494923318786
+  },
+  {
+   "layer": 15,
+   "tensor": "action.blocks.15.mlp_1.linear",
+   "keys": 150,
+   "rank": 150,
+   "lam": 0.09255056815679086,
+   "V_norm_mean": 10.059052824519368,
+   "fit_rel_err_gated": 0.18975981929205374,
+   "dW_rel_norm": 0.9381819093455889,
+   "changed_fraction": 0.9648392200469971,
+   "gate_median_abs": 0.06795627671710991
+  },
+  {
+   "layer": 16,
+   "tensor": "action.blocks.16.mlp_1.linear",
+   "keys": 150,
+   "rank": 150,
+   "lam": 0.08895391704947817,
+   "V_norm_mean": 24.290137280350436,
+   "fit_rel_err_gated": 0.18773763360621906,
+   "dW_rel_norm": 2.2241216732483915,
+   "changed_fraction": 0.9705908298492432,
+   "gate_median_abs": 0.13685509281388342
+  },
+  {
+   "layer": 17,
+   "tensor": "action.blocks.17.mlp_1.linear",
+   "keys": 150,
+   "rank": 128,
+   "lam": 32.01365073165491,
+   "V_norm_mean": 4.466406466182278,
+   "fit_rel_err_gated": 0.12442819074648566,
+   "dW_rel_norm": 0.03886061939294671,
+   "changed_fraction": 0.08703732490539551,
+   "gate_median_abs": 0.002577365360134338
+  }
+ ],
+ "student_cand": "base",
+ "teacher_cand": "base",
+ "teacher_prompt": "Put the cube in the bowl then put the banana in the bowl",
+ "student_prompt": "Put the cube then the banana in the bowl",
+ "factored_params": 3727360,
+ "dE_over_d0_norm": 1.0119773559426997
+}

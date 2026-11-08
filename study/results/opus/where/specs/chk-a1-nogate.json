@@ -1,0 +1,211 @@
+{
+ "id": "chk-a1-nogate",
+ "cand": "a1-nogate",
+ "prompt": "Put the cube then the banana in the bowl",
+ "items": [
+  {
+   "episode": "base.base.s20001",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20007",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20009",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20012",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20020",
+   "k": 12
+  },
+  {
+   "episode": "base.base.s20022",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20023",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20024",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20028",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20030",
+   "k": 7
+  },
+  {
+   "episode": "base.base.s20032",
+   "k": 7
+  },
+  {
+   "episode": "base.base.s20040",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20043",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20044",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20046",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20048",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20049",
+   "k": 7
+  },
+  {
+   "episode": "base.base.s20051",
+   "k": 6
+  },
+  {
+   "episode": "base.base.s20055",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20060",
+   "k": 6
+  },
+  {
+   "episode": "base.base.s20063",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20011",
+   "k": 4
+  },
+  {
+   "episode": "base.base.s20029",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20030",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20038",
+   "k": 8
+  },
+  {
+   "episode": "base.base.s20039",
+   "k": 6
+  },
+  {
+   "episode": "base.base.s20042",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20044",
+   "k": 7
+  },
+  {
+   "episode": "base.base.s20050",
+   "k": 9
+  },
+  {
+   "episode": "base.base.s20061",
+   "k": 5
+  },
+  {
+   "episode": "base.base.s20011",
+   "k": 9
+  },
+  {
+   "episode": "base.base.s20030",
+   "k": 26
+  },
+  {
+   "episode": "base.base.s20038",
+   "k": 14
+  },
+  {
+   "episode": "base.base.s20042",
+   "k": 9
+  },
+  {
+   "episode": "base.base.s20044",
+   "k": 11
+  },
+  {
+   "episode": "base.base.s20050",
+   "k": 13
+  },
+  {
+   "episode": "base.base.s20061",
+   "k": 9
+  },
+  {
+   "episode": "base.base.s20011",
+   "k": 12
+  },
+  {
+   "episode": "base.base.s20030",
+   "k": 28
+  },
+  {
+   "episode": "base.base.s20042",
+   "k": 12
+  },
+  {
+   "episode": "base.base.s20050",
+   "k": 15
+  },
+  {
+   "episode": "base.base.s20061",
+   "k": 12
+  },
+  {
+   "episode": "base.base.s20011",
+   "k": 14
+  },
+  {
+   "episode": "base.base.s20030",
+   "k": 30
+  },
+  {
+   "episode": "base.base.s20038",
+   "k": 19
+  },
+  {
+   "episode": "base.base.s20042",
+   "k": 14
+  },
+  {
+   "episode": "base.base.s20044",
+   "k": 16
+  },
+  {
+   "episode": "base.base.s20050",
+   "k": 17
+  },
+  {
+   "episode": "base.base.s20061",
+   "k": 15
+  }
+ ],
+ "vlm_layers": [],
+ "action_layers": [
+  17
+ ],
+ "action_tokens": "mean",
+ "denoise_steps": [
+  0
+ ]
+}

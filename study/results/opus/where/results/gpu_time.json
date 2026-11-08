@@ -1,0 +1,362 @@
+{
+ "chunks": [
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-a1-94016",
+   "lanes": 1,
+   "wall_s": 927,
+   "gpu_s": 927
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-a1-94048",
+   "lanes": 1,
+   "wall_s": 1018,
+   "gpu_s": 1018
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-base-94016",
+   "lanes": 2,
+   "wall_s": 505,
+   "gpu_s": 1011
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-base-94048",
+   "lanes": 1,
+   "wall_s": 940,
+   "gpu_s": 940
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-h1-94016",
+   "lanes": 1,
+   "wall_s": 844,
+   "gpu_s": 844
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-h1-94048",
+   "lanes": 1,
+   "wall_s": 851,
+   "gpu_s": 851
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-p1-94016",
+   "lanes": 1,
+   "wall_s": 1026,
+   "gpu_s": 1026
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-p1-94048",
+   "lanes": 1,
+   "wall_s": 933,
+   "gpu_s": 933
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-v1full-94016",
+   "lanes": 1,
+   "wall_s": 823,
+   "gpu_s": 823
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-v1full-94048",
+   "lanes": 1,
+   "wall_s": 859,
+   "gpu_s": 859
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-v1img816-94016",
+   "lanes": 2,
+   "wall_s": 569,
+   "gpu_s": 1138
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-v1img816-94048",
+   "lanes": 1,
+   "wall_s": 889,
+   "gpu_s": 889
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-va-94016",
+   "lanes": 1,
+   "wall_s": 966,
+   "gpu_s": 966
+  },
+  {
+   "project": "where-to-edit",
+   "run": "where-94016-64",
+   "chunk": "logs-va-94048",
+   "lanes": 1,
+   "wall_s": 908,
+   "gpu_s": 908
+  },
+  {
+   "project": "where-glasses",
+   "run": "where-tx-94016-32",
+   "chunk": "logs-a1-94016",
+   "lanes": 2,
+   "wall_s": 367,
+   "gpu_s": 734
+  },
+  {
+   "project": "where-glasses",
+   "run": "where-tx-94016-32",
+   "chunk": "logs-base-94016",
+   "lanes": 2,
+   "wall_s": 356,
+   "gpu_s": 712
+  },
+  {
+   "project": "where-glasses",
+   "run": "where-tx-94016-32",
+   "chunk": "logs-p1-94016",
+   "lanes": 2,
+   "wall_s": 422,
+   "gpu_s": 843
+  },
+  {
+   "project": "where-glasses",
+   "run": "where-tx-94016-32",
+   "chunk": "logs-v1full-94016",
+   "lanes": 2,
+   "wall_s": 373,
+   "gpu_s": 747
+  },
+  {
+   "project": "where-left",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-a1-94016",
+   "lanes": 1,
+   "wall_s": 329,
+   "gpu_s": 329
+  },
+  {
+   "project": "where-left",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-a1-94032",
+   "lanes": 1,
+   "wall_s": 314,
+   "gpu_s": 314
+  },
+  {
+   "project": "where-left",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-base-94016",
+   "lanes": 1,
+   "wall_s": 281,
+   "gpu_s": 281
+  },
+  {
+   "project": "where-left",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-base-94032",
+   "lanes": 1,
+   "wall_s": 329,
+   "gpu_s": 329
+  },
+  {
+   "project": "where-left",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-p1-94016",
+   "lanes": 1,
+   "wall_s": 282,
+   "gpu_s": 282
+  },
+  {
+   "project": "where-left",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-p1-94032",
+   "lanes": 1,
+   "wall_s": 293,
+   "gpu_s": 293
+  },
+  {
+   "project": "where-left",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-v1full-94016",
+   "lanes": 1,
+   "wall_s": 304,
+   "gpu_s": 304
+  },
+  {
+   "project": "where-left",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-v1full-94032",
+   "lanes": 1,
+   "wall_s": 304,
+   "gpu_s": 304
+  },
+  {
+   "project": "where-cube",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-a1-94016",
+   "lanes": 1,
+   "wall_s": 343,
+   "gpu_s": 343
+  },
+  {
+   "project": "where-cube",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-a1-94032",
+   "lanes": 1,
+   "wall_s": 200,
+   "gpu_s": 200
+  },
+  {
+   "project": "where-cube",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-base-94016",
+   "lanes": 1,
+   "wall_s": 144,
+   "gpu_s": 144
+  },
+  {
+   "project": "where-cube",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-base-94032",
+   "lanes": 1,
+   "wall_s": 150,
+   "gpu_s": 150
+  },
+  {
+   "project": "where-cube",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-p1-94016",
+   "lanes": 1,
+   "wall_s": 161,
+   "gpu_s": 161
+  },
+  {
+   "project": "where-cube",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-p1-94032",
+   "lanes": 1,
+   "wall_s": 173,
+   "gpu_s": 173
+  },
+  {
+   "project": "where-cube",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-v1full-94016",
+   "lanes": 1,
+   "wall_s": 184,
+   "gpu_s": 184
+  },
+  {
+   "project": "where-cube",
+   "run": "where-tx16-94016-32",
+   "chunk": "logs-v1full-94032",
+   "lanes": 1,
+   "wall_s": 158,
+   "gpu_s": 158
+  }
+ ],
+ "acts": [
+  {
+   "capture": "chk-base",
+   "capture_s": 10.1,
+   "wall_incl_queue_s": 21
+  },
+  {
+   "capture": "a-orig",
+   "capture_s": 3.7,
+   "wall_incl_queue_s": 14
+  },
+  {
+   "capture": "a-expl",
+   "capture_s": 3.7,
+   "wall_incl_queue_s": 14
+  },
+  {
+   "capture": "va-orig",
+   "capture_s": 4.0,
+   "wall_incl_queue_s": 74
+  },
+  {
+   "capture": "chk-teacher",
+   "capture_s": 9.9,
+   "wall_incl_queue_s": 20
+  },
+  {
+   "capture": "chk-v1-full",
+   "capture_s": 17.1,
+   "wall_incl_queue_s": 124
+  },
+  {
+   "capture": "chk-v1-img816",
+   "capture_s": 10.5,
+   "wall_incl_queue_s": 105
+  },
+  {
+   "capture": "chk-p1-blind",
+   "capture_s": 15.1,
+   "wall_incl_queue_s": 61
+  },
+  {
+   "capture": "chk-h1",
+   "capture_s": 11.8,
+   "wall_incl_queue_s": 73
+  },
+  {
+   "capture": "chk-h1-grip",
+   "capture_s": 11.2,
+   "wall_incl_queue_s": 70
+  },
+  {
+   "capture": "chk-a1",
+   "capture_s": 12.1,
+   "wall_incl_queue_s": 109
+  },
+  {
+   "capture": "chk-a1-nogate",
+   "capture_s": 10.7,
+   "wall_incl_queue_s": 82
+  },
+  {
+   "capture": "chk-va",
+   "capture_s": 10.0,
+   "wall_incl_queue_s": 144
+  },
+  {
+   "capture": "chk-a1-late",
+   "capture_s": 11.8,
+   "wall_incl_queue_s": 576
+  },
+  {
+   "capture": "a1-trace",
+   "capture_s": 3.7,
+   "wall_incl_queue_s": 1118
+  },
+  {
+   "capture": "va-trace",
+   "capture_s": 3.5,
+   "wall_incl_queue_s": 1320
+  }
+ ],
+ "total_wall_h": 5.18,
+ "total_gpu_h": 5.9,
+ "closed_loop_wall_h": 4.87,
+ "acts_gpu_h_upper": 0.31
+}

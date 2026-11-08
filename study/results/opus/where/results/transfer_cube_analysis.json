@@ -1,0 +1,289 @@
+{
+ "source": "/home/ali/vibes/opus-weight-surgery/projects/where-cube/heldout/where-tx16-94016-32/results.json",
+ "task": "RubiksCubeTask",
+ "slot_filter": null,
+ "lanes_per_chunk": {
+  "base-94016": [
+   0
+  ],
+  "v1full-94016": [
+   0
+  ],
+  "p1-94016": [
+   0
+  ],
+  "a1-94016": [
+   0
+  ],
+  "a1-94032": [
+   0
+  ],
+  "p1-94032": [
+   0
+  ],
+  "v1full-94032": [
+   0
+  ],
+  "base-94032": [
+   0
+  ]
+ },
+ "n_slots": 32,
+ "slot_range": [
+  94016,
+  94047
+ ],
+ "fingerprints": {
+  "base": null,
+  "v1full": "63db0c52a51306c9",
+  "p1": "4ca8023b0592b79f",
+  "a1": "09b7c9f5bfe26912"
+ },
+ "arms": {
+  "base": {
+   "success": 32,
+   "n": 32,
+   "wilson95": [
+    0.893,
+    1.0
+   ],
+   "mean_steps_success": 124.7
+  },
+  "v1full": {
+   "success": 32,
+   "n": 32,
+   "wilson95": [
+    0.893,
+    1.0
+   ],
+   "mean_steps_success": 128.1
+  },
+  "p1": {
+   "success": 32,
+   "n": 32,
+   "wilson95": [
+    0.893,
+    1.0
+   ],
+   "mean_steps_success": 121.6
+  },
+  "a1": {
+   "success": 31,
+   "n": 32,
+   "wilson95": [
+    0.843,
+    0.994
+   ],
+   "mean_steps_success": 184.2
+  }
+ },
+ "comparisons": [
+  {
+   "cand": "v1full",
+   "ref": "base",
+   "n": 32,
+   "cand_succ": 32,
+   "ref_succ": 32,
+   "fixed": 0,
+   "broke": 0,
+   "diff_pp": 0.0,
+   "boot95_pp": [
+    0.0,
+    0.0
+   ],
+   "mcnemar_p": 1.0
+  },
+  {
+   "cand": "p1",
+   "ref": "base",
+   "n": 32,
+   "cand_succ": 32,
+   "ref_succ": 32,
+   "fixed": 0,
+   "broke": 0,
+   "diff_pp": 0.0,
+   "boot95_pp": [
+    0.0,
+    0.0
+   ],
+   "mcnemar_p": 1.0
+  },
+  {
+   "cand": "a1",
+   "ref": "base",
+   "n": 32,
+   "cand_succ": 31,
+   "ref_succ": 32,
+   "fixed": 0,
+   "broke": 1,
+   "diff_pp": -3.1,
+   "boot95_pp": [
+    -9.4,
+    0.0
+   ],
+   "mcnemar_p": 1.0
+  },
+  {
+   "cand": "p1",
+   "ref": "v1full",
+   "n": 32,
+   "cand_succ": 32,
+   "ref_succ": 32,
+   "fixed": 0,
+   "broke": 0,
+   "diff_pp": 0.0,
+   "boot95_pp": [
+    0.0,
+    0.0
+   ],
+   "mcnemar_p": 1.0
+  },
+  {
+   "cand": "a1",
+   "ref": "v1full",
+   "n": 32,
+   "cand_succ": 31,
+   "ref_succ": 32,
+   "fixed": 0,
+   "broke": 1,
+   "diff_pp": -3.1,
+   "boot95_pp": [
+    -9.4,
+    0.0
+   ],
+   "mcnemar_p": 1.0
+  }
+ ],
+ "by_chunk": [
+  {
+   "slots": [
+    94016,
+    94031
+   ],
+   "order": [
+    "base",
+    "v1full",
+    "p1",
+    "a1"
+   ],
+   "success": {
+    "base": 16,
+    "v1full": 16,
+    "p1": 16,
+    "a1": 15
+   },
+   "vs_ref": {
+    "v1full": {
+     "cand": "v1full",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 16,
+     "ref_succ": 16,
+     "fixed": 0,
+     "broke": 0,
+     "diff_pp": 0.0,
+     "boot95_pp": [
+      0.0,
+      0.0
+     ],
+     "mcnemar_p": 1.0
+    },
+    "p1": {
+     "cand": "p1",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 16,
+     "ref_succ": 16,
+     "fixed": 0,
+     "broke": 0,
+     "diff_pp": 0.0,
+     "boot95_pp": [
+      0.0,
+      0.0
+     ],
+     "mcnemar_p": 1.0
+    },
+    "a1": {
+     "cand": "a1",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 15,
+     "ref_succ": 16,
+     "fixed": 0,
+     "broke": 1,
+     "diff_pp": -6.2,
+     "boot95_pp": [
+      -18.8,
+      0.0
+     ],
+     "mcnemar_p": 1.0
+    }
+   }
+  },
+  {
+   "slots": [
+    94032,
+    94047
+   ],
+   "order": [
+    "a1",
+    "p1",
+    "v1full",
+    "base"
+   ],
+   "success": {
+    "base": 16,
+    "v1full": 16,
+    "p1": 16,
+    "a1": 16
+   },
+   "vs_ref": {
+    "v1full": {
+     "cand": "v1full",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 16,
+     "ref_succ": 16,
+     "fixed": 0,
+     "broke": 0,
+     "diff_pp": 0.0,
+     "boot95_pp": [
+      0.0,
+      0.0
+     ],
+     "mcnemar_p": 1.0
+    },
+    "p1": {
+     "cand": "p1",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 16,
+     "ref_succ": 16,
+     "fixed": 0,
+     "broke": 0,
+     "diff_pp": 0.0,
+     "boot95_pp": [
+      0.0,
+      0.0
+     ],
+     "mcnemar_p": 1.0
+    },
+    "a1": {
+     "cand": "a1",
+     "ref": "base",
+     "n": 16,
+     "cand_succ": 16,
+     "ref_succ": 16,
+     "fixed": 0,
+     "broke": 0,
+     "diff_pp": 0.0,
+     "boot95_pp": [
+      0.0,
+      0.0
+     ],
+     "mcnemar_p": 1.0
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+{
+ "base": {
+  "n": 32,
+  "first_chunk_closed": 0.0,
+  "closed_share_before_first_grasp": 0.213,
+  "wrong_object_grabs_per_episode": 2.31,
+  "drops_per_episode": 0.0
+ },
+ "v1full": {
+  "n": 32,
+  "first_chunk_closed": 0.0,
+  "closed_share_before_first_grasp": 0.079,
+  "wrong_object_grabs_per_episode": 1.69,
+  "drops_per_episode": 0.0
+ },
+ "p1": {
+  "n": 32,
+  "first_chunk_closed": 0.156,
+  "closed_share_before_first_grasp": 0.295,
+  "wrong_object_grabs_per_episode": 3.25,
+  "drops_per_episode": 0.0
+ },
+ "a1": {
+  "n": 32,
+  "first_chunk_closed": 0.281,
+  "closed_share_before_first_grasp": 0.499,
+  "wrong_object_grabs_per_episode": 4.06,
+  "drops_per_episode": 0.0
+ }
+}

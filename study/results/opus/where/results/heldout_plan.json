@@ -1,0 +1,125 @@
+{
+ "arms": {
+  "base": {
+   "cand": null,
+   "workspace": null,
+   "fingerprint": null,
+   "prompt": "Put the cube then the banana in the bowl"
+  },
+  "v1full": {
+   "cand": "v1-full",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/where-to-edit/heldout/where-94016-64/frozen-v1full",
+   "fingerprint": "63db0c52a51306c9",
+   "prompt": null
+  },
+  "v1img816": {
+   "cand": "v1-img816",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/where-to-edit/heldout/where-94016-64/frozen-v1img816",
+   "fingerprint": "5bf8c4329c1e416a",
+   "prompt": null
+  },
+  "a1": {
+   "cand": "a1",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/where-to-edit/heldout/where-94016-64/frozen-a1",
+   "fingerprint": "09b7c9f5bfe26912",
+   "prompt": null
+  },
+  "h1": {
+   "cand": "h1",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/where-to-edit/heldout/where-94016-64/frozen-h1",
+   "fingerprint": "d965cd706aed9dec",
+   "prompt": null
+  },
+  "p1": {
+   "cand": "p1-blind",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/where-to-edit/heldout/where-94016-64/frozen-p1",
+   "fingerprint": "4ca8023b0592b79f",
+   "prompt": null
+  },
+  "va": {
+   "cand": "va",
+   "workspace": "/home/ali/vibes/opus-weight-surgery/projects/where-to-edit/heldout/where-94016-64/frozen-va",
+   "fingerprint": "5ee25e8d2e78a555",
+   "prompt": null
+  }
+ },
+ "task": "RubiksCubeThenBananaTask",
+ "default_instruction": "Put the cube then the banana in the bowl",
+ "slots": [
+  94016,
+  94079
+ ],
+ "schedule": [
+  [
+   "base",
+   94016,
+   94047
+  ],
+  [
+   "v1full",
+   94016,
+   94047
+  ],
+  [
+   "v1img816",
+   94016,
+   94047
+  ],
+  [
+   "a1",
+   94016,
+   94047
+  ],
+  [
+   "h1",
+   94016,
+   94047
+  ],
+  [
+   "p1",
+   94016,
+   94047
+  ],
+  [
+   "va",
+   94016,
+   94047
+  ],
+  [
+   "va",
+   94048,
+   94079
+  ],
+  [
+   "p1",
+   94048,
+   94079
+  ],
+  [
+   "h1",
+   94048,
+   94079
+  ],
+  [
+   "a1",
+   94048,
+   94079
+  ],
+  [
+   "v1img816",
+   94048,
+   94079
+  ],
+  [
+   "v1full",
+   94048,
+   94079
+  ],
+  [
+   "base",
+   94048,
+   94079
+  ]
+ ],
+ "started": "Sat Nov  7 15:05:41 2026"
+}
