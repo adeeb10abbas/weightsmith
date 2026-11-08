@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 14,
- "gpu_hours": 2.38,
+ "jobs": 15,
+ "gpu_hours": 2.58,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
@@ -13,7 +13,7 @@
   "T7/base/practice": "0/16",
   "T8/base/practice": "0/16",
   "R1/base/practice": "16/16",
-  "T1/ctl-rand/heldout": "0/16",
+  "T1/ctl-rand/heldout": "0/32",
   "T1/base/heldout": "2/32",
   "T1/v2mi-f/heldout": "20/32"
  },
