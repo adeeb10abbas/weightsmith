@@ -146,6 +146,50 @@
    "k": 10,
    "n": 16
   },
+  "ali-ms/T3-base": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 4,
+   "n": 16
+  },
+  "ali-ms/T5-Et8und": {
+   "slots": [
+    30000,
+    30001,
+    30002,
+    30003,
+    30004,
+    30005,
+    30006,
+    30007,
+    30008,
+    30009,
+    30010,
+    30011,
+    30012,
+    30013,
+    30014,
+    30015
+   ],
+   "k": 0,
+   "n": 16
+  },
   "ali-ms/T5-base": {
    "slots": [
     30000,
@@ -467,6 +511,21 @@
   },
   {
    "machine": "ali-ms",
+   "code": "T3",
+   "task": "RubiksCubeLeftOfBowlTask",
+   "k": 4,
+   "n": 16,
+   "wilson95": [
+    10.2,
+    49.5
+   ],
+   "slots": [
+    30000,
+    30015
+   ]
+  },
+  {
+   "machine": "ali-ms",
    "code": "T5",
    "task": "MustardInLeftBinTask",
    "k": 8,
@@ -709,6 +768,28 @@
   {
    "machine": "ali-ms",
    "edit": "t8und",
+   "code": "T5",
+   "n": 16,
+   "ref_k": 8,
+   "cand_k": 0,
+   "fixed": 0,
+   "broke": 8,
+   "both": 0,
+   "neither": 8,
+   "p": 0.0078125,
+   "diff_pts": -50.0,
+   "diff_ci95_pts": [
+    -75.0,
+    -25.0
+   ],
+   "slots": [
+    30000,
+    30015
+   ]
+  },
+  {
+   "machine": "ali-ms",
+   "edit": "t8und",
    "code": "R1",
    "n": 16,
    "ref_k": 9,
@@ -808,6 +889,46 @@
     "gpu_s": 1062.2,
     "started": "2026-11-08 01:04:30",
     "finished": "2026-11-08 01:22:12"
+   }
+  ],
+  "ali-ms/T3-base": [
+   {
+    "tag": "T3-base-s30000",
+    "task": "RubiksCubeLeftOfBowlTask",
+    "prompt": null,
+    "edit": null,
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 4,
+    "gpu_s": 596.7,
+    "started": "2026-11-08 05:05:34",
+    "finished": "2026-11-08 05:15:30"
+   }
+  ],
+  "ali-ms/T5-Et8und": [
+   {
+    "tag": "T5-Et8und-s30000",
+    "task": "MustardInLeftBinTask",
+    "prompt": null,
+    "edit": "edits/t8und.pt",
+    "slots": [
+     30000,
+     30015
+    ],
+    "envs": 8,
+    "render": "default",
+    "n": 16,
+    "completed": 16,
+    "success": 0,
+    "gpu_s": 725.8,
+    "started": "2026-11-08 05:05:24",
+    "finished": "2026-11-08 05:17:30"
    }
   ],
   "ali-ms/T5-base": [
@@ -1127,5 +1248,5 @@
    }
   ]
  },
- "records": 13
+ "records": 15
 }

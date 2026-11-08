@@ -1,0 +1,261 @@
+{
+ "tag": "T3-base-s30000",
+ "task": "RubiksCubeLeftOfBowlTask",
+ "prompt": null,
+ "edit": null,
+ "slots": [
+  30000,
+  30015
+ ],
+ "envs": 8,
+ "render": "default",
+ "n": 16,
+ "completed": 16,
+ "success": 4,
+ "groups": [
+  {
+   "group": 1875,
+   "env_offset": 0,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 291.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.robolab/cosmosx-T3-base-s30000-g1875o0-1108-050548"
+  },
+  {
+   "group": 1875,
+   "env_offset": 8,
+   "rc": 0,
+   "rows": 8,
+   "sim_s": 261.3,
+   "robolab_output": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.robolab/cosmosx-T3-base-s30000-g1875o8-1108-051039"
+  }
+ ],
+ "server_load": {
+  "edit": null,
+  "slim": {
+   "lm_head_gb": 0.5,
+   "embed_gb": 0.5,
+   "vae_decoders": {
+    "model.tokenizer_vision_gen.model.model.decoder": 1.034
+   },
+   "alloc_gb": 5.56,
+   "reserved_gb": 5.977
+  },
+  "load_s": 13.8
+ },
+ "wait_lock_s": 0.0,
+ "gpu_s": 596.7,
+ "server_ready_s": 14.0,
+ "started": "2026-11-08 05:05:34",
+ "finished": "2026-11-08 05:15:30",
+ "rows": [
+  {
+   "slot": 30000,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 269,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Wrong object that was grabbed is now detached: 'rubiks_cube'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30001,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30002,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30003,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 398,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Wrong object that was grabbed is now detached: 'rubiks_cube'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30004,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30005,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 194,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Wrong object that was grabbed is now detached: 'rubiks_cube'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30006,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30007,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o0/obs_r0_e7.npz"
+  },
+  {
+   "slot": 30008,
+   "group": 1875,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o8/obs_r0_e0.npz"
+  },
+  {
+   "slot": 30009,
+   "group": 1875,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o8/obs_r0_e1.npz"
+  },
+  {
+   "slot": 30010,
+   "group": 1875,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o8/obs_r0_e2.npz"
+  },
+  {
+   "slot": 30011,
+   "group": 1875,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o8/obs_r0_e3.npz"
+  },
+  {
+   "slot": 30012,
+   "group": 1875,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 181,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Wrong object that was grabbed is now detached: 'rubiks_cube'",
+   "score": 1.0,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o8/obs_r0_e4.npz"
+  },
+  {
+   "slot": 30013,
+   "group": 1875,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o8/obs_r0_e5.npz"
+  },
+  {
+   "slot": 30014,
+   "group": 1875,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o8/obs_r0_e6.npz"
+  },
+  {
+   "slot": 30015,
+   "group": 1875,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 450,
+   "instruction": "Put the rubiks cube to the left of the bowl",
+   "reason": "Condition not satisfied: object_left_of(object=rubiks_cube, reference_object=bowl, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "score": 0.6666666865348816,
+   "obs": "/home/ali/cross/cosmos/runs/q/T3-base-s30000.obs/g1875o8/obs_r0_e7.npz"
+  }
+ ]
+}
