@@ -34,5 +34,17 @@
   "stored_values": 533136384,
   "sha256_16": "c899d8981734159a",
   "control_sha256_16": null
+ },
+ {
+  "name": "t8undr",
+  "code": "T8",
+  "location": "text pathway (und mlp.down_proj, layers 0-26), with relation-aware preservation keys",
+  "good_wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
+  "teacher_arm": "wtf",
+  "summary": "t8und's sequential closed-form distillation plus zero-change preservation keys from 24 left/right instructions of other RoboLab tasks (tasks/preserve_relation.json; T3/T5/T8 object pairs and all shared-set tasks excluded; every position after the template's common prefix); lam_rel 1e-3; built after the T5/T3 side effect of t8und was seen",
+  "values_changed": null,
+  "stored_values": null,
+  "sha256_16": null,
+  "control_sha256_16": null
  }
 ]
