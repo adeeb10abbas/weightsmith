@@ -1126,3 +1126,160 @@
 .gtable thead th:first-child {
   width: 16%;
 }
+
+/* ---------- animated block diagrams (figure.anim) ----------
+   The drawing is a complete still image on its own: without the script, in print and before the script runs, every
+   part marked .sh is hidden and every moving token (.tk) is invisible. cosmos.js animates only transform and opacity
+   (Web Animations API, on SVG groups), so the still drawing and the animation never fight over other properties. */
+.dg .sh,
+.dg .tk { opacity: 0; }
+.dg .tk { pointer-events: none; }
+.dg .st,
+.dg .tk,
+.dg .nd { transform-box: fill-box; transform-origin: 50% 50%; }
+.dg .sxo { transform-origin: 0 50%; }
+.dg .gb { fill: var(--muted); transform-box: fill-box; transform-origin: 50% 100%; }
+.dg .gb-g { fill: var(--ink-2); }
+
+.dg .dg-frame { fill: none; stroke: var(--rule); stroke-width: 1; }
+.dg .dg-pol { fill: none; stroke: var(--rule); stroke-width: 1.25; stroke-dasharray: 5 4; }
+.dg .dg-wash { fill: color-mix(in srgb, var(--accent) 9%, var(--bg)); }
+.dg .dg-chip-c { fill: color-mix(in srgb, var(--accent) 14%, var(--bg)); stroke: var(--accent); stroke-width: 1; }
+.dg .dg-sb-o { fill: var(--mark-base); }
+.dg .dg-sb-c { fill: var(--accent); }
+.dg .dg-wc { fill: var(--bg-2); stroke: var(--rule); stroke-width: 1; }
+.dg .dg-wp1 { fill: var(--accent); }
+.dg .dg-wp2 { fill: color-mix(in srgb, var(--accent) 50%, var(--bg)); }
+.dg .dg-chunk { fill: var(--muted); }
+.dg .dg-chunk-run { fill: var(--ink-2); }
+.dg .dg-vf { fill: var(--bg); stroke: var(--muted); stroke-width: 1; }
+.dg .dg-patch { fill: none; stroke: var(--accent); stroke-width: 2; }
+.dg .dg-tag { fill: var(--accent); }
+.dg .dg-tag-t { fill: var(--bg); }
+.dg .dg-ghost { fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+
+/* tokens */
+.dg .tk-word.tk-o,
+.dg .tk-dot.tk-o { fill: var(--mark-base); }
+.dg .tk-word.tk-c,
+.dg .tk-dot.tk-c { fill: var(--accent); }
+.dg .tk-state { fill: var(--ink-2); }
+.dg .tk-fr { fill: none; stroke: var(--ink-2); stroke-width: 0.75; }
+.dg .tk-o .tk-cb { fill: var(--mark-base); }
+.dg .tk-c .tk-cb { fill: var(--accent); }
+.dg .tk-vf { fill: var(--bg); stroke: var(--accent); stroke-width: 1; }
+.dg .tk-dl { fill: var(--accent); }
+.dg .dg .tk-dlt,
+.dg text.tk-dlt { fill: var(--bg); }
+.dg .tk-ring { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+
+.dg1 .dg { max-width: 460px; margin: 0 auto; }
+.dg3 .dg { max-width: 440px; }
+
+/* the controls: shown only when the script runs */
+.anim-ctl { display: none; }
+.anim-ready .anim-ctl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  max-width: var(--measure);
+  margin: 10px auto 0;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+}
+.anim-ready .anim-steps { display: none; }
+
+.anim-play,
+.anim-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.anim-play { gap: 6px; padding: 0 12px 0 10px; min-width: 82px; }
+.anim-ico { width: 12px; height: 12px; fill: currentColor; }
+.anim-play .i-play,
+.anim-play[aria-pressed="true"] .i-pause { display: none; }
+.anim-play[aria-pressed="true"] .i-play { display: inline; }
+.anim-rm .anim-play { display: none; }
+.anim-dots { display: inline-flex; gap: 6px; }
+.anim-dot { width: 28px; padding: 0; }
+.anim-dot[aria-current="step"] { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+.anim-play:hover,
+.anim-dot:hover { border-color: var(--ink-2); }
+.anim-play:focus-visible,
+.anim-dot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.anim-bar {
+  position: relative;
+  flex: 1 1 60px;
+  min-width: 40px;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 1px;
+  background: var(--grid);
+}
+.anim-bar i {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+.anim-rm .anim-bar { display: none; }
+/* every step's words share one grid cell, so the line count never changes the page's height */
+.anim-label {
+  display: grid;
+  flex: 1 1 100%;
+  margin: 0;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.anim-label span {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+.anim-label span.on {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease 0.1s, visibility 0s;
+}
+.anim-steps {
+  max-width: var(--measure);
+  margin: 10px auto 0;
+  padding-left: 1.3rem;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.dg-after { margin-top: 0.9rem; }
+
+@media print {
+  .dg .tk { display: none; }
+  .anim-ready .anim-ctl { display: none; }
+  .anim-ready .anim-steps { display: block; }
+}
+
+/* a table row head naming an architecture type, with the model tested as its instance below it */
+.ctable th .inst {
+  display: block;
+  font-weight: 400;
+  font-size: 0.9em;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-label span { transition: none; }
+}
