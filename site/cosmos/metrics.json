@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "b6cd6abb81dd"
+    "commit": "c52556be945d"
    }
   }
  ],
@@ -1559,14 +1559,13 @@
        "fl": "Cube then banana (32 practice)"
       },
       "pi05": {
-       "v": "2 → 27 of 48",
+       "v": "2 → 36 of 64",
        "s": "ok",
-       "d": "25 / 0, p = 6.0 × 10⁻⁸; +52.1 points; slots 96000–96047; Put the cube then the banana in the bowl; paper’s evaluation: 13 → 57 of 64",
+       "d": "+53.1 points; slots 96000–96063; Put the cube then the banana in the bowl; paper’s evaluation: 13 → 57 of 64",
        "a": 2,
-       "b": 27,
-       "n": 48,
-       "pv": 5.960464477539063e-08,
-       "fl": "Cube then banana (48 unseen)"
+       "b": 36,
+       "n": 64,
+       "fl": "Cube then banana (64 unseen)"
       }
      }
     },
@@ -2088,8 +2087,8 @@
        "r": 2,
        "e": 40,
        "n": 64,
-       "t": 27,
-       "tn": 48,
+       "t": 36,
+       "tn": 64,
        "loc": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
        "fl": "Cube then banana (64 unseen)"
       }
@@ -2160,14 +2159,14 @@
        "words": true
       },
       "pi05": {
-       "v": "120%",
+       "v": "The edit did at least as well as the clearer wording (40 vs 36 of 64; not a clear difference)",
        "s": "ok",
-       "d": "as reported; (32 − 2) / (27 − 2) on the 48 starts where the clear wording also ran; paper’s evaluation: 84%",
+       "d": "paper’s evaluation: 84%",
        "a": 2,
-       "b": 32,
-       "t": 27,
-       "n": 48,
-       "sub": true
+       "b": 40,
+       "t": 36,
+       "n": 64,
+       "words": true
       }
      }
     },
@@ -2176,13 +2175,14 @@
      "label": "Mustard right of raisin box",
      "cells": {
       "cosmos": {
-       "v": "100%",
+       "v": "The edit did as well as the clearer wording (56 vs 56 of 64)",
        "s": "ok",
-       "d": "as reported; (56 − 0) / (56 − 0) of 64",
+       "d": null,
        "a": 0,
        "b": 56,
        "t": 56,
-       "n": 64
+       "n": 64,
+       "words": true
       },
       "groot": {
        "v": "—",
@@ -9786,8 +9786,8 @@
      ]
     },
     "control_k": 2,
-    "teacher_k": 27,
-    "recovery_pct": 120.0,
+    "teacher_k": 36,
+    "recovery_pct": 111.8,
     "transfer": null,
     "retention": null,
     "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
@@ -10165,22 +10165,22 @@
       "wording": "Put the cube in the bowl then put the banana in the bowl",
       "slots": [
        96000,
-       96047
+       96063
       ],
-      "n": 48,
-      "k": 27,
+      "n": 64,
+      "k": 36,
       "vs_edit": {
-       "fixed": 9,
-       "broke": 14,
-       "p": 0.4048728942871094
+       "fixed": 11,
+       "broke": 15,
+       "p": 0.557197093963623
       },
       "vs_unedited": {
-       "fixed": 25,
+       "fixed": 34,
        "broke": 0,
-       "p": 5.960464477539063e-08
+       "p": 1.1641532182693481e-10
       },
       "unedited_k_same_slots": 2,
-      "edited_k_same_slots": 32,
+      "edited_k_same_slots": 40,
       "per_slot": {
        "96000": 0,
        "96001": 0,
@@ -10229,7 +10229,23 @@
        "96044": 1,
        "96045": 1,
        "96046": 1,
-       "96047": 0
+       "96047": 0,
+       "96048": 1,
+       "96049": 0,
+       "96050": 0,
+       "96051": 1,
+       "96052": 1,
+       "96053": 0,
+       "96054": 0,
+       "96055": 1,
+       "96056": 1,
+       "96057": 1,
+       "96058": 1,
+       "96059": 0,
+       "96060": 0,
+       "96061": 1,
+       "96062": 0,
+       "96063": 1
       }
      },
      "gpus": [
@@ -10250,20 +10266,20 @@
        96063
       ]
      },
-     "teacher_n": 48,
+     "teacher_n": 64,
      "teacher_slots": [
       96000,
-      96047
+      96063
      ],
      "teacher_unedited_k": 2,
-     "teacher_edited_k": 32,
-     "teacher_p": 5.960464477539063e-08,
-     "teacher_fixed": 25,
+     "teacher_edited_k": 40,
+     "teacher_p": 1.1641532182693481e-10,
+     "teacher_fixed": 34,
      "teacher_broke": 0,
      "edit_vs_teacher": {
-      "p": 0.4048728942871094,
-      "ref_k": 27,
-      "cand_k": 32
+      "p": 0.557197093963623,
+      "ref_k": 36,
+      "cand_k": 40
      }
     }
    },
@@ -12482,13 +12498,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "b6cd6abb81dd"
+   "commit": "c52556be945d"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "d03db685ce7b6288",
- "numbers_hash": "1f74f9075cd93196",
- "updated": "2026-11-09T05:35Z",
- "updated_text": "9 Nov 2026, 05:35 UTC",
+ "content_hash": "7d785f7c9fdfb0ce",
+ "numbers_hash": "df8b73d755d890e9",
+ "updated": "2026-11-09T05:44Z",
+ "updated_text": "9 Nov 2026, 05:44 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: complete"
 }
