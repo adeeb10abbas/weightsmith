@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "dbd407e8ef30"
+    "commit": "0121dff7df27"
    }
   }
  ],
@@ -151,7 +151,7 @@
     "lead": "π0.5",
     "kind": "OpenPI VLA, control",
     "tag": "earlier records",
-    "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). On 32 of those starts a random edit of the same size scored 0, against 20 for the edit and 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
+    "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). A random edit of the same size scored 2 of 64 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
    },
    {
     "id": "cosmos",
@@ -172,7 +172,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted Eyeglasses (22 → 44 of 64), made none detectably worse, and kept the retention task Cube in bowl at 32 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
+    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted Eyeglasses (22 → 44 of 64), made none detectably worse, and kept the retention task Cube in bowl at 31 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -442,10 +442,9 @@
       "d": "not edited"
      },
      "pi05": {
-      "v": "kept: 32 → 32 of 32",
+      "v": "31 → 31 of 32",
       "s": "ok",
-      "d": "cube into the bowl, Cube then banana edit; shared slots, unedited: 16 of 16",
-      "prov": true
+      "d": "earlier record: kept: 32 → 32 of 32"
      }
     }
    },
@@ -485,7 +484,7 @@
       "prac": true
      },
      "pi05": {
-      "v": "control 0, unedited 2, edit 20 of 32",
+      "v": "control 2, unedited 2, edit 40 of 64",
       "s": "ok",
       "d": "Cube then banana"
      }
@@ -1634,26 +1633,21 @@
        "fl": "Mustard right of raisin box (32 practice)"
       },
       "pi05": {
-       "v": "0 → 27 of 32",
+       "v": "0 → 12 of 16",
        "s": "ok",
-       "d": "27 / 0, p = 1.5 × 10⁻⁸; +84.4 points [71.9, 96.9]; practice slots 20000–20031; raisin-box-first → mustard-first: “Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.” → “Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.”",
-       "src": [
-        "study/results/sgdw/results/screen_s4r_tf_vs_rf.json"
-       ],
+       "d": "12 / 0, p = 4.9 × 10⁻⁴; +75.0 points; slots 30000–30015; “Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.” → “Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.”; earlier slots: 0 → 27 of 32",
        "a": 0,
-       "b": 27,
-       "n": 32,
-       "pv": 1.4901161193847656e-08,
-       "fl": "Mustard right of raisin box (32 practice)",
-       "prov": true
+       "b": 12,
+       "n": 16,
+       "pv": 0.0004883,
+       "fl": "Mustard right of raisin box (16 practice)"
       }
      }
     }
    ],
    "note": "Reference-first describes the placement from the reference object's side, mustard-first from the moved object's side. In the earlier Same Goal, Different Words study (8 starting layouts per goal, no paired starts), raisin-box-first wording lowered stable placement by 8.1 points for Cosmos3 Edge across 12 goals; on this goal Edge placed 4 of 8 under mustard-first and 0 of 8 under raisin-box-first.",
    "sources": [
-    "study/results/opus/controls/ctl1-90000-64.analysis.json",
-    "study/results/sgdw/results/screen_s4r_tf_vs_rf.json"
+    "study/results/opus/controls/ctl1-90000-64.analysis.json"
    ]
   },
   {
@@ -2082,15 +2076,16 @@
        "fl": "Cube then banana, VLM backbone edit (32 practice)"
       },
       "pi05": {
-       "v": "control 0, unedited 2, edit 20 of 32",
+       "v": "control 2, unedited 2, edit 40 of 64",
        "s": "ok",
-       "d": "the control ran on 32 of the 64 starts; slots 96000–96031; edit against control p = 1.9 × 10⁻⁶; earlier slots: control 9, unedited 13, edit 50 of 64",
+       "d": "slots 96000–96063; earlier slots: control 9, unedited 13, edit 50 of 64",
        "u": 2,
-       "r": 0,
-       "e": 20,
-       "n": 32,
-       "sub": true,
-       "fl": "Cube then banana (32 unseen)"
+       "r": 2,
+       "e": 40,
+       "n": 64,
+       "tn": 64,
+       "loc": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+       "fl": "Cube then banana (64 unseen)"
       }
      }
     },
@@ -2825,15 +2820,14 @@
        "d": "dropped: both Cube then banana edits lowered success on Cube then banana itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
-       "v": "±0: 32 → 32 of 32",
+       "v": "±0: 31 → 31 of 32",
        "s": "ok",
-       "d": "0 / 0; p = 1; slots 94016–94047",
+       "d": "0 / 0; p = 1; slots 96000–96031; earlier slots: ±0: 32 → 32 of 32",
        "delta": 0,
-       "a": 32,
-       "b": 32,
+       "a": 31,
+       "b": 31,
        "n": 32,
-       "p": 1.0,
-       "prov": true
+       "p": 1.0
       }
      }
     }
@@ -2865,14 +2859,9 @@
        "s": "na"
       },
       "pi05": {
-       "v": "32 → 32 of 32",
+       "v": "31 → 31 of 32",
        "s": "ok",
-       "d": "cube into the bowl, the Cube then banana edit; slots 94016–94047; also 16 → 16 of 16, and banana onto plate 16 → 16 of 16",
-       "src": [
-        "study/results/opus/comparisons.json",
-        "study/results/opus/where/results/transfer_cube_analysis.json"
-       ],
-       "prov": true
+       "d": "the Cube then banana edit, unchanged; 0 / 0; p = 1; slots 96000–96031; earlier slots: 32 → 32 of 32"
       }
      }
     },
@@ -2923,8 +2912,6 @@
    ],
    "note": "At these sample sizes a retention check rules out only large losses (see the noise floor).",
    "sources": [
-    "study/results/opus/comparisons.json",
-    "study/results/opus/where/results/transfer_cube_analysis.json",
     "study/results/sgdw/results/practice_rf_grp3_vs_base.json",
     "study/results/sgdw/results/practice_tf_grp3_vs_base.json"
    ]
@@ -9812,7 +9799,7 @@
       71.9
      ]
     },
-    "control_k": 0,
+    "control_k": 2,
     "teacher_k": null,
     "recovery_pct": null,
     "transfer": null,
@@ -10000,131 +9987,163 @@
       ],
       "96032": [
        0,
-       1
+       1,
+       0
       ],
       "96033": [
        0,
-       1
+       1,
+       0
       ],
       "96034": [
        0,
-       1
+       1,
+       0
       ],
       "96035": [
        0,
-       1
+       1,
+       0
       ],
       "96036": [
        0,
-       1
+       1,
+       0
       ],
       "96037": [
+       0,
        0,
        0
       ],
       "96038": [
        0,
+       1,
        1
       ],
       "96039": [
        0,
-       1
+       1,
+       0
       ],
       "96040": [
        0,
-       1
+       1,
+       0
       ],
       "96041": [
+       0,
        0,
        0
       ],
       "96042": [
        0,
+       0,
        0
       ],
       "96043": [
        0,
-       1
+       1,
+       0
       ],
       "96044": [
        0,
-       0
+       0,
+       1
       ],
       "96045": [
        0,
-       1
+       1,
+       0
       ],
       "96046": [
        0,
-       1
+       1,
+       0
       ],
       "96047": [
        0,
-       1
+       1,
+       0
       ],
       "96048": [
        0,
-       1
+       1,
+       0
       ],
       "96049": [
+       0,
        0,
        0
       ],
       "96050": [
        0,
+       0,
        0
       ],
       "96051": [
        0,
-       1
+       1,
+       0
       ],
       "96052": [
+       0,
        0,
        0
       ],
       "96053": [
        0,
+       0,
        0
       ],
       "96054": [
        0,
-       1
+       1,
+       0
       ],
       "96055": [
        0,
-       1
+       1,
+       0
       ],
       "96056": [
+       0,
        0,
        0
       ],
       "96057": [
        0,
-       1
+       1,
+       0
       ],
       "96058": [
        0,
-       1
+       1,
+       0
       ],
       "96059": [
+       0,
        0,
        0
       ],
       "96060": [
        0,
+       0,
        0
       ],
       "96061": [
        0,
-       1
+       1,
+       0
       ],
       "96062": [
+       0,
        0,
        0
       ],
       "96063": [
        0,
-       1
+       1,
+       0
       ]
      },
      "control": {
@@ -10132,25 +10151,25 @@
       "fingerprint": "1efd3512a92642f7",
       "slots": [
        96000,
-       96031
+       96063
       ],
-      "n": 32,
-      "k": 0,
+      "n": 64,
+      "k": 2,
       "wilson95_pct": [
-       0.0,
+       0.9,
        10.7
       ],
       "unedited_k_same_slots": 2,
-      "edited_k_same_slots": 20,
+      "edited_k_same_slots": 40,
       "vs_unedited": {
-       "fixed": 0,
+       "fixed": 2,
        "broke": 2,
-       "p": 0.5
+       "p": 1.0
       },
       "edit_vs_control": {
-       "edit_only": 20,
-       "control_only": 0,
-       "p": 1.9073486328125e-06
+       "edit_only": 39,
+       "control_only": 1,
+       "p": 7.457856554538012e-11
       },
       "edit_location": "same layers as v2mi-f",
       "values_changed": 502291925,
@@ -10159,19 +10178,19 @@
      "gpus": [
       0
      ],
-     "control_n": 32,
+     "control_n": 64,
      "control_slots": [
       96000,
-      96031
+      96063
      ],
      "control_unedited_k": 2,
      "edit_vs_control": {
-      "cand_k": 20,
-      "ref_k": 0,
-      "p": 1.9073486328125e-06,
+      "cand_k": 40,
+      "ref_k": 2,
+      "p": 7.457856554538012e-11,
       "slots": [
        96000,
-       96031
+       96063
       ]
      }
     }
@@ -10567,6 +10586,324 @@
       1
      ]
     }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "RubiksCubeTask",
+    "code": "R1",
+    "wording_pair": [
+     "Put the cube in the bowl"
+    ],
+    "slots": [
+     96000,
+     96031
+    ],
+    "n": 32,
+    "unedited_k": 31,
+    "edited_k": 31,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "unedited_wilson95_pct": [
+      84.3,
+      99.4
+     ],
+     "edited_wilson95_pct": [
+      84.3,
+      99.4
+     ],
+     "paired_diff_bootstrap95_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": {
+     "unedited_k": 31,
+     "edited_k": 31,
+     "n": 32
+    },
+    "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+    "values_changed": 450468837,
+    "notes": "side effect of the T1 edit v2mi-f on another task, held-out slots, the task's own default instruction; per_slot = [unedited, edited]",
+    "_ptask": null,
+    "_task": "R1",
+    "_edit_task": "T1",
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the explicit wording 'Put the cube in the bowl then put the banana in the bowl'",
+     "per_slot": {
+      "96000": [
+       1,
+       1
+      ],
+      "96001": [
+       1,
+       1
+      ],
+      "96002": [
+       1,
+       1
+      ],
+      "96003": [
+       1,
+       1
+      ],
+      "96004": [
+       1,
+       1
+      ],
+      "96005": [
+       1,
+       1
+      ],
+      "96006": [
+       1,
+       1
+      ],
+      "96007": [
+       1,
+       1
+      ],
+      "96008": [
+       1,
+       1
+      ],
+      "96009": [
+       1,
+       1
+      ],
+      "96010": [
+       0,
+       0
+      ],
+      "96011": [
+       1,
+       1
+      ],
+      "96012": [
+       1,
+       1
+      ],
+      "96013": [
+       1,
+       1
+      ],
+      "96014": [
+       1,
+       1
+      ],
+      "96015": [
+       1,
+       1
+      ],
+      "96016": [
+       1,
+       1
+      ],
+      "96017": [
+       1,
+       1
+      ],
+      "96018": [
+       1,
+       1
+      ],
+      "96019": [
+       1,
+       1
+      ],
+      "96020": [
+       1,
+       1
+      ],
+      "96021": [
+       1,
+       1
+      ],
+      "96022": [
+       1,
+       1
+      ],
+      "96023": [
+       1,
+       1
+      ],
+      "96024": [
+       1,
+       1
+      ],
+      "96025": [
+       1,
+       1
+      ],
+      "96026": [
+       1,
+       1
+      ],
+      "96027": [
+       1,
+       1
+      ],
+      "96028": [
+       1,
+       1
+      ],
+      "96029": [
+       1,
+       1
+      ],
+      "96030": [
+       1,
+       1
+      ],
+      "96031": [
+       1,
+       1
+      ]
+     },
+     "gpus": [
+      1
+     ]
+    }
+   },
+   {
+    "experiment": "wording",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+     "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+    ],
+    "slots": [
+     30000,
+     30015
+    ],
+    "n": 16,
+    "unedited_k": 0,
+    "edited_k": null,
+    "fixed": 12,
+    "broke": 0,
+    "p": 0.0004883,
+    "ci": {
+     "rf_wilson95_pct": [
+      0.0,
+      19.4
+     ],
+     "tf_wilson95_pct": [
+      50.5,
+      89.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": 12,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": null,
+    "values_changed": null,
+    "notes": "unedited weights; reference-first (RF, task default) vs target-first (TF) wording on the same starts; fixed = TF-only, broke = RF-only; per_slot = [RF, TF]",
+    "_ptask": null,
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": null,
+     "values_changed_note": null,
+     "per_slot": {
+      "30000": [
+       0,
+       1
+      ],
+      "30001": [
+       0,
+       1
+      ],
+      "30002": [
+       0,
+       0
+      ],
+      "30003": [
+       0,
+       0
+      ],
+      "30004": [
+       0,
+       1
+      ],
+      "30005": [
+       0,
+       1
+      ],
+      "30006": [
+       0,
+       1
+      ],
+      "30007": [
+       0,
+       1
+      ],
+      "30008": [
+       0,
+       1
+      ],
+      "30009": [
+       0,
+       1
+      ],
+      "30010": [
+       0,
+       0
+      ],
+      "30011": [
+       0,
+       1
+      ],
+      "30012": [
+       0,
+       1
+      ],
+      "30013": [
+       0,
+       0
+      ],
+      "30014": [
+       0,
+       1
+      ],
+      "30015": [
+       0,
+       1
+      ]
+     },
+     "gpus": [
+      0
+     ]
+    }
    }
   ]
  },
@@ -10624,13 +10961,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "dbd407e8ef30"
+   "commit": "0121dff7df27"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "8ba24940550e35f3",
- "numbers_hash": "33c3160bcb58db71",
- "updated": "2026-11-08T23:39Z",
- "updated_text": "8 Nov 2026, 23:39 UTC",
+ "content_hash": "1fffebc548a8b541",
+ "numbers_hash": "1b5d2ea564d29e2f",
+ "updated": "2026-11-09T00:11Z",
+ "updated_text": "9 Nov 2026, 00:11 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: first results"
 }
