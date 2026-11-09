@@ -3272,8 +3272,8 @@ def tldr_story(tables, models, prevent, sites):
     pred = WHEN_LAST.get("pred") or []
     held = any(x["equal"] and x["held"] is True for x in pred) and all(x["held"] is not False for x in pred)
     items.append(dict(id="where", lead="When it works.",
-                      text="Only where the robot reads, and only when the clearer wording swaps words in place."
-                           + (" A prediction made in advance held." if held else "")))
+                      text="Only where the robot reads; on NVIDIA’s models, only when the clearer wording swaps words "
+                           "in place." + (" Predicted in advance, it held." if held else "")))
     drops = left_drops(tables)
     if drops:
         what = ("the two other tasks that say “left”" if len(drops) == 2 and _says_left([t for t, _ in drops])
@@ -4288,10 +4288,13 @@ def second_main(S):
     if failed and len(failed) == len(rows):
         b = next((r.get("build") for r in failed if r.get("build")), None)
         added = b and b["good"] > b["orig"]
-        s.append(("But that wording adds words, so the rule above says its edit should fail, and it did. " if added
-                  else "")
-                 + f"The cube-left edit failed its offline check, alone and on top of the mustard edit, so neither ran on "
-                   "the robot.")
+        alone = next((r for r in failed if not stacked(r["name"])), None)
+        stack = next((r for r in failed if stacked(r["name"])), None)
+        s.append(("But that wording adds words, and " if added else "But ")
+                 + ("the cube-left edit failed its offline check, which is one of the cases that showed us the rule."
+                    if added and alone else "the cube-left edit failed its offline check." if alone else "")
+                 + (" Stacked on top of the mustard edit, it failed the check too, so neither ran on the robot."
+                    if stack and alone else " Neither version ran on the robot."))
     else:
         return second_html(S, full=False) + "<p>GR00T N1.7 is a different story.</p>"
     return f"<p>{esc(' '.join(s))}</p><p>GR00T N1.7 is a different story.</p>"
