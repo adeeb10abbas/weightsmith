@@ -123,14 +123,14 @@
    {
     "id": "fix",
     "lead": "The fix.",
-    "text": "A closed-form weight edit makes a world-action model (Cosmos3 Edge) succeed from 56 of 64 new starts, as often as rewording the instruction does.",
+    "text": "A closed-form weight edit makes a world-action model, Cosmos3 Edge, succeed from 56 of 64 new starts, as often as rewording does.",
     "kind": null,
     "tag": null
    },
    {
     "id": "where",
     "lead": "When it works.",
-    "text": "Only in the VLM or text pathway; except in the action-expert VLA, only when the clear wording swaps words in place, as predicted.",
+    "text": "Only in the VLM or text pathway. Outside the action-expert VLA, only when the clear wording swaps words in place, as predicted.",
     "kind": null,
     "tag": null
    },
@@ -188,7 +188,7 @@
   },
   {
    "id": "question",
-   "title": "The skill is there; the language grounding is not",
+   "title": "The skill is there, but the language grounding is not",
    "level": 2
   },
   {
@@ -209,11 +209,6 @@
   {
    "id": "fix",
    "title": "In a world-action model, the edit works as well as the clearer wording",
-   "level": 2
-  },
-  {
-   "id": "results",
-   "title": "Three architectures at a glance",
    "level": 2
   },
   {
@@ -244,6 +239,11 @@
   {
    "id": "groot",
    "title": "The reasoning-backbone VLA has nothing to fix",
+   "level": 2
+  },
+  {
+   "id": "recap",
+   "title": "Putting it together",
    "level": 2
   },
   {
@@ -1050,7 +1050,7 @@
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ]
  },
- "when_text": "The edit copies the clearer wording’s effect onto the matching tokens of the original, position by position: each token’s input is a key, as in model editing. On the mustard task the two wordings have the same length and swap words in place, so every token has a match, and the edit works. When the clearer wording adds words, the new tokens have nothing to land on. That is why the edit failed on the world-action model’s Cube left of bowl and the reasoning-backbone VLA’s Cube then banana. Copying only the words both wordings share does nothing at all. The action-expert VLA is the exception, for a reason: π0.5’s VLM backbone attends over the image tokens and the whole instruction together, so a clearer wording’s effect also reaches the image tokens, which both wordings share, and the edit can copy it from there. π0.5 is known to hold spatial information at its image-token positions. We wrote this rule down before testing a new pair of wordings. On a pair of equal length, Cube left of bowl worded bowl-first vs cube-first, the edit lifted the task from 1 to 12 of 32 unseen starts, far above a random edit. On a pair of unequal length, it failed its offline check, as predicted. Case The two wordings Result Mustard right of raisin box, world-action model Same length, swapped in place 0 → 56 of 64 unseen starts Cube left of bowl, world-action model Words added Failed the offline check Cube then banana, reasoning-backbone VLA Words added Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, only the shared words copied — No more than a random edit, in replays Predicted: Cube left of bowl, worded bowl-first vs cube-first Same length, swapped in place 1 → 12 of 32 unseen starts; random edit 3 Predicted: Cube in front of bowl, worded bowl-first vs cube-first Words added Failed the offline check Even where it works, though, the edit is not free.",
+ "when_text": "The edit copies the clearer wording’s effect onto the matching tokens of the original, position by position. Each token’s input is a key, as in model editing. On the mustard task the two wordings have the same length and swap words in place, so every token has a match, and the edit works. When the clearer wording adds words, the new tokens have nothing to land on. That is why the edit failed on the world-action model’s Cube left of bowl and the reasoning-backbone VLA’s Cube then banana. Copying only the words both wordings share does nothing at all. The action-expert VLA is the exception, for a reason. π0.5’s VLM backbone attends over the image tokens and the whole instruction together, so a clearer wording’s effect also reaches the image tokens, which both wordings share, and the edit can copy it from there. π0.5 is known to hold spatial information at its image-token positions. We wrote this rule down before testing a new pair of wordings. On a pair of equal length, Cube left of bowl worded bowl-first vs cube-first, the edit lifted the task from 1 to 12 of 32 unseen starts, far above a random edit. On a pair of unequal length, it failed its offline check, as predicted. Case The two wordings Result Mustard right of raisin box, world-action model Same length, swapped in place Fixed Cube left of bowl, world-action model Words added Failed the offline check Cube then banana, reasoning-backbone VLA Words added Broke the task Mustard right of raisin box, only the shared words copied Only the shared words No better than a random edit, in replays Cube left of bowl, worded bowl-first vs cube-first, predicted Same length, swapped in place Fixed, as predicted Cube in front of bowl, worded bowl-first vs cube-first, predicted Words added Failed the offline check, as predicted Even where it works, though, the edit is not free.",
  "diagrams": {
   "where": [
    {
@@ -12572,8 +12572,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "058c64c0c86f4fa3",
- "numbers_hash": "fca601373c5467d2",
+ "content_hash": "112e6dc7bbbb25f9",
+ "numbers_hash": "790835e243aec5e9",
  "updated": "2026-11-09T06:06Z",
  "updated_text": "9 Nov 2026, 06:06 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: complete"
