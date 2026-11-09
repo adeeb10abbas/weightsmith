@@ -13,3 +13,4 @@
 {"batch": ["T8-base-s96000"], "gpu": 0, "lock_requested": 1794183748.5601616, "lock_acquired": 1794183748.5602052, "released": 1794184272.064569, "held_s": 523.5}
 {"batch": ["T2-v2mi-f-s96000", "T2-v2mi-f-s96016"], "gpu": 1, "lock_requested": 1794183416.726691, "lock_acquired": 1794183416.7267735, "released": 1794184507.541391, "held_s": 1090.8}
 {"batch": ["T8-s4r-grp3-s96000"], "gpu": 0, "lock_requested": 1794184274.0817356, "lock_acquired": 1794184274.081817, "released": 1794184915.0107834, "held_s": 640.9}
+{"batch": ["T8-base-s96016"], "gpu": 1, "lock_requested": 1794184509.5576355, "lock_acquired": 1794184509.5576837, "released": 1794185030.0381572, "held_s": 520.5}
