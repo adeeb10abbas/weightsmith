@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "ffa4f98802c1"
+    "commit": "d28d4448a432"
    }
   }
  ],
@@ -151,7 +151,7 @@
     "lead": "π0.5",
     "kind": "OpenPI VLA, control",
     "tag": "earlier records",
-    "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 9 of 16 (p = 0.0039). A random edit of the same size scored 2 of 64 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
+    "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 16 of 32 (p = 3.1 × 10⁻⁵). A random edit of the same size scored 2 of 64 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
    },
    {
     "id": "cosmos",
@@ -420,9 +420,9 @@
       "d": "not edited"
      },
      "pi05": {
-      "v": "0 → 9 of 16",
+      "v": "0 → 16 of 32",
       "s": "ok",
-      "d": "9 / 0, p = 0.0039; earlier record: fixed: 0 → 27 of 64"
+      "d": "16 / 0, p = 3.1 × 10⁻⁵; earlier record: fixed: 0 → 27 of 64"
      }
     }
    },
@@ -1631,14 +1631,13 @@
        "fl": "Mustard right of raisin box (32 practice)"
       },
       "pi05": {
-       "v": "0 → 12 of 16",
+       "v": "0 → 26 of 32",
        "s": "ok",
-       "d": "12 / 0, p = 4.9 × 10⁻⁴; +75.0 points; slots 30000–30015; “Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.” → “Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.”; earlier slots: 0 → 27 of 32",
+       "d": "+81.2 points; slots 96000–96031; Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.; earlier slots: 0 → 27 of 32",
        "a": 0,
-       "b": 12,
-       "n": 16,
-       "pv": 0.0004883,
-       "fl": "Mustard right of raisin box (16 practice)"
+       "b": 26,
+       "n": 32,
+       "fl": "Mustard right of raisin box (32 unseen)"
       }
      }
     }
@@ -2009,19 +2008,19 @@
        "s": "na"
       },
       "pi05": {
-       "v": "0 → 9 of 16",
+       "v": "0 → 16 of 32",
        "s": "ok",
-       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; 9 / 0, p = 0.0039; +56.2 points [31.2, 81.2]; slots 96000–96015; earlier slots: 0 → 27 of 64",
+       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; 16 / 0, p = 3.1 × 10⁻⁵; +50.0 points [31.2, 68.8]; slots 96000–96031; earlier slots: 0 → 27 of 64",
        "a": 0,
-       "b": 9,
-       "n": 16,
-       "fx": 9,
+       "b": 16,
+       "n": 32,
+       "fx": 16,
        "br": 0,
-       "pv": 0.003906,
+       "pv": 3.052e-05,
        "ci": [
-        56.2,
+        50.0,
         31.2,
-        81.2
+        68.8
        ],
        "color": "teal",
        "loc": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
@@ -2105,26 +2104,23 @@
        "s": "na"
       },
       "pi05": {
-       "v": "control 0, unedited 0, edit 27 of 64",
+       "v": "control 0, unedited 0, edit 16 of 32",
        "s": "ok",
-       "d": "held-out slots 92000–92063",
-       "src": [
-        "study/results/sgdw/results/heldout_pairs_92000-64.json"
-       ],
+       "d": "slots 96000–96031; earlier slots: control 0, unedited 0, edit 27 of 64",
        "u": 0,
        "r": 0,
-       "e": 27,
-       "n": 64,
-       "fl": "Mustard right of raisin box (64 unseen)",
-       "prov": true
+       "e": 16,
+       "n": 32,
+       "t": 26,
+       "tn": 32,
+       "loc": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
+       "fl": "Mustard right of raisin box (32 unseen)"
       }
      }
     }
    ],
    "note": "The control keeps every layer's singular values and replaces the singular vectors with random orthonormal bases (seed 0), so its Frobenius norm matches the edit's in every layer.",
-   "sources": [
-    "study/results/sgdw/results/heldout_pairs_92000-64.json"
-   ]
+   "sources": []
   },
   {
    "id": "recovery",
@@ -2183,27 +2179,20 @@
        "s": "na"
       },
       "pi05": {
-       "v": "59%",
+       "v": "62%",
        "s": "ok",
-       "d": "(16 − 0) / (27 − 0) of 32, practice slots 20000–20031, which were used to build the edit; the teacher was not run on unseen starts",
-       "src": [
-        "study/results/sgdw/results/practice_rf_grp3_vs_base.json",
-        "study/results/sgdw/results/practice_tf_grp3_vs_base.json"
-       ],
+       "d": "as reported; (16 − 0) / (26 − 0) of 32; earlier slots: 59%",
        "a": 0,
        "b": 16,
-       "t": 27,
-       "n": 32,
-       "prov": true
+       "t": 26,
+       "n": 32
       }
      }
     }
    ],
    "note": "100% would mean the edit does everything the clear wording does while the original wording stays.",
    "sources": [
-    "study/results/opus/controls/ctl1-90000-64.analysis.json",
-    "study/results/sgdw/results/practice_rf_grp3_vs_base.json",
-    "study/results/sgdw/results/practice_tf_grp3_vs_base.json"
+    "study/results/opus/controls/ctl1-90000-64.analysis.json"
    ]
   },
   {
@@ -10193,36 +10182,36 @@
     ],
     "slots": [
      96000,
-     96015
+     96031
     ],
-    "n": 16,
+    "n": 32,
     "unedited_k": 0,
-    "edited_k": 9,
-    "fixed": 9,
+    "edited_k": 16,
+    "fixed": 16,
     "broke": 0,
-    "p": 0.003906,
+    "p": 3.052e-05,
     "ci": {
      "unedited_wilson95_pct": [
       0.0,
-      19.4
+      10.7
      ],
      "edited_wilson95_pct": [
-      33.2,
-      76.9
+      33.6,
+      66.4
      ],
      "paired_diff_bootstrap95_pts": [
       31.2,
-      81.2
+      68.8
      ]
     },
-    "control_k": null,
-    "teacher_k": null,
-    "recovery_pct": null,
+    "control_k": 0,
+    "teacher_k": 26,
+    "recovery_pct": 61.5,
     "transfer": null,
     "retention": null,
     "edit_location": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
     "values_changed": 275482328,
-    "notes": "held-out slots (never used for any choice); instruction unchanged (task default); per_slot = [unedited, edited]",
+    "notes": "held-out slots (never used for any choice); instruction unchanged (task default); per_slot = [unedited, edited, control]",
     "_ptask": null,
     "_task": "T8",
     "_edit_task": null,
@@ -10243,72 +10232,268 @@
      "per_slot": {
       "96000": [
        0,
+       0,
        0
       ],
       "96001": [
+       0,
        0,
        0
       ],
       "96002": [
        0,
-       1
+       1,
+       0
       ],
       "96003": [
+       0,
        0,
        0
       ],
       "96004": [
        0,
+       0,
        0
       ],
       "96005": [
        0,
-       1
+       1,
+       0
       ],
       "96006": [
        0,
-       1
+       1,
+       0
       ],
       "96007": [
+       0,
        0,
        0
       ],
       "96008": [
        0,
-       1
+       1,
+       0
       ],
       "96009": [
+       0,
        0,
        0
       ],
       "96010": [
        0,
-       1
+       1,
+       0
       ],
       "96011": [
        0,
-       1
+       1,
+       0
       ],
       "96012": [
        0,
-       1
+       1,
+       0
       ],
       "96013": [
+       0,
        0,
        0
       ],
       "96014": [
        0,
-       1
+       1,
+       0
       ],
       "96015": [
        0,
-       1
+       1,
+       0
+      ],
+      "96016": [
+       0,
+       1,
+       0
+      ],
+      "96017": [
+       0,
+       1,
+       0
+      ],
+      "96018": [
+       0,
+       0,
+       0
+      ],
+      "96019": [
+       0,
+       0,
+       0
+      ],
+      "96020": [
+       0,
+       1,
+       0
+      ],
+      "96021": [
+       0,
+       1,
+       0
+      ],
+      "96022": [
+       0,
+       0,
+       0
+      ],
+      "96023": [
+       0,
+       0,
+       0
+      ],
+      "96024": [
+       0,
+       0,
+       0
+      ],
+      "96025": [
+       0,
+       1,
+       0
+      ],
+      "96026": [
+       0,
+       1,
+       0
+      ],
+      "96027": [
+       0,
+       0,
+       0
+      ],
+      "96028": [
+       0,
+       0,
+       0
+      ],
+      "96029": [
+       0,
+       0,
+       0
+      ],
+      "96030": [
+       0,
+       0,
+       0
+      ],
+      "96031": [
+       0,
+       1,
+       0
       ]
      },
+     "control": {
+      "name": "ctl-rand3",
+      "fingerprint": "fbc8349de4182099",
+      "slots": [
+       96000,
+       96031
+      ],
+      "n": 32,
+      "k": 0,
+      "wilson95_pct": [
+       0.0,
+       10.7
+      ],
+      "unedited_k_same_slots": 0,
+      "edited_k_same_slots": 16,
+      "vs_unedited": {
+       "fixed": 0,
+       "broke": 0,
+       "p": 1.0
+      },
+      "edit_vs_control": {
+       "edit_only": 16,
+       "control_only": 0,
+       "p": 3.0517578125e-05
+      },
+      "edit_location": "same tensors as s4r-grp3",
+      "values_changed": 290322032,
+      "values_changed_note": "random-direction control: s4r-grp3's tensors, ranks and singular values, random orthonormal directions (default_rng(0))"
+     },
+     "teacher": {
+      "wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
+      "slots": [
+       96000,
+       96031
+      ],
+      "n": 32,
+      "k": 26,
+      "vs_edit": {
+       "fixed": 14,
+       "broke": 4,
+       "p": 0.0308837890625
+      },
+      "vs_unedited": {
+       "fixed": 26,
+       "broke": 0,
+       "p": 2.9802322387695312e-08
+      },
+      "unedited_k_same_slots": 0,
+      "edited_k_same_slots": 16,
+      "per_slot": {
+       "96000": 1,
+       "96001": 1,
+       "96002": 0,
+       "96003": 0,
+       "96004": 1,
+       "96005": 1,
+       "96006": 1,
+       "96007": 1,
+       "96008": 1,
+       "96009": 1,
+       "96010": 1,
+       "96011": 1,
+       "96012": 1,
+       "96013": 1,
+       "96014": 1,
+       "96015": 0,
+       "96016": 0,
+       "96017": 1,
+       "96018": 1,
+       "96019": 1,
+       "96020": 1,
+       "96021": 1,
+       "96022": 1,
+       "96023": 1,
+       "96024": 0,
+       "96025": 0,
+       "96026": 1,
+       "96027": 1,
+       "96028": 1,
+       "96029": 1,
+       "96030": 1,
+       "96031": 1
+      }
+     },
      "gpus": [
-      0
-     ]
+      0,
+      1
+     ],
+     "control_n": 32,
+     "control_slots": [
+      96000,
+      96031
+     ],
+     "control_unedited_k": 0,
+     "edit_vs_control": {
+      "cand_k": 16,
+      "ref_k": 0,
+      "p": 3.0517578125e-05,
+      "slots": [
+       96000,
+       96031
+      ]
+     }
     }
    },
    {
@@ -11273,13 +11458,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "ffa4f98802c1"
+   "commit": "d28d4448a432"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "279ab55e5d61311c",
- "numbers_hash": "2f38fe4d21c60660",
- "updated": "2026-11-09T00:42Z",
- "updated_text": "9 Nov 2026, 00:42 UTC",
+ "content_hash": "2c20b2b92425663d",
+ "numbers_hash": "491086556a0a155d",
+ "updated": "2026-11-09T01:14Z",
+ "updated_text": "9 Nov 2026, 01:14 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: first results"
 }

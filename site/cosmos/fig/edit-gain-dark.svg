@@ -1192,7 +1192,7 @@ L 359.8785 234.18
    </g>
    <g id="line2d_28">
     <path d="M 371.988 252.18 
-L 449.613 252.18 
+L 430.362 252.18 
 " clip-path="url(#p5b3da95935)" style="fill: none; stroke: #2aa5bc; stroke-width: 2.2; stroke-linecap: round"/>
    </g>
    <g id="patch_3">
@@ -2877,23 +2877,24 @@ z
    </g>
    <g id="line2d_37">
     <g clip-path="url(#p5b3da95935)">
-     <use xlink:href="#me1a465ed99" x="410.8005" y="252.18" style="fill: #2aa5bc; stroke: #201f1d; stroke-width: 1.3"/>
+     <use xlink:href="#me1a465ed99" x="401.175" y="252.18" style="fill: #2aa5bc; stroke: #201f1d; stroke-width: 1.3"/>
     </g>
    </g>
    <g id="text_32">
-    <!-- 0 → 9 of 16 -->
+    <!-- 0 → 16 of 32 -->
     <g style="fill: #c4c1ba" transform="translate(487.44 254.454937) scale(0.088 -0.088)">
      <use xlink:href="#ArialMT-30"/>
      <use xlink:href="#ArialMT-20" transform="translate(55.615234 0)"/>
      <use xlink:href="#ArialMT-2192" transform="translate(83.398438 0)"/>
      <use xlink:href="#ArialMT-20" transform="translate(183.398438 0)"/>
-     <use xlink:href="#ArialMT-39" transform="translate(211.181641 0)"/>
-     <use xlink:href="#ArialMT-20" transform="translate(266.796875 0)"/>
-     <use xlink:href="#ArialMT-6f" transform="translate(294.580078 0)"/>
-     <use xlink:href="#ArialMT-66" transform="translate(350.195312 0)"/>
-     <use xlink:href="#ArialMT-20" transform="translate(377.978516 0)"/>
-     <use xlink:href="#ArialMT-31" transform="translate(405.761719 0)"/>
-     <use xlink:href="#ArialMT-36" transform="translate(461.376953 0)"/>
+     <use xlink:href="#ArialMT-31" transform="translate(211.181641 0)"/>
+     <use xlink:href="#ArialMT-36" transform="translate(266.796875 0)"/>
+     <use xlink:href="#ArialMT-20" transform="translate(322.412109 0)"/>
+     <use xlink:href="#ArialMT-6f" transform="translate(350.195312 0)"/>
+     <use xlink:href="#ArialMT-66" transform="translate(405.810547 0)"/>
+     <use xlink:href="#ArialMT-20" transform="translate(433.59375 0)"/>
+     <use xlink:href="#ArialMT-33" transform="translate(461.376953 0)"/>
+     <use xlink:href="#ArialMT-32" transform="translate(516.992188 0)"/>
     </g>
    </g>
   </g>
