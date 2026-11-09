@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "0121dff7df27"
+    "commit": "ffa4f98802c1"
    }
   }
  ],
@@ -151,7 +151,7 @@
     "lead": "π0.5",
     "kind": "OpenPI VLA, control",
     "tag": "earlier records",
-    "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 27 of 64 (p = 1.5 × 10⁻⁸). A random edit of the same size scored 2 of 64 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
+    "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 9 of 16 (p = 0.0039). A random edit of the same size scored 2 of 64 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
    },
    {
     "id": "cosmos",
@@ -172,7 +172,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted Eyeglasses (22 → 44 of 64), made none detectably worse, and kept the retention task Cube in bowl at 31 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
+    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted Eyeglasses (12 → 21 of 32), made none detectably worse, and kept the retention task Cube in bowl at 31 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
@@ -290,10 +290,9 @@
       "d": "not edited"
      },
      "pi05": {
-      "v": "Cube then banana edit: 22 → 44 of 64",
+      "v": "Cube then banana edit: 12 → 21 of 32",
       "s": "ok",
-      "d": "own edit 18 → 27 of 64, not significant; shared slots, unedited: 7 of 16",
-      "prov": true
+      "d": "12 / 3; p = 0.035; earlier record: Cube then banana edit: 22 → 44 of 64"
      }
     }
    },
@@ -421,10 +420,9 @@
       "d": "not edited"
      },
      "pi05": {
-      "v": "fixed: 0 → 27 of 64",
+      "v": "0 → 9 of 16",
       "s": "ok",
-      "d": "distilled edit; 27 / 0, p = 1.5 × 10⁻⁸; shared slots, unedited: 0 of 16",
-      "prov": true
+      "d": "9 / 0, p = 0.0039; earlier record: fixed: 0 → 27 of 64"
      }
     }
    },
@@ -2011,27 +2009,24 @@
        "s": "na"
       },
       "pi05": {
-       "v": "0 → 27 of 64",
+       "v": "0 → 9 of 16",
        "s": "ok",
-       "d": "distilled edit from the mustard-first wording; 27 / 0, p = 1.5 × 10⁻⁸; +42.2 points [29.7, 54.7]; held-out slots 92000–92063",
-       "src": [
-        "study/results/sgdw/results/heldout_pairs_92000-64.json"
-       ],
+       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; 9 / 0, p = 0.0039; +56.2 points [31.2, 81.2]; slots 96000–96015; earlier slots: 0 → 27 of 64",
        "a": 0,
-       "b": 27,
-       "n": 64,
+       "b": 9,
+       "n": 16,
+       "fx": 9,
+       "br": 0,
+       "pv": 0.003906,
        "ci": [
-        42.2,
-        29.7,
-        54.7
+        56.2,
+        31.2,
+        81.2
        ],
        "color": "teal",
-       "fl": "Mustard right of raisin box",
-       "fb": "Mustard right of raisin box distilled",
-       "fx": 27,
-       "br": 0,
-       "pv": 1.4901161193847656e-08,
-       "prov": true
+       "loc": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
+       "fl": "Mustard right of raisin box, VLM MLP down-projections l…",
+       "fb": "Mustard right of raisin box VLM MLP down-proj"
       }
      }
     }
@@ -2044,7 +2039,6 @@
     "study/results/ctrl/heldout/ctrl-stack3__p1-Stack3RubiksCubeTask-91008-64.json",
     "study/results/ctrl/summary.json",
     "study/results/opus/comparisons.json",
-    "study/results/sgdw/results/heldout_pairs_92000-64.json",
     "study/results/tutorial/tutorial-ctb__ctb-first-95008-64.results.json"
    ]
   },
@@ -2520,13 +2514,9 @@
        "s": "na"
       },
       "pi05": {
-       "v": "15.9M as factors (0.47%)",
+       "v": "275,482,328 values",
        "s": "ok",
-       "d": "VLM layers 8–16, rank ≤ 96 per layer, image cells; three decision phases as separate key groups",
-       "src": [
-        "study/results/sgdw/runs/s4r/build_grp3.json"
-       ],
-       "prov": true
+       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; earlier slots: 15.9M as factors (0.47%)"
       }
      }
     }
@@ -2534,8 +2524,7 @@
    "note": "A low-rank update is dense in its weight matrix: the 0.16% variant changes 7.4% of stored values; as factors it is 0.16% of the parameters.",
    "sources": [
     "study/results/ctrl/summary.json",
-    "study/results/opus/heldout/cube-then-banana__abl-imgl8-RubiksCubeThenBananaTask-90000-128.json",
-    "study/results/sgdw/runs/s4r/build_grp3.json"
+    "study/results/opus/heldout/cube-then-banana__abl-imgl8-RubiksCubeThenBananaTask-90000-128.json"
    ]
   },
   {
@@ -2602,15 +2591,14 @@
        "d": "dropped: both Cube then banana edits lowered success on Cube then banana itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
-       "v": "+22: 22 → 44 of 64",
+       "v": "+9: 12 → 21 of 32",
        "s": "ok",
-       "d": "31 / 9; p = 6.8 × 10⁻⁴; slots 90000–90063",
-       "delta": 22,
-       "a": 22,
-       "b": 44,
-       "n": 64,
-       "p": 0.0006795482549932785,
-       "prov": true
+       "d": "12 / 3; p = 0.035; slots 96000–96031; earlier slots: +22: 22 → 44 of 64",
+       "delta": 9,
+       "a": 12,
+       "b": 21,
+       "n": 32,
+       "p": 0.03516
       }
      }
     },
@@ -10196,6 +10184,330 @@
     }
    },
    {
+    "experiment": "edit_target",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+    ],
+    "slots": [
+     96000,
+     96015
+    ],
+    "n": 16,
+    "unedited_k": 0,
+    "edited_k": 9,
+    "fixed": 9,
+    "broke": 0,
+    "p": 0.003906,
+    "ci": {
+     "unedited_wilson95_pct": [
+      0.0,
+      19.4
+     ],
+     "edited_wilson95_pct": [
+      33.2,
+      76.9
+     ],
+     "paired_diff_bootstrap95_pts": [
+      31.2,
+      81.2
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": null,
+    "retention": null,
+    "edit_location": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
+    "values_changed": 275482328,
+    "notes": "held-out slots (never used for any choice); instruction unchanged (task default); per_slot = [unedited, edited]",
+    "_ptask": null,
+    "_task": "T8",
+    "_edit_task": null,
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": {
+      "name": "s4r-grp3",
+      "fingerprint": "9e6f2378e28be6a3"
+     },
+     "values_changed_note": "T8's own edit from the sgdw study: the target-first wording distilled into the reference-first one; dense count from the policy server's load report",
+     "per_slot": {
+      "96000": [
+       0,
+       0
+      ],
+      "96001": [
+       0,
+       0
+      ],
+      "96002": [
+       0,
+       1
+      ],
+      "96003": [
+       0,
+       0
+      ],
+      "96004": [
+       0,
+       0
+      ],
+      "96005": [
+       0,
+       1
+      ],
+      "96006": [
+       0,
+       1
+      ],
+      "96007": [
+       0,
+       0
+      ],
+      "96008": [
+       0,
+       1
+      ],
+      "96009": [
+       0,
+       0
+      ],
+      "96010": [
+       0,
+       1
+      ],
+      "96011": [
+       0,
+       1
+      ],
+      "96012": [
+       0,
+       1
+      ],
+      "96013": [
+       0,
+       0
+      ],
+      "96014": [
+       0,
+       1
+      ],
+      "96015": [
+       0,
+       1
+      ]
+     },
+     "gpus": [
+      0
+     ]
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "PickGlassesTask",
+    "code": "T2",
+    "wording_pair": [
+     "Pick up the eye glasses"
+    ],
+    "slots": [
+     96000,
+     96031
+    ],
+    "n": 32,
+    "unedited_k": 12,
+    "edited_k": 21,
+    "fixed": 12,
+    "broke": 3,
+    "p": 0.03516,
+    "ci": {
+     "unedited_wilson95_pct": [
+      22.9,
+      54.7
+     ],
+     "edited_wilson95_pct": [
+      48.3,
+      79.6
+     ],
+     "paired_diff_bootstrap95_pts": [
+      6.2,
+      50.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": {
+     "unedited_k": 12,
+     "edited_k": 21,
+     "n": 32
+    },
+    "retention": null,
+    "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+    "values_changed": 450468837,
+    "notes": "side effect of the T1 edit v2mi-f on another task, held-out slots, the task's own default instruction; per_slot = [unedited, edited]",
+    "_ptask": null,
+    "_task": "T2",
+    "_edit_task": "T1",
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the explicit wording 'Put the cube in the bowl then put the banana in the bowl'",
+     "per_slot": {
+      "96000": [
+       1,
+       1
+      ],
+      "96001": [
+       0,
+       0
+      ],
+      "96002": [
+       0,
+       1
+      ],
+      "96003": [
+       0,
+       1
+      ],
+      "96004": [
+       0,
+       1
+      ],
+      "96005": [
+       0,
+       0
+      ],
+      "96006": [
+       0,
+       0
+      ],
+      "96007": [
+       1,
+       1
+      ],
+      "96008": [
+       0,
+       1
+      ],
+      "96009": [
+       1,
+       1
+      ],
+      "96010": [
+       1,
+       1
+      ],
+      "96011": [
+       1,
+       1
+      ],
+      "96012": [
+       1,
+       0
+      ],
+      "96013": [
+       0,
+       1
+      ],
+      "96014": [
+       0,
+       1
+      ],
+      "96015": [
+       1,
+       1
+      ],
+      "96016": [
+       0,
+       0
+      ],
+      "96017": [
+       1,
+       0
+      ],
+      "96018": [
+       1,
+       1
+      ],
+      "96019": [
+       0,
+       1
+      ],
+      "96020": [
+       0,
+       1
+      ],
+      "96021": [
+       1,
+       0
+      ],
+      "96022": [
+       0,
+       1
+      ],
+      "96023": [
+       1,
+       1
+      ],
+      "96024": [
+       0,
+       1
+      ],
+      "96025": [
+       0,
+       0
+      ],
+      "96026": [
+       0,
+       0
+      ],
+      "96027": [
+       0,
+       1
+      ],
+      "96028": [
+       1,
+       1
+      ],
+      "96029": [
+       0,
+       1
+      ],
+      "96030": [
+       0,
+       0
+      ],
+      "96031": [
+       0,
+       0
+      ]
+     },
+     "gpus": [
+      1
+     ]
+    }
+   },
+   {
     "experiment": "side_effect",
     "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
     "task": "RubiksCubeLeftOfBowlTask",
@@ -10961,13 +11273,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "0121dff7df27"
+   "commit": "ffa4f98802c1"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "1fffebc548a8b541",
- "numbers_hash": "1b5d2ea564d29e2f",
- "updated": "2026-11-09T00:11Z",
- "updated_text": "9 Nov 2026, 00:11 UTC",
+ "content_hash": "279ab55e5d61311c",
+ "numbers_hash": "2f38fe4d21c60660",
+ "updated": "2026-11-09T00:42Z",
+ "updated_text": "9 Nov 2026, 00:42 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: first results"
 }
