@@ -1,0 +1,453 @@
+/* The weightsmith post (index.html). Loaded after style.css and cosmos/cosmos.css, and built by scripts/build_post.py.
+   Holds the opening video's place in the header, the three charts drawn in HTML (classes start with pc-), and the
+   way charts draw themselves when they scroll into view. */
+
+/* ---------- opening video, under the title ---------- */
+.cz-hero .hero {
+  width: 100%;
+  max-width: 960px;
+  margin: 44px 0 0;
+}
+
+.cz-hero .hero figcaption {
+  max-width: var(--measure);
+}
+
+.cz-hero {
+  padding-bottom: 60px;
+}
+
+/* the two π0.5 clips sit side by side on wide screens */
+.cz .post section .clips.wide {
+  margin: 1.6rem 0 1.8rem;
+}
+
+.cz .post section .clips figure {
+  margin: 0;
+}
+
+/* every figure starts at the left edge of the text column */
+.cz .post section .dgfig {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.cz .post section .dgfig .anim-ctl,
+.cz .post section .dgfig .anim-steps {
+  margin-left: 0;
+}
+
+/* ---------- charts drawn in HTML ---------- */
+
+.pc {
+  --pc-h: 14px;
+  font-family: var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+
+.cz .post section .pc .dg-ttl {
+  margin: 0 0 0.9rem;
+}
+
+.cz .post section .pc p.pc-lab {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 0 0 5px;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.pc-lab b {
+  font-weight: 600;
+}
+
+.pc-row {
+  margin: 0 0 13px;
+}
+
+.pc-num {
+  flex: none;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.pc-num b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.pc-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 7px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted);
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+
+.pc-bar {
+  display: block;
+  height: 100%;
+  min-width: 3px;
+  background: var(--mark-base);
+}
+
+/* bars: one row per instruction */
+.pc-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pc-track {
+  flex: 1;
+  height: var(--pc-h);
+  border-radius: 0 4px 4px 0;
+  background: var(--grid);
+}
+
+.pc-track .pc-bar {
+  border-radius: 0 4px 4px 0;
+  transform-origin: left center;
+}
+
+.pc-val {
+  flex: 0 0 4.4em;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.pc-val b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* dots: the unedited policy (tick) against the policy named in the row (mark), on one 0 to 100% rail */
+.cz .post section .pc p.pc-gh {
+  margin: 1.1rem 0 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.pc-rail {
+  position: relative;
+  height: 18px;
+  margin: 0 8px;
+}
+
+/* the mark rides on a rail-wide box that slides sideways; the row hides the part of that box past its end */
+.pc-dots .pc-row {
+  overflow: hidden;
+}
+
+.pc-rail::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--grid);
+}
+
+/* the line from the tick to the mark */
+.pc-rail::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: min(var(--u), var(--e));
+  width: calc(max(var(--u), var(--e)) - min(var(--u), var(--e)));
+  height: 2px;
+  background: var(--mark-base);
+}
+
+.pc-tick {
+  position: absolute;
+  z-index: 1;
+  left: var(--u);
+  top: 1px;
+  width: 2px;
+  height: 16px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: var(--ink);
+}
+
+.pc-run {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(var(--e));
+  pointer-events: none;
+}
+
+.pc-dot {
+  position: absolute;
+  left: -7px;
+  top: 2px;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+.pc-fix {
+  background: var(--accent);
+}
+
+.pc-rand {
+  border: 2px solid var(--mark-base);
+  background: var(--bg);
+}
+
+.pc-ref {
+  border: 2px solid var(--ink-2);
+  border-radius: 2px;
+  background: var(--bg);
+  transform: rotate(45deg) scale(0.82);
+}
+
+/* verdict marks, as in the where-to-edit chart: grey for no clear change, dark with a cross for clearly worse */
+.pc-none {
+  background: var(--mark-base);
+}
+
+.pc-worse {
+  background: var(--mark-other);
+}
+
+.pc-worse::before,
+.pc-worse::after {
+  content: "";
+  position: absolute;
+  left: 21%;
+  top: 50%;
+  width: 58%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+  background: var(--bg);
+  transform: rotate(45deg);
+}
+
+.pc-worse::after {
+  transform: rotate(-45deg);
+}
+
+/* where the edit changed nothing, the tick shows through the mark */
+.pc-same .pc-tick {
+  z-index: 3;
+}
+
+.pc-axis {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.pc-axis > :last-child {
+  text-align: right;
+}
+
+/* legend keys */
+.pc-k {
+  flex: none;
+  display: inline-block;
+}
+
+.pc-k.pc-dot {
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  box-shadow: none;
+}
+
+.pc-k-tick {
+  width: 2px;
+  height: 14px;
+  margin: 0 5px;
+  border-radius: 1px;
+  background: var(--ink);
+}
+
+.pc-sw {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+/* two-sided bars: runs the edit broke to the left of zero, runs it fixed to the right */
+.pc-heads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 3px;
+  margin: 0 0 12px;
+}
+
+.post section .pc-heads > li:first-child {
+  justify-content: flex-end;
+}
+
+.pc-split {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+}
+
+.pc-split::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--muted);
+}
+
+.pc-half {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--pc-h);
+  background: var(--grid);
+}
+
+.pc-half-l {
+  justify-content: flex-end;
+  border-radius: 4px 0 0 4px;
+}
+
+.pc-half-r {
+  border-radius: 0 4px 4px 0;
+}
+
+.pc-broke {
+  background: var(--mark-other);
+}
+
+.pc-fixb {
+  background: var(--accent);
+}
+
+.pc-half-l .pc-bar {
+  border-radius: 4px 0 0 4px;
+  transform-origin: right center;
+}
+
+.pc-half-r .pc-bar {
+  border-radius: 0 4px 4px 0;
+  transform-origin: left center;
+}
+
+.pc-n {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+}
+
+/* ---------- charts draw themselves when they scroll into view ----------
+   post.js adds .rv-wait to a figure.reveal that is still below the screen and removes it when the figure arrives.
+   Without the script, in print, and for readers who ask for reduced motion, the charts are simply drawn. */
+.reveal .pc-bar,
+.reveal .pc-run,
+.reveal svg rect[class^="dg-bar"] {
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+.reveal .pc-dot,
+.reveal .pc-n,
+.reveal .pc-val,
+.reveal .pc-rail::after,
+.reveal svg circle,
+.reveal svg path[class^="dg-o"],
+.reveal svg line[class^="dg-o"] {
+  transition: opacity 0.5s ease;
+  transition-delay: calc(var(--i, 0) * 80ms + 250ms);
+}
+
+.reveal svg rect[class^="dg-bar"] {
+  transform-box: fill-box;
+  transform-origin: left center;
+}
+
+.rv-wait .pc-bar,
+.rv-wait svg rect[class^="dg-bar"] {
+  transform: scaleX(0);
+}
+
+.rv-wait .pc-run {
+  transform: translateX(var(--u));
+}
+
+.rv-wait .pc-dot,
+.rv-wait .pc-n,
+.rv-wait .pc-val,
+.rv-wait .pc-rail::after,
+.rv-wait svg circle,
+.rv-wait svg path[class^="dg-o"],
+.rv-wait svg line[class^="dg-o"] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal .pc-bar,
+  .reveal .pc-run,
+  .reveal .pc-dot,
+  .reveal .pc-n,
+  .reveal .pc-val,
+  .reveal .pc-rail::after,
+  .reveal svg * {
+    transition: none;
+  }
+}
+
+@media print {
+  .reveal * {
+    transition: none !important;
+  }
+}
+
+/* ---------- small things ---------- */
+/* the header carries four links; keep them on one line on a phone */
+@media (max-width: 480px) {
+  .cz-page .bar nav {
+    gap: 13px;
+    white-space: nowrap;
+  }
+
+  .cz-page .bar nav a {
+    font-size: 0.875rem;
+  }
+
+  .cz-hero .hero {
+    margin-top: 32px;
+  }
+
+  .pc-val {
+    flex-basis: 4.2em;
+  }
+}

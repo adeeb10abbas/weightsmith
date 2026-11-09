@@ -2369,9 +2369,18 @@ def block_html(t, models):
             + (f'<p class="tnote">{esc(lo)}</p>' if lo else ""))
 
 
+# The story moved to the post (site/index.html, built by build_post.py), so the records page has no markers for these
+# regions. Any other missing marker is still an error.
+STORY_REGIONS = {"tldr", "toc", "toc-m", "readtime", "problem", "clips:problem", "control-text", "dg:schematic",
+                 "fix-text", "clips:fix", "dg:fix", "dg:where", "dg:where-results", "where-text", "when", "left-text",
+                 "dg:side", "prevent", "second", "groot-text", "dg:groot", "glance"}
+
+
 def replace_region(text, name, content):
     pat = re.compile(rf"(<!-- gen:{re.escape(name)} -->)(.*?)(<!-- /gen:{re.escape(name)} -->)", re.S)
     if not pat.search(text):
+        if name in STORY_REGIONS:
+            return text
         raise KeyError(f"marker gen:{name} not found")
     return pat.sub(lambda m: m.group(1) + content + m.group(3), text, count=1)
 
@@ -2971,26 +2980,31 @@ def _svg(vb_w, vb_h, title, desc, body, cls="", ident=""):
             f'<title id="{ident}-t">{esc(title)}</title><desc id="{ident}-d">{esc(desc)}</desc>{body}</svg>')
 
 
-def dg_schematic():
+def dg_schematic(o_words=None, c_words=None, cams=("cosmos_l", "cosmos_r", "cosmos_w"), steps=None, noun="states",
+                 link=None):
     """Diagram 1, the edit as a four-step story. Camera frames and the joint state flow into the policy, the
     instruction's words into its VLM backbone or text pathway, which passes its states to the action expert or action
     head, and an action chunk goes to the robot. The still drawing (no script, print) is the last step, with the edit
-    in place; cosmos.js plays the steps (DG1_STEPS)."""
+    in place; cosmos.js plays the steps (DG1_STEPS). The main post draws the same figure with its own example
+    (build_post.py): other words, other cameras, its own step text, its own noun for the states, and its own label
+    on the arrow between the two components."""
     W = []
+    steps = steps or DG1_STEPS
     # the instruction, in its two wordings (only the words that carry the relation)
-    o_words, c_words = ["raisin box", "is to the left of", "mustard bottle"], ["mustard bottle", "is to the right of",
-                                                                             "raisin box"]
+    o_words = o_words or ["raisin box", "is to the left of", "mustard bottle"]
+    c_words = c_words or ["mustard bottle", "is to the right of", "raisin box"]
     co, xo = _chips(o_words, 170, 18, "dg-in")
     cc, xc = _chips(c_words, 170, 18, "dg-chip-c")
     W.append(_t(170, 11, "instruction", "dg-xs dg-mu", "middle"))
     W.append(_st(co, "1=o:1 4=o:1"))
     W.append(_st(cc, "2=o:1 3=o:1", static=False))
     # cameras and joint state, at the left
-    cams = ("cosmos_l", "cosmos_r", "cosmos_w")
+    up = 18 * (3 - len(cams))   # with fewer than three cameras the column closes up around the same middle line
+    cam_y = 70 + up
     for i, key in enumerate(cams):
-        W.append(_thumb(10, 70 + 36 * i, 46, 31, key, f"dg1c{i}"))
-    W.append(_t(33, 186, "cameras", "dg-xs dg-mu", "middle"))
-    W.append(_gauge(10, 198, 46, 30, 0.4) + _t(33, 242, "joint state", "dg-xs dg-mu", "middle"))
+        W.append(_thumb(10, cam_y + 36 * i, 46, 31, key, f"dg1c{i}"))
+    W.append(_t(33, 186 - up, "cameras", "dg-xs dg-mu", "middle"))
+    W.append(_gauge(10, 198 - up, 46, 30, 0.4) + _t(33, 242 - up, "joint state", "dg-xs dg-mu", "middle"))
     # the policy, its two components
     W.append('<rect x="68" y="52" width="262" height="250" rx="10" class="dg-pol"/>'
              + _t(78, 66, "robot policy", "dg-xs dg-mu"))
@@ -3001,7 +3015,7 @@ def dg_schematic():
     W.append('<line x1="92" y1="156.5" x2="208" y2="156.5" class="dg-axis"/>')
     W.append(_st(_bars(93, 156, 12, 7, 2.6, 30, 0.3, "dg-sb-o"), "1=o:1,@1.1,d:0.6", static=False))
     W.append(_st(_bars(93, 156, 12, 7, 2.6, 30, 2.1, "dg-sb-c"), "2=o:1,@1.1,d:0.6 3=o:1 4=o:1,@1.1,d:0.6,re"))
-    W.append(_t(92, 177, "states", "dg-xs dg-mu"))
+    W.append(_t(92, 177, noun, "dg-xs dg-mu"))
     # its weights, and the patch the edit writes into them
     cells = "".join(f'<rect x="{230 + c * 20:g}" y="{124 + r * 13:g}" width="16" height="10" rx="2" class="dg-wc"/>'
                     for r in range(3) for c in range(4))
@@ -3013,7 +3027,7 @@ def dg_schematic():
     W.append(_st(_arrow([(211, 141), (225, 141)], "dg-acc-ln") + _t(92, 196, "the difference, written into the weights",
                                                                     "dg-xs dg-acc dg-b"), "3=o:1,@0.3", static=False))
     # the component that produces the actions
-    W.append(_arrow([(199, 204), (199, 230)]) + _t(207, 221, "attends to its states", "dg-xs dg-mu"))
+    W.append(_arrow([(199, 204), (199, 230)]) + _t(207, 221, link or f"attends to its {noun}", "dg-xs dg-mu"))
     W.append('<rect x="80" y="230" width="238" height="60" rx="8" class="dg-blk"/>'
              + _t(92, 252, "action expert / action head", "dg-b") + _t(92, 268, "generates the action chunk", "dg-s dg-mu"))
     W.append(_arrow([(199, 290), (199, 314)]) + _chunk(199 - _chunk_w(12, 3, 1.6) / 2, 318, 12, 3, 1.6, 14)
@@ -3025,15 +3039,17 @@ def dg_schematic():
                  "2=o:1,@2.75,pop 4=o:1,@2.75,pop", cls="pp"))
     W.append(_st(_t(199, 372.5, "no robot run, computed offline", "dg-s dg-mu", "middle"), "3=o:1,@0.3", static=False))
     # tokens: words into the VLM / text pathway, frames and joint state into the policy, states on, chunks out
-    n = len(xo)
-    tx = [104 + (294 - 104) * i / (n - 1) for i in range(n)]
-    for i, x in enumerate(xo):
-        W.append(_tok("word", [(x, 40), (tx[i], 82)], "1 4", 0.35 + 0.05 * i, 0.85, "tk-o"))
-    for i, x in enumerate(xc):
-        W.append(_tok("word", [(x, 40), (tx[i], 82)], "2", 0.35 + 0.05 * i, 0.85, "tk-c"))
+    def spread(n):   # where the words of one wording land along the top of the VLM / text pathway
+        return [104 + (294 - 104) * i / (n - 1) for i in range(n)]
+
+    for i, (x, tx) in enumerate(zip(xo, spread(len(xo)))):
+        W.append(_tok("word", [(x, 40), (tx, 82)], "1 4", 0.35 + 0.05 * i, 0.85, "tk-o"))
+    for i, (x, tx) in enumerate(zip(xc, spread(len(xc)))):
+        W.append(_tok("word", [(x, 40), (tx, 82)], "2", 0.35 + 0.05 * i, 0.85, "tk-c"))
     for i, key in enumerate(cams):
-        W.append(_tok("frame", [(42, 85.5 + 36 * i), (80, 85.5 + 36 * i)], "1 2 4", 0.3 + 0.06 * i, 0.75, key=key))
-    for i, yy in enumerate((208, 218)):
+        yy = cam_y + 15.5 + 36 * i
+        W.append(_tok("frame", [(42, yy), (80, yy)], "1 2 4", 0.3 + 0.06 * i, 0.75, key=key))
+    for i, yy in enumerate((208 - up, 218 - up)):
         W.append(_tok("state", [(52, yy), (80, yy)], "1 2 4", 0.42 + 0.06 * i, 0.7))
     for i, x in enumerate((185, 199, 213)):
         W.append(_tok("dot", [(x, 206), (x, 229)], "1", 1.4 + 0.06 * i, 0.55, "tk-o"))
@@ -3044,10 +3060,10 @@ def dg_schematic():
     W.append(_tok("delta", [(150, 136), (268, 141)], "3", 0.5, 1.0))
     W.append(_tok("ring", [(0, 0)], "3", 1.2, 1.7, label=(225, 119, 86, 46)))
     title = "The edit in four steps"
-    desc = (" ".join(f"Step {i}. {s}" for i, s in enumerate(DG1_STEPS, 1))
+    desc = (" ".join(f"Step {i}. {s}" for i, s in enumerate(steps, 1))
             + " Camera frames and the joint state enter the policy. The instruction’s words enter its VLM backbone or "
-              "text pathway, whose states the action expert or action head attends to. An action chunk goes to the "
-              "robot.")
+              "text pathway, whose " + noun + " the action expert or action head attends to. An action chunk goes "
+              "to the robot.")
     return _svg(340, 384, title, desc, "".join(W), "dg-schem", "dg1")
 
 
@@ -3393,9 +3409,10 @@ def dg_groot(tables, cross):
         edit=[eg["a"], eg["b"], eg["n"]])
 
 
-def dg_schematic_html():
-    return ('<figure class="dgfig dg1 anim" data-dur="' + " ".join(f"{d:g}" for d in DG1_DUR) + '">' + dg_schematic()
-            + anim_controls(DG1_STEPS, "The edit in four steps")
+def dg_schematic_html(**example):
+    """Diagram 1 with its controls. With no arguments it draws this page's example; build_post.py passes its own."""
+    return ('<figure class="dgfig dg1 anim" data-dur="' + " ".join(f"{d:g}" for d in DG1_DUR) + '">'
+            + dg_schematic(**example) + anim_controls(example.get("steps") or DG1_STEPS, "The edit in four steps")
             + '<figcaption>The edit copies the clear wording’s effect into the weights of the VLM backbone or text '
               'pathway, where the instruction is grounded. Copied into the action expert or action head instead, it '
               'lands on states that also depend on where the robot is. That copies a symptom, not the cause. Like activation '
@@ -3915,7 +3932,10 @@ def legend_html(cross, tables=None):
              '</span></th><th scope="col"><span class="mn">RoboLab class</span></th><th scope="col"><span class="mn">'
              f'Default instruction</span></th></tr></thead><tbody>{body}</tbody></table>')
     terms = [
-        ("Slots", "the seed indices of the starting scenes: practice starts 30000–30031, unseen (held-out) starts "
+        ("Start", "one run of a task. The post calls it a run. Every run of a task begins from the same scene and has "
+                  "its own random seed. We built and chose each edit on practice starts. Unseen starts are the post’s "
+                  "held-out runs, and their seeds played no part in building an edit."),
+        ("Slots", "the seeds of the runs: practice starts 30000–30031, unseen (held-out) starts "
                   "96000–96063, the same for every model. " + (paper_line(tables) if tables else "")),
         ("13 / 0, fixed / broke", "starts where only the edited robot succeeded / starts where only the unedited robot "
                                   "did: the discordant pairs."),
@@ -3929,7 +3949,7 @@ def legend_html(cross, tables=None):
         ("Offline, gap closed", "in replays of recorded moments, the share of the clear wording’s change to the planned "
                                 "actions that an edit reproduces. Deviation: how far an edit moves the planned hand "
                                 "position from the unedited robot’s."),
-        ("Distilled edit", "an edit that copies the clear wording, this page’s method, a closed-form form of context "
+        ("Distilled edit", "an edit that copies the clear wording, the post’s method, a closed-form form of context "
                            "distillation ⟦askell2021context,snell2022distilling⟧. Blind editor: an AI editor "
                            "(Claude or GPT) that worked alone on one task and never saw our edits, a weight-space "
                            "programming agent ⟦takehi2026sparks⟧; its accepted π0.5 "
@@ -3954,7 +3974,7 @@ def legend_html(cross, tables=None):
     ]
     dl = "".join(f"<dt>{esc(a)}</dt><dd>{esc(b)}</dd>" for a, b in terms)
     return (f'<h3 id="legend">Task names and terms</h3><p>The tables below use the tasks’ internal codes and a few '
-            f'technical terms. The names on the rest of the page map to them as follows.</p>'
+            f'technical terms. The post’s task names map to the codes as follows.</p>'
             f'<div class="tblock">{table}</div><dl class="defs">{dl}</dl>')
 
 
@@ -5427,14 +5447,16 @@ def clip_html(c, info, tables, compact=False):
             f'<figcaption><b>{esc(title)}.</b> {esc(caption)}</figcaption></figure>')
 
 
-def clips_section(group, info, tables, models=None):
-    """A finished track's placeholder is dropped: its clip will not come. The fix clip's caption is short; its full
-    caption and records lead the gallery."""
+def clips_section(group, info, tables, models=None, shown=("problem", "fix")):
+    """A finished track's placeholder is dropped: its clip will not come. A clip the page shows in its story (`shown`
+    names those groups) has a short caption there, and its full caption and records lead the gallery. On a page
+    without the story, the gallery shows those clips in full."""
     if group == "gallery":
         full = "".join(f'<p class="note"><b>{esc(c["title"])}</b> (above): '
                        + re.sub(r"^.*?</b> ", "", clip_html(c, info, tables).split("<figcaption>")[1]).split("</figcaption>")[0]
-                       + "</p>" for c in CLIPS if c["group"] in ("problem", "fix") and info[c["stem"]]["exists"])
-        return full + "".join(clip_html(c, info, tables) for c in CLIPS if c["group"] == group
+                       + "</p>" for c in CLIPS if c["group"] in shown and info[c["stem"]]["exists"])
+        here = (group,) + tuple(g for g in ("problem", "fix") if g not in shown)
+        return full + "".join(clip_html(c, info, tables) for c in CLIPS if c["group"] in here
                               and not (c.get("mid") and models and models[c["mid"]]["status"] == "final"
                                        and not info[c["stem"]]["exists"]))
     return "".join(clip_html(c, info, tables, compact=group in ("fix", "problem")) for c in CLIPS if c["group"] == group
@@ -6200,8 +6222,9 @@ def main():
             cap += " Hollow, dashed: scored on the practice starts the edit was built from, not on unseen starts."
         page = replace_region(page, f"fig:{name}", figure_html(name, alts[name], cap))
     clips = prepare_clips()
+    shown = tuple(g for g in ("problem", "fix") if f"<!-- gen:clips:{g} -->" in page)
     for group in ("problem", "fix", "gallery"):
-        page = replace_region(page, f"clips:{group}", clips_section(group, clips, tables, models))
+        page = replace_region(page, f"clips:{group}", clips_section(group, clips, tables, models, shown))
     page, nfig = number_figures(page)
     page, reflist = number_citations(page, load_refs())
     page = replace_region(page, "references", reflist)

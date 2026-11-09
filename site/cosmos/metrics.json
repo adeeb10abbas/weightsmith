@@ -182,84 +182,74 @@
  },
  "sections": [
   {
-   "id": "tldr",
-   "title": "TL;DR",
-   "level": 2
-  },
-  {
-   "id": "question",
-   "title": "The skill is there, but the language grounding is not",
-   "level": 2
-  },
-  {
-   "id": "models",
-   "title": "Edit the weights, keep the words",
-   "level": 2
-  },
-  {
-   "id": "control",
-   "title": "It works on a VLA with an action expert",
-   "level": 2
-  },
-  {
-   "id": "architectures",
-   "title": "Does it carry over to other architectures?",
-   "level": 2
-  },
-  {
-   "id": "fix",
-   "title": "In a world-action model, the edit works as well as the clearer wording",
-   "level": 2
-  },
-  {
-   "id": "where",
-   "title": "It only works in the VLM / text pathway",
-   "level": 2
-  },
-  {
-   "id": "when",
-   "title": "The words have to line up",
-   "level": 2
-  },
-  {
-   "id": "side-effects",
-   "title": "The fix has a cost: it overgeneralises the relation",
-   "level": 2
-  },
-  {
-   "id": "prevent",
-   "title": "Protecting other instructions doesn’t help",
+   "id": "glance",
+   "title": "At a glance",
    "level": 3
   },
   {
-   "id": "second-edit",
-   "title": "A second edit can’t undo it",
+   "id": "per-model",
+   "title": "Per model",
    "level": 3
   },
   {
-   "id": "groot",
-   "title": "The reasoning-backbone VLA has nothing to fix",
-   "level": 2
+   "id": "model-cards",
+   "title": "The three models in detail",
+   "level": 3
   },
   {
-   "id": "recap",
-   "title": "Putting it together",
-   "level": 2
+   "id": "edit",
+   "title": "The closed-form edit",
+   "level": 3
   },
   {
-   "id": "meaning",
-   "title": "What this means",
-   "level": 2
+   "id": "protocol",
+   "title": "Protocol",
+   "level": 3
   },
   {
-   "id": "limits",
-   "title": "Limits",
-   "level": 2
+   "id": "failure-map",
+   "title": "Failure map",
+   "level": 3
   },
   {
-   "id": "numbers",
-   "title": "All numbers and records",
-   "level": 2
+   "id": "wording",
+   "title": "Wording sensitivity",
+   "level": 3
+  },
+  {
+   "id": "edit-gain",
+   "title": "Edits on unseen starts",
+   "level": 3
+  },
+  {
+   "id": "where-numbers",
+   "title": "Where to edit",
+   "level": 3
+  },
+  {
+   "id": "side-effect-numbers",
+   "title": "Side effects",
+   "level": 3
+  },
+  {
+   "id": "caveats",
+   "title": "Caveats in full",
+   "level": 3
+  },
+  {
+   "id": "noise",
+   "title": "Noise floor",
+   "level": 3
+  },
+  {
+   "id": "records",
+   "title": "Records and reproduction",
+   "level": 3
+  },
+  {
+   "id": "clips",
+   "title": "Clips",
+   "level": 3
   },
   {
    "id": "references",
@@ -12572,7 +12562,7 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "1472ea74ed063878",
+ "content_hash": "212e8ea37d8add18",
  "numbers_hash": "790835e243aec5e9",
  "updated": "2026-11-09T06:06Z",
  "updated_text": "9 Nov 2026, 06:06 UTC",
