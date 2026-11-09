@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "d28d4448a432"
+    "commit": "e5ac7659cd39"
    }
   }
  ],
@@ -151,7 +151,7 @@
     "lead": "π0.5",
     "kind": "OpenPI VLA, control",
     "tag": "earlier records",
-    "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 16 of 32 (p = 3.1 × 10⁻⁵). A random edit of the same size scored 2 of 64 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
+    "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 28 of 64 (p = 7.5 × 10⁻⁹). A random edit of the same size scored 2 of 64 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
    },
    {
     "id": "cosmos",
@@ -420,9 +420,9 @@
       "d": "not edited"
      },
      "pi05": {
-      "v": "0 → 16 of 32",
+      "v": "0 → 28 of 64",
       "s": "ok",
-      "d": "16 / 0, p = 3.1 × 10⁻⁵; earlier record: fixed: 0 → 27 of 64"
+      "d": "28 / 0, p = 7.5 × 10⁻⁹; earlier record: fixed: 0 → 27 of 64"
      }
     }
    },
@@ -1631,13 +1631,13 @@
        "fl": "Mustard right of raisin box (32 practice)"
       },
       "pi05": {
-       "v": "0 → 26 of 32",
+       "v": "0 → 52 of 64",
        "s": "ok",
-       "d": "+81.2 points; slots 96000–96031; Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.; earlier slots: 0 → 27 of 32",
+       "d": "+81.2 points; slots 96000–96063; Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.; earlier slots: 0 → 27 of 32",
        "a": 0,
-       "b": 26,
-       "n": 32,
-       "fl": "Mustard right of raisin box (32 unseen)"
+       "b": 52,
+       "n": 64,
+       "fl": "Mustard right of raisin box (64 unseen)"
       }
      }
     }
@@ -2008,19 +2008,19 @@
        "s": "na"
       },
       "pi05": {
-       "v": "0 → 16 of 32",
+       "v": "0 → 28 of 64",
        "s": "ok",
-       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; 16 / 0, p = 3.1 × 10⁻⁵; +50.0 points [31.2, 68.8]; slots 96000–96031; earlier slots: 0 → 27 of 64",
+       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; 28 / 0, p = 7.5 × 10⁻⁹; +43.8 points [31.2, 56.2]; slots 96000–96063; earlier slots: 0 → 27 of 64",
        "a": 0,
-       "b": 16,
-       "n": 32,
-       "fx": 16,
+       "b": 28,
+       "n": 64,
+       "fx": 28,
        "br": 0,
-       "pv": 3.052e-05,
+       "pv": 7.451e-09,
        "ci": [
-        50.0,
+        43.8,
         31.2,
-        68.8
+        56.2
        ],
        "color": "teal",
        "loc": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
@@ -2104,17 +2104,17 @@
        "s": "na"
       },
       "pi05": {
-       "v": "control 0, unedited 0, edit 16 of 32",
+       "v": "control 0, unedited 0, edit 28 of 64",
        "s": "ok",
-       "d": "slots 96000–96031; earlier slots: control 0, unedited 0, edit 27 of 64",
+       "d": "slots 96000–96063; earlier slots: control 0, unedited 0, edit 27 of 64",
        "u": 0,
        "r": 0,
-       "e": 16,
-       "n": 32,
-       "t": 26,
-       "tn": 32,
+       "e": 28,
+       "n": 64,
+       "t": 52,
+       "tn": 64,
        "loc": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
-       "fl": "Mustard right of raisin box (32 unseen)"
+       "fl": "Mustard right of raisin box (64 unseen)"
       }
      }
     }
@@ -2179,13 +2179,13 @@
        "s": "na"
       },
       "pi05": {
-       "v": "62%",
+       "v": "54%",
        "s": "ok",
-       "d": "as reported; (16 − 0) / (26 − 0) of 32; earlier slots: 59%",
+       "d": "as reported; (28 − 0) / (52 − 0) of 64; earlier slots: 59%",
        "a": 0,
-       "b": 16,
-       "t": 26,
-       "n": 32
+       "b": 28,
+       "t": 52,
+       "n": 64
       }
      }
     }
@@ -10182,31 +10182,31 @@
     ],
     "slots": [
      96000,
-     96031
+     96063
     ],
-    "n": 32,
+    "n": 64,
     "unedited_k": 0,
-    "edited_k": 16,
-    "fixed": 16,
+    "edited_k": 28,
+    "fixed": 28,
     "broke": 0,
-    "p": 3.052e-05,
+    "p": 7.451e-09,
     "ci": {
      "unedited_wilson95_pct": [
       0.0,
-      10.7
+      5.7
      ],
      "edited_wilson95_pct": [
-      33.6,
-      66.4
+      32.3,
+      55.9
      ],
      "paired_diff_bootstrap95_pts": [
       31.2,
-      68.8
+      56.2
      ]
     },
     "control_k": 0,
-    "teacher_k": 26,
-    "recovery_pct": 61.5,
+    "teacher_k": 52,
+    "recovery_pct": 53.8,
     "transfer": null,
     "retention": null,
     "edit_location": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
@@ -10389,6 +10389,166 @@
        0,
        1,
        0
+      ],
+      "96032": [
+       0,
+       1,
+       0
+      ],
+      "96033": [
+       0,
+       0,
+       0
+      ],
+      "96034": [
+       0,
+       0,
+       0
+      ],
+      "96035": [
+       0,
+       0,
+       0
+      ],
+      "96036": [
+       0,
+       0,
+       0
+      ],
+      "96037": [
+       0,
+       0,
+       0
+      ],
+      "96038": [
+       0,
+       1,
+       0
+      ],
+      "96039": [
+       0,
+       0,
+       0
+      ],
+      "96040": [
+       0,
+       0,
+       0
+      ],
+      "96041": [
+       0,
+       0,
+       0
+      ],
+      "96042": [
+       0,
+       0,
+       0
+      ],
+      "96043": [
+       0,
+       1,
+       0
+      ],
+      "96044": [
+       0,
+       0,
+       0
+      ],
+      "96045": [
+       0,
+       0,
+       0
+      ],
+      "96046": [
+       0,
+       1,
+       0
+      ],
+      "96047": [
+       0,
+       0,
+       0
+      ],
+      "96048": [
+       0,
+       0,
+       0
+      ],
+      "96049": [
+       0,
+       1,
+       0
+      ],
+      "96050": [
+       0,
+       1,
+       0
+      ],
+      "96051": [
+       0,
+       1,
+       0
+      ],
+      "96052": [
+       0,
+       0,
+       0
+      ],
+      "96053": [
+       0,
+       1,
+       0
+      ],
+      "96054": [
+       0,
+       0,
+       0
+      ],
+      "96055": [
+       0,
+       1,
+       0
+      ],
+      "96056": [
+       0,
+       1,
+       0
+      ],
+      "96057": [
+       0,
+       0,
+       0
+      ],
+      "96058": [
+       0,
+       0,
+       0
+      ],
+      "96059": [
+       0,
+       0,
+       0
+      ],
+      "96060": [
+       0,
+       0,
+       0
+      ],
+      "96061": [
+       0,
+       0,
+       0
+      ],
+      "96062": [
+       0,
+       1,
+       0
+      ],
+      "96063": [
+       0,
+       1,
+       0
       ]
      },
      "control": {
@@ -10396,25 +10556,25 @@
       "fingerprint": "fbc8349de4182099",
       "slots": [
        96000,
-       96031
+       96063
       ],
-      "n": 32,
+      "n": 64,
       "k": 0,
       "wilson95_pct": [
        0.0,
-       10.7
+       5.7
       ],
       "unedited_k_same_slots": 0,
-      "edited_k_same_slots": 16,
+      "edited_k_same_slots": 28,
       "vs_unedited": {
        "fixed": 0,
        "broke": 0,
        "p": 1.0
       },
       "edit_vs_control": {
-       "edit_only": 16,
+       "edit_only": 28,
        "control_only": 0,
-       "p": 3.0517578125e-05
+       "p": 7.450580596923828e-09
       },
       "edit_location": "same tensors as s4r-grp3",
       "values_changed": 290322032,
@@ -10424,22 +10584,22 @@
       "wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
       "slots": [
        96000,
-       96031
+       96063
       ],
-      "n": 32,
-      "k": 26,
+      "n": 64,
+      "k": 52,
       "vs_edit": {
-       "fixed": 14,
-       "broke": 4,
-       "p": 0.0308837890625
+       "fixed": 31,
+       "broke": 7,
+       "p": 0.00011616700794547796
       },
       "vs_unedited": {
-       "fixed": 26,
+       "fixed": 52,
        "broke": 0,
-       "p": 2.9802322387695312e-08
+       "p": 4.440892098500626e-16
       },
       "unedited_k_same_slots": 0,
-      "edited_k_same_slots": 16,
+      "edited_k_same_slots": 28,
       "per_slot": {
        "96000": 1,
        "96001": 1,
@@ -10472,27 +10632,74 @@
        "96028": 1,
        "96029": 1,
        "96030": 1,
-       "96031": 1
+       "96031": 1,
+       "96032": 1,
+       "96033": 1,
+       "96034": 1,
+       "96035": 1,
+       "96036": 1,
+       "96037": 0,
+       "96038": 1,
+       "96039": 1,
+       "96040": 0,
+       "96041": 1,
+       "96042": 1,
+       "96043": 0,
+       "96044": 1,
+       "96045": 1,
+       "96046": 0,
+       "96047": 1,
+       "96048": 1,
+       "96049": 1,
+       "96050": 1,
+       "96051": 1,
+       "96052": 1,
+       "96053": 1,
+       "96054": 1,
+       "96055": 0,
+       "96056": 1,
+       "96057": 1,
+       "96058": 1,
+       "96059": 0,
+       "96060": 1,
+       "96061": 1,
+       "96062": 1,
+       "96063": 1
       }
      },
      "gpus": [
       0,
       1
      ],
-     "control_n": 32,
+     "control_n": 64,
      "control_slots": [
       96000,
-      96031
+      96063
      ],
      "control_unedited_k": 0,
      "edit_vs_control": {
-      "cand_k": 16,
+      "cand_k": 28,
       "ref_k": 0,
-      "p": 3.0517578125e-05,
+      "p": 7.450580596923828e-09,
       "slots": [
        96000,
-       96031
+       96063
       ]
+     },
+     "teacher_n": 64,
+     "teacher_slots": [
+      96000,
+      96063
+     ],
+     "teacher_unedited_k": 0,
+     "teacher_edited_k": 28,
+     "teacher_p": 4.440892098500626e-16,
+     "teacher_fixed": 52,
+     "teacher_broke": 0,
+     "edit_vs_teacher": {
+      "p": 0.00011616700794547796,
+      "ref_k": 52,
+      "cand_k": 28
      }
     }
    },
@@ -11458,13 +11665,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "d28d4448a432"
+   "commit": "e5ac7659cd39"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "2c20b2b92425663d",
- "numbers_hash": "491086556a0a155d",
- "updated": "2026-11-09T01:14Z",
- "updated_text": "9 Nov 2026, 01:14 UTC",
+ "content_hash": "e1357d948d149f0a",
+ "numbers_hash": "27bbcfdc561a5d80",
+ "updated": "2026-11-09T01:46Z",
+ "updated_text": "9 Nov 2026, 01:46 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: first results"
 }

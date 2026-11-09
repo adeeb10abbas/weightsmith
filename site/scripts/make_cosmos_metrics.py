@@ -951,6 +951,20 @@ def read_cross(args, meta_out):
                 evc = ctl.get("edit_vs_control") or {}
                 extra.setdefault("edit_vs_control", {"cand_k": ctl.get("edited_k_same_slots"), "ref_k": ctl.get("k"),
                                                      "p": evc.get("p"), "slots": ctl.get("slots")})
+            tch = extra.get("teacher")
+            if isinstance(tch, dict) and as_int(tch.get("n")) is not None:
+                vu, ve = tch.get("vs_unedited") or {}, tch.get("vs_edit") or {}
+                extra.setdefault("teacher_n", as_int(tch.get("n")))
+                extra.setdefault("teacher_slots", tch.get("slots"))
+                for k_, v_ in (("teacher_unedited_k", tch.get("unedited_k_same_slots")),
+                               ("teacher_edited_k", tch.get("edited_k_same_slots")),
+                               ("teacher_p", vu.get("p")), ("teacher_fixed", vu.get("fixed")),
+                               ("teacher_broke", vu.get("broke"))):
+                    if v_ is not None:
+                        extra.setdefault(k_, v_)
+                if ve.get("p") is not None:
+                    extra.setdefault("edit_vs_teacher", {"p": ve.get("p"), "ref_k": tch.get("k"),
+                                                         "cand_k": tch.get("edited_k_same_slots")})
             nr["_extra"] = extra
             pc = (describe(nr.get("code")) or "").upper()
             nr["_ptask"] = pc if pc in PROSPECT["pairs"] else None
@@ -1136,9 +1150,23 @@ def row_cells(src):
             k, n = as_int(r.get("unedited_k")), as_int(r.get("n"))
             T["failure_map"][tid] = C(f"{k} of {n}", "; ".join(x for x in (pct(k, n), where_txt(r)) if x), k=k, n=n)
         tw = [r for r in rs if None not in (ints(r)["unedited_k"], ints(r)["teacher_k"], ints(r)["n"])]
+        def tview(r):
+            """The row's counts, or, when its clear-wording arm ran on fewer starts, the counts on those starts."""
+            i = ints(r)
+            tn_ = as_int(xg_(r, "teacher_n"))
+            if not tn_ or tn_ == i["n"]:
+                return i, where_txt(r), None
+            ua = as_int(xg_(r, "teacher_unedited_k"))
+            if ua is None:
+                return None
+            ts = xg_(r, "teacher_slots")
+            return (dict(i, n=tn_, unedited_k=ua, fixed=as_int(xg_(r, "teacher_fixed")), broke=as_int(xg_(r, "teacher_broke"))),
+                    f"slots {ts[0]}–{ts[1]}" if isinstance(ts, (list, tuple)) and len(ts) == 2 else None,
+                    as_float(xg_(r, "teacher_p")))
+        tw = [r for r in tw if tview(r)]
         if tw:
             r = tw[0]
-            i = ints(r)
+            i, wtxt, tp = tview(r)
             wp = r.get("wording_pair")
             if isinstance(wp, (list, tuple)) and len(wp) == 2:
                 wp = f"“{wp[0]}” → “{wp[1]}”"
@@ -1148,14 +1176,14 @@ def row_cells(src):
                 wp = f"“{o}” → “{cl}”" if o and cl else describe(wp)
             wd = [f"{sgn(100 * (i['teacher_k'] - i['unedited_k']) / i['n'])} points"]
             pw = None
-            if as_int(r.get("edited_k")) is None and None not in (i["fixed"], i["broke"]):
-                pw = as_float(r.get("p"))
+            if (as_int(r.get("edited_k")) is None or tp is not None) and None not in (i["fixed"], i["broke"]):
+                pw = tp if tp is not None else as_float(r.get("p"))
                 wd = [f"{i['fixed']} / {i['broke']}" + (f", p = {fp(pw)}" if pw is not None else "")]
-                cw = as_ci(r.get("ci"))
+                cw = as_ci(r.get("ci")) if tp is None else None
                 d0 = round(100 * (i["teacher_k"] - i["unedited_k"]) / i["n"], 1)
                 wd.append(fci(d0, *cw) if cw else f"{sgn(d0)} points")
             T["wording"][tid] = C(f"{i['unedited_k']} → {i['teacher_k']} of {i['n']}",
-                                  "; ".join(x for x in (*wd, where_txt(r), describe(wp)) if x),
+                                  "; ".join(x for x in (*wd, wtxt, describe(wp)) if x),
                                   a=i["unedited_k"], b=i["teacher_k"], n=i["n"], pv=pw,
                                   fl=f"{SHORT[tid]} ({i['n']}{slot_kind(r)})")
         ed = [r for r in rs if as_int(r.get("edited_k")) is not None and as_int(r.get("unedited_k")) is not None]
@@ -1244,10 +1272,15 @@ def row_cells(src):
                     rp *= 100
                 tn_ = as_int(xg(rt, "teacher_n")) or it["n"]
                 same = it["teacher_k"] is not None and tn_ == it["n"] and it["edited_k"] is not None
+                te, tu = as_int(xg(rt, "teacher_edited_k")), as_int(xg(rt, "teacher_unedited_k"))
+                sub = not same and None not in (te, tu, it["teacher_k"])
                 T["recovery"][tid] = C(f"{sgn(rp, False, 0)}%", "as reported" + (
                     f"; ({it['edited_k']} − {it['unedited_k']}) / ({it['teacher_k']} − {it['unedited_k']}) of {it['n']}"
-                    if same else "") + ("; on practice starts" if pt else ""), prac=pt or None,
-                    **(dict(a=it["unedited_k"], b=it["edited_k"], t=it["teacher_k"], n=it["n"]) if same else {}))
+                    if same else f"; ({te} − {tu}) / ({it['teacher_k']} − {tu}) on the {tn_} starts where the clear "
+                                 f"wording also ran" if sub else "") + ("; on practice starts" if pt else ""),
+                    prac=pt or None,
+                    **(dict(a=it["unedited_k"], b=it["edited_k"], t=it["teacher_k"], n=it["n"]) if same else
+                       dict(a=tu, b=te, t=it["teacher_k"], n=tn_, sub=True) if sub else {}))
             elif as_int(xg(rt, "teacher_n")) and as_int(xg(rt, "teacher_n")) != it["n"]:
                 # the clear wording ran on fewer starts than the edit: compare on those starts only
                 tn_, ts = as_int(xg(rt, "teacher_n")), xg(rt, "teacher_slots")
@@ -1271,7 +1304,8 @@ def row_cells(src):
                 evt = xg(rt, "edit_vs_teacher")
                 T["recovery"][tid] = guard_recovery(
                     T["recovery"][tid], T["wording"].get(tid),
-                    explicit=as_float(tx.get("p")) if isinstance(tx, dict) else None,
+                    explicit=(as_float(xg(rt, "teacher_p")) if as_float(xg(rt, "teacher_p")) is not None else
+                              as_float(tx.get("p")) if isinstance(tx, dict) else None),
                     p_cmp=as_float(evt.get("p")) if isinstance(evt, dict) else None)
         vc = r.get("values_changed")
         if vc is not None:
@@ -3479,7 +3513,9 @@ def control_text(P, tables):
                       f"; a random edit of the same size, {r8['r']}" if r8 and r8.get("s") == "ok" and not r8.get("prov")
                       and r8.get("r") is not None and r8.get("n") == f8["n"] else "",
                       f"; the clearer wording itself, {t8['t']}" if t8 and t8.get("s") == "ok" and not t8.get("prov")
-                      and t8.get("n") == f8["n"] and t8.get("t") is not None else "") if x) + ".")
+                      and t8.get("n") == f8["n"] and t8.get("t") is not None else
+                      f"; the clearer wording itself, {t8['t']} of the first {t8['n']}" if t8 and t8.get("s") == "ok"
+                      and not t8.get("prov") and t8.get("sub") and t8.get("t") is not None else "") if x) + ".")
     s = (f"π0.5 is where the method comes from, and our control.{fresh} In earlier runs, from other starts, the edit "
          f"lifted {tn('T1')} from {e['base']} to {e['cand']} of {e['n']} unseen starts and {tn('T8')} from {s4['base']} "
          f"to {s4['cand']} of {s4['n']}; a random edit of the same size scored {c['rand']} of {c['n']} on {tn('T1')}, "
