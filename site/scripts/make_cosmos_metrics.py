@@ -3484,10 +3484,10 @@ def control_text(P, tables):
                 if _ok(T["side_effects"].get(t, {}).get("pi05"), ("a", "b", "n")) and not T["side_effects"][t]["pi05"].get("prov")]
     if fresh_se:
         s += (" On this page’s starts so far, with the edit " + and_list(
-            f"{tn(t)} went from {c['a']} to {c['b']} of {c['n']}"
+            (f"{tn(t)} stayed at {c['a']} of {c['n']}" if c["a"] == c["b"] else f"{tn(t)} went from {c['a']} to {c['b']} of {c['n']}")
             + (" (clearly better)" if c.get("p") is not None and c["p"] < SIG and c["b"] > c["a"] else
                " (clearly worse)" if c.get("p") is not None and c["p"] < SIG else "") for t, c in fresh_se)
-              + (", changes these starts cannot tell from chance" if all(c.get("p") is None or c["p"] >= SIG
+              + (", none of them a clear change" if all(c.get("p") is None or c["p"] >= SIG
                                                                         for _, c in fresh_se) else "") + ".")
     s += (f" No edit helped {and_list(tn(t) for t in ('T4', 'T5', 'T6', 'T7'))}, whose failures are seeing, grasping or a "
           "missing skill, not reading. π0.5’s runs from this page’s starts replace these numbers as they land.")
