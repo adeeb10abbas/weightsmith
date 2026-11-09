@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 42,
- "gpu_hours": 6.26,
+ "jobs": 43,
+ "gpu_hours": 6.4,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
@@ -16,6 +16,7 @@
   "T1/ctl-rand/heldout": "2/64",
   "T1/base/heldout": "2/64",
   "T1/v2mi-f/heldout": "40/64",
+  "T8/ctl-rand3/heldout": "0/16",
   "T8/base/heldout": "0/16",
   "T8/s4r-grp3/heldout": "9/16",
   "T2/base/heldout": "12/32",
@@ -199,7 +200,7 @@
    "n": 16,
    "unedited_k": 0,
    "edited_k": 9,
-   "control_k": null,
+   "control_k": 0,
    "teacher_k": null,
    "fixed": 9,
    "broke": 0,

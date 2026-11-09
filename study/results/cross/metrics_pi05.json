@@ -3771,7 +3771,7 @@
     81.2
    ]
   },
-  "control_k": null,
+  "control_k": 0,
   "teacher_k": null,
   "recovery_pct": null,
   "transfer": null,
@@ -3783,72 +3783,117 @@
   "edit_location": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
   "values_changed": 275482328,
   "values_changed_note": "T8's own edit from the sgdw study: the target-first wording distilled into the reference-first one; dense count from the policy server's load report",
-  "notes": "held-out slots (never used for any choice); instruction unchanged (task default); per_slot = [unedited, edited]",
+  "notes": "held-out slots (never used for any choice); instruction unchanged (task default); per_slot = [unedited, edited, control]",
   "per_slot": {
    "96000": [
+    0,
     0,
     0
    ],
    "96001": [
     0,
+    0,
     0
    ],
    "96002": [
     0,
-    1
+    1,
+    0
    ],
    "96003": [
+    0,
     0,
     0
    ],
    "96004": [
     0,
+    0,
     0
    ],
    "96005": [
     0,
-    1
+    1,
+    0
    ],
    "96006": [
     0,
-    1
+    1,
+    0
    ],
    "96007": [
+    0,
     0,
     0
    ],
    "96008": [
     0,
-    1
+    1,
+    0
    ],
    "96009": [
+    0,
     0,
     0
    ],
    "96010": [
     0,
-    1
+    1,
+    0
    ],
    "96011": [
     0,
-    1
+    1,
+    0
    ],
    "96012": [
     0,
-    1
+    1,
+    0
    ],
    "96013": [
+    0,
     0,
     0
    ],
    "96014": [
     0,
-    1
+    1,
+    0
    ],
    "96015": [
     0,
-    1
+    1,
+    0
    ]
+  },
+  "control": {
+   "name": "ctl-rand3",
+   "fingerprint": "fbc8349de4182099",
+   "slots": [
+    96000,
+    96015
+   ],
+   "n": 16,
+   "k": 0,
+   "wilson95_pct": [
+    0.0,
+    19.4
+   ],
+   "unedited_k_same_slots": 0,
+   "edited_k_same_slots": 9,
+   "vs_unedited": {
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0
+   },
+   "edit_vs_control": {
+    "edit_only": 9,
+    "control_only": 0,
+    "p": 0.00390625
+   },
+   "edit_location": "same tensors as s4r-grp3",
+   "values_changed": 290322032,
+   "values_changed_note": "random-direction control: s4r-grp3's tensors, ranks and singular values, random orthonormal directions (default_rng(0))"
   },
   "gpus": [
    0
