@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 69,
- "gpu_hours": 10.5,
+ "jobs": 70,
+ "gpu_hours": 10.71,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
