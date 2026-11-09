@@ -1,4 +1,4 @@
-\begin{thebibliography}{21}
+\begin{thebibliography}{25}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -48,6 +48,31 @@ A.-A. Abbas and E.~Seraj.
 \newblock Companion study; manuscript and data in the \texttt{study/} directory
   of the weightsmith repository, 2026.
 \newblock URL \url{https://github.com/adeeb10abbas/weightsmith}.
+
+\bibitem[Zhang et~al.(2026)Zhang, Wang, and Lin]{zhang2026debugrobots}
+J.~Zhang, K.~Wang, and L.~Lin.
+\newblock Can {LLMs} debug robots by editing their weights?, 2026.
+
+\bibitem[Swann et~al.(2026)Swann, Papillon, Jacobs, Boppana, Haklay, Bigelow,
+  Lee, Watts, Icard, Schwager, Lewis, Merullo, Lubana, Geiger, Fel, and
+  Kowal]{swann2026causal}
+A.~Swann, M.~Papillon, M.~Jacobs, S.~Boppana, T.~Haklay, E.~Bigelow, A.~Lee,
+  C.~Watts, T.~Icard, M.~Schwager, O.~Lewis, J.~Merullo, E.~S. Lubana,
+  A.~Geiger, T.~Fel, and M.~Kowal.
+\newblock Causal analysis of robot foundation models enables efficiency gains,
+  2026.
+
+\bibitem[Wulff and Cangelosi(2026)]{wulff2026grounding}
+T.~Wulff and A.~Cangelosi.
+\newblock Do vision-language-action models understand instructions? {A}
+  mechanistic interpretability study on language grounding, 2026.
+
+\bibitem[Jiang et~al.(2026)Jiang, Cao, He, Deng, Wu, Sun, Wang, Zhang, Zheng,
+  Song, Luo, and Luo]{jiang2026groundinggap}
+S.~Jiang, J.~Cao, Q.~He, F.~Deng, K.~Wu, J.~Sun, J.~Wang, Q.~Zhang, Q.~Zheng,
+  C.~Song, P.~Luo, and A.~F. Luo.
+\newblock Encoded but not in control: Revealing the grounding gap in
+  vision-language robot policies, 2026.
 
 \bibitem[Khazatsky et~al.(2024)Khazatsky, Pertsch, Nair, Balakrishna, Dasari,
   Karamcheti, Nasiriany, et~al.]{khazatsky2024droid}
