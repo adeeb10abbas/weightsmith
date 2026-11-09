@@ -79,7 +79,7 @@ instructions, same slots, same render preset, same GPU model.
 | Metrics | [`scripts/fresh.py`](scripts/fresh.py) → records with `"status": "fresh"`, `"run": "C-prime-default"` in [`../metrics_pi05.json`](../metrics_pi05.json) and [`results/fresh/summary.json`](results/fresh/summary.json); per-job records in `results/fresh/runs/` |
 
 <!-- fresh2:begin -->
-Jobs finished: **45** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **6.69 GPU-h** (ali-ms RTX 3090s: GPU0, and GPU1 from 22:45 UTC; both arms of every pair on one GPU, `gpus` in each record). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
+Jobs finished: **46** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **6.82 GPU-h** (ali-ms RTX 3090s: GPU0, and GPU1 from 22:45 UTC; both arms of every pair on one GPU, `gpus` in each record). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
 
 **Failure map** (unedited π0.5, task's default instruction, practice slots). For context, Cosmos3 Edge on the same 16 starts (Track A's run records on ali-ms, default preset, 8 envs per process; `results/fresh/cosmos_same_slots_ali-ms.json`):
 
@@ -115,10 +115,10 @@ Slots 96000–96063 (held-out, never used for any choice); control on 96000–96
 |---|---|---|
 | unedited | 0/32 | |
 | **`s4r-grp3`** | **16/32** | vs unedited: 16 fixed / 0 broke, p = 3.1 × 10<sup>-5</sup>; difference +31.2 to +68.8 pts |
-| random-direction control `ctl-rand3` | 0/16 | vs unedited (0/16): 0 fixed / 0 broke, p = 1; edit vs control: 9 edit-only / 0 control-only, p = 0.0039 |
+| random-direction control `ctl-rand3` | 0/32 | vs unedited (0/32): 0 fixed / 0 broke, p = 1; edit vs control: 16 edit-only / 0 control-only, p = 3.1 × 10<sup>-5</sup> |
 | unedited, target-first wording (teacher) | 13/16 | vs unedited (0/16): 13 / 0, p = 2.4 × 10<sup>-4</sup>; vs edit (9/16): 6 teacher-only / 2 edit-only, p = 0.29; recovery **69.2%** of the teacher's gain |
 
-Slots 96000–96031 (held-out, never used for any choice); control on 96000–96015; teacher on 96000–96015.
+Slots 96000–96031 (held-out, never used for any choice); control on 96000–96031; teacher on 96000–96015.
 
 ![Fresh T8 held-out](plots/fresh_t8_heldout.png)
 
