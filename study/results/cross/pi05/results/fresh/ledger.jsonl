@@ -25,3 +25,4 @@
 {"batch": ["T8-ctl-rand3-s96048"], "gpu": 1, "lock_requested": 1794187750.44263, "lock_acquired": 1794187750.442678, "released": 1794188255.8261805, "held_s": 505.4}
 {"batch": ["T8-teacher-s96032"], "gpu": 0, "lock_requested": 1794187734.8541088, "lock_acquired": 1794187734.8541555, "released": 1794188288.372621, "held_s": 553.5}
 {"batch": ["T8-teacher-s96048", "T4-base-s96000", "T4-base-s96016"], "gpu": 1, "lock_requested": 1794188257.8318667, "lock_acquired": 1794188257.8319094, "released": 1794188769.3166792, "held_s": 511.5}
+{"batch": ["T6-v2mi-f-s96000", "T8-v2mi-f-s96000"], "gpu": 0, "lock_requested": 1794188290.3793006, "lock_acquired": 1794188290.379352, "released": 1794189246.1153533, "held_s": 955.7}
