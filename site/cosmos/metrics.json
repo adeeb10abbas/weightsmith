@@ -130,7 +130,7 @@
    {
     "id": "where",
     "lead": "When it works.",
-    "text": "Only where the robot reads, and only when the clearer wording swaps words in place. A prediction made in advance held.",
+    "text": "Only where the robot reads; on NVIDIA’s models, only when the clearer wording swaps words in place. Predicted in advance, it held.",
     "kind": null,
     "tag": null
    },
@@ -12019,7 +12019,7 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "8d4b7756d8e01676",
+ "content_hash": "3ab69be86c3238b5",
  "numbers_hash": "3434328d0f17c320",
  "updated": "2026-11-09T04:31Z",
  "updated_text": "9 Nov 2026, 04:31 UTC",
