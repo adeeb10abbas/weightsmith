@@ -8,9 +8,9 @@
    "id": "cosmos",
    "name": "Cosmos3 Edge Policy",
    "short": "world-action model",
-   "kind": "NVIDIA world-action model",
+   "kind": "world-action model",
    "status": "final",
-   "checkpoint": "`nvidia/Cosmos3-Edge-Policy-DROID` at `a7c7288`, 3.37B parameters",
+   "checkpoint": "`nvidia/Cosmos3-Edge-Policy-DROID` at `a7c7288`, 3.37B parameters by the track’s count (the model card lists 4B)",
    "architecture": "One transformer denoises an action chunk together with future video latents, conditioned on the instruction: a mixture of transformers with 28 layers of width 2048, each holding a text pathway and a generation pathway for video and action tokens. It sees the wrist and both shoulder cameras as one composite image and returns 32 joint-position steps per request, run open loop at 15 Hz.",
    "entry": "Text tokens attend only to text; video and action tokens attend to the text keys and values in every layer, so the instruction reaches the actions only through those keys and values (read from the code that served Cosmos3 Nano).",
    "where": "text pathway / video-action (generation) pathway",
@@ -27,12 +27,12 @@
    "id": "groot",
    "name": "GR00T N1.7",
    "short": "reasoning-backbone VLA",
-   "kind": "NVIDIA vision-language-action policy",
+   "kind": "VLA on a reasoning backbone",
    "status": "final",
    "checkpoint": "`nvidia/GR00T-N1.7-DROID` at `05e7cc9`, 3.14B parameters",
    "architecture": "A Cosmos-Reason2-2B vision-language backbone (Qwen3-VL), cut to its first 16 language layers, reads an exterior and a wrist camera (180 × 320 each) and the instruction. The action head, 4 self-attention layers and 32 diffusion-transformer blocks, turns the backbone's tokens and the robot state into 40-step chunks by flow matching; the first 8 steps run at 15 Hz.",
    "entry": "As text tokens in the Cosmos-Reason2 backbone, next to the image tokens (lowercased, punctuation removed). The action head reads the instruction only through the backbone's tokens.",
-   "where": "Cosmos-Reason2 backbone / diffusion action head",
+   "where": "Cosmos-Reason2 VLM backbone / flow-matching DiT action head",
    "evaluation": "Closed loop on the shared RoboLab DROID tasks and slots, NVIDIA's validated client and embodiment setting.",
    "source": {
     "kind": "branch",
@@ -46,12 +46,12 @@
    "id": "pi05",
    "name": "π0.5",
    "short": "OpenPI VLA, control",
-   "kind": "OpenPI vision-language-action policy, the control",
+   "kind": "VLA with an action expert (OpenPI)",
    "status": "final",
    "checkpoint": "`pi05_droid_jointpos` (OpenPI), about 3.35 billion parameters",
    "architecture": "An 18-layer PaliGemma vision-language model (VLM) and an 18-layer Gemma action expert. The action expert attends to the VLM's keys and values and produces 15-step action chunks, including a gripper command, by flow matching.",
    "entry": "As text tokens in the VLM, together with image tokens from two cameras and robot-state tokens, under bidirectional attention, so the image tokens read the instruction. The distilled edit goes into the VLM's MLP weights.",
-   "where": "VLM / action expert / action head",
+   "where": "VLM backbone / action expert / action output projection",
    "evaluation": "Closed loop on RoboLab in Isaac Sim: on the shared starts with the default render preset, and, for the comparisons not rerun there, the paper’s evaluation (RTX 3090, performance render preset), each with its own slots and number of starts. Trained on DROID data and none of these tasks.",
    "source": {
     "kind": "branch",
@@ -123,14 +123,14 @@
    {
     "id": "fix",
     "lead": "The fix.",
-    "text": "A closed-form weight edit makes NVIDIA’s Cosmos3 Edge succeed from 56 of 64 new starts, as often as rewording the instruction does.",
+    "text": "A closed-form weight edit makes a world-action model (Cosmos3 Edge) succeed from 56 of 64 new starts, as often as rewording the instruction does.",
     "kind": null,
     "tag": null
    },
    {
     "id": "where",
     "lead": "When it works.",
-    "text": "Only where the robot reads; on NVIDIA’s models, only when the clearer wording swaps words in place. Predicted in advance, it held.",
+    "text": "Only in the VLM or text pathway; except in the action-expert VLA, only when the clear wording swaps words in place, as predicted.",
     "kind": null,
     "tag": null
    },
@@ -168,7 +168,7 @@
     "kind": "reasoning-backbone VLA",
     "tag": null,
     "prov": null,
-    "text": "Unedited, all 9 tasks: Cube then banana 9 of 32, Cube left of bowl 1 of 32 and Cube in bowl 28 of 32; no success on Eyeglasses and Yellow on red, Mustard in left bin, Three-cube tower, Flat box, Mustard right of raisin box. Clearer wording, same weights: Cube then banana 9 → 16 of 32 (p = 0.12); no gain on Cube left of bowl and Mustard right of raisin box. Cube then banana edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); random edits of the same sizes, 11 and 10 of 32; no held-out runs, since no edit passed practice. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
+    "text": "Unedited, all 9 tasks: Cube then banana 9 of 32, Cube left of bowl 1 of 32 and Cube in bowl 28 of 32; no success on Eyeglasses and Yellow on red, Mustard in left bin, Three-cube tower, Flat box, Mustard right of raisin box. Clearer wording, same weights: Cube then banana 9 → 16 of 32 (p = 0.12); no gain on Cube left of bowl and Mustard right of raisin box. Cube then banana edits in the Cosmos-Reason2 VLM backbone and in the flow-matching DiT action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); random edits of the same sizes, 11 and 10 of 32; no held-out runs, since no edit passed practice. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
     "id": "side-effects",
@@ -188,7 +188,7 @@
   },
   {
    "id": "question",
-   "title": "The robot can do the task, but misreads it",
+   "title": "The skill is there; the language grounding is not",
    "level": 2
   },
   {
@@ -198,27 +198,27 @@
   },
   {
    "id": "control",
-   "title": "It works on π0.5",
+   "title": "It works on a VLA with an action expert",
    "level": 2
   },
   {
-   "id": "nvidia",
-   "title": "Does it carry over to NVIDIA’s models?",
+   "id": "architectures",
+   "title": "Does it carry over to other architectures?",
    "level": 2
   },
   {
    "id": "fix",
-   "title": "On Cosmos3 Edge, the edit works as well as the clearer wording",
+   "title": "In a world-action model, the edit works as well as the clearer wording",
    "level": 2
   },
   {
    "id": "results",
-   "title": "All three models at a glance",
+   "title": "Three architectures at a glance",
    "level": 2
   },
   {
    "id": "where",
-   "title": "It only works where the robot reads",
+   "title": "It only works in the VLM / text pathway",
    "level": 2
   },
   {
@@ -243,7 +243,7 @@
   },
   {
    "id": "groot",
-   "title": "GR00T N1.7 has nothing to fix",
+   "title": "The reasoning-backbone VLA has nothing to fix",
    "level": 2
   },
   {
@@ -517,12 +517,12 @@
       "d": "Mustard right of raisin box, 16 practice starts; unedited 0"
      },
      "groot": {
-      "v": "Cosmos-Reason2 backbone 0, diffusion action head 0 of 32",
+      "v": "Cosmos-Reason2 VLM backbone 0, flow-matching DiT action head 0 of 32",
       "s": "ok",
       "d": "Cube then banana, 32 practice starts; unedited 9"
      },
      "pi05": {
-      "v": "VLM 55, action expert 20, head 0 of 64",
+      "v": "VLM 55, action expert 20, output projection 0 of 64",
       "s": "ok",
       "d": "Cube then banana; unedited 5; only the VLM edit transfers",
       "prov": true
@@ -834,7 +834,7 @@
    "cross-cosmos/v1:study/results/cross/metrics_cosmos.json",
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ],
-  "text": "`t8undp` (preservation keys from 65 generic instructions) keeps the Mustard right of raisin box fix (0 → 12 of 16 practice starts) but does not prevent the break: Mustard in left bin still falls from 8 to 0 of 16 practice starts (p = 0.0078); offline it closes 93% of the Mustard right of raisin box gap and moves Mustard in left bin’s actions 13.9 cm (`t8und`: 13.7 cm) from the unedited policy’s. `t8undr` (preservation keys from 24 left/right instructions of other tasks) keeps the Mustard right of raisin box fix (0 → 13 of 16 practice starts) but does not prevent the break: Mustard in left bin still falls from 8 to 2 of 16 practice starts (p = 0.031) and Cube left of bowl goes from 4 to 1 of 16 practice starts (p = 0.38; `t8und`: 0); offline it closes 94% of the Mustard right of raisin box gap and moves Mustard in left bin’s actions 5.9 cm (`t8und`: 13.7 cm) and Cube left of bowl’s 6.5 cm (`t8und`: 29.6 cm) from the unedited policy’s, so the smaller offline deviation on Mustard in left bin and Cube left of bowl does not carry over to the closed loop. `t8unds` (only the instruction template aligned and the 65 generic preservation keys): offline it closes 1.9% of the Mustard right of raisin box gap and moves Mustard in left bin’s actions 2.0 cm (`t8und`: 13.7 cm) and Cube left of bowl’s 0.8 cm (`t8und`: 29.6 cm) from the unedited policy’s; closed loop {running}."
+  "text": "`t8undp` (preservation keys from 65 generic instructions) keeps the Mustard right of raisin box fix (0 → 12 of 16 practice starts) but does not prevent the break: Mustard in left bin still falls from 8 to 0 of 16 practice starts (p = 0.0078); offline it closes 93% of the Mustard right of raisin box gap and moves Mustard in left bin’s actions 13.9 cm (`t8und`: 13.7 cm) from the unedited policy’s. `t8undr` (preservation keys from 24 left/right instructions of other tasks) keeps the Mustard right of raisin box fix (0 → 13 of 16 practice starts) but does not prevent the break: Mustard in left bin still falls from 8 to 2 of 16 practice starts (p = 0.031) and Cube left of bowl goes from 4 to 1 of 16 practice starts (p = 0.38; `t8und`: 0); offline it closes 94% of the Mustard right of raisin box gap and moves Mustard in left bin’s actions 5.9 cm (`t8und`: 13.7 cm) and Cube left of bowl’s 6.5 cm (`t8und`: 29.6 cm) from the unedited policy’s, so the smaller offline deviation on Mustard in left bin and Cube left of bowl does not carry over to the closed loop. `t8unds` (only the instruction template aligned and the 65 generic preservation keys): offline it closes 1.9% of the Mustard right of raisin box gap and moves Mustard in left bin’s actions 2.0 cm (`t8und`: 13.7 cm) and Cube left of bowl’s 0.8 cm (`t8und`: 29.6 cm) from the unedited policy’s; it failed the offline check, so it did not run on the robot."
  },
  "second_edit": {
   "model": "cosmos",
@@ -1045,7 +1045,7 @@
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ]
  },
- "when_text": "The edit copies the clearer wording’s effect onto the matching words of the original. On the mustard task the two wordings have the same length and swap words in place, so every word has a match, and the edit works. When the clearer wording adds words, the new words have nothing to land on. That is why the edit failed on Cosmos3 Edge’s Cube left of bowl and GR00T N1.7’s Cube then banana. Copying only the words both wordings share does nothing at all. π0.5 is the exception, for a reason: it reads the camera images together with the whole instruction, so a clearer wording’s effect also reaches positions both wordings share, and the edit can copy it from there. We wrote this rule down before testing a new pair of wordings. On a pair of equal length, Cube left of bowl worded bowl-first vs cube-first, the edit lifted the task from 1 to 12 of 32 unseen starts, far above a random edit. On a pair of unequal length, it failed its offline check, as predicted. Case The two wordings Result Mustard right of raisin box, Cosmos3 Edge Same length, swapped in place 0 → 56 of 64 unseen starts Cube left of bowl, Cosmos3 Edge Words added Failed the offline check Cube then banana, GR00T N1.7 Words added Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, only the shared words copied — No more than a random edit, in replays Predicted: Cube left of bowl, worded bowl-first vs cube-first Same length, swapped in place 1 → 12 of 32 unseen starts; random edit 3 Predicted: Cube in front of bowl, worded bowl-first vs cube-first Words added Failed the offline check Even where it works, though, the edit is not free.",
+ "when_text": "The edit copies the clearer wording’s effect onto the matching tokens of the original, position by position. On the mustard task the two wordings have the same length and swap words in place, so every token has a match, and the edit works. When the clearer wording adds words, the new tokens have nothing to land on. That is why the edit failed on the world-action model’s Cube left of bowl and the reasoning-backbone VLA’s Cube then banana. Copying only the words both wordings share does nothing at all. The action-expert VLA is the exception, for a reason: π0.5’s VLM backbone attends over the image tokens and the whole instruction together, so a clearer wording’s effect also reaches the image tokens, which both wordings share, and the edit can copy it from there. We wrote this rule down before testing a new pair of wordings. On a pair of equal length, Cube left of bowl worded bowl-first vs cube-first, the edit lifted the task from 1 to 12 of 32 unseen starts, far above a random edit. On a pair of unequal length, it failed its offline check, as predicted. Case The two wordings Result Mustard right of raisin box, world-action model Same length, swapped in place 0 → 56 of 64 unseen starts Cube left of bowl, world-action model Words added Failed the offline check Cube then banana, reasoning-backbone VLA Words added Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, only the shared words copied — No more than a random edit, in replays Predicted: Cube left of bowl, worded bowl-first vs cube-first Same length, swapped in place 1 → 12 of 32 unseen starts; random edit 3 Predicted: Cube in front of bowl, worded bowl-first vs cube-first Words added Failed the offline check Even where it works, though, the edit is not free.",
  "diagrams": {
   "where": [
    {
@@ -1063,7 +1063,7 @@
       "sites": [
        {
         "variant": "whole part",
-        "row": "Edit in the reading part (whole)",
+        "row": "VLM, all layers",
         "oc": "fixed",
         "k": 55,
         "n": 64,
@@ -1073,7 +1073,7 @@
        },
        {
         "variant": "image part only",
-        "row": "Edit in the reading part (image part only)",
+        "row": "VLM, image tokens only (0.16% of parameters)",
         "oc": "partial",
         "k": 41,
         "n": 64,
@@ -1089,7 +1089,7 @@
       "sites": [
        {
         "variant": "this part alone",
-        "row": "Edit in the motion part",
+        "row": "Action expert",
         "oc": "partial",
         "k": 20,
         "n": 64,
@@ -1099,7 +1099,7 @@
        },
        {
         "variant": "A and B together",
-        "row": "Edit in both parts",
+        "row": "VLM + action expert",
         "oc": "partial",
         "k": 43,
         "n": 64,
@@ -1111,11 +1111,11 @@
      },
      {
       "let": "C",
-      "detail": "action head",
+      "detail": "action output projection",
       "sites": [
        {
         "variant": "always on",
-        "row": "Edit in the final layer, always on",
+        "row": "Action output projection, unconditional",
         "oc": "none",
         "k": 0,
         "n": 64,
@@ -1125,7 +1125,7 @@
        },
        {
         "variant": "with an on/off switch",
-        "row": "Edit in the final layer, with an on/off switch*",
+        "row": "Action output projection, gated*",
         "oc": "partial",
         "k": 30,
         "n": 64,
@@ -1152,7 +1152,7 @@
       "sites": [
        {
         "variant": "",
-        "row": "Edit in the reading part",
+        "row": "Text pathway",
         "oc": "fixed",
         "k": 13,
         "n": 16,
@@ -1168,7 +1168,7 @@
       "sites": [
        {
         "variant": "",
-        "row": "Edit in the motion part",
+        "row": "Video/action pathway",
         "oc": "none",
         "k": 0,
         "n": 16,
@@ -1196,11 +1196,11 @@
     "blocks": [
      {
       "let": "A",
-      "detail": "Cosmos-Reason2 model",
+      "detail": "Cosmos-Reason2 VLM backbone",
       "sites": [
        {
         "variant": "",
-        "row": "Edit in the reading part",
+        "row": "VLM backbone",
         "oc": "broke",
         "k": 0,
         "n": 32,
@@ -1212,11 +1212,11 @@
      },
      {
       "let": "B",
-      "detail": "diffusion action head",
+      "detail": "flow-matching DiT action head",
       "sites": [
        {
         "variant": "",
-        "row": "Edit in the motion part",
+        "row": "Flow-matching DiT action head",
         "oc": "broke",
         "k": 0,
         "n": 32,
@@ -1655,7 +1655,7 @@
      }
     }
    ],
-   "note": "Reference-first describes the placement from the reference object's side, mustard-first from the moved object's side. In the Same Goal, Different Words study (8 starting layouts per goal, no paired starts), raisin-box-first wording lowered stable placement by 8.1 points for Cosmos3 Edge across 12 goals; on this goal Edge placed 4 of 8 under mustard-first and 0 of 8 under raisin-box-first.",
+   "note": "Reference-first describes the placement from the reference object's side, mustard-first from the moved object's side. In the Same Goal, Different Words study (8 starts per scene, the same starts for every wording, not this page's slots), raisin-box-first wording lowered stable placement by 8.1 points for Cosmos3 Edge across 12 goals; on this goal Edge placed 4 of 8 under mustard-first and 0 of 8 under raisin-box-first.",
    "sources": []
   },
   {
@@ -2291,9 +2291,9 @@
        "s": "ok"
       },
       "pi05": {
-       "v": "action expert 20, action head 0 of 64",
+       "v": "action expert 20, action output projection 0 of 64",
        "s": "ok",
-       "d": "expert 20 / 5, p = 0.0041; head 0 / 5; a head edit with a hand-built gate (blind editor): 30",
+       "d": "expert 20 / 5, p = 0.0041; output projection 0 / 5; an output-projection edit with a hand-built gate (blind editor): 30",
        "src": [
         "study/results/opus/where/results/heldout_analysis.json"
        ],
@@ -2417,7 +2417,7 @@
      }
     }
    ],
-   "note": "In π0.5 the VLM's weights process image and text tokens alike, and the edit is keyed at the image tokens. In Cosmos3 the video and action tokens have their own weights (the generation pathway), so its closest counterpart is the video-action pathway; the text pathway is the other candidate. In GR00T the backbone is Cosmos-Reason2-2B and the action pathway is the diffusion head.",
+   "note": "In π0.5 the VLM's weights process image and text tokens alike, and the edit is keyed at the image tokens. In Cosmos3 the video and action tokens have their own weights (the generation pathway), so its closest counterpart is the video-action pathway; the text pathway is the other candidate. In GR00T the backbone is Cosmos-Reason2-2B and the action pathway is the flow-matching DiT action head.",
    "sources": [
     "study/results/opus/comparisons.json",
     "study/results/opus/where/results/heldout_analysis.json",
@@ -12567,8 +12567,8 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "cb296b97d510d8f9",
- "numbers_hash": "35be625c8b0772da",
+ "content_hash": "6b69e1f3930f55dd",
+ "numbers_hash": "9faf5f9064c99d4f",
  "updated": "2026-11-09T06:06Z",
  "updated_text": "9 Nov 2026, 06:06 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: complete"

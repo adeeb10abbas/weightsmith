@@ -91,8 +91,9 @@ ORDER = ["cosmos", "groot", "pi05"]
 
 MODELS = {
     "cosmos": dict(
-        name="Cosmos3 Edge Policy", short="world-action model", kind="NVIDIA world-action model",
-        status="running", checkpoint="`nvidia/Cosmos3-Edge-Policy-DROID` at `a7c7288`, 3.37B parameters",
+        name="Cosmos3 Edge Policy", short="world-action model", kind="world-action model",
+        status="running", checkpoint="`nvidia/Cosmos3-Edge-Policy-DROID` at `a7c7288`, 3.37B parameters by the track’s "
+                                     "count (the model card lists 4B)",
         architecture="One transformer denoises an action chunk together with future video latents, conditioned on the "
                      "instruction: a mixture of transformers with 28 layers of width 2048, each holding a text pathway "
                      "and a generation pathway for video and action tokens. It sees the wrist and both shoulder cameras "
@@ -105,7 +106,7 @@ MODELS = {
                    "study (4 sampling steps, guidance 3).",
     ),
     "groot": dict(
-        name="GR00T N1.7", short="reasoning-backbone VLA", kind="NVIDIA vision-language-action policy",
+        name="GR00T N1.7", short="reasoning-backbone VLA", kind="VLA on a reasoning backbone",
         status="running", checkpoint="`nvidia/GR00T-N1.7-DROID` at `05e7cc9`, 3.14B parameters",
         architecture="A Cosmos-Reason2-2B vision-language backbone (Qwen3-VL), cut to its first 16 language layers, reads an "
                      "exterior and a wrist camera (180 × 320 each) and the instruction. The action head, 4 self-attention "
@@ -113,12 +114,12 @@ MODELS = {
                      "40-step chunks by flow matching; the first 8 steps run at 15 Hz.",
         entry="As text tokens in the Cosmos-Reason2 backbone, next to the image tokens (lowercased, punctuation removed). "
               "The action head reads the instruction only through the backbone's tokens.",
-        where="Cosmos-Reason2 backbone / diffusion action head",
+        where="Cosmos-Reason2 VLM backbone / flow-matching DiT action head",
         evaluation="Closed loop on the shared RoboLab DROID tasks and slots, NVIDIA's validated client and embodiment "
                    "setting.",
     ),
     "pi05": dict(
-        name="π0.5", short="OpenPI VLA, control", kind="OpenPI vision-language-action policy, the control",
+        name="π0.5", short="OpenPI VLA, control", kind="VLA with an action expert (OpenPI)",
         status="measured", checkpoint="`pi05_droid_jointpos` (OpenPI), about 3.35 billion parameters",
         architecture="An 18-layer PaliGemma vision-language model (VLM) and an 18-layer Gemma action expert. The action "
                      "expert attends to the VLM's keys and values and produces 15-step action chunks, including a "
@@ -126,7 +127,7 @@ MODELS = {
         entry="As text tokens in the VLM, together with image tokens from two cameras and robot-state tokens, under "
               "bidirectional attention, so the image tokens read the instruction. The distilled edit goes into the "
               "VLM's MLP weights.",
-        where="VLM / action expert / action head",
+        where="VLM backbone / action expert / action output projection",
         evaluation="Closed loop on RoboLab in Isaac Sim: on the shared starts with the default render preset, and, for "
                    "the comparisons not rerun there, the paper’s evaluation (RTX 3090, performance render preset), each "
                    "with its own slots and number of starts. Trained on DROID data and none of these tasks.",
@@ -661,9 +662,10 @@ def pi05_cells(P):
     W_["backbone"] = C(f"VLM MLPs: {w['arms']['v1full']} of {w['n']}",
                        f"{cm['v1full']['fixed']} / {cm['v1full']['broke']}, p = {fp(cm['v1full']['mcnemar_p'])}; the VLM's "
                        "weights also process the image tokens, where this edit is keyed", src=w["src"])
-    W_["action"] = C(f"action expert {w['arms']['a1']}, action head {w['arms']['h1']} of {w['n']}",
-                     f"expert {cm['a1']['fixed']} / {cm['a1']['broke']}, p = {fp(cm['a1']['mcnemar_p'])}; head "
-                     f"{cm['h1']['fixed']} / {cm['h1']['broke']}; a head edit with a hand-built gate (blind editor): "
+    W_["action"] = C(f"action expert {w['arms']['a1']}, action output projection {w['arms']['h1']} of {w['n']}",
+                     f"expert {cm['a1']['fixed']} / {cm['a1']['broke']}, p = {fp(cm['a1']['mcnemar_p'])}; output projection "
+                     f"{cm['h1']['fixed']} / {cm['h1']['broke']}; an output-projection edit with a hand-built gate (blind "
+                     f"editor): "
                      f"{w['arms']['p1']}", src=w["src"])
     W_["both"] = C(f"VLM + action expert: {w['arms']['va']} of {w['n']}",
                    f"below the VLM edit alone, p = {fp(w['vs_full']['va']['mcnemar_p'])}", src=w["src"])
@@ -1808,7 +1810,11 @@ def prevent_finding(rows):
                     smaller.add(t)
             off.append("moves " + and_list(mv).replace("’s ", "’s actions ", 1) + " from the unedited policy’s")
         if res is None:
-            parts.append(f"{who}: " + (f"offline it {and_list(off)}; closed loop {RUNNING}." if off else f"{RUNNING}."))
+            if r.get("gate_failed"):   # failed its offline check: it never ran on the robot
+                parts.append(f"{who}: " + (f"offline it {and_list(off)}; " if off else "")
+                             + "it failed the offline check, so it did not run on the robot.")
+            else:
+                parts.append(f"{who}: " + (f"offline it {and_list(off)}; closed loop {RUNNING}." if off else f"{RUNNING}."))
             continue
         s = present_clause(who, res)
         if off:
@@ -2058,8 +2064,9 @@ NOTES = {
                    "(the largest run, on its own slots). Its unedited rate on T1 ranged from 8% to 21% across six start "
                    "sets, so compare models on the shared slots.",
     "wording": "Reference-first describes the placement from the reference object's side, target-first from the moved "
-               "object's side. In the Same Goal, Different Words study (8 starting layouts per goal, no paired "
-               "starts), reference-first wording lowered stable placement by 8.1 points for Cosmos3 Edge across 12 goals; "
+               "object's side. In the Same Goal, Different Words study (8 starts per scene, the same starts for every "
+               "wording, not this page's slots), reference-first wording lowered stable placement by 8.1 points for "
+               "Cosmos3 Edge across 12 goals; "
                "on this goal Edge placed 4 of 8 under target-first and 0 of 8 under reference-first.",
     "edit_gain": "Distilled edits copy the clear wording's internal effect (teal in the figures); the blind editors "
                  "designed their own edits under the same rules (dark). The packaged tool's 2 × 2 table happens to equal "
@@ -2070,7 +2077,7 @@ NOTES = {
     "where": "In π0.5 the VLM's weights process image and text tokens alike, and the edit is keyed at the image tokens. "
              "In Cosmos3 the video and action tokens have their own weights (the generation pathway), so its closest "
              "counterpart is the video-action pathway; the text pathway is the other candidate. In GR00T the backbone is "
-             "Cosmos-Reason2-2B and the action pathway is the diffusion head.",
+             "Cosmos-Reason2-2B and the action pathway is the flow-matching DiT action head.",
     "size": "A low-rank update is dense in its weight matrix: the 0.16% variant changes 7.4% of stored values; as factors "
             "it is 0.16% of the parameters.",
     "side_effects": "Each model's main edit, unchanged, on every suite task; π0.5's is the T1 edit. In the paper’s "
@@ -2209,7 +2216,8 @@ def summary_table(P, tables, cross, rc):
                                                                           f"p = {fp(s4ho['p'])}"),
         "R1": C(f"kept: {tx['cube']['base']} → {tx['cube']['arms']['v1full']} of {tx['cube']['n']}", "cube into the bowl, T1 edit"),
         "control": C(f"{c['rand']} of {c['n']}", f"T1; unedited {c['base']}, edit {c['edit']}"),
-        "where": C(f"VLM {w['arms']['v1full']}, action expert {w['arms']['a1']}, head {w['arms']['h1']} of {w['n']}",
+        "where": C(f"VLM {w['arms']['v1full']}, action expert {w['arms']['a1']}, output projection {w['arms']['h1']} of "
+                   f"{w['n']}",
                    f"T1; unedited {w['arms']['base']}; only the VLM edit transfers"),
     }
     rows = []
@@ -2963,33 +2971,83 @@ def _svg(vb_w, vb_h, title, desc, body, cls="", ident=""):
 
 
 def dg_schematic():
-    """Diagram 1: the generic route of the instruction, the three places an edit can go, and what the edit copies."""
-    W, b = [], dict(x=34, w=210)
-    cx = b["x"] + b["w"] / 2
-    W.append(f'<rect x="34" y="8" width="84" height="28" rx="14" class="dg-in"/>' + _t(76, 26.5, "cameras", "dg-s", "middle"))
-    W.append(f'<rect x="138" y="4" width="132" height="46" rx="8" class="dg-in"/>'
-             + _t(150, 22, "original wording", "dg-s") + _t(150, 41, "clear wording", "dg-s dg-acc"))
-    W.append(_arrow([(76, 36), (76, 80)]) + _t(84, 64, "π0.5, GR00T", "dg-xs dg-mu"))
-    W.append(_arrow([(190, 50), (190, 80)]))
-    W.append(f'<rect x="{b["x"]}" y="80" width="{b["w"]}" height="104" rx="7" class="dg-blk"/>' + _letter(b["x"], 99, "A")
-             + _t(52, 104, "reads the instruction", "dg-b") + _t(52, 121, "the language part", "dg-s dg-mu"))
-    W.append(f'<rect x="46" y="132" width="186" height="40" rx="5" class="dg-band"/>'
-             + _t(56, 149, "the clear wording changes", "dg-s") + _t(56, 165, "the states here first", "dg-s"))
-    W.append(_arrow([(258, 50), (258, 152), (234, 152)], "dg-acc-ln") + _t(264, 98, "the", "dg-s dg-acc dg-b")
-             + _t(264, 114, "edit", "dg-s dg-acc dg-b"))
-    W.append(_arrow([(34, 22), (16, 22), (16, 252), (34, 252)], "dg-ln dg-dash") + _t(22, 203, "Cosmos3 Edge", "dg-xs dg-mu"))
-    W.append(_arrow([(cx, 184), (cx, 212)]) + _t(cx + 8, 202, "passes what it read", "dg-xs dg-mu"))
-    for y, let, name in ((212, "B", PARTS["B"]), (290, "C", PARTS["C"])):
-        W.append(f'<rect x="{b["x"]}" y="{y}" width="{b["w"]}" height="54" rx="7" class="dg-blk"/>' + _letter(b["x"], y + 19, let)
-                 + _t(52, y + 24, name, "dg-b") + _t(52, y + 41, "changes because A did", "dg-s dg-mu"))
-    W.append(_arrow([(cx, 266), (cx, 290)]))
-    W.append(_arrow([(cx, 344), (cx, 368)]) + _t(cx, 386, "joint commands to the robot", "dg-s", "middle"))
-    title = "Where the instruction enters, and where an edit can go"
-    desc = ("Camera images and the instruction enter the model. Part A reads the instruction; part B turns what A passes "
-            "on into motion (in Cosmos3 Edge the camera images enter B); the final output layer C writes the joint commands. "
-            "Under the clear wording the internal states first change in A, and B and C change because A did. The edit "
-            "copies the clear wording's change into A's weights.")
-    return _svg(306, 396, title, desc, "".join(W), "dg-schem", "dg1")
+    """Diagram 1, the edit as a four-step story. Camera frames and the joint state flow into the policy, the
+    instruction's words into its VLM backbone or text pathway, which passes its states to the action expert or action
+    head, and an action chunk goes to the robot. The still drawing (no script, print) is the last step, with the edit
+    in place; cosmos.js plays the steps (DG1_STEPS)."""
+    W = []
+    # the instruction, in its two wordings (only the words that carry the relation)
+    o_words, c_words = ["raisin box", "is to the left of", "mustard bottle"], ["mustard bottle", "is to the right of",
+                                                                             "raisin box"]
+    co, xo = _chips(o_words, 170, 18, "dg-in")
+    cc, xc = _chips(c_words, 170, 18, "dg-chip-c")
+    W.append(_t(170, 11, "instruction", "dg-xs dg-mu", "middle"))
+    W.append(_st(co, "1=o:1 4=o:1"))
+    W.append(_st(cc, "2=o:1 3=o:1", static=False))
+    # cameras and joint state, at the left
+    cams = ("cosmos_l", "cosmos_r", "cosmos_w")
+    for i, key in enumerate(cams):
+        W.append(_thumb(10, 70 + 36 * i, 46, 31, key, f"dg1c{i}"))
+    W.append(_t(33, 186, "cameras", "dg-xs dg-mu", "middle"))
+    W.append(_gauge(10, 198, 46, 30, 0.4) + _t(33, 242, "joint state", "dg-xs dg-mu", "middle"))
+    # the policy, its two components
+    W.append('<rect x="68" y="52" width="262" height="250" rx="10" class="dg-pol"/>'
+             + _t(78, 66, "robot policy", "dg-xs dg-mu"))
+    W.append('<rect x="80" y="76" width="238" height="128" rx="8" class="dg-blk"/>')
+    W.append(_st('<rect x="81.5" y="77.5" width="235" height="125" rx="7" class="dg-wash"/>',
+                 "2=o:1,@1.1,d:0.6 4=o:1,@1.1,d:0.6,re"))
+    W.append(_t(92, 96, "VLM backbone / text pathway", "dg-b") + _t(92, 112, "grounds the instruction", "dg-s dg-mu"))
+    W.append('<line x1="92" y1="156.5" x2="208" y2="156.5" class="dg-axis"/>')
+    W.append(_st(_bars(93, 156, 12, 7, 2.6, 30, 0.3, "dg-sb-o"), "1=o:1,@1.1,d:0.6", static=False))
+    W.append(_st(_bars(93, 156, 12, 7, 2.6, 30, 2.1, "dg-sb-c"), "2=o:1,@1.1,d:0.6 3=o:1 4=o:1,@1.1,d:0.6,re"))
+    W.append(_t(92, 177, "states", "dg-xs dg-mu"))
+    # its weights, and the patch the edit writes into them
+    cells = "".join(f'<rect x="{230 + c * 20:g}" y="{124 + r * 13:g}" width="16" height="10" rx="2" class="dg-wc"/>'
+                    for r in range(3) for c in range(4))
+    patch = "".join(f'<rect x="{230 + c * 20:g}" y="{124 + r * 13:g}" width="16" height="10" rx="2" '
+                    f'class="{"dg-wp1" if (r * 3 + c * 5) % 4 else "dg-wp2"}"/>' for r in range(3) for c in range(4))
+    W.append(cells + _st(patch, "3=o:1,@1.3,pop 4=o:1"))
+    W.append(_st(_t(268, 177, "weights", "dg-xs dg-mu", "middle"), "1=o:1 2=o:1", static=False)
+             + _st(_t(268, 177, "edited weights", "dg-xs dg-acc dg-b", "middle"), "3=o:1,@1.5 4=o:1"))
+    W.append(_st(_arrow([(211, 141), (225, 141)], "dg-acc-ln") + _t(92, 196, "the difference, written into the weights",
+                                                                    "dg-xs dg-acc dg-b"), "3=o:1,@0.3", static=False))
+    # the component that produces the actions
+    W.append(_arrow([(199, 204), (199, 230)]) + _t(207, 221, "attends to its states", "dg-xs dg-mu"))
+    W.append('<rect x="80" y="230" width="238" height="60" rx="8" class="dg-blk"/>'
+             + _t(92, 252, "action expert / action head", "dg-b") + _t(92, 268, "generates the action chunk", "dg-s dg-mu"))
+    W.append(_arrow([(199, 290), (199, 314)]) + _chunk(199 - _chunk_w(12, 3, 1.6) / 2, 318, 12, 3, 1.6, 14)
+             + _t(234, 329, "action chunk", "dg-xs dg-mu") + _arrow([(199, 336), (199, 354)]))
+    # the robot
+    W.append(_st(_mark(146, 368, "broke", 7) + _t(160, 372.5, "the robot fails", "dg-s dg-b"), "1=o:1,@2.75,pop",
+                 static=False, cls="pp"))
+    W.append(_st(_mark(140, 368, "fixed", 7) + _t(154, 372.5, "the robot succeeds", "dg-s dg-b"),
+                 "2=o:1,@2.75,pop 4=o:1,@2.75,pop", cls="pp"))
+    W.append(_st(_t(199, 372.5, "no robot run: computed offline", "dg-s dg-mu", "middle"), "3=o:1,@0.3", static=False))
+    # tokens: words into the VLM / text pathway, frames and joint state into the policy, states on, chunks out
+    n = len(xo)
+    tx = [104 + (294 - 104) * i / (n - 1) for i in range(n)]
+    for i, x in enumerate(xo):
+        W.append(_tok("word", [(x, 40), (tx[i], 82)], "1 4", 0.35 + 0.05 * i, 0.85, "tk-o"))
+    for i, x in enumerate(xc):
+        W.append(_tok("word", [(x, 40), (tx[i], 82)], "2", 0.35 + 0.05 * i, 0.85, "tk-c"))
+    for i, key in enumerate(cams):
+        W.append(_tok("frame", [(42, 85.5 + 36 * i), (80, 85.5 + 36 * i)], "1 2 4", 0.3 + 0.06 * i, 0.75, key=key))
+    for i, yy in enumerate((208, 218)):
+        W.append(_tok("state", [(52, yy), (80, yy)], "1 2 4", 0.42 + 0.06 * i, 0.7))
+    for i, x in enumerate((185, 199, 213)):
+        W.append(_tok("dot", [(x, 206), (x, 229)], "1", 1.4 + 0.06 * i, 0.55, "tk-o"))
+        W.append(_tok("dot", [(x, 206), (x, 229)], "2 4", 1.4 + 0.06 * i, 0.55, "tk-c"))
+    for i in range(2):
+        W.append(_tok("chunk", [(199, 325), (199, 356)], "1", 2.0 + 0.4 * i, 0.8, "tk-o"))
+        W.append(_tok("chunk", [(199, 325), (199, 356)], "2 4", 2.0 + 0.4 * i, 0.8, "tk-c"))
+    W.append(_tok("delta", [(150, 136), (268, 141)], "3", 0.5, 1.0))
+    W.append(_tok("ring", [(0, 0)], "3", 1.2, 1.7, label=(225, 119, 86, 46)))
+    title = "The edit in four steps"
+    desc = (" ".join(f"Step {i}: {s}" for i, s in enumerate(DG1_STEPS, 1))
+            + " Camera frames and the joint state enter the policy; the instruction’s words enter its VLM backbone or "
+              "text pathway, whose states the action expert or action head attends to; an action chunk goes to the "
+              "robot.")
+    return _svg(340, 384, title, desc, "".join(W), "dg-schem", "dg1")
 
 
 def where_sites(P, rc, tables):
@@ -3010,16 +3068,16 @@ def where_sites(P, rc, tables):
 
     out = [dict(id="pi05", name="π0.5", task=tn("T1"), n=n, base=base, kind="unseen", cams="A",
                 blocks=[dict(let="A", detail="vision-language model",
-                             sites=[pi("v1full", "whole part", "Edit in the reading part (whole)"),
-                                    pi("v1img816", "image part only", "Edit in the reading part (image part only)")]),
+                             sites=[pi("v1full", "whole part", "VLM, all layers"),
+                                    pi("v1img816", "image part only", "VLM, image tokens only (0.16% of parameters)")]),
                         dict(let="B", detail="action expert",
-                             sites=[pi("a1", "this part alone", "Edit in the motion part"),
-                                    pi("va", "A and B together", "Edit in both parts")]),
-                        dict(let="C", detail="action head",
-                             sites=[pi("h1", "always on", "Edit in the final layer, always on"),
-                                    pi("p1", "with an on/off switch", "Edit in the final layer, with an on/off switch*")])])]
+                             sites=[pi("a1", "this part alone", "Action expert"),
+                                    pi("va", "A and B together", "VLM + action expert")]),
+                        dict(let="C", detail="action output projection",
+                             sites=[pi("h1", "always on", "Action output projection, unconditional"),
+                                    pi("p1", "with an on/off switch", "Action output projection, gated*")])])]
     for mid, name, cams, details in (("cosmos", "Cosmos3 Edge", "B", ("text pathway", "video and action pathway", "")),
-                                     ("groot", "GR00T N1.7", "A", ("Cosmos-Reason2 model", "diffusion action head", ""))):
+                                     ("groot", "GR00T N1.7", "A", ("Cosmos-Reason2 VLM backbone", "flow-matching DiT action head", ""))):
         bars = rc[mid]["where"].get("_bars")
         if not bars:
             continue
@@ -3032,7 +3090,8 @@ def where_sites(P, rc, tables):
             for s in [x for x in bars["sites"] if x["cls"] == cls] if cls else []:
                 oc = ("none" if s["p"] is None or s["p"] >= SIG else "broke" if s["b"] < s["a"] else
                       "fixed" if s["b"] == top else "partial")
-                sites.append(dict(variant="", row="Edit in the reading part" if cls == "backbone" else "Edit in the motion part", oc=oc,
+                sites.append(dict(variant="", row={"cosmos": ("Text pathway", "Video/action pathway"), "groot": ("VLM backbone", "Flow-matching DiT action head")}[mid][
+                    0 if cls == "backbone" else 1], oc=oc,
                                   k=s["b"], n=s["n"], a=s["a"], p=s["p"], ctl=s.get("ctl")))
             blocks.append(dict(let=let, detail=det, sites=sites))
         out.append(dict(id=mid, name=name, task=tn(bars["task"]), n=bars["n"], base=bars["base"], kind=kind, cams=cams,
@@ -3044,56 +3103,176 @@ BADGE = {"fixed": "fixed it", "partial": "partly fixed it", "none": "no effect",
 PARTS = {"A": "reads the instruction", "B": "turns it into motion", "C": "final output layer"}
 
 
-def dg_panel(m, letters=True):
-    """One model on the schematic, structure only: parts A, B, C in plain words, the model's own name for each in
-    small text, and one verdict badge (icon and word) per edit tried there."""
-    W, x0, x1 = [], 30, 266
-    W.append(_t(14, 20, m["name"], "dg-h") + _t(14, 38, m["task"], "dg-s dg-mu"))
-    W.append(f'<rect x="30" y="50" width="80" height="24" rx="12" class="dg-in"/>' + _t(70, 66.5, "cameras", "dg-s", "middle"))
-    W.append(f'<rect x="150" y="50" width="96" height="24" rx="12" class="dg-in"/>'
-             + _t(198, 66.5, "instruction", "dg-s", "middle"))
-    y, tops = 100, {}
-    # the final output layer is drawn only for a model with an edit there (π0.5); elsewhere B leads to the robot
-    blocks = [b for b in m["blocks"] if b["sites"] or b["let"] != "C"]
-    for i, blk in enumerate(blocks):
-        nb = max(sum(2 if s["variant"] else 1 for s in blk["sites"]), 1)
-        h = 30 + (16 if blk["detail"] else 0) + 20 * nb + 8
-        tops[blk["let"]] = (y, h)
-        W.append(f'<rect x="{x0}" y="{y}" width="{x1 - x0}" height="{h}" rx="7" class="dg-blk"/>'
-                 + (_letter(x0, y + 18, blk["let"]) if letters else "") + _t(48, y + 23, PARTS[blk["let"]], "dg-b"))
-        yy = y + 23 + (17 if blk["detail"] else 0)
-        if blk["detail"]:
-            W.append(_t(48, yy, f"({blk['detail']})", "dg-s dg-mu"))
-        yy += 23
-        if not blk["sites"]:
-            W.append(_t(48, yy - 4.5 + 4.5, "– not tried", "dg-s dg-mu"))
-        for s in blk["sites"]:
-            word = BADGE[s["oc"]]
-            W.append(f'<g><title>{esc(word + (": " + s["variant"] if s["variant"] else ""))}</title>'
-                     + _mark(54, yy - 4.5, s["oc"]) + _t(67, yy, word, "dg-s dg-b")
-                     + (_t(67, yy + 18, s["variant"], "dg-s dg-mu") if s["variant"] else "") + "</g>")
-            yy += 40 if s["variant"] else 20
-        y += h + (30 if i < len(blocks) - 1 else 0)
-    cx = 148
-    ya, ha = tops["A"]
-    yb, hb = tops["B"]
-    yc, hc = tops.get("C", (None, None))
-    W.append(_arrow([(198, 74), (198, ya)]))
-    if m["cams"] == "A":
-        W.append(_arrow([(70, 74), (70, ya)]))
+def dg_panel(m, nsteps=3):
+    """One architecture in Figure 4: its inputs (real camera frames, the joint state, the instruction) flowing into
+    its components, an action chunk flowing out, and one verdict per component the edit went into; the component
+    holding the edit in each step is outlined. Components with no edit are not drawn."""
+    a = ARCH[m["id"]]
+    pid = f"dg2{m['id']}"
+    W = [_t(14, 20, a["type"], "dg-h")]
+    starts = f"{m['n']} {'unseen' if m['kind'] == 'unseen' else 'practice'} starts"
+    lines = [f"{m['name']} · {m['task']}", starts]
+    if _tw(" · ".join(lines), 11.5) <= 252:
+        lines = [" · ".join(lines)]
+    for i, ln in enumerate(lines):
+        W.append(_t(14, 37 + 14 * i, ln, "dg-xs dg-mu"))
+    y_in = 37 + 14 * (len(lines) - 1) + 14
+    blocks = [b for b in m["blocks"] if b["sites"]]
+    lets = [b["let"] for b in blocks]
+    X0, X1 = 16, 258
+    cams = a["cams"]
+    ih = 23
+    toks = []
+
+    def badge(blk, x, y):
+        s = blk["sites"][0]
+        k = lets.index(blk["let"]) + 1
+        spec = " ".join(f"{j}=o:1" + (",@2.9,pop" if j == k else "") for j in range(k, nsteps + 1))
+        return _st(f'<title>{esc(BADGE[s["oc"]])}</title>' + _mark(x, y, s["oc"]) + _t(x + 13, y + 4.5, BADGE[s["oc"]],
+                                                                                         "dg-s dg-b"), spec, cls="pp")
+
+    def patch(blk, x, y, w, h, tx=None, ty=None):
+        """The component holding the edit in this step: outlined, with an "edit" tag inside it (top right, or at
+        tx, ty)."""
+        k = lets.index(blk["let"]) + 1
+        tag_w = 34
+        tx = x + w - tag_w - 8 if tx is None else tx
+        ty = y + 8 if ty is None else ty
+        return _st(f'<rect x="{x - 2:g}" y="{y - 2:g}" width="{w + 4:g}" height="{h + 4:g}" rx="9" class="dg-patch"/>'
+                   f'<rect x="{tx:g}" y="{ty:g}" width="{tag_w}" height="15" rx="7.5" class="dg-tag"/>'
+                   + _t(tx + tag_w / 2, ty + 11, "edit", "dg-xs dg-b dg-tag-t", "middle"), f"{k}=o:1", static=False)
+
+    if a["layout"] == "stack":
+        # inputs: cameras, joint state, instruction
+        xs_ = [X0 + i * 38 for i in range(len(cams))]
+        for i, (x, key) in enumerate(zip(xs_, cams)):
+            W.append(_thumb(x, y_in, 34, ih, key, f"{pid}c{i}"))
+        cam_c = (xs_[0] + xs_[-1] + 34) / 2
+        if a["state_to"] == "A":
+            gx, ix0, ix1 = xs_[-1] + 40, xs_[-1] + 86, X1
+        else:
+            gx, ix0, ix1 = X1 - 38, xs_[-1] + 40, X1 - 46
+        W.append(_gauge(gx, y_in, 38, ih, 1.1 + len(cams)))
+        W.append(f'<rect x="{ix0:g}" y="{y_in:g}" width="{ix1 - ix0:g}" height="{ih}" rx="{ih / 2:g}" class="dg-in"/>'
+                 + _t((ix0 + ix1) / 2, y_in + 15.5, "instruction", "dg-xs", "middle"))
+        W.append(_t(cam_c, y_in + ih + 13, "cameras", "dg-xs dg-mu", "middle")
+                 + _t(gx + 19, y_in + ih + 13, "joint state", "dg-xs dg-mu", "middle"))
+        y = y_in + ih + 26
+        tops, bh = {}, 66
+        for i, blk in enumerate(blocks):
+            name, det = a["parts"][blk["let"]]
+            tops[blk["let"]] = y
+            W.append(f'<rect x="{X0}" y="{y}" width="{X1 - X0}" height="{bh}" rx="8" class="dg-blk"/>'
+                     + _t(X0 + 12, y + 20, name, "dg-b") + _t(X0 + 12, y + 36, det, "dg-s dg-mu"))
+            W.append(patch(blk, X0, y, X1 - X0, bh) + badge(blk, X0 + 18, y + 51))
+            y += bh + (30 if i < len(blocks) - 1 else 0)
+        ya = tops["A"]
+        cx = (X0 + X1) / 2
+        ic = (ix0 + ix1) / 2
+        W.append(_arrow([(ic, y_in + ih), (ic, ya)]) + _arrow([(cam_c, y_in + ih + 17), (cam_c, ya)]))
+        for i, f in enumerate((0.22, 0.42, 0.62, 0.82)):
+            x = ix0 + (ix1 - ix0) * f
+            toks.append(_tok("word", [(x, y_in + ih + 3), (ic - 24 + 16 * i, ya + 6)], "1 2 3", 0.35 + 0.05 * i, 0.8,
+                             "tk-c"))
+        for i, (x, key) in enumerate(zip(xs_, cams)):
+            toks.append(_tok("frame", [(cam_c - 12 + 24 * i, y_in + ih + 19), (cam_c - 12 + 24 * i, ya + 6)], "1 2 3",
+                             0.3 + 0.06 * i, 0.7, key=key))
+        if a["state_to"] == "A":
+            W.append(_arrow([(gx + 19, y_in + ih + 17), (gx + 19, ya)]))
+            for i in range(2):
+                toks.append(_tok("state", [(gx + 15 + 8 * i, y_in + ih + 18), (gx + 15 + 8 * i, ya + 6)], "1 2 3",
+                                 0.42 + 0.06 * i, 0.75))
+        else:
+            yb = tops["B"]
+            lx = X1 + 12
+            W.append(_arrow([(gx + 19, y_in + ih + 17), (gx + 19, y_in + ih + 21), (lx, y_in + ih + 21), (lx, yb + 33),
+                             (X1, yb + 33)]))
+            for i in range(2):
+                toks.append(_tok("state", [(gx + 19, y_in + ih + 18), (gx + 19, y_in + ih + 21), (lx, y_in + ih + 21),
+                                           (lx, yb + 33), (X1 - 6, yb + 33)], "1 2 3", 0.4 + 0.12 * i, 1.3))
+        for p, q in zip(lets, lets[1:]):
+            y0, y1 = tops[p] + bh, tops[q]
+            W.append(_arrow([(cx, y0), (cx, y1)]) + (_t(cx + 8, y0 + 19, a["links"][p], "dg-xs dg-mu")
+                                                    if p in a["links"] else ""))
+            t0 = 1.3 + 0.45 * lets.index(p)
+            for i, dx in enumerate((-10, 0, 10)):
+                toks.append(_tok("dot", [(cx + dx, y0 + 2), (cx + dx, y1 + 4)], "1 2 3", t0 + 0.06 * i, 0.5, "tk-c"))
+        ye = y
+        n, run = a["chunk"]
+        cw = 64 / n * 0.62
+        gap = (64 - n * cw) / (n - 1)
+        W.append(_arrow([(cx, ye), (cx, ye + 20)]) + _chunk(cx - 32, ye + 24, n, round(cw, 2), round(gap, 2), 14,
+                                                            run if run < n else None)
+                 + _t(cx, ye + 54, a["out"], "dg-xs", "middle") + _t(cx, ye + 69, "to the robot", "dg-xs dg-mu", "middle"))
+        for i in range(2):
+            toks.append(_tok("chunk", [(cx, ye + 31), (cx, ye + 44)], "1 2 3", 2.1 + 0.35 * i, 0.7, "tk-c"))
+        H = ye + 78
     else:
-        W.append(_arrow([(30, 62), (14, 62), (14, yb + 40), (30, yb + 40)]))
-    W.append(_arrow([(cx, ya + ha), (cx, yb)]) + _t(cx + 8, ya + ha + 19, "passes what it read", "dg-xs dg-mu"))
-    if yc is not None:
-        W.append(_arrow([(cx, yb + hb), (cx, yc)]))
-    ye = (yc + hc) if yc is not None else (yb + hb)
-    W.append(_arrow([(cx, ye), (cx, ye + 22)]) + _t(cx, ye + 40, "robot", "dg-s", "middle"))
-    H = ye + 48
-    parts = "; ".join(f"{b['let']}, {PARTS[b['let']]}" + (f" ({b['detail']})" if b["detail"] else "") + ": "
-                      + (", ".join(BADGE[s["oc"]] + (f" ({s['variant']})" if s["variant"] else "") for s in b["sites"])
-                         or "no edit") for b in blocks)
-    return _svg(280, H, f"{m['name']}, {m['task']}: where each edit went", parts + ".", "".join(W), "dg-panel",
-                f"dg2-{m['id']}")
+        # the world-action model: two pathways side by side; the video/action pathway reads the text pathway's keys
+        # and values in every layer
+        AX0, AX1, BX0, BX1 = X0, 112, 150, X1
+        W.append(f'<rect x="{AX0}" y="{y_in}" width="{AX1 - AX0}" height="{ih}" rx="{ih / 2:g}" class="dg-in"/>'
+                 + _t((AX0 + AX1) / 2, y_in + 15.5, "instruction", "dg-xs", "middle"))
+        xs_ = [BX0 - 14 + i * 29 for i in range(len(cams))]
+        for i, (x, key) in enumerate(zip(xs_, cams)):
+            W.append(_thumb(x, y_in, 26, ih - 4, key, f"{pid}c{i}"))
+        gx = BX1 - 34
+        W.append(_gauge(gx, y_in, 34, ih - 4, 2.2))
+        cam_c = (xs_[0] + xs_[-1] + 26) / 2
+        W.append(_t(cam_c, y_in + ih + 9, "cameras", "dg-xs dg-mu", "middle")
+                 + _t(gx + 17, y_in + ih + 9, "joint state", "dg-xs dg-mu", "middle"))
+        ya = y_in + ih + 26
+        bh = 132
+        ba, bb = blocks[0], blocks[1] if len(blocks) > 1 else None
+        W.append(f'<rect x="{AX0}" y="{ya}" width="{AX1 - AX0}" height="{bh}" rx="8" class="dg-blk"/>'
+                 + _t(AX0 + 10, ya + 20, a["parts"]["A"][0], "dg-b") + _t(AX0 + 10, ya + 36, "instruction", "dg-s dg-mu")
+                 + _t(AX0 + 10, ya + 51, "tokens", "dg-s dg-mu"))
+        W.append(patch(ba, AX0, ya, AX1 - AX0, bh, AX0 + 10, ya + 72) + badge(ba, AX0 + 16, ya + bh - 15))
+        W.append(f'<rect x="{BX0}" y="{ya}" width="{BX1 - BX0}" height="{bh}" rx="8" class="dg-blk"/>'
+                 + _t(BX0 + 10, ya + 20, "video/action", "dg-b") + _t(BX0 + 10, ya + 35, "pathway", "dg-b")
+                 + _t(BX0 + 10, ya + 51, "video and", "dg-s dg-mu") + _t(BX0 + 10, ya + 66, "action tokens", "dg-s dg-mu"))
+        if bb:
+            W.append(patch(bb, BX0, ya, BX1 - BX0, bh, BX0 + 10, ya + 80) + badge(bb, BX0 + 16, ya + bh - 15))
+        ic = (AX0 + AX1) / 2
+        W.append(_arrow([(ic, y_in + ih), (ic, ya)]) + _arrow([(cam_c, y_in + ih + 13), (cam_c, ya)])
+                 + _arrow([(gx + 17, y_in + ih + 13), (gx + 17, ya)]))
+        for i, f in enumerate((0.2, 0.4, 0.6, 0.8)):
+            x = AX0 + (AX1 - AX0) * f
+            toks.append(_tok("word", [(x, y_in + ih + 3), (ic - 21 + 14 * i, ya + 6)], "1 2 3", 0.35 + 0.05 * i, 0.8,
+                             "tk-c"))
+        for i, (x, key) in enumerate(zip(xs_, cams)):
+            toks.append(_tok("frame", [(cam_c - 20 + 20 * i, y_in + ih + 15), (cam_c - 20 + 20 * i, ya + 6)], "1 2 3",
+                             0.3 + 0.06 * i, 0.7, key=key))
+        for i in range(2):
+            toks.append(_tok("state", [(gx + 13 + 8 * i, y_in + ih + 14), (gx + 13 + 8 * i, ya + 6)], "1 2 3",
+                             0.42 + 0.06 * i, 0.7))
+        for i, yy in enumerate((ya + 62, ya + 82, ya + 102)):
+            W.append(_arrow([(AX1, yy), (BX0, yy)]))
+            toks.append(_tok("dot", [(AX1 + 2, yy), (BX0 - 4, yy)], "1 2 3", 1.2 + 0.08 * i, 0.5, "tk-c"))
+        W.append(_t(AX0, ya + bh + 16, a["links"]["A"], "dg-xs dg-mu"))
+        ye = ya + bh
+        ox = (BX0 + BX1) / 2
+        n, _ = a["chunk"]
+        W.append(_arrow([(ox, ye), (ox, ye + 26)]))
+        vid = "".join(f'<rect x="{ox - 52 + 4 * i:g}" y="{ye + 30 + 3 * i:g}" width="22" height="15" rx="2" '
+                      f'class="dg-vf"/>' for i in range(3))
+        cw = 1.25
+        gap = (60 - n * cw) / (n - 1)
+        W.append(vid + _chunk(ox - 12, ye + 33, n, cw, round(gap, 2), 14))
+        W.append(_t(X1, ye + 66, a["out"], "dg-xs", "end") + _t(X1, ye + 81, "to the robot", "dg-xs dg-mu", "end"))
+        for i in range(2):
+            toks.append(_tok("chunk", [(ox + 18, ye + 36), (ox + 18, ye + 50)], "1 2 3", 1.9 + 0.35 * i, 0.7, "tk-c"))
+            toks.append(_tok("video", [(ox - 38, ye + 38), (ox - 38, ye + 50)], "1 2 3", 1.9 + 0.35 * i, 0.7))
+        H = ye + 90
+    W += toks
+    parts = "; ".join(f"{a['parts'][b['let']][0]}: {BADGE[b['sites'][0]['oc']]}" for b in blocks)
+    return _svg(280, H, f"{a['type']} ({m['name']}), {m['task']}: where the edit went",
+                f"{m['n']} {'unseen' if m['kind'] == 'unseen' else 'practice'} starts. Inputs: "
+                + ("three camera views and the joint state into the video/action pathway, the instruction into the text "
+                   "pathway, whose keys and values the video/action pathway reads in every layer" if a["layout"] == "side"
+                   else f"{len(cams)} camera views and the instruction into the VLM backbone, the joint state into the "
+                        + ("VLM backbone" if a["state_to"] == "A" else a["parts"]["B"][0]))
+                + f"; output: {a['out']}. One verdict per component: {parts}.", "".join(W), "dg-panel", pid)
 
 
 def dg_legend():
@@ -3104,7 +3283,9 @@ def dg_legend():
 
 
 def dg_groot(tables, cross):
-    """Diagram 3: GR00T's clear wording adds words the original prompt has no counterpart for."""
+    """Diagram 3, the reasoning-backbone VLA's two wordings word by word: the words before and after the clear
+    wording's inserted clause line up one to one, the inserted words have nothing to land on. cosmos.js plays it in
+    three steps (GROOT_STEPS); the still drawing is the last."""
     T = {t["id"]: {r["key"]: r["cells"] for r in t["rows"]} for t in tables}
     rows = (cross.get("groot") or {}).get("rows") or []
     wp = next((r.get("wording_pair") for r in rows if r["_task"] == "T1" and isinstance(r.get("wording_pair"), list)
@@ -3124,38 +3305,64 @@ def dg_groot(tables, cross):
     j = 0
     while j < min(len(o), len(c)) - i and o[-1 - j].lower() == c[-1 - j].lower():
         j += 1
-    seg_o = [" ".join(o[:i]), " ".join(o[i:len(o) - j]), " ".join(o[len(o) - j:])]
     seg_c = [" ".join(c[:i]), " ".join(c[i:len(c) - j]), " ".join(c[len(c) - j:])]
-
-    def lines(s, width=15):
-        """One line, or two of balanced length."""
-        ws = s.split()
-        if len(s) <= width or len(ws) < 2:
-            return [s] if s else []
-        k = min(range(1, len(ws)), key=lambda q: max(len(" ".join(ws[:q])), len(" ".join(ws[q:]))))
-        return [" ".join(ws[:k]), " ".join(ws[k:])]
-
+    mid_o = o[i:len(o) - j]
+    Y0, P, CH = 70, 17, 14
+    ry = lambda r: Y0 + P * r
+    LX, RX = 14, 216
     W = [_t(14, 18, "The two wordings, word by word", "dg-b"), _t(14, 36, f"GR00T N1.7 · {tn('T1')}", "dg-s dg-mu"),
-         _t(14, 62, "original wording", "dg-s dg-mu"), _t(206, 62, "clear wording", "dg-s dg-acc")]
-    y = 72
-    for k in range(3):
-        lo, lc = lines(seg_o[k]), lines(seg_c[k])
-        h = 12 + 17 * max(len(lo), len(lc), 1)
-        mid = k == 1
-        W.append(f'<rect x="14" y="{y}" width="120" height="{h}" rx="5" class="{"dg-tok dg-dash-b" if mid else "dg-tok"}"/>'
-                 + "".join(_t(24, y + 19 + 17 * q, s, "dg-s dg-mu" if mid else "dg-s") for q, s in enumerate(lo)))
-        W.append(f'<rect x="206" y="{y}" width="120" height="{h}" rx="5" class="{"dg-band dg-acc-b" if mid else "dg-tok"}"/>'
-                 + "".join(_t(216, y + 19 + 17 * q, s, "dg-s") for q, s in enumerate(lc)))
-        if mid:
-            W.append(_t(170, y + h / 2 - 2, "no", "dg-xs dg-mu", "middle")
-                     + _t(170, y + h / 2 + 12, "counterpart", "dg-xs dg-mu", "middle"))
+         _t(LX, 60, "original wording", "dg-s dg-mu"), _t(RX, 60, "clear wording", "dg-s dg-acc")]
+    chip = lambda x, y, s, cls="dg-tok": (f'<rect x="{x:g}" y="{y:g}" width="{_tw(s, 11.5) + 12:.1f}" height="{CH}" '
+                                          f'rx="4" class="{cls}"/>' + _t(x + 6, y + 10.5, s, "dg-xs"))
+    # the clear wording's inserted clause: a band behind it, and room it cannot land in on the original side
+    ins = range(i, len(c) - j)
+    bw = max(_tw(c[r], 11.5) for r in ins) + 22
+    W.append(_st(f'<rect x="{RX - 5}" y="{ry(i) - 3}" width="{bw:.1f}" height="{P * len(ins) + 2}" rx="6" '
+                 f'class="dg-band"/>', "3=o:1,@0.2"))
+    gap_rows = range(i + len(mid_o), len(c) - j)
+    W.append(_st("".join(f'<rect x="{LX}" y="{ry(r)}" width="44" height="{CH}" rx="4" class="dg-ghost"/>' for r in gap_rows),
+                 "3=o:1,@1.4"))
+    my = (ry(i) + ry(len(c) - j - 1) + CH) / 2
+    W.append(_st(_t(140, my - 3, "no counterpart:", "dg-xs dg-mu dg-b", "middle")
+                 + _t(140, my + 11, "nowhere to land", "dg-xs dg-mu", "middle"), "3=o:1,@1.7"))
+    # matched words: connectors, drawn from the left
+    matched = list(range(i)) + list(range(len(c) - j, len(c)))
+    for q, r in enumerate(matched):
+        ow = o[r] if r < i else o[len(o) - (len(c) - r)]
+        x1 = LX + _tw(ow, 11.5) + 15
+        W.append(_st(f'<line x1="{x1:.1f}" y1="{ry(r) + 7}" x2="{RX - 3}" y2="{ry(r) + 7}" class="dg-acc-ln"/>',
+                     f"1=o:0,sx:0 2=o:1,sx:1,@{1.0 + 0.05 * q:.2f},d:0.5 3=o:1", cls="sxo"))
+    # the original's words, in order (step 1: they come in one by one): the prefix in place, its middle unmatched, its
+    # suffix sliding down into line
+    come = lambda r, extra="": f"1=o:1{extra},@{0.2 + 0.055 * r:.2f},d:0.4,re"
+    for r in range(i):
+        W.append(_st(chip(LX, ry(r), o[r]), come(r) + " 2=o:1 3=o:1"))
+    for q, w_ in enumerate(mid_o):
+        W.append(_st(chip(LX, ry(i + q), w_), come(i + q), static=False)
+                 + _st(chip(LX, ry(i + q), w_, "dg-tok dg-dash-b"), "2=o:1,@0.9 3=o:1"))
+    shift = -(len(c) - j - (i + len(mid_o))) * P
+    for q in range(j):
+        r = len(c) - j + q
+        W.append(_st(chip(LX, ry(r), o[len(o) - j + q]),
+                     come(i + len(mid_o) + q, f",y:{shift}") + f" 2=y:0,@{0.3 + 0.05 * q:.2f},d:0.75 3=y:0"))
+    # the clear wording's words; the inserted ones reach for a counterpart and come back
+    for r, w_ in enumerate(c):
+        st = come(r + 0.5) + " 2=o:1 3=o:1"
+        if r in ins:
+            q = r - i
+            W.append(f'<g class="nd" data-n="3@{0.55 + 0.08 * q:.2f}">'
+                     + _st(chip(RX, ry(r), w_, "dg-tok dg-acc-b"), st) + "</g>")
         else:
-            W.append(f'<line x1="134" y1="{y + h / 2:g}" x2="206" y2="{y + h / 2:g}" class="dg-acc-ln"/>'
-                     + _t(170, y + h / 2 - 6, "matched", "dg-xs dg-acc", "middle"))
-        y += h + 10
-    y += 8
+            W.append(_st(chip(RX, ry(r), w_), st))
+    y = ry(len(c)) + 14
+    W.append(f'<line x1="{LX}" y1="{y - 4}" x2="{LX + 22}" y2="{y - 4}" class="dg-acc-ln"/>'
+             + _t(LX + 30, y, "matched: the edit copies the change at these words", "dg-xs dg-mu"))
+    W.append(f'<rect x="{LX - 2}" y="{y + 6}" width="26" height="15" rx="4" class="dg-band"/>'
+             f'<rect x="{LX + 1}" y="{y + 8}" width="20" height="11" rx="3" class="dg-tok dg-acc-b"/>'
+             + _t(LX + 30, y + 17, "inserted: no counterpart in the original", "dg-xs dg-mu"))
+    y += 46
     W.append(_t(14, y + 4, "The clear wording", "dg-b dg-acc"))
-    W.append(_t(14, y + 23, "The motion planner reads the extra words,", "dg-s"))
+    W.append(_t(14, y + 23, "The action head attends to the inserted words,", "dg-s"))
     W.append(_t(14, y + 40, "so the robot’s first reach stays as it was.", "dg-s"))
     W.append(_t(14, y + 61, f"{wd['b']} of {wd['n']} practice starts completed", "dg-s dg-b"))
     W.append(_t(14, y + 78, f"with the original wording: {wd['a']}"
@@ -3173,45 +3380,74 @@ def dg_groot(tables, cross):
                 "dg-s dg-mu"))
     H = y + 125
     desc = (f"Original wording: “{wp[0]}”. Clear wording: “{wp[1]}”. The words before and after the inserted words are "
-            f"matched one to one; “{seg_c[1]}” has no counterpart in the original. Under the clear wording the motion "
-            f"planner reads those extra words, which keep the first reach unchanged: {wd['a']} → {wd['b']} of {wd['n']}. "
-            f"The edit can copy only the change at the matched words, which is the same at the first grasp as at the "
-            f"banana (median similarity {cos:.2f}), so it acts from the first reach: {eg['a']} → {eg['b']}.")
-    return _svg(340, H, "Why the edit backfires on GR00T N1.7", desc, "".join(W), "dg-groot", "dg3"), dict(
+            f"matched one to one; “{seg_c[1]}” has no counterpart in the original. Under the clear wording the action "
+            f"head attends to those inserted words, which keep the first reach unchanged: {wd['a']} → {wd['b']} of "
+            f"{wd['n']}. The edit can copy only the change at the matched words, which is the same at the first grasp as "
+            f"at the banana (median similarity {cos:.2f}), so it acts from the first reach: {eg['a']} → {eg['b']}.")
+    return _svg(340, H, "Why the edit backfires on the reasoning-backbone VLA", desc, "".join(W), "dg-groot", "dg3"), dict(
         original=wp[0], clear=wp[1], clause=seg_c[1], cos=round(cos, 2), teacher=[wd["a"], wd["b"], wd["n"]],
         edit=[eg["a"], eg["b"], eg["n"]])
 
 
 def dg_schematic_html():
-    notes = ("<li><b>A reads the instruction.</b> In π0.5 it is a vision-language model (PaliGemma); in GR00T N1.7, "
-             "NVIDIA’s Cosmos-Reason2 model; in Cosmos3 Edge, the path the instruction’s words take through the network "
-             "(its text pathway). Under the clear wording, A’s internal states change first; B and C change only "
-             "because A did.</li>"
-             "<li><b>The edit</b> copies that change into A’s weights, so the original wording produces it. That copies "
-             "the cause.</li>"
-             "<li><b>Copied into B or C</b>, the same change lands on states that also depend on where the robot is, so "
-             "it copies a symptom: it needs an on/off switch, leaks into other moments, or breaks the task.</li>")
-    return (f'<figure class="dgfig dg1"><div class="dg1-grid">{dg_schematic()}<ol class="dg-notes">{notes}</ol></div>'
-            f'<figcaption>Copy the clear wording’s effect where the instruction is read (A) and you copy the cause; copy '
-            f'it into the motion side (B or C) and you copy a symptom that also depends on where the robot is.'
-            f'</figcaption></figure>')
+    return ('<figure class="dgfig dg1 anim" data-dur="' + " ".join(f"{d:g}" for d in DG1_DUR) + '">' + dg_schematic()
+            + anim_controls(DG1_STEPS, "The edit in four steps")
+            + '<figcaption>The edit copies the clear wording’s effect into the weights of the VLM backbone or text '
+              'pathway, where the instruction is grounded. Copied into the action expert or action head instead, it '
+              'lands on states that also depend on where the robot is: a symptom, not the cause.</figcaption></figure>')
 
 
 def dg_where_html(sites):
-    """Figure (a): where each edit went, structure and verdicts only."""
-    fixed = [m["name"] for m in sites if any(s["oc"] == "fixed" for s in m["blocks"][0]["sites"])
-             and not any(s["oc"] == "fixed" for b in m["blocks"][1:] for s in b["sites"])]
-    broke = [m["name"] for m in sites if all(s["oc"] == "broke" for b in m["blocks"] for s in b["sites"])
+    """Figure 4: the three architectures, one verdict per component the edit went into, inputs and outputs moving; the
+    variants tried on the action-expert VLA in one or two sentences below it."""
+    fixed = [ARCH[m["id"]]["short"] for m in sites if any(s["oc"] == "fixed" for s in m["blocks"][0]["sites"][:1])
+             and not any(b["sites"] and b["sites"][0]["oc"] == "fixed" for b in m["blocks"][1:])]
+    broke = [ARCH[m["id"]]["short"] for m in sites if all(b["sites"][0]["oc"] == "broke" for b in m["blocks"] if b["sites"])
              and any(b["sites"] for b in m["blocks"])]
-    cap = ((f"In {and_list(fixed)} only the edit in the part that reads the instruction fixed the task; " if fixed else "")
-           + (f"in {and_list(broke)} every version broke it." if broke else ""))
-    cap = cap[0].upper() + cap[1:] if cap else "Where each version of the edit went."
+    first = or_list(sorted({ARCH[m["id"]]["parts"]["A"][0] for m in sites}, key=lambda s: ("VLM" not in s, s)))
+    cap = ((f"In {and_list('the ' + x for x in fixed)}, only the edit in the {first} fixed the task; " if fixed else "")
+           + (f"in {and_list('the ' + x for x in broke)}, every placement broke it." if broke else ""))
+    cap = cap[0].upper() + cap[1:] if cap else "Where the edit went."
     cap = cap.rstrip("; ") + ("" if cap.endswith(".") else ".")
-    cap += (" Fixed or broke means clearly better or worse than the unedited model from the same starts; the scores are "
-            "in the next figure.")
-    return (f'<figure class="dgfig dg2 wide"><div class="dg2-grid">'
-            + "".join(f'<div class="dg2-p">{dg_panel(m)}</div>' for m in sites)
-            + f'</div><figcaption>{esc(cap)}</figcaption></figure>')
+    cap += (" One verdict per component: clearly better or worse than the unedited model from the same starts, or no "
+            "clear change. The scores are in the next figure.")
+    steps = where_steps(sites)
+    # the variants tried on the action-expert VLA, in words below the figure
+    pi = next((m for m in sites if m["id"] == "pi05"), None)
+    var = []
+    if pi:
+        for b in pi["blocks"]:
+            for s in b["sites"][1:]:
+                var.append(s)
+    note = ""
+    if var:
+        what = {"VLM, image tokens only (0.16% of parameters)": "the VLM edit restricted to the image tokens (storable in "
+                                                                "0.16% of the parameters)",
+                "VLM + action expert": "the VLM backbone and the action expert edited together",
+                "Action output projection, gated*": "a gated edit of the action output projection written by a "
+                                                    "blind AI editor"}
+        bits = [what.get(s["row"], s["row"][0].lower() + s["row"][1:]) for s in var]
+        ocs = {s["oc"] for s in var}
+        n = pi["n"]
+        if len(ocs) == 1:
+            res = (f"Each {BADGE[var[0]['oc']].replace('fixed it', 'fixed the task')} "
+                   f"({and_list(str(s['k']) for s in var)} of {n})")
+        else:
+            res = "; ".join(f"{w[0].upper() + w[1:]}: {BADGE[s['oc']]}, {s['k']} of {n}" for w, s in zip(bits, var))
+        cnt = {1: "one variant", 2: "two variants", 3: "three variants", 4: "four variants"}.get(len(var), f"{len(var)} variants")
+        note = (f'<p class="dg-after">On the {ARCH["pi05"]["short"]} we also tried {cnt} on the same {n} starts: '
+                f'{"; ".join(bits[:-1]) + "; and " + bits[-1] if len(bits) > 2 else and_list(bits)}. {res}; the next '
+                f'figure scores them, and the records have the details.</p>')
+    return (f'<figure class="dgfig dg2 wide anim" data-dur="{" ".join(f"{d:g}" for d in WHERE_DUR[:len(steps)])}">'
+            + '<div class="dg2-grid">' + "".join(f'<div class="dg2-p">{dg_panel(m, len(steps))}</div>' for m in sites)
+            + "</div>" + anim_controls(steps, "Where the edit went")
+            + f'<figcaption>{esc(cap)}</figcaption></figure>' + note)
+
+
+GROOT_STEPS = ["The two wordings, word by word: the clear one inserts a clause.",
+               "The words before and after the clause match one to one, so they line up.",
+               "The inserted words have no counterpart in the original: the edit has nowhere to copy their effect."]
+GROOT_DUR = (4.2, 5.0, 5.8)
 
 
 def dg_groot_html(tables, cross):
@@ -3219,9 +3455,24 @@ def dg_groot_html(tables, cross):
     if not got:
         return "", None
     svg, data = got
-    return (f'<figure class="dgfig dg3">{svg}<figcaption>The clear wording adds words that have no counterpart in the '
-            f'original, and those words keep the first reach unchanged. The edit can copy only the change at the matched '
-            f'words, which already acts on the first reach, so it breaks the task.</figcaption></figure>'), data
+    return (f'<figure class="dgfig dg3 anim" data-dur="{" ".join(f"{d:g}" for d in GROOT_DUR)}">{svg}'
+            + anim_controls(GROOT_STEPS, "The two wordings, word by word")
+            + '<figcaption>The words of the two wordings line up only where the wordings match; the clear wording’s '
+              'inserted clause has no counterpart in the original, so the edit has nowhere to copy its effect. The '
+              'change at the matched words already acts on the first reach, so the edit breaks the task.'
+              '</figcaption></figure>'), data
+
+
+THUMBS = {   # camera views for the block diagrams: (clip in video/, crop of one view in its frame at THUMB_T seconds)
+    "cosmos_l": ("cosmos_t8_wording", (45, 208, 270, 358)),
+    "cosmos_r": ("cosmos_t8_wording", (352, 208, 577, 358)),
+    "cosmos_w": ("cosmos_t8_wording", (690, 208, 915, 358)),
+    "pi05_ext": ("pi05_t1_edit_control_teacher", (110, 592, 425, 802)),
+    "pi05_wrist": ("pi05_t1_edit_control_teacher", (600, 592, 915, 802)),
+    "groot_ext": ("groot_t1_wording", (110, 318, 425, 528)),
+    "groot_wrist": ("groot_t1_wording", (600, 318, 915, 528)),
+}
+THUMB_T, THUMB_PX = 0.4, (132, 88)
 
 
 # ---------------------------------------------------------------- the story: TL;DR and the main flow's numbered prose
@@ -3273,15 +3524,15 @@ def tldr_story(tables, models, prevent, sites):
         rec = T["recovery"].get(tid, {}).get("cosmos") or {}
         same = rec.get("s") == "ok" and rec.get("n") == c["n"] and rec.get("t") == c["b"]
         items.append(dict(id="fix", lead="The fix.",
-                          text=f"A closed-form weight edit makes NVIDIA’s Cosmos3 Edge succeed from {c['b']} of {c['n']} "
-                               "new starts" + (", as often as rewording the instruction does." if same else ".")))
+                          text=f"A closed-form weight edit makes a world-action model (Cosmos3 Edge) succeed from {c['b']} "
+                               f"of {c['n']} new starts" + (", as often as rewording the instruction does." if same else ".")))
     else:
-        items.append(dict(id="fix", lead="The fix.", text=f"Cosmos3 Edge’s edit on unseen starts: {RUNNING}."))
+        items.append(dict(id="fix", lead="The fix.", text=f"The world-action model’s edit on unseen starts: {RUNNING}."))
     pred = WHEN_LAST.get("pred") or []
     held = any(x["equal"] and x["held"] is True for x in pred) and all(x["held"] is not False for x in pred)
     items.append(dict(id="where", lead="When it works.",
-                      text="Only where the robot reads; on NVIDIA’s models, only when the clearer wording swaps words "
-                           "in place." + (" Predicted in advance, it held." if held else "")))
+                      text="Only in the VLM or text pathway; except in the action-expert VLA, only when the clear "
+                           "wording swaps words in place" + (", as predicted." if held else ".")))
     drops = left_drops(tables)
     if drops:
         what = ("the two other tasks that say “left”" if len(drops) == 2 and _says_left([t for t, _ in drops])
@@ -3300,10 +3551,10 @@ def fix_text(tables, cross):
     T = _cells(tables)
     fx = main_fix(tables)
     if not fx:
-        return f'<p>Cosmos3 Edge’s edit on unseen starts is <span class="run">running</span>.</p>'
+        return f'<p>The world-action model’s edit on unseen starts is <span class="run">running</span>.</p>'
     tid, c, rc0 = fx
     r = rc0.get("r") if _ok(rc0, ("r", "n")) and rc0["n"] == c["n"] else None
-    s1 = (f"On {c['n']} unseen starts, the edited Cosmos3 Edge succeeds {c['b']} times. Unedited it succeeds "
+    s1 = (f"On {c['n']} unseen starts, the edited world-action model succeeds {c['b']} times. Unedited it succeeds "
           + (f"{c['a']} times" if c["a"] else "none of the time")
           + (", and so does the robot with a random edit of the same size." if r is not None and r == c["a"] else
              f"; with a random edit of the same size, {r} times." if r is not None else "."))
@@ -3311,8 +3562,8 @@ def fix_text(tables, cross):
     s2 = ""
     if rec.get("s") == "ok" and rec.get("n") == c["n"] and isinstance(rec.get("t"), int):
         s2 = (f"Given the clearer wording instead, the unedited robot succeeds {rec['t']} times. "
-              + ("The edit gets all the way there, and the robot still reads the original words."
-                 if rec["t"] == c["b"] else "The edit does at least as well, and the robot still reads the original words."
+              + ("The edit gets all the way there, and the robot still receives the original words."
+                 if rec["t"] == c["b"] else "The edit does at least as well, and the robot still receives the original words."
                  if c["b"] > rec["t"] else f"The edit gets {rec['v']} of the way there, with the original words."))
     return f"<p>{esc(s1)}</p>" + (f"<p>{esc(s2)}</p>" if s2 else "")
 
@@ -3434,12 +3685,13 @@ def left_text(tables):
           + (" practice" if first[1].get("prac") else " unseen") + " starts"
           + ("; on Mustard in left bin the robot carries the mustard to the other bin." if "T5" in tids else "."))
     s2 = ("The edit was built from one sentence pair that turns “left of” into “right of”. It seems to have taught the "
-          "reading part something like “left means right”, well beyond that sentence." if _says_left(tids) else "")
+          "text pathway something like “left means right”, well beyond that sentence." if _says_left(tids) else "")
     pi = [(t, T["side_effects"][t]["pi05"]) for t in ("T2", "T3", "T4", "T5", "T6", "T7", "R1")
           if _ok(T["side_effects"].get(t, {}).get("pi05"), ("a", "b", "n"))]
     up = [t for t, c in pi if c.get("p") is not None and c["p"] < SIG and c["b"] > c["a"]]
     down = [t for t, c in pi if c.get("p") is not None and c["p"] < SIG and c["b"] < c["a"]]
-    s3 = (f"π0.5’s cube-then-banana edit, run the same way, lifted {and_list(tn(t) for t in up)} and broke nothing "
+    s3 = (f"The action-expert VLA’s cube-then-banana edit, run the same way, lifted {and_list(tn(t) for t in up)} and "
+          "broke nothing "
           "clearly." if pi and up and not down else "")
     return "".join(f"<p>{esc(x)}</p>" for x in (s1, s2, s3) if x)
 
@@ -3453,7 +3705,8 @@ def groot_text(tables):
         return f'<p>GR00T N1.7’s runs are <span class="run">running</span>.</p>'
     some = [t for t, c in fm if c["k"] > 0]
     wd = T["wording"].get("T1", {}).get("groot")
-    s1 = (f"GR00T N1.7 mostly fails at the motion itself, not at reading. Unedited, it completes only "
+    s1 = (f"GR00T N1.7, our reasoning-backbone VLA, mostly fails at the motion itself, not at language grounding. "
+          f"Unedited, it completes only "
           f"{len(some)} of the {len(fm)} tasks at all.")
     if _ok(wd):
         clear = wd.get("pv") is not None and wd["pv"] < SIG
@@ -3519,7 +3772,7 @@ def control_text(P, tables):
         if lifted:
             s += f" In the earlier runs the {tn('T1')} edit also lifted {and_list(tn(t) for t in lifted)}."
     s += (f" In the paper’s earlier runs, edits aimed at {and_list(tn(t) for t in ('T4', 'T5', 'T6', 'T7'))} did not help: "
-          "their failures are seeing, grasping or a missing skill, not reading.")
+          "their failures are seeing, grasping or a missing skill, not language grounding.")
     return f"<p>{esc(s)}</p>"
 
 
@@ -3564,19 +3817,23 @@ def dg_where_results(sites):
         elif a and a["oc"] == "broke" and (not b or b["oc"] == "broke"):
             bad.append((m, a, b))
     take = ""
+    tname = lambda m: ARCH[m["id"]]["short"]
+    pname = lambda m, let: ARCH[m["id"]]["parts"][let][0]
     if good:
         mo = [(m, b) for m, _, b in good if b]
-        take = (" With the edit in the part that reads the instruction, "
-                + and_list(f"{m['name']} went from {pc(a['a'], a['n'])} to {pc(a['k'], a['n'])}" for m, a, _ in good)
-                + ("; with it in the motion part, "
-                   + and_list((f"{m['name']} completed " if i == 0 else f"{m['name']} ") + pc(b["k"], b["n"])
-                              for i, (m, b) in enumerate(mo)) if mo else "") + ".")
+        take = (" With the edit in the " + or_list(dict.fromkeys(pname(m, "A") for m, _, _ in good)) + ", "
+                + and_list(f"the {tname(m)} went from {pc(a['a'], a['n'])} to {pc(a['k'], a['n'])}" for m, a, _ in good)
+                + (f"; with it in the {or_list(dict.fromkeys(pname(m, 'B') for m, _ in mo))}, "
+                   + (f"they completed {and_list(pc(b['k'], b['n']) for _, b in mo)}" if len(mo) > 1 else
+                      f"the {tname(mo[0][0])} completed {pc(mo[0][1]['k'], mo[0][1]['n'])}") if mo else "") + ".")
     for m, a, b in bad:
-        take += (f" {m['name']} fell from {pc(a['a'], a['n'])} to {pc(a['k'], a['n'])}"
-                 + (" with the edit in either part." if b and b["k"] == a["k"] else
-                    f" with the edit in the reading part and to {pc(b['k'], b['n'])} in the motion part." if b else "."))
-    cap = ("Each dot is the share of starts the robot completed after the edit was placed in that part. The tick is the "
-           "same robot without the edit." + take + " Teal dot: clearly better than without the edit; dot with a cross: "
+        take += (f" The {tname(m)} fell from {pc(a['a'], a['n'])} to {pc(a['k'], a['n'])}"
+                 + (" with the edit in either component." if b and b["k"] == a["k"] else
+                    f" with the edit in the {pname(m, 'A')} and to {pc(b['k'], b['n'])} in the {pname(m, 'B')}." if b
+                    else "."))
+    cap = ("Each dot is the share of starts the robot completed after the edit was placed in that component. The tick is "
+           "the same robot without the edit." + take + " Teal dot: clearly better than without the edit (exact McNemar "
+           "p < 0.05); dot with a cross: "
            "clearly worse; grey dot: no clear change. The ring, a random edit of the same size, is a placebo, run "
            "from the same starts.")
     if any(m["id"] == "pi05" for m in sites):
@@ -3594,9 +3851,10 @@ def where_text(tables):
     if c and c.get("s") == "ok" and c.get("parts"):
         parts = {loc_class(loc): v for loc, v, _ in c["parts"]}
         if "backbone" in parts and "action" in parts:
-            s = (f"<p>Replays of recorded moments, our offline check before any run on the robot, agree. On Cosmos3 "
-                 f"Edge the reading-part edit reproduces {sgn(parts['backbone'], False, 0)}% of the clearer wording’s "
-                 f"effect on the planned motion; the motion-part edit, {sgn(parts['action'], False, 0)}%.</p>")
+            s = (f"<p>Open-loop replays of recorded decisions, our offline check before any robot run, agree. In the "
+                 f"world-action model, the text-pathway edit reproduces {sgn(parts['backbone'], False, 0)}% of the "
+                 f"clearer wording’s effect on the planned actions; the video/action-pathway edit, "
+                 f"{sgn(parts['action'], False, 0)}%.</p>")
     return s + "<p>Where the edit goes is one condition. The other is the wording itself.</p>"
 
 
@@ -3663,14 +3921,16 @@ def legend_html(cross, tables=None):
                            "(Claude or GPT) that worked alone on one task and never saw our edits; its accepted π0.5 "
                            "edit is gated (it has an on/off switch). Least norm: the smallest change that does the job, "
                            "always on."),
-        ("Model parts", "VLM: vision-language model, π0.5’s reading part; action expert: π0.5’s motion part; action "
-                        "head: the final output layer. Cosmos3 Edge: text pathway (reading part), video/action or "
-                        "generation pathway (motion part). GR00T N1.7: backbone, Cosmos-Reason2 (reading part); DiT, "
-                        "the diffusion action head (motion part)."),
+        ("Model components", "π0.5: VLM backbone (PaliGemma), action expert (flow matching) and action output "
+                             "projection (its last linear layer). GR00T N1.7: VLM backbone (Cosmos-Reason2) and action "
+                             "head (a flow-matching DiT). Cosmos3 Edge: text pathway (the instruction tokens) and "
+                             "video/action or generation pathway (video and action tokens, which read the text tokens’ "
+                             "keys and values in every layer)."),
         ("Edit names", "t8und: the edit for Mustard right of raisin box, “the mustard edit”; t3und: the edit for Cube "
                        "left of bowl, “the cube-left edit”, built the same way from its more specific wording; t8t3und: "
                        "the cube-left edit built on top of the mustard edit, “both edits together”; t8gen: the same copy written into Cosmos3 "
-                       "Edge’s motion part; t8undp: + 65 unrelated instructions kept unchanged (preservation keys); "
+                       "Edge’s video/action pathway; t8undp: + 65 unrelated instructions kept unchanged (preservation keys: "
+                       "zero-change constraints in the solve); "
                        "t8undr: + 24 left/right instructions from other tasks kept unchanged; t8unds: only the words "
                        "both wordings share (template positions) + the 65 unrelated instructions."),
         ("Render preset", "the simulator’s image quality setting; all fresh runs use RoboLab’s default."),
@@ -3682,12 +3942,10 @@ def legend_html(cross, tables=None):
 
 
 def dg_blog_pi05(sites):
-    """The main post's figure (site/index.html, pasted there by hand): π0.5's parts in plain words, one verdict badge
-    and one count per edit, all on the same 64 new starts."""
+    """The main post's figure (site/index.html, pasted there by hand): π0.5's three components by their technical
+    names, one verdict and one count each, all on the same 64 new starts."""
     m = next(x for x in sites if x["id"] == "pi05")
-    keep = {"v1full": "full edit", "v1img816": "compact version (0.16%)", "a1": "this part alone",
-            "h1": "smallest change, always on"}
-    variant_of = {"whole part": "v1full", "image part only": "v1img816", "this part alone": "a1", "always on": "h1"}
+    a = ARCH["pi05"]
     W, x0, x1 = [], 30, 266
     n, base = m["n"], m["base"]
     W.append(_t(14, 20, "π0.5", "dg-h") + _t(14, 38, f"{m['task']} · {n} new starts", "dg-s dg-mu")
@@ -3695,30 +3953,28 @@ def dg_blog_pi05(sites):
     W.append(f'<rect x="30" y="66" width="80" height="24" rx="12" class="dg-in"/>' + _t(70, 82.5, "cameras", "dg-s", "middle"))
     W.append(f'<rect x="150" y="66" width="96" height="24" rx="12" class="dg-in"/>'
              + _t(198, 82.5, "instruction", "dg-s", "middle"))
-    y, tops, desc = 116, {}, []
-    for i, blk in enumerate(m["blocks"]):
-        sts = [s for s in blk["sites"] if variant_of.get(s["variant"]) in keep]
-        h = 30 + 16 + 40 * len(sts) + 8
-        tops[blk["let"]] = (y, h)
+    y, tops, desc, h = 116, {}, [], 72
+    blocks = [b for b in m["blocks"] if b["sites"]]
+    for i, blk in enumerate(blocks):
+        s = blk["sites"][0]
+        name, det = a["parts"][blk["let"]]
+        tops[blk["let"]] = y
         W.append(f'<rect x="{x0}" y="{y}" width="{x1 - x0}" height="{h}" rx="7" class="dg-blk"/>'
-                 + _t(48, y + 23, PARTS[blk["let"]], "dg-b") + _t(48, y + 40, f"({blk['detail']})", "dg-s dg-mu"))
-        yy = y + 63
-        for s in sts:
-            lab = keep[variant_of[s["variant"]]]
-            W.append(f'<g><title>{esc(BADGE[s["oc"]])}: {esc(lab)}, {s["k"]} of {s["n"]}</title>'
-                     + _mark(54, yy - 4.5, s["oc"]) + _t(67, yy, BADGE[s["oc"]], "dg-s dg-b")
-                     + _t(x1 - 8, yy, f"{s['k']} of {s['n']}", "dg-s dg-b", "end")
-                     + _t(67, yy + 18, lab, "dg-s dg-mu") + "</g>")
-            desc.append(f"{PARTS[blk['let']]} ({blk['detail']}), {lab}: {BADGE[s['oc']]}, {s['k']} of {s['n']}")
-            yy += 40
-        y += h + (30 if i < 2 else 0)
+                 + _t(48, y + 23, name, "dg-b") + _t(48, y + 40, f"({det})", "dg-s dg-mu"))
+        W.append(f'<g><title>{esc(BADGE[s["oc"]])}, {s["k"]} of {s["n"]}</title>'
+                 + _mark(54, y + 54.5, s["oc"]) + _t(67, y + 59, BADGE[s["oc"]], "dg-s dg-b")
+                 + _t(x1 - 8, y + 59, f"{s['k']} of {s['n']}", "dg-s dg-b", "end") + "</g>")
+        desc.append(f"{name} ({det}): {BADGE[s['oc']]}, {s['k']} of {s['n']}")
+        y += h + (30 if i < len(blocks) - 1 else 0)
     cx = 148
-    (ya, ha), (yb, hb), (yc, hc) = tops["A"], tops["B"], tops["C"]
-    W.append(_arrow([(198, 90), (198, ya)]) + _arrow([(70, 90), (70, ya)]))
-    W.append(_arrow([(cx, ya + ha), (cx, yb)]) + _t(cx + 8, ya + ha + 19, "passes what it read", "dg-xs dg-mu"))
-    W.append(_arrow([(cx, yb + hb), (cx, yc)]))
-    W.append(_arrow([(cx, yc + hc), (cx, yc + hc + 22)]) + _t(cx, yc + hc + 40, "robot", "dg-s", "middle"))
-    svg = _svg(280, yc + hc + 48, "π0.5: where each edit went and what it did",
+    lets = [b["let"] for b in blocks]
+    W.append(_arrow([(198, 90), (198, tops["A"])]) + _arrow([(70, 90), (70, tops["A"])]))
+    for p, q in zip(lets, lets[1:]):
+        W.append(_arrow([(cx, tops[p] + h), (cx, tops[q])])
+                 + (_t(cx + 8, tops[p] + h + 19, a["links"][p], "dg-xs dg-mu") if p in a["links"] else ""))
+    ye = tops[lets[-1]] + h
+    W.append(_arrow([(cx, ye), (cx, ye + 22)]) + _t(cx, ye + 40, "robot", "dg-s", "middle"))
+    svg = _svg(280, ye + 48, "π0.5: where the edit went and what it did",
                f"{m['task']}, {n} new starts; the unedited robot succeeded {base} times. " + "; ".join(desc) + ".",
                "".join(W), "dg-panel", "dg2-wp")
     return (f'<figure class="fig dg-blog">\n      {svg}\n'
@@ -3747,7 +4003,7 @@ def wrap_px(s, width, size, bold=False):
 
 _TW = {**{c: 0.61 for c in "0123456789"}, **{c: 0.25 for c in "ijl.,:;'’|!"}, "·": 0.32, **{c: 0.36 for c in "frt()/[]"},
        "m": 0.86, "w": 0.76, " ": 0.27, "%": 0.9, "*": 0.45, "−": 0.6, "→": 0.6, "-": 0.4, "±": 0.6, "+": 0.6}
-F5_TITLE = "How often the robot completed the task, with the edit placed in each part"
+F5_TITLE = "How often the robot completed the task, with the edit placed in each component"
 F5_AXIS = "Task success: share of starts the robot completed"
 F5_KEY = (("fix", "robot with the edit"), ("ring", "robot with a random edit of the same size"),
           ("tick", "robot without any edit"))
@@ -3788,9 +4044,11 @@ def _f5_layout(sites, wide):
         rows = [s for b in m["blocks"] for s in b["sites"]]
         if not rows:
             continue
-        W.append(_t(LX, y, f"{m['name']} · {m['task']}", "dg-s dg-b"))
-        W.append(_t(LX, y + 16, f"{m['n']} {m['kind']} starts, the same in every row", "dg-xs dg-mu"))
-        y += 36
+        W.append(_t(LX, y, f"{ARCH[m['id']]['type']} ({m['name']})", "dg-s dg-b"))
+        sub = wrap_px(f"{m['task']} · {m['n']} {m['kind']} starts, the same in every row", X1 - LX, XS)
+        for q, ln in enumerate(sub):
+            W.append(_t(LX, y + 16 + 14 * q, ln, "dg-xs dg-mu"))
+        y += 36 + 14 * (len(sub) - 1)
         for i, s in enumerate(rows):
             n = s["n"]
             pe, pa = pc(s["k"], n), pc(s["a"], n)
@@ -3988,7 +4246,7 @@ def second_html(S, full=True):
              f'</tr></thead><tbody>{"".join(body)}</tbody></table>')
     w, wp = S.get("wording"), S.get("wording_pair")
     t3 = tn(SECOND["second"])
-    first = (f"Cosmos3 Edge also misreads {t3}: a more specific wording"
+    first = (f"Cosmos3 Edge’s grounding also fails on {t3}: a more specific wording"
              + (f", “{wp[1].rstrip('.')}”," if wp and full else "")
              + (f" lifts it from {w['a']} to {w['b']} of {w['n']} practice starts." if w else " helps it."))
     intro = (f"<p>{esc(first)} So we gave that task its own edit, built the same way as the mustard edit, and then "
@@ -4058,29 +4316,29 @@ def when_html(tables, cross, prevent, second, P=None):
     if not (b8 and _ok(c8) and b8["orig"] == b8["good"]):
         return ""
     fails = []
-    rows = [(f"{tn('T8')}, Cosmos3 Edge", "Same length, swapped in place",
+    rows = [(f"{tn('T8')}, world-action model", "Same length, swapped in place",
              f"{c8['a']} → {c8['b']} of {c8['n']} unseen starts")]
     if b3 and g3 and not g3["passed"] and b3["orig"] != b3["good"]:
-        rows.append((f"{tn('T3')}, Cosmos3 Edge", "Words added", "Failed the offline check"))
-        fails.append(f"Cosmos3 Edge’s {tn('T3')}")
+        rows.append((f"{tn('T3')}, world-action model", "Words added", "Failed the offline check"))
+        fails.append(f"the world-action model’s {tn('T3')}")
     if gd and _ok(eg) and eg["b"] < eg["a"]:
-        rows.append((f"{tn('T1')}, GR00T N1.7", "Words added",
+        rows.append((f"{tn('T1')}, reasoning-backbone VLA", "Words added",
                      f"Worse: {eg['a']} → {eg['b']} of {eg['n']}{' practice' if eg.get('prac') else ''} starts"))
-        fails.append(f"GR00T N1.7’s {tn('T1')}")
+        fails.append(f"the reasoning-backbone VLA’s {tn('T1')}")
     if us and us["cells"]["gap"].get("x") is not None:
         rows.append((f"{tn('T8')}, only the shared words copied", "—",
                      "No more than a random edit, in replays"))
     WHEN_LAST["rule"] = bool(fails)
-    ps = [("The edit copies the clearer wording’s effect onto the matching words of the original. On the mustard "
-           "task the two wordings have the same length and swap words in place, so every word has a match, and the "
-           "edit works.")]
+    ps = [("The edit copies the clearer wording’s effect onto the matching tokens of the original, position by "
+           "position. On the mustard task the two wordings have the same length and swap words in place, so every token "
+           "has a match, and the edit works.")]
     if fails:
-        ps.append("When the clearer wording adds words, the new words have nothing to land on. That is why the edit "
+        ps.append("When the clearer wording adds words, the new tokens have nothing to land on. That is why the edit "
                   f"failed on {and_list(fails)}." + (" Copying only the words both wordings share does nothing at all."
                                                      if us else ""))
-    ps.append("π0.5 is the exception, for a reason: it reads the camera images together with the whole instruction, so "
-              "a clearer wording’s effect also reaches positions both wordings share, and the edit can copy it from "
-              "there.")
+    ps.append("The action-expert VLA is the exception, for a reason: π0.5’s VLM backbone attends over the image tokens "
+              "and the whole instruction together, so a clearer wording’s effect also reaches the image tokens, which "
+              "both wordings share, and the edit can copy it from there.")
     pred = prospect_main(P)
     if pred:
         ps.append(pred[0])
@@ -4292,7 +4550,7 @@ def second_main(S):
     w, t3 = S.get("wording"), tn(SECOND["second"])
     rows = [r for r in S["rows"] if r["name"] != SECOND["edits"][0]["name"]]
     failed = [r for r in rows if r.get("gate_failed")]
-    s = [f"Cosmos3 Edge also misreads {t3}: a more specific wording lifts it "
+    s = [f"The world-action model’s grounding also fails on {t3}: a more specific wording lifts it "
          + (f"from {w['a']} to {w['b']} of {w['n']} practice starts." if w else "clearly.")]
     if failed and len(failed) == len(rows):
         b = next((r.get("build") for r in failed if r.get("build")), None)
@@ -4305,8 +4563,8 @@ def second_main(S):
                  + (" Stacked on top of the mustard edit, it failed the check too, so neither ran on the robot."
                     if stack and alone else " Neither version ran on the robot."))
     else:
-        return second_html(S, full=False) + "<p>GR00T N1.7 is a different story.</p>"
-    return f"<p>{esc(' '.join(s))}</p><p>GR00T N1.7 is a different story.</p>"
+        return second_html(S, full=False) + "<p>The reasoning-backbone VLA is a different story.</p>"
+    return f"<p>{esc(' '.join(s))}</p><p>The reasoning-backbone VLA is a different story.</p>"
 
 
 def limit_pi05(tables):
@@ -4345,20 +4603,23 @@ def problem_html(tables, cross):
     def prac(w):
         m_ = re.search(r"slots (\d+)", w.get("d") or "")
         return bool(m_ and int(m_.group(1)) < 90000)
-    body = "".join(f'<tr><th scope="row">{esc(FIGNAME[m])}</th>'
+    body = "".join(f'<tr><th scope="row">{type_th(m)}</th>'
                    + td_html(C(f"{w['a']} of {w['n']}"), "Raisin box first")
                    + td_html(C(f"{w['b']} of {w['n']}", prac=prac(w) or None), "Mustard first") + "</tr>" for m, w in per)
     table = ('<div class="tblock"><table class="ctable ptable wtable2"><thead><tr><th scope="col"><span class="vh">'
              'Model</span></th><th scope="col"><span class="mn">Raisin box first</span><span class="mk">starts '
              'completed</span></th><th scope="col"><span class="mn">Mustard first</span><span class="mk">starts '
              f'completed</span></th></tr></thead><tbody>{body}</tbody></table></div>')
-    p1 = ("<p>A robot policy can have the skill for a task and still fail it, because of how the goal is worded. Here "
-          "is one task from RoboLab, a simulated benchmark, as two wordings of the same goal:</p>")
+    p1 = ("<p>Some robot failures come from weak language grounding: the policy has the skill but grounds the "
+          "instruction to the wrong object or relation. Here is one task from RoboLab, a simulated benchmark, as two "
+          "wordings of the same goal:</p>")
     p2 = ("<p>Same goal, same starting scenes, same weights; only the order of the words changes. "
-          + (f"So {and_list(FIGNAME[m] for m in works)} can do the task: "
-             f"{'they misread' if len(works) > 1 else 'it misreads'} the instruction." if works else "")
-          + (f" {and_list(FIGNAME[m] for m in neither)} fails both ways, a different problem we come back to at the end."
-             if neither else "") + "</p>")
+          + (f"So {and_list('the ' + ARCH[m]['short'] for m in works)} {'have' if len(works) > 1 else 'has'} the "
+             f"skill; what fails is how {'they ground' if len(works) > 1 else 'it grounds'} the instruction."
+             if works else "")
+          + (f" {and_list('the ' + ARCH[m]['short'] for m in neither)[0].upper()}"
+             f"{and_list('the ' + ARCH[m]['short'] for m in neither)[1:]} fails both ways, a different problem we come "
+             "back to at the end." if neither else "") + "</p>")
     p3 = ("<p>That raises a simple question. If a clearer wording works, could the original wording be made to work "
           "too, without changing a word?</p>")
     return p1 + block + table + p2 + "<!-- clipslot -->" + p3
@@ -4373,15 +4634,22 @@ def pi05_story(P, tables):
     if not _ok(e):
         return ""
     kind = "practice" if e.get("prac") else "unseen"
-    s = (f"We first built this on π0.5, an open robot policy (<a href=\"../\">the weightsmith post</a>). On "
-         f"{esc(tn('T1'))}, a task it misreads the same way, the edit lifts it from {e['a']} to {e['b']} of {e['n']} "
+    s = (f"We first built this on a VLA with a separate action expert: π0.5, an open robot policy (<a href=\"../\">the "
+         f"weightsmith post</a>). On {esc(tn('T1'))}, where its grounding fails the same way, the edit lifts it from "
+         f"{e['a']} to {e['b']} of {e['n']} "
          f"{kind} starts: scenes never used to build or choose the edit")
     if r.get("s") == "ok" and r.get("r") is not None and r.get("n") == e["n"]:
         s += f". A random edit of the same size stays at {r['r']}"
     s += "."
     if _ok(e8) and e8["b"] > e8["a"]:
         s += " Its own edit for the mustard task works too."
-    return (f"<p>{s}</p><p>But π0.5 is one model. Would the same trick work on robots built very differently?</p>")
+    return (f"<p>{s}</p><p>But that is one architecture. Would the same edit work on policies built very "
+            "differently?</p>")
+
+
+def type_th(mid):
+    """A table row head: the architecture type, and the model tested as its instance."""
+    return f'{esc(ARCH[mid]["type"])}<span class="inst">{esc(FIGNAME[mid])}</span>'
 
 
 def glance_html(tables, sites):
@@ -4416,17 +4684,24 @@ def glance_html(tables, sites):
         m = byid.get(mid)
         if not m:
             return "—"
-        bits = []
+        bits, first = [], None
         for blk in m["blocks"]:
             if not blk["sites"]:
                 continue
             s = blk["sites"][0]
-            part = {"A": "reading part", "B": "motion part", "C": "final layer"}[blk["let"]]
-            bits.append(f"{part} {s['k']} of {s['n']}")
+            part = ARCH[mid]["parts"][blk["let"]][0]
+            if first is None:
+                first = (part, s)
+            else:
+                bits.append(f"{part} {s['k']} of {s['n']}")
         tail = " practice starts" if m.get("kind") == "practice" else ""
         if all(s["oc"] == "broke" for b in m["blocks"] for s in b["sites"]):
-            return "Nowhere: every placement made it worse (" + ", ".join(bits) + tail + ")"
-        return "Where it reads: " + ", ".join(bits) + tail
+            return ("Nowhere: every placement made it worse (" + ", ".join([f"{first[0]} {first[1]['k']} of {first[1]['n']}"]
+                                                                           + bits) + tail + ")")
+        part, s = first
+        only = all(x["oc"] in ("none", "broke") for b in m["blocks"][1:] for x in b["sites"][:1])
+        return (f"{'Only' if only else 'Best'} in the {part} ({s['k']} of {s['n']}{tail if not bits else ''})"
+                + ("; " + ", ".join(bits) + tail if bits else ""))
 
     def side(mid):
         t = next((t for t in tables if t["id"] == "side_effects"), None)
@@ -4439,14 +4714,15 @@ def glance_html(tables, sites):
         return ("; ".join(x for x in ((f"breaks {and_list(down)}" if down else ""), (f"lifts {and_list(up)}" if up else ""))
                           if x) + "; no clear change elsewhere") if (down or up) else "No clear change on other tasks"
     rows = [("The fix", fix), ("Where it works", where), ("Side effects", side)]
-    head = "".join(f'<th scope="col"><span class="mn">{esc(FIGNAME[m])}</span></th>' for m in ORDER)
+    head = "".join(f'<th scope="col"><span class="mn">{esc(ARCH[m]["type"])}</span><span class="mk">{esc(FIGNAME[m])}'
+                   f'</span></th>' for m in ORDER)
     body = "".join(f'<tr><th scope="row">{esc(lab)}</th>'
                    + "".join(td_html(C(fn(m)[0].upper() + fn(m)[1:]), FIGNAME[m]) for m in ORDER) + "</tr>"
                    for lab, fn in rows)
     return (f'<div class="tblock wide"><table class="ctable gtable"><thead><tr><th scope="col"><span class="vh">Row'
             f'</span></th>{head}</tr></thead><tbody>{body}</tbody></table></div>'
-            "<p>Two things decide whether the edit works: where in the model it goes, and how the two wordings line "
-            "up.</p>")
+            "<p>Two things decide whether the edit works: where in the architecture it goes, and how the two wordings "
+            "line up.</p>")
 
 
 def prospect_main(P):
@@ -4482,6 +4758,203 @@ def prospect_main(P):
         rows.append((f"Predicted: {x['plain']}", "Words added",
                      "Failed the offline check" if x["passed"] is False else "Passed the offline check"))
     return " ".join(s), rows
+
+
+
+
+
+def _st(inner, spec, static=True, cls=""):
+    """A drawing part with one state per animation step. cosmos.js reads data-s, e.g. "1=o:1 2=o:1,y:-68,@0.3,d:0.7,pop":
+    per step its opacity o, translation x/y, scale s and horizontal scale sx, eased in after @ seconds over d; pop
+    springs it in, re re-lights it; a step not listed hides it. static: whether the still drawing (no script, print,
+    the state before the script runs) shows it."""
+    c = " ".join(x for x in ("st", "" if static else "sh", cls) if x)
+    return f'<g class="{c}" data-s="{spec}">{inner}</g>'
+
+
+def _chunk(x, y, n, w, gap, h, run=None, cls="dg-chunk"):
+    """An action chunk: n steps as thin bars whose heights follow a smooth joint trajectory; the first `run` steps (the
+    ones executed) darker."""
+    out = []
+    for i in range(n):
+        hh = h * (0.4 + 0.6 * (0.5 + 0.5 * _math.sin(i * 6.2832 * 1.15 / n + 0.7)))
+        c = cls + (" dg-chunk-run" if run and i < run else "")
+        out.append(f'<rect x="{x + i * (w + gap):.2f}" y="{y + h - hh:.2f}" width="{w:g}" height="{hh:.2f}" '
+                   f'rx="{min(w / 2, 1):g}" class="{c}"/>')
+    return "".join(out)
+
+
+def _chunk_w(n, w, gap):
+    return n * w + (n - 1) * gap
+
+
+def _gauge(x, y, w, h, seed=0.0):
+    """The joint state, seven joints and the gripper, as a small bar readout; cosmos.js makes the bars tick by scaling
+    them (data-g: the scale factors it steps through)."""
+    n, pad, gap = 8, 4, 1.5
+    bw = (w - 2 * pad - (n - 1) * gap) / n
+    H = h - 2 * pad
+    out = [f'<rect x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" rx="4" class="dg-in"/>']
+    for i in range(n):
+        v = [0.3 + 0.62 * (0.5 + 0.5 * _math.sin(seed + i * 1.93 + k * 1.37)) for k in range(6)]
+        g = " ".join(f"{a / v[0]:.2f}" for a in v)
+        out.append(f'<rect x="{x + pad + i * (bw + gap):.2f}" y="{y + pad + H * (1 - v[0]):.2f}" width="{bw:.2f}" '
+                   f'height="{H * v[0]:.2f}" rx="0.8" class="gb{" gb-g" if i == n - 1 else ""}" data-g="{g}"/>')
+    return "".join(out)
+
+
+def _tok(kind, pts, on, t, dur, cls="", key=None, label=""):
+    """A token that moves along pts (drawn at the first point) in the steps listed in `on`, starting t seconds into the
+    step; cosmos.js animates only its transform and opacity."""
+    x0, y0 = pts[0]
+    rel = " ".join(f"{x - x0:g},{y - y0:g}" for x, y in pts[1:])
+    if kind == "word":
+        shape = f'<rect x="{x0 - 6:g}" y="{y0 - 3.5:g}" width="12" height="7" rx="3.5"/>'
+    elif kind == "dot":
+        shape = f'<circle cx="{x0:g}" cy="{y0:g}" r="2.8"/>'
+    elif kind == "state":
+        shape = f'<rect x="{x0 - 3:g}" y="{y0 - 3:g}" width="6" height="6" rx="1.2"/>'
+    elif kind == "frame":
+        shape = (f'<image href="fig/thumb-{key}.webp" x="{x0 - 9:g}" y="{y0 - 6:g}" width="18" height="12" '
+                 f'preserveAspectRatio="xMidYMid slice"/><rect x="{x0 - 9:g}" y="{y0 - 6:g}" width="18" height="12" '
+                 f'rx="1.5" class="tk-fr"/>')
+    elif kind == "chunk":
+        shape = _chunk(x0 - 15, y0 - 5, 8, 3, 1.3, 10, cls="tk-cb")
+    elif kind == "video":
+        shape = "".join(f'<rect x="{x0 - 9 + 3 * i:g}" y="{y0 - 7 + 3 * i:g}" width="14" height="10" rx="1.5" '
+                        f'class="tk-vf"/>' for i in range(3))
+    elif kind == "delta":
+        shape = (f'<rect x="{x0 - 11:g}" y="{y0 - 8:g}" width="22" height="16" rx="8" class="tk-dl"/>'
+                 + _t(x0, y0 + 4, "Δ", "dg-xs dg-b tk-dlt", "middle"))
+    elif kind == "ring":
+        x1, y1, w1, h1 = label
+        shape = f'<rect x="{x1:g}" y="{y1:g}" width="{w1:g}" height="{h1:g}" rx="6" class="tk-ring"/>'
+    else:
+        raise ValueError(kind)
+    return (f'<g class="tk tk-{kind}{(" " + cls) if cls else ""}" data-on="{on}" data-t="{t:.2f}" data-dur="{dur:g}" '
+            f'data-p="{rel}">{shape}</g>')
+
+
+def _chips(words, cx, y, cls, size=11.5, h=20):
+    """A row of instruction chips centred on cx; returns the drawing and the centre of every word in it."""
+    ws = [_tw(w, size) + 16 for w in words]
+    gap = 6
+    x = cx - (sum(ws) + gap * (len(ws) - 1)) / 2
+    out, centres = [], []
+    for w_, s in zip(ws, words):
+        out.append(f'<rect x="{x:.1f}" y="{y:g}" width="{w_:.1f}" height="{h:g}" rx="{h / 2:g}" class="{cls}"/>'
+                   + _t(round(x + w_ / 2, 1), y + h / 2 + 4, s, "dg-xs", "middle"))
+        xx = x + 8
+        for word in s.split():
+            ww = _tw(word, size)
+            centres.append(xx + ww / 2)
+            xx += ww + _tw(" ", size)
+        x += w_ + gap
+    return "".join(out), centres
+
+
+def _bars(x, y, n, w, gap, h, seed, cls):
+    """A row of activation bars standing on y: an internal state pattern."""
+    out = []
+    for i in range(n):
+        v = 0.18 + 0.82 * (0.5 + 0.5 * _math.sin(seed + i * 2.31 + _math.sin(i * 0.9 + seed) * 1.7))
+        out.append(f'<rect x="{x + i * (w + gap):.2f}" y="{y - h * v:.2f}" width="{w:g}" height="{h * v:.2f}" rx="1" '
+                   f'class="{cls}"/>')
+    return "".join(out)
+
+
+DG1_STEPS = ["Original wording: the VLM / text pathway grounds it to the wrong relation, and the robot fails.",
+             "Clear wording: the states inside the VLM / text pathway change, and the robot succeeds.",
+             "Offline, the difference between the two sets of states is written into its weights: one least-squares "
+             "solve per layer, no robot run.",
+             "Same words, edited weights: the original wording now produces the clear wording’s states, and the robot "
+             "succeeds."]
+DG1_DUR = (4.0, 4.0, 4.2, 4.6)
+
+
+def anim_controls(steps, label):
+    """Play/pause, one button per step and the current step's words (cosmos.js shows them); the steps themselves stay
+    in the page as a list, for print, screen readers and readers without the script."""
+    dots = "".join(f'<button type="button" class="anim-dot" data-k="{i}" aria-label="Step {i} of {len(steps)}: '
+                   f'{esc(s)}">{i}</button>' for i, s in enumerate(steps, 1))
+    icon = ('<svg class="anim-ico" viewBox="0 0 12 12" aria-hidden="true"><path class="i-pause" d="M3 2h2v8H3zM7 2h2v8H7z"/>'
+            '<path class="i-play" d="M3.5 2v8l6.5-4z"/></svg>')
+    return (f'<div class="anim-ctl" role="group" aria-label="{esc(label)}: animation controls">'
+            f'<button type="button" class="anim-play" aria-pressed="false">{icon}<span>Pause</span></button>'
+            f'<span class="anim-dots">{dots}</span><span class="anim-bar" aria-hidden="true"><i></i></span>'
+            f'<p class="anim-label">' + "".join(f'<span data-k="{i}">{i}. {esc(x)}</span>' for i, x in enumerate(steps, 1))
+            + '</p></div>'
+            + '<ol class="anim-steps">' + "".join(f"<li>{esc(s)}</li>" for s in steps) + "</ol>")
+
+
+ARCH = {   # each architecture type, its instance, and how it is wired (MODELS above; the tracks' READMEs)
+    "pi05": dict(type="VLA with an action expert", short="action-expert VLA",
+                 cams=("pi05_ext", "pi05_wrist"), layout="stack",
+                 parts={"A": ("VLM backbone", "PaliGemma"), "B": ("action expert", "flow matching"),
+                        "C": ("action output projection", "its last linear layer")},
+                 links={"A": "keys and values"}, state_to="A", chunk=(15, 15),
+                 out="15-step action chunk"),
+    "groot": dict(type="VLA on a reasoning backbone", short="reasoning-backbone VLA",
+                  cams=("groot_ext", "groot_wrist"), layout="stack",
+                  parts={"A": ("VLM backbone", "Cosmos-Reason2"), "B": ("action head", "flow-matching DiT"),
+                         "C": ("action head", "")},
+                  links={"A": "backbone tokens"}, state_to="B", chunk=(40, 8),
+                  out="40-step action chunk, first 8 run"),
+    "cosmos": dict(type="World-action model", short="world-action model",
+                   cams=("cosmos_l", "cosmos_r", "cosmos_w"), layout="side",
+                   parts={"A": ("text pathway", "instruction tokens"), "B": ("video/action pathway",
+                                                                            "video and action tokens"),
+                          "C": ("action head", "")},
+                   links={"A": "keys and values, every layer"}, state_to="B", chunk=(32, 32),
+                   out="predicted video + 32-step action chunk"),
+}
+TYPE = {k: v["type"] for k, v in ARCH.items()}
+WHERE_DUR = (5.0, 5.0, 5.4)
+
+
+def or_list(xs):
+    xs = list(xs)
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " or " + xs[-1]
+
+
+def where_steps(sites):
+    """The steps of Figure 4: the edit in each component in turn, named by the architectures' own terms."""
+    names = lambda let: or_list(dict.fromkeys(ARCH[m["id"]]["parts"][let][0] for m in sites
+                                              if any(b["let"] == let and b["sites"] for b in m["blocks"])))
+    out = [f"The edit in the {names('A')}."]
+    if any(b["let"] == "B" and b["sites"] for m in sites for b in m["blocks"]):
+        out.append(f"The edit in the {names('B')}.")
+    c = [m for m in sites if any(b["let"] == "C" and b["sites"] for b in m["blocks"])]
+    if c:
+        out.append(f"The edit in the {ARCH[c[0]['id']]['parts']['C'][0]} ({and_list(ARCH[m['id']]['short'] for m in c)} "
+                   "only).")
+    return out
+
+
+def ensure_thumbs():
+    """The camera-view thumbnails (fig/thumb-*.webp, 2x their largest drawn size, a few KB each): one frame of our own
+    clips, cropped to one view. Made once; delete a file to remake it."""
+    from PIL import Image
+    frames = {}
+    for key, (stem, box) in THUMBS.items():
+        dst = FIG / f"thumb-{key}.webp"
+        if dst.exists():
+            continue
+        if stem not in frames:
+            tmp = Path(tempfile.mkdtemp()) / "frame.png"
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(THUMB_T), "-i", str(VID / f"{stem}.mp4"),
+                            "-frames:v", "1", str(tmp)], check=True)
+            frames[stem] = Image.open(tmp).convert("RGB")
+        frames[stem].crop(box).resize(THUMB_PX, Image.LANCZOS).save(dst, "WEBP", quality=84, method=6)
+        print(f"  wrote {rel(dst)} ({dst.stat().st_size // 1024 + 1} KB)")
+
+
+def _thumb(x, y, w, h, key, ident):
+    """A real camera frame from one of our clips (ensure_thumbs), clipped to rounded corners, with a hairline frame."""
+    return (f'<clipPath id="{ident}"><rect x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" rx="3"/></clipPath>'
+            f'<image href="fig/thumb-{key}.webp" x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" '
+            f'preserveAspectRatio="xMidYMid slice" clip-path="url(#{ident})"/>'
+            f'<rect x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" rx="3" class="dg-frame"/>')
 
 VID = OUT / "video"
 # Each clip: stem (video/<stem>.mp4, or "src" for a clip the main page already serves), group (where it goes on the
@@ -4644,9 +5117,10 @@ CLIPS = [
                          "the original wording", "the explicit two-step wording")),
     dict(stem="groot_t1_edits", group="gallery", title="GR00T N1.7, T1: two edits that make things worse",
          cap=cap_panels(X_GROOT, 30004, [("fm-T1", "unedited"), ("ed-bb-T1", "edited in the Cosmos-Reason2 backbone"),
-                                         ("ed-dit-T1", "edited in the diffusion action head")],
+                                         ("ed-dit-T1", "edited in the flow-matching DiT action head")],
                         "Both edits distil the explicit two-step wording; neither picks up the cube.", "groot", "T1")),
-    dict(stem="t1_same_start", group="gallery", title="T1, one start, two NVIDIA models", cap=cap_same_start(30000)),
+    dict(stem="t1_same_start", group="gallery", title="T1, one start, the reasoning-backbone VLA and the world-action "
+                                                       "model", cap=cap_same_start(30000)),
     dict(stem="pi05_t1_edit_control_teacher", group="gallery", title="π0.5, T1: the edit against its controls",
          cap=cap_pi05("t1_v2mi-f_vs_control_vs_teacher_90000.mp4",
                       "The unedited policy, a random edit of the same size, the distilled edit and the clearer wording.")),
@@ -4822,13 +5296,13 @@ def brief_lines(P, rc, models, cross, tables=None):
     f8 = (T["edit_gain"].get("T8", {}).get("pi05") or {}) if T else {}
     r1 = (T["random_control"].get("T1", {}).get("pi05") or {}) if T else {}
     if _ok(f1) and _ok(f8):   # the numbers the page shows: the shared starts where run, else the paper's
-        lines[1] = (f"<li><b>π0.5, the control.</b> The edit fixed its two wording failures: {tn('T1')} "
+        lines[1] = (f"<li><b>VLA with an action expert (π0.5).</b> The edit fixed its two grounding failures: {tn('T1')} "
                     f"{f1['a']} → {f1['b']} of {f1['n']} unseen starts and {tn('T8')} {f8['a']} → {f8['b']} of {f8['n']}"
                     + (f"; a random edit of the same size did nothing ({r1['r']} vs {r1['u']} of {r1['n']})"
                        if r1.get("s") == "ok" and None not in (r1.get("r"), r1.get("u")) and r1.get("n") == f1["n"]
                        else "") + ".</li>")
     else:
-        lines[1] = (f"<li><b>π0.5, the control.</b> The edit fixed its two wording failures: {tn('T1')} "
+        lines[1] = (f"<li><b>VLA with an action expert (π0.5).</b> The edit fixed its two grounding failures: {tn('T1')} "
                     f"{e['base']} → {e['cand']} of {e['n']} unseen starts and {tn('T8')} {s4ho['base']} → {s4ho['cand']} "
                     f"of {s4ho['n']}; a random edit of the same size did nothing ({c['rand']} vs {c['base']} of {c['n']}).</li>")
     if tables:
@@ -4837,7 +5311,7 @@ def brief_lines(P, rc, models, cross, tables=None):
         first = lambda t: re.split(r"(?<=[.;])\s", t, maxsplit=1)[0].rstrip(";") + ("" if t.split(";")[0].endswith(".") else ".")
         bits = " ".join(f"<b>{esc(it['lead'].rstrip('.:'))}:</b> {esc(first(it['text']) if it['id'] != 'fix' else it['text'])}"
                         for it in st["items"])
-        lines.append(f"<li><b>NVIDIA models.</b> {bits}</li>")
+        lines.append(f"<li><b>Across architectures.</b> {bits}</li>")
     return "".join(lines)
 
 
@@ -4845,7 +5319,7 @@ def brief_lines(P, rc, models, cross, tables=None):
 PREVENT_LAST = {}       # the prevention rows and diagram sites of this run, for the brief
 RUNNING = "{running}"   # rendered as the italic "running" marker; never a number
 SIG = 0.05              # "lifted" / "worse": exact McNemar p below this, paired by start
-TLDR_ORDER = ["pi05", "cosmos", "groot"]   # the control's established result first, then the NVIDIA models
+TLDR_ORDER = ["pi05", "cosmos", "groot"]   # the action-expert VLA's established result first, then the other two
 
 
 def task_list(keys):
@@ -5356,6 +5830,7 @@ def main():
                                 f"+refs/heads/{branch}:refs/remotes/origin/{branch}"], capture_output=True, text=True)
             print(f"  fetch {branch}: {'ok' if r.returncode == 0 else 'not on origin yet'}")
 
+    ensure_thumbs()
     S = Sources()
     P = build_pi05(S)
     meta = {}
