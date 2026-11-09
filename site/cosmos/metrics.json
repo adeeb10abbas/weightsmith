@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "c7b4f079cb75"
+    "commit": "c42472937e7d"
    }
   }
  ],
@@ -352,7 +352,7 @@
      "pi05": {
       "v": "no gain",
       "s": "ok",
-      "d": "lookalike perception; no clear wording; shared slots, unedited: 9 of 16",
+      "d": "lookalike perception; no clear wording; shared slots, unedited: 9 of 16; shared slots, Cube then banana edit: 13 → 12 of 16",
       "prov": true
      }
     }
@@ -2660,15 +2660,14 @@
        "d": "dropped: both Cube then banana edits lowered success on Cube then banana itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
-       "v": "+3: 14 → 17 of 32",
+       "v": "−1: 13 → 12 of 16",
        "s": "ok",
-       "d": "9 / 6; p = 0.61; slots 20000–20031",
-       "delta": 3,
-       "a": 14,
-       "b": 17,
-       "n": 32,
-       "p": 0.60723876953125,
-       "prov": true
+       "d": "2 / 3; p = 1; slots 96000–96015; paper’s evaluation: +3: 14 → 17 of 32",
+       "delta": -1,
+       "a": 13,
+       "b": 12,
+       "n": 16,
+       "p": 1.0
       }
      }
     },
@@ -11119,6 +11118,138 @@
    {
     "experiment": "side_effect",
     "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "StackYellowOnRedTask",
+    "code": "T4",
+    "wording_pair": [
+     "Stack the yellow block on the red block"
+    ],
+    "slots": [
+     96000,
+     96015
+    ],
+    "n": 16,
+    "unedited_k": 13,
+    "edited_k": 12,
+    "fixed": 2,
+    "broke": 3,
+    "p": 1.0,
+    "ci": {
+     "unedited_wilson95_pct": [
+      57.0,
+      93.4
+     ],
+     "edited_wilson95_pct": [
+      50.5,
+      89.8
+     ],
+     "paired_diff_bootstrap95_pts": [
+      -31.2,
+      18.8
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": {
+     "unedited_k": 13,
+     "edited_k": 12,
+     "n": 16
+    },
+    "retention": null,
+    "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+    "values_changed": 450468837,
+    "notes": "side effect of the T1 edit v2mi-f on another task, held-out slots, the task's own default instruction; per_slot = [unedited, edited]",
+    "_ptask": null,
+    "_task": "T4",
+    "_edit_task": "T1",
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the explicit wording 'Put the cube in the bowl then put the banana in the bowl'",
+     "per_slot": {
+      "96000": [
+       1,
+       1
+      ],
+      "96001": [
+       1,
+       1
+      ],
+      "96002": [
+       1,
+       1
+      ],
+      "96003": [
+       1,
+       1
+      ],
+      "96004": [
+       1,
+       1
+      ],
+      "96005": [
+       1,
+       1
+      ],
+      "96006": [
+       1,
+       0
+      ],
+      "96007": [
+       1,
+       1
+      ],
+      "96008": [
+       1,
+       0
+      ],
+      "96009": [
+       0,
+       1
+      ],
+      "96010": [
+       1,
+       1
+      ],
+      "96011": [
+       1,
+       1
+      ],
+      "96012": [
+       0,
+       1
+      ],
+      "96013": [
+       1,
+       0
+      ],
+      "96014": [
+       1,
+       1
+      ],
+      "96015": [
+       0,
+       0
+      ]
+     },
+     "gpus": [
+      0
+     ]
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
     "task": "MustardInLeftBinTask",
     "code": "T5",
     "wording_pair": [
@@ -12015,13 +12146,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "c7b4f079cb75"
+   "commit": "c42472937e7d"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "3ab69be86c3238b5",
- "numbers_hash": "3434328d0f17c320",
- "updated": "2026-11-09T04:31Z",
- "updated_text": "9 Nov 2026, 04:31 UTC",
+ "content_hash": "fc3201796d6bd573",
+ "numbers_hash": "39d5096cd75b10c4",
+ "updated": "2026-11-09T05:03Z",
+ "updated_text": "9 Nov 2026, 05:03 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: complete"
 }
