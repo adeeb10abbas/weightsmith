@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 47,
- "gpu_hours": 6.95,
+ "jobs": 48,
+ "gpu_hours": 7.09,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
@@ -201,7 +201,7 @@
    "unedited_k": 0,
    "edited_k": 16,
    "control_k": 0,
-   "teacher_k": 13,
+   "teacher_k": 26,
    "fixed": 16,
    "broke": 0,
    "p": 3.052e-05
