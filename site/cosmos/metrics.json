@@ -47,7 +47,7 @@
    "name": "π0.5",
    "short": "OpenPI VLA, control",
    "kind": "OpenPI vision-language-action policy, the control",
-   "status": "partial",
+   "status": "final",
    "checkpoint": "`pi05_droid_jointpos` (OpenPI), about 3.35 billion parameters",
    "architecture": "An 18-layer PaliGemma vision-language model (VLM) and an 18-layer Gemma action expert. The action expert attends to the VLM's keys and values and produces 15-step action chunks, including a gripper command, by flow matching.",
    "entry": "As text tokens in the VLM, together with image tokens from two cameras and robot-state tokens, under bidirectional attention, so the image tokens read the instruction. The distilled edit goes into the VLM's MLP weights.",
@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "e5ac7659cd39"
+    "commit": "1addc6b07076"
    }
   }
  ],
@@ -175,7 +175,7 @@
     "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted Eyeglasses (12 → 21 of 32), made none detectably worse, and kept the retention task Cube in bowl at 31 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
    }
   ],
-  "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs replace them as they land."
+  "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs did not repeat them."
  },
  "sections": [
   {
@@ -378,7 +378,7 @@
      "pi05": {
       "v": "no gain",
       "s": "ok",
-      "d": "own edit 35 → 39 of 64; shared slots, unedited: 6 of 16",
+      "d": "own edit 35 → 39 of 64; shared slots, unedited: 6 of 16; shared slots, Cube then banana edit: 6 → 6 of 16",
       "prov": true
      }
     }
@@ -461,8 +461,8 @@
       "d": "Banana onto plate"
      },
      "pi05": {
-      "v": "running",
-      "s": "running"
+      "v": "—",
+      "s": "na"
      }
     }
    },
@@ -1498,8 +1498,8 @@
        "task": "Banana onto plate"
       },
       "pi05": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       }
      }
     }
@@ -1581,8 +1581,8 @@
        "fl": "Cube left of bowl (32 practice)"
       },
       "pi05": {
-       "v": "running",
-       "s": "running"
+       "v": "—",
+       "s": "na"
       }
      }
     },
@@ -2705,15 +2705,14 @@
        "d": "dropped: both Cube then banana edits lowered success on Cube then banana itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
-       "v": "+5: 14 → 19 of 32",
+       "v": "±0: 6 → 6 of 16",
        "s": "ok",
-       "d": "9 / 4; p = 0.27; slots 60000–60031",
-       "delta": 5,
-       "a": 14,
-       "b": 19,
-       "n": 32,
-       "p": 0.266845703125,
-       "prov": true
+       "d": "3 / 3; p = 1; slots 96000–96015; earlier slots: +5: 14 → 19 of 32",
+       "delta": 0,
+       "a": 6,
+       "b": 6,
+       "n": 16,
+       "p": 1.0
       }
      }
     },
@@ -11294,6 +11293,138 @@
    {
     "experiment": "side_effect",
     "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "Stack3RubiksCubeTask",
+    "code": "T6",
+    "wording_pair": [
+     "Stack the rubiks cubes in a tower"
+    ],
+    "slots": [
+     96000,
+     96015
+    ],
+    "n": 16,
+    "unedited_k": 6,
+    "edited_k": 6,
+    "fixed": 3,
+    "broke": 3,
+    "p": 1.0,
+    "ci": {
+     "unedited_wilson95_pct": [
+      18.5,
+      61.4
+     ],
+     "edited_wilson95_pct": [
+      18.5,
+      61.4
+     ],
+     "paired_diff_bootstrap95_pts": [
+      -31.2,
+      31.2
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": {
+     "unedited_k": 6,
+     "edited_k": 6,
+     "n": 16
+    },
+    "retention": null,
+    "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+    "values_changed": 450468837,
+    "notes": "side effect of the T1 edit v2mi-f on another task, held-out slots, the task's own default instruction; per_slot = [unedited, edited]",
+    "_ptask": null,
+    "_task": "T6",
+    "_edit_task": "T1",
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the explicit wording 'Put the cube in the bowl then put the banana in the bowl'",
+     "per_slot": {
+      "96000": [
+       0,
+       0
+      ],
+      "96001": [
+       0,
+       0
+      ],
+      "96002": [
+       0,
+       1
+      ],
+      "96003": [
+       0,
+       0
+      ],
+      "96004": [
+       0,
+       1
+      ],
+      "96005": [
+       0,
+       1
+      ],
+      "96006": [
+       0,
+       0
+      ],
+      "96007": [
+       1,
+       0
+      ],
+      "96008": [
+       1,
+       0
+      ],
+      "96009": [
+       1,
+       1
+      ],
+      "96010": [
+       1,
+       1
+      ],
+      "96011": [
+       0,
+       0
+      ],
+      "96012": [
+       0,
+       0
+      ],
+      "96013": [
+       0,
+       0
+      ],
+      "96014": [
+       1,
+       0
+      ],
+      "96015": [
+       1,
+       1
+      ]
+     },
+     "gpus": [
+      0
+     ]
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
     "task": "RubiksCubeTask",
     "code": "R1",
     "wording_pair": [
@@ -11665,13 +11796,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "e5ac7659cd39"
+   "commit": "1addc6b07076"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "e1357d948d149f0a",
- "numbers_hash": "27bbcfdc561a5d80",
- "updated": "2026-11-09T01:46Z",
- "updated_text": "9 Nov 2026, 01:46 UTC",
- "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: first results"
+ "content_hash": "5b5a13ab661c1a95",
+ "numbers_hash": "9292131e8600995c",
+ "updated": "2026-11-09T02:01Z",
+ "updated_text": "9 Nov 2026, 02:01 UTC",
+ "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: complete"
 }

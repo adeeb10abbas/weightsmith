@@ -990,7 +990,8 @@ def read_cross(args, meta_out):
         final = str(meta.get("status", "")).lower() in ("final", "done", "complete", "finished")
         readme = None if override else git("show", f"origin/{branch}:{str(Path(rel).parent)}/{mid}/README.md")
         m_st = (re.search(r"^Status:\s*\*\*([^*]*\bcomplete\b[^*]*)\*\*", readme or "", re.M | re.I)
-                or re.search(r"^Status \(([^)]*\bfinal)\)", readme or "", re.M | re.I))   # "Status (date, final): ..."
+                or re.search(r"^Status \(([^)]*\bfinal)\)", readme or "", re.M | re.I)    # "Status (date, final): ..."
+                or re.search(r"^\*\*Status \(([^)]*\bruns finished)\)", readme or "", re.M | re.I))   # Track C'
         if m_st:
             final = True
             meta["status_note"] = f"{m_st.group(1).strip()} ({branch} README)"
@@ -1558,6 +1559,7 @@ SECOND = dict(
     readme="cross-cosmos/v1:study/results/cross/cosmos/README.md",
 )
 SECOND_LAST = {}   # this run's second-edit rows, for the TL;DR
+DONE = {"all": False}   # every track's record final: no "as they land" wording
 PROSPECT_LAST = {}  # the prospective test's pairs with records, for the task legend
 WHEN_LAST = {}     # whether the records show both sides of "when does the edit work?", for the TL;DR
 
@@ -3528,14 +3530,15 @@ def control_text(P, tables):
     fresh_se = [(t, T["side_effects"][t]["pi05"]) for t in ("T2", "T3", "T4", "T5", "T6", "T7", "R1")
                 if _ok(T["side_effects"].get(t, {}).get("pi05"), ("a", "b", "n")) and not T["side_effects"][t]["pi05"].get("prov")]
     if fresh_se:
-        s += (" On this page’s starts so far, with the edit " + and_list(
+        s += (f" On this page’s starts{'' if DONE['all'] else ' so far'}, with the edit " + and_list(
             (f"{tn(t)} stayed at {c['a']} of {c['n']}" if c["a"] == c["b"] else f"{tn(t)} went from {c['a']} to {c['b']} of {c['n']}")
             + (" (clearly better)" if c.get("p") is not None and c["p"] < SIG and c["b"] > c["a"] else
                " (clearly worse)" if c.get("p") is not None and c["p"] < SIG else "") for t, c in fresh_se)
               + (", none of them a clear change" if all(c.get("p") is None or c["p"] >= SIG
                                                                         for _, c in fresh_se) else "") + ".")
     s += (f" No edit helped {and_list(tn(t) for t in ('T4', 'T5', 'T6', 'T7'))}, whose failures are seeing, grasping or a "
-          "missing skill, not reading. π0.5’s runs from this page’s starts replace these numbers as they land.")
+          "missing skill, not reading." + ("" if DONE["all"] else
+                                           " π0.5’s runs from this page’s starts replace these numbers as they land."))
     return f"<p>{esc(s)}</p>"
 
 
@@ -4816,8 +4819,8 @@ def tldr(tables, models, prevent=None):
     early = [it["lead"] for it in items if it.get("tag")]
     note = ("Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. "
             + (f"{and_list(x + '’s' for x in early)} numbers are earlier records, each on its own slots and number of "
-               "starts; the shared-slot runs "
-               "replace them as they land." if early else "Every number here is from the shared slots."))
+               "starts; the shared-slot runs " + ("did not repeat them." if DONE["all"] else "replace them as they land.")
+               if early else "Every number here is from the shared slots."))
     return dict(items=items, note=note)
 
 
@@ -5132,6 +5135,7 @@ def main():
     P = build_pi05(S)
     meta = {}
     cross = read_cross(args, meta)
+    DONE["all"] = all(cross.get(m) and cross[m]["final"] for m in ORDER)
 
     models = {}
     for mid in ORDER:
@@ -5252,6 +5256,9 @@ def main():
     page = replace_region(page, "prevent", prevent_html(data["prevention"], full=False))
     page = replace_region(page, "prevent-full", prevent_html(data["prevention"]))
     page = replace_region(page, "when", when)
+    page = replace_region(page, "fill-note", "Every track has finished; a cell that reads — was not run." if DONE["all"]
+                          else 'The page fills in as runs finish; anything not measured yet reads <span class="run">'
+                               'running</span>.')
     page = replace_region(page, "second", second_html(data["second_edit"], full=False))
     page = replace_region(page, "second-full", second_html(data["second_edit"]))
     page = replace_region(page, "tldr-models", "<ul>" + tldr_html(data["tldr_models"]) + "</ul>")
