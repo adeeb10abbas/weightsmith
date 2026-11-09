@@ -3365,8 +3365,8 @@
    ]
   },
   "control_k": 2,
-  "teacher_k": null,
-  "recovery_pct": null,
+  "teacher_k": 8,
+  "recovery_pct": 114.3,
   "transfer": null,
   "retention": null,
   "edit": {
@@ -3727,6 +3727,45 @@
    "edit_location": "same layers as v2mi-f",
    "values_changed": 502291925,
    "values_changed_note": "random-direction control: v2mi-f's layers, rank and singular values, random orthonormal directions (seed 0)"
+  },
+  "teacher": {
+   "wording": "Put the cube in the bowl then put the banana in the bowl",
+   "slots": [
+    96000,
+    96015
+   ],
+   "n": 16,
+   "k": 8,
+   "vs_edit": {
+    "fixed": 4,
+    "broke": 5,
+    "p": 1.0
+   },
+   "vs_unedited": {
+    "fixed": 7,
+    "broke": 0,
+    "p": 0.015625
+   },
+   "unedited_k_same_slots": 1,
+   "edited_k_same_slots": 9,
+   "per_slot": {
+    "96000": 0,
+    "96001": 0,
+    "96002": 0,
+    "96003": 1,
+    "96004": 1,
+    "96005": 0,
+    "96006": 0,
+    "96007": 1,
+    "96008": 0,
+    "96009": 1,
+    "96010": 0,
+    "96011": 0,
+    "96012": 1,
+    "96013": 1,
+    "96014": 1,
+    "96015": 1
+   }
   },
   "gpus": [
    0
