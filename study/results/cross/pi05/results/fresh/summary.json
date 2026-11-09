@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 71,
- "gpu_hours": 10.93,
+ "jobs": 72,
+ "gpu_hours": 11.14,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
@@ -27,8 +27,8 @@
   "T4/v2mi-f/heldout": "27/32",
   "T5/base/heldout": "7/32",
   "T5/v2mi-f/heldout": "6/32",
-  "T6/base/heldout": "6/16",
-  "T6/v2mi-f/heldout": "6/16",
+  "T6/base/heldout": "11/32",
+  "T6/v2mi-f/heldout": "11/32",
   "T7/base/heldout": "0/32",
   "T7/v2mi-f/heldout": "0/32",
   "T8/v2mi-f/heldout": "0/32",
@@ -282,15 +282,15 @@
    "code": "T6",
    "slots": [
     96000,
-    96015
+    96031
    ],
-   "n": 16,
-   "unedited_k": 6,
-   "edited_k": 6,
+   "n": 32,
+   "unedited_k": 11,
+   "edited_k": 11,
    "control_k": null,
    "teacher_k": null,
-   "fixed": 3,
-   "broke": 3,
+   "fixed": 7,
+   "broke": 7,
    "p": 1.0
   },
   {

@@ -81,7 +81,7 @@ instructions, same slots, same render preset, same GPU model.
 | Metrics | [`scripts/fresh.py`](scripts/fresh.py) → records with `"status": "fresh"`, `"run": "C-prime-default"` in [`../metrics_pi05.json`](../metrics_pi05.json) and [`results/fresh/summary.json`](results/fresh/summary.json); per-job records in `results/fresh/runs/` |
 
 <!-- fresh2:begin -->
-Jobs finished: **71** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **10.93 GPU-h** (ali-ms RTX 3090s: GPU0, and GPU1 from 22:45 UTC; both arms of every pair on one GPU, `gpus` in each record). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
+Jobs finished: **72** (16 slots each, two fresh 8-env Isaac processes per group); GPU time in finished jobs: **11.14 GPU-h** (ali-ms RTX 3090s: GPU0, and GPU1 from 22:45 UTC; both arms of every pair on one GPU, `gpus` in each record). All rows: default render preset, environment seed 0, arms paired on the same slots (same scene, same noise seeds); p = exact two-sided McNemar; intervals Wilson 95% (rates) and paired bootstrap 95% (differences).
 
 **Failure map** (unedited π0.5, task's default instruction, practice slots). For context, Cosmos3 Edge on the same 16 starts (Track A's run records on ali-ms, default preset, 8 envs per process; `results/fresh/cosmos_same_slots_ali-ms.json`):
 
@@ -133,7 +133,7 @@ Slots 96000–96063 (held-out, never used for any choice); control on 96000–96
 | T3 RubiksCubeLeftOfBowlTask | 1/32 → **6/32** | 6 / 1 | 0.12 | 96000–96031 |
 | T4 StackYellowOnRedTask | 21/32 → **27/32** | 9 / 3 | 0.15 | 96000–96031 |
 | T5 MustardInLeftBinTask | 7/32 → **6/32** | 6 / 7 | 1 | 96000–96031 |
-| T6 Stack3RubiksCubeTask | 6/16 → **6/16** | 3 / 3 | 1 | 96000–96015 |
+| T6 Stack3RubiksCubeTask | 11/32 → **11/32** | 7 / 7 | 1 | 96000–96031 |
 | T7 PickUpGreenObjectTask | 0/32 → **0/32** | 0 / 0 | 1 | 96000–96031 |
 | T8 MustardRightOfRaisinRFTask | 0/32 → **0/32** | 0 / 0 | 1 | 96000–96031 |
 | R1 RubiksCubeTask | 31/32 → **31/32** | 0 / 0 | 1 | 96000–96031 |
