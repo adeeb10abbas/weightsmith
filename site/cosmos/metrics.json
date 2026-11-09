@@ -58,7 +58,7 @@
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "c52556be945d"
+    "commit": "05b5a28fd7b5"
    }
   }
  ],
@@ -396,7 +396,7 @@
      "pi05": {
       "v": "no gain",
       "s": "ok",
-      "d": "own edit 35 → 39 of 64; shared slots, unedited: 6 of 16; shared slots, Cube then banana edit: 6 → 6 of 16",
+      "d": "own edit 35 → 39 of 64; shared slots, unedited: 6 of 16; shared slots, Cube then banana edit: 11 → 11 of 32",
       "prov": true
      }
     }
@@ -2712,13 +2712,13 @@
        "d": "dropped: both Cube then banana edits lowered success on Cube then banana itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
-       "v": "±0: 6 → 6 of 16",
+       "v": "±0: 11 → 11 of 32",
        "s": "ok",
-       "d": "3 / 3; p = 1; slots 96000–96015; paper’s evaluation: +5: 14 → 19 of 32",
+       "d": "7 / 7; p = 1; slots 96000–96031; paper’s evaluation: +5: 14 → 19 of 32",
        "delta": 0,
-       "a": 6,
-       "b": 6,
-       "n": 16,
+       "a": 11,
+       "b": 11,
+       "n": 32,
        "p": 1.0
       }
      }
@@ -11609,35 +11609,35 @@
     ],
     "slots": [
      96000,
-     96015
+     96031
     ],
-    "n": 16,
-    "unedited_k": 6,
-    "edited_k": 6,
-    "fixed": 3,
-    "broke": 3,
+    "n": 32,
+    "unedited_k": 11,
+    "edited_k": 11,
+    "fixed": 7,
+    "broke": 7,
     "p": 1.0,
     "ci": {
      "unedited_wilson95_pct": [
-      18.5,
-      61.4
+      20.4,
+      51.7
      ],
      "edited_wilson95_pct": [
-      18.5,
-      61.4
+      20.4,
+      51.7
      ],
      "paired_diff_bootstrap95_pts": [
-      -31.2,
-      31.2
+      -21.9,
+      21.9
      ]
     },
     "control_k": null,
     "teacher_k": null,
     "recovery_pct": null,
     "transfer": {
-     "unedited_k": 6,
-     "edited_k": 6,
-     "n": 16
+     "unedited_k": 11,
+     "edited_k": 11,
+     "n": 32
     },
     "retention": null,
     "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
@@ -11724,10 +11724,75 @@
       "96015": [
        1,
        1
+      ],
+      "96016": [
+       1,
+       1
+      ],
+      "96017": [
+       0,
+       0
+      ],
+      "96018": [
+       0,
+       1
+      ],
+      "96019": [
+       0,
+       0
+      ],
+      "96020": [
+       0,
+       1
+      ],
+      "96021": [
+       0,
+       1
+      ],
+      "96022": [
+       0,
+       0
+      ],
+      "96023": [
+       0,
+       0
+      ],
+      "96024": [
+       0,
+       0
+      ],
+      "96025": [
+       1,
+       0
+      ],
+      "96026": [
+       1,
+       0
+      ],
+      "96027": [
+       1,
+       0
+      ],
+      "96028": [
+       0,
+       1
+      ],
+      "96029": [
+       0,
+       0
+      ],
+      "96030": [
+       0,
+       0
+      ],
+      "96031": [
+       1,
+       0
       ]
      },
      "gpus": [
-      0
+      0,
+      1
      ]
     }
    },
@@ -12498,13 +12563,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "c52556be945d"
+   "commit": "05b5a28fd7b5"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "7d785f7c9fdfb0ce",
- "numbers_hash": "df8b73d755d890e9",
- "updated": "2026-11-09T05:44Z",
- "updated_text": "9 Nov 2026, 05:44 UTC",
+ "content_hash": "cb296b97d510d8f9",
+ "numbers_hash": "35be625c8b0772da",
+ "updated": "2026-11-09T06:06Z",
+ "updated_text": "9 Nov 2026, 06:06 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: complete"
 }
