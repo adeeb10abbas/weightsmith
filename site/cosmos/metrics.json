@@ -52,13 +52,13 @@
    "architecture": "An 18-layer PaliGemma vision-language model (VLM) and an 18-layer Gemma action expert. The action expert attends to the VLM's keys and values and produces 15-step action chunks, including a gripper command, by flow matching.",
    "entry": "As text tokens in the VLM, together with image tokens from two cameras and robot-state tokens, under bidirectional attention, so the image tokens read the instruction. The distilled edit goes into the VLM's MLP weights.",
    "where": "VLM / action expert / action head",
-   "evaluation": "Closed loop on RoboLab in Isaac Sim. Until its shared-slot runs land, its cells are earlier records (RTX 3090, performance render preset), each tagged with its own slots and number of starts. Trained on DROID data and none of these tasks.",
+   "evaluation": "Closed loop on RoboLab in Isaac Sim: on the shared starts with the default render preset, and, for the comparisons not rerun there, the paper’s evaluation (RTX 3090, performance render preset), each with its own slots and number of starts. Trained on DROID data and none of these tasks.",
    "source": {
     "kind": "branch",
     "branch": "cross-pi05/v1",
     "path": "study/results/cross/metrics_pi05.json",
     "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-    "commit": "1addc6b07076"
+    "commit": "c7b4f079cb75"
    }
   }
  ],
@@ -122,27 +122,27 @@
   "items": [
    {
     "id": "fix",
-    "lead": "The fix",
-    "text": "On NVIDIA’s Cosmos3 Edge, a weight edit fixed a task the robot failed only because of how its instruction was worded: 0 → 56 successes from 64 unseen starts. A random edit of the same size, a placebo: 0. Rewording the instruction itself, from the same starts: 56.",
+    "lead": "The fix.",
+    "text": "A closed-form weight edit makes NVIDIA’s Cosmos3 Edge succeed from 56 of 64 new starts, as often as rewording the instruction does.",
     "kind": null,
     "tag": null
    },
    {
     "id": "where",
-    "lead": "Where it works",
-    "text": "Only when written into the part of the model that reads the instruction; written into the part that turns it into motion, the same edit did less (π0.5) or nothing (Cosmos3 Edge). On GR00T N1.7 every version of the edit made the robot worse. On both NVIDIA models it works when the clear wording changes words in place, not when it adds words, a rule we wrote down before testing a new pair, and it held (1 → 12 of 32 unseen starts, random edit 3).",
+    "lead": "When it works.",
+    "text": "Only where the robot reads, and only when the clearer wording swaps words in place. A prediction made in advance held.",
     "kind": null,
     "tag": null
    },
    {
     "id": "cost",
-    "lead": "The cost",
-    "text": "It breaks the two other tasks whose instructions say “left”: Cube left of bowl 13 → 0 and Mustard in left bin 9 → 0 of 32 unseen starts. Rebuilding it while telling it to leave other instructions unchanged kept the fix on practice starts but did not stop the damage. A rebuild that leaves the instruction’s own words alone no longer fixes the task in replays: the fix and the damage are the same change.",
+    "lead": "The cost.",
+    "text": "It breaks the two other tasks that say “left”, and rebuilding it to protect them didn’t help.",
     "kind": null,
     "tag": null
    }
   ],
-  "note": "Unseen starts: simulated starting scenes never used to build or choose an edit. Practice starts: the scenes an edit was built and checked on. Every count compares the edited and the unedited robot from the same starts. p: the chance of a difference at least this large if the edit did nothing; below 0.05 we call a difference clear."
+  "note": ""
  },
  "tldr_models": {
   "items": [
@@ -150,7 +150,8 @@
     "id": "pi05",
     "lead": "π0.5",
     "kind": "OpenPI VLA, control",
-    "tag": "earlier records",
+    "tag": null,
+    "prov": true,
     "text": "Edits lifted success on Cube then banana from 2 to 40 of 64 unseen starts (p = 7.3 × 10⁻¹²) and on Mustard right of raisin box from 0 to 28 of 64 (p = 7.5 × 10⁻⁹). A random edit of the same size scored 2 of 64 on Cube then banana, against 2 unedited. No detectable gain on Yellow on red, Mustard in left bin, Three-cube tower, Flat box, failures of perception, contact or missing skill."
    },
    {
@@ -158,6 +159,7 @@
     "lead": "Cosmos3 Edge Policy",
     "kind": "world-action model",
     "tag": null,
+    "prov": null,
     "text": "Edits lifted success on Mustard right of raisin box from 0 to 56 of 64 unseen starts (p = 2.8 × 10⁻¹⁷). A random edit of the same size scored 0 of 64 on Mustard right of raisin box, against 0 unedited."
    },
    {
@@ -165,6 +167,7 @@
     "lead": "GR00T N1.7",
     "kind": "reasoning-backbone VLA",
     "tag": null,
+    "prov": null,
     "text": "Unedited, all 9 tasks: Cube then banana 9 of 32, Cube left of bowl 1 of 32 and Cube in bowl 28 of 32; no success on Eyeglasses and Yellow on red, Mustard in left bin, Three-cube tower, Flat box, Mustard right of raisin box. Clearer wording, same weights: Cube then banana 9 → 16 of 32 (p = 0.12); no gain on Cube left of bowl and Mustard right of raisin box. Cube then banana edits in the Cosmos-Reason2 backbone and in the diffusion action head each lowered success on the 32 practice starts they were built from, 9 → 0 (p = 0.0039 each); random edits of the same sizes, 11 and 10 of 32; no held-out runs, since no edit passed practice. Render check: banana onto plate succeeded on 5 of 16 starts under RoboLab’s performance preset and 16 of 16 under the default preset, which all three models now use."
    },
    {
@@ -172,10 +175,10 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted Eyeglasses (12 → 21 of 32), made none detectably worse, and kept the retention task Cube in bowl at 31 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
+    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box, Mustard right of raisin box and Cube in bowl, lifted Eyeglasses (12 → 21 of 32), made none detectably worse, and kept the retention task Cube in bowl at 31 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
    }
   ],
-  "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. π0.5’s numbers are earlier records, each on its own slots and number of starts; the shared-slot runs did not repeat them."
+  "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. Some of π0.5’s numbers are from the paper’s evaluation, each on its own slots and number of starts."
  },
  "sections": [
   {
@@ -185,52 +188,67 @@
   },
   {
    "id": "question",
-   "title": "What we asked",
+   "title": "The robot can do the task, but misreads it",
    "level": 2
   },
   {
    "id": "models",
-   "title": "Three models, one edit",
-   "level": 2
-  },
-  {
-   "id": "fix",
-   "title": "The fix on Cosmos3 Edge",
-   "level": 2
-  },
-  {
-   "id": "where",
-   "title": "Where to edit",
-   "level": 2
-  },
-  {
-   "id": "when",
-   "title": "When does the edit work?",
-   "level": 3
-  },
-  {
-   "id": "side-effects",
-   "title": "What else changed",
-   "level": 2
-  },
-  {
-   "id": "prevent",
-   "title": "Can the side effect be prevented?",
-   "level": 3
-  },
-  {
-   "id": "second-edit",
-   "title": "Can a second edit undo the damage?",
-   "level": 3
-  },
-  {
-   "id": "groot",
-   "title": "GR00T N1.7: why there is no fix",
+   "title": "Edit the weights, keep the words",
    "level": 2
   },
   {
    "id": "control",
-   "title": "π0.5, the control",
+   "title": "It works on π0.5",
+   "level": 2
+  },
+  {
+   "id": "nvidia",
+   "title": "Does it carry over to NVIDIA’s models?",
+   "level": 2
+  },
+  {
+   "id": "fix",
+   "title": "On Cosmos3 Edge, the edit works as well as the clearer wording",
+   "level": 2
+  },
+  {
+   "id": "results",
+   "title": "All three models at a glance",
+   "level": 2
+  },
+  {
+   "id": "where",
+   "title": "It only works where the robot reads",
+   "level": 2
+  },
+  {
+   "id": "when",
+   "title": "The words have to line up",
+   "level": 2
+  },
+  {
+   "id": "side-effects",
+   "title": "The fix has a cost",
+   "level": 2
+  },
+  {
+   "id": "prevent",
+   "title": "Protecting other instructions doesn’t help",
+   "level": 3
+  },
+  {
+   "id": "second-edit",
+   "title": "A second edit can’t undo it",
+   "level": 3
+  },
+  {
+   "id": "groot",
+   "title": "GR00T N1.7 has nothing to fix",
+   "level": 2
+  },
+  {
+   "id": "meaning",
+   "title": "What this means",
    "level": 2
   },
   {
@@ -271,7 +289,7 @@
      "pi05": {
       "v": "2 → 40 of 64",
       "s": "ok",
-      "d": "38 / 0, p = 7.3 × 10⁻¹²; earlier record: fixed: 27 → 106 of 128"
+      "d": "38 / 0, p = 7.3 × 10⁻¹²; paper’s evaluation: fixed: 27 → 106 of 128"
      }
     }
    },
@@ -292,7 +310,7 @@
      "pi05": {
       "v": "Cube then banana edit: 12 → 21 of 32",
       "s": "ok",
-      "d": "12 / 3; p = 0.035; earlier record: Cube then banana edit: 22 → 44 of 64"
+      "d": "12 / 3; p = 0.035; paper’s evaluation: Cube then banana edit: 22 → 44 of 64"
      }
     }
    },
@@ -313,7 +331,7 @@
      "pi05": {
       "v": "Cube then banana edit: 1 → 6 of 32",
       "s": "ok",
-      "d": "6 / 1; p = 0.12; earlier record: Cube then banana edit: 8 → 36 of 64"
+      "d": "6 / 1; p = 0.12; paper’s evaluation: Cube then banana edit: 8 → 36 of 64"
      }
     }
    },
@@ -422,7 +440,7 @@
      "pi05": {
       "v": "0 → 28 of 64",
       "s": "ok",
-      "d": "28 / 0, p = 7.5 × 10⁻⁹; earlier record: fixed: 0 → 27 of 64"
+      "d": "28 / 0, p = 7.5 × 10⁻⁹; paper’s evaluation: fixed: 0 → 27 of 64"
      }
     }
    },
@@ -442,7 +460,7 @@
      "pi05": {
       "v": "31 → 31 of 32",
       "s": "ok",
-      "d": "earlier record: kept: 32 → 32 of 32"
+      "d": "paper’s evaluation: kept: 32 → 32 of 32"
      }
     }
    },
@@ -1027,7 +1045,7 @@
    "cross-cosmos/v1:study/results/cross/cosmos/README.md"
   ]
  },
- "when_text": "The edit copies the clear wording’s effect onto the same words of the original wording, and that effect lives in the words that differ. So it works where the two wordings line up word for word: on Mustard right of raisin box both have 171 tokens, and the edit took Cosmos3 Edge from 0 to 56 of 64 unseen starts, as many as the clear wording itself. It fails where the clear wording adds or removes words, because the added words have no counterpart to copy their effect onto: Cube left of bowl on Cosmos3 Edge (159 and 167 tokens) and Cube then banana on GR00T N1.7 (the clear wording inserts “in the bowl then put”). Copying only the words both wordings share does nothing: 1.9% of the clear wording’s effect in replays, about the same as a random edit of the same size (2.6%). π0.5 is different: its clear wording for Cube then banana also adds words, yet the edit worked, because in π0.5 the camera images are read together with the whole instruction, so the wording’s effect also reaches positions both wordings share, and the edit copies it there (in the paper, the image positions alone carry the fix). A prediction we tested. Before building anything, we wrote down a prediction (the Cosmos3 Edge track’s README, commit e01cbfe): an edit for a new pair of wordings of equal length would pass the offline check and fix the task; one for wordings of unequal length would fail the check. Cube left of bowl, worded bowl-first vs cube-first, 169 and 169 tokens; unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07), a modest gap: in replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38); on 32 unseen starts it went from 1 to 12, against 3 for the random edit and 8 for the clearer wording (p = 9.8 × 10⁻⁴); the edit did at least as well as the clearer wording (12 vs 8 of 32; not a clear difference). The prediction held. Cube in front of bowl, worded bowl-first vs cube-first, 166 and 168 tokens: in replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check. The prediction held. Case Do the wordings line up? Result Mustard right of raisin box, Cosmos3 Edge Yes: 171 and 171 tokens, every word matched 0 → 56 of 64 unseen starts; the clear wording itself: 56 Cube left of bowl, Cosmos3 Edge No: 159 and 167 tokens Didn’t pass the offline check; not run on the robot in replays it moved the planned motion away from the clear wording’s (−86% of the gap) Cube then banana, GR00T N1.7 No: the clear wording inserts “in the bowl then put” Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, Cosmos3 Edge, only the words both wordings share Only the shared words: 159 of 171 tokens 1.9% of the clear wording’s effect in replays; a random edit 2.6% not run on the robot Tested after a written prediction Cube left of bowl, worded bowl-first vs cube-first Yes: 169 and 169 tokens predicted before the build: it works In replays the edit closed 96% of the gap to the clearer wording (a random edit of the same size: −1.3%), passing the offline check; on 16 practice starts it went from 1 to 4, against 1 for the random edit and 7 for the clearer wording (p = 0.38); on 32 unseen starts it went from 1 to 12, against 3 for the random edit and 8 for the clearer wording (p = 9.8 × 10⁻⁴); the edit did at least as well as the clearer wording (12 vs 8 of 32; not a clear difference) Unedited, the clearer wording lifts it only from 1 to 7 of 16 practice starts (p = 0.07). The prediction held. Cube in front of bowl, worded bowl-first vs cube-first No: 166 and 168 tokens predicted before the build: it fails In replays the edit closed 11% of the gap to the clearer wording (a random edit of the same size: +12.6%), failing the offline check The prediction held.",
+ "when_text": "The edit copies the clearer wording’s effect onto the matching words of the original. On the mustard task the two wordings have the same length and swap words in place, so every word has a match, and the edit works. When the clearer wording adds words, the new words have nothing to land on. That is why the edit failed on Cosmos3 Edge’s Cube left of bowl and GR00T N1.7’s Cube then banana. Copying only the words both wordings share does nothing at all. π0.5 is the exception, for a reason: it reads the camera images together with the whole instruction, so a clearer wording’s effect also reaches positions both wordings share, and the edit can copy it from there. We wrote this rule down before testing a new pair of wordings. On a pair of equal length, Cube left of bowl worded bowl-first vs cube-first, the edit lifted the task from 1 to 12 of 32 unseen starts, far above a random edit. On a pair of unequal length, it failed its offline check, as predicted. Case The two wordings Result Mustard right of raisin box, Cosmos3 Edge Same length, swapped in place 0 → 56 of 64 unseen starts Cube left of bowl, Cosmos3 Edge Words added Failed the offline check Cube then banana, GR00T N1.7 Words added Worse: 9 → 0 of 32 practice starts Mustard right of raisin box, only the shared words copied — No more than a random edit, in replays Predicted: Cube left of bowl, worded bowl-first vs cube-first Same length, swapped in place 1 → 12 of 32 unseen starts; random edit 3 Predicted: Cube in front of bowl, worded bowl-first vs cube-first Words added Failed the offline check Even where it works, though, the edit is not free.",
  "diagrams": {
   "where": [
    {
@@ -1244,7 +1262,7 @@
       "pi05": {
        "v": "3 of 16",
        "s": "ok",
-       "d": "19%; slots 30000–30015; earlier slots: 27 of 128",
+       "d": "19%; slots 30000–30015; paper’s evaluation: 27 of 128",
        "k": 3,
        "n": 16
       }
@@ -1271,7 +1289,7 @@
       "pi05": {
        "v": "7 of 16",
        "s": "ok",
-       "d": "44%; slots 30000–30015; earlier slots: 18 of 64",
+       "d": "44%; slots 30000–30015; paper’s evaluation: 18 of 64",
        "k": 7,
        "n": 16
       }
@@ -1298,7 +1316,7 @@
       "pi05": {
        "v": "0 of 16",
        "s": "ok",
-       "d": "0%; slots 30000–30015; earlier slots: 8 of 64",
+       "d": "0%; slots 30000–30015; paper’s evaluation: 8 of 64",
        "k": 0,
        "n": 16
       }
@@ -1325,7 +1343,7 @@
       "pi05": {
        "v": "9 of 16",
        "s": "ok",
-       "d": "56%; slots 30000–30015; earlier slots: 13 of 32",
+       "d": "56%; slots 30000–30015; paper’s evaluation: 13 of 32",
        "k": 9,
        "n": 16
       }
@@ -1352,7 +1370,7 @@
       "pi05": {
        "v": "3 of 16",
        "s": "ok",
-       "d": "19%; slots 30000–30015; earlier slots: 8 of 64",
+       "d": "19%; slots 30000–30015; paper’s evaluation: 8 of 64",
        "k": 3,
        "n": 16
       }
@@ -1379,7 +1397,7 @@
       "pi05": {
        "v": "6 of 16",
        "s": "ok",
-       "d": "38%; slots 30000–30015; earlier slots: 35 of 64",
+       "d": "38%; slots 30000–30015; paper’s evaluation: 35 of 64",
        "k": 6,
        "n": 16
       }
@@ -1406,7 +1424,7 @@
       "pi05": {
        "v": "0 of 16",
        "s": "ok",
-       "d": "0%; slots 30000–30015; earlier slots: 0 of 32",
+       "d": "0%; slots 30000–30015; paper’s evaluation: 0 of 32",
        "k": 0,
        "n": 16
       }
@@ -1433,7 +1451,7 @@
       "pi05": {
        "v": "0 of 16",
        "s": "ok",
-       "d": "0%; slots 30000–30015; earlier slots: 0 of 64",
+       "d": "0%; slots 30000–30015; paper’s evaluation: 0 of 64",
        "k": 0,
        "n": 16
       }
@@ -1460,14 +1478,14 @@
       "pi05": {
        "v": "16 of 16",
        "s": "ok",
-       "d": "100%; slots 30000–30015; earlier slots: 32 of 32",
+       "d": "100%; slots 30000–30015; paper’s evaluation: 32 of 32",
        "k": 16,
        "n": 16
       }
      }
     }
    ],
-   "note": "Until its shared-slot runs land, π0.5's cells are earlier records: for each task the largest earlier run, on its own slots, as the π0.5 track lists them with every other measurement. Its unedited rate on Cube then banana ranged from 8% to 21% across six start sets, so compare models on the shared slots.",
+   "note": "π0.5's cells are from the shared slots where it was run there, else from the paper’s evaluation (the largest run, on its own slots). Its unedited rate on Cube then banana ranged from 8% to 21% across six start sets, so compare models on the shared slots.",
    "sources": []
   },
   {
@@ -1504,7 +1522,7 @@
      }
     }
    ],
-   "note": "The performance preset renders without the RTX denoiser, which leaves speckle noise on every surface; the default preset is NVIDIA's validated configuration. All three models are compared under the default preset. π0.5's earlier records, including the paper's, used the performance preset.",
+   "note": "The performance preset renders without the RTX denoiser, which leaves speckle noise on every surface; the default preset is NVIDIA's validated configuration. All three models are compared under the default preset. The paper’s evaluation of π0.5 used the performance preset.",
    "sources": [
     "cross-groot/v1:study/results/cross/groot/results/validation/official-bop16.episode_results.jsonl",
     "cross-groot/v1:study/results/cross/groot/results/validation/smoke-bop-s0-default.json",
@@ -1633,7 +1651,7 @@
       "pi05": {
        "v": "0 → 52 of 64",
        "s": "ok",
-       "d": "+81.2 points; slots 96000–96063; Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.; earlier slots: 0 → 27 of 32",
+       "d": "+81.2 points; slots 96000–96063; Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.; paper’s evaluation: 0 → 27 of 32",
        "a": 0,
        "b": 52,
        "n": 64,
@@ -1642,7 +1660,7 @@
      }
     }
    ],
-   "note": "Reference-first describes the placement from the reference object's side, mustard-first from the moved object's side. In the earlier Same Goal, Different Words study (8 starting layouts per goal, no paired starts), raisin-box-first wording lowered stable placement by 8.1 points for Cosmos3 Edge across 12 goals; on this goal Edge placed 4 of 8 under mustard-first and 0 of 8 under raisin-box-first.",
+   "note": "Reference-first describes the placement from the reference object's side, mustard-first from the moved object's side. In the Same Goal, Different Words study (8 starting layouts per goal, no paired starts), raisin-box-first wording lowered stable placement by 8.1 points for Cosmos3 Edge across 12 goals; on this goal Edge placed 4 of 8 under mustard-first and 0 of 8 under raisin-box-first.",
    "sources": [
     "study/results/opus/controls/ctl1-90000-64.analysis.json"
    ]
@@ -1695,7 +1713,7 @@
       "pi05": {
        "v": "2 → 40 of 64",
        "s": "ok",
-       "d": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys; 38 / 0, p = 7.3 × 10⁻¹²; +59.4 points [46.9, 71.9]; slots 96000–96063; earlier slots: 27 → 106 of 128",
+       "d": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys; 38 / 0, p = 7.3 × 10⁻¹²; +59.4 points [46.9, 71.9]; slots 96000–96063; paper’s evaluation: 27 → 106 of 128",
        "a": 2,
        "b": 40,
        "n": 64,
@@ -2010,7 +2028,7 @@
       "pi05": {
        "v": "0 → 28 of 64",
        "s": "ok",
-       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; 28 / 0, p = 7.5 × 10⁻⁹; +43.8 points [31.2, 56.2]; slots 96000–96063; earlier slots: 0 → 27 of 64",
+       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; 28 / 0, p = 7.5 × 10⁻⁹; +43.8 points [31.2, 56.2]; slots 96000–96063; paper’s evaluation: 0 → 27 of 64",
        "a": 0,
        "b": 28,
        "n": 64,
@@ -2071,7 +2089,7 @@
       "pi05": {
        "v": "control 2, unedited 2, edit 40 of 64",
        "s": "ok",
-       "d": "slots 96000–96063; earlier slots: control 9, unedited 13, edit 50 of 64",
+       "d": "slots 96000–96063; paper’s evaluation: control 9, unedited 13, edit 50 of 64",
        "u": 2,
        "r": 2,
        "e": 40,
@@ -2106,7 +2124,7 @@
       "pi05": {
        "v": "control 0, unedited 0, edit 28 of 64",
        "s": "ok",
-       "d": "slots 96000–96063; earlier slots: control 0, unedited 0, edit 27 of 64",
+       "d": "slots 96000–96063; paper’s evaluation: control 0, unedited 0, edit 27 of 64",
        "u": 0,
        "r": 0,
        "e": 28,
@@ -2181,7 +2199,7 @@
       "pi05": {
        "v": "54%",
        "s": "ok",
-       "d": "as reported; (28 − 0) / (52 − 0) of 64; earlier slots: 59%",
+       "d": "as reported; (28 − 0) / (52 − 0) of 64; paper’s evaluation: 59%",
        "a": 0,
        "b": 28,
        "t": 52,
@@ -2439,7 +2457,7 @@
       "pi05": {
        "v": "450,468,837 values",
        "s": "ok",
-       "d": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys; earlier slots: 450,468,837 values (13.4%)"
+       "d": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys; paper’s evaluation: 450,468,837 values (13.4%)"
       }
      }
     },
@@ -2505,7 +2523,7 @@
       "pi05": {
        "v": "275,482,328 values",
        "s": "ok",
-       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; earlier slots: 15.9M as factors (0.47%)"
+       "d": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer; paper’s evaluation: 15.9M as factors (0.47%)"
       }
      }
     }
@@ -2550,7 +2568,7 @@
       "pi05": {
        "v": "+38: 2 → 40 of 64",
        "s": "ok",
-       "d": "38 / 0; p = 7.3 × 10⁻¹²; the target task; slots 96000–96063; earlier slots: +79: 27 → 106 of 128",
+       "d": "38 / 0; p = 7.3 × 10⁻¹²; the target task; slots 96000–96063; paper’s evaluation: +79: 27 → 106 of 128",
        "delta": 38,
        "a": 2,
        "b": 40,
@@ -2582,7 +2600,7 @@
       "pi05": {
        "v": "+9: 12 → 21 of 32",
        "s": "ok",
-       "d": "12 / 3; p = 0.035; slots 96000–96031; earlier slots: +22: 22 → 44 of 64",
+       "d": "12 / 3; p = 0.035; slots 96000–96031; paper’s evaluation: +22: 22 → 44 of 64",
        "delta": 9,
        "a": 12,
        "b": 21,
@@ -2613,7 +2631,7 @@
       "pi05": {
        "v": "+5: 1 → 6 of 32",
        "s": "ok",
-       "d": "6 / 1; p = 0.12; slots 96000–96031; earlier slots: +28: 8 → 36 of 64",
+       "d": "6 / 1; p = 0.12; slots 96000–96031; paper’s evaluation: +28: 8 → 36 of 64",
        "delta": 5,
        "a": 1,
        "b": 6,
@@ -2676,7 +2694,7 @@
       "pi05": {
        "v": "−1: 7 → 6 of 32",
        "s": "ok",
-       "d": "6 / 7; p = 1; slots 96000–96031; earlier slots: +5: 7 → 12 of 32",
+       "d": "6 / 7; p = 1; slots 96000–96031; paper’s evaluation: +5: 7 → 12 of 32",
        "delta": -1,
        "a": 7,
        "b": 6,
@@ -2707,7 +2725,7 @@
       "pi05": {
        "v": "±0: 6 → 6 of 16",
        "s": "ok",
-       "d": "3 / 3; p = 1; slots 96000–96015; earlier slots: +5: 14 → 19 of 32",
+       "d": "3 / 3; p = 1; slots 96000–96015; paper’s evaluation: +5: 14 → 19 of 32",
        "delta": 0,
        "a": 6,
        "b": 6,
@@ -2769,10 +2787,14 @@
        "d": "dropped: both Cube then banana edits lowered success on Cube then banana itself, so no side-effect map was run for them (cross-groot/v1 639a29b)"
       },
       "pi05": {
-       "v": "not run",
+       "v": "±0: 0 → 0 of 32",
        "s": "ok",
-       "d": "the Cube then banana edit was not run on Mustard right of raisin box, which has its own edit",
-       "prov": true
+       "d": "0 / 0; p = 1; slots 96000–96031; paper’s evaluation: not run",
+       "delta": 0,
+       "a": 0,
+       "b": 0,
+       "n": 32,
+       "p": 1.0
       }
      }
     },
@@ -2798,7 +2820,7 @@
       "pi05": {
        "v": "±0: 31 → 31 of 32",
        "s": "ok",
-       "d": "0 / 0; p = 1; slots 96000–96031; earlier slots: ±0: 32 → 32 of 32",
+       "d": "0 / 0; p = 1; slots 96000–96031; paper’s evaluation: ±0: 32 → 32 of 32",
        "delta": 0,
        "a": 31,
        "b": 31,
@@ -2808,7 +2830,7 @@
      }
     }
    ],
-   "note": "Each model's main edit, unchanged, on every suite task. π0.5's earlier records use the Cube then banana edit: Cube then banana, Eyeglasses, Cube left of bowl on unseen starts (128 or 64), Yellow on red, Mustard in left bin, Three-cube tower, Flat box on 32 practice starts, Cube in bowl on 32 fresh starts; it was not run on Mustard right of raisin box. Across fifteen other surveyed tasks it harmed none detectably.",
+   "note": "Each model's main edit, unchanged, on every suite task; π0.5's is the Cube then banana edit. In the paper’s evaluation it harmed none of fifteen other surveyed tasks detectably.",
    "sources": [],
    "edit": {
     "cosmos": "the Mustard right of raisin box edit (text pathway (und mlp.down_proj, layers 0-26))",
@@ -2837,7 +2859,7 @@
       "pi05": {
        "v": "31 → 31 of 32",
        "s": "ok",
-       "d": "the Cube then banana edit, unchanged; 0 / 0; p = 1; slots 96000–96031; earlier slots: 32 → 32 of 32"
+       "d": "the Cube then banana edit, unchanged; 0 / 0; p = 1; slots 96000–96031; paper’s evaluation: 32 → 32 of 32"
       }
      }
     },
@@ -11425,6 +11447,203 @@
    {
     "experiment": "side_effect",
     "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+    "task": "MustardRightOfRaisinRFTask",
+    "code": "T8",
+    "wording_pair": [
+     "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+    ],
+    "slots": [
+     96000,
+     96031
+    ],
+    "n": 32,
+    "unedited_k": 0,
+    "edited_k": 0,
+    "fixed": 0,
+    "broke": 0,
+    "p": 1.0,
+    "ci": {
+     "unedited_wilson95_pct": [
+      0.0,
+      10.7
+     ],
+     "edited_wilson95_pct": [
+      0.0,
+      10.7
+     ],
+     "paired_diff_bootstrap95_pts": [
+      0.0,
+      0.0
+     ]
+    },
+    "control_k": null,
+    "teacher_k": null,
+    "recovery_pct": null,
+    "transfer": {
+     "unedited_k": 0,
+     "edited_k": 0,
+     "n": 32
+    },
+    "retention": null,
+    "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+    "values_changed": 450468837,
+    "notes": "side effect of the T1 edit v2mi-f on another task, held-out slots, the task's own default instruction; per_slot = [unedited, edited]",
+    "_ptask": null,
+    "_task": "T8",
+    "_edit_task": "T1",
+    "_prov": false,
+    "extra": {
+     "status": "fresh",
+     "run": "C-prime-default",
+     "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+     "render_preset": "default",
+     "envs_per_process": 8,
+     "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+     "env_seed": 0,
+     "edit": {
+      "name": "v2mi-f",
+      "fingerprint": "63db0c52a51306c9"
+     },
+     "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the explicit wording 'Put the cube in the bowl then put the banana in the bowl'",
+     "per_slot": {
+      "96000": [
+       0,
+       0
+      ],
+      "96001": [
+       0,
+       0
+      ],
+      "96002": [
+       0,
+       0
+      ],
+      "96003": [
+       0,
+       0
+      ],
+      "96004": [
+       0,
+       0
+      ],
+      "96005": [
+       0,
+       0
+      ],
+      "96006": [
+       0,
+       0
+      ],
+      "96007": [
+       0,
+       0
+      ],
+      "96008": [
+       0,
+       0
+      ],
+      "96009": [
+       0,
+       0
+      ],
+      "96010": [
+       0,
+       0
+      ],
+      "96011": [
+       0,
+       0
+      ],
+      "96012": [
+       0,
+       0
+      ],
+      "96013": [
+       0,
+       0
+      ],
+      "96014": [
+       0,
+       0
+      ],
+      "96015": [
+       0,
+       0
+      ],
+      "96016": [
+       0,
+       0
+      ],
+      "96017": [
+       0,
+       0
+      ],
+      "96018": [
+       0,
+       0
+      ],
+      "96019": [
+       0,
+       0
+      ],
+      "96020": [
+       0,
+       0
+      ],
+      "96021": [
+       0,
+       0
+      ],
+      "96022": [
+       0,
+       0
+      ],
+      "96023": [
+       0,
+       0
+      ],
+      "96024": [
+       0,
+       0
+      ],
+      "96025": [
+       0,
+       0
+      ],
+      "96026": [
+       0,
+       0
+      ],
+      "96027": [
+       0,
+       0
+      ],
+      "96028": [
+       0,
+       0
+      ],
+      "96029": [
+       0,
+       0
+      ],
+      "96030": [
+       0,
+       0
+      ],
+      "96031": [
+       0,
+       0
+      ]
+     },
+     "gpus": [
+      0,
+      1
+     ]
+    }
+   },
+   {
+    "experiment": "side_effect",
+    "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
     "task": "RubiksCubeTask",
     "code": "R1",
     "wording_pair": [
@@ -11796,13 +12015,13 @@
    "branch": "cross-pi05/v1",
    "path": "study/results/cross/metrics_pi05.json",
    "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
-   "commit": "1addc6b07076"
+   "commit": "c7b4f079cb75"
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "5b5a13ab661c1a95",
- "numbers_hash": "9292131e8600995c",
- "updated": "2026-11-09T02:01Z",
- "updated_text": "9 Nov 2026, 02:01 UTC",
+ "content_hash": "8d4b7756d8e01676",
+ "numbers_hash": "3434328d0f17c320",
+ "updated": "2026-11-09T04:31Z",
+ "updated_text": "9 Nov 2026, 04:31 UTC",
  "status_text": "Cosmos3 Edge Policy: complete · GR00T N1.7: complete · π0.5: complete"
 }
