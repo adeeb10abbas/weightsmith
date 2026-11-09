@@ -3733,6 +3733,128 @@
   ]
  },
  {
+  "experiment": "edit_target",
+  "status": "fresh",
+  "run": "C-prime-default",
+  "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "render_preset": "default",
+  "envs_per_process": 8,
+  "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+  "env_seed": 0,
+  "task": "MustardRightOfRaisinRFTask",
+  "code": "T8",
+  "wording_pair": [
+   "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle."
+  ],
+  "slots": [
+   96000,
+   96015
+  ],
+  "n": 16,
+  "unedited_k": 0,
+  "edited_k": 9,
+  "fixed": 9,
+  "broke": 0,
+  "p": 0.003906,
+  "ci": {
+   "unedited_wilson95_pct": [
+    0.0,
+    19.4
+   ],
+   "edited_wilson95_pct": [
+    33.2,
+    76.9
+   ],
+   "paired_diff_bootstrap95_pts": [
+    31.2,
+    81.2
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit": {
+   "name": "s4r-grp3",
+   "fingerprint": "9e6f2378e28be6a3"
+  },
+  "edit_location": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups (approach, grasp, transport), rank <= 96 per layer",
+  "values_changed": 275482328,
+  "values_changed_note": "T8's own edit from the sgdw study: the target-first wording distilled into the reference-first one; dense count from the policy server's load report",
+  "notes": "held-out slots (never used for any choice); instruction unchanged (task default); per_slot = [unedited, edited]",
+  "per_slot": {
+   "96000": [
+    0,
+    0
+   ],
+   "96001": [
+    0,
+    0
+   ],
+   "96002": [
+    0,
+    1
+   ],
+   "96003": [
+    0,
+    0
+   ],
+   "96004": [
+    0,
+    0
+   ],
+   "96005": [
+    0,
+    1
+   ],
+   "96006": [
+    0,
+    1
+   ],
+   "96007": [
+    0,
+    0
+   ],
+   "96008": [
+    0,
+    1
+   ],
+   "96009": [
+    0,
+    0
+   ],
+   "96010": [
+    0,
+    1
+   ],
+   "96011": [
+    0,
+    1
+   ],
+   "96012": [
+    0,
+    1
+   ],
+   "96013": [
+    0,
+    0
+   ],
+   "96014": [
+    0,
+    1
+   ],
+   "96015": [
+    0,
+    1
+   ]
+  },
+  "gpus": [
+   0
+  ]
+ },
+ {
   "experiment": "side_effect",
   "status": "fresh",
   "run": "C-prime-default",
