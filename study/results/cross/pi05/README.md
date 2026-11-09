@@ -97,13 +97,13 @@ Jobs finished: **37** (16 slots each, two fresh 8-env Isaac processes per group)
 
 ![Fresh failure map](plots/fresh_failure_map.png)
 
-**T1 held-out: the distilled edit `v2mi-f` (instruction unchanged)**
+**T1 held-out: the distilled edit `v2mi-f` (the paper's T1 edit); instruction unchanged (the task's default)**
 
 | Arm | Success | Paired |
 |---|---|---|
 | unedited | 2/64 | |
 | **`v2mi-f`** | **40/64** | vs unedited: 38 fixed / 0 broke, p = 7.3 × 10<sup>-12</sup>; difference +46.9 to +71.9 pts |
-| random-direction control `ctl-rand` | 2/64 | vs unedited (2/64): 2 fixed / 2 broke, p = 1.00; edit vs control: 39 edit-only / 1 control-only, p = 7.5 × 10<sup>-11</sup> |
+| random-direction control `ctl-rand` | 2/64 | vs unedited (2/64): 2 fixed / 2 broke, p = 1; edit vs control: 39 edit-only / 1 control-only, p = 7.5 × 10<sup>-11</sup> |
 
 Slots 96000–96063 (held-out, never used for any choice); control on 96000–96063.
 
@@ -114,8 +114,8 @@ Slots 96000–96063 (held-out, never used for any choice); control on 96000–96
 | Task | Unedited → edited | Fixed / broke | Exact p | Slots |
 |---|---|---|---|---|
 | T3 RubiksCubeLeftOfBowlTask | 1/32 → **6/32** | 6 / 1 | 0.12 | 96000–96031 |
-| T5 MustardInLeftBinTask | 7/32 → **6/32** | 6 / 7 | 1.00 | 96000–96031 |
-| R1 RubiksCubeTask | 31/32 → **31/32** | 0 / 0 | 1.00 | 96000–96031 |
+| T5 MustardInLeftBinTask | 7/32 → **6/32** | 6 / 7 | 1 | 96000–96031 |
+| R1 RubiksCubeTask | 31/32 → **31/32** | 0 / 0 | 1 | 96000–96031 |
 
 ![Fresh side effects](plots/fresh_side_effects.png)
 

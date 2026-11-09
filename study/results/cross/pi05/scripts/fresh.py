@@ -144,6 +144,8 @@ def bs_ci(b):
 def fmt_p(p):
     if p is None:
         return "–"
+    if p >= 0.995:
+        return "1"
     if p >= 0.001:
         return f"{p:.2g}" if p < 0.1 else f"{p:.2f}"
     m, e = f"{p:.1e}".split("e")
@@ -180,26 +182,36 @@ def readme_block(out, summary):
     et = [r for r in out if r["experiment"] == "edit_target"]
     for r in et:
         d = r["ci"]["paired_diff_bootstrap95_pts"]
-        L += ["**T1 held-out: the distilled edit `v2mi-f` (instruction unchanged)**", "",
+        en = r["edit"]["name"]
+        what = {"T1": "the distilled edit `v2mi-f` (the paper's T1 edit)",
+                "T8": "π0.5's own T8 edit `s4r-grp3` (the sgdw study's target-first wording distilled into the "
+                      "reference-first one)"}[r["code"]]
+        L += [f"**{r['code']} held-out: {what}; instruction unchanged (the task's default)**", "",
               "| Arm | Success | Paired |", "|---|---|---|",
               f"| unedited | {r['unedited_k']}/{r['n']} | |",
-              f"| **`v2mi-f`** | **{r['edited_k']}/{r['n']}** | vs unedited: {r['fixed']} fixed / {r['broke']} broke, "
+              f"| **`{en}`** | **{r['edited_k']}/{r['n']}** | vs unedited: {r['fixed']} fixed / {r['broke']} broke, "
               f"p = {fmt_p(r['p'])}; difference {d[0]:+.1f} to {d[1]:+.1f} pts |"]
         c = r.get("control")
         if c:
-            L.append(f"| random-direction control `ctl-rand` | {c['k']}/{c['n']} | vs unedited "
+            L.append(f"| random-direction control `{c['name']}` | {c['k']}/{c['n']} | vs unedited "
                      f"({c['unedited_k_same_slots']}/{c['n']}): {c['vs_unedited']['fixed']} fixed / "
                      f"{c['vs_unedited']['broke']} broke, p = {fmt_p(c['vs_unedited']['p'])}; edit vs control: "
                      f"{c['edit_vs_control']['edit_only']} edit-only / {c['edit_vs_control']['control_only']} "
                      f"control-only, p = {fmt_p(c['edit_vs_control']['p'])} |")
         t = r.get("teacher")
         if t:
-            L.append(f"| unedited, explicit wording (teacher) | {t['k']}/{t['n']} | recovery "
-                     f"{r['recovery_pct']}% |")
+            L.append(f"| unedited, {'explicit' if r['code'] == 'T1' else 'target-first'} wording (teacher) | "
+                     f"{t['k']}/{t['n']} | vs unedited ({t['unedited_k_same_slots']}/{t['n']}): "
+                     f"{t['vs_unedited']['fixed']} / {t['vs_unedited']['broke']}, p = {fmt_p(t['vs_unedited']['p'])}; "
+                     f"vs edit ({t['edited_k_same_slots']}/{t['n']}): {t['vs_edit']['fixed']} teacher-only / "
+                     f"{t['vs_edit']['broke']} edit-only, p = {fmt_p(t['vs_edit']['p'])}; recovery "
+                     f"**{r['recovery_pct']}%** of the teacher's gain |")
         L += ["", f"Slots {r['slots'][0]}–{r['slots'][1]} (held-out, never used for any choice)"
-              + (f"; control on {c['slots'][0]}–{c['slots'][1]}" if c else "") + ".", ""]
-        if (PI05 / "plots/fresh_t1_heldout.png").exists():
-            L += ["![Fresh T1 held-out](plots/fresh_t1_heldout.png)", ""]
+              + (f"; control on {c['slots'][0]}–{c['slots'][1]}" if c else "")
+              + (f"; teacher on {t['slots'][0]}–{t['slots'][1]}" if t else "") + ".", ""]
+        png = f"plots/fresh_{r['code'].lower()}_heldout.png"
+        if (PI05 / png).exists():
+            L += [f"![Fresh {r['code']} held-out]({png})", ""]
     se = [r for r in out if r["experiment"] == "side_effect"]
     if se:
         L += ["**Side effects of `v2mi-f`** (held-out, each task's own default instruction):", "",

@@ -90,28 +90,31 @@ def main():
 
     et = [r for r in M if r["experiment"] == "edit_target"]
     for r in et:
-        arms = [("unedited", r["unedited_k"], r["n"], NEUTRAL), ("v2mi-f (edit)", r["edited_k"], r["n"], BLUE)]
+        en = r["edit"]["name"]
+        arms = [("unedited", r["unedited_k"], r["n"], NEUTRAL), (f"{en} (edit)", r["edited_k"], r["n"], BLUE)]
         c = r.get("control")
         if c:
-            arms.append((f"ctl-rand (random-direction control, {c['slots'][0]}–{c['slots'][1]})", c["k"], c["n"],
+            arms.append((f"{c['name']} (random control, {c['slots'][0]}–{c['slots'][1]})", c["k"], c["n"],
                          LIGHT))
         t = r.get("teacher")
         if t:
-            arms.append(("unedited, explicit wording (teacher)", t["k"], t["n"], MUTE))
+            arms.append((f"unedited, {'explicit' if r['code'] == 'T1' else 'target-first'} wording "
+                         f"(teacher, {t['slots'][0]}–{t['slots'][1]})", t["k"], t["n"], MUTE))
         fig, ax = plt.subplots(figsize=(6.4, 0.5 * len(arms) + 1.0))
         for i, (lab, k, n, col) in enumerate(arms):
             bar(ax, i, k, n, col, h=0.5)
         axes_common(ax, len(arms))
         ax.set_yticks(range(len(arms)))
         ax.set_yticklabels([a[0] for a in arms], fontsize=8.4)
-        ax.set_title(f"T1 cube then banana, held-out starts {r['slots'][0]}–{r['slots'][1]}, instruction unchanged",
+        name = {"T1": "T1 cube then banana", "T8": "T8 mustard right of raisin (RF wording)"}[r["code"]]
+        ax.set_title(f"{name}, held-out starts {r['slots'][0]}–{r['slots'][1]}, instruction unchanged",
                      fontsize=10, color=INK, loc="left")
         note = (f"Edit vs unedited: {r['fixed']} fixed / {r['broke']} broke, exact McNemar p = {S.format_p(r['p'])}."
                 + (f" Edit vs control: {c['edit_vs_control']['edit_only']} / {c['edit_vs_control']['control_only']}, "
                    f"p = {S.format_p(c['edit_vs_control']['p'])}." if c else "")
                 + " Default render preset; whiskers: Wilson 95%.")
         fig.text(0.01, -0.02, note, fontsize=7.4, color=INK2, va="top")
-        save(fig, "fresh_t1_heldout")
+        save(fig, f"fresh_{r['code'].lower()}_heldout")
 
     se = [r for r in M if r["experiment"] == "side_effect"]
     if se:
