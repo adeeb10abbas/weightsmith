@@ -1,0 +1,478 @@
+{
+ "tag": "T4-v2mi-f-s96000",
+ "code": "T4",
+ "task": "StackYellowOnRedTask",
+ "slot_start": 96000,
+ "n": 16,
+ "arm": "v2mi-f",
+ "workspace": "/home/ali/vibes/opus-weight-surgery/projects/cross-pi05-t1/cands/v2mi-f",
+ "fp": "63db0c52a51306c9",
+ "prompt": null,
+ "rendering_type": null,
+ "video_mode": "sensor",
+ "status": "fresh",
+ "render_preset": "default",
+ "rendering_flag": "none (RoboLab default preset)",
+ "envs_per_process": 8,
+ "processes": [
+  {
+   "group": 6000,
+   "env_offset": 0,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T4-v2mi-f-s96000-1108-232305/sim-g6000o0a0.log"
+  },
+  {
+   "group": 6000,
+   "env_offset": 8,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T4-v2mi-f-s96000-1108-232305/sim-g6000o8a0.log"
+  }
+ ],
+ "fp_checked": "63db0c52a51306c9",
+ "server": {
+  "edit_scope": "VLM blocks, action expert, action projections, and time MLP",
+  "changed_elements": 450468837,
+  "editable_parameters": 2823447440,
+  "total_parameters_and_buffers": 3353433872,
+  "changed_fraction": 0.13433061577902497,
+  "max_changed_fraction": 1.0,
+  "base_vlm_sha256": "7f887d213226dbb576a450c618314ef07ed168ae69521b131248dac99b8793a7",
+  "action_expert_and_head_frozen": false,
+  "vlm_embeddings_and_final_norms_frozen": true,
+  "fingerprint": "a97bb6a2948a65f856b3b0dd9166f6d6791768e7aa3ed1c38abe792fa67909a0",
+  "workspace": "/home/ali/vibes/opus-weight-surgery/projects/cross-pi05-t1/cands/v2mi-f"
+ },
+ "server_fingerprint": "a97bb6a2948a65f856b3b0dd9166f6d6791768e7aa3ed1c38abe792fa67909a0",
+ "server_log": "/home/ali/cross/pi05/fresh/logs/server-T8-v2mi-f-s96000-1108-231527.log",
+ "server_started": 1794197727.2667248,
+ "server_ready_s": 38.0,
+ "rows": [
+  {
+   "slot": 96000,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 212,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env0.mp4"
+  },
+  {
+   "slot": 96001,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 287,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env1.mp4"
+  },
+  {
+   "slot": 96002,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 223,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 2,
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env2.mp4"
+  },
+  {
+   "slot": 96003,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 436,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 1,
+    "WRONG_OBJECT_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env3.mp4"
+  },
+  {
+   "slot": 96004,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 431,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 2,
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "OBJECT_BUMPED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block",
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env4.mp4"
+  },
+  {
+   "slot": 96005,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 663,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 2,
+    "GRIPPER_HIT_OBJECT": 2,
+    "WRONG_OBJECT_GRABBED": 3,
+    "OBJECT_BUMPED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block",
+     "lizard_figurine_01",
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env5.mp4"
+  },
+  {
+   "slot": 96006,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['red_block', 'yellow_block'], order=bottom_to_top) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "GRIPPER_FULLY_CLOSED": 8,
+    "wrong_objects_grabbed": [
+     "yellow_block",
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env6.mp4"
+  },
+  {
+   "slot": 96007,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 326,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 1,
+    "GRIPPER_HIT_OBJECT": 2,
+    "WRONG_OBJECT_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o0a0-1108-232305/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env7.mp4"
+  },
+  {
+   "slot": 96008,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['red_block', 'yellow_block'], order=bottom_to_top) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env0.mp4"
+  },
+  {
+   "slot": 96009,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 722,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 3,
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "OBJECT_BUMPED": 3,
+    "wrong_objects_grabbed": [
+     "yellow_block",
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env1.mp4"
+  },
+  {
+   "slot": 96010,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 304,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 1,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block",
+     "yellow_block",
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env2.mp4"
+  },
+  {
+   "slot": 96011,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 530,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env3.mp4"
+  },
+  {
+   "slot": 96012,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 363,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env4.mp4"
+  },
+  {
+   "slot": 96013,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['red_block', 'yellow_block'], order=bottom_to_top) (step 1/1)",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 3,
+    "OBJECT_BUMPED": 1,
+    "GRIPPER_FULLY_CLOSED": 4,
+    "wrong_objects_grabbed": [
+     "yellow_block",
+     "yellow_block",
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env5.mp4"
+  },
+  {
+   "slot": 96014,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 332,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_yellow_on_red' 1/1",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 2,
+    "WRONG_OBJECT_GRABBED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env6.mp4"
+  },
+  {
+   "slot": 96015,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the yellow block on the red block",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['red_block', 'yellow_block'], order=bottom_to_top) (step 1/1)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 1,
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_OUT_OF_SCENE": 1,
+    "OBJECT_MOVED": 1,
+    "wrong_objects_grabbed": [
+     "yellow_block"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954/StackYellowOnRedTask/Stack_the_yellow_block_on_the_red_block_0_env7.mp4"
+  }
+ ],
+ "completed": 16,
+ "success": 12,
+ "started": 1794198185.734042,
+ "finished": 1794199056.5701303,
+ "job_s": 870.8,
+ "gpu": 0,
+ "port": 8720,
+ "host": "ali-MS-7D25",
+ "gpu_name": "NVIDIA GeForce RTX 3090",
+ "log_root": "/home/ali/cross/pi05/fresh/logs/T4-v2mi-f-s96000-1108-232305",
+ "videos": {
+  "96000": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96000.mp4",
+  "96001": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96001.mp4",
+  "96002": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96002.mp4",
+  "96003": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96003.mp4",
+  "96004": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96004.mp4",
+  "96005": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96005.mp4",
+  "96006": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96006.mp4",
+  "96007": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96007.mp4",
+  "96008": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96008.mp4",
+  "96009": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96009.mp4",
+  "96010": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96010.mp4",
+  "96011": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96011.mp4",
+  "96012": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96012.mp4",
+  "96013": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96013.mp4",
+  "96014": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96014.mp4",
+  "96015": "/home/ali/cross/pi05/fresh/videos/T4/v2mi-f/96015.mp4"
+ },
+ "sim_cmd_example": [
+  "/home/ali/vibes/weight-space-policy-lab/robolab_env/.venv/bin/python",
+  "/home/ali/cross/pi05/weightsmith/weightsmith/run_batched.py",
+  "--policy",
+  "pi05",
+  "--task",
+  "StackYellowOnRedTask",
+  "--environment-seed",
+  "0",
+  "--sampling-seed-base",
+  "6000",
+  "--remote-port",
+  "8720",
+  "--num-envs",
+  "8",
+  "--num-runs",
+  "1",
+  "--headless",
+  "--video-mode",
+  "sensor",
+  "--output-folder-name",
+  "x05f-T4-v2mi-f-s96000-g6000o8a0-1108-232954",
+  "--device",
+  "cuda:0",
+  "--/rtx/verifyDriverVersion/enabled=false",
+  "--/renderer/multiGpu/enabled=false",
+  "--/renderer/multiGpu/autoEnable=false",
+  "--/renderer/activeGpu=0"
+ ]
+}
