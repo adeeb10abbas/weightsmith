@@ -3772,8 +3772,8 @@
    ]
   },
   "control_k": 0,
-  "teacher_k": null,
-  "recovery_pct": null,
+  "teacher_k": 13,
+  "recovery_pct": 69.2,
   "transfer": null,
   "retention": null,
   "edit": {
@@ -3958,6 +3958,45 @@
    "edit_location": "same tensors as s4r-grp3",
    "values_changed": 290322032,
    "values_changed_note": "random-direction control: s4r-grp3's tensors, ranks and singular values, random orthonormal directions (default_rng(0))"
+  },
+  "teacher": {
+   "wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
+   "slots": [
+    96000,
+    96015
+   ],
+   "n": 16,
+   "k": 13,
+   "vs_edit": {
+    "fixed": 6,
+    "broke": 2,
+    "p": 0.2890625
+   },
+   "vs_unedited": {
+    "fixed": 13,
+    "broke": 0,
+    "p": 0.000244140625
+   },
+   "unedited_k_same_slots": 0,
+   "edited_k_same_slots": 9,
+   "per_slot": {
+    "96000": 1,
+    "96001": 1,
+    "96002": 0,
+    "96003": 0,
+    "96004": 1,
+    "96005": 1,
+    "96006": 1,
+    "96007": 1,
+    "96008": 1,
+    "96009": 1,
+    "96010": 1,
+    "96011": 1,
+    "96012": 1,
+    "96013": 1,
+    "96014": 1,
+    "96015": 0
+   }
   },
   "gpus": [
    0,
