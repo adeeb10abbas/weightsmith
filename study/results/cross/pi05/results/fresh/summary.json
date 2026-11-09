@@ -1,8 +1,8 @@
 {
  "run": "C-prime-default",
  "render_preset": "default",
- "jobs": 34,
- "gpu_hours": 5.07,
+ "jobs": 35,
+ "gpu_hours": 5.21,
  "cells": {
   "T1/base/practice": "3/16",
   "T2/base/practice": "7/16",
@@ -21,7 +21,8 @@
   "T5/base/heldout": "7/32",
   "T5/v2mi-f/heldout": "6/32",
   "R1/base/heldout": "31/32",
-  "R1/v2mi-f/heldout": "31/32"
+  "R1/v2mi-f/heldout": "31/32",
+  "T8/teacher(TF)/practice": "12/16"
  },
  "records": [
   {
@@ -231,6 +232,22 @@
    "fixed": 0,
    "broke": 0,
    "p": 1.0
+  },
+  {
+   "experiment": "wording",
+   "code": "T8",
+   "slots": [
+    30000,
+    30015
+   ],
+   "n": 16,
+   "unedited_k": 0,
+   "edited_k": null,
+   "control_k": null,
+   "teacher_k": 12,
+   "fixed": 12,
+   "broke": 0,
+   "p": 0.0004883
   }
  ]
 }

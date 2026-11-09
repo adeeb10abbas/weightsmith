@@ -4301,5 +4301,121 @@
   "gpus": [
    1
   ]
+ },
+ {
+  "experiment": "wording",
+  "status": "fresh",
+  "run": "C-prime-default",
+  "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "render_preset": "default",
+  "envs_per_process": 8,
+  "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+  "env_seed": 0,
+  "task": "MustardRightOfRaisinRFTask",
+  "code": "T8",
+  "wording_pair": [
+   "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box."
+  ],
+  "slots": [
+   30000,
+   30015
+  ],
+  "n": 16,
+  "unedited_k": 0,
+  "edited_k": null,
+  "fixed": 12,
+  "broke": 0,
+  "p": 0.0004883,
+  "ci": {
+   "rf_wilson95_pct": [
+    0.0,
+    19.4
+   ],
+   "tf_wilson95_pct": [
+    50.5,
+    89.8
+   ]
+  },
+  "control_k": null,
+  "teacher_k": 12,
+  "recovery_pct": null,
+  "transfer": null,
+  "retention": null,
+  "edit": null,
+  "edit_location": null,
+  "values_changed": null,
+  "values_changed_note": null,
+  "notes": "unedited weights; reference-first (RF, task default) vs target-first (TF) wording on the same starts; fixed = TF-only, broke = RF-only; per_slot = [RF, TF]",
+  "per_slot": {
+   "30000": [
+    0,
+    1
+   ],
+   "30001": [
+    0,
+    1
+   ],
+   "30002": [
+    0,
+    0
+   ],
+   "30003": [
+    0,
+    0
+   ],
+   "30004": [
+    0,
+    1
+   ],
+   "30005": [
+    0,
+    1
+   ],
+   "30006": [
+    0,
+    1
+   ],
+   "30007": [
+    0,
+    1
+   ],
+   "30008": [
+    0,
+    1
+   ],
+   "30009": [
+    0,
+    1
+   ],
+   "30010": [
+    0,
+    0
+   ],
+   "30011": [
+    0,
+    1
+   ],
+   "30012": [
+    0,
+    1
+   ],
+   "30013": [
+    0,
+    0
+   ],
+   "30014": [
+    0,
+    1
+   ],
+   "30015": [
+    0,
+    1
+   ]
+  },
+  "gpus": [
+   0
+  ]
  }
 ]
