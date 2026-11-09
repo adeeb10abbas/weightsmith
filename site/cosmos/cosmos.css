@@ -1083,3 +1083,46 @@
 .ltable thead th:first-child {
   width: 24%;
 }
+
+/* the two wordings of one goal, shown once */
+.wordings {
+  margin: 1.1rem 0 0.9rem;
+  padding: 0.8rem 1rem;
+  border-left: 3px solid var(--rule);
+  background: var(--bg-2);
+  border-radius: 0 6px 6px 0;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.wordings p {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.wordings p + p {
+  margin-top: 0.45rem;
+}
+
+.wordings .wl {
+  flex: none;
+  width: 3.6rem;
+  font-weight: 600;
+  color: var(--mark-other);
+}
+
+.wordings .wl-ok {
+  color: var(--accent);
+}
+
+.wordings .wt {
+  min-width: 0;
+  color: var(--ink);
+}
+
+/* all three models at a glance */
+.gtable thead th:first-child {
+  width: 16%;
+}
