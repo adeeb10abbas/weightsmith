@@ -3772,8 +3772,8 @@
    ]
   },
   "control_k": 0,
-  "teacher_k": 38,
-  "recovery_pct": 52.6,
+  "teacher_k": 52,
+  "recovery_pct": 53.8,
   "transfer": null,
   "retention": null,
   "edit": {
@@ -4139,22 +4139,22 @@
    "wording": "Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.",
    "slots": [
     96000,
-    96047
+    96063
    ],
-   "n": 48,
-   "k": 38,
+   "n": 64,
+   "k": 52,
    "vs_edit": {
-    "fixed": 24,
-    "broke": 6,
-    "p": 0.001430906355381012
+    "fixed": 31,
+    "broke": 7,
+    "p": 0.00011616700794547796
    },
    "vs_unedited": {
-    "fixed": 38,
+    "fixed": 52,
     "broke": 0,
-    "p": 7.275957614183426e-12
+    "p": 4.440892098500626e-16
    },
    "unedited_k_same_slots": 0,
-   "edited_k_same_slots": 20,
+   "edited_k_same_slots": 28,
    "per_slot": {
     "96000": 1,
     "96001": 1,
@@ -4203,7 +4203,23 @@
     "96044": 1,
     "96045": 1,
     "96046": 0,
-    "96047": 1
+    "96047": 1,
+    "96048": 1,
+    "96049": 1,
+    "96050": 1,
+    "96051": 1,
+    "96052": 1,
+    "96053": 1,
+    "96054": 1,
+    "96055": 0,
+    "96056": 1,
+    "96057": 1,
+    "96058": 1,
+    "96059": 0,
+    "96060": 1,
+    "96061": 1,
+    "96062": 1,
+    "96063": 1
    }
   },
   "gpus": [
