@@ -3471,6 +3471,15 @@ def control_text(P, tables):
                     f"; on the {fr['n']} of these starts where a random edit of the same size also ran, it scored {fr['r']} "
                     f"against the edit’s {fr['e']}" if fr and fr.get("s") == "ok" and not fr.get("prov") and fr.get("sub")
                     and None not in (fr.get("r"), fr.get("e")) else "") + ".")
+    f8, r8 = T["edit_gain"].get("T8", {}).get("pi05"), T["random_control"].get("T8", {}).get("pi05")
+    t8 = T["recovery"].get("T8", {}).get("pi05")
+    if _ok(f8) and not f8.get("prov"):
+        fresh += (f" Its own {tn('T8')} edit went from {f8['a']} to {f8['b']} of {f8['n']}"
+                  + "".join(x for x in (
+                      f"; a random edit of the same size, {r8['r']}" if r8 and r8.get("s") == "ok" and not r8.get("prov")
+                      and r8.get("r") is not None and r8.get("n") == f8["n"] else "",
+                      f"; the clearer wording itself, {t8['t']}" if t8 and t8.get("s") == "ok" and not t8.get("prov")
+                      and t8.get("n") == f8["n"] and t8.get("t") is not None else "") if x) + ".")
     s = (f"π0.5 is where the method comes from, and our control.{fresh} In earlier runs, from other starts, the edit "
          f"lifted {tn('T1')} from {e['base']} to {e['cand']} of {e['n']} unseen starts and {tn('T8')} from {s4['base']} "
          f"to {s4['cand']} of {s4['n']}; a random edit of the same size scored {c['rand']} of {c['n']} on {tn('T1')}, "
