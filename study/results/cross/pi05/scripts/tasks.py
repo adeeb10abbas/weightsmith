@@ -281,6 +281,28 @@ def queue_lanes_t8():
     return g0, g1
 
 
+def queue_round3():
+    """2026-11-09 02:00 UTC (coordinator): complete the fresh column, no stop time. Every pair (same slot, two arms) runs
+    on the GPU that already holds one of its arms, or on one GPU for both:
+    1. v2mi-f side effects on held-out 96000-96031: T8 (its unedited reference-first groups already ran: 96000 on GPU0,
+       96016 on GPU1), T4 (96000 on GPU0, 96016 on GPU1), T7 (both groups on GPU1);
+    2. the T1 explicit wording (teacher) on 96000-96063, GPU0 (where every T1 held-out arm ran);
+    3. T6's second group 96016 (unedited and v2mi-f), GPU1.
+    Jobs with the same weights are adjacent so one policy server serves them."""
+    def fj(code, arm, s, prompt=None):
+        j = job(code, arm, s, prompt)
+        if arm == "v2mi-f":
+            j["workspace"] = str(project("T1") / "cands" / arm)
+        return j
+    H = groups(HELDOUT)
+    g0 = [fj("T8", "v2mi-f", H[0]), fj("T4", "v2mi-f", H[0]), fj("T4", "base", H[0])]
+    g0 += [fj("T1", "teacher", s, TEACHERS["T1"]) for s in H]
+    g1 = [fj("T8", "v2mi-f", H[1]), fj("T4", "v2mi-f", H[1]), fj("T7", "v2mi-f", H[0]), fj("T7", "v2mi-f", H[1]),
+          fj("T4", "base", H[1]), fj("T7", "base", H[0]), fj("T7", "base", H[1]), fj("T6", "base", H[1]),
+          fj("T6", "v2mi-f", H[1])]
+    return g0, g1
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "setup":
         setup(tuple(sys.argv[2:]) or ("v2mi-f",))
@@ -290,8 +312,9 @@ if __name__ == "__main__":
         q = queue_fresh(*sys.argv[3:4])
         Path(sys.argv[2]).write_text(json.dumps(q, indent=1) + "\n")
         print(len(q), "jobs")
-    elif sys.argv[1] in ("queue-lanes", "queue-lanes-t8"):
-        for f, q in zip(sys.argv[2:4], queue_lanes() if sys.argv[1] == "queue-lanes" else queue_lanes_t8()):
+    elif sys.argv[1] in ("queue-lanes", "queue-lanes-t8", "queue-round3"):
+        qs = {"queue-lanes": queue_lanes, "queue-lanes-t8": queue_lanes_t8, "queue-round3": queue_round3}[sys.argv[1]]()
+        for f, q in zip(sys.argv[2:4], qs):
             Path(f).write_text(json.dumps(q, indent=1) + "\n")
             print(f, len(q), "jobs")
     elif sys.argv[1] == "queue":
