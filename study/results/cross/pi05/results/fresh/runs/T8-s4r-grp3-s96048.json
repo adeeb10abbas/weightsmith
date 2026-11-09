@@ -1,0 +1,534 @@
+{
+ "tag": "T8-s4r-grp3-s96048",
+ "code": "T8",
+ "task": "MustardRightOfRaisinRFTask",
+ "slot_start": 96048,
+ "n": 16,
+ "arm": "s4r-grp3",
+ "workspace": "/home/ali/vibes/opus-weight-surgery/projects/cross-pi05-t8/cands/s4r-grp3",
+ "fp": "9e6f2378e28be6a3",
+ "prompt": null,
+ "rendering_type": null,
+ "video_mode": "sensor",
+ "status": "fresh",
+ "render_preset": "default",
+ "rendering_flag": "none (RoboLab default preset)",
+ "envs_per_process": 8,
+ "processes": [
+  {
+   "group": 6003,
+   "env_offset": 0,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T8-s4r-grp3-s96048-1108-202025/sim-g6003o0a0.log"
+  },
+  {
+   "group": 6003,
+   "env_offset": 8,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T8-s4r-grp3-s96048-1108-202025/sim-g6003o8a0.log"
+  }
+ ],
+ "fp_checked": "9e6f2378e28be6a3",
+ "server": {
+  "edit_scope": "VLM blocks, action expert, action projections, and time MLP",
+  "changed_elements": 275482328,
+  "editable_parameters": 2823447440,
+  "total_parameters_and_buffers": 3353433872,
+  "changed_fraction": 0.08214932469674774,
+  "max_changed_fraction": 1.0,
+  "base_vlm_sha256": "7f887d213226dbb576a450c618314ef07ed168ae69521b131248dac99b8793a7",
+  "action_expert_and_head_frozen": false,
+  "vlm_embeddings_and_final_norms_frozen": true,
+  "fingerprint": "8e1c4921aad1e3ba7a68f87cfb0e03ef4d2830ecf108258acf54aa802264779a",
+  "workspace": "/home/ali/vibes/opus-weight-surgery/projects/cross-pi05-t8/cands/s4r-grp3"
+ },
+ "server_fingerprint": "8e1c4921aad1e3ba7a68f87cfb0e03ef4d2830ecf108258acf54aa802264779a",
+ "server_log": "/home/ali/cross/pi05/fresh/logs/server-T8-s4r-grp3-s96048-1108-201957.log",
+ "server_started": 1794187197.920897,
+ "server_ready_s": 28.0,
+ "rows": [
+  {
+   "slot": 96048,
+   "group": 6003,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 0.6666666865348816,
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 4,
+    "GRIPPER_HIT_OBJECT": 1,
+    "GRIPPER_FULLY_CLOSED": 3,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env0.mp4"
+  },
+  {
+   "slot": 96049,
+   "group": 6003,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 448,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 4,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 5,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env1.mp4"
+  },
+  {
+   "slot": 96050,
+   "group": 6003,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 178,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 1,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env2.mp4"
+  },
+  {
+   "slot": 96051,
+   "group": 6003,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 200,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 2,
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env3.mp4"
+  },
+  {
+   "slot": 96052,
+   "group": 6003,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 0.6666666865348816,
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 8,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 3,
+    "GRIPPER_FULLY_CLOSED": 4,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env4.mp4"
+  },
+  {
+   "slot": 96053,
+   "group": 6003,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 238,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 1,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env5.mp4"
+  },
+  {
+   "slot": 96054,
+   "group": 6003,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 5,
+    "GRIPPER_FULLY_CLOSED": 7,
+    "OBJECT_BUMPED": 1,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env6.mp4"
+  },
+  {
+   "slot": 96055,
+   "group": 6003,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 219,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o0a0-1108-202025/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env7.mp4"
+  },
+  {
+   "slot": 96056,
+   "group": 6003,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 179,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Completed subtask 'mustard_right_of_raisin_box' 1/1",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 3,
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 2,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env0.mp4"
+  },
+  {
+   "slot": 96057,
+   "group": 6003,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 0.6666666865348816,
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 4,
+    "WRONG_OBJECT_GRABBED": 4,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env1.mp4"
+  },
+  {
+   "slot": 96058,
+   "group": 6003,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 0.6666666865348816,
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 1,
+    "OBJECT_BUMPED": 3,
+    "GRIPPER_FULLY_CLOSED": 6,
+    "wrong_objects_grabbed": [
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env2.mp4"
+  },
+  {
+   "slot": 96059,
+   "group": 6003,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 0.6666666865348816,
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "events": {
+    "GRIPPER_HIT_OBJECT": 1,
+    "WRONG_OBJECT_GRABBED": 10,
+    "OBJECT_BUMPED": 2,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env3.mp4"
+  },
+  {
+   "slot": 96060,
+   "group": 6003,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 0.6666666865348816,
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 10,
+    "OBJECT_BUMPED": 1,
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 1,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env4.mp4"
+  },
+  {
+   "slot": 96061,
+   "group": 6003,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 600,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Condition not satisfied: object_right_of(object=mustard_bottle, reference_object=raisin_box, frame_of_reference=robot, mirrored=False) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 8,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 9,
+    "GRIPPER_FULLY_CLOSED": 3,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env5.mp4"
+  },
+  {
+   "slot": 96062,
+   "group": 6003,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 383,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 7,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env6.mp4"
+  },
+  {
+   "slot": 96063,
+   "group": 6003,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 205,
+   "instruction": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+   "score": 1.0,
+   "reason": "Wrong object that was grabbed is now detached: 'mustard_bottle'",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 6,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 4,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "wrong_objects_grabbed": [
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle",
+     "mustard_bottle"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429/MustardRightOfRaisinRFTask/Move_the_mustard_bottle_on_the_table_so_that_the_raisin_box_is_to_the_left_of_the_mustard_bottle_0_env7.mp4"
+  }
+ ],
+ "completed": 16,
+ "success": 8,
+ "started": 1794187225.9605463,
+ "finished": 1794187718.4355464,
+ "job_s": 492.5,
+ "gpu": 1,
+ "port": 8740,
+ "host": "ali-MS-7D25",
+ "gpu_name": "NVIDIA GeForce RTX 3090",
+ "log_root": "/home/ali/cross/pi05/fresh/logs/T8-s4r-grp3-s96048-1108-202025",
+ "videos": {
+  "96048": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96048.mp4",
+  "96049": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96049.mp4",
+  "96050": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96050.mp4",
+  "96051": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96051.mp4",
+  "96052": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96052.mp4",
+  "96053": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96053.mp4",
+  "96054": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96054.mp4",
+  "96055": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96055.mp4",
+  "96056": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96056.mp4",
+  "96057": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96057.mp4",
+  "96058": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96058.mp4",
+  "96059": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96059.mp4",
+  "96060": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96060.mp4",
+  "96061": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96061.mp4",
+  "96062": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96062.mp4",
+  "96063": "/home/ali/cross/pi05/fresh/videos/T8/s4r-grp3/96063.mp4"
+ },
+ "sim_cmd_example": [
+  "/home/ali/vibes/weight-space-policy-lab/robolab_env/.venv/bin/python",
+  "/home/ali/cross/pi05/weightsmith/weightsmith/run_batched.py",
+  "--policy",
+  "pi05",
+  "--task",
+  "MustardRightOfRaisinRFTask",
+  "--environment-seed",
+  "0",
+  "--sampling-seed-base",
+  "6003",
+  "--remote-port",
+  "8740",
+  "--num-envs",
+  "8",
+  "--num-runs",
+  "1",
+  "--headless",
+  "--video-mode",
+  "sensor",
+  "--output-folder-name",
+  "x05f-T8-s4r-grp3-s96048-g6003o8a0-1108-202429",
+  "--device",
+  "cuda:1",
+  "--/rtx/verifyDriverVersion/enabled=false",
+  "--/renderer/multiGpu/enabled=false",
+  "--/renderer/multiGpu/autoEnable=false",
+  "--/renderer/activeGpu=1"
+ ]
+}
