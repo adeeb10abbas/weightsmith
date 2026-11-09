@@ -1,0 +1,1748 @@
+{
+ "page": "https://ali-adeeb.com/weightsmith/cosmos/ (source: /Users/ali/opus-wsp/wt-cosmos-page/site/cosmos/index.html)",
+ "generated": "2026-11-09",
+ "count_core": 35,
+ "count_alternates": 22,
+ "section_ids": {
+  "tldr": "TL;DR",
+  "question": "The robot can do the task, but misreads it",
+  "models": "Edit the weights, keep the words",
+  "control": "It works on π0.5",
+  "nvidia": "Does it carry over to NVIDIA's models?",
+  "fix": "On Cosmos3 Edge, the edit works as well as the clearer wording",
+  "results": "All three models at a glance",
+  "where": "It only works where the robot reads",
+  "when": "The words have to line up",
+  "side-effects": "The fix has a cost",
+  "prevent": "Protecting other instructions doesn't help (h3)",
+  "second-edit": "A second edit can't undo it (h3)",
+  "groot": "GR00T N1.7 has nothing to fix",
+  "meaning": "What this means",
+  "limits": "Limits",
+  "numbers": "All numbers and records (#legend, #model-cards, #edit, #protocol, #wording, #edit-gain, #where-numbers, #side-effect-numbers, #caveats, #noise, #records are h3s inside it)",
+  "citation": "Citation"
+ },
+ "verification_method": "Titles copied verbatim from the arXiv API (export.arxiv.org/api/query?id_list=...), the Semantic Scholar Graph API (paper/batch, search, recommendations, citations), Crossref, or the fetched page; s2_title shown where it differs in case/format.",
+ "references": [
+  {
+   "key": "brohan2023rt2",
+   "group": "vla",
+   "authors": "Brohan, Brown, Carbajal, Chebotar, et al.",
+   "venue_year": "CoRL 2023",
+   "arxiv": "2307.15818",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2307.15818",
+   "verified_title": "RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2023-07-28",
+   "s2_paperId": "38939304bb760473141c2aca0305e44fbe04e6e8",
+   "s2_title": "RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control",
+   "verified": true,
+   "note": "Coins \"vision-language-action (VLA) model\": a web-pretrained VLM co-fine-tuned to emit robot actions.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "VLA lineage at \"Each of these models has a part that reads the instruction and a part that turns what it read into motion\"; defines VLA"
+    }
+   ]
+  },
+  {
+   "key": "kim2024openvla",
+   "group": "vla",
+   "authors": "Kim, Pertsch, Karamcheti, et al.",
+   "venue_year": "CoRL 2024",
+   "arxiv": "2406.09246",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2406.09246",
+   "verified_title": "OpenVLA: An Open-Source Vision-Language-Action Model",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2024-06-13",
+   "s2_paperId": "8f9ceb5ffad8e7a066dfc9d9aaa5153b714740ee",
+   "s2_title": "OpenVLA: An Open-Source Vision-Language-Action Model",
+   "verified": true,
+   "note": "7B open-source VLA (Llama 2 with DINOv2 + SigLIP vision features) trained on 970k robot demonstrations; the standard open VLA reference point.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "VLA lineage, alongside RT-2 and π0"
+    }
+   ]
+  },
+  {
+   "key": "black2024pi0",
+   "group": "vla",
+   "authors": "Black, Brown, Driess, Esmail, et al.",
+   "venue_year": "arXiv 2024",
+   "arxiv": "2410.24164",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2410.24164",
+   "verified_title": "$π_0$: A Vision-Language-Action Flow Model for General Robot Control",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2024-10-31",
+   "s2_paperId": "7e7e59d2e247d99954081080ddd5aae93d10b9e0",
+   "s2_title": "π0: A Vision-Language-Action Flow Model for General Robot Control",
+   "verified": true,
+   "note": "π0: PaliGemma VLM plus a separate flow-matching \"action expert\" producing action chunks; origin of the action-expert design used by π0.5.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "A/B/C figure: π0.5 reading part = VLM, motion part = action expert"
+    },
+    {
+     "section": "numbers#model-cards",
+     "claim": "π0.5 architecture row (18-layer VLM + action expert, flow matching)"
+    }
+   ]
+  },
+  {
+   "key": "pi2025pi05",
+   "group": "vla",
+   "authors": "Physical Intelligence, Black, Brown, et al.",
+   "venue_year": "arXiv 2025",
+   "arxiv": "2504.16054",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2504.16054",
+   "verified_title": "$π_{0.5}$: a Vision-Language-Action Model with Open-World Generalization",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2025-04-22",
+   "s2_paperId": "1e2a82ef5e0325a26ca0344c4f8c256c52fae7ec",
+   "s2_title": "π0.5: a Vision-Language-Action Model with Open-World Generalization",
+   "verified": true,
+   "note": "π0.5, the control policy (pi05_droid_jointpos via openpi): co-trained VLA with a flow-matching action expert.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "\"In π0.5 it is a vision-language model (PaliGemma)\""
+    },
+    {
+     "section": "control",
+     "claim": "\"We first built this on π0.5, an open robot policy\""
+    },
+    {
+     "section": "numbers#model-cards",
+     "claim": "π0.5 card"
+    }
+   ]
+  },
+  {
+   "key": "nvidia2025gr00tn1",
+   "group": "vla",
+   "authors": "NVIDIA: Bjorck, Castañeda, et al.",
+   "venue_year": "arXiv 2025",
+   "arxiv": "2503.14734",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2503.14734",
+   "verified_title": "GR00T N1: An Open Foundation Model for Generalist Humanoid Robots",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2025-03-18",
+   "s2_paperId": "731c50b0d6af4c1cb8d95f506541681ea487973b",
+   "s2_title": "GR00T N1: An Open Foundation Model for Generalist Humanoid Robots",
+   "verified": true,
+   "note": "GR00T N1 dual-system VLA: a VLM (System 2) feeding a diffusion-transformer action module (System 1); the GR00T-N1.7-DROID model card cites it as the N1.x architecture white paper.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "\"in GR00T N1.7, NVIDIA's Cosmos-Reason2 model\""
+    },
+    {
+     "section": "nvidia",
+     "claim": "\"GR00T N1.7 reads the scene ... with a reasoning [VLM] and plans the motion with a diffusion model\""
+    },
+    {
+     "section": "numbers#model-cards",
+     "claim": "GR00T N1.7 card: backbone + DiT action head"
+    },
+    {
+     "section": "groot",
+     "claim": "architecture recap"
+    }
+   ]
+  },
+  {
+   "key": "lipman2023flowmatching",
+   "group": "generative",
+   "authors": "Lipman, Chen, Ben-Hamu, Nickel, Le",
+   "venue_year": "ICLR 2023",
+   "arxiv": "2210.02747",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2210.02747",
+   "verified_title": "Flow Matching for Generative Modeling",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2022-10-06",
+   "s2_paperId": "af68f10ab5078bfc519caae377c90ee6d9c504e9",
+   "s2_title": "Flow Matching for Generative Modeling",
+   "verified": true,
+   "note": "Flow matching, the training objective of π0.5's action expert and GR00T N1.7's action head.",
+   "cited_in": [
+    {
+     "section": "numbers#model-cards",
+     "claim": "\"by flow matching\" in the π0.5 and GR00T N1.7 cards"
+    },
+    {
+     "section": "nvidia",
+     "claim": "if the prose names the action generator"
+    }
+   ]
+  },
+  {
+   "key": "chi2023diffusionpolicy",
+   "group": "generative",
+   "authors": "Chi, Xu, Feng, Cousineau, Du, Burchfiel, Tedrake, Song",
+   "venue_year": "RSS 2023 (IJRR 2024 extended)",
+   "arxiv": "2303.04137",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2303.04137",
+   "verified_title": "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2023-03-07",
+   "s2_paperId": "bdba3bd30a49ea4c5b20b43dbd8f0eb59e9d80e2",
+   "s2_title": "Diffusion policy: Visuomotor policy learning via action diffusion",
+   "verified": true,
+   "note": "Diffusion Policy: visuomotor action chunks generated by iterative denoising; origin of diffusion action heads.",
+   "cited_in": [
+    {
+     "section": "nvidia",
+     "claim": "\"plans the motion with a diffusion model\" (GR00T N1.7)"
+    },
+    {
+     "section": "numbers#legend",
+     "claim": "\"DiT, the diffusion action head\""
+    }
+   ]
+  },
+  {
+   "key": "peebles2023dit",
+   "group": "generative",
+   "authors": "Peebles, Xie",
+   "venue_year": "ICCV 2023",
+   "arxiv": "2212.09748",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2212.09748",
+   "verified_title": "Scalable Diffusion Models with Transformers",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2022-12-19",
+   "s2_paperId": "736973165f98105fec3729b7db414ae4d80fcbeb",
+   "s2_title": "Scalable Diffusion Models with Transformers",
+   "verified": true,
+   "note": "Diffusion Transformer (DiT); GR00T N1.7's action head is a stack of DiT blocks.",
+   "cited_in": [
+    {
+     "section": "numbers#model-cards",
+     "claim": "\"4 self-attention layers and 32 diffusion-transformer blocks\""
+    },
+    {
+     "section": "numbers#legend",
+     "claim": "\"DiT\""
+    }
+   ]
+  },
+  {
+   "key": "nvidia2026cosmos3",
+   "group": "cosmos",
+   "authors": "NVIDIA (Aditi, Agarwal, et al.)",
+   "venue_year": "arXiv 2026 (technical report)",
+   "arxiv": "2606.02800",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2606.02800",
+   "verified_title": "Cosmos 3: Omnimodal World Models for Physical AI",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-06-01",
+   "s2_paperId": "3e381da585aab631ec29e97d3f7a084281247df1",
+   "s2_title": "Cosmos 3: Omnimodal World Models for Physical AI",
+   "verified": true,
+   "note": "Cosmos 3: omnimodal world models on a Mixture-of-Transformers backbone that subsume VLMs, video generators and world-action models; the Cosmos3-Edge-Policy-DROID model card links this report.",
+   "cited_in": [
+    {
+     "section": "nvidia",
+     "claim": "\"Cosmos3 Edge Policy is a world-action model\""
+    },
+    {
+     "section": "models",
+     "claim": "\"in Cosmos3 Edge, ... its text pathway\""
+    },
+    {
+     "section": "numbers#model-cards",
+     "claim": "Cosmos3 Edge card: MoT with text and generation pathways"
+    },
+    {
+     "section": "limits",
+     "claim": "wiring read from Cosmos3 Nano code"
+    }
+   ]
+  },
+  {
+   "key": "kim2026cosmospolicy",
+   "group": "cosmos",
+   "authors": "Kim, Gao, Lin, Lin, et al.",
+   "venue_year": "ICLR 2026 (per Semantic Scholar); arXiv 2026",
+   "arxiv": "2601.16163",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2601.16163",
+   "verified_title": "Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-01-22",
+   "s2_paperId": "e1042da4004da8b246737df2ee1ea96012b17824",
+   "s2_title": "Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning",
+   "verified": true,
+   "note": "Cosmos Policy: fine-tunes a Cosmos video model into a visuomotor policy that encodes actions, future states and values as latent frames — the video-policy precursor of joint video-action denoising.",
+   "cited_in": [
+    {
+     "section": "nvidia",
+     "claim": "\"one network predicts the video of what will happen and the robot's actions together\""
+    }
+   ]
+  },
+  {
+   "key": "shen2026wamsurvey",
+   "group": "cosmos",
+   "authors": "Shen, Zhang, Liao, Li, et al.",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2606.20781",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2606.20781",
+   "verified_title": "World Action Models: A Survey",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-06-18",
+   "s2_paperId": "e2c230fec6803e36123aa02539b98d1020479d46",
+   "s2_title": "World Action Models: A Survey",
+   "verified": true,
+   "note": "Survey that defines world action models (WAMs) and separates them from VLAs and video generators; anchor for the term.",
+   "cited_in": [
+    {
+     "section": "nvidia",
+     "claim": "definition of \"world-action model\""
+    },
+    {
+     "section": "numbers#legend",
+     "claim": "term list"
+    }
+   ]
+  },
+  {
+   "key": "ahn2022saycan",
+   "group": "grounding",
+   "authors": "Ahn, Brohan, Brown, Chebotar, et al.",
+   "venue_year": "CoRL 2022",
+   "arxiv": "2204.01691",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2204.01691",
+   "verified_title": "Do As I Can, Not As I Say: Grounding Language in Robotic Affordances",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2022-04-04",
+   "s2_paperId": "cb5e3f085caefd1f3d5e08637ab55d39e61234fc",
+   "s2_title": "Do As I Can, Not As I Say: Grounding Language in Robotic Affordances",
+   "verified": true,
+   "note": "Language grounding for robots: grounding instructions in what the robot can do (affordances); the classic \"grounding\" citation.",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "name the failure class: a language-grounding failure, not a missing skill"
+    }
+   ]
+  },
+  {
+   "key": "shridhar2021cliport",
+   "group": "grounding",
+   "authors": "Shridhar, Manuelli, Fox",
+   "venue_year": "CoRL 2021",
+   "arxiv": "2109.12098",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2109.12098",
+   "verified_title": "CLIPort: What and Where Pathways for Robotic Manipulation",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2021-09-24",
+   "s2_paperId": "69ee9b3a915951cc84b74599a3a2699a66d4004f",
+   "s2_title": "CLIPort: What and Where Pathways for Robotic Manipulation",
+   "verified": true,
+   "note": "Language-conditioned manipulation with separate semantic (\"what\") and spatial (\"where\") pathways — grounding objects and spatial relations.",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "grounding of objects and spatial relations (\"to the left of\")"
+    }
+   ]
+  },
+  {
+   "key": "fei2026liberoplus",
+   "group": "grounding",
+   "authors": "Fei, Wang, Shi, Dai, et al.",
+   "venue_year": "CVPR 2026",
+   "arxiv": "2510.13626",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2510.13626",
+   "verified_title": "LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2025-10-15",
+   "s2_paperId": "dfa5ba43d6df553bb3a8cf3fc1cf2d1210cc10c3",
+   "s2_title": "LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models",
+   "verified": true,
+   "note": "VLA robustness benchmark including language perturbations; VLAs are sensitive to (or ignore) instruction variants. CVPR title: \"LIBERO-Plus: A Progressive Robustness Benchmark for Visual-Language-Action Models\".",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "\"A robot policy can have the skill ... and still fail it, because of how the goal is worded\" — known in the literature"
+    },
+    {
+     "section": "numbers#wording",
+     "claim": "wording-sensitivity table"
+    }
+   ]
+  },
+  {
+   "key": "kim2026liberopara",
+   "group": "grounding",
+   "authors": "Kim, Kim, Kang, Kim, Jung",
+   "venue_year": "EMNLP 2026",
+   "arxiv": "2603.28301",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2603.28301",
+   "verified_title": "LIBERO-Para: A Diagnostic Benchmark and Metrics for Paraphrase Robustness in VLA Models",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-03-30",
+   "s2_paperId": "ea44b2d7948f1f109a1ef03be9e91b182c2653eb",
+   "s2_title": "LIBERO-Para: A Diagnostic Benchmark and Metrics for Paraphrase Robustness in VLA Models",
+   "verified": true,
+   "note": "Paraphrase-robustness benchmark and metrics for VLAs: success drops under meaning-preserving rewordings.",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "same claim as LIBERO-Plus (paraphrase sensitivity)"
+    },
+    {
+     "section": "numbers#wording",
+     "claim": "wording-sensitivity table"
+    }
+   ]
+  },
+  {
+   "key": "fang2026counterfactual",
+   "group": "grounding",
+   "authors": "Fang, Feng, Jing, Liu, et al.",
+   "venue_year": "CoRL 2026",
+   "arxiv": "2602.17659",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2602.17659",
+   "verified_title": "When Vision Overrides Language: Evaluating and Mitigating Counterfactual Failures in VLAs",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-02-19",
+   "s2_paperId": "9b3b47b6116d15a32d8df9c6ad23e36f6d56e3ea",
+   "s2_title": "When Vision Overrides Language: Evaluating and Mitigating Counterfactual Failures in VLAs",
+   "verified": true,
+   "note": "VLAs fall back on visual priors when the instruction asks for something else (\"vision overrides language\"): a language-grounding failure mode.",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "policy has the skill but grounds the instruction to the wrong target"
+    },
+    {
+     "section": "meaning",
+     "claim": "\"Some robot failures are reading failures\""
+    }
+   ]
+  },
+  {
+   "key": "wulff2026grounding",
+   "group": "recent_and_related",
+   "authors": "Wulff, Cangelosi",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2610.10178",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2610.10178",
+   "verified_title": "Do Vision-Language-Action Models Understand Instructions? A Mechanistic Interpretability Study on Language Grounding",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-10-07",
+   "s2_paperId": "a0c06e9161ee18ee4ec2a692b43d5a5ca78a7c4d",
+   "s2_title": "Do Vision-Language-Action Models Understand Instructions? A Mechanistic Interpretability Study on Language Grounding",
+   "verified": true,
+   "note": "Activation and attribution patching of language grounding in π0.5 and GR00T N1.7: both react most strongly to directional-language corruption, with the sensitivity localised differently in each model.",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "directional words (\"left\"/\"right\") are where these exact models are most sensitive"
+    },
+    {
+     "section": "where",
+     "claim": "the instruction is read in different places in π0.5 and GR00T N1.7"
+    },
+    {
+     "section": "groot",
+     "claim": "GR00T N1.7 grounding locus"
+    }
+   ]
+  },
+  {
+   "key": "jiang2026groundinggap",
+   "group": "recent_and_related",
+   "authors": "Jiang, Cao, He, Deng, et al.",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2610.06235",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2610.06235",
+   "verified_title": "Encoded but Not in Control: Revealing the Grounding Gap in Vision-Language Robot Policies",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-10-05",
+   "s2_paperId": "31d7c9639ad782226413134289e37de1d2919827",
+   "s2_title": "Encoded but Not in Control: Revealing the Grounding Gap in Vision-Language Robot Policies",
+   "verified": true,
+   "note": "VLAs and WAMs encode the instructed target (linear probes recover it) yet it rarely controls the action — the \"grounding gap\".",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "\"the policy has the skill, but misreads\" — encoded but not in control"
+    },
+    {
+     "section": "meaning",
+     "claim": "\"Some robot failures are reading failures\""
+    }
+   ]
+  },
+  {
+   "key": "meng2022rome",
+   "group": "editing",
+   "authors": "Meng, Bau, Andonian, Belinkov",
+   "venue_year": "NeurIPS 2022",
+   "arxiv": "2202.05262",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2202.05262",
+   "verified_title": "Locating and Editing Factual Associations in GPT",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2022-02-10",
+   "s2_paperId": "996445d847f06e99b0bd259345408a0cf1bce87e",
+   "s2_title": "Locating and Editing Factual Associations in GPT",
+   "verified": true,
+   "note": "ROME: locate-then-edit; a rank-one closed-form update to an MLP weight viewed as a key-value memory.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "\"one least-squares solve per layer\""
+    },
+    {
+     "section": "numbers#edit",
+     "claim": "closed-form edit box"
+    }
+   ]
+  },
+  {
+   "key": "meng2023memit",
+   "group": "editing",
+   "authors": "Meng, Sen Sharma, Andonian, Belinkov, Bau",
+   "venue_year": "ICLR 2023",
+   "arxiv": "2210.07229",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2210.07229",
+   "verified_title": "Mass-Editing Memory in a Transformer",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2022-10-13",
+   "s2_paperId": "2fe1ac0b09cc0f50eb83eef6c7c6b45ac8b12413",
+   "s2_title": "Mass-Editing Memory in a Transformer",
+   "verified": true,
+   "note": "MEMIT: multi-key, multi-layer closed-form least-squares edit. The page's ΔW = Kᵀ(KKᵀ+λI)⁻¹V equals MEMIT's update with the key-covariance prior replaced by λI, written in dual (kernel) form.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "the closed-form edit"
+    },
+    {
+     "section": "numbers#edit",
+     "claim": "ΔW = Kᵀ(KKᵀ+λI)⁻¹V"
+    },
+    {
+     "section": "prevent",
+     "claim": "preservation keys play the role of MEMIT's preserved-key term"
+    }
+   ]
+  },
+  {
+   "key": "wang2024kesurvey",
+   "group": "editing",
+   "authors": "Wang, Zhu, Liu, Zheng, et al.",
+   "venue_year": "ACM Computing Surveys 2024 (arXiv 2023)",
+   "arxiv": "2310.16218",
+   "doi": "10.1145/3698590",
+   "url": "https://arxiv.org/abs/2310.16218",
+   "verified_title": "Knowledge Editing for Large Language Models: A Survey",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2023-10-24",
+   "s2_paperId": "42016f91e5b1da63174d45acb96bc89b64aa124d",
+   "s2_title": "Knowledge Editing for Large Language Models: A Survey",
+   "verified": true,
+   "note": "Survey of knowledge-based model editing: general formulation, taxonomy of methods (incl. locate-then-edit), and evaluation of edits, including locality/specificity on unrelated inputs.",
+   "cited_in": [
+    {
+     "section": "side-effects",
+     "claim": "name the cost: a locality (specificity) failure"
+    },
+    {
+     "section": "numbers#side-effect-numbers",
+     "claim": "side-effect map = locality evaluation"
+    }
+   ]
+  },
+  {
+   "key": "cohen2024ripple",
+   "group": "editing",
+   "authors": "Cohen, Biran, Yoran, Globerson, Geva",
+   "venue_year": "TACL 2024",
+   "arxiv": "2307.12976",
+   "doi": "10.1162/tacl_a_00644",
+   "url": "https://arxiv.org/abs/2307.12976",
+   "verified_title": "Evaluating the Ripple Effects of Knowledge Editing in Language Models",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2023-07-24",
+   "s2_paperId": "1fdf449c96fbac0789cf8dfae15b788905407fd3",
+   "s2_title": "Evaluating the Ripple Effects of Knowledge Editing in Language Models",
+   "verified": true,
+   "note": "Ripple effects: an edit changes related facts beyond the edited input, so evaluation must probe neighbours.",
+   "cited_in": [
+    {
+     "section": "side-effects",
+     "claim": "\"It seems to have taught the reading part something like left means right\""
+    },
+    {
+     "section": "meaning",
+     "claim": "\"every edit has to be checked on the tasks it was not built for\""
+    }
+   ]
+  },
+  {
+   "key": "fang2025alphaedit",
+   "group": "editing",
+   "authors": "Fang, Jiang, Wang, Ma, et al.",
+   "venue_year": "ICLR 2025",
+   "arxiv": "2410.02355",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2410.02355",
+   "verified_title": "AlphaEdit: Null-Space Constrained Knowledge Editing for Language Models",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2024-10-03",
+   "s2_paperId": "f212ca51d941ee686341d43eb167fcbd7e78807c",
+   "s2_title": "AlphaEdit: Null-Space Constrained Knowledge Editing for Language Models",
+   "verified": true,
+   "note": "AlphaEdit: project the update onto the null space of preserved keys (hard constraint); the stronger version of the page's zero-change preservation keys (soft, least-squares).",
+   "cited_in": [
+    {
+     "section": "prevent",
+     "claim": "\"telling it to leave other instructions unchanged\" — preservation keys"
+    },
+    {
+     "section": "numbers#side-effect-numbers",
+     "claim": "t8undp / t8undr rebuilds"
+    }
+   ]
+  },
+  {
+   "key": "askell2021context",
+   "group": "editing",
+   "authors": "Askell, Bai, Chen, Drain, et al.",
+   "venue_year": "arXiv 2021",
+   "arxiv": "2112.00861",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2112.00861",
+   "verified_title": "A General Language Assistant as a Laboratory for Alignment",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2021-12-01",
+   "s2_paperId": "3dc7dc1bea9a4f70c02b6759a0bda7aca0005a9e",
+   "s2_title": "A General Language Assistant as a Laboratory for Alignment",
+   "verified": true,
+   "note": "Introduces context distillation (in the body, not the abstract): fine-tune a model without the prompt to match its prompted outputs.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "\"compute ... the weight change that makes the original words produce what the clearer words produce\""
+    },
+    {
+     "section": "numbers#legend",
+     "claim": "\"Distilled edit\""
+    }
+   ]
+  },
+  {
+   "key": "snell2022distilling",
+   "group": "editing",
+   "authors": "Snell, Klein, Zhong",
+   "venue_year": "arXiv 2022",
+   "arxiv": "2209.15189",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2209.15189",
+   "verified_title": "Learning by Distilling Context",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2022-09-30",
+   "s2_paperId": "8fbd7ddf1ea30c991f3b1152a245df77caa18e16",
+   "s2_title": "Learning by Distilling Context",
+   "verified": true,
+   "note": "Learning by distilling context: internalise instructions into weights so the model acts as if the context were present.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "same claim as Askell et al.; the page's method is a training-free, closed-form context distillation"
+    }
+   ]
+  },
+  {
+   "key": "turner2023steering",
+   "group": "editing",
+   "authors": "Turner, Thiergart, Leech, Udell, Vazquez, Mini, MacDiarmid",
+   "venue_year": "arXiv 2023",
+   "arxiv": "2308.10248",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2308.10248",
+   "verified_title": "Steering Language Models With Activation Engineering",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2023-08-20",
+   "s2_paperId": "fe303bbaae47b1b08d0641b41d3288fcd74a3a80",
+   "s2_title": "Steering Language Models With Activation Engineering",
+   "verified": true,
+   "note": "Activation addition: add a contrastive activation vector at inference time — the activation-steering alternative to editing weights.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "\"it needs an on/off switch\" — a gated, steering-style intervention"
+    },
+    {
+     "section": "numbers#legend",
+     "claim": "\"gated (it has an on/off switch)\""
+    }
+   ]
+  },
+  {
+   "key": "takehi2026sparks",
+   "group": "weight_space_programming",
+   "authors": "Takehi, Teoh, Zhang, Khattab",
+   "venue_year": "Technical blog, 2 Nov 2026",
+   "arxiv": null,
+   "doi": null,
+   "url": "https://rikiyat.github.io/blog/weight-space-programming/",
+   "verified_title": "Sparks of Weight-Space Programming: LLMs can natively read & write neural network weights",
+   "verified_via": [
+    "fetched page <meta name=\"citation_title\"> and citation_author tags"
+   ],
+   "s2_paperId": null,
+   "s2_note": "blog / unpublished manuscript: not a Semantic Scholar record",
+   "verified": true,
+   "note": "Coins weight-space programming: a general LLM reads and writes another network's weights without an optimizer; context for the blind AI editors.",
+   "cited_in": [
+    {
+     "section": "where",
+     "claim": "figure 6 footnote: \"Written by an AI editor (Claude) working alone\""
+    },
+    {
+     "section": "numbers#legend",
+     "claim": "\"Blind editor\""
+    }
+   ]
+  },
+  {
+   "key": "zhang2026debugrobots",
+   "group": "recent_and_related",
+   "authors": "Zhang, Wang, Lin",
+   "venue_year": "arXiv 2026 (6 Nov)",
+   "arxiv": "2611.09376",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2611.09376",
+   "verified_title": "Can LLMs Debug Robots by Editing Their Weights?",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)"
+   ],
+   "arxiv_first_posted": "2026-11-06",
+   "s2_paperId": null,
+   "s2_note": "not indexed by Semantic Scholar as of 2026-11-09 (paper/batch returned 404)",
+   "verified": true,
+   "note": "Closest concurrent work: an LLM editor repairs π0.5's lexical instruction grounding by editing 65 token-embedding rows; matched random-direction edits do not help; exact paired tests.",
+   "cited_in": [
+    {
+     "section": "control",
+     "claim": "related robot weight edits for instruction grounding"
+    },
+    {
+     "section": "models",
+     "claim": "random-direction control as the accepted placebo"
+    },
+    {
+     "section": "meaning",
+     "claim": "positioning"
+    }
+   ]
+  },
+  {
+   "key": "swann2026causal",
+   "group": "recent_and_related",
+   "authors": "Swann, Papillon, Jacobs, Boppana, et al.",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2610.20750",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2610.20750",
+   "verified_title": "Causal Analysis of Robot Foundation Models Enables Efficiency Gains",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-10-14",
+   "s2_paperId": "04e23e47166533e57f0ef5aae93facf35deb842f",
+   "s2_title": "Causal Analysis of Robot Foundation Models Enables Efficiency Gains",
+   "verified": true,
+   "note": "Activation patching in π0.5, MolmoAct2, MolmoBot: instruction information reaches the action expert through a narrow band of cross-attention layers (the \"action-conditioning interface\"); π0.5 also stores spatial information at image-token positions.",
+   "cited_in": [
+    {
+     "section": "where",
+     "claim": "\"It only works where the robot reads\": the instruction enters the action path through a narrow interface"
+    },
+    {
+     "section": "when",
+     "claim": "\"π0.5 is the exception ... a clearer wording's effect also reaches positions both wordings share\" (image-token positions)"
+    }
+   ]
+  },
+  {
+   "key": "mcnemar1947",
+   "group": "statistics",
+   "authors": "McNemar",
+   "venue_year": "Psychometrika 12(2):153–157, 1947",
+   "arxiv": null,
+   "doi": "10.1007/BF02295996",
+   "url": "https://doi.org/10.1007/BF02295996",
+   "verified_title": "Note on the sampling error of the difference between correlated proportions or percentages",
+   "verified_via": [
+    "Semantic Scholar",
+    "Crossref API"
+   ],
+   "s2_paperId": "cdb48a96036b8cd2367eea596cff2db828305150",
+   "s2_title": "Note on the sampling error of the difference between correlated proportions or percentages",
+   "verified": true,
+   "note": "Test on discordant pairs for paired binary outcomes; the page's \"fixed / broke\" counts are the discordant pairs.",
+   "cited_in": [
+    {
+     "section": "numbers#protocol",
+     "claim": "\"Exact two-sided McNemar test on the fixed and broke pairs\""
+    },
+    {
+     "section": "numbers#legend",
+     "claim": "\"p: exact McNemar test\""
+    }
+   ]
+  },
+  {
+   "key": "khazatsky2024droid",
+   "group": "data_sim",
+   "authors": "Khazatsky, Pertsch, Nair, Balakrishna, et al.",
+   "venue_year": "RSS 2024",
+   "arxiv": "2403.12945",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2403.12945",
+   "verified_title": "DROID: A Large-Scale In-The-Wild Robot Manipulation Dataset",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2024-03-19",
+   "s2_paperId": "ee5070fe52fd17da9a89d3f342fb07cc9ae51afe",
+   "s2_title": "DROID: A Large-Scale In-The-Wild Robot Manipulation Dataset",
+   "verified": true,
+   "note": "DROID: large in-the-wild Franka manipulation dataset; all three checkpoints are DROID post-trained.",
+   "cited_in": [
+    {
+     "section": "numbers#model-cards",
+     "claim": "checkpoint names (…-DROID, pi05_droid)"
+    },
+    {
+     "section": "numbers#caveats",
+     "claim": "\"π0.5 was trained on DROID data and on none of these tasks\""
+    }
+   ]
+  },
+  {
+   "key": "yang2026robolab",
+   "group": "data_sim",
+   "authors": "Yang, Dagli, Zook, Hadfield, et al.",
+   "venue_year": "RSS 2026",
+   "arxiv": "2604.09860",
+   "doi": "10.15607/RSS.2026.XXII.096",
+   "url": "https://arxiv.org/abs/2604.09860",
+   "verified_title": "RoboLab: A High-Fidelity Simulation Benchmark for Analysis of Task Generalist Policies",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Crossref API (DOI 10.15607/RSS.2026.XXII.096, Robotics: Science and Systems XXII)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-04-10",
+   "s2_paperId": "4a0e21475dfe488e745aac8776bd1b9e2c1c99af",
+   "s2_title": "RoboLab: A High-Fidelity Simulation Benchmark for Analysis of Task Generalist Policies",
+   "verified": true,
+   "note": "RoboLab: high-fidelity simulation benchmark for task-generalist policies (incl. a relational competency axis); source of every task and start.",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "\"one task from RoboLab, a simulated benchmark\""
+    },
+    {
+     "section": "nvidia",
+     "claim": "\"We ran all three on the same RoboLab tasks\""
+    },
+    {
+     "section": "limits",
+     "claim": "\"Every number comes from RoboLab tasks\""
+    }
+   ]
+  },
+  {
+   "key": "nvidia2025isaaclab",
+   "group": "data_sim",
+   "authors": "NVIDIA (Mittal, Roth, et al.)",
+   "venue_year": "arXiv 2025",
+   "arxiv": "2511.04831",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2511.04831",
+   "verified_title": "Isaac Lab: A GPU-Accelerated Simulation Framework for Multi-Modal Robot Learning",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2025-11-06",
+   "s2_paperId": "cc6aa4157cea38d9af9907c10321a009389dba6b",
+   "s2_title": "Isaac Lab: A GPU-Accelerated Simulation Framework for Multi-Modal Robot Learning",
+   "verified": true,
+   "note": "Isaac Lab, NVIDIA's GPU robot-learning framework with Isaac Sim as its simulation/rendering backend; RoboLab is built on Isaac Lab (RoboLab README).",
+   "cited_in": [
+    {
+     "section": "nvidia",
+     "claim": "\"in NVIDIA's Isaac Sim\""
+    },
+    {
+     "section": "numbers#protocol",
+     "claim": "render preset is Isaac Lab's \"balanced\" setting"
+    },
+    {
+     "section": "limits",
+     "claim": "simulation only"
+    }
+   ]
+  },
+  {
+   "key": "abbas2026distilling",
+   "group": "authors",
+   "authors": "Abbas, Seraj",
+   "venue_year": "2026, arXiv preprint forthcoming",
+   "arxiv": null,
+   "doi": null,
+   "url": "https://ali-adeeb.com/weightsmith/",
+   "verified_title": "Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy's Misreading",
+   "verified_via": [
+    "title in /Users/ali/opus-wsp/astra-study/paper/main.tex and on https://ali-adeeb.com/weightsmith/ (fetched 2026-11-09); not on arXiv or Semantic Scholar yet"
+   ],
+   "s2_paperId": null,
+   "s2_note": "blog / unpublished manuscript: not a Semantic Scholar record",
+   "verified": true,
+   "note": "The paper: closed-form instruction distillation on π0.5; source of every π0.5 number and the method.",
+   "cited_in": [
+    {
+     "section": "control",
+     "claim": "\"the weightsmith post\" / π0.5 results"
+    },
+    {
+     "section": "numbers#edit",
+     "claim": "method"
+    },
+    {
+     "section": "citation",
+     "claim": "cite-this block"
+    }
+   ]
+  },
+  {
+   "key": "abbas2026samegoal",
+   "group": "authors",
+   "authors": "Abbas, Seraj, Toghi, Padır",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2610.16242",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2610.16242",
+   "verified_title": "Same Goal, Different Words: Spatial Instruction Sensitivity in World-Action Models",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-10-12",
+   "s2_paperId": "0db668196cb5b25a85679cb0a5c12b072e6254ba",
+   "s2_title": "Same Goal, Different Words: Spatial Instruction Sensitivity in World-Action Models",
+   "verified": true,
+   "note": "SGDW: reference-first spatial wording lowers stable placement in world-action models; finds relation reversals; source of the Cosmos3 Edge evaluation settings.",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "reference-first vs. mustard-first wording gap"
+    },
+    {
+     "section": "numbers#wording",
+     "claim": "\"In the Same Goal, Different Words study ...\""
+    },
+    {
+     "section": "numbers#model-cards",
+     "claim": "\"settings of the Same Goal, Different Words study (4 sampling steps, guidance 3)\""
+    }
+   ]
+  }
+ ],
+ "alternates": [
+  {
+   "key": "agarwal2025cosmos",
+   "group": "alternate",
+   "authors": "NVIDIA (Agarwal, Ali, et al.)",
+   "venue_year": "arXiv 2025",
+   "arxiv": "2501.03575",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2501.03575",
+   "verified_title": "Cosmos World Foundation Model Platform for Physical AI",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2025-01-07",
+   "s2_paperId": "b95baf93d1cfb406b50aa370ce5ba18788b5891d",
+   "s2_title": "Cosmos World Foundation Model Platform for Physical AI",
+   "verified": true,
+   "note": "Original Cosmos world foundation model platform; coins \"world foundation model\".",
+   "cited_in": [
+    {
+     "section": "nvidia",
+     "claim": "Cosmos lineage"
+    }
+   ]
+  },
+  {
+   "key": "liang2025mot",
+   "group": "alternate",
+   "authors": "Liang, Yu, Luo, Iyer, et al.",
+   "venue_year": "TMLR 2025",
+   "arxiv": "2411.04996",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2411.04996",
+   "verified_title": "Mixture-of-Transformers: A Sparse and Scalable Architecture for Multi-Modal Foundation Models",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2024-11-07",
+   "s2_paperId": "18ea06ae95cad35d3c79610d16dd2a3c9ee208a5",
+   "s2_title": "Mixture-of-Transformers: A Sparse and Scalable Architecture for Multi-Modal Foundation Models",
+   "verified": true,
+   "note": "Mixture-of-Transformers: modality-specific weights with shared global self-attention; the architecture named on the Cosmos3 Edge card.",
+   "cited_in": [
+    {
+     "section": "numbers#model-cards",
+     "claim": "\"a mixture of transformers with 28 layers ... text pathway and a generation pathway\""
+    }
+   ]
+  },
+  {
+   "key": "azzolini2025cosmosreason1",
+   "group": "alternate",
+   "authors": "NVIDIA (Azzolini, Bai, et al.)",
+   "venue_year": "arXiv 2025",
+   "arxiv": "2503.15558",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2503.15558",
+   "verified_title": "Cosmos-Reason1: From Physical Common Sense To Embodied Reasoning",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2025-03-18",
+   "s2_paperId": "cce886854084ecfec8badc26f275fabfe69176be",
+   "s2_title": "Cosmos-Reason1: From Physical Common Sense To Embodied Reasoning",
+   "verified": true,
+   "note": "Cosmos-Reason1, the paper for the Cosmos-Reason family of physical-reasoning VLMs (no separate Cosmos-Reason2 paper found).",
+   "cited_in": [
+    {
+     "section": "nvidia",
+     "claim": "\"a reasoning language model, Cosmos-Reason2\""
+    }
+   ]
+  },
+  {
+   "key": "bai2025qwen3vl",
+   "group": "alternate",
+   "authors": "Bai, Cai, Chen, Chen, et al.",
+   "venue_year": "arXiv 2025",
+   "arxiv": "2511.21631",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2511.21631",
+   "verified_title": "Qwen3-VL Technical Report",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2025-11-26",
+   "s2_paperId": "15538df854dd33351dfb5cefd7e8f3340c8936c3",
+   "s2_title": "Qwen3-VL Technical Report",
+   "verified": true,
+   "note": "Qwen3-VL; Cosmos-Reason2-2B's base model per its Hugging Face metadata (base_model: Qwen/Qwen3-VL-2B-Instruct).",
+   "cited_in": [
+    {
+     "section": "numbers#model-cards",
+     "claim": "\"Cosmos-Reason2-2B vision-language backbone (Qwen3-VL)\""
+    }
+   ]
+  },
+  {
+   "key": "beyer2024paligemma",
+   "group": "alternate",
+   "authors": "Beyer, Steiner, Pinto, Kolesnikov, et al.",
+   "venue_year": "arXiv 2024",
+   "arxiv": "2407.07726",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2407.07726",
+   "verified_title": "PaliGemma: A versatile 3B VLM for transfer",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2024-07-10",
+   "s2_paperId": "440d7944dc701dbe4030d3fbad49036700fba788",
+   "s2_title": "PaliGemma: A versatile 3B VLM for transfer",
+   "verified": true,
+   "note": "PaliGemma, π0.5's VLM.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "\"In π0.5 it is a vision-language model (PaliGemma)\""
+    }
+   ]
+  },
+  {
+   "key": "jiang2023vima",
+   "group": "alternate",
+   "authors": "Jiang, Gupta, Zhang, Wang, et al.",
+   "venue_year": "ICML 2023",
+   "arxiv": "2210.03094",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2210.03094",
+   "verified_title": "VIMA: General Robot Manipulation with Multimodal Prompts",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2022-10-06",
+   "s2_paperId": "25425e299101b13ec2872417a14f961f4f8aa18e",
+   "s2_title": "VIMA: General Robot Manipulation with Multimodal Prompts",
+   "verified": true,
+   "note": "Multimodal-prompt manipulation incl. spatial-relation tasks.",
+   "cited_in": [
+    {
+     "section": "question",
+     "claim": "grounding lineage"
+    }
+   ]
+  },
+  {
+   "key": "kamath2023whatsup",
+   "group": "alternate",
+   "authors": "Kamath, Hessel, Chang",
+   "venue_year": "EMNLP 2023",
+   "arxiv": "2310.19785",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2310.19785",
+   "verified_title": "What's \"up\" with vision-language models? Investigating their struggle with spatial reasoning",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2023-10-30",
+   "s2_paperId": "1fa674b4e1c82cf648868be2568637fdfb5fb1b3",
+   "s2_title": "What's \"up\" with vision-language models? Investigating their struggle with spatial reasoning",
+   "verified": true,
+   "note": "VLMs confuse basic spatial relations (left/right, on/under) — weak relation grounding in the backbones.",
+   "cited_in": [
+    {
+     "section": "side-effects",
+     "claim": "left/right relations are a known weak spot of VLM backbones"
+    }
+   ]
+  },
+  {
+   "key": "hoelscher2023counterfactplus",
+   "group": "alternate",
+   "authors": "Hoelscher-Obermaier, Persson, Kran, Konstas, Barez",
+   "venue_year": "ACL Findings 2023",
+   "arxiv": "2305.17553",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2305.17553",
+   "verified_title": "Detecting Edit Failures In Large Language Models: An Improved Specificity Benchmark",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2023-05-27",
+   "s2_paperId": "cc57a02307b77585f69779cca2937dedc69006d6",
+   "s2_title": "Detecting Edit Failures In Large Language Models: An Improved Specificity Benchmark",
+   "verified": true,
+   "note": "Editing side effects missed by static specificity benchmarks (CounterFact+).",
+   "cited_in": [
+    {
+     "section": "side-effects",
+     "claim": "specificity must be measured on related inputs"
+    }
+   ]
+  },
+  {
+   "key": "zou2023repe",
+   "group": "alternate",
+   "authors": "Zou, Phan, Chen, Campbell, et al.",
+   "venue_year": "arXiv 2023",
+   "arxiv": "2310.01405",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2310.01405",
+   "verified_title": "Representation Engineering: A Top-Down Approach to AI Transparency",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2023-10-02",
+   "s2_paperId": "58fdf550600fc3873729d466601c5d08a51ba8a0",
+   "s2_title": "Representation Engineering: A Top-Down Approach to AI Transparency",
+   "verified": true,
+   "note": "Representation engineering: read and control concepts via representation directions.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "steering alternative"
+    }
+   ]
+  },
+  {
+   "key": "ilharco2023taskarithmetic",
+   "group": "alternate",
+   "authors": "Ilharco, Ribeiro, Wortsman, Gururangan, et al.",
+   "venue_year": "ICLR 2023",
+   "arxiv": "2212.04089",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2212.04089",
+   "verified_title": "Editing Models with Task Arithmetic",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2022-12-08",
+   "s2_paperId": "71ba5f845bd22d42003675b7cea970ca9e590bcc",
+   "s2_title": "Editing Models with Task Arithmetic",
+   "verified": true,
+   "note": "Task vectors / task arithmetic (weight-difference edits).",
+   "cited_in": [
+    {
+     "section": "meaning",
+     "claim": "other training-free weight edits"
+    }
+   ]
+  },
+  {
+   "key": "hoerl1970ridge",
+   "group": "alternate",
+   "authors": "Hoerl, Kennard",
+   "venue_year": "Technometrics 12(1), 1970",
+   "arxiv": null,
+   "doi": "10.1080/00401706.1970.10488634",
+   "url": "https://doi.org/10.1080/00401706.1970.10488634",
+   "verified_title": "Ridge Regression: Biased Estimation for Nonorthogonal Problems",
+   "verified_via": [
+    "Crossref API (title, Technometrics, issued 1970-02)",
+    "Semantic Scholar Graph API"
+   ],
+   "s2_note": "Semantic Scholar has no record for the 1970 DOI; paperId is for the 2000 Technometrics reprint (DOI 10.1080/00401706.2000.10485983).",
+   "s2_paperId": "1473110f6c33b483251ade10b79416d3efee2da4",
+   "s2_title": "Ridge Regression: Biased Estimation for Nonorthogonal Problems",
+   "verified": true,
+   "note": "Ridge regression: the λI regulariser in ΔW = Kᵀ(KKᵀ+λI)⁻¹V. S2 indexes only the 2000 reprint (paperId given); the 1970 DOI is Crossref-verified.",
+   "cited_in": [
+    {
+     "section": "numbers#edit",
+     "claim": "\"λ = 10⁻³ tr(KKᵀ)/n\""
+    }
+   ]
+  },
+  {
+   "key": "efron1979bootstrap",
+   "group": "alternate",
+   "authors": "Efron",
+   "venue_year": "Annals of Statistics 1979",
+   "arxiv": null,
+   "doi": "10.1214/aos/1176344552",
+   "url": "https://doi.org/10.1214/aos/1176344552",
+   "verified_title": "Bootstrap Methods: Another Look at the Jackknife",
+   "verified_via": [
+    "Semantic Scholar Graph API"
+   ],
+   "s2_paperId": "005a8323a14a9710fad2f360cc2bd1bffb736240",
+   "s2_title": "Bootstrap Methods: Another Look at the Jackknife",
+   "verified": true,
+   "note": "The bootstrap; the page's paired bootstrap 95% intervals.",
+   "cited_in": [
+    {
+     "section": "numbers#protocol",
+     "claim": "\"paired bootstrap 95% interval\""
+    }
+   ]
+  },
+  {
+   "key": "wilson1927probable",
+   "group": "alternate",
+   "authors": "Wilson",
+   "venue_year": "JASA 22(158), 1927",
+   "arxiv": null,
+   "doi": "10.1080/01621459.1927.10502953",
+   "url": "https://doi.org/10.1080/01621459.1927.10502953",
+   "verified_title": "Probable Inference, the Law of Succession, and Statistical Inference",
+   "verified_via": [
+    "Semantic Scholar Graph API"
+   ],
+   "s2_paperId": "b14f4269f09ef77ad310581ea82d502402d90fb9",
+   "s2_title": "Probable Inference, the Law of Succession, and Statistical Inference",
+   "verified": true,
+   "note": "Wilson score interval for single rates.",
+   "cited_in": [
+    {
+     "section": "numbers#protocol",
+     "claim": "\"Wilson intervals for single rates\""
+    }
+   ]
+  },
+  {
+   "key": "kressgazit2024empirical",
+   "group": "alternate",
+   "authors": "Kress-Gazit, Hashimoto, Kuppuswamy, Shah, et al.",
+   "venue_year": "arXiv 2024",
+   "arxiv": "2409.09491",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2409.09491",
+   "verified_title": "Robot Learning as an Empirical Science: Best Practices for Policy Evaluation",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2024-09-14",
+   "s2_paperId": "6d704fc8e304abd7f7717d6ef99c41543d677cc2",
+   "s2_title": "Robot Learning as an Empirical Science: Best Practices for Policy Evaluation",
+   "verified": true,
+   "note": "Best practices for robot policy evaluation (paired trials, statistics).",
+   "cited_in": [
+    {
+     "section": "numbers#noise",
+     "claim": "noise floor / paired evaluation"
+    }
+   ]
+  },
+  {
+   "key": "gupta2026robotweights",
+   "group": "alternate_recent",
+   "authors": "Gupta, Rohilla, Prashant, Zhu",
+   "venue_year": "Technical blog, 4 Nov 2026",
+   "arxiv": null,
+   "doi": null,
+   "url": "https://codnay.github.io/blog/llms-fix-robots-by-editing-weights/",
+   "verified_title": "Can frontier LLMs fix robots by editing their weights? · Pranay Gupta",
+   "verified_via": [
+    "fetched page <title>, byline and date (2026-11-09)"
+   ],
+   "s2_paperId": null,
+   "s2_note": "blog / unpublished manuscript: not a Semantic Scholar record",
+   "verified": true,
+   "note": "Opus edits π0.5 weights directly (0.004% of weights) in RoboDojo; folding 51%→75% with a trained direction.",
+   "cited_in": [
+    {
+     "section": "control",
+     "claim": "other robot weight-edit results"
+    }
+   ]
+  },
+  {
+   "key": "gong2026roboticsweightediting",
+   "group": "alternate_recent",
+   "authors": "Gong, Zheng, Huang, Chen, Tian, Yang, Liu, Yang",
+   "venue_year": "Project blog, Nov 2026",
+   "arxiv": null,
+   "doi": null,
+   "url": "https://cuzyoung.github.io/robotics-weight-editing/en/",
+   "verified_title": "We Asked Opus-5.5 to Edit $\\pi_{0.5}$'s Weights. AutoResearch Made It Happen.",
+   "verified_via": [
+    "fetched page heading and BibTeX block (2026-11-09)"
+   ],
+   "s2_paperId": null,
+   "s2_note": "blog / unpublished manuscript: not a Semantic Scholar record",
+   "verified": true,
+   "note": "Opus 5.5 edits π0.5 on a real bimanual robot; a RoPE intervention fitted into Q/K weights by least squares (closed-form fit, like the page).",
+   "cited_in": [
+    {
+     "section": "meaning",
+     "claim": "related least-squares weight fits on π0.5"
+    }
+   ]
+  },
+  {
+   "key": "haon2025steering",
+   "group": "alternate_recent",
+   "authors": "Häon, Stocking, Chuang, Tomlin",
+   "venue_year": "CoRL 2025",
+   "arxiv": "2509.00328",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2509.00328",
+   "verified_title": "Mechanistic interpretability for steering vision-language-action models",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2025-08-30",
+   "s2_paperId": "c63324aadee7bc9566a98fef80e2149d21a3360a",
+   "s2_title": "Mechanistic interpretability for steering vision-language-action models",
+   "verified": true,
+   "note": "First activation-steering framework for VLAs (π0, OpenVLA) via FFN value vectors projected on the token basis.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "steering vs. editing in VLAs"
+    }
+   ]
+  },
+  {
+   "key": "lei2026roboirs",
+   "group": "alternate_recent",
+   "authors": "Lei, Liu, Li, Zhang, et al.",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2610.04681",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2610.04681",
+   "verified_title": "RoboIRS: Inference-Time Internal Representation Steering for Generalist Robot Policies",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-10-03",
+   "s2_paperId": "dae1b497d1afaa392c5f9e3d160b78cfd18f22c1",
+   "s2_title": "RoboIRS: Inference-Time Internal Representation Steering for Generalist Robot Policies",
+   "verified": true,
+   "note": "Inference-time representation steering for π0.5 and the WAM Cosmos Policy from success/failure rollouts.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "gated/steering alternative on the same model families"
+    }
+   ]
+  },
+  {
+   "key": "hong2026walqr",
+   "group": "alternate_recent",
+   "authors": "Hong, Skifstad, Dai, Chan, Chou",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2607.14943",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2607.14943",
+   "verified_title": "Steering Robustness into World Action Models via Mechanistic Interpretability and Optimal Control",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-07-16",
+   "s2_paperId": "8dc8e7fbd8b74fd5dd8d4dc9b452801b1c543220",
+   "s2_title": "Steering Robustness into World Action Models via Mechanistic Interpretability and Optimal Control",
+   "verified": true,
+   "note": "Training-free activation steering of world action models (Cosmos-Policy, DiT4DiT) with LQR feedback.",
+   "cited_in": [
+    {
+     "section": "nvidia",
+     "claim": "interventions inside WAMs"
+    }
+   ]
+  },
+  {
+   "key": "wang2026tasknegation",
+   "group": "alternate_recent",
+   "authors": "Wang, Guo, Dai, Zhao, et al.",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2608.04692",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2608.04692",
+   "verified_title": "Suppression Sticks, Locality Is Fragile: A Closed-Loop Target-and-Control Audit of Task-Vector Negation in VLA Policies",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-08-05",
+   "s2_paperId": "114c8a249ebd3abb0b445004e8445a63538c5083",
+   "s2_title": "Suppression Sticks, Locality Is Fragile: A Closed-Loop Target-and-Control Audit of Task-Vector Negation in VLA Policies",
+   "verified": true,
+   "note": "Closed-loop audit: task-vector subtraction in VLAs suppresses targets but harms nominally unrelated controls (locality is fragile).",
+   "cited_in": [
+    {
+     "section": "side-effects",
+     "claim": "robot-policy precedent for edits breaking unrelated tasks"
+    }
+   ]
+  },
+  {
+   "key": "wang2026more",
+   "group": "alternate_recent",
+   "authors": "Wang, Lei, Li, Liu, et al.",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2606.29201",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2606.29201",
+   "verified_title": "Behavior Uncloning: Distilling Mode Redirection into Policy Weights without Inference-Time Steering",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-06-28",
+   "s2_paperId": "9cceb76523e47b7438e8ded4e32a46098edb33bb",
+   "s2_title": "Behavior Uncloning: Distilling Mode Redirection into Policy Weights without Inference-Time Steering",
+   "verified": true,
+   "note": "MoRE / \"behavior uncloning\": distils an inference-time redirection signal into Diffusion Policy and π0.5 weights with a retain loss.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "distilling an inference-time effect into policy weights (gradient-based counterpart)"
+    }
+   ]
+  },
+  {
+   "key": "miao2026coast",
+   "group": "alternate_recent",
+   "authors": "Miao, Kim, Yang, Ungar",
+   "venue_year": "arXiv 2026",
+   "arxiv": "2605.17144",
+   "doi": null,
+   "url": "https://arxiv.org/abs/2605.17144",
+   "verified_title": "Contrastive Conceptor Activation Steering (COAST): Unlocking Vision-Language-Action Models through Hidden States",
+   "verified_via": [
+    "arXiv API (export.arxiv.org)",
+    "Semantic Scholar Graph API"
+   ],
+   "arxiv_first_posted": "2026-05-16",
+   "s2_paperId": "ff54d4f113ca3ef58b8cad2da072a7a7ffb84bdb",
+   "s2_title": "Contrastive Conceptor Activation Steering (COAST): Unlocking Vision-Language-Action Models through Hidden States",
+   "verified": true,
+   "note": "Closed-form conceptor steering of VLA action-expert latents from success/failure rollouts.",
+   "cited_in": [
+    {
+     "section": "models",
+     "claim": "closed-form but inference-time alternative"
+    }
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "item": "Guo & Xie, \"Weight Editing across Robot Policies: VLA, WAM, and Humanoid Control\" (X thread, 4 Nov 2026; x.com/Lingxiao234/status/2118048171649806424)",
+   "reason": "post only: no paper, preprint or blog found (web search; awesome-weight-space-programming list marks it \"post only, no code or paper as of 2026-11-05\"). Cited in the paper's refs.bib but not citable on the page under the \"never cite the post\" rule."
+  },
+  {
+   "item": "Xie & Guo, \"Direct Weight Editing for Robot Policy Adaptation\" (X thread, x.com/AngchenXie/status/2118052439576465647)",
+   "reason": "same as above: post only."
+  },
+  {
+   "item": "A Cosmos-Reason2 paper",
+   "reason": "none found: the nvidia/Cosmos-Reason2-2B card is gated; its arXiv tags (2503.06800 VideoPhy-2, 2406.10721 RoboPoint, 2603.18178 VLM-AutoDrive, 2312.14115 LingoQA) are datasets/benchmarks, not a Cosmos-Reason2 report. Use the model card URL, GR00T N1, and the alternates Cosmos-Reason1 + Qwen3-VL."
+  },
+  {
+   "item": "A standalone Isaac Sim paper",
+   "reason": "none exists; Isaac Lab (arXiv 2511.04831) is the citable paper, and github.com/isaac-sim/IsaacSim (verified via GitHub API) can be linked as software."
+  },
+  {
+   "item": "haohw/vla_real_pb_from_left_edit_step300/400 (Hugging Face π0.5 checkpoints, surfaced by web search)",
+   "reason": "model cards only, no paper or blog."
+  },
+  {
+   "item": "Geeksongs/Weight-Space-Programming-VLA (GitHub, SmolVLA one-parameter edit)",
+   "reason": "code repository only, no paper or blog."
+  }
+ ],
+ "verified_but_not_included": [
+  {
+   "arxiv": "2606.07217",
+   "verified_title": "Robotic Policy Adaptation via Weight-Space Meta-Learning",
+   "s2_paperId": "9ca5c3f41ef931fbbf6ad468c91b9516b73f9445",
+   "why_not_core": "WIZARD: weight-space meta-learning for VLA LoRA generation (adaptation, not grounding repair)"
+  },
+  {
+   "arxiv": "2604.03956",
+   "verified_title": "VLA-Forget: Vision-Language-Action Unlearning for Embodied Foundation Models",
+   "s2_paperId": "1727bdf8112fda688360736774b9a076a790ba38",
+   "why_not_core": "VLA-Forget: VLA unlearning (KnowFM @ ACL 2026)"
+  },
+  {
+   "arxiv": "2603.19183",
+   "verified_title": "Sparse Autoencoders Reveal Interpretable and Steerable Features in VLA Models",
+   "s2_paperId": "2e5d85d884573733c4c261c4be6c37eb3931d988",
+   "why_not_core": "Sparse autoencoders on VLA activations (steerable features)"
+  },
+  {
+   "arxiv": "2607.14280",
+   "verified_title": "DiMaS: Distribution Matching for Steering Vision-Language-Action Models",
+   "s2_paperId": "62589454c55c6f091515bf180c22833ef0252d12",
+   "why_not_core": "DiMaS: distribution-matching steering of flow-matching VLAs"
+  },
+  {
+   "arxiv": "2607.00666",
+   "verified_title": null,
+   "s2_paperId": "fdc784bfabc353bf8f4c890755306481518f8575",
+   "why_not_core": "DART: weight-vector arithmetic for one-shot VLA adaptation"
+  },
+  {
+   "arxiv": "2611.00522",
+   "verified_title": "Behavioral Steering of Vision-Language-Action Models in the Low-Parameter Regime",
+   "s2_paperId": "58b990ea09a6dec1c741847c7d822f1ab3407830",
+   "why_not_core": "TinyLoRA behavioural steering of OpenVLA-OFT"
+  },
+  {
+   "arxiv": "2610.12696",
+   "verified_title": "Spa-Bench: A Real-Robot Benchmark for Spatial Grounding in Vision-Language-Action Models",
+   "s2_paperId": "b82e085cbb022e1f646f3b4bbac578fd78cbee1e",
+   "why_not_core": "Spa-Bench: real-robot spatial-grounding benchmark for VLAs"
+  },
+  {
+   "arxiv": "2609.25636",
+   "verified_title": "RoboFollow: Unveiling the Instruction Following Mirage in Embodied Agents",
+   "s2_paperId": "b500a1795000556375aeec71dae720708c4d1fa8",
+   "why_not_core": "RoboFollow: instruction-following mirage in VLAs and WAMs"
+  },
+  {
+   "arxiv": "2609.16074",
+   "verified_title": "World-Action Models for Robot Learning and Control: A Survey",
+   "s2_paperId": "45567115bc7c494832455358b1ad2735b7fd9446",
+   "why_not_core": "World-Action Models for Robot Learning and Control: A Survey (second WAM survey)"
+  },
+  {
+   "arxiv": "2610.28431",
+   "verified_title": "Plausible Future, Wrong Choice: Steering World-Action Models toward Intended Future",
+   "s2_paperId": "e2be51b05c32e1bb6805963f6de68c1460bc6fe3",
+   "why_not_core": "TaskWAM: stage confusion in world-action models"
+  },
+  {
+   "arxiv": "2504.02792",
+   "verified_title": "Unified World Models: Coupling Video and Action Diffusion for Pretraining on Large Robotic Datasets",
+   "s2_paperId": "514b9977bdb57f6e9586461f36fcf6467a775b3c",
+   "why_not_core": "Unified World Models (video + action diffusion)"
+  },
+  {
+   "arxiv": "2503.00200",
+   "verified_title": "Unified Video Action Model",
+   "s2_paperId": "8b0ca97a94de3b2f411e0a7ad014ef6d59e1a4a0",
+   "why_not_core": "Unified Video Action Model"
+  },
+  {
+   "arxiv": "2302.00111",
+   "verified_title": "Learning Universal Policies via Text-Guided Video Generation",
+   "s2_paperId": "da2fe6cd385194b0274d04d04ee72e8caf3854d4",
+   "why_not_core": "UniPi: text-guided video generation as policy"
+  },
+  {
+   "arxiv": "2306.03310",
+   "verified_title": "LIBERO: Benchmarking Knowledge Transfer for Lifelong Robot Learning",
+   "s2_paperId": "98cfd7b1b29453c4e82536f5afdc6ddc58bbb1b3",
+   "why_not_core": "LIBERO"
+  },
+  {
+   "arxiv": "2405.12213",
+   "verified_title": "Octo: An Open-Source Generalist Robot Policy",
+   "s2_paperId": "1d2753d74025e7a71594506623be81f18b073adb",
+   "why_not_core": "Octo"
+  },
+  {
+   "arxiv": "2012.14913",
+   "verified_title": "Transformer Feed-Forward Layers Are Key-Value Memories",
+   "s2_paperId": "4a54d58a4b20e4f3af25cea3c188a12082a95e02",
+   "why_not_core": "FFN layers as key-value memories"
+  },
+  {
+   "arxiv": "2306.09306",
+   "verified_title": "Propagating Knowledge Updates to LMs Through Distillation",
+   "s2_paperId": "a5d3a865b71f3f424ba31e037848028f60161478",
+   "why_not_core": "Propagating knowledge updates through distillation"
+  },
+  {
+   "arxiv": "2310.15213",
+   "verified_title": "Function Vectors in Large Language Models",
+   "s2_paperId": "b13947c7598aa91992cf04048afa19c7cfe69795",
+   "why_not_core": "Function vectors"
+  },
+  {
+   "arxiv": "2301.04195",
+   "verified_title": "Orbit: A Unified Simulation Framework for Interactive Robot Learning Environments",
+   "s2_paperId": "60219c9da45ec42560ade9f4adf792776ecc763a",
+   "why_not_core": "Orbit (Isaac Lab predecessor)"
+  }
+ ]
+}
