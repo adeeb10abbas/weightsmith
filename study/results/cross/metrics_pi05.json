@@ -3365,8 +3365,8 @@
    ]
   },
   "control_k": 2,
-  "teacher_k": 8,
-  "recovery_pct": 114.3,
+  "teacher_k": 16,
+  "recovery_pct": 128.6,
   "transfer": null,
   "retention": null,
   "edit": {
@@ -3732,22 +3732,22 @@
    "wording": "Put the cube in the bowl then put the banana in the bowl",
    "slots": [
     96000,
-    96015
+    96031
    ],
-   "n": 16,
-   "k": 8,
+   "n": 32,
+   "k": 16,
    "vs_edit": {
-    "fixed": 4,
-    "broke": 5,
-    "p": 1.0
+    "fixed": 6,
+    "broke": 10,
+    "p": 0.454498291015625
    },
    "vs_unedited": {
-    "fixed": 7,
+    "fixed": 14,
     "broke": 0,
-    "p": 0.015625
+    "p": 0.0001220703125
    },
-   "unedited_k_same_slots": 1,
-   "edited_k_same_slots": 9,
+   "unedited_k_same_slots": 2,
+   "edited_k_same_slots": 20,
    "per_slot": {
     "96000": 0,
     "96001": 0,
@@ -3764,7 +3764,23 @@
     "96012": 1,
     "96013": 1,
     "96014": 1,
-    "96015": 1
+    "96015": 1,
+    "96016": 0,
+    "96017": 0,
+    "96018": 0,
+    "96019": 1,
+    "96020": 1,
+    "96021": 0,
+    "96022": 1,
+    "96023": 0,
+    "96024": 1,
+    "96025": 0,
+    "96026": 1,
+    "96027": 0,
+    "96028": 1,
+    "96029": 1,
+    "96030": 1,
+    "96031": 0
    }
   },
   "gpus": [
