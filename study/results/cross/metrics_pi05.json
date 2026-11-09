@@ -4617,6 +4617,132 @@
   "envs_per_process": 8,
   "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
   "env_seed": 0,
+  "task": "StackYellowOnRedTask",
+  "code": "T4",
+  "wording_pair": [
+   "Stack the yellow block on the red block"
+  ],
+  "slots": [
+   96000,
+   96015
+  ],
+  "n": 16,
+  "unedited_k": 13,
+  "edited_k": 12,
+  "fixed": 2,
+  "broke": 3,
+  "p": 1.0,
+  "ci": {
+   "unedited_wilson95_pct": [
+    57.0,
+    93.4
+   ],
+   "edited_wilson95_pct": [
+    50.5,
+    89.8
+   ],
+   "paired_diff_bootstrap95_pts": [
+    -31.2,
+    18.8
+   ]
+  },
+  "control_k": null,
+  "teacher_k": null,
+  "recovery_pct": null,
+  "transfer": {
+   "unedited_k": 13,
+   "edited_k": 12,
+   "n": 16
+  },
+  "retention": null,
+  "edit": {
+   "name": "v2mi-f",
+   "fingerprint": "63db0c52a51306c9"
+  },
+  "edit_location": "VLM (PaliGemma) MLPs, layers 0-16: prompt + state + image keys",
+  "values_changed": 450468837,
+  "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the explicit wording 'Put the cube in the bowl then put the banana in the bowl'",
+  "notes": "side effect of the T1 edit v2mi-f on another task, held-out slots, the task's own default instruction; per_slot = [unedited, edited]",
+  "per_slot": {
+   "96000": [
+    1,
+    1
+   ],
+   "96001": [
+    1,
+    1
+   ],
+   "96002": [
+    1,
+    1
+   ],
+   "96003": [
+    1,
+    1
+   ],
+   "96004": [
+    1,
+    1
+   ],
+   "96005": [
+    1,
+    1
+   ],
+   "96006": [
+    1,
+    0
+   ],
+   "96007": [
+    1,
+    1
+   ],
+   "96008": [
+    1,
+    0
+   ],
+   "96009": [
+    0,
+    1
+   ],
+   "96010": [
+    1,
+    1
+   ],
+   "96011": [
+    1,
+    1
+   ],
+   "96012": [
+    0,
+    1
+   ],
+   "96013": [
+    1,
+    0
+   ],
+   "96014": [
+    1,
+    1
+   ],
+   "96015": [
+    0,
+    0
+   ]
+  },
+  "gpus": [
+   0
+  ]
+ },
+ {
+  "experiment": "side_effect",
+  "status": "fresh",
+  "run": "C-prime-default",
+  "model": "pi05_droid_jointpos (OpenPI pi0.5 DROID, joint position; gs://openpi-assets-simeval/pi05_droid_jointpos)",
+  "hardware": "ali-ms RTX 3090 24 GB (GPU index per record in `gpus`; both arms of every pair on one GPU); weightsmith @ ad31044 + OWSP_ENV_OFFSET patch in batched_client.py",
+  "render_preset": "default",
+  "envs_per_process": 8,
+  "process_layout": "8 envs per Isaac process, two fresh processes per 16-slot group (env e of the process with offset o holds slot 16 g + o + e; the OWSP_ENV_OFFSET patch in weightsmith/batched_client.py keeps each slot's noise seeds ((g * 64 + o + e) * 100 + k) identical to a 16-env process), as Track A runs Cosmos3 Edge. 16 envs beside the 9.8 GB policy server ran out of GPU memory under the default preset (20:02 UTC, not counted)",
+  "env_seed": 0,
   "task": "MustardInLeftBinTask",
   "code": "T5",
   "wording_pair": [
