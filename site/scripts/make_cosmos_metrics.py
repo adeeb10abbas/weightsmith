@@ -2064,7 +2064,8 @@ NOTES = {
                    "(the largest run, on its own slots). Its unedited rate on T1 ranged from 8% to 21% across six start "
                    "sets, so compare models on the shared slots.",
     "wording": "Reference-first describes the placement from the reference object's side, target-first from the moved "
-               "object's side. In the Same Goal, Different Words study (8 starts per scene, the same starts for every "
+               "object's side. In the Same Goal, Different Words study ⟦abbas2026samegoal⟧ (8 starts per scene, the "
+               "same starts for every "
                "wording, not this page's slots), reference-first wording lowered stable placement by 8.1 points for "
                "Cosmos3 Edge across 12 goals; "
                "on this goal Edge placed 4 of 8 under target-first and 0 of 8 under reference-first.",
@@ -3394,7 +3395,9 @@ def dg_schematic_html():
             + anim_controls(DG1_STEPS, "The edit in four steps")
             + '<figcaption>The edit copies the clear wording’s effect into the weights of the VLM backbone or text '
               'pathway, where the instruction is grounded. Copied into the action expert or action head instead, it '
-              'lands on states that also depend on where the robot is: a symptom, not the cause.</figcaption></figure>')
+              'lands on states that also depend on where the robot is: a symptom, not the cause. Like activation '
+              'steering ⟦turner2023steering⟧, such an edit then needs an on/off gate or leaks into other moments.'
+              '</figcaption></figure>')
 
 
 def dg_where_html(sites):
@@ -3409,8 +3412,8 @@ def dg_where_html(sites):
            + (f"in {and_list('the ' + x for x in broke)}, every placement broke it." if broke else ""))
     cap = cap[0].upper() + cap[1:] if cap else "Where the edit went."
     cap = cap.rstrip("; ") + ("" if cap.endswith(".") else ".")
-    cap += (" One verdict per component: clearly better or worse than the unedited model from the same starts, or no "
-            "clear change. The scores are in the next figure.")
+    cap += (" One verdict per component: clearly better or worse than the unedited model from the same starts (exact "
+            "McNemar p < 0.05), or no clear change. The scores are in the next figure.")
     steps = where_steps(sites)
     # the variants tried on the action-expert VLA, in words below the figure
     pi = next((m for m in sites if m["id"] == "pi05"), None)
@@ -3683,9 +3686,12 @@ def left_text(tables):
              else and_list(tn(t) for t in tids) + ".")
           + f" {tn(first[0])} drops from {first[1]['a']} to {first[1]['b']} of {first[1]['n']}"
           + (" practice" if first[1].get("prac") else " unseen") + " starts"
-          + ("; on Mustard in left bin the robot carries the mustard to the other bin." if "T5" in tids else "."))
+          + ("; on Mustard in left bin the robot carries the mustard to the other bin." if "T5" in tids else ".")
+          + " In model-editing terms this is a locality failure ⟦wang2024kesurvey⟧.")
     s2 = ("The edit was built from one sentence pair that turns “left of” into “right of”. It seems to have taught the "
-          "text pathway something like “left means right”, well beyond that sentence." if _says_left(tids) else "")
+          "text pathway something like “left means right”, well beyond that sentence: a ripple effect "
+          "⟦cohen2024ripple⟧. Directional words are also where the grounding of π0.5 and GR00T N1.7 is most sensitive "
+          "⟦wulff2026grounding⟧." if _says_left(tids) else "")
     pi = [(t, T["side_effects"][t]["pi05"]) for t in ("T2", "T3", "T4", "T5", "T6", "T7", "R1")
           if _ok(T["side_effects"].get(t, {}).get("pi05"), ("a", "b", "n"))]
     up = [t for t, c in pi if c.get("p") is not None and c["p"] < SIG and c["b"] > c["a"]]
@@ -3837,8 +3843,8 @@ def dg_where_results(sites):
            "clearly worse; grey dot: no clear change. The ring, a random edit of the same size, is a placebo, run "
            "from the same starts.")
     if any(m["id"] == "pi05" for m in sites):
-        cap += (" *Written by an AI editor (Claude) working alone, who never saw our edit; the other π0.5 rows copy the "
-                "clear wording.")
+        cap += (" *Written by an AI editor (Claude) working alone, who never saw our edit, by weight-space programming "
+                "⟦takehi2026sparks⟧; the other π0.5 rows copy the clear wording.")
     return (f'<figure class="dgfig dg2b"><p class="dg-ttl">{esc(F5_TITLE)}</p><ul class="dg-legend dg5-key">{key}</ul>'
             f'{svgs}<figcaption>{esc(cap)}</figcaption></figure>')
 
@@ -3851,7 +3857,9 @@ def where_text(tables):
     if c and c.get("s") == "ok" and c.get("parts"):
         parts = {loc_class(loc): v for loc, v, _ in c["parts"]}
         if "backbone" in parts and "action" in parts:
-            s = (f"<p>Open-loop replays of recorded decisions, our offline check before any robot run, agree. In the "
+            s = (f"<p>Interpretability work points the same way: in π0.5, instruction information reaches the action "
+                 f"expert through a narrow band of layers ⟦swann2026causal⟧. Open-loop replays of recorded decisions, our "
+                 f"offline check before any robot run, agree. In the "
                  f"world-action model, the text-pathway edit reproduces {sgn(parts['backbone'], False, 0)}% of the "
                  f"clearer wording’s effect on the planned actions; the video/action-pathway edit, "
                  f"{sgn(parts['action'], False, 0)}%.</p>")
@@ -3904,11 +3912,12 @@ def legend_html(cross, tables=None):
              '</span></th><th scope="col"><span class="mn">RoboLab class</span></th><th scope="col"><span class="mn">'
              f'Default instruction</span></th></tr></thead><tbody>{body}</tbody></table>')
     terms = [
-        ("Slots", "the numbers of the starting scenes: practice starts 30000–30031, unseen starts 96000–96063, the "
-                  "same for every model. " + (paper_line(tables) if tables else "")),
+        ("Slots", "the seed indices of the starting scenes: practice starts 30000–30031, unseen (held-out) starts "
+                  "96000–96063, the same for every model. " + (paper_line(tables) if tables else "")),
         ("13 / 0, fixed / broke", "starts where only the edited robot succeeded / starts where only the unedited robot "
-                                  "did."),
-        ("p", "exact McNemar test on those starts: the chance of a split at least this lopsided if the edit did nothing."),
+                                  "did: the discordant pairs."),
+        ("p", "exact McNemar test on those starts ⟦mcnemar1947⟧: the chance of a split at least this lopsided if the "
+              "edit did nothing."),
         ("+87.5 points [78.1, 95.3]", "change in success, in percentage points, with its paired bootstrap 95% "
                                       "interval."),
         ("Teacher, clear wording", "the unedited model given the clearer wording. Recovery: (edited − unedited) / "
@@ -3917,13 +3926,18 @@ def legend_html(cross, tables=None):
         ("Offline, gap closed", "in replays of recorded moments, the share of the clear wording’s change to the planned "
                                 "actions that an edit reproduces. Deviation: how far an edit moves the planned hand "
                                 "position from the unedited robot’s."),
-        ("Distilled edit", "an edit that copies the clear wording, this page’s method. Blind editor: an AI editor "
-                           "(Claude or GPT) that worked alone on one task and never saw our edits; its accepted π0.5 "
+        ("Distilled edit", "an edit that copies the clear wording, this page’s method, a closed-form form of context "
+                           "distillation ⟦askell2021context,snell2022distilling⟧. Blind editor: an AI editor "
+                           "(Claude or GPT) that worked alone on one task and never saw our edits, a weight-space "
+                           "programming agent ⟦takehi2026sparks⟧; its accepted π0.5 "
                            "edit is gated (it has an on/off switch). Least norm: the smallest change that does the job, "
                            "always on."),
-        ("Model components", "π0.5: VLM backbone (PaliGemma), action expert (flow matching) and action output "
-                             "projection (its last linear layer). GR00T N1.7: VLM backbone (Cosmos-Reason2) and action "
-                             "head (a flow-matching DiT). Cosmos3 Edge: text pathway (the instruction tokens) and "
+        ("Model components", "π0.5 ⟦pi2025pi05⟧: VLM backbone (PaliGemma), action expert (flow matching "
+                             "⟦lipman2023flowmatching⟧) and action output "
+                             "projection (its last linear layer). GR00T N1.7 ⟦nvidia2025gr00tn1⟧: VLM backbone "
+                             "(Cosmos-Reason2) and action head (a flow-matching DiT ⟦peebles2023dit⟧). Cosmos3 Edge, a "
+                             "world-action model ⟦shen2026wamsurvey,nvidia2026cosmos3⟧: text pathway (the instruction "
+                             "tokens) and "
                              "video/action or generation pathway (video and action tokens, which read the text tokens’ "
                              "keys and values in every layer)."),
         ("Edit names", "t8und: the edit for Mustard right of raisin box, “the mustard edit”; t3und: the edit for Cube "
@@ -4330,7 +4344,7 @@ def when_html(tables, cross, prevent, second, P=None):
                      "No more than a random edit, in replays"))
     WHEN_LAST["rule"] = bool(fails)
     ps = [("The edit copies the clearer wording’s effect onto the matching tokens of the original, position by "
-           "position. On the mustard task the two wordings have the same length and swap words in place, so every token "
+           "position: each token’s input is a key, as in model editing ⟦meng2023memit⟧. On the mustard task the two wordings have the same length and swap words in place, so every token "
            "has a match, and the edit works.")]
     if fails:
         ps.append("When the clearer wording adds words, the new tokens have nothing to land on. That is why the edit "
@@ -4338,7 +4352,8 @@ def when_html(tables, cross, prevent, second, P=None):
                                                      if us else ""))
     ps.append("The action-expert VLA is the exception, for a reason: π0.5’s VLM backbone attends over the image tokens "
               "and the whole instruction together, so a clearer wording’s effect also reaches the image tokens, which "
-              "both wordings share, and the edit can copy it from there.")
+              "both wordings share, and the edit can copy it from there. π0.5 is known to hold spatial information at "
+              "its image-token positions ⟦swann2026causal⟧.")
     pred = prospect_main(P)
     if pred:
         ps.append(pred[0])
@@ -4524,13 +4539,14 @@ def prevent_main(P):
     ps = []
     if ran:
         ps.append(f"We rebuilt it {'twice' if len(ran) == 2 else f'{len(ran)} times'}, telling it to leave other "
-                  f"instructions unchanged" + (f": {and_list(keys).replace(' and ', ', then ', 1) if len(keys) == 2 else and_list(keys)}" if keys else "")
+                  f"instructions unchanged (preservation keys: zero-change constraints in the solve ⟦meng2023memit⟧)" + (f": {and_list(keys).replace(' and ', ', then ', 1) if len(keys) == 2 else and_list(keys)}" if keys else "")
                   + ". " + (f"{'Both' if len(ran) == 2 else 'All'} kept the fix" if kept else "The fix did not always hold")
                   + (f", and {'both' if len(ran) == 2 else 'all'} still broke {tn(t5)}." if broke else "."))
     if gated:
         ps.append("A third rebuild copied only the words both wordings share. In replays it barely touched the “left” "
                   "tasks, but it lost the fix too, doing no more than a random edit. The fix and the damage are the same "
-                  "change.")
+                  "change. Methods that enforce preservation exactly, by projecting the update away from the preserved "
+                  "keys ⟦fang2025alphaedit⟧, are a different approach that we did not test.")
     rows = ([base] if base else []) + ran
     cols = [(k, a, b) for k, a, b in PCOLS if k in (P["target"], t5) and all(r["cells"][k]["s"] == "ok" for r in rows)]
     head = "".join(f'<th scope="col"><span class="mn">{esc(a)}</span><span class="mk">{esc(b)}</span></th>'
@@ -4610,10 +4626,13 @@ def problem_html(tables, cross):
              'Model</span></th><th scope="col"><span class="mn">Raisin box first</span><span class="mk">starts '
              'completed</span></th><th scope="col"><span class="mn">Mustard first</span><span class="mk">starts '
              f'completed</span></th></tr></thead><tbody>{body}</tbody></table></div>')
-    p1 = ("<p>Some robot failures come from weak language grounding: the policy has the skill but grounds the "
-          "instruction to the wrong object or relation. Here is one task from RoboLab, a simulated benchmark, as two "
-          "wordings of the same goal:</p>")
-    p2 = ("<p>Same goal, same starting scenes, same weights; only the order of the words changes. "
+    p1 = ("<p>Some robot failures come from weak language grounding ⟦shridhar2021cliport,ahn2022saycan⟧: the policy "
+          "has the skill but grounds the instruction to the wrong object or relation ⟦fang2026counterfactual⟧. Robot "
+          "policies are known to be sensitive to how an instruction is worded "
+          "⟦fei2026liberoplus,kim2026liberopara,abbas2026samegoal⟧. Here is one task from RoboLab, a simulated "
+          "benchmark ⟦yang2026robolab⟧, as two wordings of the same goal:</p>")
+    p2 = ("<p>Same goal, same starting scenes, same weights; only the order of the words changes: the two wordings "
+          "state one spatial relation from either object’s side. "
           + (f"So {and_list('the ' + ARCH[m]['short'] for m in works)} {'have' if len(works) > 1 else 'has'} the "
              f"skill; what fails is how {'they ground' if len(works) > 1 else 'it grounds'} the instruction."
              if works else "")
@@ -4634,8 +4653,9 @@ def pi05_story(P, tables):
     if not _ok(e):
         return ""
     kind = "practice" if e.get("prac") else "unseen"
-    s = (f"We first built this on a VLA with a separate action expert: π0.5, an open robot policy (<a href=\"../\">the "
-         f"weightsmith post</a>). On {esc(tn('T1'))}, where its grounding fails the same way, the edit lifts it from "
+    s = (f"We first built this on a VLA with a separate action expert: π0.5 ⟦pi2025pi05,black2024pi0⟧, an open robot "
+         f"policy (<a href=\"../\">the weightsmith post</a> ⟦abbas2026distilling⟧). On {esc(tn('T1'))}, where its "
+         f"grounding fails the same way, the edit lifts it from "
          f"{e['a']} to {e['b']} of {e['n']} "
          f"{kind} starts: scenes never used to build or choose the edit")
     if r.get("s") == "ok" and r.get("r") is not None and r.get("n") == e["n"]:
@@ -4643,6 +4663,8 @@ def pi05_story(P, tables):
     s += "."
     if _ok(e8) and e8["b"] > e8["a"]:
         s += " Its own edit for the mustard task works too."
+    s += (" In concurrent work, an LLM editor repairs π0.5’s grounding of instruction words by editing token-embedding "
+          "rows, with matched random-direction edits as the control ⟦zhang2026debugrobots⟧.")
     return (f"<p>{s}</p><p>But that is one architecture. Would the same edit work on policies built very "
             "differently?</p>")
 
@@ -4955,6 +4977,87 @@ def _thumb(x, y, w, h, key, ident):
             f'<image href="fig/thumb-{key}.webp" x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" '
             f'preserveAspectRatio="xMidYMid slice" clip-path="url(#{ident})"/>'
             f'<rect x="{x:g}" y="{y:g}" width="{w:g}" height="{h:g}" rx="3" class="dg-frame"/>')
+
+
+def load_refs():
+    """The verified references (site/scripts/cosmos_refs.json, from the research agent's refs.json): core and
+    alternates by key. Only these can be cited; an unknown key stops the build."""
+    d = json.loads(REFS_FILE.read_text())
+    out = {}
+    for e in (d.get("references") or []) + (d.get("alternates") or []):
+        if e.get("verified") is not False and e.get("key"):
+            out[e["key"]] = e
+    return out
+
+
+def _ref_title(e):
+    t = e.get("verified_title") or e.get("title") or ""
+    t = REF_TITLE.get(e["key"], t)
+    return re.sub(r"\$π_\{?([0-9.]+)\}?\$", r"π\1", t)
+
+
+def _ref_html(n, e):
+    """One entry of the reference list: authors, title, venue and year, and a link (arXiv, DOI or the page)."""
+    links = []
+    if e.get("arxiv"):
+        links.append(f'<a href="https://arxiv.org/abs/{esc(e["arxiv"])}">arXiv:{esc(e["arxiv"])}</a>')
+    if e.get("doi"):
+        links.append(f'<a href="https://doi.org/{esc(e["doi"])}">doi:{esc(e["doi"])}</a>')
+    if not links and e.get("url"):
+        links.append(f'<a href="{esc(e["url"])}">{esc(REF_LINK.get(e["key"]) or re.sub(r"^https?://", "", e["url"]).rstrip("/"))}</a>')
+    venue = REF_VENUE.get(e["key"], e.get("venue_year") or "")
+    end = lambda t: t if t[-1:] in "?!." else t + "."
+    return (f'<li id="ref-{n}"><span class="ref-au">{esc(end(e.get("authors", "")))}</span> '
+            f'<span class="ref-t">{esc(end(_ref_title(e)))}</span> {esc(end(venue))} ' + " · ".join(links) + "</li>")
+
+
+def number_citations(page, refs):
+    """Citations are written ⟦key,key⟧ in the generator's text and the page; each becomes a numbered link [n] to the
+    References section, numbered in order of first appearance in the article. Spans from an earlier build are
+    renumbered from their data-ref, so the static text keeps its citations across builds. Returns the page and the
+    reference list (only references cited, from the verified file)."""
+    page = re.sub(r"\s*⟦([a-z0-9_,\s]+)⟧", lambda m: ' <span class="cite" data-ref="' + ",".join(
+        k.strip() for k in m.group(1).split(",")) + '">[]</span>', page)
+    a, b = article(page)
+    order = []
+    for m in re.finditer(r'<span class="cite" data-ref="([^"]+)">', page[a:b]):
+        for k in m.group(1).split(","):
+            if k not in refs:
+                raise SystemExit(f"citation {k!r} is not in {REFS_FILE.name}: only verified references can be cited")
+            if k not in order:
+                order.append(k)
+    num = {k: i + 1 for i, k in enumerate(order)}
+
+    def one(m):
+        ks = m.group(1).split(",")
+        return (f'<span class="cite" data-ref="{m.group(1)}">['
+                + ", ".join(f'<a href="#ref-{num[k]}" title="{esc(_ref_title(refs[k]))}">{num[k]}</a>' for k in ks) + "]</span>")
+    page = page[:a] + re.sub(r'<span class="cite" data-ref="([^"]+)">.*?</span>', one, page[a:b]) + page[b:]
+    lst = ('<ol class="refs">' + "".join(_ref_html(num[k], refs[k]) for k in order) + "</ol>") if order else ""
+    return page, lst
+
+
+def strip_cites(x):
+    """Plain text for metrics.json and the brief: citations dropped."""
+    if isinstance(x, str):
+        return re.sub(r"\s*⟦[^⟧]*⟧", "", x)
+    if isinstance(x, dict):
+        return {k: strip_cites(v) for k, v in x.items()}
+    if isinstance(x, list):
+        return [strip_cites(v) for v in x]
+    return x
+
+
+REFS_FILE = Path(__file__).resolve().parent / "cosmos_refs.json"
+REF_TITLE = {   # the title to cite where it differs from the arXiv one
+    "fei2026liberoplus": "LIBERO-Plus: A Progressive Robustness Benchmark for Visual-Language-Action Models",
+}
+REF_VENUE = {   # where the verified record's venue note is not a venue
+    "abbas2026distilling": "2026, arXiv preprint forthcoming",
+    "kim2026cosmospolicy": "arXiv 2026",
+    "zhang2026debugrobots": "arXiv 2026",
+}
+REF_LINK = {"abbas2026distilling": "project page: ali-adeeb.com/weightsmith"}
 
 VID = OUT / "video"
 # Each clip: stem (video/<stem>.mp4, or "src" for a clip the main page already serves), group (where it goes on the
@@ -5589,6 +5692,8 @@ def read_minutes(page):
     """Words a reader meets in the article (collapsed tables and code excluded), at 230 words a minute."""
     a, b = article(page)
     art = re.sub(r"<!-- (allnums|gallery) -->.*?<!-- /\1 -->", " ", page[a:b], flags=re.S)
+    art = re.sub(r"<!-- gen:references -->.*?<!-- /gen:references -->", " ", art, flags=re.S)
+    art = re.sub(r'<span class="cite".*?</span>', " ", art, flags=re.S)
     art = re.sub(r'<details class="tdetails.*?</details>', " ", art, flags=re.S)
     art = re.sub(r"<svg\b.*?</svg>", " ", art, flags=re.S)
     art = re.sub(r"<(script|style|table|pre)\b.*?</\1>", " ", art, flags=re.S)
@@ -5905,7 +6010,8 @@ def main():
     }
     data["tldr"] = tldr_story(tables, models, prevent, data["diagrams"]["where"])
     PREVENT_LAST.update(p=prevent, sites=data["diagrams"]["where"])
-    data = dename_deep(data)   # task names, not codes, in every display string (cross_rows and sources stay raw)
+    data = strip_cites(dename_deep(data))   # task names, not codes, in every display string (cross_rows and sources
+    # stay raw); citations are the page's, not the data's
 
     def no_commit(x):  # a branch commit that changes no number does not move the "updated" stamp
         if isinstance(x, dict):
@@ -5991,6 +6097,8 @@ def main():
     for group in ("problem", "fix", "gallery"):
         page = replace_region(page, f"clips:{group}", clips_section(group, clips, tables, models))
     page, nfig = number_figures(page)
+    page, reflist = number_citations(page, load_refs())
+    page = replace_region(page, "references", reflist)
     mins, words = read_minutes(page)
     page = replace_region(page, "readtime", f"{mins} min read")
     keep = re.search(r"<!-- legend -->.*?<!-- /legend -->", page, re.S)
@@ -6014,7 +6122,7 @@ def main():
     caps = dict(FIGS)
     for name in BRIEF_FIGS:
         btxt = replace_region(btxt, f"fig:{name}", figure_html(name, alts[name], caps[name], pdf=True))
-    btxt = dename(btxt)
+    btxt = strip_cites(dename(btxt))
     br.write_text(btxt)
     print(f"wrote {rel(br)}")
 
