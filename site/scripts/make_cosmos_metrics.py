@@ -3023,7 +3023,7 @@ def dg_schematic():
                  static=False, cls="pp"))
     W.append(_st(_mark(140, 368, "fixed", 7) + _t(154, 372.5, "the robot succeeds", "dg-s dg-b"),
                  "2=o:1,@2.75,pop 4=o:1,@2.75,pop", cls="pp"))
-    W.append(_st(_t(199, 372.5, "no robot run: computed offline", "dg-s dg-mu", "middle"), "3=o:1,@0.3", static=False))
+    W.append(_st(_t(199, 372.5, "no robot run, computed offline", "dg-s dg-mu", "middle"), "3=o:1,@0.3", static=False))
     # tokens: words into the VLM / text pathway, frames and joint state into the policy, states on, chunks out
     n = len(xo)
     tx = [104 + (294 - 104) * i / (n - 1) for i in range(n)]
@@ -3044,9 +3044,9 @@ def dg_schematic():
     W.append(_tok("delta", [(150, 136), (268, 141)], "3", 0.5, 1.0))
     W.append(_tok("ring", [(0, 0)], "3", 1.2, 1.7, label=(225, 119, 86, 46)))
     title = "The edit in four steps"
-    desc = (" ".join(f"Step {i}: {s}" for i, s in enumerate(DG1_STEPS, 1))
-            + " Camera frames and the joint state enter the policy; the instruction’s words enter its VLM backbone or "
-              "text pathway, whose states the action expert or action head attends to; an action chunk goes to the "
+    desc = (" ".join(f"Step {i}. {s}" for i, s in enumerate(DG1_STEPS, 1))
+            + " Camera frames and the joint state enter the policy. The instruction’s words enter its VLM backbone or "
+              "text pathway, whose states the action expert or action head attends to. An action chunk goes to the "
               "robot.")
     return _svg(340, 384, title, desc, "".join(W), "dg-schem", "dg1")
 
@@ -3266,14 +3266,17 @@ def dg_panel(m, nsteps=3):
             toks.append(_tok("video", [(ox - 38, ye + 38), (ox - 38, ye + 50)], "1 2 3", 1.9 + 0.35 * i, 0.7))
         H = ye + 90
     W += toks
-    parts = "; ".join(f"{a['parts'][b['let']][0]}: {BADGE[b['sites'][0]['oc']]}" for b in blocks)
-    return _svg(280, H, f"{a['type']} ({m['name']}), {m['task']}: where the edit went",
-                f"{m['n']} {'unseen' if m['kind'] == 'unseen' else 'practice'} starts. Inputs: "
-                + ("three camera views and the joint state into the video/action pathway, the instruction into the text "
-                   "pathway, whose keys and values the video/action pathway reads in every layer" if a["layout"] == "side"
-                   else f"{len(cams)} camera views and the instruction into the VLM backbone, the joint state into the "
+    parts = " ".join(f"With the edit in the {a['parts'][b['let']][0]}, it {BADGE[b['sites'][0]['oc']]}."
+                     for b in blocks)
+    return _svg(280, H, f"{a['type']}, {m['name']}, {m['task']}. Where the edit went",
+                f"{m['n']} {'unseen' if m['kind'] == 'unseen' else 'practice'} starts. "
+                + ("Three camera views and the joint state go into the video/action pathway and the instruction into "
+                   "the text pathway, whose keys and values the video/action pathway reads in every layer"
+                   if a["layout"] == "side"
+                   else f"{'Two' if len(cams) == 2 else len(cams)} camera views and the instruction go into the VLM "
+                        "backbone, and the joint state into the "
                         + ("VLM backbone" if a["state_to"] == "A" else a["parts"]["B"][0]))
-                + f"; output: {a['out']}. One verdict per component: {parts}.", "".join(W), "dg-panel", pid)
+                + f". Out comes a {a['out']}. {parts}", "".join(W), "dg-panel", pid)
 
 
 def dg_legend():
@@ -3324,7 +3327,7 @@ def dg_groot(tables, cross):
     W.append(_st("".join(f'<rect x="{LX}" y="{ry(r)}" width="44" height="{CH}" rx="4" class="dg-ghost"/>' for r in gap_rows),
                  "3=o:1,@1.4"))
     my = (ry(i) + ry(len(c) - j - 1) + CH) / 2
-    W.append(_st(_t(140, my - 3, "no counterpart:", "dg-xs dg-mu dg-b", "middle")
+    W.append(_st(_t(140, my - 3, "no counterpart", "dg-xs dg-mu dg-b", "middle")
                  + _t(140, my + 11, "nowhere to land", "dg-xs dg-mu", "middle"), "3=o:1,@1.7"))
     # matched words: connectors, drawn from the left
     matched = list(range(i)) + list(range(len(c) - j, len(c)))
@@ -3357,17 +3360,17 @@ def dg_groot(tables, cross):
             W.append(_st(chip(RX, ry(r), w_), st))
     y = ry(len(c)) + 14
     W.append(f'<line x1="{LX}" y1="{y - 4}" x2="{LX + 22}" y2="{y - 4}" class="dg-acc-ln"/>'
-             + _t(LX + 30, y, "matched: the edit copies the change at these words", "dg-xs dg-mu"))
+             + _t(LX + 30, y, "matched words, where the edit copies the change", "dg-xs dg-mu"))
     W.append(f'<rect x="{LX - 2}" y="{y + 6}" width="26" height="15" rx="4" class="dg-band"/>'
              f'<rect x="{LX + 1}" y="{y + 8}" width="20" height="11" rx="3" class="dg-tok dg-acc-b"/>'
-             + _t(LX + 30, y + 17, "inserted: no counterpart in the original", "dg-xs dg-mu"))
+             + _t(LX + 30, y + 17, "inserted words, with no counterpart in the original", "dg-xs dg-mu"))
     y += 46
     W.append(_t(14, y + 4, "The clear wording", "dg-b dg-acc"))
     W.append(_t(14, y + 23, "The action head attends to the inserted words,", "dg-s"))
     W.append(_t(14, y + 40, "so the robot’s first reach stays as it was.", "dg-s"))
     W.append(_t(14, y + 61, f"{wd['b']} of {wd['n']} practice starts completed", "dg-s dg-b"))
-    W.append(_t(14, y + 78, f"with the original wording: {wd['a']}"
-                + (" (could be chance)" if wd.get("pv") is not None and wd["pv"] >= SIG else ""), "dg-s dg-mu"))
+    W.append(_t(14, y + 78, f"against {wd['a']} with the original wording"
+                + (", maybe chance" if wd.get("pv") is not None and wd["pv"] >= SIG else ""), "dg-s dg-mu"))
     y += 104
     W.append(_t(14, y + 4, "The edit", "dg-b"))
     W.append(_t(14, y + 23, "It can copy only the change at the matched", "dg-s"))
@@ -3376,15 +3379,15 @@ def dg_groot(tables, cross):
     W.append(_t(14, y + 74, "moves the first reach.", "dg-s"))
     W.append(_mark(20, y + 91.5, "broke" if eg["b"] < eg["a"] else "none")
              + _t(34, y + 96, f"{eg['b']} of {eg['n']} practice starts completed", "dg-s dg-b"))
-    W.append(_t(34, y + 113, f"without the edit: {eg['a']}"
-                + (" (clearly worse)" if eg.get("pv") is not None and eg["pv"] < SIG and eg["b"] < eg["a"] else ""),
+    W.append(_t(34, y + 113, f"against {eg['a']} without the edit"
+                + (", clearly worse" if eg.get("pv") is not None and eg["pv"] < SIG and eg["b"] < eg["a"] else ""),
                 "dg-s dg-mu"))
     H = y + 125
     desc = (f"Original wording: “{wp[0]}”. Clear wording: “{wp[1]}”. The words before and after the inserted words are "
-            f"matched one to one; “{seg_c[1]}” has no counterpart in the original. Under the clear wording the action "
-            f"head attends to those inserted words, which keep the first reach unchanged: {wd['a']} → {wd['b']} of "
+            f"matched one to one, and “{seg_c[1]}” has no counterpart in the original. Under the clear wording the action "
+            f"head attends to those inserted words, which keep the first reach unchanged, {wd['a']} → {wd['b']} of "
             f"{wd['n']}. The edit can copy only the change at the matched words, which is the same at the first grasp as "
-            f"at the banana (median similarity {cos:.2f}), so it acts from the first reach: {eg['a']} → {eg['b']}.")
+            f"at the banana, with a median similarity of {cos:.2f}, so it acts from the first reach, {eg['a']} → {eg['b']}.")
     return _svg(340, H, "Why the edit backfires on the reasoning-backbone VLA", desc, "".join(W), "dg-groot", "dg3"), dict(
         original=wp[0], clear=wp[1], clause=seg_c[1], cos=round(cos, 2), teacher=[wd["a"], wd["b"], wd["n"]],
         edit=[eg["a"], eg["b"], eg["n"]])
@@ -3395,7 +3398,7 @@ def dg_schematic_html():
             + anim_controls(DG1_STEPS, "The edit in four steps")
             + '<figcaption>The edit copies the clear wording’s effect into the weights of the VLM backbone or text '
               'pathway, where the instruction is grounded. Copied into the action expert or action head instead, it '
-              'lands on states that also depend on where the robot is: a symptom, not the cause. Like activation '
+              'lands on states that also depend on where the robot is. That copies a symptom, not the cause. Like activation '
               'steering ⟦turner2023steering⟧, such an edit then needs an on/off gate or leaks into other moments.'
               '</figcaption></figure>')
 
@@ -3408,12 +3411,11 @@ def dg_where_html(sites):
     broke = [ARCH[m["id"]]["short"] for m in sites if all(b["sites"][0]["oc"] == "broke" for b in m["blocks"] if b["sites"])
              and any(b["sites"] for b in m["blocks"])]
     first = or_list(sorted({ARCH[m["id"]]["parts"]["A"][0] for m in sites}, key=lambda s: ("VLM" not in s, s)))
-    cap = ((f"In {and_list('the ' + x for x in fixed)}, only the edit in the {first} fixed the task; " if fixed else "")
-           + (f"in {and_list('the ' + x for x in broke)}, every placement broke it." if broke else ""))
-    cap = cap[0].upper() + cap[1:] if cap else "Where the edit went."
-    cap = cap.rstrip("; ") + ("" if cap.endswith(".") else ".")
-    cap += (" One verdict per component: clearly better or worse than the unedited model from the same starts (exact "
-            "McNemar p < 0.05), or no clear change. The scores are in the next figure.")
+    cap = " ".join(x for x in (
+        (f"In {and_list('the ' + x for x in fixed)}, only the edit in the {first} fixed the task." if fixed else ""),
+        (f"In {and_list('the ' + x for x in broke)}, every placement broke it." if broke else "")) if x) or "Where the edit went."
+    cap += (" Each component gets one verdict, clearly better or clearly worse than the unedited model in a paired test "
+            "on the same starts, or no clear change. The scores are in the next figure.")
     steps = where_steps(sites)
     # the variants tried on the action-expert VLA, in words below the figure
     pi = next((m for m in sites if m["id"] == "pi05"), None)
@@ -3424,32 +3426,29 @@ def dg_where_html(sites):
                 var.append(s)
     note = ""
     if var:
-        what = {"VLM, image tokens only (0.16% of parameters)": "the VLM edit restricted to the image tokens (storable in "
-                                                                "0.16% of the parameters)",
-                "VLM + action expert": "the VLM backbone and the action expert edited together",
-                "Action output projection, gated*": "a gated edit of the action output projection written by a "
+        what = {"VLM, image tokens only (0.16% of parameters)": "restricted the VLM edit to the image tokens, storable "
+                                                                "in 0.16% of the parameters",
+                "VLM + action expert": "edited the VLM backbone and the action expert together",
+                "Action output projection, gated*": "was a gated edit of the action output projection, written by a "
                                                     "blind AI editor"}
-        bits = [what.get(s["row"], s["row"][0].lower() + s["row"][1:]) for s in var]
+        bits = [what.get(s["row"], "was placed in the " + s["row"][0].lower() + s["row"][1:]) for s in var]
         ocs = {s["oc"] for s in var}
         n = pi["n"]
-        if len(ocs) == 1:
-            res = (f"Each {BADGE[var[0]['oc']].replace('fixed it', 'fixed the task')} "
-                   f"({and_list(str(s['k']) for s in var)} of {n})")
-        else:
-            res = "; ".join(f"{w[0].upper() + w[1:]}: {BADGE[s['oc']]}, {s['k']} of {n}" for w, s in zip(bits, var))
+        res = (f"Each {BADGE[var[0]['oc']].replace('fixed it', 'fixed the task')}." if len(ocs) == 1 else
+               " ".join(f"The {['first', 'second', 'third', 'fourth'][i]} {BADGE[s['oc']]}." for i, s in enumerate(var)))
         cnt = {1: "one variant", 2: "two variants", 3: "three variants", 4: "four variants"}.get(len(var), f"{len(var)} variants")
-        note = (f'<p class="dg-after">On the {ARCH["pi05"]["short"]} we also tried {cnt} on the same {n} starts: '
-                f'{"; ".join(bits[:-1]) + "; and " + bits[-1] if len(bits) > 2 else and_list(bits)}. {res}; the next '
-                f'figure scores them, and the records have the details.</p>')
+        note = (f'<p class="dg-after">On the {ARCH["pi05"]["short"]} we also tried {cnt} on the same {n} starts. '
+                + " ".join(f"One {b_}." for b_ in bits) + f" {res} The next figure scores them, and the records have "
+                "the details.</p>")
     return (f'<figure class="dgfig dg2 wide anim" data-dur="{" ".join(f"{d:g}" for d in WHERE_DUR[:len(steps)])}">'
             + '<div class="dg2-grid">' + "".join(f'<div class="dg2-p">{dg_panel(m, len(steps))}</div>' for m in sites)
             + "</div>" + anim_controls(steps, "Where the edit went")
             + f'<figcaption>{esc(cap)}</figcaption></figure>' + note)
 
 
-GROOT_STEPS = ["The two wordings, word by word: the clear one inserts a clause.",
+GROOT_STEPS = ["The two wordings, word by word. The clear one inserts a clause.",
                "The words before and after the clause match one to one, so they line up.",
-               "The inserted words have no counterpart in the original: the edit has nowhere to copy their effect."]
+               "The inserted words have no counterpart in the original, so the edit has nowhere to copy their effect."]
 GROOT_DUR = (4.2, 5.0, 5.8)
 
 
@@ -3460,7 +3459,7 @@ def dg_groot_html(tables, cross):
     svg, data = got
     return (f'<figure class="dgfig dg3 anim" data-dur="{" ".join(f"{d:g}" for d in GROOT_DUR)}">{svg}'
             + anim_controls(GROOT_STEPS, "The two wordings, word by word")
-            + '<figcaption>The words of the two wordings line up only where the wordings match; the clear wording’s '
+            + '<figcaption>The words of the two wordings line up only where the wordings match. The clear wording’s '
               'inserted clause has no counterpart in the original, so the edit has nowhere to copy its effect. The '
               'change at the matched words already acts on the first reach, so the edit breaks the task.'
               '</figcaption></figure>'), data
@@ -3527,14 +3526,14 @@ def tldr_story(tables, models, prevent, sites):
         rec = T["recovery"].get(tid, {}).get("cosmos") or {}
         same = rec.get("s") == "ok" and rec.get("n") == c["n"] and rec.get("t") == c["b"]
         items.append(dict(id="fix", lead="The fix.",
-                          text=f"A closed-form weight edit makes a world-action model (Cosmos3 Edge) succeed from {c['b']} "
-                               f"of {c['n']} new starts" + (", as often as rewording the instruction does." if same else ".")))
+                          text=f"A closed-form weight edit makes a world-action model, Cosmos3 Edge, succeed from {c['b']} "
+                               f"of {c['n']} new starts" + (", as often as rewording does." if same else ".")))
     else:
         items.append(dict(id="fix", lead="The fix.", text=f"The world-action model’s edit on unseen starts: {RUNNING}."))
     pred = WHEN_LAST.get("pred") or []
     held = any(x["equal"] and x["held"] is True for x in pred) and all(x["held"] is not False for x in pred)
     items.append(dict(id="where", lead="When it works.",
-                      text="Only in the VLM or text pathway; except in the action-expert VLA, only when the clear "
+                      text="Only in the VLM or text pathway. Outside the action-expert VLA, only when the clear "
                            "wording swaps words in place" + (", as predicted." if held else ".")))
     drops = left_drops(tables)
     if drops:
@@ -3557,17 +3556,17 @@ def fix_text(tables, cross):
         return f'<p>The world-action model’s edit on unseen starts is <span class="run">running</span>.</p>'
     tid, c, rc0 = fx
     r = rc0.get("r") if _ok(rc0, ("r", "n")) and rc0["n"] == c["n"] else None
-    s1 = (f"On {c['n']} unseen starts, the edited world-action model succeeds {c['b']} times. Unedited it succeeds "
-          + (f"{c['a']} times" if c["a"] else "none of the time")
-          + (", and so does the robot with a random edit of the same size." if r is not None and r == c["a"] else
-             f"; with a random edit of the same size, {r} times." if r is not None else "."))
     rec = T["recovery"].get(tid, {}).get("cosmos") or {}
-    s2 = ""
-    if rec.get("s") == "ok" and rec.get("n") == c["n"] and isinstance(rec.get("t"), int):
-        s2 = (f"Given the clearer wording instead, the unedited robot succeeds {rec['t']} times. "
-              + ("The edit gets all the way there, and the robot still receives the original words."
-                 if rec["t"] == c["b"] else "The edit does at least as well, and the robot still receives the original words."
-                 if c["b"] > rec["t"] else f"The edit gets {rec['v']} of the way there, with the original words."))
+    same = rec.get("s") == "ok" and rec.get("n") == c["n"] and isinstance(rec.get("t"), int)
+    s1 = (f"On unseen starts, the edited world-action model succeeds in {c['b']} of {c['n']}"
+          + (", exactly as often as the unedited robot given the clearer wording." if same and rec["t"] == c["b"] else
+             ", at least as often as the unedited robot given the clearer wording." if same and c["b"] > rec["t"] else
+             f", against {rec['t']} for the unedited robot given the clearer wording." if same else ".")
+          + (" Unedited, and with a random edit of the same size, it never succeeds." if c["a"] == 0 and r == 0 else
+             " Unedited it succeeds far less often, and a random edit of the same size does no better."
+             if r is not None and r <= c["a"] + 2 else " Unedited it succeeds far less often."))
+    s2 = ("The edit gets all the way there, and the robot still receives the original words." if same and c["b"] >= rec["t"]
+          else "The robot still receives the original words.")
     return f"<p>{esc(s1)}</p>" + (f"<p>{esc(s2)}</p>" if s2 else "")
 
 
@@ -3586,31 +3585,30 @@ def dg_fix_chart(tables):
     if rec and rec.get("s") == "ok" and not rec.get("prac") and rec.get("n") == c["n"] and isinstance(rec.get("t"), int):
         bars.append(("without any edit, given the clear wording", rec["t"], "dg-bar-ref"))
     VW, x0, L, W = 350, 150, 110, []
-    ttl = f"{tn(tid)}: starts the robot completed, of {c['n']} unseen starts"
+    ttl = f"Starts the robot completed on {tn(tid)}, of {c['n']} unseen starts"
     y = 6
     top = y - 6
     for lab, k, cls in bars:
         w = L * k / c["n"]
         lab_l = wrap_px(lab, x0 - 14, 12.5)
         h = max(18, 15 * len(lab_l) + 3)
-        val = f"{k} of {c['n']}" + (f" ({100 * k / c['n']:.0f}%)" if k else "")
-        W.append(f'<g><title>Robot {esc(lab)}: {k} of {c["n"]} starts completed ({100 * k / c["n"]:.0f}%)</title>'
+        val = f"{k} of {c['n']}" + (f" · {100 * k / c['n']:.0f}%" if k else "")
+        W.append(f'<g><title>Robot {esc(lab)}, {k} of {c["n"]} starts completed, {100 * k / c["n"]:.0f}%</title>'
                  + "".join(_t(x0 - 10, y + 13 + 15 * q - 7.5 * (len(lab_l) - 1), ln, "dg-s", "end")
                            for q, ln in enumerate(lab_l))
                  + f'<rect x="{x0}" y="{y + h / 2 - 9:g}" width="{w:.1f}" height="18" rx="3" class="{cls}"/>'
                  + _t(x0 + w + 7, y + h / 2 + 4, val, "dg-s dg-b") + "</g>")
         y += h + 12
     W.append(f'<line x1="{x0}" y1="{top}" x2="{x0}" y2="{y - 6}" class="dg-axis"/>')
-    desc = "; ".join(f"robot {lab}: {k} of {c['n']} starts completed" for lab, k, _ in bars)
-    svg = _svg(VW, y, ttl, desc + ".", "".join(W), "dg-fixchart", "dg-fix")
+    desc = " ".join(f"The robot {lab} completed {k} of {c['n']} starts." for lab, k, _ in bars)
+    svg = _svg(VW, y, ttl, desc, "".join(W), "dg-fixchart", "dg-fix")
     who = {"without any edit": "without any edit", "with a random edit of the same size":
            "with a random edit of the same size (a placebo)",
            "without any edit, given the clear wording": "without any edit but given the clear wording"}
-    cap = (f"Each bar counts the starts the robot completed, from the same {c['n']} unseen starts: {c['b']} with the edit, "
-           + and_list(f"{k} {who.get(lab, lab)}" for lab, k, _ in bars if lab != "with the edit") + ". The robot "
-           "always received the original wording, except in the last bar.") if bars[-1][2] == "dg-bar-ref" else (
-           f"Each bar counts the starts the robot completed, from the same {c['n']} unseen starts: {c['b']} with the edit, "
-           + and_list(f"{k} {who.get(lab, lab)}" for lab, k, _ in bars[:-1]) + ".")
+    cap = (f"Each bar counts the starts the robot completed, from the same {c['n']} unseen starts. The robot always "
+           "received the original wording, except in the last bar, which is the unedited robot given the clear "
+           "wording." if bars[-1][2] == "dg-bar-ref" else
+           f"Each bar counts the starts the robot completed, from the same {c['n']} unseen starts.")
     return f'<figure class="dgfig dg-fix"><p class="dg-ttl">{esc(ttl)}</p>{svg}<figcaption>{esc(cap)}</figcaption></figure>'
 
 
@@ -3638,9 +3636,9 @@ def dg_side_chart(tables, mid="cosmos"):
         cls = "dg-bar-acc" if sig and d > 0 else "dg-bar-loss" if sig else "dg-bar-base"
         w = half * abs(d) / 100
         val = f"{c['a']} → {c['b']} of {c['n']}" + (" practice" if c.get("prac") else "")
-        tip = (f"{tn(tid)}: {c['a']} of {c['n']} {'practice ' if c.get('prac') else 'unseen '}starts completed without the "
-               f"edit, {c['b']} with it; change {sgn(d, True, 0)} percentage points"
-               + ("; clearly worse" if sig and d < 0 else "; clearly better" if sig else "; no clear change"))
+        tip = (f"{tn(tid)}. {c['a']} of {c['n']} {'practice ' if c.get('prac') else 'unseen '}starts completed without the "
+               f"edit and {c['b']} with it, a change of {sgn(d, True, 0)} percentage points"
+               + (", clearly worse." if sig and d < 0 else ", clearly better." if sig else ", no clear change."))
         W.append(f'<g><title>{esc(tip)}</title>' + _t(0, y + 4, tn(tid), "dg-s dg-b" if sig else "dg-s")
                  + _t(VW, y + 4, val, "dg-s dg-b" if sig else "dg-s dg-mu", "end")
                  + (f'<rect x="{x0 - w if d < 0 else x0:.1f}" y="{y + 10}" width="{max(w, 0):.1f}" height="12" rx="2" '
@@ -3657,17 +3655,17 @@ def dg_side_chart(tables, mid="cosmos"):
                       11.5, True):
         W.append(_t(VW / 2, y, ln, "dg-xs dg-b", "middle"))
         y += 15
-    desc = "; ".join(f"{tn(tid)}: {c['a']} → {c['b']} of {c['n']} starts completed" + (" (clear)" if c.get("p") is not None
-                                                                                         and c["p"] < SIG else "")
-                     for tid, c in rows)
+    desc = " ".join(f"{tn(tid)}, {c['a']} → {c['b']} of {c['n']} starts completed"
+                    + (", a clear change." if c.get("p") is not None and c["p"] < SIG else ".") for tid, c in rows)
     ttl = (f"The {tn(target)} edit, unchanged, on every other task" if target else
            "The edit, unchanged, on every other task")
-    svg = _svg(VW, y - 6, ttl, desc + ".", "".join(W), "dg-side", "dg-side")
+    svg = _svg(VW, y - 6, ttl, desc, "".join(W), "dg-side", "dg-side")
     drops = [tn(t) for t, c in rows if c.get("p") is not None and c["p"] < SIG and c["delta"] < 0]
     cap = ("Each bar is how much the share of starts the robot completed changed when the edit ran, unchanged, on a task "
-           "it was not built for: with the edit minus without, from the same starts ("
-           + ("practice starts where marked, else unseen" if any(c.get("prac") for _, c in rows) else "unseen starts")
-           + "). Dark bar and bold label: clearly worse; grey: no clear change. "
+           "it was not built for. It is the share with the edit minus the share without, from the same "
+           + ("starts, practice starts where marked and unseen otherwise" if any(c.get("prac") for _, c in rows)
+              else "unseen starts")
+           + ". A dark bar and bold label mean clearly worse, and grey means no clear change. "
            + (f"Only {and_list(drops)} changed." if drops else "No task changed clearly."))
     return (f'<figure class="dgfig dg-sidefig"><p class="dg-ttl">{esc(ttl)}</p>{svg}<figcaption>{esc(cap)}</figcaption>'
             f'</figure>')
@@ -3684,12 +3682,12 @@ def left_text(tables):
     s1 = ("Run unchanged on every other task, the edit breaks "
           + ("the two other tasks whose instructions say “left”." if len(drops) == 2 and _says_left(tids)
              else and_list(tn(t) for t in tids) + ".")
-          + f" {tn(first[0])} drops from {first[1]['a']} to {first[1]['b']} of {first[1]['n']}"
-          + (" practice" if first[1].get("prac") else " unseen") + " starts"
-          + ("; on Mustard in left bin the robot carries the mustard to the other bin." if "T5" in tids else ".")
+          + (" On both, the robot no longer succeeds from any start" if len(drops) == 2 and all(c["b"] == 0 for _, c in drops)
+             else f" {tn(first[0])} drops clearly")
+          + (". On Mustard in left bin the robot carries the mustard to the other bin." if "T5" in tids else ".")
           + " In model-editing terms this is a locality failure ⟦wang2024kesurvey⟧.")
     s2 = ("The edit was built from one sentence pair that turns “left of” into “right of”. It seems to have taught the "
-          "text pathway something like “left means right”, well beyond that sentence: a ripple effect "
+          "text pathway something like “left means right”, well beyond that sentence, a ripple effect "
           "⟦cohen2024ripple⟧. Directional words are also where the grounding of π0.5 and GR00T N1.7 is most sensitive "
           "⟦wulff2026grounding⟧." if _says_left(tids) else "")
     pi = [(t, T["side_effects"][t]["pi05"]) for t in ("T2", "T3", "T4", "T5", "T6", "T7", "R1")
@@ -3716,13 +3714,12 @@ def groot_text(tables):
           f"{len(some)} of the {len(fm)} tasks at all.")
     if _ok(wd):
         clear = wd.get("pv") is not None and wd["pv"] < SIG
-        s1 += (f" A clearer wording helps only on {tn('T1')}, and {'' if clear else 'not clearly: '}"
-               f"{wd['a']} → {wd['b']} of {wd['n']} practice starts.")
+        s1 += (f" A clearer wording helps only on {tn('T1')}" + ("." if clear else ", and not clearly."))
     e = T["edit_gain"].get("T1", {}).get("groot")
     rc0 = T["random_control"].get("T1", {}).get("groot") or {}
     s2 = ""
     if _ok(e) and e["b"] < e["a"]:
-        s2 = (f"Copying that wording into the weights made things worse wherever we put it: {e['a']} → {e['b']} of {e['n']}"
+        s2 = ("Copying that wording into the weights made things worse wherever we put it"
               + (", while a random edit of the same size stayed near where it started." if rc0.get("r") is not None
                  and abs(rc0["r"] - e["a"]) <= max(3, e["n"] // 10) else ".")
               + " The clearer wording adds a clause, so the edit can only land on the matched words, and there it "
@@ -3802,9 +3799,9 @@ def dg_where_results(sites):
     rows = [(m, s) for m in sites for b in m["blocks"] for s in b["sites"]]
     if not rows:
         return ""
-    desc = "; ".join(f"{m['name']}, {m['task']}, {s['row'].lower()}: {s['k']} of {s['n']} starts completed "
-                     f"({100 * s['k'] / s['n']:.0f}%), without any edit {s['a']}"
-                     + (f", with a random edit {s['ctl']}" if s.get("ctl") is not None else "") for m, s in rows) + "."
+    desc = " ".join(f"{m['name']}, {m['task']}, {s['row'].lower()}. With the edit {s['k']} of {s['n']} starts "
+                    f"completed, {100 * s['k'] / s['n']:.0f}%, and without any edit {s['a']}"
+                    + (f", with a random edit {s['ctl']}" if s.get("ctl") is not None else "") + "." for m, s in rows)
     svgs = ""
     for wide in (True, False):
         body, vw, h = _f5_layout(sites, wide)
@@ -3828,25 +3825,28 @@ def dg_where_results(sites):
     if good:
         mo = [(m, b) for m, _, b in good if b]
         take = (" With the edit in the " + or_list(dict.fromkeys(pname(m, "A") for m, _, _ in good)) + ", "
-                + and_list(f"the {tname(m)} went from {pc(a['a'], a['n'])} to {pc(a['k'], a['n'])}" for m, a, _ in good)
-                + (f"; with it in the {or_list(dict.fromkeys(pname(m, 'B') for m, _ in mo))}, "
-                   + (f"they completed {and_list(pc(b['k'], b['n']) for _, b in mo)}" if len(mo) > 1 else
-                      f"the {tname(mo[0][0])} completed {pc(mo[0][1]['k'], mo[0][1]['n'])}") if mo else "") + ".")
+                + and_list(f"the {tname(m)}" for m, _, _ in good) + " completed the task far more often than without it"
+                + (f". In the {or_list(dict.fromkeys(pname(m, 'B') for m, _ in mo))} it helped "
+                   + ("only partly or not at all" if len({b['oc'] for _, b in mo}) > 1 else
+                      {"partial": "only partly", "none": "not at all"}.get(mo[0][1]["oc"], "less")) if mo else "") + ".")
     for m, a, b in bad:
-        take += (f" The {tname(m)} fell from {pc(a['a'], a['n'])} to {pc(a['k'], a['n'])}"
-                 + (" with the edit in either component." if b and b["k"] == a["k"] else
-                    f" with the edit in the {pname(m, 'A')} and to {pc(b['k'], b['n'])} in the {pname(m, 'B')}." if b
-                    else "."))
+        take += f" The {tname(m)} got worse wherever the edit went."
     cap = ("Each dot is the share of starts the robot completed after the edit was placed in that component. The tick is "
-           "the same robot without the edit." + take + " Teal dot: clearly better than without the edit (exact McNemar "
-           "p < 0.05); dot with a cross: "
-           "clearly worse; grey dot: no clear change. The ring, a random edit of the same size, is a placebo, run "
-           "from the same starts.")
+           "the same robot without the edit." + take + " A teal dot is clearly better than without the edit in a paired "
+           "test on the same starts. A dot with a cross is "
+           "clearly worse, and a grey dot shows no clear change. The ring, a random edit of the same size, is a "
+           "placebo run from the same starts.")
     if any(m["id"] == "pi05" for m in sites):
-        cap += (" *Written by an AI editor (Claude) working alone, who never saw our edit, by weight-space programming "
-                "⟦takehi2026sparks⟧; the other π0.5 rows copy the clear wording.")
+        cap += (" *Written by an AI editor, Claude, working alone by weight-space programming ⟦takehi2026sparks⟧ and "
+                "never seeing our edit. The other π0.5 rows copy the clear wording.")
     return (f'<figure class="dgfig dg2b"><p class="dg-ttl">{esc(F5_TITLE)}</p><ul class="dg-legend dg5-key">{key}</ul>'
             f'{svgs}<figcaption>{esc(cap)}</figcaption></figure>')
+
+
+def share_words(pct):
+    """A share of an effect in words: 'almost all', 'about half', 'less than a quarter'."""
+    return ("all" if pct >= 98 else "almost all" if pct >= 85 else "most" if pct >= 60 else "about half" if pct >= 40
+            else "about a third" if pct >= 28 else "less than a quarter" if pct >= 5 else "almost none")
 
 
 def where_text(tables):
@@ -3857,12 +3857,12 @@ def where_text(tables):
     if c and c.get("s") == "ok" and c.get("parts"):
         parts = {loc_class(loc): v for loc, v, _ in c["parts"]}
         if "backbone" in parts and "action" in parts:
-            s = (f"<p>Interpretability work points the same way: in π0.5, instruction information reaches the action "
+            s = (f"<p>Interpretability work points the same way. In π0.5, instruction information reaches the action "
                  f"expert through a narrow band of layers ⟦swann2026causal⟧. Open-loop replays of recorded decisions, our "
                  f"offline check before any robot run, agree. In the "
-                 f"world-action model, the text-pathway edit reproduces {sgn(parts['backbone'], False, 0)}% of the "
-                 f"clearer wording’s effect on the planned actions; the video/action-pathway edit, "
-                 f"{sgn(parts['action'], False, 0)}%.</p>")
+                 f"world-action model, the text-pathway edit reproduces "
+                 f"{share_words(parts['backbone'])} of the clearer wording’s effect on the planned actions, and the "
+                 f"video/action-pathway edit {share_words(parts['action'])}.</p>")
     return s + "<p>Where the edit goes is one condition. The other is the wording itself.</p>"
 
 
@@ -4058,7 +4058,7 @@ def _f5_layout(sites, wide):
         rows = [s for b in m["blocks"] for s in b["sites"]]
         if not rows:
             continue
-        W.append(_t(LX, y, f"{ARCH[m['id']]['type']} ({m['name']})", "dg-s dg-b"))
+        W.append(_t(LX, y, f"{ARCH[m['id']]['type']} · {m['name']}", "dg-s dg-b"))
         sub = wrap_px(f"{m['task']} · {m['n']} {m['kind']} starts, the same in every row", X1 - LX, XS)
         for q, ln in enumerate(sub):
             W.append(_t(LX, y + 16 + 14 * q, ln, "dg-xs dg-mu"))
@@ -4095,16 +4095,16 @@ def _f5_layout(sites, wide):
                        "broke": "clearly worse than without the edit", "none": "no clear change"}[s["oc"]]
             g = [f'<g><title>{esc(s["row"])}</title>' + "".join(_t(LX, yy, ln, "dg-s") for yy, ln in zip(ly, lab)) + "</g>",
                  f'<line x1="{xs(0):g}" y1="{yt}" x2="{xs(100):g}" y2="{yt}" class="dg-track"/>',
-                 f'<g><title>Robot without any edit: {s["a"]} of {n} starts completed ({pa:.0f}%)</title>'
+                 f'<g><title>Robot without any edit, {s["a"]} of {n} starts completed, {pa:.0f}%</title>'
                  f'<line x1="{xs(pa):.1f}" y1="{yt - 8}" x2="{xs(pa):.1f}" y2="{yt + 8}" class="dg-base"/>'
                  f'<rect x="{xs(pa) - 5:.1f}" y="{yt - 9}" width="10" height="18" fill="none" pointer-events="all"/></g>']
             if pr is not None:
-                g.append(f'<g><title>Robot with a random edit of the same size: {s["ctl"]} of {n} starts completed '
-                         f'({pr:.0f}%)</title><circle cx="{xs(pr):.1f}" cy="{yt}" r="5.5" class="dg-o-none"/>'
+                g.append(f'<g><title>Robot with a random edit of the same size, {s["ctl"]} of {n} starts completed, '
+                         f'{pr:.0f}%</title><circle cx="{xs(pr):.1f}" cy="{yt}" r="5.5" class="dg-o-none"/>'
                          f'<circle cx="{xs(pr):.1f}" cy="{yt}" r="9" fill="none" pointer-events="all"/></g>')
             cls = "dg-o-fix" if s["oc"] in ("fixed", "partial") else "dg-o-none2"
             dot = _mark(x, yt, "broke", 6.5) if s["oc"] == "broke" else f'<circle cx="{x:.1f}" cy="{yt}" r="6" class="{cls}"/>'
-            g.append(f'<g><title>Robot with the edit: {s["k"]} of {n} starts completed ({pe:.0f}%), {verdict}</title>'
+            g.append(f'<g><title>Robot with the edit, {s["k"]} of {n} starts completed, {pe:.0f}%, {verdict}</title>'
                      f'{dot}<circle cx="{x:.1f}" cy="{yt}" r="11" fill="none" pointer-events="all"/>'
                      + (_t(vpos[0], yt + 4, val, "dg-xs dg-b", vpos[1]) if vpos else "") + "</g>")
             yy = yt + 22
@@ -4330,27 +4330,25 @@ def when_html(tables, cross, prevent, second, P=None):
     if not (b8 and _ok(c8) and b8["orig"] == b8["good"]):
         return ""
     fails = []
-    rows = [(f"{tn('T8')}, world-action model", "Same length, swapped in place",
-             f"{c8['a']} → {c8['b']} of {c8['n']} unseen starts")]
+    rows = [(f"{tn('T8')}, world-action model", "Same length, swapped in place", "Fixed")]
     if b3 and g3 and not g3["passed"] and b3["orig"] != b3["good"]:
         rows.append((f"{tn('T3')}, world-action model", "Words added", "Failed the offline check"))
         fails.append(f"the world-action model’s {tn('T3')}")
     if gd and _ok(eg) and eg["b"] < eg["a"]:
-        rows.append((f"{tn('T1')}, reasoning-backbone VLA", "Words added",
-                     f"Worse: {eg['a']} → {eg['b']} of {eg['n']}{' practice' if eg.get('prac') else ''} starts"))
+        rows.append((f"{tn('T1')}, reasoning-backbone VLA", "Words added", "Broke the task"))
         fails.append(f"the reasoning-backbone VLA’s {tn('T1')}")
     if us and us["cells"]["gap"].get("x") is not None:
-        rows.append((f"{tn('T8')}, only the shared words copied", "—",
-                     "No more than a random edit, in replays"))
+        rows.append((f"{tn('T8')}, only the shared words copied", "Only the shared words",
+                     "No better than a random edit, in replays"))
     WHEN_LAST["rule"] = bool(fails)
     ps = [("The edit copies the clearer wording’s effect onto the matching tokens of the original, position by "
-           "position: each token’s input is a key, as in model editing ⟦meng2023memit⟧. On the mustard task the two wordings have the same length and swap words in place, so every token "
+           "position. Each token’s input is a key, as in model editing ⟦meng2023memit⟧. On the mustard task the two wordings have the same length and swap words in place, so every token "
            "has a match, and the edit works.")]
     if fails:
         ps.append("When the clearer wording adds words, the new tokens have nothing to land on. That is why the edit "
                   f"failed on {and_list(fails)}." + (" Copying only the words both wordings share does nothing at all."
                                                      if us else ""))
-    ps.append("The action-expert VLA is the exception, for a reason: π0.5’s VLM backbone attends over the image tokens "
+    ps.append("The action-expert VLA is the exception, for a reason. π0.5’s VLM backbone attends over the image tokens "
               "and the whole instruction together, so a clearer wording’s effect also reaches the image tokens, which "
               "both wordings share, and the edit can copy it from there. π0.5 is known to hold spatial information at "
               "its image-token positions ⟦swann2026causal⟧.")
@@ -4538,9 +4536,12 @@ def prevent_main(P):
     keys = [pe(r["name"]).get("keys") for r in ran if pe(r["name"]).get("keys")]
     ps = []
     if ran:
-        ps.append(f"We rebuilt it {'twice' if len(ran) == 2 else f'{len(ran)} times'}, telling it to leave other "
-                  f"instructions unchanged (preservation keys: zero-change constraints in the solve ⟦meng2023memit⟧)" + (f": {and_list(keys).replace(' and ', ', then ', 1) if len(keys) == 2 else and_list(keys)}" if keys else "")
-                  + ". " + (f"{'Both' if len(ran) == 2 else 'All'} kept the fix" if kept else "The fix did not always hold")
+        ps.append(f"We rebuilt it {'twice' if len(ran) == 2 else f'{len(ran)} times'} and told it to leave other "
+                  f"instructions unchanged"
+                  + (f", first {and_list(keys).replace(' and ', ', then ', 1) if len(keys) == 2 else and_list(keys)}" if keys
+                     else "")
+                  + ". These preservation keys are zero-change constraints in the solve ⟦meng2023memit⟧. "
+                  + (f"{'Both' if len(ran) == 2 else 'All'} kept the fix" if kept else "The fix did not always hold")
                   + (f", and {'both' if len(ran) == 2 else 'all'} still broke {tn(t5)}." if broke else "."))
     if gated:
         ps.append("A third rebuild copied only the words both wordings share. In replays it barely touched the “left” "
@@ -4554,8 +4555,7 @@ def prevent_main(P):
     body = "".join(f'<tr><th scope="row">{esc(r["plain"])}</th>'
                    + "".join(td_html({x: v for x, v in r["cells"][k].items() if x != "d"}, f"{a}, {b}")
                              for k, a, b in cols) + "</tr>" for r in rows)
-    table = (f'<div class="tblock wide"><table class="ctable ptable ptable-s"><thead><tr><th scope="col"><span '
-             f'class="vh">Edit</span></th>{head}</tr></thead><tbody>{body}</tbody></table></div>') if len(rows) > 1 else ""
+    table = ""   # the counts are in the records' full table
     return (f"<p>{esc(ps[0])}</p>" if ps else "") + table + "".join(f"<p>{esc(x)}</p>" for x in ps[1:]) \
         + "<p>What about giving the damaged task an edit of its own?</p>"
 
@@ -4566,8 +4566,9 @@ def second_main(S):
     w, t3 = S.get("wording"), tn(SECOND["second"])
     rows = [r for r in S["rows"] if r["name"] != SECOND["edits"][0]["name"]]
     failed = [r for r in rows if r.get("gate_failed")]
-    s = [f"The world-action model’s grounding also fails on {t3}: a more specific wording lifts it "
-         + (f"from {w['a']} to {w['b']} of {w['n']} practice starts." if w else "clearly.")]
+    s = [f"The world-action model’s grounding also fails on {t3}. A more specific wording lifts it "
+         + ("to twice as many successes on the practice starts." if w and w["b"] == 2 * w["a"] else
+            "clearly on the practice starts." if w else "clearly.")]
     if failed and len(failed) == len(rows):
         b = next((r.get("build") for r in failed if r.get("build")), None)
         added = b and b["good"] > b["orig"]
@@ -4626,22 +4627,26 @@ def problem_html(tables, cross):
              'Model</span></th><th scope="col"><span class="mn">Raisin box first</span><span class="mk">starts '
              'completed</span></th><th scope="col"><span class="mn">Mustard first</span><span class="mk">starts '
              f'completed</span></th></tr></thead><tbody>{body}</tbody></table></div>')
-    p1 = ("<p>Some robot failures come from weak language grounding ⟦shridhar2021cliport,ahn2022saycan⟧: the policy "
-          "has the skill but grounds the instruction to the wrong object or relation ⟦fang2026counterfactual⟧. Robot "
+    p1 = ("<p>Some robot failures come from weak language grounding ⟦shridhar2021cliport,ahn2022saycan⟧. The policy "
+          "has the skill, but it grounds the instruction to the wrong object or relation ⟦fang2026counterfactual⟧. Robot "
           "policies are known to be sensitive to how an instruction is worded "
           "⟦fei2026liberoplus,kim2026liberopara,abbas2026samegoal⟧. Here is one task from RoboLab, a simulated "
           "benchmark ⟦yang2026robolab⟧, as two wordings of the same goal:</p>")
-    p2 = ("<p>Same goal, same starting scenes, same weights; only the order of the words changes: the two wordings "
+    head = next(((m, w) for m, w in per if m == "cosmos" and m in works), None)
+    p2 = ("<p>Same goal, same starting scenes, same weights. Only the order of the words changes, so the two wordings "
           "state one spatial relation from either object’s side. "
+          + (f"Given the second wording, the world-action model completes the task from {head[1]['b']} of "
+             f"{head[1]['n']} starts, and given the first, from {'none' if head[1]['a'] == 0 else head[1]['a']}. "
+             if head else "")
           + (f"So {and_list('the ' + ARCH[m]['short'] for m in works)} {'have' if len(works) > 1 else 'has'} the "
-             f"skill; what fails is how {'they ground' if len(works) > 1 else 'it grounds'} the instruction."
+             f"skill, and what fails is how {'they ground' if len(works) > 1 else 'it grounds'} the instruction."
              if works else "")
           + (f" {and_list('the ' + ARCH[m]['short'] for m in neither)[0].upper()}"
              f"{and_list('the ' + ARCH[m]['short'] for m in neither)[1:]} fails both ways, a different problem we come "
              "back to at the end." if neither else "") + "</p>")
     p3 = ("<p>That raises a simple question. If a clearer wording works, could the original wording be made to work "
           "too, without changing a word?</p>")
-    return p1 + block + table + p2 + "<!-- clipslot -->" + p3
+    return p1 + block + p2 + "<!-- clipslot -->" + p3
 
 
 def pi05_story(P, tables):
@@ -4653,13 +4658,13 @@ def pi05_story(P, tables):
     if not _ok(e):
         return ""
     kind = "practice" if e.get("prac") else "unseen"
-    s = (f"We first built this on a VLA with a separate action expert: π0.5 ⟦pi2025pi05,black2024pi0⟧, an open robot "
-         f"policy (<a href=\"../\">the weightsmith post</a> ⟦abbas2026distilling⟧). On {esc(tn('T1'))}, where its "
-         f"grounding fails the same way, the edit lifts it from "
+    s = (f"We first built this on a VLA with a separate action expert, π0.5 ⟦pi2025pi05,black2024pi0⟧, an open robot "
+         f"policy, as described in <a href=\"../\">the weightsmith post</a> ⟦abbas2026distilling⟧. On {esc(tn('T1'))}, "
+         f"where its grounding fails the same way, the edit lifts it from "
          f"{e['a']} to {e['b']} of {e['n']} "
-         f"{kind} starts: scenes never used to build or choose the edit")
-    if r.get("s") == "ok" and r.get("r") is not None and r.get("n") == e["n"]:
-        s += f". A random edit of the same size stays at {r['r']}"
+         f"{kind} starts, scenes never used to build or choose the edit")
+    if r.get("s") == "ok" and r.get("r") is not None and r.get("n") == e["n"] and r["r"] <= e["a"] + 2:
+        s += ". A random edit of the same size does nothing"
     s += "."
     if _ok(e8) and e8["b"] > e8["a"]:
         s += " Its own edit for the mustard task works too."
@@ -4675,8 +4680,8 @@ def type_th(mid):
 
 
 def glance_html(tables, sites):
-    """All three models side by side: the fix on each model's own task (unedited → edited, random edit, clearer
-    wording), where the edit works, and its side effects; the next sections take each row in turn."""
+    """The records' "At a glance, with counts": all three models side by side, the fix on each model's own task
+    (unedited → edited, random edit, clearer wording), where the edit works, and its side effects."""
     T = _cells(tables)
     byid = {m["id"]: m for m in sites}
     own = {"cosmos": ["T8"], "groot": ["T1"], "pi05": ["T1", "T8"]}
@@ -4689,18 +4694,18 @@ def glance_html(tables, sites):
             if not _ok(e):
                 continue
             kind = " practice" if e.get("prac") else ""
-            bits = [f"{tn(tid)}: {e['a']} → {e['b']} of {e['n']}{kind}"]
+            bits = [f"{tn(tid)}, {e['a']} → {e['b']} of {e['n']}{kind}"]
             same = lambda c_: c_.get("n") == e["n"] and bool(c_.get("prov")) == bool(e.get("prov"))
             r = T["random_control"].get(tid, {}).get(mid) or {}
             if r.get("s") == "ok" and r.get("r") is not None and same(r):
-                bits.append(f"random edit {r['r']}")
+                bits.append(f"Random edit {r['r']}")
             rec, w = T["recovery"].get(tid, {}).get(mid) or {}, T["wording"].get(tid, {}).get(mid) or {}
             if rec.get("s") == "ok" and rec.get("t") is not None and same(rec):
-                bits.append(f"clearer wording {rec['t']}")
+                bits.append(f"Clearer wording {rec['t']}")
             elif _ok(w) and same(w) and w["a"] == e["a"]:
-                bits.append(f"clearer wording {w['b']}")
-            out.append("; ".join(bits))
-        return " · ".join(out) or "—"
+                bits.append(f"Clearer wording {w['b']}")
+            out.append(". ".join(bits) + ".")
+        return " ".join(out) or "—"
 
     def where(mid):
         m = byid.get(mid)
@@ -4718,23 +4723,23 @@ def glance_html(tables, sites):
                 bits.append(f"{part} {s['k']} of {s['n']}")
         tail = " practice starts" if m.get("kind") == "practice" else ""
         if all(s["oc"] == "broke" for b in m["blocks"] for s in b["sites"]):
-            return ("Nowhere: every placement made it worse (" + ", ".join([f"{first[0]} {first[1]['k']} of {first[1]['n']}"]
-                                                                           + bits) + tail + ")")
+            return ("Nowhere. Every placement made it worse, " + ", ".join([f"{first[0]} {first[1]['k']} of {first[1]['n']}"]
+                                                                           + bits) + tail + ".")
         part, s = first
         only = all(x["oc"] in ("none", "broke") for b in m["blocks"][1:] for x in b["sites"][:1])
-        return (f"{'Only' if only else 'Best'} in the {part} ({s['k']} of {s['n']}{tail if not bits else ''})"
-                + ("; " + ", ".join(bits) + tail if bits else ""))
+        return (f"{'Only' if only else 'Best'} in the {part}, {s['k']} of {s['n']}{tail if not bits else ''}."
+                + (" " + ", ".join(bits)[0].upper() + ", ".join(bits)[1:] + tail + "." if bits else ""))
 
     def side(mid):
         t = next((t for t in tables if t["id"] == "side_effects"), None)
         if not t or mid not in se_models(t):
-            return "Nothing to map: no edit passed its own task"
+            return "Nothing to map, since no edit passed its own task"
         cells = [(r["key"], r["cells"][mid]) for r in t["rows"] if r["cells"][mid].get("s") == "ok"
                  and "delta" in r["cells"][mid] and not r["cells"][mid].get("target")]
         down = [f"{tn(k)} {c['a']} → {c['b']}" for k, c in cells if sig(c) and c["delta"] < 0]
         up = [f"{tn(k)} {c['a']} → {c['b']}" for k, c in cells if sig(c) and c["delta"] > 0]
-        return ("; ".join(x for x in ((f"breaks {and_list(down)}" if down else ""), (f"lifts {and_list(up)}" if up else ""))
-                          if x) + "; no clear change elsewhere") if (down or up) else "No clear change on other tasks"
+        return (". ".join(x for x in ((f"breaks {and_list(down)}" if down else ""), (f"lifts {and_list(up)}" if up else ""))
+                          if x) + ". No clear change elsewhere.") if (down or up) else "No clear change on other tasks"
     rows = [("The fix", fix), ("Where it works", where), ("Side effects", side)]
     head = "".join(f'<th scope="col"><span class="mn">{esc(ARCH[m]["type"])}</span><span class="mk">{esc(FIGNAME[m])}'
                    f'</span></th>' for m in ORDER)
@@ -4742,9 +4747,87 @@ def glance_html(tables, sites):
                    + "".join(td_html(C(fn(m)[0].upper() + fn(m)[1:]), FIGNAME[m]) for m in ORDER) + "</tr>"
                    for lab, fn in rows)
     return (f'<div class="tblock wide"><table class="ctable gtable"><thead><tr><th scope="col"><span class="vh">Row'
-            f'</span></th>{head}</tr></thead><tbody>{body}</tbody></table></div>'
-            "<p>Two things decide whether the edit works: where in the architecture it goes, and how the two wordings "
-            "line up.</p>")
+            f'</span></th>{head}</tr></thead><tbody>{body}</tbody></table></div>')
+
+
+RECAP_ORDER = ["pi05", "cosmos", "groot"]   # the story's order
+
+
+def recap_html(tables, sites):
+    """"Putting it together", near the end: one row per architecture type, in words only (no counts; they are in the
+    sections and in the records' "At a glance, with counts"). Each cell is read from the same cells as the counts."""
+    T = _cells(tables)
+    byid = {m["id"]: m for m in sites}
+    own = {"cosmos": ["T8"], "groot": ["T1"], "pi05": ["T1", "T8"]}
+    sig = lambda c: c.get("p") is not None and c["p"] < SIG
+
+    def how_well(e, t):
+        """The edit against the clear wording, in words."""
+        if t is None or t <= e["a"]:
+            return ""
+        r = (e["b"] - e["a"]) / (t - e["a"])
+        return ("as well as rewording" if r >= 0.85 else "most of the way to rewording" if r >= 0.65 else
+                "about half as well as rewording" if r >= 0.35 else "a little")
+
+    def fix(mid):
+        m = byid.get(mid)
+        if m and all(s_["oc"] == "broke" for b in m["blocks"] for s_ in b["sites"]) and any(b["sites"] for b in m["blocks"]):
+            return "No, every placement broke the task"
+        bits = []
+        for tid in own[mid]:
+            e = T["edit_gain"].get(tid, {}).get(mid) or {}
+            if not _ok(e):
+                continue
+            if not (e.get("pv") is not None and e["pv"] < SIG and e["b"] > e["a"]):
+                bits.append((tid, "no"))
+                continue
+            rec, w = T["recovery"].get(tid, {}).get(mid) or {}, T["wording"].get(tid, {}).get(mid) or {}
+            same = lambda c_: c_.get("n") == e["n"] and bool(c_.get("prov")) == bool(e.get("prov"))
+            t = rec["t"] if rec.get("s") == "ok" and rec.get("t") is not None and same(rec) else (
+                w["b"] if _ok(w) and same(w) and w["a"] == e["a"] else None)
+            bits.append((tid, how_well(e, t)))
+        if not bits:
+            return "—"
+        if len(bits) == 1:
+            return "Yes" + (f", {bits[0][1]}" if bits[0][1] else "")
+        return "Yes, " + and_list(f"{h or 'yes'} on {tn(tid)}" if i == 0 else f"{(h or 'yes').replace(' as rewording', '')} on {tn(tid)}"
+                                  for i, (tid, h) in enumerate(bits))
+
+    def where(mid):
+        m = byid.get(mid)
+        if not m:
+            return "—"
+        bl = [b for b in m["blocks"] if b["sites"]]
+        if all(b["sites"][0]["oc"] == "broke" for b in bl):
+            return "Nowhere"
+        a = ARCH[mid]["parts"][bl[0]["let"]][0]
+        part = [ARCH[mid]["parts"][b["let"]][0] for b in bl[1:] if b["sites"][0]["oc"] in ("fixed", "partial")]
+        a = a[0].upper() + a[1:]
+        return f"{a} only" if not part else f"{a}, and the {and_list(part)} only partly"
+
+    def side(mid):
+        t = next((t for t in tables if t["id"] == "side_effects"), None)
+        if not t or mid not in se_models(t):
+            return "Nothing to map"
+        cells = [(r["key"], r["cells"][mid]) for r in t["rows"] if r["cells"][mid].get("s") == "ok"
+                 and "delta" in r["cells"][mid] and not r["cells"][mid].get("target")]
+        down = [k for k, c in cells if sig(c) and c["delta"] < 0]
+        up = [k for k, c in cells if sig(c) and c["delta"] > 0]
+        words = {1: "one", 2: "two", 3: "three", 4: "four"}
+        if down:
+            what = (f"the {words.get(len(down), len(down))} other “left” tasks" if _says_left(down)
+                    else f"{words.get(len(down), len(down))} other task{'s' if len(down) > 1 else ''}")
+            return f"Breaks {what}" + (f" and lifts {words.get(len(up), len(up))}" if up else "")
+        return "None" + (f", and it lifts {words.get(len(up), len(up))} other task{'s' if len(up) > 1 else ''}" if up else "")
+
+    cols = [("Fixes the target task?", fix), ("Where the edit works", where), ("Side effects", side)]
+    head = "".join(f'<th scope="col"><span class="mn">{esc(c)}</span></th>' for c, _ in cols)
+    body = "".join(f'<tr><th scope="row">{type_th(mid)}</th>'
+                   + "".join(td_html(C(fn(mid)), c) for c, fn in cols) + "</tr>" for mid in RECAP_ORDER)
+    return ("<p>Each architecture in one line. The numbers are in the sections above and in "
+            "<a href=\"#glance-counts\">All numbers and records</a>.</p>"
+            f'<div class="tblock wide"><table class="ctable gtable rtable"><thead><tr><th scope="col"><span class="vh">'
+            f'Architecture</span></th>{head}</tr></thead><tbody>{body}</tbody></table></div>')
 
 
 def prospect_main(P):
@@ -4770,15 +4853,16 @@ def prospect_main(P):
         elif x["passed"]:
             s.append(f"On a pair of equal length, {x['plain'].replace(', worded', ' worded')}, the edit passed its "
                      "offline check.")
-        rows.append((f"Predicted: {x['plain']}", "Same length, swapped in place",
-                     (f"{cu['a']} → {cu['b']} of {cu['n']} unseen starts" + (f"; random edit {cu['ctl']}"
-                                                                           if cu.get("ctl") is not None else ""))
-                     if cu else ("Passed the offline check" if x["passed"] else "Failed the offline check")))
+        rows.append((f"{x['plain']}, predicted", "Same length, swapped in place",
+                     ("Fixed, as predicted" if p["held"] is True else "Not fixed, against the prediction"
+                      if p["held"] is False else "Passed the offline check") if cu else
+                     ("Passed the offline check" if x["passed"] else "Failed the offline check")))
     if neg:
         x, p = neg
         s.append("On a pair of unequal length, it failed its offline check" + (", as predicted." if p["held"] else "."))
-        rows.append((f"Predicted: {x['plain']}", "Words added",
-                     "Failed the offline check" if x["passed"] is False else "Passed the offline check"))
+        rows.append((f"{x['plain']}, predicted", "Words added",
+                     ("Failed the offline check" + (", as predicted" if p["held"] else "")) if x["passed"] is False
+                     else "Passed the offline check"))
     return " ".join(s), rows
 
 
@@ -4885,11 +4969,12 @@ def _bars(x, y, n, w, gap, h, seed, cls):
     return "".join(out)
 
 
-DG1_STEPS = ["Original wording: the VLM / text pathway grounds it to the wrong relation, and the robot fails.",
-             "Clear wording: the states inside the VLM / text pathway change, and the robot succeeds.",
-             "Offline, the difference between the two sets of states is written into its weights: one least-squares "
-             "solve per layer, no robot run.",
-             "Same words, edited weights: the original wording now produces the clear wording’s states, and the robot "
+DG1_STEPS = ["The original wording goes in. The VLM or text pathway grounds it to the wrong relation, and the robot "
+             "fails.",
+             "The clear wording goes in. The states inside the VLM or text pathway change, and the robot succeeds.",
+             "Offline, the difference between the two sets of states is written into the weights, one least-squares "
+             "solve per layer, with no robot run.",
+             "Same words, edited weights. The original wording now produces the clear wording’s states, and the robot "
              "succeeds."]
 DG1_DUR = (4.0, 4.0, 4.2, 4.6)
 
@@ -4897,11 +4982,11 @@ DG1_DUR = (4.0, 4.0, 4.2, 4.6)
 def anim_controls(steps, label):
     """Play/pause, one button per step and the current step's words (cosmos.js shows them); the steps themselves stay
     in the page as a list, for print, screen readers and readers without the script."""
-    dots = "".join(f'<button type="button" class="anim-dot" data-k="{i}" aria-label="Step {i} of {len(steps)}: '
+    dots = "".join(f'<button type="button" class="anim-dot" data-k="{i}" aria-label="Step {i} of {len(steps)}. '
                    f'{esc(s)}">{i}</button>' for i, s in enumerate(steps, 1))
     icon = ('<svg class="anim-ico" viewBox="0 0 12 12" aria-hidden="true"><path class="i-pause" d="M3 2h2v8H3zM7 2h2v8H7z"/>'
             '<path class="i-play" d="M3.5 2v8l6.5-4z"/></svg>')
-    return (f'<div class="anim-ctl" role="group" aria-label="{esc(label)}: animation controls">'
+    return (f'<div class="anim-ctl" role="group" aria-label="Animation controls, {esc(label)}">'
             f'<button type="button" class="anim-play" aria-pressed="false">{icon}<span>Pause</span></button>'
             f'<span class="anim-dots">{dots}</span><span class="anim-bar" aria-hidden="true"><i></i></span>'
             f'<p class="anim-label">' + "".join(f'<span data-k="{i}">{i}. {esc(x)}</span>' for i, x in enumerate(steps, 1))
@@ -4948,8 +5033,8 @@ def where_steps(sites):
         out.append(f"The edit in the {names('B')}.")
     c = [m for m in sites if any(b["let"] == "C" and b["sites"] for b in m["blocks"])]
     if c:
-        out.append(f"The edit in the {ARCH[c[0]['id']]['parts']['C'][0]} ({and_list(ARCH[m['id']]['short'] for m in c)} "
-                   "only).")
+        out.append(f"The edit in the {ARCH[c[0]['id']]['parts']['C'][0]}, in the "
+                   f"{and_list(ARCH[m['id']]['short'] for m in c)} only.")
     return out
 
 
@@ -5213,6 +5298,8 @@ def fixed_cap(text):
 
 CLIPS = [
     dict(stem="cosmos_t8_wording", group="problem", title="Cosmos3 Edge Policy, T8: the wording gap",
+         short=("The wording gap in Cosmos3 Edge", "The same weights and the same starting scene. On top, with the "
+                "original raisin-box-first wording, the robot {0}. Below, with the clearer mustard-first wording, it {1}."),
          cap=cap_wording(X_COSMOS, "T8", 30000, "T8-base-s30000", "T8-wtf-s30000", "cosmos", "T8",
                          "the original, reference-first wording", "the clearer, target-first wording")),
     dict(stem="groot_t1_wording", group="gallery", title="GR00T N1.7, T1: the wording gap",
@@ -5231,6 +5318,8 @@ CLIPS = [
          cap=cap_pi05("t8_s4r-grp3_vs_control_92001.mp4",
                       "The reference-first wording throughout; the edit distils the target-first wording.")),
     dict(stem="cosmos_before_after", group="fix", title="Cosmos3 Edge Policy, T8",
+         short=("Before and after the edit", "A start never used to build the edit, and the original wording in both "
+                "runs. On top, the unedited robot {0}. Below, the edited robot {1}."),
          cap=cap_edit_heldout(X_COSMOS, 96003, "T8-base-s96000", "T8-Et8und-s96000", "cosmos", "T8")),
     dict(stem="groot_before_after", group="gallery", title="GR00T N1.7", mid="groot",
          cap=fixed_cap("Unedited and edited, on an unseen start where the edit helped.")),
@@ -5304,8 +5393,19 @@ def prepare_clips():
 def clip_html(c, info, tables, compact=False):
     i = info[c["stem"]]
     caption, srcs = c["cap"](tables)
+    if compact and caption and c.get("short"):
+        oc = re.findall(r"(did not succeed|succeeded) in \d+ steps", caption)
+        words = ["fails" if x == "did not succeed" else "succeeds" for x in oc]
+        if len(words) == 2:
+            c = dict(c, title=c["short"][0])
+            caption = c["short"][1].format(*words)
     if compact and caption:
         caption, srcs = caption.split(" Over all")[0], []
+        caption = re.sub(r"^(?:Practice|Unseen) start \d+(, never used to build the edit)?: ",
+                         lambda m: "On a start never used to build the edit: " if m.group(1) else "", caption)
+        caption = re.sub(r"did not succeed in \d+ steps", "fails", caption)
+        caption = re.sub(r"succeeded in \d+ steps", "succeeds", caption)
+        caption = caption[:1].upper() + caption[1:]
     title = c["title"]
     rec = ("" if not srcs else " Records: " + ", ".join(
         f'<a href="{esc(gh(s))}"><code>{esc(s.split("/")[-1])}</code></a>' for s in srcs) + ".")
@@ -5329,7 +5429,7 @@ def clips_section(group, info, tables, models=None):
     if group == "gallery":
         full = "".join(f'<p class="note"><b>{esc(c["title"])}</b> (above): '
                        + re.sub(r"^.*?</b> ", "", clip_html(c, info, tables).split("<figcaption>")[1]).split("</figcaption>")[0]
-                       + "</p>" for c in CLIPS if c["group"] == "fix" and info[c["stem"]]["exists"])
+                       + "</p>" for c in CLIPS if c["group"] in ("problem", "fix") and info[c["stem"]]["exists"])
         return full + "".join(clip_html(c, info, tables) for c in CLIPS if c["group"] == group
                               and not (c.get("mid") and models and models[c["mid"]]["status"] == "final"
                                        and not info[c["stem"]]["exists"]))
@@ -5390,8 +5490,8 @@ def brief_lines(P, rc, models, cross, tables=None):
     e, c, s4ho = P["edit"], P["ctl"], P["s4ho"]
     lines = [
         "<li><b>Method.</b> When a clearer wording of the same goal makes a robot succeed, copy that wording’s internal "
-        "effect into the weights: one least-squares calculation per layer, no training, and the robot still gets the "
-        "original instruction.</li>",
+        "effect into the weights. It takes one least-squares calculation per layer and no training, and the robot still "
+        "gets the original instruction.</li>",
         "",
     ]
     T = _cells(tables) if tables else None
@@ -5399,11 +5499,12 @@ def brief_lines(P, rc, models, cross, tables=None):
     f8 = (T["edit_gain"].get("T8", {}).get("pi05") or {}) if T else {}
     r1 = (T["random_control"].get("T1", {}).get("pi05") or {}) if T else {}
     if _ok(f1) and _ok(f8):   # the numbers the page shows: the shared starts where run, else the paper's
-        lines[1] = (f"<li><b>VLA with an action expert (π0.5).</b> The edit fixed its two grounding failures: {tn('T1')} "
-                    f"{f1['a']} → {f1['b']} of {f1['n']} unseen starts and {tn('T8')} {f8['a']} → {f8['b']} of {f8['n']}"
-                    + (f"; a random edit of the same size did nothing ({r1['r']} vs {r1['u']} of {r1['n']})"
+        lines[1] = (f"<li><b>VLA with an action expert, π0.5.</b> The edit fixed its two grounding failures, {tn('T1')} "
+                    f"from {f1['a']} to {f1['b']} of {f1['n']} unseen starts and {tn('T8')} from {f8['a']} to {f8['b']} of "
+                    f"{f8['n']}."
+                    + (" A random edit of the same size did nothing."
                        if r1.get("s") == "ok" and None not in (r1.get("r"), r1.get("u")) and r1.get("n") == f1["n"]
-                       else "") + ".</li>")
+                       and r1["r"] <= r1["u"] + 2 else "") + "</li>")
     else:
         lines[1] = (f"<li><b>VLA with an action expert (π0.5).</b> The edit fixed its two grounding failures: {tn('T1')} "
                     f"{e['base']} → {e['cand']} of {e['n']} unseen starts and {tn('T8')} {s4ho['base']} → {s4ho['cand']} "
@@ -5412,7 +5513,7 @@ def brief_lines(P, rc, models, cross, tables=None):
         st = tldr_story(tables, models, PREVENT_LAST.get("p") or {"rows": [], "left": [], "target": "T8", "base": ""},
                         PREVENT_LAST.get("sites") or [])
         first = lambda t: re.split(r"(?<=[.;])\s", t, maxsplit=1)[0].rstrip(";") + ("" if t.split(";")[0].endswith(".") else ".")
-        bits = " ".join(f"<b>{esc(it['lead'].rstrip('.:'))}:</b> {esc(first(it['text']) if it['id'] != 'fix' else it['text'])}"
+        bits = " ".join(f"<b>{esc(it['lead'])}</b> {esc(first(it['text']) if it['id'] != 'fix' else it['text'])}"
                         for it in st["items"])
         lines.append(f"<li><b>Across architectures.</b> {bits}</li>")
     return "".join(lines)
@@ -6063,7 +6164,8 @@ def main():
     page = replace_region(page, "when", when)
     page = replace_region(page, "problem", problem_html(tables, cross).replace(
         "<!-- clipslot -->", '<div class="clipgrid one wide"><!-- gen:clips:problem --><!-- /gen:clips:problem --></div>'))
-    page = replace_region(page, "glance", glance_html(tables, data["diagrams"]["where"]))
+    page = replace_region(page, "glance", recap_html(tables, data["diagrams"]["where"]))
+    page = replace_region(page, "glance-full", glance_html(tables, data["diagrams"]["where"]))
     page = replace_region(page, "prospect-full", prospect_html(PROSPECT_LAST.get("p"))[0] if PROSPECT_LAST.get("p") else "")
     page = replace_region(page, "second", second_main(data["second_edit"]))
     page = replace_region(page, "second-full", second_html(data["second_edit"]))

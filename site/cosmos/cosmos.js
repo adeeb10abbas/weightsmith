@@ -582,3 +582,18 @@
     });
   });
 })();
+
+/* A link to a place inside a closed section ("All numbers and records") opens that section first. */
+(function () {
+  function reveal(id) {
+    var el = id && document.getElementById(id);
+    var d = el && el.closest ? el.closest('details') : null;
+    while (d) { d.open = true; d = d.parentElement ? d.parentElement.closest('details') : null; }
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (a) reveal(decodeURIComponent(a.getAttribute('href').slice(1)));
+  });
+  window.addEventListener('hashchange', function () { reveal(decodeURIComponent(location.hash.slice(1))); });
+  if (location.hash) reveal(decodeURIComponent(location.hash.slice(1)));
+})();
