@@ -255,6 +255,32 @@ def queue_lanes():
     return g0, g1
 
 
+def queue_lanes_t8():
+    """2026-11-09 00:25 UTC (coordinator): pi0.5's own T8 edit s4r-grp3 first, on held-out starts, against the unedited
+    policy under the reference-first wording, its random-direction control ctl-rand3 and the target-first wording
+    (teacher). All four arms of one 16-slot group run on one GPU: GPU0 takes 96000 then 96032, GPU1 96016 then 96048.
+    Then GPU0: the v2mi-f arm of T6 on 96000 (pairs the T6 unedited group already run there), v2mi-f on T8 96000, the
+    T1 teacher; GPU1: the T2 pair it is finishing, the T4 and T7 pairs, v2mi-f on T8 96016. The unedited T6 group on
+    96016 is dropped."""
+    def fj(code, arm, s, prompt=None):
+        j = job(code, arm, s, prompt)
+        if arm in CANDS and code != "T8" or arm == "v2mi-f":
+            j["workspace"] = str(project("T1") / "cands" / arm)
+        return j
+    H = groups(HELDOUT)
+
+    def t8(s):
+        return [fj("T8", "base", s), fj("T8", "s4r-grp3", s), fj("T8", "ctl-rand3", s),
+                fj("T8", "teacher", s, TEACHERS["T8"])]
+    g0 = t8(H[0]) + t8(H[2]) + [fj("T6", "v2mi-f", H[0]), fj("T8", "v2mi-f", H[0])]
+    g0 += [fj("T1", "teacher", s, TEACHERS["T1"]) for s in H]
+    g1 = [fj("T2", "v2mi-f", s) for s in H[:2]] + t8(H[1]) + t8(H[3])
+    for c in ("T4", "T7"):
+        g1 += [fj(c, arm, s) for arm in ("base", "v2mi-f") for s in H[:2]]
+    g1.append(fj("T8", "v2mi-f", H[1]))
+    return g0, g1
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "setup":
         setup(tuple(sys.argv[2:]) or ("v2mi-f",))
@@ -264,8 +290,8 @@ if __name__ == "__main__":
         q = queue_fresh(*sys.argv[3:4])
         Path(sys.argv[2]).write_text(json.dumps(q, indent=1) + "\n")
         print(len(q), "jobs")
-    elif sys.argv[1] == "queue-lanes":
-        for f, q in zip(sys.argv[2:4], queue_lanes()):
+    elif sys.argv[1] in ("queue-lanes", "queue-lanes-t8"):
+        for f, q in zip(sys.argv[2:4], queue_lanes() if sys.argv[1] == "queue-lanes" else queue_lanes_t8()):
             Path(f).write_text(json.dumps(q, indent=1) + "\n")
             print(f, len(q), "jobs")
     elif sys.argv[1] == "queue":

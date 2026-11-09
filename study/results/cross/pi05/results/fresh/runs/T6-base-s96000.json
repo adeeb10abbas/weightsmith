@@ -1,0 +1,518 @@
+{
+ "tag": "T6-base-s96000",
+ "code": "T6",
+ "task": "Stack3RubiksCubeTask",
+ "slot_start": 96000,
+ "n": 16,
+ "arm": "base",
+ "workspace": null,
+ "fp": null,
+ "prompt": null,
+ "rendering_type": null,
+ "video_mode": "sensor",
+ "status": "fresh",
+ "render_preset": "default",
+ "rendering_flag": "none (RoboLab default preset)",
+ "envs_per_process": 8,
+ "processes": [
+  {
+   "group": 6000,
+   "env_offset": 0,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T6-base-s96000-g6000o0a0-1108-190922",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T6-base-s96000-1108-190922/sim-g6000o0a0.log"
+  },
+  {
+   "group": 6000,
+   "env_offset": 8,
+   "attempt": 0,
+   "rc": 0,
+   "rows": 8,
+   "robolab_output": "x05f-T6-base-s96000-g6000o8a0-1108-191535",
+   "sim_log": "/home/ali/cross/pi05/fresh/logs/T6-base-s96000-1108-190922/sim-g6000o8a0.log"
+  }
+ ],
+ "fp_checked": null,
+ "server": {
+  "workspace": null
+ },
+ "server_fingerprint": null,
+ "server_log": "/home/ali/cross/pi05/fresh/logs/server-T8-teacher-s30000-1108-190057.log",
+ "server_started": 1794182457.4557383,
+ "server_ready_s": 22.0,
+ "rows": [
+  {
+   "slot": 96000,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "events": {
+    "GRIPPER_HIT_TABLE": 3,
+    "WRONG_OBJECT_GRABBED": 4,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 10,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube_1",
+     "rubiks_cube",
+     "rubiks_cube"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env0.mp4"
+  },
+  {
+   "slot": 96001,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 5,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env1.mp4"
+  },
+  {
+   "slot": 96002,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "events": {
+    "GRIPPER_HIT_TABLE": 2,
+    "WRONG_OBJECT_GRABBED": 6,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 6,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube_1",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env2.mp4"
+  },
+  {
+   "slot": 96003,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 5,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 1,
+    "GRIPPER_FULLY_CLOSED": 8,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env3.mp4"
+  },
+  {
+   "slot": 96004,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "WRONG_OBJECT_GRABBED": 5,
+    "GRIPPER_HIT_OBJECT": 2,
+    "GRIPPER_FULLY_CLOSED": 1,
+    "OBJECT_BUMPED": 9,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube_2",
+     "rubiks_cube"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env4.mp4"
+  },
+  {
+   "slot": 96005,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.0,
+   "reason": "No object completed. Best progress: stacked(objects=['rubiks_cube', 'rubiks_cube_1'], order=None) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 4,
+    "GRIPPER_FULLY_CLOSED": 3,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env5.mp4"
+  },
+  {
+   "slot": 96006,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 0,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 3,
+    "GRIPPER_FULLY_CLOSED": 4,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env6.mp4"
+  },
+  {
+   "slot": 96007,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 0,
+   "ok": true,
+   "success": true,
+   "steps": 613,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_all_3_cubes' 2/2",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 2,
+    "GRIPPER_FULLY_CLOSED": 3,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o0a0-1108-190922/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env7.mp4"
+  },
+  {
+   "slot": 96008,
+   "group": 6000,
+   "env": 0,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 302,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_all_3_cubes' 2/2",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env0.mp4"
+  },
+  {
+   "slot": 96009,
+   "group": 6000,
+   "env": 1,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 377,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_all_3_cubes' 2/2",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 4,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 3,
+    "wrong_objects_grabbed": [
+     "rubiks_cube_2",
+     "rubiks_cube_1",
+     "rubiks_cube_1",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env1.mp4"
+  },
+  {
+   "slot": 96010,
+   "group": 6000,
+   "env": 2,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 393,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_all_3_cubes' 2/2",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 3,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 3,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube_1",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env2.mp4"
+  },
+  {
+   "slot": 96011,
+   "group": 6000,
+   "env": 3,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 4,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 4,
+    "GRIPPER_FULLY_CLOSED": 6,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube_1",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env3.mp4"
+  },
+  {
+   "slot": 96012,
+   "group": 6000,
+   "env": 4,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "events": {
+    "WRONG_OBJECT_GRABBED": 6,
+    "GRIPPER_HIT_OBJECT": 3,
+    "OBJECT_BUMPED": 7,
+    "GRIPPER_FULLY_CLOSED": 2,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube_2",
+     "rubiks_cube_1",
+     "rubiks_cube_1",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env4.mp4"
+  },
+  {
+   "slot": 96013,
+   "group": 6000,
+   "env": 5,
+   "env_offset": 8,
+   "ok": true,
+   "success": false,
+   "steps": 900,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 0.5,
+   "reason": "Condition not satisfied: stacked(objects=['rubiks_cube', 'rubiks_cube_1', 'rubiks_cube_2'], order=None) (step 1/1)",
+   "events": {
+    "GRIPPER_FULLY_CLOSED": 5,
+    "WRONG_OBJECT_GRABBED": 7,
+    "GRIPPER_HIT_OBJECT": 1,
+    "OBJECT_BUMPED": 3,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube",
+     "rubiks_cube"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env5.mp4"
+  },
+  {
+   "slot": 96014,
+   "group": 6000,
+   "env": 6,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 872,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_all_3_cubes' 2/2",
+   "events": {
+    "GRIPPER_HIT_TABLE": 4,
+    "GRIPPER_HIT_OBJECT": 2,
+    "GRIPPER_FULLY_CLOSED": 4,
+    "WRONG_OBJECT_GRABBED": 2,
+    "OBJECT_BUMPED": 3,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env6.mp4"
+  },
+  {
+   "slot": 96015,
+   "group": 6000,
+   "env": 7,
+   "env_offset": 8,
+   "ok": true,
+   "success": true,
+   "steps": 309,
+   "instruction": "Stack the rubiks cubes in a tower",
+   "score": 1.0,
+   "reason": "Completed subtask 'stack_all_3_cubes' 2/2",
+   "events": {
+    "GRIPPER_HIT_TABLE": 1,
+    "WRONG_OBJECT_GRABBED": 2,
+    "GRIPPER_HIT_OBJECT": 2,
+    "OBJECT_BUMPED": 2,
+    "wrong_objects_grabbed": [
+     "rubiks_cube",
+     "rubiks_cube_1"
+    ]
+   },
+   "out_dir": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535",
+   "video": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/output/x05f-T6-base-s96000-g6000o8a0-1108-191535/Stack3RubiksCubeTask/Stack_the_rubiks_cubes_in_a_tower_0_env7.mp4"
+  }
+ ],
+ "completed": 16,
+ "success": 6,
+ "started": 1794182962.9619856,
+ "finished": 1794183737.7194393,
+ "job_s": 774.8,
+ "gpu": 0,
+ "port": 8720,
+ "host": "ali-MS-7D25",
+ "gpu_name": "NVIDIA GeForce RTX 3090",
+ "log_root": "/home/ali/cross/pi05/fresh/logs/T6-base-s96000-1108-190922",
+ "videos": {
+  "96000": "/home/ali/cross/pi05/fresh/videos/T6/base/96000.mp4",
+  "96001": "/home/ali/cross/pi05/fresh/videos/T6/base/96001.mp4",
+  "96002": "/home/ali/cross/pi05/fresh/videos/T6/base/96002.mp4",
+  "96003": "/home/ali/cross/pi05/fresh/videos/T6/base/96003.mp4",
+  "96004": "/home/ali/cross/pi05/fresh/videos/T6/base/96004.mp4",
+  "96005": "/home/ali/cross/pi05/fresh/videos/T6/base/96005.mp4",
+  "96006": "/home/ali/cross/pi05/fresh/videos/T6/base/96006.mp4",
+  "96007": "/home/ali/cross/pi05/fresh/videos/T6/base/96007.mp4",
+  "96008": "/home/ali/cross/pi05/fresh/videos/T6/base/96008.mp4",
+  "96009": "/home/ali/cross/pi05/fresh/videos/T6/base/96009.mp4",
+  "96010": "/home/ali/cross/pi05/fresh/videos/T6/base/96010.mp4",
+  "96011": "/home/ali/cross/pi05/fresh/videos/T6/base/96011.mp4",
+  "96012": "/home/ali/cross/pi05/fresh/videos/T6/base/96012.mp4",
+  "96013": "/home/ali/cross/pi05/fresh/videos/T6/base/96013.mp4",
+  "96014": "/home/ali/cross/pi05/fresh/videos/T6/base/96014.mp4",
+  "96015": "/home/ali/cross/pi05/fresh/videos/T6/base/96015.mp4"
+ },
+ "sim_cmd_example": [
+  "/home/ali/vibes/weight-space-policy-lab/robolab_env/.venv/bin/python",
+  "/home/ali/cross/pi05/weightsmith/weightsmith/run_batched.py",
+  "--policy",
+  "pi05",
+  "--task",
+  "Stack3RubiksCubeTask",
+  "--environment-seed",
+  "0",
+  "--sampling-seed-base",
+  "6000",
+  "--remote-port",
+  "8720",
+  "--num-envs",
+  "8",
+  "--num-runs",
+  "1",
+  "--headless",
+  "--video-mode",
+  "sensor",
+  "--output-folder-name",
+  "x05f-T6-base-s96000-g6000o8a0-1108-191535",
+  "--device",
+  "cuda:0",
+  "--/rtx/verifyDriverVersion/enabled=false",
+  "--/renderer/multiGpu/enabled=false",
+  "--/renderer/multiGpu/autoEnable=false",
+  "--/renderer/activeGpu=0"
+ ]
+}

@@ -42,6 +42,14 @@ EDIT_INFO = {
                "values_changed": 450468837,
                "values_changed_note": "13.4% of pi0.5's parameters as dense entries; closed-form distillation of the "
                                       "explicit wording 'Put the cube in the bowl then put the banana in the bowl'"},
+    "s4r-grp3": {"edit_location": "VLM MLP down-projections language.blocks.08-16.mlp.linear (9 tensors), 3 key groups "
+                              "(approach, grasp, transport), rank <= 96 per layer",
+                 "values_changed": None,
+                 "values_changed_note": "T8's own edit from the sgdw study: the target-first wording distilled into the "
+                                        "reference-first one; dense count from the policy server's load report"},
+    "ctl-rand3": {"edit_location": "same tensors as s4r-grp3", "values_changed": None,
+                  "values_changed_note": "random-direction control: s4r-grp3's tensors, ranks and singular values, random "
+                                         "orthonormal directions (default_rng(0))"},
     "ctl-rand": {"edit_location": "same layers as v2mi-f", "values_changed": None,
                  "values_changed_note": "random-direction control: v2mi-f's layers, rank and singular values, random "
                                         "orthonormal directions (seed 0)"},
@@ -231,55 +239,59 @@ def main():
         out.append(r)
         summary["cells"][f"{code}/base/practice"] = f"{k}/{len(sl)}"
 
-    # 2. T1 held-out: v2mi-f vs unedited, the random-direction control, the teacher wording
-    base = block(T.get(("T1", "base"), {}), 96000, 96063)
-    ed = block(T.get(("T1", "v2mi-f"), {}), 96000, 96063)
-    ctl = block(T.get(("T1", "ctl-rand"), {}), 96000, 96063)
-    tch = block(T.get(("T1", "teacher"), {}), 96000, 96063)
-    gs = common_groups(base, ed)
-    if gs:
-        sl = slots_of(gs)
-        pe = pair(base, ed, sl)
-        r = base_record("T1", "edit_target", sl, [TASKS["T1"][1]])
-        ku, ke = sum(base[s] for s in sl), sum(ed[s] for s in sl)
-        r.update(unedited_k=ku, edited_k=ke, fixed=pe["fixed"], broke=pe["broke"], p=pe["p"],
-                 ci={"unedited_wilson95_pct": wil(ku, len(sl)), "edited_wilson95_pct": wil(ke, len(sl)),
-                     "paired_diff_bootstrap95_pts": bs_ci(pe["bootstrap"])},
-                 edit={"name": "v2mi-f", "fingerprint": CANDS["v2mi-f"]}, **EDIT_INFO["v2mi-f"],
-                 per_slot={str(s): [int(base[s]), int(ed[s])] for s in sl},
-                 notes="held-out slots (never used for any choice); instruction unchanged (task default); "
-                       "per_slot = [unedited, edited]")
-        gc = common_groups(base, ed, ctl)
-        if gc:
-            sc = slots_of(gc)
-            kc = sum(ctl[s] for s in sc)
-            pc = pair(base, ctl, sc)
-            pec = pair(ctl, ed, sc)
-            r["control_k"] = kc
-            r["control"] = {"name": "ctl-rand", "fingerprint": CANDS["ctl-rand"], "slots": span(sc), "n": len(sc),
-                            "k": kc, "wilson95_pct": wil(kc, len(sc)),
-                            "unedited_k_same_slots": sum(base[s] for s in sc),
-                            "edited_k_same_slots": sum(ed[s] for s in sc),
-                            "vs_unedited": {k: pc[k] for k in ("fixed", "broke", "p")},
-                            "edit_vs_control": {"edit_only": pec["fixed"], "control_only": pec["broke"],
-                                                "p": pec["p"]},
-                            **EDIT_INFO["ctl-rand"]}
-            for s in sc:
-                r["per_slot"][str(s)].append(int(ctl[s]))
-            r["notes"] = r["notes"].replace("[unedited, edited]", "[unedited, edited, control]")
-            summary["cells"]["T1/ctl-rand/heldout"] = f"{kc}/{len(sc)}"
-        gt = common_groups(base, ed, tch)
-        if gt:
-            st = slots_of(gt)
-            kt, kus, kes = (sum(tch[s] for s in st), sum(base[s] for s in st), sum(ed[s] for s in st))
-            r["teacher_k"] = kt
-            r["teacher"] = {"wording": TEACHERS["T1"], "slots": span(st), "n": len(st), "k": kt,
-                            "vs_edit": {k: pair(ed, tch, st)[k] for k in ("fixed", "broke", "p")}}
-            if kt != kus:
-                r["recovery_pct"] = round(100 * (kes - kus) / (kt - kus), 1)
-        out.append(r)
-        summary["cells"]["T1/base/heldout"] = f"{ku}/{len(sl)}"
-        summary["cells"]["T1/v2mi-f/heldout"] = f"{ke}/{len(sl)}"
+    # 2. held-out edit targets: T1 v2mi-f (control ctl-rand) and T8 s4r-grp3 (control ctl-rand3), with the teacher
+    for code, edn, ctn in (("T1", "v2mi-f", "ctl-rand"), ("T8", "s4r-grp3", "ctl-rand3")):
+        base = block(T.get((code, "base"), {}), 96000, 96063)
+        ed = block(T.get((code, edn), {}), 96000, 96063)
+        ctl = block(T.get((code, ctn), {}), 96000, 96063)
+        tch = block(T.get((code, "teacher"), {}), 96000, 96063)
+        gs = common_groups(base, ed)
+        if gs:
+            sl = slots_of(gs)
+            pe = pair(base, ed, sl)
+            r = base_record(code, "edit_target", sl, [TASKS[code][1]])
+            ku, ke = sum(base[s] for s in sl), sum(ed[s] for s in sl)
+            r.update(unedited_k=ku, edited_k=ke, fixed=pe["fixed"], broke=pe["broke"], p=pe["p"],
+                     ci={"unedited_wilson95_pct": wil(ku, len(sl)), "edited_wilson95_pct": wil(ke, len(sl)),
+                         "paired_diff_bootstrap95_pts": bs_ci(pe["bootstrap"])},
+                     edit={"name": edn, "fingerprint": CANDS[edn]}, **EDIT_INFO[edn],
+                     per_slot={str(s): [int(base[s]), int(ed[s])] for s in sl},
+                     notes="held-out slots (never used for any choice); instruction unchanged (task default); "
+                           "per_slot = [unedited, edited]")
+            gc = common_groups(base, ed, ctl)
+            if gc:
+                sc = slots_of(gc)
+                kc = sum(ctl[s] for s in sc)
+                pc = pair(base, ctl, sc)
+                pec = pair(ctl, ed, sc)
+                r["control_k"] = kc
+                r["control"] = {"name": ctn, "fingerprint": CANDS[ctn], "slots": span(sc), "n": len(sc),
+                                "k": kc, "wilson95_pct": wil(kc, len(sc)),
+                                "unedited_k_same_slots": sum(base[s] for s in sc),
+                                "edited_k_same_slots": sum(ed[s] for s in sc),
+                                "vs_unedited": {k: pc[k] for k in ("fixed", "broke", "p")},
+                                "edit_vs_control": {"edit_only": pec["fixed"], "control_only": pec["broke"],
+                                                    "p": pec["p"]},
+                                **EDIT_INFO[ctn]}
+                for s in sc:
+                    r["per_slot"][str(s)].append(int(ctl[s]))
+                r["notes"] = r["notes"].replace("[unedited, edited]", "[unedited, edited, control]")
+                summary["cells"][f"{code}/{ctn}/heldout"] = f"{kc}/{len(sc)}"
+            gt = common_groups(base, ed, tch)
+            if gt:
+                st = slots_of(gt)
+                kt, kus, kes = (sum(tch[s] for s in st), sum(base[s] for s in st), sum(ed[s] for s in st))
+                r["teacher_k"] = kt
+                r["teacher"] = {"wording": TEACHERS[code], "slots": span(st), "n": len(st), "k": kt,
+                                "vs_edit": {k: pair(ed, tch, st)[k] for k in ("fixed", "broke", "p")},
+                            "vs_unedited": {k: pair(base, tch, st)[k] for k in ("fixed", "broke", "p")},
+                            "unedited_k_same_slots": kus, "edited_k_same_slots": kes,
+                            "per_slot": {str(x): int(tch[x]) for x in st}}
+                if kt != kus:
+                    r["recovery_pct"] = round(100 * (kes - kus) / (kt - kus), 1)
+            out.append(r)
+            summary["cells"][f"{code}/base/heldout"] = f"{ku}/{len(sl)}"
+            summary["cells"][f"{code}/{edn}/heldout"] = f"{ke}/{len(sl)}"
 
     # 3. side effects of v2mi-f, held-out 96000-96031, task's own default wording
     for code in TASKS:
@@ -327,7 +339,9 @@ def main():
         summary["cells"]["T8/teacher(TF)/practice"] = f"{k2}/{len(sl)}"
 
     for r in out:
-        arms = {"failure_map": ["base"], "edit_target": ["base", "v2mi-f", "ctl-rand", "teacher"],
+        arms = {"failure_map": ["base"],
+                "edit_target": ["base", (r.get("edit") or {}).get("name"), (r.get("control") or {}).get("name"),
+                                "teacher"],
                 "side_effect": ["base", "v2mi-f"], "wording": ["base", "teacher"]}[r["experiment"]]
         r["gpus"] = sorted({GPU[(r["code"], a, int(sl))] for a in arms for sl in r["per_slot"]
                             if (r["code"], a, int(sl)) in GPU})

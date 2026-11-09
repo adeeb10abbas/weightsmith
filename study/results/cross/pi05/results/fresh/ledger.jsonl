@@ -9,3 +9,4 @@
 {"batch": ["R1-base-s96000", "R1-base-s96016"], "gpu": 1, "lock_requested": 1794181147.7933042, "lock_acquired": 1794181147.7933493, "released": 1794181785.3791628, "held_s": 637.6}
 {"batch": ["R1-v2mi-f-s96000", "R1-v2mi-f-s96016"], "gpu": 1, "lock_requested": 1794181787.383538, "lock_acquired": 1794181787.3835845, "released": 1794182348.6885223, "held_s": 561.3}
 {"batch": ["T1-ctl-rand-s96032", "T1-ctl-rand-s96048"], "gpu": 0, "lock_requested": 1794180929.886469, "lock_acquired": 1794180929.886527, "released": 1794182455.4511156, "held_s": 1525.6}
+{"batch": ["T2-base-s96000", "T2-base-s96016"], "gpu": 1, "lock_requested": 1794182350.6930468, "lock_acquired": 1794182350.693098, "released": 1794183414.7215557, "held_s": 1064.0}
