@@ -15,7 +15,15 @@ Machine-readable: [`../metrics_pi05.json`](../metrics_pi05.json) (one record per
 job, one row per slot), [`results/summary.json`](results/summary.json), [`results/provisional.json`](results/provisional.json).
 
 <!-- summary:begin -->
-**Status (2026-11-08 22:50 UTC). Fresh π0.5 numbers are being run on ali-ms (Track C', GPU0, and GPU1 from 22:45 UTC), like for like with Tracks A and B: the same tasks, instructions and slots, RoboLab's default render preset, RTX 3090, and Track A's process layout (8 envs per Isaac process, two fresh processes per 16-slot group, seeds kept identical). Every finished number is in [FRESH (Track C')](#fresh-track-c-ali-ms-gpu0-default-render-preset-the-slots-of-tracks-a-and-b) and in `../metrics_pi05.json` (`"status": "fresh"`, `"run": "C-prime-default"`). The rented pod planned for this earlier could not run Isaac Sim (notes below); the provisional column (earlier runs, other slots, `performance` preset) is kept further down for reference.
+**Status (2026-11-09 00:05 UTC). Fresh π0.5 numbers (Track C') on ali-ms, like for like with Tracks A and B:** the same tasks, instructions and slots, RoboLab's default render preset, RTX 3090s, and Track A's process layout (8 envs per Isaac process, two fresh processes per 16-slot group, seeds kept identical). Runs continue to 02:00 UTC; every finished number is in [FRESH (Track C')](#fresh-track-c-ali-ms-gpu0-default-render-preset-the-slots-of-tracks-a-and-b) and in `../metrics_pi05.json` (`"status": "fresh"`, `"run": "C-prime-default"`).
+
+**Headline (fresh, paired on the same starts, exact McNemar):**
+
+1. **Fix.** T1 (cube then banana), held-out 96000–96063, instruction unchanged: unedited **2/64**, the distilled edit `v2mi-f` **40/64** (38 fixed / 0 broke, p = 7.3 × 10⁻¹²), its same-layers random-direction control **2/64** (edit vs control 39 / 1, p = 7.5 × 10⁻¹¹).
+2. **Side effects on the "left" tasks that Cosmos's edit broke** (held-out 96000–96031): T3 cube left of bowl 1/32 → 6/32 (6 / 1, p = 0.125), T5 mustard in left bin 7/32 → 6/32 (6 / 7, p = 1): no detectable damage at n = 32 (Cosmos's `t8und` took them 13/32 → 0/32 and 9/32 → 0/32 on these starts). The earlier `performance`-preset runs found a significant T3 gain (8/64 → 36/64 on 90000–90063); here the gain is smaller and not significant. Retention R1 31/32 → 31/32.
+3. **Failure map** (unedited, practice 30000–30015): T1 3, T2 7, T3 0, T4 9, T5 3, T6 6, T7 0, T8 0, R1 16 (of 16).
+
+The rented pod planned for this earlier could not run Isaac Sim (notes below); the provisional column (earlier runs, other slots, `performance` preset) is kept further down for reference.
 
 **At a glance (PROVISIONAL π0.5 column: earlier runs, own slots, ali-ms RTX 3090, `performance` preset).** Every
 comparison is paired on identical starts; p is the exact two-sided McNemar test.
