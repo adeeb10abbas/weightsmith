@@ -278,6 +278,8 @@ def edit_vs_clear(b, t, n, p_cmp=None):
     known = p_cmp is not None
     clear = known and p_cmp < SIG
     note = "" if not known or clear else "; not a clear difference"
+    if b == t:
+        return f"the edit did as well as the clearer wording ({b} vs {t} of {n})"
     if b >= t:
         return (f"the edit did {'clearly better than' if clear and b > t else 'at least as well as'} the clearer "
                 f"wording ({b} vs {t} of {n}" + ("" if clear and b > t else note) + ")")
@@ -291,6 +293,12 @@ def guard_recovery(cell, wording=None, explicit=None, p_cmp=None):
         return cell
     a, b, t, n = cell["a"], cell["b"], cell["t"], cell["n"]
     pt = teacher_gain_p(a, t, n, explicit, wording)
+    if b >= t and t > a:   # a ratio of 100% or more reads oddly: say it in words
+        words = edit_vs_clear(b, t, n, p_cmp)
+        keep = [x for x in (cell.get("d") or "").split("; ") if x and not x.startswith("as reported")
+                and " / (" not in x and "computed here" not in x]
+        return dict(cell, v=words[0].upper() + words[1:], words=True,
+                    d="; ".join(keep + (["practice starts"] if cell.get("prac") else [])) or None)
     if pt is not None and pt < SIG and t > a:
         return cell
     words = edit_vs_clear(b, t, n, p_cmp)
@@ -3304,7 +3312,8 @@ def fix_text(tables, cross):
     if rec.get("s") == "ok" and rec.get("n") == c["n"] and isinstance(rec.get("t"), int):
         s2 = (f"Given the clearer wording instead, the unedited robot succeeds {rec['t']} times. "
               + ("The edit gets all the way there, and the robot still reads the original words."
-                 if rec["t"] == c["b"] else f"The edit gets {rec['v']} of the way there, with the original words."))
+                 if rec["t"] == c["b"] else "The edit does at least as well, and the robot still reads the original words."
+                 if c["b"] > rec["t"] else f"The edit gets {rec['v']} of the way there, with the original words."))
     return f"<p>{esc(s1)}</p>" + (f"<p>{esc(s2)}</p>" if s2 else "")
 
 
@@ -4391,15 +4400,15 @@ def glance_html(tables, sites):
                 continue
             kind = " practice" if e.get("prac") else ""
             bits = [f"{tn(tid)}: {e['a']} → {e['b']} of {e['n']}{kind}"]
+            same = lambda c_: c_.get("n") == e["n"] and bool(c_.get("prov")) == bool(e.get("prov"))
             r = T["random_control"].get(tid, {}).get(mid) or {}
-            if r.get("s") == "ok" and r.get("r") is not None:
-                bits.append(f"random edit {r['r']}" + ("" if r.get("n") == e["n"] else f" of {r['n']}"))
+            if r.get("s") == "ok" and r.get("r") is not None and same(r):
+                bits.append(f"random edit {r['r']}")
             rec, w = T["recovery"].get(tid, {}).get(mid) or {}, T["wording"].get(tid, {}).get(mid) or {}
-            if rec.get("s") == "ok" and rec.get("n") == e["n"] and rec.get("t") is not None \
-                    and bool(rec.get("prov")) == bool(e.get("prov")):
+            if rec.get("s") == "ok" and rec.get("t") is not None and same(rec):
                 bits.append(f"clearer wording {rec['t']}")
-            elif _ok(w):
-                bits.append(f"clearer wording {w['a']} → {w['b']} of {w['n']}")
+            elif _ok(w) and same(w) and w["a"] == e["a"]:
+                bits.append(f"clearer wording {w['b']}")
             out.append("; ".join(bits))
         return " · ".join(out) or "—"
 
@@ -4816,7 +4825,8 @@ def brief_lines(P, rc, models, cross, tables=None):
         lines[1] = (f"<li><b>π0.5, the control.</b> The edit fixed its two wording failures: {tn('T1')} "
                     f"{f1['a']} → {f1['b']} of {f1['n']} unseen starts and {tn('T8')} {f8['a']} → {f8['b']} of {f8['n']}"
                     + (f"; a random edit of the same size did nothing ({r1['r']} vs {r1['u']} of {r1['n']})"
-                       if r1.get("s") == "ok" and None not in (r1.get("r"), r1.get("u")) else "") + ".</li>")
+                       if r1.get("s") == "ok" and None not in (r1.get("r"), r1.get("u")) and r1.get("n") == f1["n"]
+                       else "") + ".</li>")
     else:
         lines[1] = (f"<li><b>π0.5, the control.</b> The edit fixed its two wording failures: {tn('T1')} "
                     f"{e['base']} → {e['cand']} of {e['n']} unseen starts and {tn('T8')} {s4ho['base']} → {s4ho['cand']} "
