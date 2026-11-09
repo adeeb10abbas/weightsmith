@@ -1541,7 +1541,7 @@ PREVENT = dict(
            dict(name="t8undr", plain="The edit + 24 left/right instructions from other tasks kept unchanged",
                 label="+ preservation keys from 24 left/right instructions of other RoboLab tasks",
                 short="preservation keys from 24 left/right instructions of other tasks",
-                keys="24 left/right instructions from other tasks", always=True, nick="the left/right version",
+                keys="24 instructions from other tasks that use the same spatial relations", always=True, nick="the left/right version",
                 intro="For `t8undr` a rule fixed before the build leaves out every T3, T5 and T8 instruction and object "
                       "pair, so T3 and T5 stay unseen tests; it has its own random control."),
            dict(name="t8unds", plain="Copying only the words both wordings share (+ the 65 unrelated instructions)",
@@ -3537,12 +3537,12 @@ def tldr_story(tables, models, prevent, sites):
                            "wording swaps words in place" + (", as predicted." if held else ".")))
     drops = left_drops(tables)
     if drops:
-        what = ("the two other tasks that say “left”" if len(drops) == 2 and _says_left([t for t, _ in drops])
-                else "other tasks")
         tried = [r for r in prevent["rows"] if r["name"] != prevent["base"]
                  and any(r["cells"][t]["s"] == "ok" for t in prevent["left"])]
-        items.append(dict(id="cost", lead="The cost.", text=f"It breaks {what}"
-                          + (", and rebuilding it to protect them didn’t help." if tried else ".")))
+        items.append(dict(id="cost", lead="The cost.", text=(
+            "The edit overgeneralises the spatial relation it fixes. Other instructions using that relation break"
+            if _says_left([t for t, _ in drops]) else "The edit overgeneralises, and other tasks break")
+            + (", and preservation constraints did not prevent it." if tried else ".")))
     for it in items:
         it.update(kind=None, tag=None)
     return dict(items=items, note="")
@@ -3666,7 +3666,9 @@ def dg_side_chart(tables, mid="cosmos"):
            + ("starts, practice starts where marked and unseen otherwise" if any(c.get("prac") for _, c in rows)
               else "unseen starts")
            + ". A dark bar and bold label mean clearly worse, and grey means no clear change. "
-           + (f"Only {and_list(drops)} changed." if drops else "No task changed clearly."))
+           + (("Only the two tasks whose instructions share the edited spatial relation changed." if len(drops) == 2
+                and _says_left([t for t, c in rows if c.get("p") is not None and c["p"] < SIG and c["delta"] < 0])
+                else f"Only {and_list(drops)} changed.") if drops else "No task changed clearly."))
     return (f'<figure class="dgfig dg-sidefig"><p class="dg-ttl">{esc(ttl)}</p>{svg}<figcaption>{esc(cap)}</figcaption>'
             f'</figure>')
 
@@ -3679,17 +3681,18 @@ def left_text(tables):
     tids = [t for t, _ in drops]
     T = _cells(tables)
     first = drops[0]
-    s1 = ("Run unchanged on every other task, the edit breaks "
-          + ("the two other tasks whose instructions say “left”." if len(drops) == 2 and _says_left(tids)
-             else and_list(tn(t) for t in tids) + ".")
-          + (" On both, the robot no longer succeeds from any start" if len(drops) == 2 and all(c["b"] == 0 for _, c in drops)
-             else f" {tn(first[0])} drops clearly")
-          + (". On Mustard in left bin the robot carries the mustard to the other bin." if "T5" in tids else ".")
-          + " In model-editing terms this is a locality failure ⟦wang2024kesurvey⟧.")
-    s2 = ("The edit was built from one sentence pair that turns “left of” into “right of”. It seems to have taught the "
-          "text pathway something like “left means right”, well beyond that sentence, a ripple effect "
-          "⟦cohen2024ripple⟧. Directional words are also where the grounding of π0.5 and GR00T N1.7 is most sensitive "
-          "⟦wulff2026grounding⟧." if _says_left(tids) else "")
+    rel = _says_left(tids)
+    s1 = ("Run unchanged on every other task, the edit overgeneralises. "
+          + ("It changes how the text pathway grounds the spatial relation it was built for, so other instructions that "
+             "use the same relation break. " if rel else f"It breaks {and_list(tn(t) for t in tids)}. ")
+          + "In model-editing terms this is collateral interference, a loss of specificity or locality "
+            "⟦wang2024kesurvey⟧.")
+    s2 = ("Concretely, the edit was built from one sentence pair that turns “left of” into “right of”, and it breaks "
+          + ("both other tasks whose instructions say “left”, on one of them carrying the mustard to the wrong bin."
+             if len(drops) == 2 and "T5" in tids else "the other tasks whose instructions say “left”.")
+          + " It generalises along the relation, well beyond the sentence it was built from, a ripple effect "
+            "⟦cohen2024ripple⟧. Directional words are also where the grounding of π0.5 and GR00T N1.7 is most "
+            "sensitive ⟦wulff2026grounding⟧." if rel else "")
     pi = [(t, T["side_effects"][t]["pi05"]) for t in ("T2", "T3", "T4", "T5", "T6", "T7", "R1")
           if _ok(T["side_effects"].get(t, {}).get("pi05"), ("a", "b", "n"))]
     up = [t for t, c in pi if c.get("p") is not None and c["p"] < SIG and c["b"] > c["a"]]
@@ -4542,10 +4545,11 @@ def prevent_main(P):
                      else "")
                   + ". These preservation keys are zero-change constraints in the solve ⟦meng2023memit⟧. "
                   + (f"{'Both' if len(ran) == 2 else 'All'} kept the fix" if kept else "The fix did not always hold")
-                  + (f", and {'both' if len(ran) == 2 else 'all'} still broke {tn(t5)}." if broke else "."))
+                  + (f", and {'both' if len(ran) == 2 else 'all'} still broke a task that shares the edited relation."
+                     if broke else "."))
     if gated:
-        ps.append("A third rebuild copied only the words both wordings share. In replays it barely touched the “left” "
-                  "tasks, but it lost the fix too, doing no more than a random edit. The fix and the damage are the same "
+        ps.append("A third rebuild copied only the words both wordings share. In replays it barely touched the tasks "
+                  "that share the relation, but it lost the fix too, doing no more than a random edit. The fix and the damage are the same "
                   "change. Methods that enforce preservation exactly, by projecting the update away from the preserved "
                   "keys ⟦fang2025alphaedit⟧, are a different approach that we did not test.")
     rows = ([base] if base else []) + ran
@@ -4815,7 +4819,7 @@ def recap_html(tables, sites):
         up = [k for k, c in cells if sig(c) and c["delta"] > 0]
         words = {1: "one", 2: "two", 3: "three", 4: "four"}
         if down:
-            what = (f"the {words.get(len(down), len(down))} other “left” tasks" if _says_left(down)
+            what = ("other tasks that use the same spatial relation" if _says_left(down)
                     else f"{words.get(len(down), len(down))} other task{'s' if len(down) > 1 else ''}")
             return f"Breaks {what}" + (f" and lifts {words.get(len(up), len(up))}" if up else "")
         return "None" + (f", and it lifts {words.get(len(up), len(up))} other task{'s' if len(up) > 1 else ''}" if up else "")

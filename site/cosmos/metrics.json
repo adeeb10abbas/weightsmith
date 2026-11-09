@@ -137,7 +137,7 @@
    {
     "id": "cost",
     "lead": "The cost.",
-    "text": "It breaks the two other tasks that say “left”, and rebuilding it to protect them didn’t help.",
+    "text": "The edit overgeneralises the spatial relation it fixes. Other instructions using that relation break, and preservation constraints did not prevent it.",
     "kind": null,
     "tag": null
    }
@@ -175,7 +175,7 @@
     "lead": "Side effects",
     "kind": null,
     "tag": null,
-    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box, Mustard right of raisin box and Cube in bowl, lifted Eyeglasses (12 → 21 of 32), made none detectably worse, and kept the retention task Cube in bowl at 31 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 left/right instructions from other tasks, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
+    "text": "π0.5’s Cube then banana edit, run unchanged on Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box, Mustard right of raisin box and Cube in bowl, lifted Eyeglasses (12 → 21 of 32), made none detectably worse, and kept the retention task Cube in bowl at 31 of 32. Cosmos3 Edge Policy’s Mustard right of raisin box edit, run unchanged on Cube then banana, Eyeglasses, Cube left of bowl, Yellow on red, Mustard in left bin, Three-cube tower, Flat box and Cube in bowl, lifted no task, lowered Cube left of bowl (13 → 0 of 32) and Mustard in left bin (9 → 0 of 32), and moved the retention task Cube in bowl from 24 to 28 of 32. Rebuilt with preservation keys, the edit kept Mustard right of raisin box (0 → 12 and 0 → 13 of 16 practice starts) but did not prevent the break on practice starts: with keys from 65 unrelated instructions, Mustard in left bin fell from 8 to 0 of 16; with keys from 24 instructions from other tasks that use the same spatial relations, Mustard in left bin fell from 8 to 2 of 16 and Cube left of bowl from 4 to 1 of 16 (the original edit: 0). GR00T N1.7: not run, because its Cube then banana edits lowered success on Cube then banana itself."
    }
   ],
   "note": "Lifted and worse mean an exact McNemar p < 0.05 on the same starts, edited against unedited. Some of π0.5’s numbers are from the paper’s evaluation, each on its own slots and number of starts."
@@ -223,7 +223,7 @@
   },
   {
    "id": "side-effects",
-   "title": "The fix has a cost",
+   "title": "The fix has a cost: it overgeneralises the relation",
    "level": 2
   },
   {
@@ -12572,7 +12572,7 @@
   }
  },
  "method": "Exact two-sided McNemar on fixed vs broke pairs; paired bootstrap 95% interval of the difference (20,000 multinomial draws over the four paired outcome types, seed 0); Wilson 95% intervals.",
- "content_hash": "112e6dc7bbbb25f9",
+ "content_hash": "1472ea74ed063878",
  "numbers_hash": "790835e243aec5e9",
  "updated": "2026-11-09T06:06Z",
  "updated_text": "9 Nov 2026, 06:06 UTC",
