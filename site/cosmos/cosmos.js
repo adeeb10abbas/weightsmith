@@ -469,12 +469,15 @@
     var self = this;
     this.k = k;
     this.clear();
+    var stepping = !instant && !this.playing;   // stepping while paused: the step's still frame, without waiting
     this.parts.forEach(function (p) {
       var st = p.spec[k];
-      if (!instant && !self.playing && st.at) {   // stepping while paused: the step's still frame, without waiting
+      if (stepping && st.at) {
         st = { o: st.o, x: st.x, y: st.y, s: st.s, sx: st.sx, at: 0, d: st.d, pop: st.pop, re: st.re };
       }
       self.setState(p, st, instant || reduce);
+      // a part that was paused before it had appeared would stay hidden: take it to the end of its move
+      if (stepping) p.anims.forEach(function (a) { if (a.playState === 'paused') a.finish(); });
     });
     Array.prototype.forEach.call(this.dots, function (d) {
       if (+d.getAttribute('data-k') === k) d.setAttribute('aria-current', 'step'); else d.removeAttribute('aria-current');

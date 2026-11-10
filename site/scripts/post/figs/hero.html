@@ -1,0 +1,20 @@
+<figure class="hero wide">
+    <video id="hero-video" autoplay muted loop playsinline controls preload="auto" poster="assets/video/cube_then_banana.jpg" width="960" height="540" aria-label="Both robots are told: put the cube then the banana in the bowl. Top: the original robot lets go of the cube a moment after picking it up. Bottom: after the weight edit it carries the cube to the bowl, then the banana.">
+      <source src="assets/video/cube_then_banana.mp4" type="video/mp4">
+    </video>
+    <script>
+      (function () { // no autoplay for readers who ask for reduced motion
+        var v = document.getElementById('hero-video');
+        if (v && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          v.removeAttribute('autoplay');
+          v.autoplay = false;
+          v.pause();
+        }
+      })();
+    </script>
+    <div class="scrub" id="scrub" data-src="data/hero_90002.json" role="slider" tabindex="0" hidden aria-label="Episode timeline: scrub the video one control step at a time" aria-valuemin="0" aria-valuemax="287" aria-valuenow="0">
+      <svg id="scrub-svg" aria-hidden="true" focusable="false"></svg>
+    </div>
+    <p class="scrub-readout" id="scrub-readout" hidden aria-hidden="true"><span class="s-step">Step 0</span><span>Unedited: reaching for the cube</span><span>After the edit: reaching for the cube</span></p>
+    <figcaption>Same instruction, same starting position: “Put the cube then the banana in the bowl.” Top: the robot as released lets go of the cube a moment after picking it up. Bottom: after the edit, it carries the cube to the bowl, then the banana. <span class="scrub-hint" hidden>The bars under the video show when each robot’s gripper is closed. Click or drag them to step through the episode. <button class="textbtn" id="scrub-slow" type="button" aria-pressed="false">Replay the drop in slow motion</button></span></figcaption>
+  </figure>

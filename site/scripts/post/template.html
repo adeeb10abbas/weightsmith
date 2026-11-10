@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>weightsmith: fixing weak language grounding in a robot policy’s weights</title>
+<meta name="description" content="A robot policy can fail a task under one wording of the instruction and complete it under another. We edit the weights so that the failing wording works, and we test the edit on three policy architectures.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://ali-adeeb.com/weightsmith/">
+<meta name="citation_title" content="Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy's Misreading">
+<meta name="citation_author" content="Abbas, Ali-Adeeb">
+<meta name="citation_author" content="Seraj, Esmaeil">
+<meta name="citation_publication_date" content="2026/11/06">
+<meta name="citation_pdf_url" content="https://ali-adeeb.com/weightsmith/paper.pdf">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="weightsmith">
+<meta property="og:title" content="Fixing weak language grounding in a robot policy’s weights">
+<meta property="og:description" content="A robot policy fails a task under one wording and completes it under another. A closed-form weight edit makes the failing wording work. We test it on three policy architectures.">
+<meta property="og:url" content="https://ali-adeeb.com/weightsmith/">
+<meta property="og:image" content="https://ali-adeeb.com/weightsmith/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The headline beside two wrist-camera views of the same moment. The unedited policy has let go of the cube, and the edited policy still holds it.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fixing weak language grounding in a robot policy’s weights">
+<meta name="twitter:description" content="A robot policy fails a task under one wording and completes it under another. A closed-form weight edit makes the failing wording work. We test it on three policy architectures.">
+<meta name="twitter:image" content="https://ali-adeeb.com/weightsmith/assets/og.png">
+<meta name="twitter:image:alt" content="The headline beside two wrist-camera views of the same moment. The unedited policy has let go of the cube, and the edited policy still holds it.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&amp;display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="cosmos/cosmos.css">
+<link rel="stylesheet" href="post.css">
+<script>
+  // links to sections of the two pages this post replaced
+  (function () {
+    var moved = { failure: 'problem', fix: 'method', failures: 'skill', study: 'editors', measuring: 'scoring', cite: 'citation',
+      question: 'problem', models: 'method', control: 'pi05', 'side-effects': 'cost', groot: 'skill' };
+    var h = location.hash.slice(1);
+    if (moved[h]) location.replace('#' + moved[h]);
+  })();
+</script>
+</head>
+<body class="cz-page">
+<a class="skip" href="#main">Skip to the article</a>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="wordmark" href="./">weightsmith</a>
+    <nav aria-label="Site">
+      <a href="paper.pdf">Paper</a>
+      <a href="https://github.com/adeeb10abbas/weightsmith">Code</a>
+      <a href="explore.html">Explore</a>
+      <a href="cosmos/">All numbers</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="cz">
+
+  <header class="cz-hero">
+    <h1>Fixing weak language grounding in a robot policy’s weights</h1>
+    <p class="cz-sub">A robot policy can fail a task when the instruction is worded one way and succeed when it is worded another. We edit the weights so that the wording that failed works. Then we test the edit on three policy architectures.</p>
+    <p class="cz-byline">
+      <span class="cz-who">Ali-Adeeb Abbas, Esmaeil Seraj</span>
+      <span>November 2026</span>
+      <span>{{readtime}}</span>
+    </p>
+    <nav class="cz-links" aria-label="Related">
+      <a class="cz-btn cz-btn-main" href="paper.pdf">Paper (PDF) <span aria-hidden="true">→</span></a>
+      <a class="cz-btn" href="https://github.com/adeeb10abbas/weightsmith">Code <span aria-hidden="true">→</span></a>
+      <a class="cz-btn" href="explore.html">Explore the results <span aria-hidden="true">→</span></a>
+      <a class="cz-btn" href="cosmos/">All numbers <span aria-hidden="true">→</span></a>
+    </nav>
+    {{hero}}Both robots get the same instruction in the same scene: “Put the cube then the banana in the bowl.” Top: the released π0.5 picks up the cube and lets go of it. Bottom: after our edit, it carries the cube to the bowl and then the banana.{{/hero}}
+  </header>
+
+  <div class="cz-layout">
+
+    <aside class="cz-side">
+      <nav class="toc-side" aria-label="Contents">
+        <p class="toc-h">Contents</p>
+        {{toc}}
+      </nav>
+    </aside>
+
+    <article class="post cz-main">
+
+      <section id="tldr" class="tldr" aria-labelledby="tldr-h">
+        <h2 id="tldr-h">TL;DR</h2>
+        <ul>
+          <li data-id="problem"><span class="tl"><b>The problem.</b></span> A robot policy can fail a task under one wording of the instruction and complete it under another. The policy has the skill. It grounds the instruction to the wrong object or relation.</li>
+          <li data-id="edit"><span class="tl"><b>The edit.</b></span> We compute a weight change that makes the failing wording act like the working one inside the network. It takes one least-squares solve per layer and no training. The robot still receives the original words.</li>
+          <li data-id="where"><span class="tl"><b>Where it works.</b></span> The edit fixed the task on a VLA with an action expert and on a world-action model. It worked best in the VLM backbone or text pathway, where the policy grounds the instruction. On the world-action model it needed two wordings that line up word for word.</li>
+          <li data-id="cost"><span class="tl"><b>The cost.</b></span> On the world-action model, the edit also broke two other tasks whose instructions use the same spatial relation.</li>
+        </ul>
+      </section>
+
+      <details class="toc-mob">
+        <summary>Contents</summary>
+        <nav aria-label="Contents (list)">{{toc}}</nav>
+      </details>
+
+      <section id="problem">
+        <h2>Same goal, different words</h2>
+        <p>Robot policies are sensitive to how an instruction is worded {{c:fei2026liberoplus,kim2026liberopara}}. In an earlier study we gave three world-action models the same placement goals in different words {{c:abbas2026samegoal}}. When the instruction described the goal from the reference object’s side instead of the moved object’s side, stable placements fell by 12.2 points across 864 rollouts.</p>
+        <p>That study measured the gap. This post asks whether we can close it inside the policy.</p>
+        <p>Our running example is π0.5, an open vision-language-action policy (VLA) {{c:pi2025pi05,black2024pi0}}, on a task from RoboLab, a simulated benchmark {{c:yang2026robolab}}. The instruction is “Put the cube then the banana in the bowl.” The robot picks up the cube and lets go of it on the way to the bowl. It completes the task about one time in five.</p>
+        <p>To find out why, we recorded 21 moments where the robot let go of the cube. We replayed each moment and changed only the instruction.</p>
+        {{chart:rewordings}}We replayed 21 recorded drops under six instructions. Each bar counts the replays in which the robot still let go of the cube. The drops go away when “in the bowl” comes right after “the cube”.{{/chart}}
+        <p>Renaming the cube changed nothing. Putting “in the bowl” right after “the cube” removed almost every drop. So the policy was attaching “in the bowl” to the banana, and while it held the cube it acted as if it held the wrong object.</p>
+        <p>The policy has the skill. Given “Put the cube in the bowl then put the banana in the bowl”, the same weights completed 22 of 32 runs. Given the original wording they completed 3.</p>
+        <p>We call this weak language grounding {{c:shridhar2021cliport,ahn2022saycan}}. The policy can do the task, but it grounds the instruction to the wrong object or relation {{c:fang2026counterfactual}}.</p>
+        <p>A clear wording works. Can we make the original wording work too, without changing a word?</p>
+      </section>
+
+      <section id="method">
+        <h2>Edit the weights, keep the words</h2>
+        <p>We cannot always reword an instruction. Instructions come from people and from other software.</p>
+        <p>Each of these policies has a component that grounds the instruction. In a VLA it is the VLM backbone, the vision-language model that takes in the camera images and the instruction {{c:brohan2023rt2,kim2024openvla}}. In a world-action model it is the text pathway, the layers that carry the instruction tokens {{c:nvidia2026cosmos3}}. A second component generates the actions. It is an action expert {{c:black2024pi0}} or an action head {{c:nvidia2025gr00tn1}}.</p>
+        <p>The clear wording already produces the right activations in the component that grounds the instruction. So we copy them. We record moments where the robot fails, and we replay each one with both wordings. Then, for each layer, we solve for the weight change that makes the original wording produce the clear wording’s activations.</p>
+        <p>This is context distillation {{c:askell2021context,snell2022distilling}} in closed form. Each layer takes one least-squares solve, the same update used to edit facts in language models {{c:meng2022rome,meng2023memit}}. We run no training and collect no new data. The robot still receives the original instruction.</p>
+        {{fig:schematic}}The edit in four steps. We compute it offline from recorded moments, so no robot runs while we build it.{{/fig}}
+        <p>We work by weight-space programming {{c:takehi2026sparks}}. An LLM editor, here Claude Opus, reads and writes the weights with tools instead of an optimizer. Before any robot run, the editor checks each edit offline. It replays the recorded moments through the edited weights and looks at the actions the policy plans. Three simpler edits failed this offline check before the one above passed.</p>
+
+        <h3 id="scoring">How we score an edit</h3>
+        <p>A <em>run</em> is one attempt at a task. Every run of a task begins from the same scene and has its own random seed. We build and choose an edit on <em>practice runs</em>. We score it on <em>held-out runs</em>, whose seeds played no part in building it.</p>
+        <p>The simulator is noisy. When we ran one policy twice on the same seeds, about 30% of the runs ended differently on one task and almost 60% on another. So we compare the edited and the unedited policy on the same seeds, and we trust a difference only when it is larger than this noise.</p>
+        <p>We also compare every edit with a random edit of the same size. It changes the same layers with the same rank and singular values, in random directions. Concurrent work uses the same control {{c:zhang2026debugrobots}}.</p>
+      </section>
+
+      <section id="pi05">
+        <h2>It works on a VLA with an action expert</h2>
+        <p>π0.5 pairs a PaliGemma VLM backbone with a separate action expert. We wrote the edit into the VLM backbone and scored it on 128 held-out runs. The unedited policy completed 27 of them, and the edited policy completed 106. The edit fixed 81 runs and broke 2.</p>
+        <p>A random edit of the same size did nothing. The edit also recovers most of what the clear wording gives. On the same 64 runs, the edited policy completed 50 with the original wording, and the unedited policy completed 57 with the clear wording.</p>
+        <p>A compact version keeps most of the effect. It changes only what the VLM backbone computes at the image tokens in layers 8 to 16, and it can be stored in 0.16% of the parameter count.</p>
+        {{chart:pi05}}Each row compares two policies on the same held-out runs. The tick is the unedited policy with the original wording. The mark is the policy named in the row, and the numbers count completed runs for the tick and then the mark.{{/chart}}
+
+        <h3 id="transfer">The same edit helped two other tasks</h3>
+        <p>We ran the edit unchanged on 15 other tasks. Two improved: “Pick up the eyeglasses” and “Put the cube to the left of the bowl”. On the other 13 we saw no clear change. Those tasks had 16 to 32 runs each, so we could have missed a small change.</p>
+        <div class="clips wide">
+          <figure>
+            <video controls muted playsinline loop preload="metadata" poster="assets/video/eyeglasses.jpg" width="960" height="540" aria-label="Pick up the eyeglasses. Top: the unedited policy. Bottom: the edited policy.">
+              <source src="assets/video/eyeglasses.mp4" type="video/mp4">
+            </video>
+            <figcaption><span class="fig-n">{{fign:clip-eyeglasses}}</span> “Pick up the eyeglasses.” Top: unedited. Bottom: edited.</figcaption>
+          </figure>
+          <figure>
+            <video controls muted playsinline loop preload="metadata" poster="assets/video/cube_left_of_bowl.jpg" width="960" height="540" aria-label="Put the cube to the left of the bowl. Top: the unedited policy. Bottom: the edited policy.">
+              <source src="assets/video/cube_left_of_bowl.mp4" type="video/mp4">
+            </video>
+            <figcaption><span class="fig-n">{{fign:clip-left}}</span> “Put the cube to the left of the bowl.” Top: unedited. Bottom: edited.</figcaption>
+          </figure>
+        </div>
+        <p>The edit does not make the policy better at spatial language in general. “Put the cube to the <em>right</em> of the bowl” still never works. Our guess is that the edit strengthens how the policy ties a destination, such as “in the bowl” or “to the left of”, to the object in the gripper.</p>
+        <p>All of this is one policy. Does the same edit work on policies that are built differently?</p>
+      </section>
+
+      <section id="architectures">
+        <h2>Does it carry over to other architectures?</h2>
+        <p>We tested two more architecture types, with one released model of each.</p>
+        <p>A world-action model {{c:shen2026wamsurvey}} predicts the video of what will happen and the robot’s actions together, in one network {{c:kim2026cosmospolicy}}. Our instance is Cosmos3 Edge {{c:nvidia2026cosmos3}}. Its instruction tokens run through their own text pathway.</p>
+        <p>A VLA on a reasoning backbone grounds the camera images and the instruction in a reasoning VLM, and it generates action chunks with an action head {{c:chi2023diffusionpolicy}}. Our instance is GR00T N1.7 {{c:nvidia2025gr00tn1}}, with a Cosmos-Reason2 backbone and a flow-matching {{c:lipman2023flowmatching}} diffusion-transformer head {{c:peebles2023dit}}.</p>
+        <div class="tblock wide"><table class="ctable gtable rtable atable"><thead><tr><th scope="col"><span class="vh">Architecture</span></th><th scope="col"><span class="mn">Grounds the instruction</span></th><th scope="col"><span class="mn">Generates the actions</span></th></tr></thead><tbody>
+          <tr><th scope="row">VLA with an action expert<span class="inst">π0.5</span></th><td class="c" data-model="Grounds the instruction"><span class="v">VLM backbone (PaliGemma)</span></td><td class="c" data-model="Generates the actions"><span class="v">Action expert (flow matching)</span></td></tr>
+          <tr><th scope="row">World-action model<span class="inst">Cosmos3 Edge</span></th><td class="c" data-model="Grounds the instruction"><span class="v">Text pathway</span></td><td class="c" data-model="Generates the actions"><span class="v">Video/action pathway, which also predicts the video</span></td></tr>
+          <tr><th scope="row">VLA on a reasoning backbone<span class="inst">GR00T N1.7</span></th><td class="c" data-model="Grounds the instruction"><span class="v">VLM backbone (Cosmos-Reason2)</span></td><td class="c" data-model="Generates the actions"><span class="v">Action head (flow-matching DiT)</span></td></tr>
+        </tbody></table></div>
+        <p>We ran all three on the same RoboLab tasks in Isaac Sim {{c:nvidia2025isaaclab}}, and we paired each edit with a random edit of the same size. We start with the world-action model.</p>
+      </section>
+
+      <section id="wam">
+        <h2>In a world-action model, the edit works as well as the clear wording</h2>
+        <p>The world-action model has the same kind of failure on another task. Here are two wordings of one goal:</p>
+        <div class="wordings"><p><span class="wl">Fails</span> <span class="wt">“Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.”</span></p><p><span class="wl wl-ok">Works</span> <span class="wt">“Move the mustard bottle on the table so that the mustard bottle is to the right of the raisin box.”</span></p></div>
+        <p>Both wordings state one spatial relation, each from a different object’s side. With the second wording the model completed 31 of 32 practice runs. With the first it completed none.</p>
+        <div class="clipgrid one wide"><figure class="clip"><video controls muted loop playsinline preload="metadata" poster="cosmos/video/cosmos_t8_wording.jpg" width="960" height="360" aria-label="The same weights and the same scene. Top: with the original wording, the robot fails. Bottom: with the clear wording, it succeeds."><source src="cosmos/video/cosmos_t8_wording.mp4" type="video/mp4"></video><figcaption><span class="fig-n">{{fign:clip-gap}}</span> <b>Two wordings, one model.</b> Same weights, same scene. Top: the original wording, and the robot fails. Bottom: the clear wording, and the robot succeeds.</figcaption></figure></div>
+        <p>We built the edit from this pair and wrote it into the text pathway. On 64 held-out runs the edited model completed 56, with the original wording. The unedited model completed the same number when we gave it the clear wording. The unedited model and the random edit completed none.</p>
+        <div class="clipgrid one wide"><figure class="clip"><video controls muted loop playsinline preload="metadata" poster="cosmos/video/cosmos_before_after.jpg" width="960" height="360" aria-label="A held-out run, with the original wording both times. Top: the unedited model fails. Bottom: the edited model succeeds."><source src="cosmos/video/cosmos_before_after.mp4" type="video/mp4"></video><figcaption><span class="fig-n">{{fign:clip-fix}}</span> <b>Before and after the edit.</b> A held-out run, with the original wording both times. Top: the unedited model fails. Bottom: the edited model succeeds.</figcaption></figure></div>
+        {{fig:fix}}Each bar counts completed runs out of the same 64 held-out runs. The robot received the original wording in every bar except the last.{{/fig}}
+        <p>So the edit carries over to this world-action model. Three things decide whether it works: where the edit goes, how the two wordings line up, and whether the policy has the skill at all.</p>
+      </section>
+
+      <section id="where">
+        <h2>The edit works best where the instruction is grounded</h2>
+        <p>We wrote the same edit into each component of each architecture.</p>
+        {{fig:where}}Where we placed the edit in each architecture, one placement per step. The badge on each placement compares the edited policy with the unedited policy on the same runs. {{figref:where-results}} has the scores.{{/fig}}
+        <p>On π0.5 we also tried three variants. One restricted the VLM edit to the image tokens. One edited the VLM backbone and the action expert together. One was a gated edit of the action output projection, written by an LLM editor that never saw our edit. Each of them fixed part of the failure.</p>
+        {{fig:where-results}}Each dot is the share of runs the robot completed with the edit in that component. The tick is the same robot without the edit, and the ring is a random edit of the same size. A teal dot is clearly better than the unedited robot on the same runs, a dot with a cross is clearly worse, and a grey dot shows no clear change. The π0.5 rows use held-out runs, and the other rows use practice runs. *An LLM editor wrote this edit by weight-space programming {{c:takehi2026sparks}} without seeing ours.{{/fig}}
+        <p>In both models where the edit works, it helped most in the VLM backbone or text pathway. In π0.5’s action expert it helped less. In the world-action model’s video/action pathway it did nothing.</p>
+        <p>We think the reason is cause and symptom. The clear wording changes the VLM backbone or text pathway first, and the components downstream follow. An edit there copies the cause. An edit in the action expert has to copy activations that also depend on where the robot is, so it copies a symptom. On π0.5’s action output projection, the edit fixed nothing when it acted at every step. It helped only behind a gate that switches it on at the right moments, as in activation steering {{c:turner2023steering}}.</p>
+        <p>Interpretability work points the same way. In π0.5, information about the instruction reaches the action expert through a narrow band of layers {{c:swann2026causal}}. Our offline replays agree. In the world-action model, the text-pathway edit reproduces almost all of the clear wording’s effect on the planned actions. The video/action-pathway edit reproduces less than a quarter.</p>
+      </section>
+
+      <section id="when">
+        <h2>The two wordings have to line up</h2>
+        <p>The edit copies the clear wording’s effect onto the original wording token by token. Each token’s input is a key, as in model editing {{c:meng2023memit}}. On the mustard task the two wordings have the same length and swap words in place. Every token has a counterpart, and the edit works.</p>
+        <p>When the clear wording adds words, the added tokens have no counterpart. The edit failed this way on the world-action model’s Cube left of bowl and on the reasoning-backbone VLA’s Cube then banana.</p>
+        {{fig:align}}The two wordings of Cube then banana in the reasoning-backbone VLA, word by word. The words before and after the inserted clause match one to one. The inserted words have no counterpart in the original wording, so the edit has nowhere to copy their effect.{{/fig}}
+        <p>We wrote this rule down before we tested two new pairs of wordings. The first pair has equal length: Cube left of bowl, worded bowl-first and cube-first. The edit lifted the world-action model from 1 to 12 of 32 held-out runs, far above a random edit. The second pair has unequal length, and its edit failed the offline check, as the rule predicts.</p>
+        <div class="tblock wide"><table class="ctable ptable wtable"><thead><tr><th scope="col"><span class="vh">Case</span></th><th scope="col"><span class="mn">The two wordings</span></th><th scope="col"><span class="mn">Result</span></th></tr></thead><tbody>
+          <tr><th scope="row">Mustard right of raisin box, world-action model</th><td class="c" data-model="The two wordings"><span class="v">Same length, swapped in place</span></td><td class="c" data-model="Result"><span class="v">Fixed</span></td></tr>
+          <tr><th scope="row">Cube left of bowl, world-action model</th><td class="c" data-model="The two wordings"><span class="v">Words added</span></td><td class="c" data-model="Result"><span class="v">Failed the offline check</span></td></tr>
+          <tr><th scope="row">Cube then banana, reasoning-backbone VLA</th><td class="c" data-model="The two wordings"><span class="v">Words added</span></td><td class="c" data-model="Result"><span class="v">Broke the task</span></td></tr>
+          <tr><th scope="row">Mustard right of raisin box, copying only the shared words</th><td class="c" data-model="The two wordings"><span class="v">Only the shared words</span></td><td class="c" data-model="Result"><span class="v">No better than a random edit, in replays</span></td></tr>
+          <tr><th scope="row">Cube left of bowl, bowl-first and cube-first, predicted</th><td class="c" data-model="The two wordings"><span class="v">Same length, swapped in place</span></td><td class="c" data-model="Result"><span class="v">Fixed, as predicted</span></td></tr>
+          <tr><th scope="row">Cube in front of bowl, bowl-first and cube-first, predicted</th><td class="c" data-model="The two wordings"><span class="v">Words added</span></td><td class="c" data-model="Result"><span class="v">Failed the offline check, as predicted</span></td></tr>
+        </tbody></table></div>
+        <p>π0.5 is the exception. Its clear wording adds words, and the edit still works. π0.5’s VLM backbone attends over the image tokens and the instruction together, so the clear wording’s effect also reaches the image tokens. Both wordings share those tokens, and the edit copies the effect there. π0.5 is known to hold spatial information at its image-token positions {{c:swann2026causal}}.</p>
+      </section>
+
+      <section id="skill">
+        <h2>The policy must already have the skill</h2>
+        <p>The edit copies a behaviour that the policy already shows under some wording. It did not help when no wording produced the behaviour.</p>
+        <p>We tried three other π0.5 failures, with Claude Opus and GPT-6 Astra as the LLM editors. In one the robot grabs a lookalike block. In another the box is too wide for the robot’s usual grasp. In the third a mustard bottle slips out of the gripper. The editors wrote dozens of edits, and none helped. The policy can tell the lookalike blocks apart, but no input we tried made it act on that. The box needs a grasp the policy never learned, and the bottle slips.</p>
+        <p>We also changed one bias value so that the gripper closes more readily. Across seven tasks the policy completed exactly as many runs with the change as without it.</p>
+        {{chart:flips}}Each row compares two policies on the same runs. A run counts as fixed when it failed without the edit and succeeded with it, and as broken in the reverse case. Our edit fixes many runs and breaks almost none. The edits that did not work break about as many runs as they fix. The last row has no edit at all: we ran the unedited policy twice on a stacking task, and 37 of 64 runs changed by chance.{{/chart}}
+        <p>The reasoning-backbone VLA fails for the same reason. Without any edit, GR00T N1.7 completes only 3 of the 9 tasks at all. A clear wording helped on one task, Cube then banana, and the gain was within noise. We copied that wording into the VLM backbone and into the action head. With either edit the robot completed none of 32 practice runs, while random edits of the same size left it about where it started.</p>
+      </section>
+
+      <section id="cost">
+        <h2>The cost: the edit overgeneralises the relation</h2>
+        <p>We ran the world-action model’s mustard edit unchanged on every other task. Two tasks broke. The edit was built from a sentence pair that turns “left of” into “right of”, and both broken tasks have instructions that say “left”. On one of them the robot now carries the mustard to the wrong bin.</p>
+        {{chart:side}}The mustard edit on the eight tasks we did not build it for. The tick is the unedited model, and the dot is the edited model on the same held-out runs. The edited model completed no runs on the two tasks whose instructions name the left side.{{/chart}}
+        <p>The edit changed how the text pathway grounds a spatial relation, and the change reached other instructions that use the relation. Model-editing work calls this a loss of specificity or locality {{c:wang2024kesurvey}}, or a ripple effect {{c:cohen2024ripple}}. Directional words are also where π0.5 and GR00T N1.7 are most sensitive {{c:wulff2026grounding}}.</p>
+        <p>π0.5’s edit behaved differently. Run the same way, it helped two tasks and broke none that we could detect.</p>
+
+        <h3 id="prevent">Protecting other instructions did not help in our tests</h3>
+        <p>We rebuilt the mustard edit twice with constraints that tell the solve to leave other instructions unchanged {{c:meng2023memit}}. The first rebuild protected 65 unrelated instructions. The second protected 24 instructions from other tasks that use the same spatial relations. Both rebuilds kept the fix, and both still broke a task that shares the relation.</p>
+        <p>A third rebuild copied only the words that both wordings share. In replays it barely touched the other tasks, and it also lost the fix.</p>
+        <p>These tests were small. Each used 16 practice runs in one setting, with no control. Methods that enforce preservation exactly, by projecting the update away from the protected keys {{c:fang2025alphaedit}}, might do better. We did not test them.</p>
+
+        <h3 id="second-edit">A second edit did not undo it</h3>
+        <p>The world-action model also fails Cube left of bowl because of weak grounding. A more specific wording about doubles its success on practice runs. But that wording adds words, and its edit failed the offline check. Stacked on the mustard edit it failed again, so neither edit ran on the robot.</p>
+      </section>
+
+      <section id="editors">
+        <h2>Can an LLM find these edits on its own?</h2>
+        <p>We gave seven fresh Claude Opus editors the same tools and the same small budget. Each got one π0.5 task with a different kind of failure. No editor saw our edit or another editor’s work. We scored each edit they submitted on 64 held-out runs.</p>
+        <p>The editor on the cube task found the grounding failure by itself. It replayed the drops with a clear wording, as we had. Then it wrote a different and much sparser edit that changes 1,024 weights. That edit raised success from 11 to 27 of 64, which is less than our edit and more than noise.</p>
+        <div class="tblock wide"><table class="ctable ptable wtable etable"><thead><tr><th scope="col"><span class="vh">Task</span></th><th scope="col"><span class="mn">Weights changed</span></th><th scope="col"><span class="mn">Held-out runs completed, unedited → edited</span></th></tr></thead><tbody>
+          <tr><th scope="row">Cube then banana</th><td class="c" data-model="Weights changed"><span class="v">1,024</span></td><td class="c" data-model="Held-out runs completed, unedited → edited"><span class="v"><b>11 → 27 of 64</b>, a clear gain</span></td></tr>
+          <tr><th scope="row">Pick up the eyeglasses</th><td class="c" data-model="Weights changed"><span class="v">3,072</span></td><td class="c" data-model="Held-out runs completed, unedited → edited"><span class="v">18 → 27 of 64, within noise</span></td></tr>
+          <tr><th scope="row">Mustard into the left bin</th><td class="c" data-model="Weights changed"><span class="v">4,094</span></td><td class="c" data-model="Held-out runs completed, unedited → edited"><span class="v">8 → 11 of 64, within noise</span></td></tr>
+        </tbody></table></div>
+        <p>The other four editors submitted nothing, which the protocol asks for when no edit holds up. On Cube left of bowl the fix broke grasping. On the three-cube stack the edit failed its offline check. On the lookalike block no wording helped. On the flat box the grasp held and the box still slipped. Every editor’s notes and code are <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results/ctrl">in the repository</a>.</p>
+      </section>
+
+      <section id="recap">
+        <h2>Putting it together</h2>
+        <div class="tblock wide"><table class="ctable gtable rtable"><thead><tr><th scope="col"><span class="vh">Architecture</span></th><th scope="col"><span class="mn">Did the edit fix the task?</span></th><th scope="col"><span class="mn">Where the edit worked</span></th><th scope="col"><span class="mn">Effect on other tasks</span></th></tr></thead><tbody>
+          <tr><th scope="row">VLA with an action expert<span class="inst">π0.5</span></th><td class="c" data-model="Did the edit fix the task?"><span class="v">Yes, close to the clear wording</span></td><td class="c" data-model="Where the edit worked"><span class="v">Best in the VLM backbone. The action expert helped less</span></td><td class="c" data-model="Effect on other tasks"><span class="v">Helped two tasks and broke none we could detect</span></td></tr>
+          <tr><th scope="row">World-action model<span class="inst">Cosmos3 Edge</span></th><td class="c" data-model="Did the edit fix the task?"><span class="v">Yes, as well as the clear wording</span></td><td class="c" data-model="Where the edit worked"><span class="v">In the text pathway. The video/action pathway did nothing</span></td><td class="c" data-model="Effect on other tasks"><span class="v">Broke two tasks that use the same spatial relation</span></td></tr>
+          <tr><th scope="row">VLA on a reasoning backbone<span class="inst">GR00T N1.7</span></th><td class="c" data-model="Did the edit fix the task?"><span class="v">No, both placements made it worse</span></td><td class="c" data-model="Where the edit worked"><span class="v">Nowhere we tried</span></td><td class="c" data-model="Effect on other tasks"><span class="v">Not tested, because no edit worked</span></td></tr>
+        </tbody></table></div>
+      </section>
+
+      <section id="meaning">
+        <h2>What this means</h2>
+        <p>Some robot failures come from weak language grounding. The policy has the skill, and the instruction fails to trigger it. A policy can even encode the instructed target without that target controlling the action {{c:jiang2026groundinggap}}.</p>
+        <p>When a clear wording works, a closed-form edit can copy its effect into the weights. In our tests the edit worked when three things held. The policy had the skill. The edit went into the component that grounds the instruction. And the two wordings lined up token by token, or they shared image tokens that carried the effect.</p>
+        <p>The edit can also change other instructions that use the same relation. So we check every edit on tasks it was not built for.</p>
+        <p>Our rule of thumb is to edit when some wording already makes the robot do the right thing, and to train when none does. Two outside reports of large gains from weight edits fit this rule. One edited checkpoints that were already fine-tuned on each task {{c:guo2026robotweights}}. The other built its updates from differences between trained models {{c:gupta2026robotweights}}. We did not reproduce either result.</p>
+      </section>
+
+      <section id="limits">
+        <h2>Limits</h2>
+        <p><b>Simulation only.</b> Every number comes from RoboLab tasks in Isaac Sim. We ran nothing on a physical robot.</p>
+        <p><b>One scene per task.</b> Held-out runs change the random seed and keep the scene, so they do not test new object positions.</p>
+        <p><b>Small samples.</b> With 64 runs per comparison we can detect a change of about 19 percentage points. With 16 to 32 runs we can detect only larger ones.</p>
+        <p><b>One released model per architecture type.</b> The results describe π0.5, Cosmos3 Edge and GR00T N1.7. Each model has its own cameras and action-chunk length, so compare what an edit fixes or breaks within a model, and do not compare success rates across models.</p>
+        <p><b>The edit needs a wording that works.</b> We found each clear wording by trying rewordings.</p>
+        <p><b>The edit is low-rank and not sparse.</b> It changes many weights by a small amount.</p>
+        <p><b>Cosmos3 Edge’s wiring.</b> We read it from the code that serves a sibling model, Cosmos3 Nano {{c:nvidia2026cosmos3}}. In that code the video/action pathway reads the instruction only through the text tokens’ keys and values.</p>
+      </section>
+
+      <section id="try">
+        <h2>Try it</h2>
+        <p>weightsmith is a harness for weight-space programming on robot policies. An LLM editor, or you, reads, probes and writes π0.5’s weights through one tool. The harness scores every edit against the unedited policy on held-out runs.</p>
+<pre class="cmd"><code>git clone https://github.com/adeeb10abbas/weightsmith &amp;&amp; cd weightsmith
+pip install -e '.[mcp]'
+weightsmith --help</code></pre>
+        <p>Start with the <a href="https://github.com/adeeb10abbas/weightsmith#readme">README</a>. The <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/BENCHMARK.md">benchmark</a> has the rules for submitting an edit, and the <a href="https://github.com/adeeb10abbas/weightsmith/blob/main/LEADERBOARD.md">leaderboard</a> has every result so far. The <a href="explore.html">explorer</a> shows every π0.5 comparison run by run. <a href="cosmos/">All numbers and records</a> has every table, the protocol and more clips for the three architectures.</p>
+      </section>
+
+      <section id="references">
+        <h2>References</h2>
+        {{refs}}
+      </section>
+
+      <section id="citation">
+        <h2>Citation</h2>
+        <p class="cite-text">Ali-Adeeb Abbas and Esmaeil Seraj. “Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy’s Misreading.” 2026. arXiv preprint, forthcoming.</p>
+        <div class="bib">
+          <button type="button" class="bib-copy" hidden>Copy</button>
+<pre id="bibtex"><code>@misc{abbas2026distilling,
+  title  = {{Distilling Instructions into Weights: Closed-Form Edits Fix a Robot Policy's Misreading}},
+  author = {Abbas, Ali-Adeeb and Seraj, Esmaeil},
+  year   = {2026},
+  url    = {https://ali-adeeb.com/weightsmith/},
+  note   = {arXiv preprint, forthcoming}
+}</code></pre>
+        </div>
+        <p class="note">We measured every result here ourselves on paired simulator runs, except where we say that a result is a guess or comes from another group. The exact numbers and statistical tests are in the <a href="paper.pdf">paper</a> and the <a href="https://github.com/adeeb10abbas/weightsmith/tree/main/study/results">result files</a>. Each π0.5 video shows one run where only the edited robot succeeds, at twice real speed. This work builds on weight-space programming (<a href="https://rikiyat.github.io/blog/weight-space-programming/">Takehi et al.</a>) and uses Physical Intelligence’s open π0.5 model and the RoboLab tasks in Isaac Sim.</p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <span>weightsmith</span>
+    <a href="https://github.com/adeeb10abbas/weightsmith">GitHub</a>
+    <a href="paper.pdf">Paper (PDF)</a>
+    <a href="explore.html">Explore the results</a>
+    <a href="cosmos/">All numbers</a>
+    <span>Code under the MIT license</span>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+<script src="hero.js" defer></script>
+<script src="cosmos/cosmos.js" defer></script>
+<script src="post.js" defer></script>
+</body>
+</html>

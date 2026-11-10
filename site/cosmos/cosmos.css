@@ -1304,3 +1304,53 @@
 .refs li { margin: 0 0 0.45rem; padding-left: 0.2rem; overflow-wrap: anywhere; }
 .refs li:target { background: color-mix(in srgb, var(--accent) 12%, transparent); }
 .refs .ref-t { color: var(--ink); }
+
+/* ---------- the records page (body.rec-page): every group of tables is a section of its own ---------- */
+.rec-page .cz .post > section:first-of-type {
+  margin-top: 1.8rem;
+}
+
+.rec-page .cz .post .toc-mob {
+  margin-top: 0;
+}
+
+@media (min-width: 1100px) {
+  .rec-page .cz .post > section:first-of-type {
+    margin-top: 0;
+  }
+}
+
+.rec-page .cz .post .allnums-in > h3 {
+  margin: 4.2rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-size: clamp(1.45rem, 1.3rem + 0.6vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+}
+
+.rec-page .cz .post .allnums-in > h3:first-child {
+  margin-top: 2.4rem;
+}
+
+.rec-page .cz .post .allnums-in > h4 {
+  margin-top: 2.6rem;
+  font-size: 1.125rem;
+}
+
+.rec-page .cz-hero {
+  padding-bottom: 44px;
+}
+
+.rec-page .cz-byline .stamp {
+  color: var(--muted);
+}
+
+/* the task table: long class names break instead of running into the next column */
+.rec-page .ltable code {
+  overflow-wrap: anywhere;
+}
+
+.rec-page .ltable td {
+  padding-right: 14px;
+}
