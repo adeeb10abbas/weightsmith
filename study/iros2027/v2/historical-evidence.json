@@ -1,0 +1,1279 @@
+{
+  "schema_version": 1,
+  "cohort": "A_and_published_secondary_models",
+  "base_git_sha": "cf39ab173d52ebb2b29bb8b424b36072cc7124b8",
+  "policy": "preserve unchanged; no rescoring or pooling across runtimes",
+  "source_blobs": [
+    {
+      "path": "BENCHMARK.md",
+      "git_blob_sha1": "085dce9aec33de0634926c698d8313f593daa8fb"
+    },
+    {
+      "path": "edits/README.md",
+      "git_blob_sha1": "90d19018092c5255c9be87fc1296c3d459bcee3a"
+    },
+    {
+      "path": "edits/SHA256SUMS",
+      "git_blob_sha1": "9a7be85fceea684f741f9c2f8f9ce091d3e4a877"
+    },
+    {
+      "path": "edits/ctrl-ctb-p1.safetensors",
+      "git_blob_sha1": "c36770d9925eb0102bc13fec903f08053674e515"
+    },
+    {
+      "path": "edits/verify.sh",
+      "git_blob_sha1": "a53dc3d1f57125de8bb0bb17d18d7a14abd4be93"
+    },
+    {
+      "path": "paper/main.tex",
+      "git_blob_sha1": "21bbf7285759ab165481b398e15c239ad186ca0f"
+    },
+    {
+      "path": "site/cosmos/metrics.json",
+      "git_blob_sha1": "130b5910500a6ca59de13a8134db2a1a63a4e837"
+    },
+    {
+      "path": "site/index.html",
+      "git_blob_sha1": "48f6d5fc3c71bda185d1b8b8544958b95be9ee7c"
+    },
+    {
+      "path": "study/RESULTS.md",
+      "git_blob_sha1": "af9007d031db1663ea515577eb61a36805bb75e6"
+    },
+    {
+      "path": "study/reproduction/common-baseline/README.md",
+      "git_blob_sha1": "594c4c55fc4163431838b1b23201b7e452a87213"
+    },
+    {
+      "path": "study/reproduction/common-baseline/SHA256SUMS",
+      "git_blob_sha1": "7ae9bed1e7f5f497b6964e012a4078f0429b077b"
+    },
+    {
+      "path": "study/reproduction/common-baseline/common_reference.py",
+      "git_blob_sha1": "df00cac5a6a55ebde4ca8f7082a12a82e03fb922"
+    },
+    {
+      "path": "study/reproduction/common-baseline/extraction_receipt.json",
+      "git_blob_sha1": "3dd0c025950526f8bb3583ed8f9a75f299c9a462"
+    },
+    {
+      "path": "study/reproduction/common-baseline/packaging_receipt.json",
+      "git_blob_sha1": "932581960fda0c57cc68097d568646dc4eac29cf"
+    },
+    {
+      "path": "study/reproduction/common-baseline/packet_validation.json",
+      "git_blob_sha1": "1e8c8d1dba23c1721da0a41c59aaa1ee5b7c137c"
+    },
+    {
+      "path": "study/reproduction/common-baseline/test_common_reference.py",
+      "git_blob_sha1": "82fcc2d3e70508c53b593a7e950630781b71e0bc"
+    },
+    {
+      "path": "study/reproduction/common-baseline/transfer_receipt.json",
+      "git_blob_sha1": "3dd0c025950526f8bb3583ed8f9a75f299c9a462"
+    },
+    {
+      "path": "study/reproduction/fixed16/MANIFEST.json",
+      "git_blob_sha1": "fc09839b807b9ac7cb4227ee85811a8bfb7e406d"
+    },
+    {
+      "path": "study/reproduction/fixed16/MODEL_ENROLLMENT.md",
+      "git_blob_sha1": "7f5da98e8abdd715570a6e12829011a59c750e63"
+    },
+    {
+      "path": "study/reproduction/fixed16/PACKETS.md",
+      "git_blob_sha1": "8da990a42da8367171d7abcf7c15e1c10da78b55"
+    },
+    {
+      "path": "study/reproduction/fixed16/README.md",
+      "git_blob_sha1": "4603b7532b138e00c8cd34883fdf5244e185d976"
+    },
+    {
+      "path": "study/reproduction/fixed16/SETUP.md",
+      "git_blob_sha1": "7840764cfe658d873448d1bbf250f726cbdd7043"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/LICENSE",
+      "git_blob_sha1": "f96c2dac87deb51957ecf778bab2fc0d8218674f"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/NOTICE",
+      "git_blob_sha1": "de0868a4b021fef481b3fe18914a01a4b0b71dee"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/envs/robolab-sim-isaac60/pyproject.toml",
+      "git_blob_sha1": "8defbd8d8817ddfe60208683f7b11ad62d665252"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/envs/robolab-sim-isaac60/uv.lock",
+      "git_blob_sha1": "460a7ae08707d25431d772d7542a6963eac3ac47"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/.gitignore",
+      "git_blob_sha1": "a81f07bb54b7c77d349c806142a95c9ccb5f0dd3"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/DESIGN.md",
+      "git_blob_sha1": "4e96654d5dc501cc8513ccf94d5506a5ffdc0898"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/__init__.py",
+      "git_blob_sha1": "aed2fb5eb3e39450b171c42689717dcdbf4cf633"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/fork_inventory.json",
+      "git_blob_sha1": "3ceeb03725d2453646d98b6d215349b3913d6163"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/packet.py",
+      "git_blob_sha1": "6017a841362838106db88322b983f1d410f9cfcc"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/LICENSE",
+      "git_blob_sha1": "f96c2dac87deb51957ecf778bab2fc0d8218674f"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/NOTICE",
+      "git_blob_sha1": "de0868a4b021fef481b3fe18914a01a4b0b71dee"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/BRIEF.md",
+      "git_blob_sha1": "d12aa837a82a9d191fdc126d4d480568c8b84461"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/MODE-adaptive.md",
+      "git_blob_sha1": "10ce50c668343908b3a9cd30e38bf9f778dfc1a8"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/briefs/study-rq123/MODE-nonadaptive.md",
+      "git_blob_sha1": "86f646638dc95cf63969f56ed5772ca4fa892a80"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/editor.json",
+      "git_blob_sha1": "996d1e0c8b467bbde19947148d43dc30300d60b3"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/operator_development.json",
+      "git_blob_sha1": "f83e6f39409d4864b862b577bd807fbeb9e548b4"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/protocol.json",
+      "git_blob_sha1": "df01f8aa8df1cb2e59ca0417e3114a31aa88dcf0"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/study_rq123/protocol.sha256",
+      "git_blob_sha1": "dcd79983b32048d3ad133ad78c8de8eca036dbcc"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/v2_editor.json",
+      "git_blob_sha1": "6ef8dbc3114898af0873e3807e4e701861f820a7"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/configs/v2_operator_development.json",
+      "git_blob_sha1": "8d533c46eb356156f5d8e3aca81fde98119645e5"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_broker.py",
+      "git_blob_sha1": "2f046514c2bd540601c035d6879961d9f8fc7e6c"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_editor.py",
+      "git_blob_sha1": "fbe8613a375912f887a4c421552a610f2ca7bb83"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_remote.py",
+      "git_blob_sha1": "0ba867b84bc6b0703c5859cfd67c9059d9a28f6a"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_tensor_ops.py",
+      "git_blob_sha1": "2d3b79f8d3b85000884ab7365b6ba0bfe5f6020c"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/drivers/study_validation.py",
+      "git_blob_sha1": "e101cd19dce0bdc79704c3599376b10eb008aef0"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim-isaac60/pyproject.toml",
+      "git_blob_sha1": "8defbd8d8817ddfe60208683f7b11ad62d665252"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim-isaac60/uv.lock",
+      "git_blob_sha1": "460a7ae08707d25431d772d7542a6963eac3ac47"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim/pyproject.toml",
+      "git_blob_sha1": "eeeea8a235aab90c6cee3672481c17710b06a75a"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/envs/robolab-sim/uv.lock",
+      "git_blob_sha1": "b2261977e18c08686234ab17bf6a388bc6a8d060"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/prepare_study_workspace.py",
+      "git_blob_sha1": "baa5cf452999d1c42c9d3c58ff9e7689a7c99c7a"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/run_isolated.py",
+      "git_blob_sha1": "31ad82354d891a7727902a486a84b06458a18070"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_analysis.py",
+      "git_blob_sha1": "cf772a9c0f643730badb8c595daa405d01ac8cb2"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_development.py",
+      "git_blob_sha1": "5ec7c20fa9a00fec5c8812d497e70dc6305480a4"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_final.py",
+      "git_blob_sha1": "23ca9264f4804854a4bb4831921f4dcec224a358"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_identity_probe.py",
+      "git_blob_sha1": "36f451c797cd1ec1d9c5d2142ac95a442544a8a9"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/study_storage.py",
+      "git_blob_sha1": "f44023f0752a1392eb26da475036082f3775d045"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/scripts/verify_runtime.py",
+      "git_blob_sha1": "ebf5662f0437c763c20929376059b393c51e1c36"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/openpi/0001-Allow-request-scoped-policy-sampling-seeds.patch",
+      "git_blob_sha1": "9744123806ab0c977ebd909f44c7f4b45c2aeb44"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab-isaac60/0001-Port-weightsmith-controls-to-Isaac-6.patch",
+      "git_blob_sha1": "0411507dc277efac8d2fbb60300a9717548566d5"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0001-Add-matched-spatial-steering-tasks-and-horizon-final.patch",
+      "git_blob_sha1": "ca26c7ce2201996ee1dbc8996f2a4ed869285bc8"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0002-Record-WAM-futures-and-make-sampling-reproducible.patch",
+      "git_blob_sha1": "014b4dd9f319499034599a93a1f4291d93d2115f"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0003-Add-auditable-predicate-oracle-prompt-control.patch",
+      "git_blob_sha1": "eb3256a1677c2d0c2e59d99c44f9472fe9d8310f"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0004-Add-direct-language-stress-prompts.patch",
+      "git_blob_sha1": "efc6fb23a4823a877e247a392d3ea6f30c0e3fe5"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0005-Make-steering-episodes-protocol-exact.patch",
+      "git_blob_sha1": "757e447d2f15479c4c1f035591e16ff03e925f3c"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/third_party/patches/robolab/0006-Skip-private-helper-modules-during-task-discovery.patch",
+      "git_blob_sha1": "d87022c541c191dbcb21b0b44b9c424a2c953f1a"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/__init__.py",
+      "git_blob_sha1": "fb82072fb2bd4fd93e9b448905c3e49e8675412c"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/acts_worker.py",
+      "git_blob_sha1": "d5a346e570278d33ac9c85a51ab9dcffe530ea8a"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/batched_client.py",
+      "git_blob_sha1": "c27ed40fbab317ed3af90e214a03c07b9c2123ad"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/batched_server.py",
+      "git_blob_sha1": "5a4f58bb77666723bd3b2f47850d473aac8371d5"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/config.py",
+      "git_blob_sha1": "23d3b153082822d2a71e0381fc8a0d39ddd90a99"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/heldout.py",
+      "git_blob_sha1": "42535a81a9e586bc0c86e2b9b985db0a696d5836"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/integrity.py",
+      "git_blob_sha1": "e31485b02a2c03d261baf4ab7cea8fcaefb006ca"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/__init__.py",
+      "git_blob_sha1": "aec3a73d27d722c0278693bd4788c2252ff709c6"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_context_v2.py",
+      "git_blob_sha1": "f33f46ec1af7637c9f0c1a769f1b70f592b8d56e"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_probe_v2.py",
+      "git_blob_sha1": "ae3886fa5be7444b419b1de5b79a08e5cf88bc53"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/batch_runtime_v2.py",
+      "git_blob_sha1": "e1cdcddec19a5173cd6e40f68a7c30f4328f238a"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/capture_plan_v2.py",
+      "git_blob_sha1": "2b44ddc27a0831e99f1791b0976d85064fd9d20d"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_head.py",
+      "git_blob_sha1": "361db78a9a442539575f1ddd7fc1f784cc9f3b73"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_probe.py",
+      "git_blob_sha1": "2e65ff89e2dcbfc53c493da5f55d348f96c915cc"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/openpi_vlm_full.py",
+      "git_blob_sha1": "6eeb244200bf1a3ecb7de611104cae7a773f0e2c"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/lab/sandbox.py",
+      "git_blob_sha1": "76a6fcdfcb13496444a68d19b29a9e1c72aeda91"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/locking.py",
+      "git_blob_sha1": "73c38476aa4c42ba2da43305b941a3d3b73370d3"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/owsp.py",
+      "git_blob_sha1": "d8733123e05907cc4c0026d44dd2515921b6a207"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/pool.py",
+      "git_blob_sha1": "7ec12b621580c78fc7272b14297a8b36bbae2270"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/replay.py",
+      "git_blob_sha1": "1a47ca6ff731268d73b7a026c0999a1fe5079e71"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/rollout.py",
+      "git_blob_sha1": "ff3ace9172c292e315ca81d531d78f4266992989"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/run_batched.py",
+      "git_blob_sha1": "823a0e97254ee8888ccab9b84164e91c4655a6a5"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/runtime/weightsmith/survey.py",
+      "git_blob_sha1": "4810f22c3fad96557a99128d94eb75ff4a72cb53"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_batch_capture_cpu.py",
+      "git_blob_sha1": "5edf4ce1432b55ee9130493054cb72bf9201f971"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_candidate_packets.py",
+      "git_blob_sha1": "5c948d007d11fe2c192fbaa01b166a2ef67b911b"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_development_packets.py",
+      "git_blob_sha1": "8401805bd259aa68b2f7f4cdc017f40c866b2fc5"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_editor_boundary.py",
+      "git_blob_sha1": "495e735ba38be19a1fb17b978b8360af7f37f35b"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_runtime_seal.py",
+      "git_blob_sha1": "95163a2b25f9b78f2a53b021c20892f96fef1a6d"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/tests/test_seed_wire.py",
+      "git_blob_sha1": "5552f2d4eb1dd34c4868b6548e5757f7141ab389"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/extensions/batch_capture_v2/validate_gpu.py",
+      "git_blob_sha1": "6e8de0014267e099ae6da27b3c1059c47d7b406a"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/BRIEF.md",
+      "git_blob_sha1": "1d31e9c88f007954b440b2f611a04db51ec7dfe7"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/MODE.md",
+      "git_blob_sha1": "10ce50c668343908b3a9cd30e38bf9f778dfc1a8"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/capture_precision_addendum.json",
+      "git_blob_sha1": "2b51141c9333c7d872321acba8f3b26856ad4d80"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/capture_resource_addendum.json",
+      "git_blob_sha1": "2ea538186860ca18a09c7f40ac88238bcad137e6"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/closure_addendum.json",
+      "git_blob_sha1": "f67f87c8e831b4508009f68921e75f4c1075ef5e"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/design/protocol.json",
+      "git_blob_sha1": "fc30272ddbf9267bfbc29eec4423806f5b1f891d"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/operator/rq123-v2/source_manifest.json",
+      "git_blob_sha1": "599d8cfe6f20253e1b277948f21c01e0a06cbbee"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/scripts/run_isolated.py",
+      "git_blob_sha1": "31ad82354d891a7727902a486a84b06458a18070"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/scripts/setup_deps.py",
+      "git_blob_sha1": "8b7f609a415d840077120e84704ba7a7e27c56d2"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/scripts/setup_native_libs.py",
+      "git_blob_sha1": "bd61a5eb9ad8913c86f50ac254c325a310b191f1"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/scripts/study_storage.py",
+      "git_blob_sha1": "f44023f0752a1392eb26da475036082f3775d045"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/third_party/patches/openpi/0001-Allow-request-scoped-policy-sampling-seeds.patch",
+      "git_blob_sha1": "9744123806ab0c977ebd909f44c7f4b45c2aeb44"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab-isaac60/0001-Port-weightsmith-controls-to-Isaac-6.patch",
+      "git_blob_sha1": "0411507dc277efac8d2fbb60300a9717548566d5"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0001-Add-matched-spatial-steering-tasks-and-horizon-final.patch",
+      "git_blob_sha1": "ca26c7ce2201996ee1dbc8996f2a4ed869285bc8"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0002-Record-WAM-futures-and-make-sampling-reproducible.patch",
+      "git_blob_sha1": "014b4dd9f319499034599a93a1f4291d93d2115f"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0003-Add-auditable-predicate-oracle-prompt-control.patch",
+      "git_blob_sha1": "eb3256a1677c2d0c2e59d99c44f9472fe9d8310f"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0004-Add-direct-language-stress-prompts.patch",
+      "git_blob_sha1": "efc6fb23a4823a877e247a392d3ea6f30c0e3fe5"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0005-Make-steering-episodes-protocol-exact.patch",
+      "git_blob_sha1": "757e447d2f15479c4c1f035591e16ff03e925f3c"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/third_party/patches/robolab/0006-Skip-private-helper-modules-during-task-discovery.patch",
+      "git_blob_sha1": "d87022c541c191dbcb21b0b44b9c424a2c953f1a"
+    },
+    {
+      "path": "study/reproduction/fixed16/bundle/weightsmith/third_party/pi05_droid_jointpos.sha256",
+      "git_blob_sha1": "be384037ff66038e953c331f71db306982019184"
+    },
+    {
+      "path": "study/reproduction/fixed16/examples/enrollment.json",
+      "git_blob_sha1": "038e8532959f5bca428acd3f146ed51b9e39e2d6"
+    },
+    {
+      "path": "study/reproduction/fixed16/examples/provider_config.json",
+      "git_blob_sha1": "eac861070884c0d698ef9532d8a03cb660d2a97f"
+    },
+    {
+      "path": "study/reproduction/fixed16/examples/wsp.env.template",
+      "git_blob_sha1": "916fa73aa16b72a2895abe6bce74a1346fd74b0b"
+    },
+    {
+      "path": "study/reproduction/fixed16/reference/capture_precision_addendum.json",
+      "git_blob_sha1": "2b51141c9333c7d872321acba8f3b26856ad4d80"
+    },
+    {
+      "path": "study/reproduction/fixed16/reference/capture_resource_addendum.json",
+      "git_blob_sha1": "2ea538186860ca18a09c7f40ac88238bcad137e6"
+    },
+    {
+      "path": "study/reproduction/fixed16/reference/closure_addendum.json",
+      "git_blob_sha1": "f67f87c8e831b4508009f68921e75f4c1075ef5e"
+    },
+    {
+      "path": "study/reproduction/fixed16/reference/installation_support_manifest.json",
+      "git_blob_sha1": "74bd54e7b164c3c6ec45d4866ebc55c6f847c615"
+    },
+    {
+      "path": "study/reproduction/fixed16/reference/pinned_stack_origin.json",
+      "git_blob_sha1": "fc66edbd13fe3baa158532fdd5afe2c902732455"
+    },
+    {
+      "path": "study/reproduction/fixed16/reference/protocol.json",
+      "git_blob_sha1": "fc30272ddbf9267bfbc29eec4423806f5b1f891d"
+    },
+    {
+      "path": "study/reproduction/fixed16/reference/source_manifest.json",
+      "git_blob_sha1": "599d8cfe6f20253e1b277948f21c01e0a06cbbee"
+    },
+    {
+      "path": "study/reproduction/fixed16/reference/v2_runtime_binding.json",
+      "git_blob_sha1": "7d530523b57790d1105fe0f69cc3b3386211af91"
+    },
+    {
+      "path": "study/reproduction/fixed16/tests/test_package.py",
+      "git_blob_sha1": "643acdcff79a30059a3797d213d82eeba32c9f1b"
+    },
+    {
+      "path": "study/reproduction/fixed16/tools/bind_runtime.py",
+      "git_blob_sha1": "b38f1599e59202d210d4456db1af2a49ed472518"
+    },
+    {
+      "path": "study/reproduction/fixed16/tools/broker_fixed16.py",
+      "git_blob_sha1": "0af9c59d5b1a069a70ffbe3393544b5419b1f55a"
+    },
+    {
+      "path": "study/reproduction/fixed16/tools/build_package.py",
+      "git_blob_sha1": "69b2cd651e68953f5ae1c8c87baee21585920c30"
+    },
+    {
+      "path": "study/reproduction/fixed16/tools/enrollment.py",
+      "git_blob_sha1": "aa4169bd5f2f3f1e58c72aefe95d74c29d95db3d"
+    },
+    {
+      "path": "study/reproduction/fixed16/tools/provider_driver.py",
+      "git_blob_sha1": "ab4d40ae99f6dd41bf37484794bac211e36f3ca9"
+    },
+    {
+      "path": "study/reproduction/fixed16/tools/verify_package.py",
+      "git_blob_sha1": "9b1804294cd9bbef33a4a5c1fe30f7aac94203ea"
+    },
+    {
+      "path": "study/results/ctrl/PRIOR_FINDINGS.md",
+      "git_blob_sha1": "367586bf03d8aa2636b488a02de6603dec14a25d"
+    },
+    {
+      "path": "study/results/ctrl/README.md",
+      "git_blob_sha1": "d1d010de61f717d56c134385f4f320b353c039b7"
+    },
+    {
+      "path": "study/results/ctrl/ctb/BRIEF.md",
+      "git_blob_sha1": "b2da2ae4d85f925e47ddf866687f13a8e4e90344"
+    },
+    {
+      "path": "study/results/ctrl/ctb/FINAL.md",
+      "git_blob_sha1": "0a7e7e0e6990c8d8b471cf293493561cb12e4d6c"
+    },
+    {
+      "path": "study/results/ctrl/ctb/NOTEBOOK.md",
+      "git_blob_sha1": "2211dcfdcd3568ad7a98d050915d1779f87c97e0"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/an1.py",
+      "git_blob_sha1": "f4bfb25cdd7666a28460d78128bab736b24d432d"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/an2.py",
+      "git_blob_sha1": "b0e539c7c9a94d8b8a1101a77764a2a5da17ff88"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/an3.py",
+      "git_blob_sha1": "ea2ff36613f2b9c2c435df12f7ae9280132a4223"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/build_p1.py",
+      "git_blob_sha1": "64c92ce74e5252ba242d6949f17513dc8aa7a4cc"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/build_p1b.py",
+      "git_blob_sha1": "8f8a9a753e80e3674dad5c6ee1482bf298c26d5e"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/explore.py",
+      "git_blob_sha1": "f431d144bee8e9bd7a7e1180356ffdf24dc90090"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/explore2.py",
+      "git_blob_sha1": "bf2c27608fddb6e400cc570133234e2d6e065cdc"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/fk_summary.py",
+      "git_blob_sha1": "99667e42648e8f150b236da98072509df059ba40"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/grip_table.py",
+      "git_blob_sha1": "cfa40aff0bf40305368b64b247101823bc1a125e"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/holds.py",
+      "git_blob_sha1": "e58ebf926248c350798a799735971cf112067db3"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/mkspec1.py",
+      "git_blob_sha1": "0ba70f7797c93dc6c706040b90d87167064db439"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/mkspec2.py",
+      "git_blob_sha1": "8789f059aaafab830df9679b3d7f3637b3206dac"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/pred_p1.py",
+      "git_blob_sha1": "57934c3d2fbc912850f72762c2b04e8d6a6b7e2b"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/replans.py",
+      "git_blob_sha1": "a8771ff2192936b4360e471f127a16c09bafa384"
+    },
+    {
+      "path": "study/results/ctrl/ctb/scripts/w_out.py",
+      "git_blob_sha1": "640ba360b0d539970498ac6f54edd31e79de8d30"
+    },
+    {
+      "path": "study/results/ctrl/ctb/specs/diag1.json",
+      "git_blob_sha1": "843f4255e447d2037805ed80e7fc992c1986cb25"
+    },
+    {
+      "path": "study/results/ctrl/ctb/specs/pres2.json",
+      "git_blob_sha1": "9d26b29c4e5411c7a3faf66c9c3c57d74b59224d"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/BRIEF.md",
+      "git_blob_sha1": "99e68c9cd8a8b0a600b271592340cf1656be6185"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/FINAL.md",
+      "git_blob_sha1": "ee13716f083310b2004e394dfd9b75fe1c00dedd"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/NOTEBOOK.md",
+      "git_blob_sha1": "a1aca4e56f545e975fa9fbaa5bca55a6ec354571"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/after_commit.py",
+      "git_blob_sha1": "b8b523b2c65deb9ea9b02c65b4fc7c3e21169025"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/an_a1.py",
+      "git_blob_sha1": "1fb3177db530199975c83142690e3154f6372370"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/an_a2.py",
+      "git_blob_sha1": "76629866ee2b1d396041084c3143c32cfa6ddae8"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/an_a3.py",
+      "git_blob_sha1": "dbb1fe9f446462d31307069e45cf81fbef1a0c16"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/build_p1.py",
+      "git_blob_sha1": "3dacdd4d1ca3ffe0c71f4fc158fcb51a297cad24"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/build_p1b.py",
+      "git_blob_sha1": "520fed2b7537e5a7a2c36c131426aecc0c0a768e"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/cmp_hold.py",
+      "git_blob_sha1": "35a675928ad2c7e5a60eb29748d0515e996b22c5"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/ep_detail.py",
+      "git_blob_sha1": "b5b03499bfe6fc73dc1d59b5dba2aca383edff7a"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/ep_detail2.py",
+      "git_blob_sha1": "aee1a5d57709fbf76899ffed27a6a504e51140ca"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/ep_summary.py",
+      "git_blob_sha1": "7b18a855b6cc18d77d02a300ef42501ddc9f6e73"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/fk.py",
+      "git_blob_sha1": "57d977e080ab448c9567fb81180584b00dcc28b1"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/green_geom.py",
+      "git_blob_sha1": "0b36db65755a8c57948333c5d981cd2eb26f2782"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/green_sum.py",
+      "git_blob_sha1": "d203f86e90cd5ee66ceb8c058cd3f093b0b71b6e"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/grip_dyn.py",
+      "git_blob_sha1": "2ddb7bb43508d6d6781089b31fb95a3ef5d5dc4a"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/grip_stats.py",
+      "git_blob_sha1": "ca217aeafe2825aa164e42f84370e90b5d0ada1a"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/hold_scan.py",
+      "git_blob_sha1": "4b5fda8390d95d00770d42049bc855ce2f7be7d4"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/make_spec1.py",
+      "git_blob_sha1": "e27b4adf0e6cacf298b107891f088ba69211869d"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/probe.py",
+      "git_blob_sha1": "143f00e681778f6daa201f661401f4d71ba1d203"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/scripts/save_p1.py",
+      "git_blob_sha1": "f63dab4a9e9de1b2fbef13478f4708b6a4f5eb7d"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/specs/a1.json",
+      "git_blob_sha1": "88074599b5a61a40c53db0b25770d2d78b290334"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/specs/a2.json",
+      "git_blob_sha1": "685fcdd70cdfaae55bc01adb382bf6aa4cfa32a2"
+    },
+    {
+      "path": "study/results/ctrl/flatbox/specs/a3.json",
+      "git_blob_sha1": "3c6dfe04ee4cfa7f7b3f15cfb672dabc2f1fa613"
+    },
+    {
+      "path": "study/results/ctrl/glasses/BRIEF.md",
+      "git_blob_sha1": "2ba2706c910bb40d3b6af0f16bd3306e5349225a"
+    },
+    {
+      "path": "study/results/ctrl/glasses/FINAL.md",
+      "git_blob_sha1": "2c5de81705a9ea8970c73c5c3b502ada027708b6"
+    },
+    {
+      "path": "study/results/ctrl/glasses/NOTEBOOK.md",
+      "git_blob_sha1": "fccf22ceba07c8953cdd0350c5d5d9023191f18d"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/an_a1.py",
+      "git_blob_sha1": "cfac5801dfeebbfdc5adeb1b16bee009cd9a0504"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/an_a1b.py",
+      "git_blob_sha1": "7344cbcaa6085944a32a367b37719994ff69bc72"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/an_v1.py",
+      "git_blob_sha1": "8f073221e458fdee9b41f1833c2af7fc6d938956"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/build_p1.py",
+      "git_blob_sha1": "6f50651e06e94f9eca1f01b6136c31d516629809"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/build_p1b.py",
+      "git_blob_sha1": "db5a3904fcd9715c5e7edb846f7479872985fcea"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/env.py",
+      "git_blob_sha1": "2208ed30fa883967ead410eadb9c9256dbfd9539"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/fk.py",
+      "git_blob_sha1": "8f62aa18e80c1d0d75465297407ece1b6293c359"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/fk2.py",
+      "git_blob_sha1": "470cd05554f5b3a87ee280746ed777498f73736c"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/jac.py",
+      "git_blob_sha1": "868059583360a87a20584b56a4b280a140ab3c24"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/mech_p1.py",
+      "git_blob_sha1": "e1411c9ce5920c6ce65eec048aec59ae7e64165f"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/pick_items.py",
+      "git_blob_sha1": "d33bcb341cdc82940a9f646548307da51128c91b"
+    },
+    {
+      "path": "study/results/ctrl/glasses/scripts/w_out.py",
+      "git_blob_sha1": "a396af30b06ca9af547dbf3b31f2ee18eb6111b7"
+    },
+    {
+      "path": "study/results/ctrl/glasses/specs/a1.json",
+      "git_blob_sha1": "083f00630c44d2825624bf592d3761279b1602a7"
+    },
+    {
+      "path": "study/results/ctrl/glasses/specs/v1.json",
+      "git_blob_sha1": "b7f9d031d802337a829855b6128a4e0f7026f26b"
+    },
+    {
+      "path": "study/results/ctrl/heldout/ctrl-ctb__p1-RubiksCubeThenBananaTask-91008-64.json",
+      "git_blob_sha1": "d429b3c91273cb8a4c71e576046067e7b46a378b"
+    },
+    {
+      "path": "study/results/ctrl/heldout/ctrl-ctb__p1-RubiksCubeThenBananaTask-91008-64.plan.json",
+      "git_blob_sha1": "d890e5b67f177f5900827175d6e151ac2f4a4f67"
+    },
+    {
+      "path": "study/results/ctrl/heldout/ctrl-glasses__p1-PickGlassesTask-91008-64.json",
+      "git_blob_sha1": "f61c59c6a3aa2b060f0ef4e3f34a24d456d269e2"
+    },
+    {
+      "path": "study/results/ctrl/heldout/ctrl-glasses__p1-PickGlassesTask-91008-64.plan.json",
+      "git_blob_sha1": "fb2fa5464d96a1f198725519561cac60d497f569"
+    },
+    {
+      "path": "study/results/ctrl/heldout/ctrl-mustard__p1-MustardInLeftBinTask-91008-64.json",
+      "git_blob_sha1": "498dd9c36457945529335d0b5a602b90303e67e6"
+    },
+    {
+      "path": "study/results/ctrl/heldout/ctrl-mustard__p1-MustardInLeftBinTask-91008-64.plan.json",
+      "git_blob_sha1": "501abf4731c7b40f36122830d22ea8e0f28e82dd"
+    },
+    {
+      "path": "study/results/ctrl/heldout/ctrl-stack3__p1-Stack3RubiksCubeTask-91008-64.json",
+      "git_blob_sha1": "fe7d3a8d50e6f79e38894345bdb2cfd486bcc0fa"
+    },
+    {
+      "path": "study/results/ctrl/heldout/ctrl-stack3__p1-Stack3RubiksCubeTask-91008-64.plan.json",
+      "git_blob_sha1": "48e4e57b892726a80c031f722d6ade2aaa1d0c91"
+    },
+    {
+      "path": "study/results/ctrl/left/BRIEF.md",
+      "git_blob_sha1": "9c8638b78192d42c9afbc93f90c77905c1f1cbf3"
+    },
+    {
+      "path": "study/results/ctrl/left/FINAL.md",
+      "git_blob_sha1": "71885bcd4d074315be7726384eb44f3a1ecd7edd"
+    },
+    {
+      "path": "study/results/ctrl/left/NOTEBOOK.md",
+      "git_blob_sha1": "37b2407b17663bd1d81614955fce903329b41495"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/actfmt.py",
+      "git_blob_sha1": "631d1380342efc8e2c51a53e2f83bf646b2c92f4"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/actsinfo.py",
+      "git_blob_sha1": "d11c99539d25e08213e9d363b3391376e8b9e13f"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/an_a1.py",
+      "git_blob_sha1": "cd01321754a9efa2e2e660e7aa1c514b0d8a38d9"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/carry.py",
+      "git_blob_sha1": "7005a13e5d2e89f22a8bb384c60649c324da9e6d"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/carry2.py",
+      "git_blob_sha1": "3e8ace50b6c98e6d35c41d745ca9786a6ceb2ea2"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/carrysum.py",
+      "git_blob_sha1": "150497c115232adc731178689e6e032d82a8ab80"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/chk_inj.py",
+      "git_blob_sha1": "7c215de3b02d8dfc2ebadb498cc500219a7b8b6b"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/detail.py",
+      "git_blob_sha1": "3c17880b1d39765ac8901477be0ba7864ea56185"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/drop0.py",
+      "git_blob_sha1": "631699873ca73d7015c785515c73c0aa39713dbe"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/edit_l8.py",
+      "git_blob_sha1": "3adeadb2460044405e3b9620c989658c4db5a72a"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/edit_steer.py",
+      "git_blob_sha1": "1693c315eaaf6ae55e70b9dc3a9ea05056099096"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/epsum.py",
+      "git_blob_sha1": "5654d4e5cf13514213c40f321c2b88c2f122e234"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/explore.py",
+      "git_blob_sha1": "1f0eca8dd65f8f26ac30a555ac90941b4c869c30"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/fk.py",
+      "git_blob_sha1": "80c0340a7d1edca8ecc0a3ef0a8a3f3c8588f53f"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/mkspec1.py",
+      "git_blob_sha1": "35ff728898d4b5ec6a7ae24f2d311c073000a9ef"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/mkspec2.py",
+      "git_blob_sha1": "22c9a88ef0c5147a7cda73c954a47ae08c800be0"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/res_a1.py",
+      "git_blob_sha1": "0b178779f0a1f1755786299c5f0449828cc690e8"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/sel_units.py",
+      "git_blob_sha1": "e4687dc51d8da0e45e04bd92aefcf9aa960bf453"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/traj.py",
+      "git_blob_sha1": "cefe9252f3eb53001668847c30ad83c5ed419d0b"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/val.py",
+      "git_blob_sha1": "1be957e2169e211b3ae7ab060b3b912a9ac088d6"
+    },
+    {
+      "path": "study/results/ctrl/left/scripts/wstats.py",
+      "git_blob_sha1": "f5763bb70e5677f0f98093e9b4ecb90a2254c7ac"
+    },
+    {
+      "path": "study/results/ctrl/left/specs/a1.json",
+      "git_blob_sha1": "07e55bfb2e6fd92e3f4b26d99eaadd6a1512fdc2"
+    },
+    {
+      "path": "study/results/ctrl/left/specs/a2.json",
+      "git_blob_sha1": "d2f01063d167585fdc1a24196244d76e6e80e5ef"
+    },
+    {
+      "path": "study/results/ctrl/left/specs/a3.json",
+      "git_blob_sha1": "e0e03ed25022c3a79e2f93fc6079190d941d1218"
+    },
+    {
+      "path": "study/results/ctrl/left/specs/a4.json",
+      "git_blob_sha1": "b69d5f28c1d3604169e079ab668b84fc964ff4c9"
+    },
+    {
+      "path": "study/results/ctrl/mustard/BRIEF.md",
+      "git_blob_sha1": "5e001d68ab701a5b7245bb605cce11c51e87398a"
+    },
+    {
+      "path": "study/results/ctrl/mustard/FINAL.md",
+      "git_blob_sha1": "89e57c4f1f41a4732aed68c875e8720a1a1c0b97"
+    },
+    {
+      "path": "study/results/ctrl/mustard/NOTEBOOK.md",
+      "git_blob_sha1": "9396604f7951d2ccacc7a2e7d5092faac1e8d05a"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/an1.py",
+      "git_blob_sha1": "8e933ba62831abcdf427199a46ca99f2dfe611f7"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/an2.py",
+      "git_blob_sha1": "ac0955ba986a82fb36659d4350cb63d4f772ceb2"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/an_v.py",
+      "git_blob_sha1": "32763eb03dfca8a79842739ccad1904cf4831eb5"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/carry.py",
+      "git_blob_sha1": "f35e190c3cb1cc28de8ee110e4e13e76353ddd6e"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/carry_p1.py",
+      "git_blob_sha1": "5d2647ae764e5b02ff9323d96bb3889d99eb94e6"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/decisions.py",
+      "git_blob_sha1": "1ba0f1c490adbe02b5cbc940ea091f6263f4a97b"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/ep_struct.py",
+      "git_blob_sha1": "b5485dd494269bcfbec2fd5c5c000b98cbb32707"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/fk.py",
+      "git_blob_sha1": "530c0472c84de9cbad7dd7f6224883e419b4b43f"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/grasps.py",
+      "git_blob_sha1": "ec9d5f67395430e7ad1983b11f7913fb4efa2401"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/mk_p1.py",
+      "git_blob_sha1": "64c3c1b944561e0ecb522c03fb561296fe4e20c2"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/mkspec1.py",
+      "git_blob_sha1": "7227bcbbf0ccd6e2739a2f25baa116b0b60a81fe"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/probe.py",
+      "git_blob_sha1": "886e3548c958767ee4b0ed40b042ef0253abb8e7"
+    },
+    {
+      "path": "study/results/ctrl/mustard/scripts/timeline.py",
+      "git_blob_sha1": "cd9e19eb8ab20979140faea191451a9306717b94"
+    },
+    {
+      "path": "study/results/ctrl/mustard/specs/a1.json",
+      "git_blob_sha1": "17607f9d33a422d7dba6a29f90272a7e3dd3f446"
+    },
+    {
+      "path": "study/results/ctrl/mustard/specs/v1.json",
+      "git_blob_sha1": "fb51da69f0a1ad0d2c1a1d425ecb452dfc438e7a"
+    },
+    {
+      "path": "study/results/ctrl/operator/ctrl_collect.py",
+      "git_blob_sha1": "66a945bc410becd37c2d557e69af79ac4a416b72"
+    },
+    {
+      "path": "study/results/ctrl/operator/ctrl_heldout_tally.py",
+      "git_blob_sha1": "2cde0b9162204c4b8c0f3a31f0ad320383f46e22"
+    },
+    {
+      "path": "study/results/ctrl/operator/score_ctrl.sh",
+      "git_blob_sha1": "bc2f27944e615c5c816903b94d3e305f03fd9961"
+    },
+    {
+      "path": "study/results/ctrl/operator/wait_proj.sh",
+      "git_blob_sha1": "9d9f650ab8e349031f9fc700c8d77a524bfd934e"
+    },
+    {
+      "path": "study/results/ctrl/stack3/BRIEF.md",
+      "git_blob_sha1": "60ecdd0a2c3762559607befd536d61e2d80e3b5e"
+    },
+    {
+      "path": "study/results/ctrl/stack3/FINAL.md",
+      "git_blob_sha1": "334c81a53aa7d991cd7b71556fc47aee71e4fe68"
+    },
+    {
+      "path": "study/results/ctrl/stack3/FINAL2.md",
+      "git_blob_sha1": "ad3833ee5926e0a269d4aa440a802d7fdf529e16"
+    },
+    {
+      "path": "study/results/ctrl/stack3/NOTEBOOK.md",
+      "git_blob_sha1": "e0dc2aa21e59cf22455edc0294412f7f43d810d5"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/an1.py",
+      "git_blob_sha1": "51a0fde39f926e184c4898af1dac5419363a2a17"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/an2.py",
+      "git_blob_sha1": "37ac39a031d20f751c5c72e5c9c8a35cc084937e"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/an3.py",
+      "git_blob_sha1": "52f3455c173a514984e12c4bfabad7c2825987be"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/an4.py",
+      "git_blob_sha1": "7dee8dc0e4b20279c23a6c497a23adebb8f9025b"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/dither.py",
+      "git_blob_sha1": "a4d453b3fd36ffffa638eced4fff880e91532b9a"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/explore.py",
+      "git_blob_sha1": "a798aafa289b4657e2c713c2d495361b1128bd51"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/fk.py",
+      "git_blob_sha1": "a3ec6d64ee9071a9380b998f60398e5d770f2838"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/phase.py",
+      "git_blob_sha1": "498b594397bb78da5a330b97b6d069038fc9b2ba"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/seg.py",
+      "git_blob_sha1": "6412000436b55801c6e08a9a909c547885d7f8cf"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts/select.py",
+      "git_blob_sha1": "b231b8c28666bf2dc60b5ae2ee7525ce9503b5f8"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts_round2/build.py",
+      "git_blob_sha1": "1caca7bc18d511eaf9382386974edb5b84bf1274"
+    },
+    {
+      "path": "study/results/ctrl/stack3/scripts_round2/recon.py",
+      "git_blob_sha1": "bbdfacc4cca1bd80942f09a37822a53b728a3727"
+    },
+    {
+      "path": "study/results/ctrl/stack3/specs/a1.json",
+      "git_blob_sha1": "d1e1ec325b3cb4bec6494f0fa2094617a048be62"
+    },
+    {
+      "path": "study/results/ctrl/summary.json",
+      "git_blob_sha1": "32447a3b5e2a4d6fd8e0d37abca8681560444627"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/BRIEF.md",
+      "git_blob_sha1": "fa171825bf940c35b93845e8473ec615fd9a40f8"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/FINAL.md",
+      "git_blob_sha1": "27e7c97c6721d33e771c461281650f12931087da"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/NOTEBOOK.md",
+      "git_blob_sha1": "a08f5e11204f963d80b041bbbf9a14c9526caa46"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/an1.py",
+      "git_blob_sha1": "493138c6d5211ec7446a5dc63e6f9cab4af83714"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/an2.py",
+      "git_blob_sha1": "3c9e42025d308212d010f8e09f1f4ec309b35455"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/an3.py",
+      "git_blob_sha1": "95b32c96ccd7fb54d58b8a05ae056b82c8c9fdf4"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/an4.py",
+      "git_blob_sha1": "b5649fc762b6d689f3105fffd23ad223fa161418"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/an5.py",
+      "git_blob_sha1": "9d510db755a280bb019e9da2c9559224d5f62709"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/explore_eps.py",
+      "git_blob_sha1": "144965a0dc6be36a6d3d2faeb236780640ef958c"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/fk.py",
+      "git_blob_sha1": "57d565555bbe90de5508f2a965f8580418071d4d"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/mk_p1.py",
+      "git_blob_sha1": "d433a015216c82eac72333bd056584c5e0d1eb59"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/mkspec1.py",
+      "git_blob_sha1": "ad65bd3761ef42e1855655476ddd3a0040171eb8"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/seg.py",
+      "git_blob_sha1": "5a5d7ec1d4218ec2ca5f08090a60504f3ad99485"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/summ.py",
+      "git_blob_sha1": "0b82f2ed7afca820a2a2660f7f36a3488d9ed6eb"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/scripts/traj.py",
+      "git_blob_sha1": "0b1fe77bdceae518c75c9abaa3fa64077301dd0e"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/specs/a1.json",
+      "git_blob_sha1": "7ebfc3de0e2927bf29c005adf3c51a2f74240ecc"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/specs/a2.json",
+      "git_blob_sha1": "d300cf98ca2fabe2afc71b4444cd2c8a0a433af9"
+    },
+    {
+      "path": "study/results/ctrl/yellowred/specs/v1.json",
+      "git_blob_sha1": "59b78bda02229cf78b35b41af6545bd89cdd7af6"
+    },
+    {
+      "path": "study/results/opus/comparisons.json",
+      "git_blob_sha1": "8f7b3264fa15a1710133b6e57bddf8195573c2d0"
+    },
+    {
+      "path": "study/results/opus/ctb/README.md",
+      "git_blob_sha1": "b6f0524a55c469c868cb5937fce99f038c2b984d"
+    },
+    {
+      "path": "study/results/opus/ctb/chk.py",
+      "git_blob_sha1": "c801f6fdda44c86a4ac1e871a987fd5844b9fa64"
+    },
+    {
+      "path": "study/results/opus/ctb/dirs.py",
+      "git_blob_sha1": "80fc1b9af0b613260c15ddfc85cebd3ec7a8be73"
+    },
+    {
+      "path": "study/results/opus/ctb/gap.py",
+      "git_blob_sha1": "54e21e85ebb1619e05af3fff875bd20fb6820693"
+    },
+    {
+      "path": "study/results/opus/ctb/gap2.py",
+      "git_blob_sha1": "1470430016401131b1a2174b90f90520136885ba"
+    },
+    {
+      "path": "study/results/opus/ctb/phase_scores.py",
+      "git_blob_sha1": "b938415907b1707942af8e2ac510097d060a3875"
+    },
+    {
+      "path": "study/results/opus/ctb/steer_edit.py",
+      "git_blob_sha1": "b1aef5199dea26625ca24a6f37770a2d5b5dbf58"
+    },
+    {
+      "path": "study/results/opus/ctb/v2m_edit.py",
+      "git_blob_sha1": "3048ad843f1357f8431a1587f0f2e909005ef146"
+    },
+    {
+      "path": "study/results/opus/ctb/v2mi2_edit.py",
+      "git_blob_sha1": "3e270d089b4f5a4edfa1d00096002ec664f53f4d"
+    },
+    {
+      "path": "study/results/opus/ctb/v2mi_edit.py",
+      "git_blob_sha1": "b8af64b76536a3087f5127a9d44e100cb3b87aaa"
+    },
+    {
+      "path": "study/results/opus/ctb/v2p_edit.py",
+      "git_blob_sha1": "f3d62aa2f86310a5c27d06ea57b8963027597956"
+    },
+    {
+      "path": "study/results/opus/ctb/v2s_edit.py",
+      "git_blob_sha1": "8871c3e72a697bff1f580aab13eb6967f569c80b"
+    },
+    {
+      "path": "study/results/opus/ctb/vs_v2.py",
+      "git_blob_sha1": "7613f93542932b7e1e31acd7b84dbcb0ec542f58"
+    }
+  ],
+  "secondary_model_sources": {
+    "cosmos": {
+      "kind": "branch",
+      "branch": "cross-cosmos/v1",
+      "path": "study/results/cross/metrics_cosmos.json",
+      "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-cosmos/v1/study/results/cross/metrics_cosmos.json",
+      "commit": "2444083b32c2",
+      "pinned_full_git_sha": "2444083b32c2686646d643f62110ae40088eebed",
+      "latest_branch_sha_at_audit": "2444083b32c2686646d643f62110ae40088eebed",
+      "pinned_file_sha256": "875b6555325f76928ec1fc68c44246a1c4da301b37ddec6e0c7b3bd3ed92d0aa",
+      "pinned_file_bytes": 47251,
+      "source_file_found": true,
+      "independently_reproduced": false
+    },
+    "groot": {
+      "kind": "branch",
+      "branch": "cross-groot/v1",
+      "path": "study/results/cross/metrics_groot.json",
+      "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-groot/v1/study/results/cross/metrics_groot.json",
+      "commit": "f1dfb229b095",
+      "pinned_full_git_sha": "f1dfb229b0959d235804bf308d0e79d3336b8efc",
+      "latest_branch_sha_at_audit": "f1dfb229b0959d235804bf308d0e79d3336b8efc",
+      "pinned_file_sha256": "484cafde82a98da2cf3ed79d9691aaa43d3d194501bfc07f8dbdb30112073dfb",
+      "pinned_file_bytes": 21949,
+      "source_file_found": true,
+      "independently_reproduced": false
+    },
+    "pi05": {
+      "kind": "branch",
+      "branch": "cross-pi05/v1",
+      "path": "study/results/cross/metrics_pi05.json",
+      "url": "https://github.com/adeeb10abbas/weightsmith/blob/cross-pi05/v1/study/results/cross/metrics_pi05.json",
+      "commit": "05b5a28fd7b5",
+      "pinned_full_git_sha": "05b5a28fd7b5112daf5667c9baa497b98f88a111",
+      "latest_branch_sha_at_audit": "05b5a28fd7b5112daf5667c9baa497b98f88a111",
+      "pinned_file_sha256": "846dbb52327c694268dc56822969c0d9daea80e23035f099a84f2d8bd2060f12",
+      "pinned_file_bytes": 123063,
+      "source_file_found": true,
+      "independently_reproduced": false
+    }
+  },
+  "secondary_model_audit_status": "Pinned aggregate source files exist and are hashed at the revisions cited by the committed site; raw rollout/checkpoint integrity and independent reproduction remain unverified.",
+  "metrics_sha256": "6a6df3bcfe31827a79422ea2d95c43f324be22ea63a7ee6ede66c2e2ccda0626"
+}

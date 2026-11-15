@@ -1,0 +1,141 @@
+# Planning manifest for a NEW experiment orchestrator; NOT a native
+# weightsmith/owsp config. Implement a loader and validate against source.
+project: weightsmith-iros2027
+version: v2_additive
+experiment_design: extension_of_frozen_published_evidence
+existing_evidence:
+  preserve_unchanged:
+    - paper/main.tex
+    - BENCHMARK.md
+    - study/results/opus/comparisons.json
+    - study/results/opus/ctb/
+    - study/results/ctrl/README.md
+    - study/RESULTS.md
+  no_overwrite: true
+  no_pool_astra_claude_runtimes: true
+  do_not_count_old_ctb_as_independent_new_repair: true
+  no_duplicate_same_scene_same_edit_evals_without_reason: true
+  publish_new_under: study/iros2027/
+conference: IROS_2027
+paper_deadline: '2027-03-01'
+repository: https://github.com/adeeb10abbas/weightsmith
+primary_model:
+  id: pi05_droid_jointpos
+  code: OpenPI
+  baseline: zero_shot
+  checkpoint_sha: RECORD_FROM_HOST
+secondary_models:
+  - id: cosmos3_edge
+    status: AUDIT_EXISTING_PROJECT_SITE_RESULTS_FIRST
+  - id: groot_n1_7
+    status: AUDIT_EXISTING_PROJECT_SITE_RESULTS_FIRST
+protocol:
+  enable_holdout_readback_to_editor: false
+  log_all_screens: true
+  semantic_goal_human_review_required: true
+  success_predicate_must_remain_fixed: true
+  pretrained_skill_gate: true
+  scenes_randomized_explicitly: true
+  preserve_original_fixed_scene_cohort: true
+  keep_new_scene_cohort_separate_from_original: true
+  paired_policy_seeds: true
+  counterbalanced_order: ABBA
+  report_base_base_noise: true
+  report_negative_results: true
+  primary_success_test: exact_mcnemar
+  confidence_interval: paired_bootstrap_95
+  multiple_tests: holm_for_primary_repair_cases
+  no_holdout_tuning: true
+  frozen_candidate_per_case: true
+screen:
+  planned_pairs: 12
+  existing_or_reference_pairs: [T01, S03]
+  repeated_goal_alternatives: [[T01, T04], [T02, T03], [B01, B02], [B03, B04]]
+  correlated_converse_family: [S01, S02]
+  count_independent_repairs_by: independent_diagnosed_failure_and_distinct_goal_with_new_edit
+  publish_all_pairs_but_cluster_inference_by_goal: true
+  pairs_per_family: 4
+  trial_starts_per_pair: 32
+  families:
+    - temporal_scope
+    - spatial_converse_goal_equivalence
+    - object_destination_binding
+  exploratory_eligibility:
+    base_orig_success_max: 0.40
+    base_explicit_success_min: 0.60
+    gap_min_pp: 25
+    diagnostic_decision_effect_required: true
+  practice_only: true
+repair:
+  recipe_first: distill_image_cells_layers_8_to_16
+  capture_source: failed_practice_decisions
+  max_closed_loop_candidates_per_case: 2
+  conditions:
+    - base_original
+    - base_explicit
+    - distilled_original
+    - spectrum_matched_random_original
+    - distilled_explicit
+  heldout_pairs_per_condition: 128
+  practice_pairs_per_condition: 64
+  heldout_slots: NEW_RESERVED_BLOCKS_AT_OR_ABOVE_120000
+  controls:
+    - identity_base_vs_base
+    - identity_edit_vs_edit
+    - norm_rank_spectrum_matched_random
+    - wording_upper_bound
+scene_sampler:
+  version: IMPLEMENT_ME
+  dev_scene_seeds: RESERVED_DEV_ONLY
+  test_scene_seeds: OPERATOR_ONLY
+  dimensions:
+    - sampled_object_xy_within_valid_reachable_workspace
+    - left_right_mirror_counterbalance
+    - distractor_identity_and_xy
+    - camera_jitter
+    - illumination_texture_shift
+  verify_actual_initial_poses: true
+retention:
+  min_tasks: 16
+  desired_tasks: 24
+  pairs_per_task: 64
+  conditions: [base_original, distilled_original]
+  groups:
+    - unrelated_tasks
+    - same_object_different_relation
+    - same_relation_different_object
+    - opposite_relation
+    - paraphrases
+    - preserve_original_known_good
+  aggregate_noninferiority_margin_pp: -10
+  worst_case_regression_must_be_reported: true
+analysis:
+  per_case:
+    - base_success_rate
+    - explicit_success_rate
+    - edited_success_rate
+    - fixed_pairs
+    - broke_pairs
+    - paired_delta_pp
+    - paired_ci_95
+    - exact_mcnemar_p
+    - failure_stage_histogram
+    - model_weight_delta_norm
+    - edit_sha
+  primary:
+    - eligible_over_screened
+    - independently_heldout_improved_over_eligible
+    - per_case_paired_effects
+    - mean_and_worst_retention_regression
+  visualizations:
+    - repair_funnel
+    - heldout_forest_plot
+    - interference_heatmap
+    - scene_shift_robustness
+    - mechanism_ablation
+milestones:
+  infrastructure: '2026-12-07'
+  independent_screen: '2027-01-04'
+  evaluation_freeze: '2027-02-01'
+  full_draft: '2027-02-15'
+  submission_ready: '2027-02-23'

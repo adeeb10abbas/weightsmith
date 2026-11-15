@@ -1,0 +1,88 @@
+{
+  "recorded_at_utc": "2026-11-15T00:08:42.923091+00:00",
+  "host": "ali-MS-7D25",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "free_bytes": 36450549760,
+  "environments": {
+    "policy": {
+      "executable": "/home/ali/openpi-robolab/.venv/bin/python",
+      "packages": {
+        "isaaclab": null,
+        "isaacsim": null,
+        "jax": "0.5.3",
+        "jaxlib": "0.5.3",
+        "numpy": "1.26.4",
+        "nvidia-cuda-runtime-cu12": "12.6.77",
+        "nvidia-cudnn-cu12": "9.5.1.17",
+        "robolab": null,
+        "torch": "2.7.1"
+      },
+      "python": "3.11.15 (main, Jun 23 2026, 15:19:43) [Clang 22.1.3 ]"
+    },
+    "simulator": {
+      "executable": "/home/ali/vibes/weight-space-policy-lab/robolab_env/.venv/bin/python",
+      "packages": {
+        "isaaclab": "2.2.0",
+        "isaacsim": "5.0.0.0",
+        "jax": null,
+        "jaxlib": null,
+        "numpy": "1.26.0",
+        "nvidia-cuda-runtime-cu12": null,
+        "nvidia-cudnn-cu12": null,
+        "robolab": "0.2.1",
+        "torch": "2.7.1+cu118"
+      },
+      "python": "3.11.15 (main, Jun 23 2026, 15:19:43) [Clang 22.1.3 ]"
+    }
+  },
+  "gpus": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "index, uuid, name, driver_version, memory.total [MiB], memory.used [MiB], utilization.gpu [%], power.limit [W], temperature.gpu\n0, GPU-169a32b5-70a4-4e3b-732b-1e14c55fde3a, NVIDIA GeForce RTX 3090, 535.309.01, 24576 MiB, 22750 MiB, 83 %, 250.00 W, 77\n1, GPU-d8caae27-6b67-b96a-74de-124a0ea0907e, NVIDIA GeForce RTX 3090, 535.309.01, 24576 MiB, 277 MiB, 0 %, 250.00 W, 32"
+  },
+  "workspace": {
+    "declared_base_sha256": "7f887d213226dbb576a450c618314ef07ed168ae69521b131248dac99b8793a7",
+    "metadata_sha256": "511b0f8c392832368e9b3d71eb87e1472670982152d8dbac32b1c80ff860a993",
+    "path": "/home/ali/vibes/weight-space-policy-lab/runs/robolab-full-policy/editor",
+    "tensor_bytes_reverified": false,
+    "tensor_count": 730
+  },
+  "limits": [
+    "No simulator run, asset verification, scene-pose check or held-out access is performed.",
+    "Source digests identify observed code, without proving equivalence to a published revision.",
+    "Workspace identity is declared metadata, not fresh verification of exported tensor bytes."
+  ],
+  "repository": {
+    "exists": true,
+    "git_sha": "cf39ab173d52ebb2b29bb8b424b36072cc7124b8",
+    "path": "/home/ali/weightsmith-iros2027",
+    "scope": "code only; excludes assets, data, results, hidden directories and symlinks",
+    "source_sha256": "ce5db2fb3d5dd36d39b50d9a1742dcae92e6f192e2a8acacbca8bad6b243b71c",
+    "source_file_count": 77
+  },
+  "openpi": {
+    "exists": true,
+    "git_sha": "9e46d3aea26417bfb564227734b95d010aa827e5",
+    "path": "/home/ali/openpi-robolab",
+    "scope": "code only; excludes assets, data, results, hidden directories and symlinks",
+    "source_sha256": "1d5530d4c3c7e537cfccbaccef34e385325b18a8d5553756e20b806742cc2a9f",
+    "source_file_count": 102
+  },
+  "robolab": {
+    "exists": true,
+    "git_sha": null,
+    "path": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout",
+    "scope": "code only; excludes assets, data, results, hidden directories and symlinks",
+    "source_sha256": "fb21bdd68f46cf96caa6edfcb8f7532a974585d5a9d1496738fb730602ade271",
+    "source_file_count": 295
+  },
+  "checkpoint": {
+    "identity_definition": "sha256 of the published per-file manifest; not a hash of concatenated model weights",
+    "manifest_sha256": "c5e21f3480d1a29e9230ac3963ebd20dcb5aea00c1a2f773abea00c7bdcb5061",
+    "path": "/home/ali/vibes/weight-space-policy-lab/artifacts/openpi-cache/openpi-assets-simeval/pi05_droid_jointpos",
+    "verification": "verified",
+    "verified_file_count": 26
+  },
+  "full_ledger": "projects/iros27-ctb-repro/provenance.json",
+  "full_ledger_sha256": "8399d37a3e2892f3932a5089fdc90f3c7cb92232b77f119fe9eaea62561f7986"
+}

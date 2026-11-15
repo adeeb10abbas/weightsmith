@@ -1,0 +1,31 @@
+{
+  "job_id": "iros2027-v2-startup-ctb-001",
+  "cohort_id": "iros2027-v2-runtime-qualification",
+  "status": "complete",
+  "baseline_episodes": 16,
+  "baseline_successes": 1,
+  "baseline_failures": 15,
+  "edited_policy_episodes": 0,
+  "heldout_episodes": 0,
+  "screen_pairs_completed": 0,
+  "new_independent_repairs": 0,
+  "rollout_wall_minutes_reported": 8.0,
+  "activation_capture_items": 1,
+  "activation_replay_max_abs_action_error": 0.004023530789183383,
+  "activation_capture_id": "smoke-1794701562",
+  "evidence": "startup-episodes.jsonl",
+  "raw_project": "projects/iros27-ctb-repro",
+  "smoke_log_sha256": "53828da0184b482501a16d93ec60e66c66da9e447979de3e7af1fa4bdebb30f1",
+  "limitations": [
+    "Unedited policy only; no estimate of repair effect or paired-run discordance.",
+    "Fixed stock scene; scene-root hash and camera hashes recorded, actual initial object poses not captured.",
+    "Failure stages remain unclassified pending event-oracle audit.",
+    "The generic smoke script prints stacking reference rates at the end; those do not apply to this CTB project."
+  ],
+  "screen_cost_estimate": {
+    "episodes_upper_bound": 640,
+    "batches_of_16": 40,
+    "one_lane_hours_at_startup_batch_speed": 5.33,
+    "qualification": "Rough planning estimate only: task durations, rendering, extra lanes, captures and diagnostics may differ. Storage must be checked before launch."
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "job_id": "iros2027-v2-startup-ctb-001",
+  "cohort_id": "iros2027-v2-runtime-qualification",
+  "reuse_or_new": "replication",
+  "claim": "Qualify the current main runtime on this host: full practice episodes and one replay activation capture. Not a new repair or a repeat of the published headline comparison.",
+  "started_under_packet": "v1; v2 arrived during execution",
+  "scope": "development only",
+  "task_id": "RubiksCubeThenBananaTask",
+  "condition": "base_original",
+  "semantic_goal_id": "cube_then_banana_in_bowl",
+  "scene_spec": "stock RoboLab fixed scene, environment seed 0",
+  "scene_randomization": false,
+  "policy_slots": [
+    64000,
+    64001,
+    64002,
+    64003,
+    64004,
+    64005,
+    64006,
+    64007,
+    64008,
+    64009,
+    64010,
+    64011,
+    64012,
+    64013,
+    64014,
+    64015
+  ],
+  "envs": 16,
+  "model_id": "pi05_droid_jointpos",
+  "checkpoint_manifest_sha256": "c5e21f3480d1a29e9230ac3963ebd20dcb5aea00c1a2f773abea00c7bdcb5061",
+  "source_git_sha": "cf39ab173d52ebb2b29bb8b424b36072cc7124b8",
+  "candidate": "base",
+  "edited_weights": false,
+  "heldout": false,
+  "estimated_wall_minutes": [
+    10,
+    15
+  ],
+  "max_rollout_episodes": 16,
+  "max_activation_capture_items": 1,
+  "status": "complete",
+  "output_root": "projects/iros27-ctb-repro",
+  "analysis_limitations": [
+    "No improvement claim; unedited policy only.",
+    "No novel-scene claim.",
+    "RoboLab source is installed without Git metadata; use recorded source digest.",
+    "Policy slots are development IDs, not a claim of fresh held-out data."
+  ],
+  "task_and_scene_file_sha256": {
+    "assets/scenes/rubiks_cube_banana_bowl.usda": "22b95d601defb9252a448a1b37d0548e1f2dc3bfb0c3d86a04c2ef5c4cc817a0",
+    "robolab/tasks/benchmark/rubiks_cube_then_banana.py": "a7cb6b2469f4269f888f3d4b0441254a844bf95583516473610a714dfaa2e23f",
+    "robolab/core/task/conditionals.py": "ff267b76c06aad6bed11842671373176d14222d9e158a139bf77d2588f4ae7f1"
+  },
+  "scene_asset_integrity_scope": "Hashes of root scene and task/scoring code only; referenced USD assets and actual initial poses not verified.",
+  "predicate": "objects_placed_in_container_in_order(rubiks_cube, banana; bowl); detached gripper and contact required",
+  "result": "startup-result.json",
+  "simulator_source_sha256": "fb21bdd68f46cf96caa6edfcb8f7532a974585d5a9d1496738fb730602ade271"
+}
