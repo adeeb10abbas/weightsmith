@@ -8,6 +8,29 @@ The repository base is `cf39ab173d52ebb2b29bb8b424b36072cc7124b8` (current `main
 All additions are under `study/iros2027/v2/`. Original study records, code and scoring predicates remain
 unchanged. Existing local experiment branches and partially completed work have not been modified.
 
+## Running development diagnostics
+
+Following the user's request to continue running, `screen_worker.py` now advances two bounded jobs:
+S01 (cube-left) on GPU 0 and S02 (cube-right) on GPU 1. Each uses the exact packet wordings on 32
+matched development starts: 64 episodes per case, **128 episodes total**. The four 16-episode batches
+follow ABBA order. T01 and S03 are not rerun. No edit or held-out test is scheduled.
+
+These are provisional development diagnostics. Semantic review remains pending and the worker does not
+declare a case eligible, tune an edit, or promote any independent-repair claim. The frozen
+`spatial-pilot.json` records the robot reference frame, fixed-reference check, hypothesis and budget.
+
+The background services are `weightsmith-iros27-s01-dev` and `weightsmith-iros27-s02-dev`. They survive
+the chat turn and stop when their four batches finish, if disk space drops below 10 GiB, if a batch is
+incomplete, or after a two-hour maximum. Incomplete evidence is preserved for inspection. Completed
+batches have receipts and can be skipped on an explicit restart; the service does not silently rerun
+an interrupted batch. Upstream pool attempts are retained in separate log/observation folders.
+
+Live state is in `projects/iros27-spatial-dev/{S01,S02}/status.json`, with an append-only `events.jsonl`
+and per-batch outcomes, observations and logs. Each episode records its actual initial object poses,
+first camera hashes, policy seed and maximum bowl displacement. The new runtime adds observation-only
+telemetry around the original reset/step functions; it leaves original predicates and actions unchanged.
+It is a separate instrumented cohort, not a claim of exact replay of the old study.
+
 ## What is ready
 
 - `historical-evidence.json` records 307 protected Git blobs and the source revisions and SHA256 hashes
@@ -21,7 +44,8 @@ unchanged. Existing local experiment branches and partially completed work have 
   10 pairs. The six candidate new goals are not six established independent failures or repairs.
   T04 is a CTB paraphrase; sequential/order-free cube–banana tasks share a correlation cluster.
 - `development-plan.json` is a planning artifact, with **zero launch-ready cases**. It does not dispatch
-  jobs. Every pair awaits semantic/physical review; missing task definitions have an additional gate.
+  formal screens. Every pair awaits semantic/physical review; missing task definitions have an additional
+  gate. The two provisional diagnostics above have their own narrower manifest and execution ledger.
 - `startup-job.json` records the bounded 16-episode baseline qualification that began before v2 arrived.
   It uses an isolated practice project, stock scene, slots 64000–64015 and unchanged weights. It is
   labeled `replication`; it is neither a new repair nor part of the new-pair screening denominator.
@@ -87,8 +111,8 @@ fixtures and a small development run. Only then screen original versus explicit 
 matched starts. ABBA means first 16 starts A then B, next 16 starts B then A; every condition must record
 the same scene specification, actual initial poses, early camera hashes, and policy-noise seeds.
 
-Before dispatch, add a failure-preserving worker and append-only episode ledger with the packet's identity
-fields and `reuse_or_new`, claim, cost, and cohort. Candidate selection, random controls, scene sampling,
+The bounded diagnostic worker and batch ledger are implemented; a general dispatcher for all remaining
+tasks and conditions is still needed. Candidate selection, random controls, scene sampling,
 noise recalibration for changed runtime/scenes, sealed operator evaluation, interference plots and the
 manuscript are subsequent work, not implemented by these kickoff tools. No IROS held-out slots have been
 reserved or opened. The packet's conference date remains a planning assumption pending official CFP verification.

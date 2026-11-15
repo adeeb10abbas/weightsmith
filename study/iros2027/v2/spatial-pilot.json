@@ -1,0 +1,40 @@
+{
+  "cohort_id": "iros2027-v2-spatial-dev-20261114",
+  "reuse_or_new": "new_claim",
+  "claim": "Development diagnosis of the exact prespecified converse/direct cube-bowl wordings on pi05; qualification only until semantic review.",
+  "phase": "development_diagnostics",
+  "human_semantic_review": "pending; no eligibility or independent-repair decisions permitted",
+  "frozen_before_outcomes": true,
+  "reference_frame": "robot, mirrored=False, per unchanged installed task predicate",
+  "fixed_reference_check": "Record maximum bowl movement per episode; assess against 0.005 m before semantic/eligibility review. Do not silently discard moved-reference episodes.",
+  "counterbalance": "ABBA in 16-start blocks",
+  "conditions": [
+    "base_original",
+    "base_explicit"
+  ],
+  "n_per_condition_per_case": 32,
+  "max_total_episodes": 128,
+  "expected_minutes_per_case": [
+    25,
+    45
+  ],
+  "code_base": "cf39ab173d52ebb2b29bb8b424b36072cc7124b8",
+  "cases": {
+    "S01": {
+      "task": "RubiksCubeLeftOfBowlTask",
+      "original_prompt": "Move the cube so the bowl is to its right",
+      "explicit_prompt": "Move the cube to the left of the bowl",
+      "slot_start": 70000,
+      "canonical_goal": "move cube so cube left of fixed bowl",
+      "review_rubric": "Move the cube only; evaluate the stated converse relation in the same robot frame with bowl held as reference. Preserve the installed termination predicate."
+    },
+    "S02": {
+      "task": "RubiksCubeRightOfBowlTask",
+      "original_prompt": "Move the cube so the bowl is to its left",
+      "explicit_prompt": "Move the cube to the right of the bowl",
+      "slot_start": 70032,
+      "canonical_goal": "move cube so cube right of fixed bowl",
+      "review_rubric": "Move the cube only; evaluate the stated converse relation in the same robot frame with bowl held as reference. Preserve the installed termination predicate."
+    }
+  }
+}
