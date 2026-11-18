@@ -242,7 +242,7 @@ def make(run_root, output):
                                 "workspace": str(candidates[condition]) if condition in candidates else None,
                                 "layouts": str(HERE / "runtime/layouts" / f"{case}_heldout.json"),
                                 "slot_start": protocol["heldout"]["slot_start"][case], "n": 16})
-        cases[case] = {"cohort_id": "rss-repair-comparison-20261117-heldout-v1", "split": "heldout",
+        cases[case] = {"cohort_id": protocol["cohort"], "split": "heldout",
                        "case": case, "batches": batches, "protocol_sha256": sha(HERE / "protocol.json"),
                        "inference_batching": protocol["heldout"]["inference_batching"],
                        "lora_selection": {"candidate_id": selected["selection"]["selected_candidate_id"],

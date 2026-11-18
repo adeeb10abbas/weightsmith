@@ -320,6 +320,8 @@ class GuardTests(unittest.TestCase):
         self.assertNotIn(str(self.root / "spatial-selection-evaluation/obs.npz"), artifacts)
         for case in ("temporal", "spatial"):
             plan = json.loads((freeze.parent / f"{case}-plan.json").read_text())
+            self.assertEqual(plan["cohort_id"], self.protocol["cohort"])
+            self.assertEqual(plan["split"], "heldout")
             self.assertEqual(plan["global_freeze"]["sha256"], planner.sha(freeze))
             self.assertEqual(sum(b["n"] for b in plan["batches"]), 320)
             self.assertEqual(plan["rewrite_dispatch"]["calls"], 10)
