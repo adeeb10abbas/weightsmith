@@ -1,0 +1,656 @@
+{
+  "created_utc": "2026-11-17T23:26:25.866667+00:00",
+  "reviewer": "Codex visual inspection of recorded policy inputs and sensor video",
+  "scope": "Development-only runtime qualification; no edited-policy or held-out evidence",
+  "source_results": [
+    {
+      "case": "temporal",
+      "cell": "00-original",
+      "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-development-v2/batch-00-original-base/obs-l0a0/metrics_r0.json",
+      "metrics_sha256": "b3cd2582b4799f7cb37bf736724205fd066574b245c36b9538e70470410b68cc",
+      "selected_goal": "cube_then_banana",
+      "n": 16,
+      "strict_successes": 1,
+      "stock_successes": 1
+    },
+    {
+      "case": "spatial",
+      "cell": "00-original",
+      "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-development-v2/batch-00-original-base/obs-l0a0/metrics_r0.json",
+      "metrics_sha256": "756667ad7f081e2e7a335b336c35a8b55d5e1883f985a7d1dd5c2322ac45fea5",
+      "selected_goal": "mustard_right",
+      "n": 16,
+      "strict_successes": 0,
+      "stock_successes": 0
+    },
+    {
+      "case": "spatial",
+      "cell": "01-teacher",
+      "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-development-v2/batch-01-teacher-base/obs-l0a0/metrics_r0.json",
+      "metrics_sha256": "43c1fc36bd16f679c9b6cef603b8e4ea13b5a0f0d48ddbd5b951bc29b2c11466",
+      "selected_goal": "mustard_right",
+      "n": 16,
+      "strict_successes": 11,
+      "stock_successes": 12
+    },
+    {
+      "case": "spatial",
+      "cell": "02-opposite_left",
+      "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-development-v2/batch-02-opposite_left-base/obs-l0a0/metrics_r0.json",
+      "metrics_sha256": "ffae0364f8a5478bb17e644a09536fc4c2e5d2e54ef9e00d6210cc8c8d2f1904",
+      "selected_goal": "mustard_left",
+      "n": 16,
+      "strict_successes": 0,
+      "stock_successes": 1,
+      "competence_note": "Baseline floor: no episode moves mustard at least 2 cm; 14 episodes move the raisin reference more than 2 cm. The single secondary-left result reflects reference movement, not a valid primary success."
+    },
+    {
+      "case": "temporal",
+      "cell": "01-teacher",
+      "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-development-v2/batch-01-teacher-base/obs-l0a0/metrics_r0.json",
+      "metrics_sha256": "c094f03976084f9a1b8ae810adfda6b00afd3c51c53d32be286d8b5d7ba2ef8f",
+      "selected_goal": "cube_then_banana",
+      "n": 16,
+      "strict_successes": 13,
+      "stock_successes": 13
+    },
+    {
+      "case": "spatial",
+      "cell": "03-on_raisin",
+      "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-development-v2/batch-03-on_raisin-base/obs-l0a0/metrics_r0.json",
+      "metrics_sha256": "b7ad3c07757eb179a5fa4793e9ca5f8010b55670815986a8102ad0d41374d47a",
+      "selected_goal": "mustard_on_raisin",
+      "n": 16,
+      "strict_successes": 10,
+      "stock_successes": 11,
+      "competence_note": "Positive same-scene competing-goal competence:10/16 strict stable supported stacking successes with fixed reference."
+    },
+    {
+      "case": "temporal",
+      "cell": "02-reverse_order",
+      "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-development-v2/batch-02-reverse_order-base/obs-l0a0/metrics_r0.json",
+      "metrics_sha256": "385dd10104166717b852dfaf12ad990780b6d173acc8a7fe0161e4da01b51e8f",
+      "selected_goal": "banana_then_cube",
+      "n": 16,
+      "strict_successes": 9,
+      "stock_successes": 12,
+      "competence_note": "Positive temporal competing-goal competence:9/16 reverse-order strict success,12/16 secondary order success."
+    },
+    {
+      "case": "temporal",
+      "cell": "03-cube_only_early_stop_diagnostic",
+      "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-development-v2/batch-03-cube_only-base/obs-l0a0/metrics_r0.json",
+      "metrics_sha256": "2266e925fa24faf3eb2c3852d622a09f6b2817d53cc8408bb75fe65eb5779701",
+      "selected_goal": "cube_only",
+      "n": 16,
+      "strict_successes": 15,
+      "stock_successes": 15,
+      "interpretation": "Early-stop diagnostic only. Full-horizon replacement is authoritative for extended compliance; this result does not show sustained banana preservation."
+    }
+  ],
+  "audits": [
+    {
+      "case": "temporal",
+      "condition": "original",
+      "env_id": 7,
+      "first_cube_tick": 123,
+      "first_banana_tick": 286,
+      "success_tick": 446,
+      "reviewed_video_frames": [
+        140,
+        300,
+        440
+      ],
+      "video_pattern": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-development-v2/sim-output/*b0*/RSSCubeThenBananaTask/*env7.mp4",
+      "observation": "Frame140 shows cube in bowl while banana remains outside. Frame440 shows cube and banana in bowl with gripper open. Matches strict order/final predicate."
+    },
+    {
+      "case": "temporal",
+      "condition": "original",
+      "env_id": 0,
+      "reviewed_policy_input_steps": [
+        0,
+        285,
+        300,
+        780,
+        885
+      ],
+      "observation": "Banana is handled before cube, consistent with first placement ticks banana286 then cube784 and failure of cube-first goal."
+    },
+    {
+      "case": "spatial",
+      "condition": "original",
+      "env_ids": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "reviewed_policy_input_steps": [
+        0,
+        585
+      ],
+      "observation": "Valid initial camera view with both objects visible. Final views show arm at raisin reference rather than mustard mover. Across all16, mustard maximum displacement below0.12mm; five raisin references move over2cm."
+    },
+    {
+      "case": "spatial",
+      "condition": "teacher",
+      "env_id": 0,
+      "success_tick": 172,
+      "reviewed_video_frames": [
+        170
+      ],
+      "video_pattern": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-development-v2/sim-output/*b1*/RSSMustardRightTask/*env0.mp4",
+      "observation": "Final sensor frame shows mustard upright and released on table, with raisin left where initialized. Robot-frame coordinates and contact/stability predicates confirm requested right relation."
+    },
+    {
+      "case": "spatial",
+      "condition": "on_raisin",
+      "env_id": 0,
+      "success_tick": 142,
+      "reviewed_video_frames": [
+        140
+      ],
+      "video_pattern": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-development-v2/sim-output/*b3*/RSSMustardOnRaisinTask/*env0.mp4",
+      "observation": "Sensor views show mustard upright on the raisin box with gripper detached. Reference maximum displacement is0.782mm. Geometric right_of is also true due to small center offset, but mustard-table contact is false, so the full right-placement goal correctly remains false."
+    },
+    {
+      "case": "temporal",
+      "condition": "reverse_order",
+      "env_id": 0,
+      "first_banana_tick": 211,
+      "first_cube_tick": 449,
+      "success_tick": 467,
+      "reviewed_video_frames": [
+        230,
+        465
+      ],
+      "video_pattern": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-development-v2/sim-output/*b2*/RSSBananaThenCubeTask/*env0.mp4",
+      "observation": "Frame230 shows banana in the bowl while cube is still on the table. Near-endpoint frame465 shows cube placed above banana in the bowl and gripper open. Bowl maximum displacement16.70mm remains below20mm threshold. Open-top containment follows the stock benchmark geometry; objects need not lie entirely below the rim."
+    }
+  ],
+  "matching_checks": [
+    {
+      "pair": "spatial original vs teacher",
+      "layout_ids_equal": true,
+      "slots_equal": true,
+      "max_settled_pose_difference_m": 0.0,
+      "status": "verified from both reset receipts",
+      "initial_policy_inputs": {
+        "base_img": {
+          "max_abs_difference": 83.0,
+          "exact_match_episodes": 0
+        },
+        "wrist_img": {
+          "max_abs_difference": 86.0,
+          "exact_match_episodes": 0
+        },
+        "joint": {
+          "max_abs_difference": 0.0,
+          "exact_match_episodes": 16
+        },
+        "gripper": {
+          "max_abs_difference": 0.0,
+          "exact_match_episodes": 16
+        },
+        "seed": {
+          "max_abs_difference": 0.0,
+          "exact_match_episodes": 16
+        }
+      },
+      "render_pixel_differences": {
+        "base_img": {
+          "mean_absolute_pixel_difference_mean": 0.605630264801233,
+          "mean_absolute_pixel_difference_max": 3.1222098214285716,
+          "pixel_rmse_mean": 2.0418899255817315,
+          "fraction_channels_difference_gt_5_mean": 0.027866493276998302
+        },
+        "wrist_img": {
+          "mean_absolute_pixel_difference_mean": 3.0144491390306123,
+          "mean_absolute_pixel_difference_max": 18.3616868622449,
+          "pixel_rmse_mean": 5.122117051483465,
+          "fraction_channels_difference_gt_5_mean": 0.14952118542729592
+        }
+      },
+      "render_note": "Initial images differ despite identical settled poses, proprioception and policy sampling seeds. This is observed rendering variation; exact pixel equivalence is not claimed."
+    },
+    {
+      "pair": "temporal original vs teacher",
+      "layout_ids_equal": true,
+      "slots_equal": true,
+      "max_settled_pose_difference_m": 0.0,
+      "status": "verified from both reset receipts"
+    }
+  ],
+  "same_seed_repeat_qualification": {
+    "temporal": {
+      "status": "complete",
+      "n": 16,
+      "reference_metrics": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-development-v2/batch-00-original-base/obs-l0a0/metrics_r0.json",
+      "repeat_metrics": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-qualification-v1/batch-01-original-base/obs-l0a0/metrics_r0.json",
+      "reference_successes": 1,
+      "repeat_successes": 0,
+      "paired_outcome_disagreements": [
+        7
+      ],
+      "success_to_failure": [
+        7
+      ],
+      "failure_to_success": [],
+      "layout_ids_equal": true,
+      "slot_ids_equal": true,
+      "initial_pose_max_abs_difference_m": 0.0,
+      "first_policy_request_comparison": {
+        "base_img": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 0.25323527848639454,
+          "mean_abs_max": 1.260031356292517,
+          "rmse_mean": 0.8683938185377145,
+          "max_abs_max": 49.0
+        },
+        "wrist_img": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 1.057725140837585,
+          "mean_abs_max": 3.120622076955782,
+          "rmse_mean": 2.066778510128481,
+          "max_abs_max": 45.0
+        },
+        "joint": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "gripper": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "seed": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "actions": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 0.002485947525873655,
+          "mean_abs_max": 0.0048351671892305605,
+          "rmse_mean": 0.0037358441988226193,
+          "max_abs_max": 0.05461558699607849
+        }
+      },
+      "interpretation": "Original prompt remains near the success floor, with one paired success lost on repeat. Initial physical state and policy sampling seeds match exactly; rendered inputs and actions differ. Positive teacher repetition is needed for a more informative variability check.",
+      "reference_metrics_sha256": "b3cd2582b4799f7cb37bf736724205fd066574b245c36b9538e70470410b68cc",
+      "repeat_metrics_sha256": "25844dbeab9d3d2911831bf3f70643e4342b35efb4120ba9e5f55c1a0f41a0cb"
+    },
+    "spatial": {
+      "status": "complete",
+      "n": 16,
+      "reference_metrics": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-development-v2/batch-00-original-base/obs-l0a0/metrics_r0.json",
+      "repeat_metrics": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-qualification-v1/batch-00-original-base/obs-l0a0/metrics_r0.json",
+      "reference_successes": 0,
+      "repeat_successes": 0,
+      "paired_outcome_disagreements": [],
+      "layout_ids_equal": true,
+      "slot_ids_equal": true,
+      "initial_pose_max_abs_difference_m": 0.0,
+      "first_policy_request_comparison": {
+        "base_img": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 0.31877914740114793,
+          "mean_abs_max": 0.9484747023809523,
+          "rmse_mean": 1.188564619738749,
+          "max_abs_max": 51.0
+        },
+        "wrist_img": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 1.8985346580038263,
+          "mean_abs_max": 5.298701902636054,
+          "rmse_mean": 3.464928066061503,
+          "max_abs_max": 51.0
+        },
+        "joint": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "gripper": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "seed": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "actions": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 0.012436353383538781,
+          "mean_abs_max": 0.03655243651786198,
+          "rmse_mean": 0.019132906879297508,
+          "max_abs_max": 0.16732074320316315
+        }
+      },
+      "interpretation": "Outcome agreement at a 0/16 floor does not demonstrate low variance for positive success rates; teacher repeats are planned. Physical starts and sampling seeds are identical, but rendered images and policy action outputs differ.",
+      "reference_metrics_sha256": "756667ad7f081e2e7a335b336c35a8b55d5e1883f985a7d1dd5c2322ac45fea5",
+      "repeat_metrics_sha256": "83a2f31fc3affd3a0e6e0311798b7de8141cedfe6e55fca4e9a551442b7730a8"
+    }
+  },
+  "caveats": [
+    "Video omits the just-frozen final frame; reviewed near-endpoint frames precede the recorded success tick. Metrics provide exact endpoint predicates.",
+    "Source RoboLab score/reason heuristic is not task success; only environment_results.success and strict_final count.",
+    "Temporal early-stop cube-only is a development diagnostic; full-horizon replacement task is required for sustained preservation.",
+    "Stock secondary is evaluated on the new runtime trajectory, whose stopping condition can differ from historical stock."
+  ],
+  "updated_utc": "2026-11-18T00:10:39.130140+00:00",
+  "full_horizon_cube_only_live_check": {
+    "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-qualification-v1/batch-00-cube_only-base/obs-l0a0/metrics_r0.json",
+    "strict_final_successes": 0,
+    "strict_ever_successes": 13,
+    "n": 16,
+    "recorded_termination_ticks": [
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900,
+      900
+    ],
+    "all_full_horizon": true
+  },
+  "teacher_repeat_qualification": {
+    "spatial": {
+      "status": "complete",
+      "n": 16,
+      "reference_metrics": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-development-v2/batch-01-teacher-base/obs-l0a0/metrics_r0.json",
+      "repeat_metrics": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-qualification-teacher-v1/batch-00-teacher-base/obs-l0a0/metrics_r0.json",
+      "reference_successes": 11,
+      "repeat_successes": 7,
+      "paired_outcome_disagreements": [
+        1,
+        7,
+        9,
+        11,
+        14,
+        15
+      ],
+      "success_to_failure": [
+        1,
+        7,
+        9,
+        14,
+        15
+      ],
+      "failure_to_success": [
+        11
+      ],
+      "layout_ids_equal": true,
+      "slot_ids_equal": true,
+      "initial_pose_max_abs_difference_m": 0.0,
+      "first_policy_request_comparison": {
+        "base_img": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 0.7230660574776786,
+          "mean_abs_max": 3.6302548363095237,
+          "rmse_mean": 2.4052887379886716,
+          "max_abs_max": 87.0
+        },
+        "wrist_img": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 3.9808108790391152,
+          "mean_abs_max": 18.504869525935373,
+          "rmse_mean": 6.556861444605719,
+          "max_abs_max": 87.0
+        },
+        "joint": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "gripper": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "seed": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "actions": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 0.01332588250635401,
+          "mean_abs_max": 0.04517901903952103,
+          "rmse_mean": 0.01884248273881777,
+          "max_abs_max": 0.22801542282104492
+        }
+      },
+      "interpretation": "Six paired outcome changes under unchanged weights and identical initial physical state and sampling seeds show substantial run-to-run variation. Rendered inputs differ, but this observational comparison alone cannot attribute all outcome differences to rendering. Both attempts must remain visible; this is not an independent additional repair.",
+      "reference_metrics_sha256": "43c1fc36bd16f679c9b6cef603b8e4ea13b5a0f0d48ddbd5b951bc29b2c11466",
+      "repeat_metrics_sha256": "e43fac836da9ab384d9a7f070681c72d8c4fdd0e1370620830c1ee72320e42ff"
+    },
+    "temporal": {
+      "status": "complete",
+      "n": 16,
+      "reference_metrics": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-development-v2/batch-01-teacher-base/obs-l0a0/metrics_r0.json",
+      "repeat_metrics": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-qualification-teacher-v1/batch-00-teacher-base/obs-l0a0/metrics_r0.json",
+      "reference_successes": 13,
+      "repeat_successes": 11,
+      "paired_outcome_disagreements": [
+        5,
+        6,
+        11,
+        12
+      ],
+      "success_to_failure": [
+        5,
+        6,
+        11
+      ],
+      "failure_to_success": [
+        12
+      ],
+      "layout_ids_equal": true,
+      "slot_ids_equal": true,
+      "initial_pose_max_abs_difference_m": 0.0,
+      "first_policy_request_comparison": {
+        "base_img": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 0.38243549372874147,
+          "mean_abs_max": 1.4670958227040816,
+          "rmse_mean": 1.305909808938638,
+          "max_abs_max": 51.0
+        },
+        "wrist_img": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 1.4550013120482568,
+          "mean_abs_max": 9.757832429846939,
+          "rmse_mean": 2.6383833001972947,
+          "max_abs_max": 72.0
+        },
+        "joint": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "gripper": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "seed": {
+          "exact_match_episodes": 16,
+          "mean_abs_mean": 0.0,
+          "mean_abs_max": 0.0,
+          "rmse_mean": 0.0,
+          "max_abs_max": 0.0
+        },
+        "actions": {
+          "exact_match_episodes": 0,
+          "mean_abs_mean": 0.0027358328208933356,
+          "mean_abs_max": 0.007561746659083231,
+          "rmse_mean": 0.003954046419379468,
+          "max_abs_max": 0.03214383125305176
+        }
+      },
+      "interpretation": "The unchanged teacher has material paired outcome variation despite identical initial physical state and policy sampling seeds. Retain both attempts; rendered inputs and action outputs differ, and this comparison does not isolate the source of all variation.",
+      "reference_metrics_sha256": "c094f03976084f9a1b8ae810adfda6b00afd3c51c53d32be286d8b5d7ba2ef8f",
+      "repeat_metrics_sha256": "64823cecd620ffd0d527d68170f855aed4d8df9aaa25a4a9d8430fa858f5b0c9"
+    }
+  },
+  "left_competence_screen": {
+    "status": "complete",
+    "plan": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-left-competence-screen-plan.json",
+    "plan_sha256": "352ff0e4bc9ee72d06191c1bd38f93dbebe88271153cae4a3b9c30bd172b2ca3",
+    "selection_rule": "First declared L1, L2, L3 variant with at least 4/16 strict successes, chosen after retaining all three batches. No further search if none qualifies.",
+    "completed": [
+      {
+        "variant": "L1",
+        "n": 16,
+        "input_prompt": "Put the mustard bottle to the left of the raisin box on the table.",
+        "strict_successes": 0,
+        "secondary_successes": 0,
+        "final_component_counts": {
+          "right_of": 0,
+          "left_of": 0,
+          "on_raisin": 0,
+          "mustard_table_contact": 16,
+          "mustard_raisin_contact": 0,
+          "mustard_detached": 16,
+          "reference_fixed": 8,
+          "mover_displaced": 2,
+          "mover_stationary": 16
+        },
+        "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-left-competence-v1/batch-00-opposite_left-base/obs-l0a0/metrics_r0.json",
+        "metrics_sha256": "a565989e0bd6abd407c75e7e3ad656dc348e91abe2954db917167722ccc517c3"
+      },
+      {
+        "variant": "L2",
+        "n": 16,
+        "input_prompt": "Pick up the mustard bottle and place it on the table to the left of the raisin box.",
+        "strict_successes": 0,
+        "secondary_successes": 1,
+        "final_component_counts": {
+          "right_of": 0,
+          "left_of": 1,
+          "on_raisin": 0,
+          "mustard_table_contact": 15,
+          "mustard_raisin_contact": 0,
+          "mustard_detached": 15,
+          "reference_fixed": 9,
+          "mover_displaced": 4,
+          "mover_stationary": 15
+        },
+        "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-left-competence-v1/batch-01-opposite_left-base/obs-l0a0/metrics_r0.json",
+        "metrics_sha256": "e2dedf2d70fa52a510003e2c6a2e05a8a0ee3008e4acbf2b34dd3954000c73ae"
+      },
+      {
+        "variant": "L3",
+        "n": 16,
+        "input_prompt": "The mustard bottle should be on the left and the raisin box on the right. Move the mustard bottle.",
+        "strict_successes": 0,
+        "secondary_successes": 4,
+        "final_component_counts": {
+          "right_of": 0,
+          "left_of": 4,
+          "on_raisin": 0,
+          "mustard_table_contact": 16,
+          "mustard_raisin_contact": 0,
+          "mustard_detached": 16,
+          "reference_fixed": 0,
+          "mover_displaced": 0,
+          "mover_stationary": 16
+        },
+        "metrics_path": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-left-competence-v1/batch-02-opposite_left-base/obs-l0a0/metrics_r0.json",
+        "metrics_sha256": "f0db00a0070f4dee047441c8cab69ef390949614cccae13668dc8257a17a32cc"
+      }
+    ],
+    "completed_episodes": 48,
+    "selection": null,
+    "decision": "No variant meets the predeclared threshold; retain the left baseline-floor limitation and perform no further wording search.",
+    "heldout_access_used": false
+  },
+  "development_execution_accounting": {
+    "status": "complete",
+    "cohorts": [
+      {
+        "root": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-development-v2",
+        "completed_episodes": 64,
+        "completed_batches": 4,
+        "status": "complete"
+      },
+      {
+        "root": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-development-v2",
+        "completed_episodes": 64,
+        "completed_batches": 4,
+        "status": "complete"
+      },
+      {
+        "root": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-qualification-v1",
+        "completed_episodes": 32,
+        "completed_batches": 2,
+        "status": "complete"
+      },
+      {
+        "root": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-qualification-v1",
+        "completed_episodes": 16,
+        "completed_batches": 1,
+        "status": "complete"
+      },
+      {
+        "root": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/temporal-qualification-teacher-v1",
+        "completed_episodes": 16,
+        "completed_batches": 1,
+        "status": "complete"
+      },
+      {
+        "root": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-qualification-teacher-v1",
+        "completed_episodes": 16,
+        "completed_batches": 1,
+        "status": "complete"
+      },
+      {
+        "root": "/home/ali/weightsmith-iros2027/projects/rss-repair-comparison-20261117/spatial-left-competence-v1",
+        "completed_episodes": 48,
+        "completed_batches": 3,
+        "status": "complete"
+      }
+    ],
+    "total_completed_policy_episodes": 256,
+    "notes": "All 256 episodes are development, qualification or competence-screen rollouts under unchanged policy weights. Repeat runs and prompt variants do not add independent repairs. Initial v1 startup attempts produced no policy episodes. No held-out outcomes were read for these decisions.",
+    "repair_cases": 2,
+    "edited_policy_episodes_in_these_cohorts": 0
+  }
+}
