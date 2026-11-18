@@ -1,0 +1,31 @@
+{
+  "cohort_id": "rss-historical-recovery-20261118",
+  "split": "development",
+  "reuse_or_new": "Reused frozen weights; new layouts and policy-noise streams",
+  "purpose": "Bounded historical artifact recovery diagnostic, no fitting or candidate selection",
+  "case": "temporal",
+  "original_prompt": "Put the cube then the banana in the bowl",
+  "clarified_prompt": "Put the cube in the bowl then put the banana in the bowl",
+  "task": "RSSCubeThenBananaTask",
+  "goal": "cube_then_banana",
+  "gpu": 0,
+  "inference_batching": "fixed16",
+  "environment_seed": 0,
+  "slot_start": 180000,
+  "episodes_per_arm": 16,
+  "layouts": 8,
+  "layout_generator_seed": 2026111806,
+  "conditions": ["base", "clarified_input", "historical_full", "historical_small", "recent_closed_form", "recent_lora"],
+  "max_policy_episodes": 96,
+  "max_attempts_per_arm": 1,
+  "primary": "Unchanged rss-repair-v1 strict_final cube_then_banana",
+  "secondary": "Unchanged rss-repair-v1 stock_final and stock_ever on the same trajectories",
+  "analysis": "Report every arm, paired outcomes and descriptive uncertainty; no confirmatory significance or candidate selection",
+  "limitations": [
+    "Single previously studied temporal repair; eight layouts are not independent repair goals",
+    "Historical and recent artifacts use different construction observations and budgets",
+    "Observation selection and preservation changed together; this does not isolate their effects",
+    "Current scoring, fixed batching and new layouts differ from historical evaluation",
+    "Same nominal layout and policy seed do not guarantee identical rendered camera images"
+  ]
+}
