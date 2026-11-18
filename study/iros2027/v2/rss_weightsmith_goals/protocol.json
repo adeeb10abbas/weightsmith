@@ -1,0 +1,231 @@
+{
+  "cohort": "rss-weightsmith-goals-20261118",
+  "version": 1,
+  "status": "Frozen before first preflight or policy rollout",
+  "reuse_or_new": "New goal constructions, source data, layouts, noise, and policy evaluations. Existing simulation machinery and phase-grouped instruction-distillation recipe reused; all historical evidence separate.",
+  "case_order": [
+    "banana_left_plate",
+    "butter_behind_raisin",
+    "left_bowl_on_right"
+  ],
+  "cases": {
+    "banana_left_plate": {
+      "original": "Move the banana on the table so that the plate is to the right of the banana.",
+      "teacher": "Move the banana on the table so that the banana is to the left of the plate.",
+      "unseen": [
+        "Place the banana to the left of the plate, from the robot's perspective.",
+        "Reposition the banana on the tabletop, leaving the plate on its right.",
+        "Leave the banana on the tabletop to the plate's left, as viewed by the robot."
+      ],
+      "competing": "Pick up the banana and put it on the plate.",
+      "task": "RSSWBananaLeftPlateTask",
+      "competing_task": "RSSWBananaOnPlateTask",
+      "goal": "banana_left_plate",
+      "competing_goal": "banana_on_plate",
+      "scene": "bagel_plate_banana_bowl",
+      "objects": [
+        "banana",
+        "plate_large",
+        "bowl"
+      ],
+      "prefix": "N",
+      "horizon_seconds": 40,
+      "reuse_or_new": "New clarification-derived edit of this semantic goal; existing scene assets and historical control exposure disclosed, not blind task discovery.",
+      "pair_source": {
+        "type": "authored inverse/direct clarification before this cohort",
+        "exposure": "Banana-on-plate and bowl stacking were used as historical gripper-control tasks. The relational goals and selected clarification pairs were not edited in the audited study. Two relation goals share a recipe and do not establish distinct failure mechanisms."
+      }
+    },
+    "butter_behind_raisin": {
+      "original": "Move the butter box on the table so that the raisin box is in front of the butter box.",
+      "teacher": "Move the butter box on the table so that the butter box is behind the raisin box.",
+      "unseen": [
+        "Place the butter box behind the raisin box, viewed from the robot.",
+        "Move the butter box to the far side of the raisin box relative to the robot.",
+        "Set the butter box on the table behind the raisin box."
+      ],
+      "competing": "Pick up the butter box and place it on top of the raisin box.",
+      "task": "RSSWButterBehindRaisinTask",
+      "competing_task": "RSSWButterOnRaisinTask",
+      "goal": "butter_behind_raisin",
+      "competing_goal": "butter_on_raisin",
+      "scene": "butter_raisin_box",
+      "objects": [
+        "butter",
+        "raisin_box"
+      ],
+      "prefix": "U",
+      "horizon_seconds": 40,
+      "reuse_or_new": "New clarification-derived edit of this semantic goal; existing scene assets and historical control exposure disclosed, not blind task discovery.",
+      "pair_source": {
+        "type": "authored inverse/direct clarification before this cohort",
+        "exposure": "Banana-on-plate and bowl stacking were used as historical gripper-control tasks. The relational goals and selected clarification pairs were not edited in the audited study. Two relation goals share a recipe and do not establish distinct failure mechanisms."
+      }
+    },
+    "left_bowl_on_right": {
+      "original": "Move the bowl on the left so that the bowl on the right contains it.",
+      "teacher": "Place the bowl on the left inside the bowl on the right.",
+      "unseen": [
+        "Nest the left-hand bowl inside the right-hand bowl.",
+        "Lift the bowl that starts on the left and lower it into the bowl on the right.",
+        "Put the left bowl into the right bowl, leaving the right bowl in place."
+      ],
+      "competing": "Place the bowl on the right inside the bowl on the left.",
+      "task": "RSSWLeftBowlOnRightTask",
+      "competing_task": "RSSWRightBowlOnLeftTask",
+      "goal": "left_bowl_on_right",
+      "competing_goal": "right_bowl_on_left",
+      "scene": "bowls_2_table",
+      "objects": [
+        "bowl_1",
+        "bowl_2"
+      ],
+      "prefix": "L",
+      "horizon_seconds": 30,
+      "reuse_or_new": "New clarification-derived edit of this semantic goal; existing scene assets and historical control exposure disclosed, not blind task discovery.",
+      "pair_source": {
+        "type": "authored inverse/direct clarification before this cohort",
+        "exposure": "Banana-on-plate and bowl stacking were used as historical gripper-control tasks. The relational goals and selected clarification pairs were not edited in the audited study. Two relation goals share a recipe and do not establish distinct failure mechanisms."
+      },
+      "display_name": "Left bowl nested inside right bowl"
+    }
+  },
+  "inference_batching": "fixed16",
+  "qualification": {
+    "episodes_per_wording": 16,
+    "layout_count": 4,
+    "noise_replicates": 4,
+    "gate": {
+      "teacher_min": 8,
+      "teacher_minus_original_min": 4,
+      "original_max": 10
+    },
+    "initial_max_episodes": 96,
+    "repeat_max_episodes": 96,
+    "competitor_max_episodes": 48,
+    "max_policy_episodes_before_adaptation": 240,
+    "selection": "All twice-qualified goals in fixed order; no replacement and no goal-specific parameter search.",
+    "competitor": "At least8/16 strict development successes qualifies preservation; otherwise retain as baseline-floor stress test.",
+    "slot_start": {
+      "initial": {
+        "banana_left_plate": 200000,
+        "butter_behind_raisin": 200016,
+        "left_bowl_on_right": 200032
+      },
+      "repeat": {
+        "banana_left_plate": 201008,
+        "butter_behind_raisin": 201024,
+        "left_bowl_on_right": 201040
+      },
+      "competing": {
+        "banana_left_plate": 202000,
+        "butter_behind_raisin": 202016,
+        "left_bowl_on_right": 202032
+      }
+    }
+  },
+  "scoring": {
+    "version": "weightsmith-new-goals-20261118-v1",
+    "frame": "Robot frame, nonmirrored 45-degree cones; bowls identified by initial robot-relative sides.",
+    "dwell_seconds": 1,
+    "placement": "Target relation plus support/contact, gripper detached, mover speed<.02m/s, mover displacement>=.02m, goal reference maximum displacement<=.02m.",
+    "endpoint": "Selected strict success termination otherwise declared horizon; each trajectory also scores the other requested goal.",
+    "reset": "Reject initially true target/preservation goal, failed writes, >12mm XY settle drift, >5mm recent drift or >.03m/s final speed.",
+    "secondary": "Fields named stock_* are instantaneous component diagnostics, not exact stock terminal scoring or independent episodes.",
+    "bowl_identity": "Require bowl_2 to be left of bowl_1 in the robot frame after each reset, before any action.",
+    "bowl_geometry": "Nesting uses the stock in_opentop_container predicate plus contact, detachment, stable dwell, intended movement, and reference preservation. All wording explicitly requests containment, not merely support above."
+  },
+  "adaptation": {
+    "method": "phase-grouped paired-clarification residual-increment ridge write",
+    "layers": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "capture_layers": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "phases": [
+      "precontact",
+      "grasp",
+      "transport"
+    ],
+    "train_per_phase": 6,
+    "validation_per_phase": 2,
+    "source_selection": "Measured first mover-contact events aligned to policy decisions. Precontact is the decision immediately before the grasp chunk; for never-grasped original failures use the last noncontact decision. A never-grasped failure contributes a failure-local pre-contact decision, not demonstrated approach motion. Failed original trajectories are prioritized, then successful teacher trajectories. Grasp is the decision whose chunk first establishes contact. Transport is the first decision starting with the mover held >=25mm above reset height. Six distinct source episodes per phase from initial qualification; two per phase from the independent repeat qualify as validation. Earliest source slots win ties. No duplicate input decisions or heldout inputs.",
+    "annotation": "Simulator mover-gripper contact and height are privileged phase-selection information, disclosed; no human action labels.",
+    "repair_keys": 96,
+    "preservation_keys": 0,
+    "ridge_relative": 0.001,
+    "merge_multiplier": 1,
+    "rank_truncation": false,
+    "candidate_budget": 1,
+    "gates": {
+      "live_replay_tolerance": 1e-06,
+      "teacher_parity_tolerance": 0.01
+    },
+    "missing_phase": "Stop that construction with evidence; no time-fraction fallback or replacement goal."
+  },
+  "heldout": {
+    "conditions": [
+      "base",
+      "weightsmith"
+    ],
+    "cells": [
+      "original",
+      "unseen1",
+      "unseen2",
+      "unseen3",
+      "competing"
+    ],
+    "new_layouts": 8,
+    "noise_replicates": 2,
+    "episodes_per_goal": 160,
+    "max_goals": 3,
+    "max_episodes": 480,
+    "slot_start": {
+      "banana_left_plate": 203008,
+      "butter_behind_raisin": 203024,
+      "left_bowl_on_right": 203040
+    },
+    "selection": "All candidates sealed together before testing; no test-based tuning, reruns, or goal replacement."
+  },
+  "preflight": {
+    "max_simulator_starts": 6,
+    "reset_cycles_per_start": 2,
+    "policy_calls": 0,
+    "action_calls": 0,
+    "scope": "All three scenes, development and heldout geometry. Each scene/split gets one process, no retry."
+  },
+  "source_paths": [
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/robolab/core/task/conditionals.py",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/robolab/core/task/predicate_logic.py",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/robolab/core/world/world_state.py",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/assets/scenes/bagel_plate_banana_bowl.usda",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/assets/scenes/butter_raisin_box.usda",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/assets/scenes/bowls_2_table.usda"
+  ],
+  "costs": {
+    "all_attempted_goals": true,
+    "failed_qualification": true,
+    "phase_selection": true,
+    "captures_replays_solves_exports": true,
+    "manual_effort": "not automatically metered",
+    "historical_data": "not pooled or counted as new"
+  }
+}

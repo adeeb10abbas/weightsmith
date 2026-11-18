@@ -174,6 +174,19 @@ def verify_registry():
     if not numerical_boundary.is_file():
         raise ValueError("Historical teacher-target replay boundary must be recorded before selection")
     artifacts = {str(path): sha(path), str(numerical_boundary): sha(numerical_boundary)}
+    dataset_path = ROOT / "lora-preparation/dataset.json"
+    dataset = read(dataset_path)
+    if (dataset.get("cohort_id") != p["cohort_id"] or dataset.get("split") != "development"
+            or dataset.get("train_inputs") != 6 or dataset.get("validation_inputs") != 0
+            or [(r["episode"], r["decision_index"]) for r in dataset["records"]]
+            != [tuple(x) for x in p["source_decisions"]]):
+        raise ValueError("LoRA training observations do not match the six historical decisions")
+    artifacts[str(dataset_path)] = sha(dataset_path)
+    for record in dataset["records"]:
+        item = dataset_path.parent / record["file"]
+        if sha(item) != record["sha256"]:
+            raise ValueError("Prepared teacher-action item changed")
+        artifacts[str(item)] = record["sha256"]
     for candidate in candidates:
         if not candidate.get("artifacts"):
             raise ValueError("Candidate is missing its artifact seal")
@@ -187,6 +200,15 @@ def verify_registry():
                 raise ValueError("LoRA workspace is not covered by its post-training seal")
         for key in ("training_path", "seal_path"):
             artifacts[str(Path(candidate[key]).resolve())] = sha(candidate[key])
+        training = read(candidate["training_path"])
+        if (training.get("cohort_id") != p["cohort_id"] or training.get("split") != "development"
+                or training.get("rank") != lr["rank"] or training.get("layers") != lr["layers"]
+                or training.get("steps") != lr["steps"] or training.get("seed") != lr["seed"]
+                or training.get("learning_rate") != candidate["learning_rate"]
+                or training.get("dataset_sha256") != sha(dataset_path)
+                or training.get("train_inputs") != 6 or training.get("validation_inputs") != 0
+                or training.get("weight_decay") != 0 or training.get("image_augmentation") is not False):
+            raise ValueError("Training receipt differs from the predeclared matched-source recipe")
         artifacts.update(identity["base_artifacts"])
     return candidates, artifacts
 

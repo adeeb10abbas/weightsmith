@@ -1,0 +1,140 @@
+{
+  "case": "left_bowl_on_right",
+  "split": "development",
+  "generator_seed": 202611182201,
+  "generation": "Predeclared small XY shifts with stock Z/orientation, authored before policy evaluation; existing stock scenes, no outcome-selected geometry.",
+  "asset": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/assets/scenes/bowls_2_table.usda",
+  "asset_sha256": "9cd522534edc56f2a47593ae1a8d62b5da64d9586f6b4abc5aa1b1867293c886",
+  "objects": [
+    "bowl_1",
+    "bowl_2"
+  ],
+  "settle_steps": 15,
+  "renders": 8,
+  "layouts": [
+    {
+      "id": "L-D01",
+      "poses": {
+        "bowl_1": {
+          "pos": [
+            0.4915904076,
+            -0.1867059487,
+            0.0303815845
+          ],
+          "quat": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bowl_2": {
+          "pos": [
+            0.3384500567,
+            -0.0011947641,
+            0.0303815678
+          ],
+          "quat": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "L-D02",
+      "poses": {
+        "bowl_1": {
+          "pos": [
+            0.4966661688,
+            -0.1841952561,
+            0.0303815845
+          ],
+          "quat": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bowl_2": {
+          "pos": [
+            0.3400185961,
+            0.00802916,
+            0.0303815678
+          ],
+          "quat": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "L-D03",
+      "poses": {
+        "bowl_1": {
+          "pos": [
+            0.4830359377,
+            -0.1840847079,
+            0.0303815845
+          ],
+          "quat": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bowl_2": {
+          "pos": [
+            0.3341078388,
+            0.002028104,
+            0.0303815678
+          ],
+          "quat": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "id": "L-D04",
+      "poses": {
+        "bowl_1": {
+          "pos": [
+            0.480943006,
+            -0.1928613252,
+            0.0303815845
+          ],
+          "quat": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "bowl_2": {
+          "pos": [
+            0.3310887872,
+            -0.0018066996,
+            0.0303815678
+          ],
+          "quat": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    }
+  ]
+}
