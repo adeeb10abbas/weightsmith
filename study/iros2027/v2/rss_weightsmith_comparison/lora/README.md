@@ -55,3 +55,20 @@ workspace, and an artifact seal. The comparison controller receives a manifest
 only after all three fits complete, then evaluates 16 independent development
 slots per candidate. Its frozen rule selects by original-request success and
 breaks ties using the smaller learning rate.
+
+Preparation on November 18 passed the physical-action roundtrip gate with a
+maximum error of 5.96e-8. All original/clarified token IDs and masks matched the
+archive at its 64 recorded positions. Numerical actions were not identical:
+current native teacher replay at `s20023/k4` differed by 0.17495 in the gripper,
+crossing the 0.5 threshold for five commands. The archived labels remain unchanged.
+`lora-adaptation/numerical-boundary.json` and `token-correspondence.json` preserve
+these checks. This is shared archival supervision, not current-teacher parity or
+an information-equivalent comparison of internal and action targets.
+
+The one-step full-rank smoke passed with finite nonzero gradients, exactly
+unchanged zero-start BF16 weights, and 15.07 GB peak live JAX allocation. It is a
+training-feasibility check, not a policy-success result. `finalize.py --project
+projects/rss-weightsmith-comparison-20261118` verifies all three final fits and
+their settings and artifact seals before atomically writing `candidates.json`.
+The selection controller then owns all policy evaluations. The global adaptation
+status carries both `status` and `stage` for supervisor compatibility.
