@@ -1,0 +1,265 @@
+{
+  "cohort": "rss-residual-targets-20261117",
+  "status": "Predeclared additive target-construction comparison; no preceding heldout outcomes used in design.",
+  "reuse_or_new": "Reused sealed development inputs/captures and frozen base; newly constructed target variants;384 new test episodes.",
+  "architecture": "pi0.5 DROID jointpos",
+  "cases": {
+    "temporal": {
+      "cells": [
+        {
+          "id": "original",
+          "task": "RSSCubeThenBananaTask",
+          "prompt": "Put the cube then the banana in the bowl",
+          "goal": "cube_then_banana",
+          "rewrite": {
+            "input_prompt": "Put the cube then the banana in the bowl",
+            "effective_prompt": "Put the cube in the bowl then put the banana in the bowl",
+            "route": "cube_then_banana",
+            "rewritten": true,
+            "mode": "semantic"
+          },
+          "exact_rewrite": {
+            "input_prompt": "Put the cube then the banana in the bowl",
+            "effective_prompt": "Put the cube in the bowl then put the banana in the bowl",
+            "route": "exact",
+            "rewritten": true,
+            "mode": "exact"
+          },
+          "wording_status": "Seen original repair request"
+        },
+        {
+          "id": "unseen_before",
+          "task": "RSSCubeThenBananaTask",
+          "prompt": "Place the cube in the bowl before you place the banana in the bowl.",
+          "goal": "cube_then_banana",
+          "rewrite": {
+            "input_prompt": "Place the cube in the bowl before you place the banana in the bowl.",
+            "effective_prompt": "Put the cube in the bowl then put the banana in the bowl",
+            "route": "cube_then_banana",
+            "rewritten": true,
+            "mode": "semantic"
+          },
+          "exact_rewrite": {
+            "input_prompt": "Place the cube in the bowl before you place the banana in the bowl.",
+            "effective_prompt": "Place the cube in the bowl before you place the banana in the bowl.",
+            "route": null,
+            "rewritten": false,
+            "mode": "exact"
+          },
+          "wording_status": "Exact target paraphrase withheld from weight adaptation"
+        },
+        {
+          "id": "competing_reverse",
+          "task": "RSSBananaThenCubeTask",
+          "prompt": "Put the banana in the bowl first, then put the cube in the bowl.",
+          "goal": "banana_then_cube",
+          "rewrite": {
+            "input_prompt": "Put the banana in the bowl first, then put the cube in the bowl.",
+            "effective_prompt": "Put the banana in the bowl first, then put the cube in the bowl.",
+            "route": "banana_then_cube",
+            "rewritten": false,
+            "mode": "semantic"
+          },
+          "exact_rewrite": {
+            "input_prompt": "Put the banana in the bowl first, then put the cube in the bowl.",
+            "effective_prompt": "Put the banana in the bowl first, then put the cube in the bowl.",
+            "route": null,
+            "rewritten": false,
+            "mode": "exact"
+          },
+          "wording_status": "Known competent development wording; new evaluation layouts and noise streams.",
+          "role": "primary_preservation",
+          "development_competence": {
+            "successes": 9,
+            "n": 16
+          }
+        }
+      ]
+    },
+    "spatial": {
+      "cells": [
+        {
+          "id": "original",
+          "task": "RSSMustardRightTask",
+          "prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+          "goal": "mustard_right",
+          "rewrite": {
+            "input_prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+            "effective_prompt": "Move the mustard bottle to the right of the raisin box on the table. Leave the raisin box where it is.",
+            "route": "mustard_right",
+            "rewritten": true,
+            "mode": "semantic"
+          },
+          "exact_rewrite": {
+            "input_prompt": "Move the mustard bottle on the table so that the raisin box is to the left of the mustard bottle.",
+            "effective_prompt": "Move the mustard bottle to the right of the raisin box on the table. Leave the raisin box where it is.",
+            "route": "exact",
+            "rewritten": true,
+            "mode": "exact"
+          },
+          "wording_status": "Seen original repair request"
+        },
+        {
+          "id": "unseen_target_first",
+          "task": "RSSMustardRightTask",
+          "prompt": "Put the mustard bottle on the table to the right of the raisin box.",
+          "goal": "mustard_right",
+          "rewrite": {
+            "input_prompt": "Put the mustard bottle on the table to the right of the raisin box.",
+            "effective_prompt": "Move the mustard bottle to the right of the raisin box on the table. Leave the raisin box where it is.",
+            "route": "mustard_right",
+            "rewritten": true,
+            "mode": "semantic"
+          },
+          "exact_rewrite": {
+            "input_prompt": "Put the mustard bottle on the table to the right of the raisin box.",
+            "effective_prompt": "Put the mustard bottle on the table to the right of the raisin box.",
+            "route": null,
+            "rewritten": false,
+            "mode": "exact"
+          },
+          "wording_status": "Exact target paraphrase withheld from weight adaptation"
+        },
+        {
+          "id": "competing_on",
+          "task": "RSSMustardOnRaisinTask",
+          "prompt": "Place the mustard bottle on top of the raisin box. Leave the raisin box where it is.",
+          "goal": "mustard_on_raisin",
+          "rewrite": {
+            "input_prompt": "Place the mustard bottle on top of the raisin box. Leave the raisin box where it is.",
+            "effective_prompt": "Place the mustard bottle on top of the raisin box. Leave the raisin box where it is.",
+            "route": "mustard_on_raisin",
+            "rewritten": false,
+            "mode": "semantic"
+          },
+          "exact_rewrite": {
+            "input_prompt": "Place the mustard bottle on top of the raisin box. Leave the raisin box where it is.",
+            "effective_prompt": "Place the mustard bottle on top of the raisin box. Leave the raisin box where it is.",
+            "route": null,
+            "rewritten": false,
+            "mode": "exact"
+          },
+          "wording_status": "Known competent development wording; new evaluation layouts and noise streams.",
+          "role": "primary_preservation",
+          "development_competence": {
+            "successes": 10,
+            "n": 16
+          }
+        }
+      ]
+    }
+  },
+  "conditions": [
+    "base",
+    "residual_increment",
+    "local_mlp",
+    "shuffled_increment"
+  ],
+  "heldout": {
+    "layouts": 8,
+    "policy_noise_replicates": 2,
+    "episodes_per_cell_condition": 16,
+    "planned_total": 384,
+    "slot_start": {
+      "temporal": 140000,
+      "spatial": 140016
+    },
+    "inference_batching": "fixed16",
+    "layout_generator_seed": 2026111803,
+    "wording_status": "One previously registered target paraphrase per case, absent from weight adaptation; competent competing wording is familiar. No blind linguistic-generalization claim."
+  },
+  "target_recipe": {
+    "layers": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "rank_cap_before_bf16": 32,
+    "repair_observations": 12,
+    "preservation_observations": 12,
+    "validation_observations_not_fitted": 8,
+    "repair_keys": 32,
+    "preservation_keys": 384,
+    "preservation_weight": 1,
+    "preservation_scale": "1/sqrt(12), individual keys retained",
+    "ridge_relative": 0.001,
+    "ridge_scale": "sum(K_repair**2)/32",
+    "alpha": 1,
+    "local_target_magnitude": "natural; not normalized to residual target",
+    "permutation_seed": 2026111804,
+    "cell_permutation": [
+      8,
+      10,
+      7,
+      1,
+      14,
+      0,
+      2,
+      15,
+      13,
+      6,
+      11,
+      5,
+      9,
+      12,
+      4,
+      3,
+      22,
+      30,
+      16,
+      20,
+      17,
+      28,
+      19,
+      29,
+      26,
+      31,
+      18,
+      24,
+      27,
+      21,
+      25,
+      23
+    ],
+    "definitions": {
+      "residual_increment": "Mean paired post-block residual increment, G_l-G_(l-1); layer7 captured for first edited layer8. Reconstructed merged candidate must equal the preceding sealed fit byte for byte.",
+      "local_mlp": "Mean paired local output difference, mean_i[(k_teacher-k_original)W_l], from the same pooled hidden activations and unchanged output-projection matrix. Natural magnitude retained; projected reconstruction from saved float16 activations, not a newly measured post-rounding module output.",
+      "shuffled_increment": "Same residual-increment target with a fixed within-camera derangement of its32 image-cell rows, shared across cases and layers; keys stay in original order. Target norm/singular values retained, resulting update norm not forced equal."
+    }
+  },
+  "reporting": {
+    "primary": "strict selected-goal final success",
+    "comparisons": [
+      [
+        "residual_increment",
+        "base"
+      ],
+      [
+        "local_mlp",
+        "base"
+      ],
+      [
+        "shuffled_increment",
+        "base"
+      ],
+      [
+        "residual_increment",
+        "local_mlp"
+      ],
+      [
+        "residual_increment",
+        "shuffled_increment"
+      ]
+    ],
+    "uncertainty": "Exploratory shared eight-layout cluster bootstrap; 20000 draws, seed17. No tight preservation or architecture-wide claim.",
+    "pairing": "Same layouts and policy-noise streams; actual first-camera hashes and reset differences retained.",
+    "cost": "Reused development acquisition labeled separately; CPU construction, new evaluation, queue/wrapper costs and failures recorded.",
+    "target_interpretation": "Target constructions differ in natural magnitude as well as content; report target/update norms. Shuffling breaks spatial correspondence but need not damage nearly constant target patterns. No direction-only or exact causal-attribution claim."
+  }
+}
