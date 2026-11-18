@@ -1,0 +1,250 @@
+{
+  "cohort": "rss-goal-expansion-v2-20261117",
+  "version": 2,
+  "status": "Prepared before policy-free geometry preflight; learned-policy launch requires reviewed passing preflight",
+  "reuse_or_new": "Additive setup successor with fresh policy noise and fresh qualification; same predeclared prompts, deterministic geometry jitter, checkpoint and method. The operator has seen32 v1 cube-behind development outcomes. V1 is separately disclosed, never pooled.",
+  "case_order": [
+    "cube_behind",
+    "glasses_pickup",
+    "mustard_left_bin"
+  ],
+  "cases": {
+    "cube_behind": {
+      "original": "Place the Rubik's cube so that the bowl is in front of the Rubik's cube.",
+      "teacher": "Place the Rubik's cube so that the Rubik's cube is behind the bowl.",
+      "unseen": "Position the Rubik's cube on the far side of the bowl, so the bowl is closer to you than the cube.",
+      "competing": "Put the rubiks cube in the bowl",
+      "task": "RSSGCubeBehindTask",
+      "competing_task": "RSSGCubeInBowlTask",
+      "goal": "cube_behind",
+      "competing_goal": "cube_in_bowl",
+      "layout_prefix": "B",
+      "horizon_seconds": 30,
+      "pair_source": {
+        "type": "historically informed SGDW inverse/direct pair; new layouts and new repair construction, not prospective task discovery",
+        "source_url": "https://ali-adeeb.com/same-goal-different-words/",
+        "checkout": "/home/ali/sgdw/loop",
+        "commit": "38f682c8ce49de8fe48ab5b27ab291222f415ba4",
+        "path": "study/results/sgdw/suite/goals.json",
+        "sha256": "28f6a9091f50e87bb41a105692d0310fd9af9a53c051e931adf6aeaff63500a7",
+        "historical_screen_path": "study/results/sgdw/loop/screens.json",
+        "historical_screen_sha256": "3ea5fb997c6dee91ebe7df330a636032117f7ec3250b164d5bfc0942ef79236e",
+        "exposure": "Historical-informed original intent/prompt choice. Before v2, operator observed v1 cube-behind initial original2/16 and teacher15/16, plus glasses pre-policy reset failures. V2 repeats all qualification on fresh noise; no prior policy observations enter v2 adaptation or outcome counts."
+      }
+    },
+    "glasses_pickup": {
+      "original": "Pick up the eye glasses",
+      "teacher": "Pick up the pair of black eyeglasses that's sitting on the table",
+      "unseen": "Lift the black spectacles off the tabletop.",
+      "competing": "Pick up the rubiks cube",
+      "task": "RSSGGlassesPickupTask",
+      "competing_task": "RSSGDeskCubePickupTask",
+      "goal": "glasses_pickup",
+      "competing_goal": "cube_pickup",
+      "layout_prefix": "G",
+      "horizon_seconds": 30,
+      "pair_source": {
+        "type": "stock default/specific wording; historically studied intent",
+        "path": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/robolab/tasks/benchmark/pick_glasses_task.py",
+        "sha256": "ea466f46f58fe3ffb8b91196016dc2de6de26c8e6f8d6aa643aec0e644ede79f",
+        "exposure": "Historical-informed original intent/prompt choice. Before v2, operator observed v1 cube-behind initial original2/16 and teacher15/16, plus glasses pre-policy reset failures. V2 repeats all qualification on fresh noise; no prior policy observations enter v2 adaptation or outcome counts."
+      }
+    },
+    "mustard_left_bin": {
+      "original": "Put the mustard in the left bin",
+      "teacher": "Pick up the mustard bottle and place it in the bin on the left side",
+      "unseen": "Place the yellow mustard bottle inside the left-hand bin.",
+      "competing": "Put the mustard in the right bin",
+      "task": "RSSGMustardLeftBinTask",
+      "competing_task": "RSSGMustardRightBinTask",
+      "goal": "mustard_left_bin",
+      "competing_goal": "mustard_right_bin",
+      "layout_prefix": "M",
+      "horizon_seconds": 30,
+      "pair_source": {
+        "type": "stock default/specific wording; historically studied intent",
+        "path": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/robolab/tasks/benchmark/mustard_in_left_bin.py",
+        "sha256": "026518480c0d5dc0a1f518a41a6bc6a4937ce320b41bd547dd9c95e3be3b5bb6",
+        "exposure": "Historical-informed original intent/prompt choice. Before v2, operator observed v1 cube-behind initial original2/16 and teacher15/16, plus glasses pre-policy reset failures. V2 repeats all qualification on fresh noise; no prior policy observations enter v2 adaptation or outcome counts."
+      }
+    }
+  },
+  "inference_batching": "fixed16",
+  "qualification": {
+    "first_pass_episodes": 96,
+    "episodes_per_wording": 16,
+    "layout_count": 4,
+    "noise_replicates": 4,
+    "gate": {
+      "teacher_min": 8,
+      "teacher_minus_original_min": 4,
+      "original_max": 12
+    },
+    "repeat": "Every first-pass eligible case receives a second original/teacher comparison with the same four layouts and new independent policy-noise slots; same gate must pass again.",
+    "repeat_max_episodes": 96,
+    "selection": "First two twice-qualified cases in fixed case_order; no changing pairs or replacing failed goals.",
+    "competitor": "16 development trials for each selected case before fitting; >=8 strict successes qualifies a preservation claim, otherwise retain as baseline-floor stress test.",
+    "competitor_max_episodes": 32,
+    "max_policy_episodes_before_adaptation": 224,
+    "failures": "Preserve all receipts, failed source/capture attempts, failed gates, and nonqualifying goals. Incomplete execution stops for inspection, never silently reruns.",
+    "slot_start": {
+      "initial": {
+        "cube_behind": 160000,
+        "glasses_pickup": 160016,
+        "mustard_left_bin": 160032
+      },
+      "repeat": {
+        "cube_behind": 161008,
+        "glasses_pickup": 161024,
+        "mustard_left_bin": 161040
+      },
+      "competing": {
+        "cube_behind": 162000,
+        "glasses_pickup": 162016,
+        "mustard_left_bin": 162032
+      }
+    },
+    "batch_order": "Initial original then teacher; repeat teacher then original; fixed case order. Same slots across wordings; different slots across passes."
+  },
+  "scoring": {
+    "version": "rss-goal-expansion-v1",
+    "all_goals_scored_on_all_trajectories": true,
+    "dwell_seconds": 1,
+    "placement": "Relation/container geometry + table/container contact + gripper detached + mover speed<.02m/s + mover displacement>=.02m + reference maximum displacement<=.02m throughout. Both bins remain fixed.",
+    "pickup": "Stock object_picked_up: grabbed and >=.05m above table, plus 1s dwell; no extra stationarity requirement.",
+    "frame": "Robot frame, nonmirrored 45-degree cone for behind. Stock named left/right bins.",
+    "endpoint": "Selected strict success termination, otherwise30s timeout. Cross-goal final and ever scores recorded separately.",
+    "stock": "Stock-compatible instantaneous predicates are secondary; strict placement additionally requires stable contact/reference locality.",
+    "reset": "Reject initially true goals, wrong pose writes, >12mm XY settle drift, >5mm recent drift, >3cm/s settle speed; log reset evidence before rejection."
+  },
+  "adaptation": {
+    "shared_observations": "32 per case before duplicate removal;24train8validation",
+    "layers": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "rank": 32,
+    "closed_form": {
+      "mode": "image",
+      "cells": "grid",
+      "pooling": "32 repair image cells averaged over training repair observations; individual preservation keys with mean-per-observation penalty",
+      "ridge_relative": 0.001,
+      "alpha": 1,
+      "preservation_weight": 1,
+      "ridge_scale": "relative ridge times mean squared norm of repair keys only"
+    },
+    "validation": {
+      "live_replay": {
+        "mode": "exact_pool_bucket",
+        "tolerance": 1e-06,
+        "cast": "recorded float32 action dtype",
+        "batch_context": "Actual active requests recovered from sealed source observation step arrays"
+      },
+      "cross_method_teacher": {
+        "mode": "native-singleton versus instrumented-singleton",
+        "tolerance": 0.01
+      },
+      "singleton_to_live_difference": "Measured diagnostic, not an input-identity gate. BF16 kernels vary with batch/graph shape."
+    },
+    "selection": {
+      "teacher": "Initial qualification teacher batch: smallest slot for each of four development layouts; trajectory fractions 0,.25,.5,.75. No outcome filtering.",
+      "preservation": "Competing batch: two smallest slots for each development layout; fractions 0,.5. No outcome filtering.",
+      "split": "D01\u2013D03 train, D04 validation: 12repair+12preservation train,4+4 validation.",
+      "duplicates": "Stop and preserve evidence if a selected trajectory cannot supply distinct indices for every fixed fraction; no replacement or duplicate training inputs."
+    },
+    "candidate_budget": 1,
+    "selection_rule": "One fixed closed-form recipe. No goal-specific rank/layer/strength search.",
+    "validation_limit": "Replay/parity must pass before evaluation; no claim of repair before heldout comparison."
+  },
+  "heldout": {
+    "conditions": [
+      "base",
+      "closed_form",
+      "saved_rewrite"
+    ],
+    "cells": [
+      "original",
+      "unseen",
+      "competing"
+    ],
+    "new_layouts": 8,
+    "noise_replicates": 2,
+    "episodes_per_goal": 144,
+    "max_goals": 2,
+    "max_episodes": 288,
+    "slot_start": {
+      "cube_behind": 163008,
+      "glasses_pickup": 163024,
+      "mustard_left_bin": 163040
+    },
+    "saved_rewrite": "Conservative text-only grammar recognizes cube-behind or inverse bowl-in-front, glasses pickup synonyms, and mustard-left-bin placement; passes competing, negated, conflicting or uncertain requests unchanged. Rules/vocabulary are engineered with the predeclared unseen test vocabulary. No evaluator case ID, exact test-string lookup, blind or learned generalization claim.",
+    "unseen": "Exact phrase withheld from adaptation; no policy testing until candidate freeze. Goals may have appeared historically.",
+    "selection": "No heldout-based edit selection or test reruns."
+  },
+  "costs": {
+    "all_initial_qualification": true,
+    "all_repeat_qualification": true,
+    "failed_goals": true,
+    "competitor_development": true,
+    "captures_teacher_solve_reload": true,
+    "historical": "Historical screening informed this cohort; disclosed separately rather than described as fresh discovery.",
+    "inherited_runtime": "Original runtime source/replay engineering is inherited; original two-case comparison cost remains separate.",
+    "measure": "Actual per-stage execution and queue wall time; no cold-start speed claim; operator effort not automatically metered.",
+    "predecessor_attempts": "Separately inventory all32 prior policy episodes,4 glasses simulator starts, server/setup/queue exposure, and interrupted supervisor. Not zero and not part of v2 policy denominator.",
+    "preflight": "Two starts maximum without policy; measured queue/execution separately from all learned-policy costs."
+  },
+  "source_paths": [
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/robolab/core/task/conditionals.py",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/robolab/core/task/predicate_logic.py",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/robolab/core/world/world_state.py",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/assets/scenes/rubiks_cube_banana_bowl.usda",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/assets/scenes/workdesk.usda",
+    "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/assets/scenes/two_bin.usda"
+  ],
+  "predecessor": {
+    "cohort": "rss-goal-expansion-20261117",
+    "source_commit": "16c87cb",
+    "protocol_sha256": "3294b98ff5556be2dcd19ee2ba5cabb57c6c4dcd6e2ea72e7a57526e27ab9531",
+    "root": "/home/ali/weightsmith-iros2027/projects/rss-goal-expansion-20261117",
+    "inventory": "/home/ali/weightsmith-iros2027/projects/rss-goal-expansion-v2-20261117/prior-v1/inventory.json",
+    "disposition": "Interrupted at glasses setup;32 completed cube-behind development episodes; no repeated gate, edit, or heldout test. All attempted costs retained separately.",
+    "inventory_sha256": "94f3f8cc1f28aba8d3376f6dbcb3f4c24747cc098e59a1ef4b69a5c83570939e"
+  },
+  "setup_successor": {
+    "case": "glasses_pickup",
+    "object": "rubiks_cube",
+    "translation_m": [
+      0,
+      -0.025,
+      0
+    ],
+    "unchanged": "All original XY jitter, X/Z/rotation, other object poses, prompts, scoring, gates, case order, method recipe and episode budgets. Only fresh policy noise and cohort identities otherwise change.",
+    "reason": "Original cube reset tipped amid tight marker geometry;25mm negative-Y shift removes projected mesh overlap. Not a policy-selected correction.",
+    "preflight": {
+      "max_simulator_starts": 2,
+      "order": [
+        "development",
+        "heldout"
+      ],
+      "num_envs": 16,
+      "reset_cycles_per_start": 2,
+      "policy_calls": 0,
+      "policy_servers": 0,
+      "gate": {
+        "max_xy_m": 0.012,
+        "max_recent_drift_m": 0.005,
+        "max_speed_mps": 0.03
+      },
+      "stop": "Any preflight failure stops; no iterative geometry search or threshold relaxation. All12 geometry layouts require passing both reset cycles before review/qualification.",
+      "gpu": 1,
+      "exclusive_lock": "weightsmith.locks.GpuLock(1)"
+    }
+  }
+}

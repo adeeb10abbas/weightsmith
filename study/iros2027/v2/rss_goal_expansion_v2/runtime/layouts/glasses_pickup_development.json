@@ -1,0 +1,140 @@
+{
+  "case": "glasses_pickup",
+  "split": "development",
+  "generator_seed": 202611171601,
+  "generation": "Original deterministic XY jitter and stock Z/orientation. Glasses-scene cube base Y shifted -25mm to separate marker geometry; all other poses unchanged. Operator has seen v1 development evidence; no v2 policy outcomes.",
+  "asset": "/home/ali/vibes/weight-space-policy-lab/robolab_checkout/assets/scenes/workdesk.usda",
+  "asset_sha256": "511f673cdec8a71442e3f7004889841e460aca04f1f9f6a0342ef11f94df2f3d",
+  "objects": [
+    "glasses",
+    "rubiks_cube"
+  ],
+  "settle_steps": 15,
+  "renders": 8,
+  "layouts": [
+    {
+      "id": "G-D01",
+      "poses": {
+        "glasses": {
+          "pos": [
+            0.3757986663,
+            0.2903914924,
+            0.0322769545
+          ],
+          "quat": [
+            0.4273157,
+            -0.015990343,
+            -0.03444884,
+            0.9033044
+          ]
+        },
+        "rubiks_cube": {
+          "pos": [
+            0.3002579962,
+            -0.0304815909,
+            0.034105543
+          ],
+          "quat": [
+            0.9999994,
+            -0.0005209464,
+            0.0009285509,
+            2.4773178e-06
+          ]
+        }
+      }
+    },
+    {
+      "id": "G-D02",
+      "poses": {
+        "glasses": {
+          "pos": [
+            0.3672803884,
+            0.2965064407,
+            0.0322769545
+          ],
+          "quat": [
+            0.4273157,
+            -0.015990343,
+            -0.03444884,
+            0.9033044
+          ]
+        },
+        "rubiks_cube": {
+          "pos": [
+            0.2923685516,
+            -0.0273876848,
+            0.034105543
+          ],
+          "quat": [
+            0.9999994,
+            -0.0005209464,
+            0.0009285509,
+            2.4773178e-06
+          ]
+        }
+      }
+    },
+    {
+      "id": "G-D03",
+      "poses": {
+        "glasses": {
+          "pos": [
+            0.3717395118,
+            0.2942294229,
+            0.0322769545
+          ],
+          "quat": [
+            0.4273157,
+            -0.015990343,
+            -0.03444884,
+            0.9033044
+          ]
+        },
+        "rubiks_cube": {
+          "pos": [
+            0.2977001931,
+            -0.0241020407,
+            0.034105543
+          ],
+          "quat": [
+            0.9999994,
+            -0.0005209464,
+            0.0009285509,
+            2.4773178e-06
+          ]
+        }
+      }
+    },
+    {
+      "id": "G-D04",
+      "poses": {
+        "glasses": {
+          "pos": [
+            0.3686445284,
+            0.2994959103,
+            0.0322769545
+          ],
+          "quat": [
+            0.4273157,
+            -0.015990343,
+            -0.03444884,
+            0.9033044
+          ]
+        },
+        "rubiks_cube": {
+          "pos": [
+            0.2958184145,
+            -0.0198136344,
+            0.034105543
+          ],
+          "quat": [
+            0.9999994,
+            -0.0005209464,
+            0.0009285509,
+            2.4773178e-06
+          ]
+        }
+      }
+    }
+  ]
+}
