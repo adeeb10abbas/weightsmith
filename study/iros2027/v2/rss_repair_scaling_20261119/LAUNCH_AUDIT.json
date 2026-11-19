@@ -1,0 +1,37 @@
+{
+  "recorded_at_utc": "2026-11-19T19:58:05.048350+00:00",
+  "cohort_id": "rss-repair-scaling-20261119",
+  "source_policy_episodes": 32,
+  "source_pairs": 16,
+  "eligible_pairs": 7,
+  "source_successes": {
+    "original": 1,
+    "teacher": 11
+  },
+  "new_edited_policy_episodes": 0,
+  "budgets": [
+    1,
+    3,
+    6,
+    12
+  ],
+  "source_manifest": {
+    "path": "/home/ali/weightsmith-iros2027/projects/rss-repair-scaling-20261119/sources/block-01/source_manifest.json",
+    "sha256": "d5ace705fe7902fe20fad6ba7b598d33beb648d8a1ad7538da1125fd5e0f1533"
+  },
+  "native_replay_gate": {
+    "path": "/home/ali/weightsmith-iros2027/projects/rss-repair-scaling-20261119/replay-gate/passed.json",
+    "sha256": "168dde3eeff7b5f583a1f9a81e2dceb95c290d12cfbeb93aa41fc0ec68f448c0",
+    "status": "passed"
+  },
+  "reset_gate": {
+    "path": "/home/ali/weightsmith-iros2027/projects/rss-repair-scaling-20261119/preflight/receipt.json",
+    "sha256": "a58861116832f9603aa9b1f80406f45be17505177da9238dc6c9c7afa52f8580",
+    "status": "passed",
+    "policy_calls": 0
+  },
+  "supervisor_unit": "weightsmith-scaling-study-20261119.service",
+  "stage_at_audit": "source-expansion",
+  "icwm_pause_record": "/home/ali/projects/sgdw_icwm/out/user_pause_weightsmith_20261119/pause_receipt.json",
+  "interpretation": "This is a launch and source-qualification audit, not a scaling or edited-policy result. The complete final report is written only after all planned available-budget trials pass verification."
+}
