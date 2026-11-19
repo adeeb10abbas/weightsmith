@@ -172,6 +172,12 @@ def message(event,snap):
             f'Monitor snapshot time (Unix): {snap["checked_unix"]}; verified completion: {snap.get("completed_episodes","unknown")}/608. '
             'Before replying, freshly verify the current cohort receipts and give a concise, plain-language update. '
             'Separate completed cells from partial results and mention material limitations. '
+            'The user wants scientific interpretation, not only progress counts: explain whether new evidence supports, '
+            'weakens, or leaves unresolved the thesis that clarification-derived weight edits produce persistent repairs '
+            'that generalize beyond the source examples. Distinguish changed-layout repair, source-budget effects, '
+            'unseen wording, competing-goal preservation, and the declared LoRA comparison. '
+            'Use completed matched comparisons for claims; do not extrapolate pending tests or call a plateau a scaling law. '
+            'If there is no new interpretable comparison, say the scientific assessment is unchanged. '
             'This message authorizes reporting only: do not restart jobs, rerun trials, tune candidates, change the frozen experiment, '
             'push or rewrite the paper, or resume ICWM. Monitoring artifacts live outside the frozen cohort.\n')
 

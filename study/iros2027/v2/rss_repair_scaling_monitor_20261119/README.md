@@ -45,6 +45,12 @@ existing request, respects later cancellation, and asks the assistant to
 freshly verify receipts before reporting. It does not authorize restarting
 jobs, tuning candidates, editing the paper, or resuming ICWM.
 
+Result updates also assess whether the completed comparisons support, weaken,
+or leave unresolved the research thesis. They distinguish repair on changed
+layouts, source-budget effects, unseen wording, competing-goal preservation,
+and the declared LoRA comparison. Progress without a newly interpretable
+comparison does not change the scientific assessment.
+
 Neither the test suite nor `--once` sends messages or starts a service. The
 operator owns the durable service launch and cancellation.
 
