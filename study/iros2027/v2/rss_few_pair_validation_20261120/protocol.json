@@ -1,0 +1,120 @@
+{
+  "cohort_id": "rss-few-pair-validation-20261120",
+  "version": 1,
+  "model": "pi0.5 DROID joint-position",
+  "goal_ids": [
+    "temporal",
+    "cube_behind",
+    "mustard_right"
+  ],
+  "inference_batching": "fixed16",
+  "collection": {
+    "fresh": true,
+    "max_pairs_per_goal": 48,
+    "batch_pairs": 16,
+    "eligible_target": 9,
+    "source_groups": 3,
+    "pairs_per_group": 3,
+    "selection": "First9eligible pairs by ascending slot, permuted once with the fixed per-goal grouping seed, then partitioned into3disjointtriplets. No edited outcomes used.",
+    "stop": "First complete paired16block with9eligible, else cap48. Failed qualification retained; no replacement goal.",
+    "slot_start": 300000,
+    "goal_slot_stride": 10000,
+    "generator_seed": 2026112001,
+    "grouping_seed": 2026112091
+  },
+  "edit": {
+    "layers": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "mode": "both",
+    "prompt_token_capture": 96,
+    "image_cells": 32,
+    "ridge_relative": 0.001,
+    "merge_multiplier": 1.0,
+    "key_rows": 72,
+    "alignment": "Three opening template tokens plus common valid State/Action suffix; reject if not40pairs consistent across all9source states.",
+    "recipe": "Mean keys and clarified-minus-original residual increments over3states; one72row ridge solve perlayer;BF16 merge; no tuning"
+  },
+  "baselines": {
+    "methods": [
+      "instruction_embedding_offset",
+      "residual_cell_offset"
+    ],
+    "residual_layer": 16,
+    "strengths": [
+      0.5,
+      1.0,
+      2.0
+    ],
+    "zero_fallback": true,
+    "selection_episodes": 16,
+    "selection": "Maximum original-request success on separate development layouts; ties choose smaller strength, including shared unedited zero. No held-out selection.",
+    "identity_gate": "Fixed16 native zero-injection action parity and exact clarified-prefix positive control before any method evaluation."
+  },
+  "evaluation": {
+    "development_slot_start": 340000,
+    "heldout_slot_start": 380000,
+    "goal_slot_stride": 10000,
+    "development_seed": 2026112002,
+    "heldout_seed": 2026112003,
+    "layouts": 16,
+    "original_noise_replicates": 2,
+    "original_episodes": 32,
+    "unseen_episodes": 16,
+    "competing_episodes": 16,
+    "base_episodes": 64,
+    "clarified_episodes": 32,
+    "conditions_per_goal": "base,clarified,1selectedembedding,3Weightsmith,3selectedresidual",
+    "max_heldout_per_goal": 544,
+    "max_heldout_total": 1632,
+    "max_development_selection_per_goal": 208,
+    "max_development_selection_total": 624,
+    "primary": "Original request on fresh changed arrangements; report eachsourcegroup and goal separately.",
+    "secondary": [
+      "unseen wording",
+      "competing goal"
+    ],
+    "freeze": "Seal runtime,candidates,developmentselection,and entireheldout schedule before firstheldout episode."
+  },
+  "analysis": {
+    "bootstrap_draws": 20000,
+    "bootstrap_unit": "layout within goal",
+    "source_group_reporting": "Report eachtriplet first; group mean/range descriptive. Shared baseline and layouts are not independent replication cohorts.",
+    "population_scope": "3historically informed repair goals,3fresh disjoint source groups each; qualification failures stay in denominator.",
+    "source_costs": "Report all attemptedpairs,qualifiedpairs,constructionstates,policyepisodes and walltime separately."
+  },
+  "ports": {
+    "base": 8860,
+    "gpu_stride": 10
+  },
+  "limits": {
+    "max_source_policy_episodes": 288,
+    "max_selection_policy_episodes": 624,
+    "max_heldout_policy_episodes": 1632,
+    "max_total_new_policy_episodes": 2544,
+    "automatic_partial_batch_retries": 0
+  },
+  "constraints": [
+    "Do not modify completed cohorts or resume ICWM.",
+    "No held-out tuning,optional stopping,or goal replacement after qualification.",
+    "A technical stop preserves partial evidence and requires a separately recorded recovery decision.",
+    "Named source sets are disjoint,not separate independent baseline/layout cohorts.",
+    "Original/clarified collection has nominal scene/noise pairing,not pixel-identical rendered trajectories."
+  ]
+}
