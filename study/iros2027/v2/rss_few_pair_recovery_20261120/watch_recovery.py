@@ -12,17 +12,22 @@ from recovery import RECROOT,OLDROOT,protocol,read,save,sha
 OUT=RECROOT/'monitor'
 def events():
     reports=[];counts={'collection':0,'selection':0,'heldout':0,'additional_development':0};issues=[]
+    quarantined_attempts=0
     handled=read(RECROOT/'design/handled-stops.json') if (RECROOT/'design/handled-stops.json').exists() else {}
     for gid in protocol()['goal_ids']:
         for stage,pattern in [('collection','collection/block-*/*/batch-*/completed.json'),
                 ('selection','selection/g*/batch-*/completed.json'),('heldout','heldout/g*/batch-*/completed.json'),
-                ('additional_development','development-edit-check/g*/batch-*/completed.json')]:
+                ('additional_development','development-edit-check/g*/batch-*/completed.json'),
+                ('additional_development','development-edit-check-recovery-v3/g*/batch-*/completed.json')]:
             for p in (OLDROOT/gid).glob(pattern):
                 r=read(p);ep=p.parent/'episodes.json'
                 if sha(ep)!=r['episodes_sha256']:raise ValueError('Receipt checksum differs: '+str(p))
                 rows=read(ep)
                 if r['n']!=len(rows) or r['successes']!=sum(bool(x['success']) for x in rows):raise ValueError('Receipt counts differ')
                 counts[stage]+=r['n']
+        recovery=RECROOT/'development-edit-check'/gid/'recovery-v3/amendment.json'
+        if recovery.exists():
+            quarantined_attempts+=read(recovery)['quarantined_policy_episodes']
         candidates=[RECROOT/gid/'prepare-status.json',RECROOT/gid/'collection-status.json',
                     RECROOT/'development-edit-check'/gid/'status.json']
         for p in candidates:
@@ -42,6 +47,7 @@ def events():
     if final.exists() and read(final)['status']=='complete_and_verified':
         result.append({'id':'final:'+sha(final),'kind':'final','path':str(final)})
     return {'checked_unix':time.time(),'receipted_episodes':counts,'events':result,
+            'quarantined_policy_attempts_not_verified':quarantined_attempts,
             'recovery_status':read(supervisor) if supervisor.exists() else {'status':'preparing'},
             'historical_stop_records_are_preserved':True}
 
@@ -51,6 +57,8 @@ def message(event,snapshot):
         '"Test the new edits then dont sit around keep exploring until we make a solid case I KNOW theres a good paper here". '
         'Respect later steering or cancellation. '+json.dumps(event)+'\n'
         'Freshly inspect evidence before interpreting: '+json.dumps(snapshot['receipted_episodes'])+'. '
+        'Separately quarantined policy attempts, excluded from verified results: '
+        +str(snapshot.get('quarantined_policy_attempts_not_verified',0))+'. '
         'Recovery status is authoritative; original collection/supervisor stop records are intentionally preserved. '
         'Report whether results support few-pair persistent repair across source groups/goals and competing goals. '
         'Separate extra development checks from the untouched confirmatory test; report all source groups, including regressions. '

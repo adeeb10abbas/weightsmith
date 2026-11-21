@@ -29,9 +29,15 @@ attempts. It does not change success predicates or select favorable source group
    These results are exploratory, are reported separately, and do not select
    or tune the edits or change the confirmatory baseline grid.
 
-The original study cap remains 2,544 policy episodes. Including the separate
-development check, the combined cap is 2,672. Recorded-state forward passes
-and policy-free reset checks are not counted as robot policy episodes.
+The original study cap remains 2,544 policy episodes. The initial separate
+development check allowed 128 additional episodes. Its first cube reference
+batch completed 16 raw trials but failed the post-run identity guard. Every
+pinned file subsequently matched, and no offending path was recorded, so those
+trials remain quarantined rather than certified. The explicit recovery-v3
+amendment repeats the unchanged four-condition cube matrix with an audited
+worker. Counting the quarantined attempt, the auxiliary cap is now 144 and the
+combined cap is 2,688. Recorded-state forward passes and policy-free reset
+checks are not counted as robot policy episodes.
 
 ## Entry points
 
@@ -48,6 +54,8 @@ and policy-free reset checks are not counted as robot policy episodes.
   and analyze the complete comparison.
 - `watch_recovery.py`: read-only monitoring and messages to the existing
   conversation, reflecting the user's authorization to continue the work.
+- `diagnostics/update_agreement.py`: compare the deployed weight changes from
+  every fixed source triplet, without loading a policy or using a GPU.
 
 Outputs and immutable recovery decisions live under
 `projects/rss-few-pair-recovery-20261120/`. Original study results remain under
@@ -58,3 +66,32 @@ directory's `supervisor-status.json` and per-goal `prepare-status.json`.
 Every failed attempt is preserved. Technical recoveries are recorded before
 continuation. No held-out outcome may be used to tune or reselect a candidate.
 ICWM remains paused.
+
+## Reading the scientific results
+
+The central test is whether three selected source pairs produce a persistent
+original-request repair that works on changed arrangements. Report all three
+triplets separately for every registered goal. A large gain from only one
+triplet would establish source sensitivity, not repeatability. The shared base
+cohort and shared layouts are not independent observations repeated three times.
+
+Three pairs is the construction budget, not the acquisition budget. Temporal
+qualification attempted 32 pairs (64 episodes), yielding 20 eligible pairs;
+cube qualification attempted 16 pairs (32 episodes), yielding 13. Each goal
+contributes its first nine eligible pairs to three fixed, disjoint triplets.
+Every edit uses one fixed clarification; these are not three different language
+corrections. Each goal also has its own edited checkpoint, so cross-goal success
+would support portability of the recipe, not composition of multiple repairs.
+
+Competing-goal results must include both net success and fixed/broken pairs.
+Equal aggregate success does not demonstrate preservation. In the historical
+N3 reverse-order result, 9/16 before and after contained five fixed and five
+broken nominally paired trials. Initial images differed, and the paired
+layout interval on the net change was -37.5 to +37.5 percentage points.
+
+Compare every edit against the shared embedding baseline and its source-matched
+residual baseline. Keep unfamiliar wording separate. The additional development
+checks and weight-agreement diagnostics must not be pooled into held-out evidence
+or used to choose the best source group. After the complete frozen comparison,
+use its outcome to define the next bounded study on fresh test arrangements;
+retain unsuccessful goals and all technical attempts in the accounting.
