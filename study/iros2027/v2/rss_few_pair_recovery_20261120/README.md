@@ -56,6 +56,12 @@ checks are not counted as robot policy episodes.
   conversation, reflecting the user's authorization to continue the work.
 - `diagnostics/update_agreement.py`: compare the deployed weight changes from
   every fixed source triplet, without loading a policy or using a GPU.
+- `diagnostics/local_activation_fit.py`: measure the same deployed updates on
+  their own three construction states and the other six recorded source states.
+  This is local activation fit with frozen keys, not edited-network behavior.
+- `diagnostics/recover_cube_check.py` and `diagnostics/worker_audited.py`:
+  preserve the failed auxiliary attempt and run the unchanged matrix with
+  complete integrity-check diagnostics.
 
 Outputs and immutable recovery decisions live under
 `projects/rss-few-pair-recovery-20261120/`. Original study results remain under
@@ -95,3 +101,13 @@ checks and weight-agreement diagnostics must not be pooled into held-out evidenc
 or used to choose the best source group. After the complete frozen comparison,
 use its outcome to define the next bounded study on fresh test arrangements;
 retain unsuccessful goals and all technical attempts in the accounting.
+
+The completed local-fit diagnostic provides a specific hypothesis for follow-up.
+On source states excluded from each edit, temporal corrections reduce target
+squared error by 31.1%, 17.0%, and 14.4%; cube corrections reduce it by 3.0% and
+6.7%, while the third increases it by 8.0%. These are activation errors, not
+success rates. Strong fit to the pooled mean (relative error about 0.05--0.06)
+therefore does not establish strong fit to individual states. If the complete
+robot comparison also shows source sensitivity, a subsequent separately frozen
+study can test whether averaging the construction states is the bottleneck.
+This observation must not change or select any candidate in the ongoing study.
